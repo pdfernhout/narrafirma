@@ -39,7 +39,6 @@ H Make a SIMPLE Project Administration section to go with home page button for u
 GENERAL
 H Think about and improve issue of values that can be set only once like catalysis report name and story collection
 H Test readonly use as anonymous under WordPress
-H Make panels read only when user permissions are read only
 H Display total count of all answers when displaying question name in Story Browser or Catalysis Report configuration
 
 ======= CYNTHIA
@@ -96,9 +95,8 @@ X Page to cluster themes into final themes
 GRAPH BROWSER
 L Support graphBrowser common maximum for multiple histograms
 
-TRENDS REPORT -> PATTERN BROWSER
+PATTERN BROWSER
 L Move options (how large should subsets, what significance threshold) to popup under patterns list
-L Rename trendsReport to Pattern Browser
 L Rename "save current graph selection to observation" buttons under graphs
 
 CLUSTERING (CATALYSIS)
@@ -888,3 +886,6 @@ DONE Scroll page top top when change page using button or link
 DONE Put help button to right before logout in navigation section
 DONE Add links for previous or next page on right before help and logout links in navigation section
 DONE Use yes/no instead of active/blank for displaying survey status if active on web (E)
+DONE Make panels read only when user permissions are read only [leaving editable, but indicating project is read only in navigation bar and via a toast at startup]
+DONE Rename trendsReport to Pattern Browser [Actually, called it Pattern Explorer]
+DONE Fix issue where bad page id on startup left app in bad state
