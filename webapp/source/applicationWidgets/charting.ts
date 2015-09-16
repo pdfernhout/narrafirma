@@ -296,13 +296,26 @@ function addYAxis(chart, yScale, configure = null) {
     return yAxis;
 }
 
-function addXAxisLabel(chart, label, labelLengthLimit = 64) {
-    var shortenedLabel = limitLabelLength(label, labelLengthLimit); 
+function addXAxisLabel(chart, label, labelLengthLimit = 64, textAnchor = "middle") {
+    var shortenedLabel = limitLabelLength(label, labelLengthLimit);
+    var xPosition;
+    var yPosition = chart.fullHeight - 16;
+     
+    if (textAnchor === "middle") {
+        xPosition = chart.margin.left + chart.width / 2;
+    } else if (textAnchor === "start") {
+        xPosition = chart.margin.left;
+        yPosition -= 25;
+    } else if (textAnchor === "end") {
+        xPosition = chart.margin.left + chart.width;
+        yPosition -= 25;
+    }
+    
     var shortenedLabelSVG = chart.chart.append("text")
         .attr("class", "x label")
-        .attr("text-anchor", "middle")
-        .attr("x", chart.margin.left + chart.width / 2)
-        .attr("y", chart.fullHeight - 16)
+        .attr("text-anchor", textAnchor)
+        .attr("x", xPosition)
+        .attr("y", yPosition)
         .text(shortenedLabel);
     
     if (label.length > labelLengthLimit) {
@@ -527,7 +540,12 @@ export function d3HistogramChart(graphBrowserInstance: GraphHolder, scaleQuestio
     var chartPane = newChartPane(graphBrowserInstance, style);
     
     var margin = {top: 20, right: 15, bottom: 60, left: 60};
-    if (isSmallFormat) margin.left = 25;
+    if (isSmallFormat) {
+        margin.left = 25;
+    } else if (scaleQuestion.displayType === "slider") {
+        margin.bottom += 30;
+    }
+    
     var chart = makeChartFramework(chartPane, "histogram", isSmallFormat, margin);
     var chartBody = chart.chartBody;
     
@@ -546,6 +564,10 @@ export function d3HistogramChart(graphBrowserInstance: GraphHolder, scaleQuestio
         addXAxisLabel(chart, choice, 18);
     } else {
         addXAxisLabel(chart, nameForQuestion(scaleQuestion));
+        if (scaleQuestion.displayType === "slider") {
+            addXAxisLabel(chart, scaleQuestion.displayConfiguration[0], undefined, "start");
+            addXAxisLabel(chart, scaleQuestion.displayConfiguration[1], undefined, "end");
+        }
     }
     
     // draw the y axis
