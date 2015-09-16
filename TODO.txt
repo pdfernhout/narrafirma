@@ -1,13 +1,11 @@
 ==== NarraFirma TODO list:
 
-PRIORITY
-- export: overall report, print text questionnaires, print catalysis report
-- catalysis (at least one step like graph or themer)
-
 EXPORT/IMPORT
 H Add page to do export
-H When import story collection, need to display name of form in select
+H Make a SIMPLE Project Administration section to go with home page button for use with import/export/backup/reporting or other settings and functions
 H Move "export story form" and story collection buttons from "Enter stories" page to "review incoming" page
+H When import story collection, need to display name of form in select
+H Include story annotations in export and import
 
 PRINTING
 H Implement printStoryForm in domain buttonClicked (what do do about entering multiple stories?) - make better looking
@@ -15,25 +13,19 @@ H Implement "export session agenda" (to HTML) for story collection
 H Implement "export session agenda" (to HTML) for sensemaking
 H Implement exportPresentationOutline in domain buttonClicked - in Return, "Prepare outline of project presentation"
 
-STORY ANNOTATION
-H Include annotations in export and import
-
 GRAPH BROWSER
+H Support graphBrowser standard deviation and mean for histograms
 H Support graphBrowser contingency table with statistical results - chi squared
 H Finish Mann-Whitney U test
 H Test statistical tests for validity - run same tests in spreadsheet on same data
-H Support graphBrowser standard deviation and mean for histograms
 
 CATALYSIS REPORT
+H Print catalysis report
 H Create catalysis report - including results (graphs, statistical results)
    Perspective
        Interpretation
            Observation
                Pattern (graph)
-H Print catalysis report
-
-CONFIGURATION
-H Make a SIMPLE Project Administration section to go with home page button for use with import/export/backup/reporting or other settings and functions
 
 GENERAL
 H Think about and improve issue of values that can be set only once like catalysis report name and story collection
@@ -890,3 +882,4 @@ DONE Rename trendsReport to Pattern Browser [Actually, called it Pattern Explore
 DONE Fix issue where bad page id on startup left app in bad state
 DONE Add low and high labels for slider/range questions (on graphs)
 DONE Add hover title text for ellipsed graph labels
+DONE Fix issue with "html" items from Introduction page showing up later on other pages
