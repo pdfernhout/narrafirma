@@ -36,6 +36,8 @@ var displayTypeToValueTypeMap = {
 
 function convertEditorQuestions(editorQuestions, prefixQPA) {
     var adjustedQuestions = [];
+    var valueOptions;
+    var displayConfiguration;
     
     for (var questionIndex = 0; questionIndex < editorQuestions.length; questionIndex++) {
         var question = editorQuestions[questionIndex];
@@ -61,9 +63,11 @@ function convertEditorQuestions(editorQuestions, prefixQPA) {
         }
         // TODO: valueType might be a number or boolean sometimes
         var valueType = displayTypeToValueTypeMap[questionType];
+        // Set these two vars to undefined so no object fields will appear set for these if not otherwise set
+        valueOptions = undefined;
+        displayConfiguration = undefined;
+        
         if (!valueType) console.log("ERROR: Could not resolve valueType for ", question);
-        var valueOptions;
-        var displayConfiguration;
         if (questionType === "select" || questionType === "checkboxes" || questionType === "radiobuttons") {
             valueOptions = options;
         } else {
