@@ -11,6 +11,7 @@ interface PlotItem {
 }
 
 var unansweredKey = "{N/A}";
+var maxRangeLabelLength = 26;
 
 function correctForUnanswered(question, value) {
     if (question.displayType === "checkbox" && !value) return "no";
@@ -324,14 +325,28 @@ function addXAxisLabel(chart, label, labelLengthLimit = 64, textAnchor = "middle
     }
 }
 
-function addYAxisLabel(chart, label, labelLengthLimit = 64) {
+function addYAxisLabel(chart, label, labelLengthLimit = 64, textAnchor = "middle") {
     var shortenedLabel = limitLabelLength(label, labelLengthLimit); 
+    
+    var xPosition;
+    var yPosition = 16;
+    
+    if (textAnchor === "middle") {
+        xPosition = -(chart.margin.top + chart.height / 2);
+    } else if (textAnchor === "start") {
+        xPosition = -(chart.margin.top + chart.height);
+        yPosition += 25;
+    } else if (textAnchor === "end") {
+        xPosition = -chart.margin.top;
+        yPosition += 25;
+    }
+    
     var shortenedLabelSVG = chart.chart.append("text")
         .attr("class", "y label")
-        .attr("text-anchor", "middle")
+        .attr("text-anchor", textAnchor)
         // Y and X are flipped because of the rotate
-        .attr("y", 16)
-        .attr("x", -(chart.margin.top + chart.height / 2))
+        .attr("y", yPosition)
+        .attr("x", xPosition)
         .attr("transform", "rotate(-90)")
         .text(shortenedLabel);
     
@@ -565,8 +580,8 @@ export function d3HistogramChart(graphBrowserInstance: GraphHolder, scaleQuestio
     } else {
         addXAxisLabel(chart, nameForQuestion(scaleQuestion));
         if (scaleQuestion.displayType === "slider") {
-            addXAxisLabel(chart, scaleQuestion.displayConfiguration[0], undefined, "start");
-            addXAxisLabel(chart, scaleQuestion.displayConfiguration[1], undefined, "end");
+            addXAxisLabel(chart, scaleQuestion.displayConfiguration[0], maxRangeLabelLength, "start");
+            addXAxisLabel(chart, scaleQuestion.displayConfiguration[1], maxRangeLabelLength, "end");
         }
     }
     
@@ -743,7 +758,8 @@ export function d3ScatterPlot(graphBrowserInstance: GraphHolder, xAxisQuestion, 
     
     var chartTitle = "" + nameForQuestion(xAxisQuestion) + " vs. " + nameForQuestion(yAxisQuestion);
 
-    var margin = {top: 20, right: 15, bottom: 60, left: 60};
+    // x 700 - 15 - 90 =  595 // y 500 - 20 - 90 = 390 // 205 difference to make square
+    var margin = {top: 20, right: 15 + 205, bottom: 90, left: 90};
     var chart = makeChartFramework(chartPane, "scatterPlot", false, margin);
     var chartBody = chart.chartBody;
     
@@ -759,7 +775,9 @@ export function d3ScatterPlot(graphBrowserInstance: GraphHolder, xAxisQuestion, 
     var xAxis = addXAxis(chart, xScale);
     
     addXAxisLabel(chart, nameForQuestion(xAxisQuestion));
-    
+    addXAxisLabel(chart, xAxisQuestion.displayConfiguration[0], maxRangeLabelLength, "start");
+    addXAxisLabel(chart, xAxisQuestion.displayConfiguration[1], maxRangeLabelLength, "end");
+
     // draw the y axis
     
     var yScale = d3.scale.linear()
@@ -772,6 +790,8 @@ export function d3ScatterPlot(graphBrowserInstance: GraphHolder, xAxisQuestion, 
     var yAxis = addYAxis(chart, yScale);
     
     addYAxisLabel(chart, nameForQuestion(yAxisQuestion));
+    addYAxisLabel(chart, yAxisQuestion.displayConfiguration[0], maxRangeLabelLength, "start");
+    addYAxisLabel(chart, yAxisQuestion.displayConfiguration[1], maxRangeLabelLength, "end");
     
     // Append brush before data to ensure titles are drown
     chart.brush = createBrush(chartBody, xScale, yScale, brushend);
