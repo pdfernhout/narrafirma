@@ -13,12 +13,6 @@ H Implement "export session agenda" (to HTML) for story collection
 H Implement "export session agenda" (to HTML) for sensemaking
 H Implement exportPresentationOutline in domain buttonClicked - in Return, "Prepare outline of project presentation"
 
-GRAPH BROWSER
-H Support graphBrowser standard deviation and mean for histograms
-H Support graphBrowser contingency table with statistical results - chi squared
-H Finish Mann-Whitney U test
-H Test statistical tests for validity - run same tests in spreadsheet on same data
-
 CATALYSIS REPORT
 H Print catalysis report
 H Create catalysis report - including results (graphs, statistical results)
@@ -26,6 +20,12 @@ H Create catalysis report - including results (graphs, statistical results)
        Interpretation
            Observation
                Pattern (graph)
+
+GRAPH BROWSER
+H Support graphBrowser standard deviation and mean for histograms
+H Support graphBrowser contingency table with statistical results - chi squared
+H Finish Mann-Whitney U test
+H Test statistical tests for validity - run same tests in spreadsheet on same data
 
 GENERAL
 H Think about and improve issue of values that can be set only once like catalysis report name and story collection
