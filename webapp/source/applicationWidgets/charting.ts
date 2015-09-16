@@ -236,26 +236,37 @@ function addXAxis(chart, xScale, configure = null) {
         .scale(xScale)
         .orient('bottom');
     
-    if (configure.labelLengthLimit) {
-        xAxis.tickFormat(function (label) {
-            return limitLabelLength(label, configure.labelLengthLimit); 
-        });
-    }
-    
     if (configure.isSmallFormat) xAxis.tickValues(xScale.domain());
     
     if (configure.drawLongAxisLines) xAxis.tickSize(-(chart.height));
 
     if (!configure.rotateAxisLabels) {
-        chart.chartBody.append('g')
+        var labels = chart.chartBody.append('g')
             .attr('transform', 'translate(0,' + chart.height + ')')
             .attr('class', 'x axis')
-            .call(xAxis);
+            .call(xAxis).selectAll("text");
+        
+        if (configure.labelLengthLimit) {
+            labels.text(function(d, i) {
+                return limitLabelLength(d, configure.labelLengthLimit);
+            });
+       }
+        
+       labels.append("svg:title").text(function(d, i) {
+            return d;
+        }); 
     } else {
+        if (configure.labelLengthLimit) {
+            xAxis.tickFormat(function (label) {
+                return limitLabelLength(label, configure.labelLengthLimit); 
+            });
+        }
+    
+        // TODO: These do not have hovers
         chart.chartBody.append('g')
             .attr('transform', 'translate(0,' + chart.height + ')')
             .attr('class', 'x axis')
-            .call(xAxis).call(xAxis).selectAll("text")
+            .call(xAxis).selectAll("text")
                 .style("text-anchor", "end")
                 .attr("dx", "-0.8em")
                 .attr("dy", "0.15em")
@@ -276,6 +287,7 @@ function addYAxis(chart, yScale, configure = null) {
         .scale(yScale)
         .orient('left');
     
+    /*
     if (configure.labelLengthLimit) {
         yAxis.tickFormat(function (label) {
             return limitLabelLength(label, configure.labelLengthLimit); 
@@ -284,16 +296,27 @@ function addYAxis(chart, yScale, configure = null) {
         // TODO: Is this really needed?
         yAxis.tickFormat(d3.format("d"));
     }
+    */
     
     if (configure.isSmallFormat) yAxis.tickValues(yScale.domain());
     
     if (configure.drawLongAxisLines) yAxis.tickSize(-(chart.width));
 
-    chart.chartBody.append('g')
+    var labels = chart.chartBody.append('g')
         // .attr('transform', 'translate(0,0)')
         .attr('class', 'y axis')
-        .call(yAxis);
+        .call(yAxis).selectAll("text");
 
+    if (configure.labelLengthLimit) {
+        labels.text(function(d, i) {
+            return limitLabelLength(d, configure.labelLengthLimit);
+        });
+    }
+        
+    labels.append("svg:title").text(function(d, i) {
+        console.log("addYAxis label", d, i);
+        return d;
+    }); 
     return yAxis;
 }
 
@@ -928,7 +951,7 @@ export function d3ContingencyTable(graphBrowserInstance: GraphHolder, xAxisQuest
     
     var chartTitle = "" + nameForQuestion(xAxisQuestion) + " vs. " + nameForQuestion(yAxisQuestion);
 
-    var margin = {top: 20, right: 15, bottom: 120, left: 140};
+    var margin = {top: 20, right: 15, bottom: 60, left: 140};
     var chart = makeChartFramework(chartPane, "contingencyChart", false, margin);
     var chartBody = chart.chartBody;
     
@@ -941,7 +964,7 @@ export function d3ContingencyTable(graphBrowserInstance: GraphHolder, xAxisQuest
     chart.xScale = xScale;
     chart.xQuestion = xAxisQuestion;
     
-    var xAxis = addXAxis(chart, xScale, {labelLengthLimit: 11, drawLongAxisLines: true, rotateAxisLabels: true});
+    var xAxis = addXAxis(chart, xScale, {labelLengthLimit: 11, drawLongAxisLines: true, rotateAxisLabels: false});
     
     addXAxisLabel(chart, nameForQuestion(xAxisQuestion));
     
