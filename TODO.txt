@@ -6,9 +6,9 @@ H Make a SIMPLE Project Administration section to go with home page button for u
 H Move "export story form" and story collection buttons from "Enter stories" page to "review incoming" page
 H When import story collection, need to display name of form in select
 H Include story annotations in export and import
+H When import, need to create questions in project
 
 PRINTING
-H Implement printStoryForm in domain buttonClicked (what do do about entering multiple stories?) - make better looking
 H Implement "export session agenda" (to HTML) for story collection
 H Implement "export session agenda" (to HTML) for sensemaking
 H Implement exportPresentationOutline in domain buttonClicked - in Return, "Prepare outline of project presentation"
@@ -88,7 +88,6 @@ L Support graphBrowser common maximum for multiple histograms
 
 PATTERN BROWSER
 L Move options (how large should subsets, what significance threshold) to popup under patterns list
-L Rename "save current graph selection to observation" buttons under graphs
 
 CLUSTERING (CATALYSIS)
 
@@ -137,6 +136,7 @@ L Way to select a different project to switch to (other than editing the URL or 
 
 GENERAL
 M Create script or procedure to deal with SVN for WordPress
+M When a Grid item is added but no data is entered like for a catalysis report, the entry in a select looks wrong
 
 UNSURE
 X Way to retrieve data about project participant groups [Is this still relevant? Probably yes, if we did "checkboxes with pull" for picking what groups an activity applies to instead of text entry]
@@ -883,3 +883,7 @@ DONE Fix issue where bad page id on startup left app in bad state
 DONE Add low and high labels for slider/range questions (on graphs)
 DONE Add hover title text for ellipsed graph labels
 DONE Fix issue with "html" items from Introduction page showing up later on other pages
+DONE Implement printStoryForm in domain buttonClicked (what do do about entering multiple stories?) - make better looking
+DONE Don't show story name as question in pattern explorer [or other text questions unless annotations]
+DONE Rename "save current graph selection to observation" buttons under graphs
+
