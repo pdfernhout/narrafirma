@@ -410,7 +410,7 @@ var exportQuestionTypeMap = {
 };
 
 export function exportQuestionnaire() {
-    var storyCollectionIdentifier = Globals.clientState().storyCollectionIdentifier;
+    var storyCollectionIdentifier = Globals.clientState().storyCollectionIdentifier();
     
     console.log("exportStoryCollection", storyCollectionIdentifier);
     var currentQuestionnaire = surveyCollection.getQuestionnaireForStoryCollection(storyCollectionIdentifier);
@@ -465,7 +465,7 @@ export function exportQuestionnaire() {
 }
 
 export function exportStoryCollection() {
-    var storyCollectionIdentifier = Globals.clientState().storyCollectionIdentifier;
+    var storyCollectionIdentifier = Globals.clientState().storyCollectionIdentifier();
     
     console.log("exportStoryCollection", storyCollectionIdentifier);
     var currentQuestionnaire = surveyCollection.getQuestionnaireForStoryCollection(storyCollectionIdentifier);
