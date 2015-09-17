@@ -2,6 +2,7 @@ import surveyCollection = require("./surveyCollection");
 import storyCardDisplay = require("./storyCardDisplay");
 import Globals = require("./Globals");
 import m = require("mithril");
+import sanitizeHTML = require("./sanitizeHTML");
 
 "use strict";
 
@@ -53,48 +54,171 @@ function repeatTags(count, tags) {
     return result;
 }
 
+function printText(text) {
+    return sanitizeHTML.generateSanitizedHTMLForMithril(text);
+}
+
+function printNewline() {
+    return [
+        m("br"),
+        m("br"),
+        "\n"
+    ];
+}
+
+function printCheckbox(text) {
+    return [
+        "[ ] ",
+        printText(text),
+        m("br"),
+        "\n"
+    ];
+}
+
+function printOption(text) {
+    return [
+        "( ) ",
+        printText(text),
+        m("br"),
+        "\n"
+    ];
+}
+
+function printQuestionText(question, instructions = "") {
+    var questionTextForPrinting = printText(question.displayPrompt);
+    if (question.displayType === "header") {
+       questionTextForPrinting = m("b", questionTextForPrinting); 
+    }
+    if (instructions) instructions = " " + instructions;
+    return [
+        questionTextForPrinting,
+        instructions,
+        printNewline()
+    ];    
+}
+
+function printQuestion(question) {
+    // console.log("printQuestion", question.displayType, question);
+    
+    var result;
+        
+    switch (question.displayType) {
+        case "boolean":
+            result = [
+                printQuestionText(question, "[Choose only one]"),
+                printOption("no"),
+                printOption("yes")
+            ];
+            break;
+            
+        case "label":
+            result = [
+                printQuestionText(question),
+            ];
+            break;
+            
+        case "header":
+            result = [
+                printQuestionText(question),
+            ];
+            break;
+            
+        case "checkbox":
+            result = [
+                printQuestionText(question),
+                printCheckbox("")
+            ];
+            break;
+            
+        case "checkboxes":
+             result = [
+                printQuestionText(question, "[Choose any combination]"),
+                question.valueOptions.map(function (option, index) {
+                    return printCheckbox(option);
+                })
+            ];
+            break;
+            
+        case "text":
+            result = [
+                printQuestionText(question),
+                m("span", "_________________________________________________________________________")
+            ];
+            break;
+            
+        case "textarea":
+            result = [
+                printQuestionText(question),
+                repeatTags(8, printNewline())
+            ];
+            break;
+            
+        case "select":
+            result = [
+                printQuestionText(question, "[Choose only one]"),
+                question.valueOptions.map(function (option, index) {
+                    return printOption(option);
+                })
+            ];
+            break;
+            
+        case "radiobuttons":
+            result = [
+                printQuestionText(question, "[Choose only one]"),
+                question.valueOptions.map(function (option, index) {
+                    return printOption(option);
+                })
+            ];
+            break;
+            
+        case "slider":
+            result = [
+                printQuestionText(question, "[Mark on the line]"),
+                question.displayConfiguration[0],
+                " -------------------------------------------------- ",
+                question.displayConfiguration[1],
+                printNewline()
+            ];
+            break;
+    }
+    
+    return [result, printNewline()];
+}
+
 function generateHTMLForQuestionnaire(questionnaire) {
      
     // TODO: Translate
     var vdom = m(".narrafirma-questionnaire-for-printing", [
         "\n",
         
-        m(".narrafirma-survey-print-title", questionnaire.title),
-        "\n",
+        m(".narrafirma-survey-print-title", printText(questionnaire.title)),
+        printNewline(),
         
-        m(".narrafirma-survey-print-intro", questionnaire.startText),
-        "\n",
+        m(".narrafirma-survey-print-intro", printText(questionnaire.startText)),
+        printNewline(),
                   
         "Please select one of the following questions to answer:",
-        m("br"),
-        m("br"),
-        "\n",
+        printNewline(),
         questionnaire.elicitingQuestions.map(function (elicitingQuestion) {
-            return [elicitingQuestion.text, m("br"), m("br"), "\n"];
+            return printOption(elicitingQuestion.text);
         }),
+        
+        printNewline(),
         
         "Please enter your response here:",
-        m("br"),
-        m("br"),
-        "\n",
-        repeatTags(7, [m("br"), m("br"), "\n"]),
-        questionnaire.storyQuestions.map(function (storyQuestion) {
-            return [storyQuestion.displayPrompt, m("br"), "\n"];
-        }),
+        repeatTags(5, printNewline()),
         
-        // TODO: Print choices...
+        questionnaire.storyQuestions.map(function (storyQuestion) {
+            return printQuestion(storyQuestion);
+        }),
         
         questionnaire.participantQuestions.map(function (participantQuestion) {
-            return [participantQuestion.displayPrompt, m("br"), "\n"];
+            return printQuestion(participantQuestion);
         }),
-
-        // TODO: Print choices...
+    
+        printNewline(),
         
-        m("br"),
-        m("br"),
-        
-        questionnaire.endText
-        
+        printText(questionnaire.endText)
     ]);
 
     return generateHTMLForPage(questionnaire.title, "/css/survey.css", vdom);
