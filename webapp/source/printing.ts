@@ -1,8 +1,19 @@
 import surveyCollection = require("./surveyCollection");
 import storyCardDisplay = require("./storyCardDisplay");
 import Globals = require("./Globals");
+import m = require("mithril");
 
 "use strict";
+
+function printHTML(htmlToPrint) {
+    // Display HTML in a new window
+    console.log(printHTML, htmlToPrint);
+    var w = window.open();
+    w.document.write(htmlToPrint);
+    w.document.close();
+    // w.print();
+    // w.close();
+}
 
 function generateBoilerplateHTML(title, stylesheet) {
     var output = "";
@@ -75,13 +86,12 @@ export function printStoryForm(model, fieldSpecification, value) {
     printHTML(output);
 }
 
-function printHTML(htmlToPrint) {
-    console.log(printHTML, htmlToPrint);
-    var w = window.open();
-    w.document.write(htmlToPrint);
-    w.document.close();
-    // w.print();
-    // w.close();
+function htmlForMithril(vdom) {
+    // Convert Mithril vdom objects to HTML
+    var temporaryDiv = document.createElement('div');
+    m.render(temporaryDiv, vdom);
+    
+    return temporaryDiv.innerHTML;
 }
 
 export function printStoryCards() {
@@ -103,7 +113,7 @@ export function printStoryCards() {
         var storyContent = storyCardDisplay.generateStoryCardContent(storyModel, {storyTextAtTop: true});
         
         output += '<div class="storyCardForPrinting">';
-        output += storyContent;
+        output += htmlForMithril(storyContent);
         output += '</div>';
     }
     
