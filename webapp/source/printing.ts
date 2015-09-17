@@ -5,7 +5,7 @@ import m = require("mithril");
 
 "use strict";
 
-function printHTML(htmlToPrint) {
+function printHTML(htmlToPrint: string) {
     // Display HTML in a new window
     console.log(printHTML, htmlToPrint);
     var w = window.open();
@@ -15,23 +15,33 @@ function printHTML(htmlToPrint) {
     // w.close();
 }
 
-function generateBoilerplateHTML(title, stylesheet) {
+function generateHTMLForPage(title: string, stylesheetReference: string, vdom) {
     var output = "";
     output += "<!DOCTYPE html>\n";
     output += "<head>\n";
     output += "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\" />\n";
     output += "<title>" + title + "</title>\n";
-    output += "<link rel=\"stylesheet\" href=\"" + stylesheet + "\">\n";
+    output += "<link rel=\"stylesheet\" href=\"" + stylesheetReference + "\">\n";
     output += "</head>\n\n";
     output += "<body>\n";
+    output += htmlForMithril(vdom);
+    output += "\n</body>\n</html>";
     
     return output;
+}
+
+function htmlForMithril(vdom) {
+    // Convert Mithril vdom objects to HTML
+    var temporaryDiv = document.createElement('div');
+    m.render(temporaryDiv, vdom);
+    
+    return temporaryDiv.innerHTML;
 }
 
 function generateHTMLForQuestionnaire(questionnaire) {
      
     // CFK started on this, but it should be finished with the mithril thing so not finishing
-    var output = generateBoilerplateHTML(questionnaire.title, "/css/survey.css");
+    var output = "";
     output += "<div class=\"narrafirma-survey-print-title\">" + questionnaire.title + "</div>\n";
     output += "<div class=\"narrafirma-survey-print-intro\">" + questionnaire.startText + "</div>\n";
     
@@ -62,9 +72,7 @@ function generateHTMLForQuestionnaire(questionnaire) {
     
     output += questionnaire.endText;
     
-    output += "\n</body>\n</html>";
-    
-    return output;
+    return generateHTMLForPage(questionnaire.title, "/css/survey.css", m.trust(output));
 }
 
 export function printStoryForm(model, fieldSpecification, value) {
@@ -86,14 +94,6 @@ export function printStoryForm(model, fieldSpecification, value) {
     printHTML(output);
 }
 
-function htmlForMithril(vdom) {
-    // Convert Mithril vdom objects to HTML
-    var temporaryDiv = document.createElement('div');
-    m.render(temporaryDiv, vdom);
-    
-    return temporaryDiv.innerHTML;
-}
-
 export function printStoryCards() {
     console.log("printStoryCards");
     
@@ -106,20 +106,18 @@ export function printStoryCards() {
     var allStoriesInStoryCollection = surveyCollection.getStoriesForStoryCollection(storyCollectionIdentifier);
     console.log("allStoriesInStoryCollection", allStoriesInStoryCollection);
     
-    var output = generateBoilerplateHTML("Story cards for: " + storyCollectionIdentifier, "/css/standard.css");
+    var storyDivs = [];
     
     for (var storyIndex = 0; storyIndex < allStoriesInStoryCollection.length; storyIndex++) {
         var storyModel = allStoriesInStoryCollection[storyIndex];
         var storyContent = storyCardDisplay.generateStoryCardContent(storyModel, {storyTextAtTop: true});
         
-        output += '<div class="storyCardForPrinting">';
-        output += htmlForMithril(storyContent);
-        output += '</div>';
+        var storyDiv = m(".storyCardForPrinting", storyContent);
+        storyDivs.push(storyDiv);
     }
     
-    output += "</body></html>";
-    
-    printHTML(output);
+   var htmlForPage = generateHTMLForPage("Story cards for: " + storyCollectionIdentifier, "/css/standard.css", storyDivs);
+   printHTML(htmlForPage);
 }
 
 export function printCatalysisReport() {
