@@ -9,11 +9,10 @@ import surveyBuilder = require("./surveyBuilderMithril");
 import surveyCollection = require("./surveyCollection");
 import surveyStorage = require("./surveyStorage");
 import translate = require("./panelBuilder/translate");
-import storyCardDisplay = require("./storyCardDisplay");
 import generateRandomUuid = require("./pointrel20150417/generateRandomUuid");
 import toaster = require("./panelBuilder/toaster");
 import ClientState = require("./ClientState");
-// import m = require("mithril");
+import printing = require("./printing");
 
 "use strict";
 
@@ -72,7 +71,7 @@ function openSurveyDialog() {
         return null;
     }
 
-    var questionnaire = getQuestionnaireForStoryCollection(storyCollectionIdentifier);
+    var questionnaire = surveyCollection.getQuestionnaireForStoryCollection(storyCollectionIdentifier, true);
     if (!questionnaire) return;
 
     var surveyDialog = openMithrilSurveyDialog(questionnaire, finished);
@@ -101,114 +100,6 @@ export function guiOpenSection(model, fieldSpecification, value) {
     // document.body.scrollTop = 0;
     // document.documentElement.scrollTop = 0;
     window.scrollTo(0, 0);
-}
-
-function generateBoilerplateHTML(title, stylesheet) {
-    var output = "";
-    output += "<!DOCTYPE html>\n";
-    output += "<head>\n";
-    output += "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\" />\n";
-    output += "<title>" + title + "</title>\n";
-    output += "<link rel=\"stylesheet\" href=\"" + stylesheet + "\">\n";
-    output += "</head>\n\n";
-    output += "<body>\n";
-    
-    return output;
-}
-
-function generateHTMLForQuestionnaire(questionnaire) {
-     
-    // CFK started on this, but it should be finished with the mithril thing so not finishing
-    var output = generateBoilerplateHTML(questionnaire.title, "/css/survey.css");
-    output += "<div class=\"narrafirma-survey-print-title\">" + questionnaire.title + "</div>\n";
-    output += "<div class=\"narrafirma-survey-print-intro\">" + questionnaire.startText + "</div>\n";
-    
-    // TODO: Translate
-    output += "Please select one of the following questions to answer:<br><br>\n";
-    
-    questionnaire.elicitingQuestions.forEach(function (elicitingQuestion) {
-        output += elicitingQuestion.text + "<br><br>\n";
-    });
-    
-    output += "Please enter your response here:<br><br>\n";
-    
-    for (var i = 0; i < 7; i++) output += "<br><br>\n";
-   
-    questionnaire.storyQuestions.forEach(function (storyQuestion) {
-        output += storyQuestion.displayPrompt + "<br>\n";
-    });
-    
-    // TODO: Print choices...
-   
-    questionnaire.participantQuestions.forEach(function (participantQuestion) {
-        output += participantQuestion.displayPrompt + "<br>\n";
-    });
-    
-    // TODO: Print choices...
-    
-    output += "<br><br>";
-    
-    output += questionnaire.endText;
-    
-    output += "\n</body>\n</html>";
-    
-    return output;
-}
-
-function getQuestionnaireForStoryCollection(storyCollectionName: string) {
-    var storyCollection = project.findStoryCollection(storyCollectionName);
-    
-    if (!storyCollection) {
-        // TODO: translate
-        alert("The selected story collection could not be found.");
-        return null;
-    }
-    
-    var questionnaireName = project.tripleStore.queryLatestC(storyCollection, "storyCollection_questionnaireIdentifier");
-    
-    if (!questionnaireName) {
-        // TODO: translate
-        alert("The story collection has no selection for a questionnaire.");
-        return null;
-    }
-    
-    var questionnaire = project.tripleStore.queryLatestC(storyCollection, "questionnaire");
-    
-    if (!questionnaire) {
-        // TODO: translate
-        alert("The questionnaire selected in the story collection could not be found.");
-        return null;
-    }
-    
-    return questionnaire;
-}
-
-export function printStoryForm(model, fieldSpecification, value) {
-    console.log("printStoryForm unfinished");
-    
-    var storyCollectionIdentifier: string = clientState.storyCollectionIdentifier();
-    
-    if (!storyCollectionIdentifier) {
-        // TODO: translate
-        alert("Please select a story collection first.");
-        return null;
-    }
-
-    var questionnaire = getQuestionnaireForStoryCollection(storyCollectionIdentifier);
-    if (!questionnaire) return;
-    
-    var output = generateHTMLForQuestionnaire(questionnaire);
-    
-    printHTML(output);
-}
-
-function printHTML(htmlToPrint) {
-    console.log(printHTML, htmlToPrint);
-    var w = window.open();
-    w.document.write(htmlToPrint);
-    w.document.close();
-    // w.print();
-    // w.close();
 }
 
 function copyDraftPNIQuestionVersionsIntoAnswers_Basic() {
@@ -278,46 +169,6 @@ export function previewQuestionForm(model, fieldSpecification) {
     window["narraFirma_previewQuestionnaire"] = questionnaire;
     
     var w = window.open("survey.html#preview=" + (new Date().toISOString()), "_blank");
-}
-
-export function printStoryCards() {
-    console.log("printStoryCards");
-    
-    if (!clientState.storyCollectionIdentifier) {
-        alert("Please select a story collection for which to print story cards");
-        return;
-    }
-    
-    var allStoriesInStoryCollection = surveyCollection.getStoriesForStoryCollection(clientState.storyCollectionIdentifier);
-    console.log("allStoriesInStoryCollection", allStoriesInStoryCollection);
-    
-    var output = generateBoilerplateHTML("Story cards for: " + clientState.storyCollectionIdentifier, "/css/standard.css");
-    
-    for (var storyIndex = 0; storyIndex < allStoriesInStoryCollection.length; storyIndex++) {
-        var storyModel = allStoriesInStoryCollection[storyIndex];
-        var storyContent = storyCardDisplay.generateStoryCardContent(storyModel, {storyTextAtTop: true});
-        
-        output += '<div class="storyCardForPrinting">';
-        output += storyContent;
-        output += '</div>';
-    }
-    
-    output += "</body></html>";
-    
-    printHTML(output);
-}
-
-export function printCatalysisReport() {
-    var catalysisReportIdentifier = clientState.catalysisReportIdentifier;
-    console.log("printCatalysisReport", catalysisReportIdentifier);
-    
-    if (!catalysisReportIdentifier) {
-        alert("Please pick a catalysis report to print.");
-        return;
-    }
-    
-    // project_catalysisReports
-    // catalysisReport_shortName
 }
 
 export function copyInterpretationsToClusteringDiagram() {
@@ -433,5 +284,11 @@ export function copyInterpretationsToClusteringDiagram() {
 export var enterSurveyResult = openSurveyDialog;
 export var toggleWebActivationOfSurvey = surveyCollection.toggleWebActivationOfSurvey;
 export var storyCollectionStop = surveyCollection.storyCollectionStop;
+
 export var importCSVQuestionnaire = csvImportExport.importCSVQuestionnaire;
 export var importCSVStories = csvImportExport.importCSVStories;
+
+export var printStoryForm = printing.printStoryForm;
+export var printStoryCards = printing.printStoryCards;
+export var printCatalysisReport = printing.printCatalysisReport;
+

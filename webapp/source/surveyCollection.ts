@@ -107,17 +107,34 @@ export function getStoriesForStoryCollection(storyCollectionIdentifier, includeI
     return result;
 }
 
-// TODO: Similar to function in buttonActions except no alerts
-export function getQuestionnaireForStoryCollection(storyCollectionIdentifier) {
-    var storyCollection = project.findStoryCollection(storyCollectionIdentifier);
-    if (!storyCollection) return null;
+export function getQuestionnaireForStoryCollection(storyCollectionName: string, alertIfProblem = false) {
+    var storyCollection = project.findStoryCollection(storyCollectionName);
+  
+    if (!storyCollection) {
+        // TODO: translate
+        if (alertIfProblem) alert("The selected story collection could not be found.");
+        return null;
+    }
     
     var questionnaireName = project.tripleStore.queryLatestC(storyCollection, "storyCollection_questionnaireIdentifier");
-    if (!questionnaireName) return null;
-
+    
+    if (!questionnaireName) {
+        // TODO: translate
+        if (alertIfProblem) alert("The story collection has no selection for a questionnaire.");
+        return null;
+    }
+    
     var questionnaire = project.tripleStore.queryLatestC(storyCollection, "questionnaire");
+    
+    if (!questionnaire) {
+        // TODO: translate
+        if (alertIfProblem) alert("The questionnaire selected in the story collection could not be found.");
+        return null;
+    }
+    
     return questionnaire;
 }
+
 
 export function urlForSurvey(storyCollectionIdentifier) {
     var href = window.location.href;
