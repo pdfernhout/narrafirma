@@ -468,6 +468,9 @@ class PatternBrowser {
             if (question.displayType === "slider") {
                 ratioQuestions.push(question);
             } else if (nominalQuestionTypes.indexOf(question.displayType) !== -1)  {
+                // Ony use text questions that are annotations
+                if (question.displayType === "text" && (question.id || "").substring(2) !== "A_") return;
+                
                 nominalQuestions.push(question);
             }
         });
