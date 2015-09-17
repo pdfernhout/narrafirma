@@ -38,41 +38,59 @@ function htmlForMithril(vdom) {
     return temporaryDiv.innerHTML;
 }
 
+function repeatTags(count, tags) {
+    var result = [];
+    for (var i = 0; i < count; i++) {
+        result.push(tags);
+    }
+    return result;
+}
+
 function generateHTMLForQuestionnaire(questionnaire) {
      
-    // CFK started on this, but it should be finished with the mithril thing so not finishing
-    var output = "";
-    output += "<div class=\"narrafirma-survey-print-title\">" + questionnaire.title + "</div>\n";
-    output += "<div class=\"narrafirma-survey-print-intro\">" + questionnaire.startText + "</div>\n";
-    
     // TODO: Translate
-    output += "Please select one of the following questions to answer:<br><br>\n";
-    
-    questionnaire.elicitingQuestions.forEach(function (elicitingQuestion) {
-        output += elicitingQuestion.text + "<br><br>\n";
-    });
-    
-    output += "Please enter your response here:<br><br>\n";
-    
-    for (var i = 0; i < 7; i++) output += "<br><br>\n";
-   
-    questionnaire.storyQuestions.forEach(function (storyQuestion) {
-        output += storyQuestion.displayPrompt + "<br>\n";
-    });
-    
-    // TODO: Print choices...
-   
-    questionnaire.participantQuestions.forEach(function (participantQuestion) {
-        output += participantQuestion.displayPrompt + "<br>\n";
-    });
-    
-    // TODO: Print choices...
-    
-    output += "<br><br>";
-    
-    output += questionnaire.endText;
-    
-    return generateHTMLForPage(questionnaire.title, "/css/survey.css", m.trust(output));
+    var vdom = m(".narrafirma-questionnaire-for-printing", [
+        "\n",
+        
+        m(".narrafirma-survey-print-title", questionnaire.title),
+        "\n",
+        
+        m(".narrafirma-survey-print-intro", questionnaire.startText),
+        "\n",
+                  
+        "Please select one of the following questions to answer:",
+        m("br"),
+        m("br"),
+        "\n",
+        questionnaire.elicitingQuestions.map(function (elicitingQuestion) {
+            return [elicitingQuestion.text, m("br"), m("br"), "\n"];
+        }),
+        
+        "Please enter your response here:",
+        m("br"),
+        m("br"),
+        "\n",
+        repeatTags(7, [m("br"), m("br"), "\n"]),
+        questionnaire.storyQuestions.map(function (storyQuestion) {
+            return [storyQuestion.displayPrompt, m("br"), "\n"];
+        }),
+        
+        // TODO: Print choices...
+        
+        questionnaire.participantQuestions.map(function (participantQuestion) {
+            return [participantQuestion.displayPrompt, m("br"), "\n"];
+        }),
+
+        // TODO: Print choices...
+        
+        m("br"),
+        m("br"),
+        
+        questionnaire.endText
+        
+    ]);
+
+    return generateHTMLForPage(questionnaire.title, "/css/survey.css", vdom);
 }
 
 export function printStoryForm(model, fieldSpecification, value) {
