@@ -20,7 +20,7 @@ function generateHTMLForPage(title: string, stylesheetReference: string, vdom) {
     output += "<!DOCTYPE html>\n";
     output += "<head>\n";
     output += "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\" />\n";
-    output += "<title>" + title + "</title>\n";
+    output += "<title>" + escapeHtml(title) + "</title>\n";
     output += "<link rel=\"stylesheet\" href=\"" + stylesheetReference + "\">\n";
     output += "</head>\n\n";
     output += "<body>\n";
@@ -37,6 +37,13 @@ function htmlForMithril(vdom) {
     
     return temporaryDiv.innerHTML;
 }
+
+// escapeHtml from: http://shebang.brandonmintern.com/foolproof-html-escaping-in-javascript/
+function escapeHtml(str) {
+    var div = document.createElement('div');
+    div.appendChild(document.createTextNode(str));
+    return div.innerHTML;
+};
 
 function repeatTags(count, tags) {
     var result = [];
