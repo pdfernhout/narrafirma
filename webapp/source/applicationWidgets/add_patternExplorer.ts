@@ -163,14 +163,14 @@ class PatternBrowser {
             panelFields: [        
                 {
                     id: "observationPanel_insertGraphSelection",
-                    displayPrompt: "Save current graph selection into observation",
+                    displayPrompt: "Save graph selection",
                     displayType: "button",
                     displayPreventBreak: true,
                     displayConfiguration: this.insertGraphSelection.bind(this)
                 },
                 {
                     id: "observationPanel_resetGraphSelection",
-                    displayPrompt: "Restore graph selection using saved selection chosen in observation",
+                    displayPrompt: "Display chosen graph selection",
                     displayType: "button",
                     displayConfiguration: this.resetGraphSelection.bind(this)
                 },
@@ -671,7 +671,7 @@ class PatternBrowser {
         if (!this.currentPattern) return;
         
         // Find observation textarea and other needed data
-        var textarea = <HTMLTextAreaElement>document.getElementById("observationPanel_observation");
+        var textarea = <HTMLTextAreaElement>document.getElementById("observationPanel_description");
         var selection = this.graphHolder.currentSelectionExtentPercentages;
         var textToInsert = JSON.stringify(selection);
         
@@ -692,7 +692,7 @@ class PatternBrowser {
     scanForSelectionJSON(doFocus = false) {
         // console.log("scanForSelectionJSON");
         // TODO: Fix this for Mithril conversion
-        var textarea = <HTMLTextAreaElement>document.getElementById("observationPanel_observation");
+        var textarea = <HTMLTextAreaElement>document.getElementById("observationPanel_description");
         if (!this.currentPattern) return;
         var text = this.currentObservationDescription();
     
