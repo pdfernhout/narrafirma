@@ -23,7 +23,7 @@ var panel: Panel = {
             id: "projectPresentationElement_type",
             valueType: "string",
             valueOptions: [
-            	"a background explanation about the project",
+                "a background explanation about the project",
                 "a report on what happened",
                 "a project outcome",
                 "something someone said about the project",
