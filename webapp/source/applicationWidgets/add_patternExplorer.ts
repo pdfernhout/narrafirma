@@ -21,6 +21,18 @@ var minimumStoryCountRequiredForTest = 20;
 // Question types that have data associated with them for filters and graphs
 var nominalQuestionTypes = ["select", "boolean", "checkbox", "checkboxes", "radiobuttons", "text"];
 
+var patternsPanelSpecification = {
+    "id": "patternsPanel",
+    panelFields: [
+        {id: "id", displayName: "Index"},
+        {id: "patternName", displayName: "Pattern name", valueOptions: []},
+        {id: "graphType", displayName: "Graph type", valueOptions: []},
+        {id: "significance", displayName: "Significance value", valueOptions: []},
+        // {id: "reviewed", displayName: "Reviewed", valueOptions: []},
+        {id: "observation", displayName: "Observation", valueOptions: []}
+    ]
+};
+
 // TODO: Duplicate code for this function copied from charting
 function nameForQuestion(question) {
     if (question.displayName) return question.displayName;
@@ -203,18 +215,6 @@ class PatternBrowser {
         // Pattern grid initialization
         
         this.modelForPatternsGrid.patterns = this.buildPatternList();
-          
-        var patternsPanelSpecification = {
-            "id": "patternsPanel",
-            panelFields: [
-                {id: "id", displayName: "Index"},
-                {id: "patternName", displayName: "Pattern name", valueOptions: []},
-                {id: "graphType", displayName: "Graph type", valueOptions: []},
-                {id: "significance", displayName: "Significance value", valueOptions: []},
-                // {id: "reviewed", displayName: "Reviewed", valueOptions: []},
-                {id: "observation", displayName: "Observation", valueOptions: []}
-            ]
-        };
         
         var patternsGridConfiguration = {
             idProperty: "id",
@@ -296,15 +296,6 @@ class PatternBrowser {
         var patternReference = this.patternReferenceForQuestions(questions);
          
         var observationIdentifier: string = this.project.tripleStore.queryLatestC(this.catalysisReportObservationSetIdentifier, patternReference);
-        
-        // TODO: Remove temporary kludge for old test data
-        if (observationIdentifier && observationIdentifier.substring(0, "Observation:".length) !== "Observation:") {
-            console.log("Temporary fixup kludge for old data", patternReference, observationIdentifier);
-            var existingDescription = observationIdentifier;
-            observationIdentifier = "Observation:" + generateRandomUuid();
-            this.project.tripleStore.addTriple(this.catalysisReportObservationSetIdentifier, patternReference, observationIdentifier);
-            this.project.tripleStore.addTriple(observationIdentifier, "observationDescription", existingDescription);                        
-        }
         
         if (!observationIdentifier) {
             if (field !== "observationInterpretations" && newValue === undefined) return "";
@@ -429,7 +420,7 @@ class PatternBrowser {
         questions.forEach(function (question) {
             result.push(question.id);
         });
-        return result;
+        return {setItem: result};
     }
     
     makePattern(id, graphType, questions) {
