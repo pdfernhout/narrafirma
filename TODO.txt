@@ -1,12 +1,14 @@
 ==== NarraFirma TODO list:
 
 EXPORT/IMPORT
-H Add page to do export
+H Add page to do export of entire project
 H Make a SIMPLE Project Administration section to go with home page button for use with import/export/backup/reporting or other settings and functions
 H Move "export story form" and story collection buttons from "Enter stories" page to "review incoming" page
-H When import story collection, need to display name of form in select
+H When import story form, need to create questions in project
+H Fix story form export so story form is defined
 H Include story annotations in export and import
-H When import, need to create questions in project
+H When import story collection, need to display name of form in select
+H Fix story collection export so story collection is defined
 
 CATALYSIS REPORT
 H Print catalysis report
