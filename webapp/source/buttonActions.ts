@@ -293,3 +293,4 @@ export var printStoryCards = printing.printStoryCards;
 export var printCatalysisReport = printing.printCatalysisReport;
 export var exportPresentationOutline = printing.exportPresentationOutline;
 export var exportCollectionSessionAgenda = printing.exportCollectionSessionAgenda;
+export var printSensemakingSessionAgenda = printing.printSensemakingSessionAgenda;

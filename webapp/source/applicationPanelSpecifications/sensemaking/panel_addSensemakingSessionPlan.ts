@@ -80,7 +80,8 @@ var panel: Panel = {
             id: "sensemakingSessionPlan_printSensemakingSessionAgendaButton",
             valueType: "none",
             displayType: "button",
-            displayPrompt: "Export session agenda"
+            displayPrompt: "Export session agenda",
+            displayConfiguration: "printSensemakingSessionAgenda"
         }
     ]
 };

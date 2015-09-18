@@ -6,6 +6,8 @@ import sanitizeHTML = require("./sanitizeHTML");
 
 "use strict";
 
+// TODO: Translate
+
 function printHTML(htmlToPrint: string) {
     // Display HTML in a new window
     console.log(printHTML, htmlToPrint);
@@ -356,5 +358,28 @@ export function exportCollectionSessionAgenda(itemID) {
     printItems.push(printList(activitiesList));
     
     var htmlForPage = generateHTMLForPage("Story collection session agenda", "/css/standard.css", printItems);
+    printHTML(htmlForPage);
+}
+
+export function printSensemakingSessionAgenda(itemID) {
+    var project = Globals.project();
+    var sensemakingSessionAgenda = project.tripleStore.makeObject(itemID, true);
+    // console.log("collectionSessionAgenda", collectionSessionAgenda);
+    var activitiesListID = sensemakingSessionAgenda["sensemakingSessionPlan_activitiesList"];
+    var activitiesList = project.tripleStore.getListForSetIdentifier(activitiesListID);
+    
+    var printItems = [
+        m("div", "Sensemaking session agenda generated " + new Date()),
+        printReturnAndBlankLine()
+    ];
+    
+    printItems.push([
+        printItem(sensemakingSessionAgenda, {sensemakingSessionPlan_activitiesList: true}),
+        printReturnAndBlankLine()
+    ]);
+    
+    printItems.push(printList(activitiesList));
+    
+    var htmlForPage = generateHTMLForPage("Sensemaking session agenda", "/css/standard.css", printItems);
     printHTML(htmlForPage);
 }
