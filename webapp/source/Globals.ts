@@ -1,5 +1,6 @@
 import ClientState = require("./ClientState");
 import Project = require("./Project");
+import PanelSpecificationCollection = require("./panelBuilder/PanelSpecificationCollection");
 
 "use strict";
 
@@ -9,6 +10,8 @@ class Globals {
     
     // A Project has data that all users are updating across the network
     private static _project: Project;
+    
+    private static _panelSpecificationCollection: PanelSpecificationCollection;
 
     static clientState(): ClientState {
         return Globals._clientState;
@@ -20,7 +23,16 @@ class Globals {
             Globals._project = newValue;
         }
         return Globals._project;
-    }  
+    }
+    
+    static panelSpecificationCollection(newValue: PanelSpecificationCollection = undefined): PanelSpecificationCollection {
+        if (newValue !== undefined) {
+            if (Globals._panelSpecificationCollection) throw new Error("Global panelSpecificationCollection was previously initalized");
+            Globals._panelSpecificationCollection = newValue;
+        }
+        return Globals._panelSpecificationCollection;
+    }
+    
 }
 
 export = Globals;

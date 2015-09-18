@@ -383,6 +383,7 @@ class Application {
     
     loadApplicationDesign() {
         var panelSpecificationCollection = PanelSetup.panelSpecificationCollection();
+        Globals.panelSpecificationCollection(panelSpecificationCollection);
         
         // Load the application design
         loadAllPanelSpecifications(panelSpecificationCollection, navigationSections, loadingBase, () => {
