@@ -287,6 +287,8 @@ export var storyCollectionStop = surveyCollection.storyCollectionStop;
 
 export var importCSVQuestionnaire = csvImportExport.importCSVQuestionnaire;
 export var importCSVStories = csvImportExport.importCSVStories;
+export var exportQuestionnaire = csvImportExport.exportQuestionnaire;
+export var exportStoryCollection = csvImportExport.exportStoryCollection;
 
 export var printStoryForm = printing.printStoryForm;
 export var printStoryCards = printing.printStoryCards;
