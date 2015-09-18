@@ -284,5 +284,18 @@ export function printCatalysisReport() {
 
 export function exportPresentationOutline() {
     alert("unfinished");
-    // project_presentationElementsList
+    var project = Globals.project();
+    var presentationElementsList = project.getListForField("project_presentationElementsList");
+    console.log("presentationElementsList", presentationElementsList);
+    console.log("Globals.panelSpecificationCollection()", Globals.panelSpecificationCollection());
+    presentationElementsList.forEach((id) => {
+        console.log("id", id);
+        var presentationElement = project.tripleStore.makeObject(id, true);
+        console.log("presentationElement", presentationElement);
+        for (var fieldName in presentationElement) {
+            var fieldSpecification = Globals.panelSpecificationCollection().getFieldSpecificationForFieldID(fieldName);
+            var shortName = fieldSpecification ? fieldSpecification.displayName : "Problem";
+            console.log("field", fieldName, presentationElement[fieldName], shortName, fieldSpecification);
+        };
+    });
 }
