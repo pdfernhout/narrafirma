@@ -16,7 +16,7 @@ function defensiveCopy(value) {
     if (typeof value === "number") return value;
     if (typeof value === "string") return value;
     if (typeof value === "boolean") return value;
-    // Value might be mutable, so returm a copy of it
+    // Value might be mutable, so return a copy of it
     return JSON.parse(JSON.stringify(value));
 }
 
