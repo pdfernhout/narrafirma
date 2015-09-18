@@ -9,7 +9,7 @@ var panel: Panel = {
             id: "feedback_name",
             valueType: "string",
             displayType: "text",
-            displayName: "Name",
+            displayName: "Feedback piece name",
             displayPrompt: "Please give this piece of feedback a <strong>name</strong>."
         },
         {

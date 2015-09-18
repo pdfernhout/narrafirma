@@ -9,7 +9,7 @@ var panel: Panel = {
             id: "projectPresentationElement_name",
             valueType: "string",
             displayType: "text",
-            displayName: "Name",
+            displayName: "Element name",
             displayPrompt: "Please give this presentation element a <strong>name</strong>."
         },
         {

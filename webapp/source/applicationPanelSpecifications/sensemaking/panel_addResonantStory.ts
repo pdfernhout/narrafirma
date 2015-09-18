@@ -9,7 +9,7 @@ var panel: Panel = {
             id: "sensemakingSessionRecord_resonantStory_name",
             valueType: "string",
             displayType: "text",
-            displayName: "Name",
+            displayName: "Resonant story name",
             displayPrompt: "What is the <strong>name</strong> of the resonant story?"
         },
         {

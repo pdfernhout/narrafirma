@@ -9,7 +9,7 @@ var panel: Panel = {
             id: "perspective_interpretation_name",
             valueType: "string",
             displayType: "text",
-            displayName: "Name",
+            displayName: "Intepretation name",
             displayPrompt: "Interpretation name (as previously entered)"
         },
         {

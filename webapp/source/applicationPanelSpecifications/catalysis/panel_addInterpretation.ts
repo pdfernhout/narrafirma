@@ -9,7 +9,7 @@ var panel: Panel = {
             id: "interpretation_name",
             valueType: "string",
             displayType: "text",
-            displayName: "Name",
+            displayName: "Intepretation name",
             displayPrompt: "Please give this interpretation a <strong>name</strong>."
         },
         {

@@ -9,7 +9,7 @@ var panel: Panel = {
             id: "catalysisReport_shortName",
             valueType: "string",
             displayType: "text",
-            displayName: "Name",
+            displayName: "Catalysis report name",
             displayPrompt: "Please give this catalysis report a short name."
         },
         {

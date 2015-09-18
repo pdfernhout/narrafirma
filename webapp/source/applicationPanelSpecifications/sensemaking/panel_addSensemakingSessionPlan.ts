@@ -9,7 +9,7 @@ var panel: Panel = {
             id: "sensemakingSessionPlan_name",
             valueType: "string",
             displayType: "text",
-            displayName: "Name",
+            displayName: "Sensemaking session plan name",
             displayPrompt: "Please give this session plan a <strong>name</strong>."
         },
         {

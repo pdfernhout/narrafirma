@@ -9,7 +9,7 @@ var panel: Panel = {
             id: "perspective_name",
             valueType: "string",
             displayType: "text",
-            displayName: "Name",
+            displayName: "Perspective name",
             displayPrompt: "Please give this perspective a name."
         },
         {

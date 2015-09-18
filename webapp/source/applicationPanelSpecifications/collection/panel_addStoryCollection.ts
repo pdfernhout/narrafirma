@@ -11,7 +11,7 @@ var panel: Panel = {
             valueType: "string",
             valueImmutable: true,
             displayType: "text",
-            displayName: "Name",
+            displayName: "Story collection name",
             displayPrompt: "Please give this story collection a short <strong>name</strong>, so we can refer to it.<br><br><span.narrafirma-special-warning>This name cannot be changed after the story collection is created. Also, the name must be unique within the project.</span>"
         },
         {

@@ -43,7 +43,7 @@ var panel: Panel = {
             id: "projectStory_name",
             valueType: "string",
             displayType: "text",
-            displayName: "Name",
+            displayName: "Project story name",
             displayPrompt: "Please <strong>name</strong> your project story."
         },
         {

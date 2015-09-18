@@ -16,7 +16,7 @@ var panel: Panel = {
             id: "sensemakingSessionPlan_activity_name",
             valueType: "string",
             displayType: "text",
-            displayName: "Name",
+            displayName: "Sensemaking activity name",
             displayPrompt: "Please give this activity a <strong>name</strong>."
         },
         {

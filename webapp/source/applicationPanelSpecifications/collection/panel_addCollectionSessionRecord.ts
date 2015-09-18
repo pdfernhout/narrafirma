@@ -9,7 +9,7 @@ var panel: Panel = {
             id: "collectionSessionRecord_name",
             valueType: "string",
             displayType: "text",
-            displayName: "Name",
+            displayName: "Collection session record name",
             displayPrompt: "Please give this session record a <strong>name</strong>."
         },
         {

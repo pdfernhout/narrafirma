@@ -9,7 +9,7 @@ var panel: Panel = {
             id: "collectionSessionPlan_name",
             valueType: "string",
             displayType: "text",
-            displayName: "Name",
+            displayName: "Collection session plan name",
             displayPrompt: "Please give this session plan a <strong>name</strong>."
         },
         {

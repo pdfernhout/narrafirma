@@ -9,7 +9,7 @@ var panel: Panel = {
             id: "storyElement_name",
             valueType: "string",
             displayType: "text",
-            displayName: "Name",
+            displayName: "Story element name",
             displayPrompt: "What is the name of the story element?"
         },
         {

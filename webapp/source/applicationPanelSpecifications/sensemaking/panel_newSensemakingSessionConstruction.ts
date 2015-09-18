@@ -9,7 +9,7 @@ var panel: Panel = {
             id: "sensemakingSessionRecord_construction_name",
             valueType: "string",
             displayType: "text",
-            displayName: "Name",
+            displayName: "Sensemaking construction name",
             displayPrompt: "Please give this construction a <strong>name</strong>."
         },
         {

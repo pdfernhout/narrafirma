@@ -16,7 +16,7 @@ var panel: Panel = {
             id: "collectionSessionActivity_name",
             valueType: "string",
             displayType: "text",
-            displayName: "Name",
+            displayName: "Collection session activity name",
             displayPrompt: "Please give this activity a <strong>name</strong>."
         },
         {
