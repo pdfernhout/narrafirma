@@ -291,4 +291,4 @@ export var importCSVStories = csvImportExport.importCSVStories;
 export var printStoryForm = printing.printStoryForm;
 export var printStoryCards = printing.printStoryCards;
 export var printCatalysisReport = printing.printCatalysisReport;
-
+export var exportPresentationOutline = printing.exportPresentationOutline;

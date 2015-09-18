@@ -23,7 +23,8 @@ var panel: Panel = {
             id: "projectPresentation_exportPresentationOutlineButton",
             valueType: "none",
             displayType: "button",
-            displayPrompt: "Export Outline"
+            displayPrompt: "Export Outline",
+            displayConfiguration: "exportPresentationOutline"
         }
     ]
 };

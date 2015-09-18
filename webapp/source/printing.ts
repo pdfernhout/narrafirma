@@ -281,3 +281,8 @@ export function printCatalysisReport() {
     // project_catalysisReports
     // catalysisReport_shortName
 }
+
+export function exportPresentationOutline() {
+    alert("unfinished");
+    // project_presentationElementsList
+}
