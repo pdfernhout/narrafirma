@@ -8,11 +8,6 @@ H When import story collection, need to display name of form in select
 H Include story annotations in export and import
 H When import, need to create questions in project
 
-PRINTING
-H Implement "export session agenda" (to HTML) for story collection
-H Implement "export session agenda" (to HTML) for sensemaking
-H Implement exportPresentationOutline in domain buttonClicked - in Return, "Prepare outline of project presentation"
-
 CATALYSIS REPORT
 H Print catalysis report
 H Create catalysis report - including results (graphs, statistical results)
@@ -886,4 +881,8 @@ DONE Fix issue with "html" items from Introduction page showing up later on othe
 DONE Implement printStoryForm in domain buttonClicked (what do do about entering multiple stories?) - make better looking
 DONE Don't show story name as question in pattern explorer [or other text questions unless annotations]
 DONE Rename "save current graph selection to observation" buttons under graphs
+DONE Implement exportPresentationOutline in domain buttonClicked - in Return, "Prepare outline of project presentation"
+DONE Implement "export session agenda" (to HTML) for story collection
+DONE Implement "export session agenda" (to HTML) for sensemaking
+DONE Make all display "name" fields longer by includign type to help with printing
 
