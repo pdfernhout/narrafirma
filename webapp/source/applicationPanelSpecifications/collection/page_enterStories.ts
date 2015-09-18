@@ -29,11 +29,17 @@ var panel: Panel = {
             displayPrompt: "Add Story..."
         },
         {
-            id: "project_exportStoryForm",
+            id: "project_csvFileUploaderForStories",
+            valueType: "none",
+            displayType: "html",
+            displayPrompt: "<input type=\"file\" id=\"csvFileLoader\" name=\"files\" title=\"Load File\" style=\"display:none\"/>"
+        },
+        {
+            id: "project_importCSVStories",
             valueType: "none",
             displayType: "button",
-            displayConfiguration: "exportQuestionnaire",
-            displayPrompt: "Export story form..."
+            displayConfiguration: "importCSVStories",
+            displayPrompt: "Import story data from CSV file into story collection ..."
         },
         {
             id: "project_exportStories",

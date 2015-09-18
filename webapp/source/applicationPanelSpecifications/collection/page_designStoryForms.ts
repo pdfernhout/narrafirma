@@ -18,7 +18,27 @@ var panel: Panel = {
             displayConfiguration: "panel_addStoryForm",
             displayName: "Questionnaires",
             displayPrompt: "These are the story forms you have created so far."
-        }
+        },
+        {
+            id: "project_csvFileUploaderForForm",
+            valueType: "none",
+            displayType: "html",
+            displayPrompt: "<input type=\"file\" id=\"csvFileLoader\" name=\"files\" title=\"Load File\" style=\"display:none\"/>"
+        },
+        {
+            id: "project_importStoryFormAndDataFromCSV",
+            valueType: "none",
+            displayType: "button",
+            displayConfiguration: "importCSVQuestionnaire",
+            displayPrompt: "Import story form from CSV file ..."
+        },
+        {
+            id: "project_exportStoryForm",
+            valueType: "none",
+            displayType: "button",
+            displayConfiguration: "exportQuestionnaire",
+            displayPrompt: "Export story form..."
+        },
     ]
 };
 

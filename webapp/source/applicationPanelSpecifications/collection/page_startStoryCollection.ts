@@ -33,26 +33,6 @@ var panel: Panel = {
             },
             displayName: "Story collections",
             displayPrompt: "These are the story collections you have created so far."
-        },
-        {
-            id: "project_csvFileUploader",
-            valueType: "none",
-            displayType: "html",
-            displayPrompt: "<input type=\"file\" id=\"csvFileLoader\" name=\"files\" title=\"Load File\" style=\"display:none\"/>"
-        },
-        {
-            id: "project_importStoryFormAndDataFromCSV",
-            valueType: "none",
-            displayType: "button",
-            displayConfiguration: "importCSVQuestionnaire",
-            displayPrompt: "Import Story Form from CSV File ..."
-        },
-        {
-            id: "project_importCSVStories",
-            valueType: "none",
-            displayType: "button",
-            displayConfiguration: "importCSVStories",
-            displayPrompt: "Import Story Data from CSV File into Story Collection ..."
         }
     ]
 };
