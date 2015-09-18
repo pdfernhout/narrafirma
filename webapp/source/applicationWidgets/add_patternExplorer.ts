@@ -32,6 +32,59 @@ var patternsPanelSpecification = {
         {id: "observation", displayName: "Observation", valueOptions: []}
     ]
 };
+    
+function makeGraph(pattern, graphHolder, selectionCallback) {
+    var graphType = pattern.graphType;
+    // var name = pattern.patternName;
+    // console.log("patternName", name, graphType);
+    var q1 = pattern.questions[0];
+    var q2 = pattern.questions[1];
+    var newGraph = null;
+    switch (graphType) {
+        case "bar":
+            newGraph = charting.d3BarChart(graphHolder, q1, selectionCallback);
+            break;
+        case "table":
+            newGraph = charting.d3ContingencyTable(graphHolder, q1, q2, selectionCallback);
+            break;
+        case "histogram":
+            newGraph = charting.d3HistogramChart(graphHolder, q1, null, null, selectionCallback);
+            break;
+        case "multiple histogram":
+            // Choice question needs to come before scale question in args
+            newGraph = charting.multipleHistograms(graphHolder, q2, q1, selectionCallback);
+            break;
+        case "scatter":
+            newGraph = charting.d3ScatterPlot(graphHolder, q1, q2, selectionCallback);
+            break;        
+       default:
+            console.log("ERROR: Unexpected graph type");
+            alert("ERROR: Unexpected graph type");
+            break;
+    }
+    
+    return newGraph;
+}
+
+function storiesForCatalysisReport(tripleStore, catalysisReportIdentifier) {
+    var result = [];
+    
+    var storyCollectionsIdentifier = tripleStore.queryLatestC(catalysisReportIdentifier, "catalysisReport_storyCollections");
+    var storyCollectionItems = tripleStore.getListForSetIdentifier(storyCollectionsIdentifier);
+    
+    if (storyCollectionItems.length === 0) return [];
+    
+    storyCollectionItems.forEach((storyCollectionPointer) => {
+        if (storyCollectionPointer) {
+            var storyCollectionIdentifier = tripleStore.queryLatestC(storyCollectionPointer, "storyCollection");
+            result = result.concat(surveyCollection.getStoriesForStoryCollection(storyCollectionIdentifier));
+        } else {
+            console.log("ERROR: null or undefined storyCollectionPointer", catalysisReportIdentifier);
+        }
+    });
+    
+    return result;
+}
 
 // TODO: Duplicate code for this function copied from charting
 function nameForQuestion(question) {
@@ -366,22 +419,9 @@ class PatternBrowser {
             return;
         }
         
-        // TODO: Handle multiple story collections
-        // TODO: Better handling when can't find something
-        
         this.catalysisReportObservationSetIdentifier = this.getObservationSetIdentifier(catalysisReportIdentifier);
         
-        var storyCollectionsIdentifier = this.project.tripleStore.queryLatestC(catalysisReportIdentifier, "catalysisReport_storyCollections");
-        var storyCollectionItems = this.project.tripleStore.getListForSetIdentifier(storyCollectionsIdentifier);
-        
-        if (storyCollectionItems.length === 0) return;
-        
-        var storyCollectionPointer = storyCollectionItems[storyCollectionItems.length - 1];
-        if (!storyCollectionPointer) return;
-    
-        var storyCollectionIdentifier = this.project.tripleStore.queryLatestC(storyCollectionPointer, "storyCollection");
-        
-        this.graphHolder.allStories = surveyCollection.getStoriesForStoryCollection(storyCollectionIdentifier);
+        this.graphHolder.allStories = storiesForCatalysisReport(this.project.tripleStore, catalysisReportIdentifier);
         // console.log("allStories", this.graphHolder.allStories);
         
         // TODO: Filter these questions by ones of interest for specific catalysis report
@@ -590,36 +630,8 @@ class PatternBrowser {
         if (pattern === null) {
             return;
         }
-        
-        var name = pattern.patternName;
-        var graphType = pattern.graphType;
-        // console.log("patternName", name, graphType);
-        var q1 = pattern.questions[0];
-        var q2 = pattern.questions[1];
-        var currentGraph = null;
-        switch (graphType) {
-            case "bar":
-                currentGraph = charting.d3BarChart(this.graphHolder, q1, this.updateStoriesPane.bind(this));
-                break;
-            case "table":
-                currentGraph = charting.d3ContingencyTable(this.graphHolder, q1, q2, this.updateStoriesPane.bind(this));
-                break;
-            case "histogram":
-                currentGraph = charting.d3HistogramChart(this.graphHolder, q1, null, null, this.updateStoriesPane.bind(this));
-                break;
-            case "multiple histogram":
-                // Choice question needs to come before scale question in args
-                currentGraph = charting.multipleHistograms(this.graphHolder, q2, q1, this.updateStoriesPane.bind(this));
-                break;
-            case "scatter":
-                currentGraph = charting.d3ScatterPlot(this.graphHolder, q1, q2, this.updateStoriesPane.bind(this));
-                break;        
-           default:
-                console.log("ERROR: Unexpected graph type");
-                alert("ERROR: Unexpected graph type");
-                break;
-        }
-        this.graphHolder.currentGraph = currentGraph;
+
+        this.graphHolder.currentGraph = makeGraph(pattern, this.graphHolder, this.updateStoriesPane.bind(this));
         this.graphHolder.currentSelectionExtentPercentages = null;
         // TODO: Is this obsolete? this.graphHolder.currentSelectionSubgraph = null;
     }
@@ -782,5 +794,8 @@ function add_patternExplorer(panelBuilder: PanelBuilder, model, fieldSpecificati
         patternBrowser
      ]);
 }
+
+add_patternExplorer["makeGraph"] = makeGraph;
+add_patternExplorer["storiesForCatalysisReport"] = storiesForCatalysisReport;
 
 export = add_patternExplorer;
