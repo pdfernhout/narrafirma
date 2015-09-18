@@ -294,14 +294,14 @@ function printItem(item, fieldsToIgnore = {}) {
     return result;
 }
 
-function printList(list, fieldsToIgnore = {}) {
+function printList(list, fieldsToIgnore = {}, printItemFunction: Function = printItem) {
     var result = [];
     var project = Globals.project();
     list.forEach((id) => {
         // console.log("id", id);
         var item = project.tripleStore.makeObject(id, true);
         // console.log("presentationElement", presentationElement);
-        result.push(printItem(item, fieldsToIgnore));
+        result.push(printItemFunction(item, fieldsToIgnore));
         result.push([
             printReturn()
         ]);
@@ -372,13 +372,57 @@ export function printSensemakingSessionAgenda(itemID) {
 }
 
 export function printCatalysisReport() {
-    var catalysisReportIdentifier = Globals.clientState().catalysisReportIdentifier();
-    console.log("printCatalysisReport", catalysisReportIdentifier);
+    var project = Globals.project();
     
-    if (!catalysisReportIdentifier) {
+    var catalysisReportShortName = Globals.clientState().catalysisReportIdentifier();
+    console.log("printCatalysisReport", catalysisReportShortName);
+    
+    if (!catalysisReportShortName) {
         alert("Please pick a catalysis report to print.");
         return;
     }
+    
+    var catalysisReport = project.findCatalysisReport(catalysisReportShortName);
+    
+    console.log("catalysisReport", catalysisReport);
+    
+    var catalysisReportObservationSetIdentifier = project.tripleStore.queryLatestC(catalysisReport, "catalysisReport_observations");
+    
+    console.log("catalysisReportObservationSetIdentifier", catalysisReportObservationSetIdentifier);
+ 
+    if (!catalysisReportObservationSetIdentifier) {
+        console.log("catalysisReportObservationSetIdentifier not defined");
+        return;
+    }
+       
+    var observationList = project.tripleStore.getListForSetIdentifier(catalysisReportObservationSetIdentifier);
+    
+    console.log("observationList", observationList);
+    
+    var printItems = [
+        m("div", "Catalysis report observation list (FIXME) generated " + new Date()),
+        printReturnAndBlankLine()
+    ];
+    
+    /*
+    printItems.push([
+        printItem(sensemakingSessionAgenda, {sensemakingSessionPlan_activitiesList: true}),
+        printReturnAndBlankLine()
+    ]);
+    */
+    
+    printItems.push(printList(observationList, {}, function (item) {
+        return [
+            m("div", "Observation title: " + item.observationTitle),
+            printReturn(),
+            m("div", "Observation description: " + ": " + item.observationDescription),
+            printReturnAndBlankLine()
+        ];
+    }));
+    
+    var htmlForPage = generateHTMLForPage("Catalysis report observation list (FIXME)", "/css/standard.css", printItems);
+    printHTML(htmlForPage);
+
     
     /*
     H Create catalysis report - including results (graphs, statistical results)
@@ -388,10 +432,8 @@ export function printCatalysisReport() {
                Pattern (graph)
     */
     
-    // project_catalysisReports
-    // catalysisReport_shortName
-    
     // For now, just print all observations
+    
     
     
 }
