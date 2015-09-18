@@ -288,6 +288,38 @@ export function printCatalysisReport() {
     // catalysisReport_shortName
 }
 
+function printItem(item, fieldsToIgnore = {}) {
+    var result = [];
+    // console.log("presentationElement", presentationElement);
+    for (var fieldName in item) {
+        if (fieldsToIgnore[fieldName]) continue;
+        var fieldSpecification = Globals.panelSpecificationCollection().getFieldSpecificationForFieldID(fieldName);
+        var shortName = fieldSpecification ? fieldSpecification.displayName : "Problem with: " + fieldName;
+        var fieldValue = item[fieldName];
+        // console.log("field", fieldName, fieldValue, shortName, fieldSpecification);
+        // console.log("$", shortName + ":", fieldValue);
+        result.push([
+            m("div", shortName + ": " + fieldValue)
+        ]);
+    };
+    return result;
+}
+
+function printList(list, fieldsToIgnore = {}) {
+    var result = [];
+    var project = Globals.project();
+    list.forEach((id) => {
+        // console.log("id", id);
+        var item = project.tripleStore.makeObject(id, true);
+        // console.log("presentationElement", presentationElement);
+        result.push(printItem(item, fieldsToIgnore));
+        result.push([
+            printReturn()
+        ]);
+    });
+    return result;
+}
+
 export function exportPresentationOutline() {
     var project = Globals.project();
     var presentationElementsList = project.getListForField("project_presentationElementsList");
@@ -298,25 +330,31 @@ export function exportPresentationOutline() {
         printReturnAndBlankLine()
     ]; 
     
-    presentationElementsList.forEach((id) => {
-        // console.log("id", id);
-        var presentationElement = project.tripleStore.makeObject(id, true);
-        // console.log("presentationElement", presentationElement);
-        for (var fieldName in presentationElement) {
-            var fieldSpecification = Globals.panelSpecificationCollection().getFieldSpecificationForFieldID(fieldName);
-            var shortName = fieldSpecification ? fieldSpecification.displayName : "Problem with: " + fieldName;
-            var fieldValue = presentationElement[fieldName];
-            // console.log("field", fieldName, fieldValue, shortName, fieldSpecification);
-            // console.log("$", shortName + ":", fieldValue);
-            printItems.push([
-                m("div", shortName + ": " + fieldValue)
-            ]);
-        };
-        printItems.push([
-            printReturn()
-        ]);
-    });
+    printItems.push(printList(presentationElementsList));
     
-   var htmlForPage = generateHTMLForPage("Presentation Outline", "/css/standard.css", printItems);
-   printHTML(htmlForPage);
+    var htmlForPage = generateHTMLForPage("Presentation Outline", "/css/standard.css", printItems);
+    printHTML(htmlForPage);
+}
+
+export function exportCollectionSessionAgenda(itemID) {
+    var project = Globals.project();
+    var collectionSessionAgenda = project.tripleStore.makeObject(itemID, true);
+    // console.log("collectionSessionAgenda", collectionSessionAgenda);
+    var activitiesListID = collectionSessionAgenda["collectionSessionPlan_activitiesList"];
+    var activitiesList = project.tripleStore.getListForSetIdentifier(activitiesListID);
+    
+    var printItems = [
+        m("div", "Story collection session agenda generated " + new Date()),
+        printReturnAndBlankLine()
+    ];
+    
+    printItems.push([
+        printItem(collectionSessionAgenda, {collectionSessionPlan_activitiesList: true}),
+        printReturnAndBlankLine()
+    ]);
+    
+    printItems.push(printList(activitiesList));
+    
+    var htmlForPage = generateHTMLForPage("Story collection session agenda", "/css/standard.css", printItems);
+    printHTML(htmlForPage);
 }
