@@ -277,19 +277,6 @@ export function printStoryCards() {
    printHTML(htmlForPage);
 }
 
-export function printCatalysisReport() {
-    var catalysisReportIdentifier = Globals.clientState().catalysisReportIdentifier();
-    console.log("printCatalysisReport", catalysisReportIdentifier);
-    
-    if (!catalysisReportIdentifier) {
-        alert("Please pick a catalysis report to print.");
-        return;
-    }
-    
-    // project_catalysisReports
-    // catalysisReport_shortName
-}
-
 function printItem(item, fieldsToIgnore = {}) {
     var result = [];
     // console.log("presentationElement", presentationElement);
@@ -382,4 +369,29 @@ export function printSensemakingSessionAgenda(itemID) {
     
     var htmlForPage = generateHTMLForPage("Sensemaking session agenda", "/css/standard.css", printItems);
     printHTML(htmlForPage);
+}
+
+export function printCatalysisReport() {
+    var catalysisReportIdentifier = Globals.clientState().catalysisReportIdentifier();
+    console.log("printCatalysisReport", catalysisReportIdentifier);
+    
+    if (!catalysisReportIdentifier) {
+        alert("Please pick a catalysis report to print.");
+        return;
+    }
+    
+    /*
+    H Create catalysis report - including results (graphs, statistical results)
+    Perspective
+       Interpretation
+           Observation
+               Pattern (graph)
+    */
+    
+    // project_catalysisReports
+    // catalysisReport_shortName
+    
+    // For now, just print all observations
+    
+    
 }
