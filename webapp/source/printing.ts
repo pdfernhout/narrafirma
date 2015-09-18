@@ -58,11 +58,17 @@ function printText(text) {
     return sanitizeHTML.generateSanitizedHTMLForMithril(text);
 }
 
-function printNewline() {
+function printReturn() {
     return [
         m("br"),
-        m("br"),
         "\n"
+    ];
+}
+
+function printReturnAndBlankLine() {
+    return [
+        printReturn(),
+        printReturn()
     ];
 }
 
@@ -93,7 +99,7 @@ function printQuestionText(question, instructions = "") {
     return [
         questionTextForPrinting,
         instructions,
-        printNewline()
+        printReturnAndBlankLine()
     ];    
 }
 
@@ -149,7 +155,7 @@ function printQuestion(question) {
         case "textarea":
             result = [
                 printQuestionText(question),
-                repeatTags(8, printNewline())
+                repeatTags(8, printReturnAndBlankLine())
             ];
             break;
             
@@ -177,12 +183,12 @@ function printQuestion(question) {
                 question.displayConfiguration[0],
                 " -------------------------------------------------- ",
                 question.displayConfiguration[1],
-                printNewline()
+                printReturnAndBlankLine()
             ];
             break;
     }
     
-    return [result, printNewline()];
+    return [result, printReturnAndBlankLine()];
 }
 
 function generateHTMLForQuestionnaire(questionnaire) {
@@ -192,21 +198,21 @@ function generateHTMLForQuestionnaire(questionnaire) {
         "\n",
         
         m(".narrafirma-survey-print-title", printText(questionnaire.title)),
-        printNewline(),
+        printReturnAndBlankLine(),
         
         m(".narrafirma-survey-print-intro", printText(questionnaire.startText)),
-        printNewline(),
+        printReturnAndBlankLine(),
                   
         "Please select one of the following questions to answer:",
-        printNewline(),
+        printReturnAndBlankLine(),
         questionnaire.elicitingQuestions.map(function (elicitingQuestion) {
             return printOption(elicitingQuestion.text);
         }),
         
-        printNewline(),
+        printReturnAndBlankLine(),
         
         "Please enter your response here:",
-        repeatTags(5, printNewline()),
+        repeatTags(5, printReturnAndBlankLine()),
         
         questionnaire.storyQuestions.map(function (storyQuestion) {
             return printQuestion(storyQuestion);
@@ -216,7 +222,7 @@ function generateHTMLForQuestionnaire(questionnaire) {
             return printQuestion(participantQuestion);
         }),
     
-        printNewline(),
+        printReturnAndBlankLine(),
         
         printText(questionnaire.endText)
     ]);
@@ -283,19 +289,34 @@ export function printCatalysisReport() {
 }
 
 export function exportPresentationOutline() {
-    alert("unfinished");
     var project = Globals.project();
     var presentationElementsList = project.getListForField("project_presentationElementsList");
-    console.log("presentationElementsList", presentationElementsList);
-    console.log("Globals.panelSpecificationCollection()", Globals.panelSpecificationCollection());
+    // console.log("presentationElementsList", presentationElementsList);
+    // console.log("Globals.panelSpecificationCollection()", Globals.panelSpecificationCollection());
+    var printItems = [
+        m("div", "Presentation Outline generated " + new Date()),
+        printReturnAndBlankLine()
+    ]; 
+    
     presentationElementsList.forEach((id) => {
-        console.log("id", id);
+        // console.log("id", id);
         var presentationElement = project.tripleStore.makeObject(id, true);
-        console.log("presentationElement", presentationElement);
+        // console.log("presentationElement", presentationElement);
         for (var fieldName in presentationElement) {
             var fieldSpecification = Globals.panelSpecificationCollection().getFieldSpecificationForFieldID(fieldName);
-            var shortName = fieldSpecification ? fieldSpecification.displayName : "Problem";
-            console.log("field", fieldName, presentationElement[fieldName], shortName, fieldSpecification);
+            var shortName = fieldSpecification ? fieldSpecification.displayName : "Problem with: " + fieldName;
+            var fieldValue = presentationElement[fieldName];
+            // console.log("field", fieldName, fieldValue, shortName, fieldSpecification);
+            // console.log("$", shortName + ":", fieldValue);
+            printItems.push([
+                m("div", shortName + ": " + fieldValue)
+            ]);
         };
+        printItems.push([
+            printReturn()
+        ]);
     });
+    
+   var htmlForPage = generateHTMLForPage("Presentation Outline", "/css/standard.css", printItems);
+   printHTML(htmlForPage);
 }
