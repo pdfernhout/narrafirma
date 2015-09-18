@@ -3,6 +3,10 @@ import storyCardDisplay = require("./storyCardDisplay");
 import Globals = require("./Globals");
 import m = require("mithril");
 import sanitizeHTML = require("./sanitizeHTML");
+import add_patternExplorer = require("./applicationWidgets/add_patternExplorer");
+
+var makeGraph: Function = add_patternExplorer["makeGraph"];
+var storiesForCatalysisReport: Function = add_patternExplorer["storiesForCatalysisReport"];
 
 "use strict";
 
@@ -371,6 +375,13 @@ export function printSensemakingSessionAgenda(itemID) {
     printHTML(htmlForPage);
 }
 
+// TODO: Duplicate of what is in add_graphBrowser and add_patternExplorer
+function createGraphResultsPane(): HTMLElement {
+    var pane = document.createElement("div");
+    pane.className = "narrafirma-graph-results-pane chartEnclosure";
+    return pane;
+}
+
 export function printCatalysisReport() {
     var project = Globals.project();
     
@@ -383,8 +394,10 @@ export function printCatalysisReport() {
     }
     
     var catalysisReport = project.findCatalysisReport(catalysisReportShortName);
-    
     console.log("catalysisReport", catalysisReport);
+        
+    var allStories = storiesForCatalysisReport(project.tripleStore, catalysisReport);
+    console.log("allStories", allStories);
     
     var catalysisReportObservationSetIdentifier = project.tripleStore.queryLatestC(catalysisReport, "catalysisReport_observations");
     
@@ -412,6 +425,19 @@ export function printCatalysisReport() {
     */
     
     printItems.push(printList(observationList, {}, function (item) {
+        // TODO: pattern
+        var pattern = null;
+        var selectionCallback = function() { return this; };
+        var graphHolder = {
+            graphResultsPane: createGraphResultsPane(),
+            chartPanes: [],
+            allStories: [],
+            currentGraph: null,
+            currentSelectionExtentPercentages: null
+        };
+        
+        var graph = makeGraph(pattern, graphHolder, selectionCallback);
+        
         return [
             m("div", "Observation title: " + item.observationTitle),
             printReturn(),
