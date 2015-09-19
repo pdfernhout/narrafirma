@@ -395,7 +395,7 @@ export function printCatalysisReport() {
     
     var catalysisReport = project.findCatalysisReport(catalysisReportShortName);
     console.log("catalysisReport", catalysisReport);
-        
+    
     var allStories = storiesForCatalysisReport(project.tripleStore, catalysisReport);
     console.log("allStories", allStories);
     
@@ -426,23 +426,29 @@ export function printCatalysisReport() {
     
     printItems.push(printList(observationList, {}, function (item) {
         // TODO: pattern
-        var pattern = null;
+        var pattern = item.pattern;
+        console.log("pattern", pattern);
+        
         var selectionCallback = function() { return this; };
         var graphHolder = {
             graphResultsPane: createGraphResultsPane(),
             chartPanes: [],
-            allStories: [],
+            allStories: allStories,
             currentGraph: null,
             currentSelectionExtentPercentages: null
         };
         
         var graph = makeGraph(pattern, graphHolder, selectionCallback);
+        console.log("graph", graph);
+        console.log("graphHolder", graphHolder);
         
         return [
             m("div", "Observation title: " + item.observationTitle),
             printReturn(),
             m("div", "Observation description: " + ": " + item.observationDescription),
-            printReturnAndBlankLine()
+            printReturnAndBlankLine(),
+            m.trust(graphHolder.graphResultsPane.outerHTML),
+            printReturnAndBlankLine(),
         ];
     }));
     
