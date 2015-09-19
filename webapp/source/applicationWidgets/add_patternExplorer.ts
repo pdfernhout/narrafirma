@@ -344,9 +344,9 @@ class PatternBrowser {
         }       
     }
     
-    observationAccessor(questions, field: string, newValue = undefined) {
+    observationAccessor(pattern, field: string, newValue = undefined) {
         if (!this.catalysisReportObservationSetIdentifier) throw new Error("observationAccessor: this.catalysisReportObservationSetIdentifier is undefined");
-        var patternReference = this.patternReferenceForQuestions(questions);
+        var patternReference = this.patternReferenceForQuestions(pattern.questions);
          
         var observationIdentifier: string = this.project.tripleStore.queryLatestC(this.catalysisReportObservationSetIdentifier, patternReference);
         
@@ -354,10 +354,19 @@ class PatternBrowser {
             if (field !== "observationInterpretations" && newValue === undefined) return "";
             // Lazy initialize the observation as will need to return a list which might be empty but could get used
             observationIdentifier = "Observation:" + generateRandomUuid();
+            // TODO: Ideally should not be creating entry just for looking at it
             this.project.tripleStore.addTriple(this.catalysisReportObservationSetIdentifier, patternReference, observationIdentifier);
+            // Need this for printing later so know what questions & pattern go with the observation
+            var patternCopyWithoutAccessorFunction = {
+                id: pattern.id,
+                graphType: pattern.graphType,
+                patternName: pattern.patternName,
+                questions: pattern.questions
+            };
+            this.project.tripleStore.addTriple(observationIdentifier, "pattern", patternCopyWithoutAccessorFunction);
         }
 
-        console.log("observationAccessor", questions, observationIdentifier, newValue);
+        console.log("observationAccessor", pattern.questions, observationIdentifier, newValue);
         if (newValue === undefined) {
             var result = this.project.tripleStore.queryLatestC(observationIdentifier, field);
             if (result === undefined || result === null) {
@@ -376,7 +385,7 @@ class PatternBrowser {
             return "";
             // throw new Error("pattern is not defined");
         }
-        return this.observationAccessor(this.currentPattern.questions, "observationDescription", newValue);
+        return this.observationAccessor(this.currentPattern, "observationDescription", newValue);
     }
     
     currentObservationTitle(newValue = undefined) {
@@ -384,7 +393,7 @@ class PatternBrowser {
             return "";
             // throw new Error("pattern is not defined");
         }
-        return this.observationAccessor(this.currentPattern.questions, "observationTitle", newValue);
+        return this.observationAccessor(this.currentPattern, "observationTitle", newValue);
     }
     
     currentObservationInterpretations(newValue = undefined) {
@@ -392,7 +401,7 @@ class PatternBrowser {
             return "";
             // throw new Error("pattern is not defined");
         }
-        return this.observationAccessor(this.currentPattern.questions, "observationInterpretations", newValue);
+        return this.observationAccessor(this.currentPattern, "observationInterpretations", newValue);
     }
     
     // We don't make the set when the report is created; lazily make it if needed now
@@ -476,17 +485,23 @@ class PatternBrowser {
         if (graphType === "scatter" || graphType === "multiple scatter") {
             q2Type = "S";
         }
-            
-        var observation = this.observationAccessor.bind(this, questions, "observationDescription");
         
+        var pattern; 
+
         if (questions.length === 1) {
-            return {id: id, observation: observation, graphType: graphType, patternName: nameForQuestion(questions[0]) + " (" + q1Type + ")", questions: questions};
+            pattern = {id: id, observation: null, graphType: graphType, patternName: nameForQuestion(questions[0]) + " (" + q1Type + ")", questions: questions};
         } else if (questions.length === 2) {
-            return {id: id, observation: observation, graphType: graphType, patternName: nameForQuestion(questions[0]) + " (" + q1Type + ") vs. " + nameForQuestion(questions[1]) + " (" + q2Type + ")", questions: questions};
+            pattern = {id: id, observation: null, graphType: graphType, patternName: nameForQuestion(questions[0]) + " (" + q1Type + ") vs. " + nameForQuestion(questions[1]) + " (" + q2Type + ")", questions: questions};
         } else {
             console.log("Unexpected number of questions", questions);
             throw new Error("Unexpected number of questions: " + questions.length);
         }
+        
+        var observation = this.observationAccessor.bind(this, pattern, "observationDescription");
+        // Next assignment creates a circular reference
+        pattern.observation = observation;
+        
+        return pattern;
     }
 
     buildPatternList() {
