@@ -9,13 +9,11 @@ var panel: Panel = {
             id: "project_aboutParticipantGroups",
             valueType: "none",
             displayType: "label",
-            displayPrompt: "On this page you will think about groups of <strong>participants</strong> you want to involve in your project. (Examples might be: doctors and patients; staff and customers; natives, immigrants, and tourists.)"
-        },
-        {
-            id: "project_aboutParticipantGroups_more",
-            valueType: "none",
-            displayType: "label",
-            displayPrompt: "The choices you make here will create the recommendations NarraFirma shows you (for story collection methods, questions about stories, etc.)."
+            displayPrompt: 
+`On this page you will think about groups of <strong>participants</strong> you want to involve in your project. 
+(Examples might be: doctors and patients; staff and customers; natives, immigrants, and tourists.)
+The choices you make here will influence the <strong>recommendations</strong> NarraFirma shows you (for story collection methods, 
+questions about stories, etc.).`
         },
         {
             id: "project_participantGroupsList",
