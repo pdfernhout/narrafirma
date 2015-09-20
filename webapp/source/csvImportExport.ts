@@ -259,8 +259,13 @@ function processCSVContentsForQuestionnaire(contents) {
         return;
     }
     
-    var storyCollectionsListIdentifier = project.getFieldValue("project_storyCollections");
-    console.log("storyCollectionsListIdentifier");
+    var storyFormListIdentifier = project.getFieldValue("project_storyForms");
+    
+    if (!storyFormListIdentifier) {
+        storyFormListIdentifier = project.tripleStore.newIdForSet("StoryFormSet");
+        project.setFieldValue("project_storyForms", storyFormListIdentifier);
+    }
+    console.log("storyFormListIdentifier");
  
     // TODO: Generalize random uuid function to take class name
     // TODO: Maybe rename quesitonForm_ to storyForm_ ?
@@ -270,7 +275,7 @@ function processCSVContentsForQuestionnaire(contents) {
         questionForm_shortName: shortName
     };
     
-    project.tripleStore.makeNewSetItem(storyCollectionsListIdentifier, "StoryForm", template);
+    project.tripleStore.makeNewSetItem(storyFormListIdentifier, "StoryForm", template);
     
     /*
     
