@@ -54,7 +54,7 @@ var messages = {
     calculate_quizScoreResult_template: "{{total}} of {{possibleTotal}} ({{percent}}%)",
     
     // other
-    copyDraftPNIQuestion_template: "Copied {{copiedAnswersCount}} answers\nNote that blank draft answers are not copied; non-blank final answers are not replaced",
+    copyDraftPNIQuestion_template: "Copied {{copiedAnswersCount}} answers.\n\n(Note that blank draft answers are not copied, and non-blank final answers are not replaced.)",
     no_questions_answered_on_page: "(No questions answered on this page)",
     
     // Used for boolean choice widget

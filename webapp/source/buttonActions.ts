@@ -133,7 +133,7 @@ function copyDraftPNIQuestionVersionsIntoAnswers_Basic() {
 
 export function copyDraftPNIQuestionVersionsIntoAnswers() {
     var copiedAnswersCount = copyDraftPNIQuestionVersionsIntoAnswers_Basic();
-    var template = translate("#copyDraftPNIQuestion_template", "Copied {{copiedAnswersCount}} answers\nNote that blank draft answers are not copied; non-blank final answers are not replaced");
+    var template = translate("#copyDraftPNIQuestion_template", "Copied {{copiedAnswersCount}} answers.\n\n(Note that blank draft answers are not copied, and non-blank final answers are not replaced.)");
     var message = template.replace("{{copiedAnswersCount}}", copiedAnswersCount);
     alert(message);
 }
