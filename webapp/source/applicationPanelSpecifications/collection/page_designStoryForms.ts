@@ -23,7 +23,7 @@ var panel: Panel = {
             id: "project_csvFileUploaderForForm",
             valueType: "none",
             displayType: "html",
-            displayPrompt: "<input type=\"file\" id=\"csvFileLoader\" name=\"files\" title=\"Load File\" style=\"display:none\"/>"
+            displayPrompt: '<input type="file" id="csvFileLoader" name="files" title="Import Story Form from CSV File" style="display:none"/>'
         },
         {
             id: "project_importStoryFormAndDataFromCSV",
