@@ -57,17 +57,10 @@ var panel: Panel = {
             id: "project_reportStartText",
             valueType: "string",
             displayType: "textarea",
-            displayName: "Report start text",
-            displayPrompt: "Enter any other information you want to appear at the start of your project report."
-        },
-        {
-            id: "project_reportEndText",
-            valueType: "string",
-            displayType: "textarea",
-            displayName: "Report end text",
-            displayPrompt: "Enter any other information you want to appear at the end of your project report."
+            displayName: "General notes",
+            displayPrompt: "Enter any <strong>general notes</strong> you want to remember about the project."
         }
-    ]
+     ]
 };
 
 export = panel;
