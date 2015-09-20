@@ -28,7 +28,9 @@ function generateHTMLForPage(title: string, stylesheetReference: string, vdom) {
     output += "<head>\n";
     output += "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\" />\n";
     output += "<title>" + escapeHtml(title) + "</title>\n";
-    output += "<link rel=\"stylesheet\" href=\"" + stylesheetReference + "\">\n";
+    if (stylesheetReference) {
+        output += "<link rel=\"stylesheet\" href=\"" + stylesheetReference + "\">\n";
+    }
     output += "</head>\n\n";
     output += "<body>\n";
     output += htmlForMithril(vdom);
