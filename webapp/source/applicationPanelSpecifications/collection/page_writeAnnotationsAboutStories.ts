@@ -9,13 +9,13 @@ var panel: Panel = {
             id: "project_storyQuestionsLabel",
             valueType: "none",
             displayType: "label",
-            displayPrompt: "On this page you will write questions which you will use to annotate stories after they have been received. You may return here to add more questions after you start collecting stories."
+            displayPrompt: "On this page you can write questions you will use to <strong>annotate</strong> stories with additional information. You can add more annotation questions after you start collecting stories."
         },
         {
             id: "project_storyAnnotationsList",
             valueType: "array",
             displayType: "grid",
-            displayConfiguration: "panel_addStoryQuestion",
+            displayConfiguration: "panel_addAnnotationQuestion",
             displayName: "Annotations about stories",
             displayPrompt: "These are the annotation questions you have written so far."
         }

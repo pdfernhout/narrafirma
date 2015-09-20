@@ -44,13 +44,6 @@ var panel: Panel = {
             displayType: "textarea",
             displayName: "Options",
             displayPrompt: "If your question requires <strong>choices</strong>, enter them here (one per line). For a slider, enter the texts to place on the left and right sides (on separate lines)."
-        },
-        {
-            id: "SPECIAL_templates_storyQuestions",
-            valueType: "none",
-            displayType: "templateList",
-            displayConfiguration: "storyQuestions",
-            displayPrompt: "Copy a question from a template"
         }
     ]
 };
