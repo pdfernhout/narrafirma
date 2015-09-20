@@ -3,7 +3,7 @@ import kludgeForUseStrict = require("../kludgeForUseStrict");
 
 "use strict";
 
-function generateRandomUuid() {
+function generateRandomUuid(className: string) {
     // summary:
     //        This function generates random UUIDs, meaning "version 4" UUIDs.
     // description:
@@ -51,7 +51,7 @@ function generateRandomUuid() {
     var d = _generateRandomEightCharacterHexString();
     var returnValue = a + hyphen + b + hyphen + c + d;
     returnValue = returnValue.toLowerCase();
-    return returnValue; // String
+    return className + "_" + returnValue; // String
 }
 
 export = generateRandomUuid;

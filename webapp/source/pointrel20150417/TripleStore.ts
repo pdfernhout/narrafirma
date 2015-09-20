@@ -295,18 +295,18 @@ class TripleStore {
     // Sets
     // TODO: Id does not have to be restricted to a string, but doing it for now to catch errors
 
-    newIdForSet(): string {
-        // var setIdentifier = {"type": "set", "id":  generateRandomUuid()};
-        var setIdentifier = "Set:" + generateRandomUuid();
+    newIdForSet(setClassName: string): string {
+        // var setIdentifier = {"type": "set", "id":  generateRandomUuid(setClassName)};
+        var setIdentifier = generateRandomUuid(setClassName);
         return setIdentifier;
     }
     
-    private newIdForSetItem(): string {
+    private newIdForSetItem(itemClassName: string): string {
         // return new Date().toISOString();
-        return generateRandomUuid();
+        return generateRandomUuid(itemClassName);
     }
     
-    makeNewSetItem(setIdentifier: string, template = undefined, idProperty = "id"): string { 
+    makeNewSetItem(setIdentifier: string, itemClassName: string, template = undefined, idProperty = "id"): string { 
         if (setIdentifier === undefined) {
             throw new Error("expected setIdentifier to be defined");
         }
@@ -316,7 +316,7 @@ class TripleStore {
         if (template) {
             newId = template[idProperty];
         } else {
-            newId = this.newIdForSetItem();
+            newId = this.newIdForSetItem(itemClassName);
         }
         
        if (template) {
@@ -332,14 +332,15 @@ class TripleStore {
         return newId;
     }
     
-    makeCopyOfSetItemWithNewId(setIdentifier: string, existingItemId: string): string {
+    makeCopyOfSetItemWithNewId(setIdentifier: string, existingItemId: string, itemClassName: string): string {
         if (setIdentifier === undefined) {
             throw new Error("expected setIdentifier to be defined");
         }
         if (existingItemId === undefined) {
             throw new Error("expected existingItemId to be defined");
         }
-        var newId = this.newIdForSetItem();
+        
+        var newId = this.newIdForSetItem(itemClassName);
         
         this.addTriple(setIdentifier, {setItem: newId}, newId);
         

@@ -202,7 +202,7 @@ class PointrelClient {
             // TODO: Simplify redundancy in timestamps
             _topicIdentifier: topicIdentifier,
             _topicTimestamp: timestamp,
-            // messageIdentifier: generateRandomUuid(), // Is this needed, as we have a unique ID from SHA256?
+            // messageIdentifier: generateRandomUuid("Message"), // Is this needed, as we have a unique ID from SHA256?
             creator: this.userIdentifier,
             creationTimestamp: timestamp,
             // TODO: createdAfter: something involving incoming records...
