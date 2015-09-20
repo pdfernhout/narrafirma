@@ -13,6 +13,7 @@ import generateRandomUuid = require("./pointrel20150417/generateRandomUuid");
 import toaster = require("./panelBuilder/toaster");
 import ClientState = require("./ClientState");
 import printing = require("./printing");
+import projectImportExport = require("./projectImportExport");
 
 "use strict";
 
@@ -289,6 +290,9 @@ export var importCSVQuestionnaire = csvImportExport.importCSVQuestionnaire;
 export var importCSVStories = csvImportExport.importCSVStories;
 export var exportQuestionnaire = csvImportExport.exportQuestionnaire;
 export var exportStoryCollection = csvImportExport.exportStoryCollection;
+
+export var exportEntireProject = projectImportExport.exportEntireProject;
+export var importEntireProject = projectImportExport.importEntireProject;
 
 export var printStoryForm = printing.printStoryForm;
 export var printStoryCards = printing.printStoryCards;

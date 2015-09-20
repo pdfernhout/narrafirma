@@ -6,24 +6,30 @@ var panel: Panel = {
     displayName: "Import & Export",
     panelFields: [
         {
-            id: "project_importExport_header",
+            id: "importExport_header",
             valueType: "none",
             displayType: "label",
-            displayPrompt: "This page can be used to import or export project data in various ways. NOT FINISHED!"
+            displayPrompt: "This page can be used to import or export project data in various ways."
         },
         {
-            id: "project_importExport_loadLatest",
+            id: "importExport_export",
             valueType: "none",
             displayType: "button",
-            displayConfiguration: "loadLatest",
-            displayPrompt: "Load latest (also going away?)"
+            displayConfiguration: "exportEntireProject",
+            displayPrompt: "Export entire project"
         },
         {
-            id: "project_importExport_importExportOld",
+            id: "project_projectFileUploaderForForm",
+            valueType: "none",
+            displayType: "html",
+            displayPrompt: '<input type="file" id="projectFileUploader" name="files" title="Import Project from JSON File" style="display:none"/>'
+        },
+        {
+            id: "importExport_import",
             valueType: "none",
             displayType: "button",
-            displayConfiguration: "importExportOld",
-            displayPrompt: "Import/Export (old approach)"
+            displayConfiguration: "importEntireProject",
+            displayPrompt: "Import entire project"
         }
     ]
 };
