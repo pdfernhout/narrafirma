@@ -598,13 +598,12 @@ class PointrelClient {
     private sendOutgoingMessage() {
         var callback;
         if (debugMessaging) console.log("sendOutgoingMessage");
-        if (this.areOutgoingMessagesSuspended) return;
         if (this.outgoingMessageQueue.length === 0) return;
-        if (this.outstandingServerRequestSentAtTimestamp) return;
         if (debugMessaging) console.log("sendOutgoingMessage proceeding");
         
-        if (this.apiURL === "loopback") {
-            // Send all the outgoing messages we have
+        var self = this;
+        if (this.apiURL === "loopback" || this.areOutgoingMessagesSuspended) {
+            // Pretend to send all the outgoing messages we have
             while (this.outgoingMessageQueue.length) {
                 var loopbackMessage = this.outgoingMessageQueue.shift();
                 callback = loopbackMessage.__pointrel_callback;
@@ -617,6 +616,9 @@ class PointrelClient {
         } else {
             // Send to a real server
             
+            // Wait for later if a request is outstanding already, like polling for new messages
+            if (this.outstandingServerRequestSentAtTimestamp) return;
+
             // If this fails, and there is no callback, this will leave message on outgoing queue (unless it was rejected for some reason)
             // If there is a callback, the message will be discarded as presumably the caller will handle resending it
             var message = this.outgoingMessageQueue[0];
@@ -634,7 +636,6 @@ class PointrelClient {
             this.outstandingServerRequestSentAtTimestamp = new Date();
             this.serverStatus("waiting", "storing " + this.outstandingServerRequestSentAtTimestamp);
             
-            var self = this;
             this.apiRequestSend(apiRequest, shortTimeout_ms, function(response) {
                 if (debugMessaging) console.log("Got store response", response);
                 self.outstandingServerRequestSentAtTimestamp = null;
@@ -853,7 +854,7 @@ class PointrelClient {
             }
             self.outstandingServerRequestSentAtTimestamp = null;
             if (response.receivedRecords && response.receivedRecords.length) {
-                // Schedule another request immediately if getting contents..
+                // Schedule another request immediately if getting contents
                 setTimeout(function () {
                     self.sendFetchOrPollIfNeeded();
                 }, 0);
