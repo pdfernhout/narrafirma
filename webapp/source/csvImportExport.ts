@@ -110,11 +110,11 @@ function processCSVContentsForStories(contents) {
             // TODO: Think about whether to include entire questionnaire or something else perhaps
             // TODO: Big kludge to use (module) global here!!!
             questionnaire: lastQuestionnaireUploaded,
-            responseID: generateRandomUuid(),
+            responseID: generateRandomUuid("QuestionnaireResponse"),
             stories: [],
             participantData: {
                 __type: "org.workingwithstories.ParticipantData",
-                participantID: generateRandomUuid()
+                participantID: generateRandomUuid("Participant")
             },
             // TODO: Should have timestamp in CSV file!!!
             timestampStart: "" + new Date().toISOString(),
@@ -127,8 +127,8 @@ function processCSVContentsForStories(contents) {
         var elicitingQuestion = item["Eliciting question"] || lastQuestionnaireUploaded.elicitingQuestions[0].id;
         var story = {
             __type: "org.workingwithstories.Story",
-            id: generateRandomUuid(),
-            storyID: generateRandomUuid(),
+            // TODO: Can this "id" field be safely removed? id: generateRandomUuid("TODO:???"),
+            storyID: generateRandomUuid("Story"),
             participantID: newSurveyResult.participantData.participantID,
             elicitingQuestion: elicitingQuestion,
             storyText: item["Story text"],
@@ -151,7 +151,7 @@ function processCSVContentsForStories(contents) {
     }
     
     var newStoryCollection = {
-        id: generateRandomUuid(),
+        id: generateRandomUuid("StoryCollection"),
         storyCollection_shortName: storyCollectionIdentifier,
         storyCollection_questionnaireIdentifier: lastQuestionnaireUploaded.title,
         storyCollection_activeOnWeb: false,
@@ -161,7 +161,7 @@ function processCSVContentsForStories(contents) {
     
     var storyCollections = project.getFieldValue("project_storyCollections");
     if (!storyCollections) {
-        storyCollections = project.tripleStore.newIdForSet();
+        storyCollections = project.tripleStore.newIdForSet("StoryCollectionSet");
         project.setFieldValue("project_storyCollections", storyCollections);
     }
     
@@ -172,7 +172,7 @@ function processCSVContentsForStories(contents) {
         return;
     }
     
-    project.tripleStore.makeNewSetItem(storyCollections, newStoryCollection);
+    project.tripleStore.makeNewSetItem(storyCollections, "StoryCollection", newStoryCollection);
      
     var totalStoryCount = surveyResults.length;
 
@@ -266,11 +266,11 @@ function processCSVContentsForQuestionnaire(contents) {
     // TODO: Maybe rename quesitonForm_ to storyForm_ ?
 
     var template = {
-        id: "StoryForm:" + generateRandomUuid(),
+        id: generateRandomUuid("StoryForm"),
         questionForm_shortName: shortName
     };
     
-    project.tripleStore.makeNewSetItem(storyCollectionsListIdentifier, template);
+    project.tripleStore.makeNewSetItem(storyCollectionsListIdentifier, "StoryForm", template);
     
     /*
     

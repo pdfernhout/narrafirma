@@ -263,12 +263,20 @@ class GridWithItemPanel {
         
         this.valueProperty = valuePathResolver.newValuePathForFieldSpecification(this.model, this.fieldSpecification);
         
+        var itemClassName = itemPanelSpecification.modelClass;
+        if (!itemClassName) {
+            console.log("ERROR: No modelClass in panel specification", itemPanelSpecification);
+            throw new Error("ERROR: No modelClass in panel specification for grid");
+            // itemClassName = "Item";
+        }
+        var setClassName = itemPanelSpecification.modelClass + "Set";
+        
         if (this.useTriples()) {
             // console.log("Grid using triples", this.model);
-            this.dataStore = new TripleSetDataStore(this.valueProperty, this.idProperty, this.gridConfiguration.transformDisplayedValues, Globals.project().tripleStore);
+            this.dataStore = new TripleSetDataStore(this.valueProperty, this.idProperty, this.gridConfiguration.transformDisplayedValues, setClassName, itemClassName, Globals.project().tripleStore);
         } else {
             // console.log("Grid using objects", this.model);
-            this.dataStore = new DataStore(this.valueProperty, this.idProperty, this.gridConfiguration.transformDisplayedValues);
+            this.dataStore = new DataStore(this.valueProperty, this.idProperty, this.gridConfiguration.transformDisplayedValues, setClassName, itemClassName);
         }
         this.updateData();
     }
@@ -728,12 +736,12 @@ class GridWithItemPanel {
 class DataStore {
     data: Array<any>;
     
-    constructor(public valueProperty: Function, public idProperty: string, public valueTransform: Function) {
+    constructor(public valueProperty: Function, public idProperty: string, public valueTransform: Function, public setClassName: string, public itemClassName: string) {
     }
     
     newIdForItem() {
         // return new Date().toISOString();
-        return generateRandomUuid();
+        return generateRandomUuid(this.itemClassName);
     }
     
     length() {
@@ -872,8 +880,8 @@ class TripleSetDataStore extends DataStore {
     tripleStore: TripleStore;
     setIdentifier: string;
     
-    constructor(valueProperty: Function, idProperty: string, valueTransform: Function, tripleStore: TripleStore) {
-        super(valueProperty, idProperty, valueTransform);
+    constructor(valueProperty: Function, idProperty: string, valueTransform: Function, setClassName: string, itemClassName: string, tripleStore: TripleStore) {
+        super(valueProperty, idProperty, valueTransform, setClassName, itemClassName);
         this.tripleStore = tripleStore;
     }
     
@@ -893,7 +901,7 @@ class TripleSetDataStore extends DataStore {
     ensureSetExists() {
         // TODO: Remove temporary addition with comparison on string type (for upgrading old data)
         if (!this.setIdentifier || typeof this.setIdentifier !== "string") {
-            this.setIdentifier = this.tripleStore.newIdForSet();
+            this.setIdentifier = this.tripleStore.newIdForSet(this.setClassName);
             // console.log("Grid triplestore getDataArrayFromModel defaulting data to empty set with id", this.setIdentifier);
             this.valueProperty(this.setIdentifier);
         }
@@ -905,7 +913,7 @@ class TripleSetDataStore extends DataStore {
 
         this.ensureSetExists();
         
-        var newId = this.tripleStore.makeCopyOfSetItemWithNewId(this.setIdentifier, item);
+        var newId = this.tripleStore.makeCopyOfSetItemWithNewId(this.setIdentifier, this.itemClassName, item);
         
         this.data.push(newId);
         
@@ -917,7 +925,7 @@ class TripleSetDataStore extends DataStore {
 
         this.ensureSetExists();
 
-        var newId = this.tripleStore.makeNewSetItem(this.setIdentifier);
+        var newId = this.tripleStore.makeNewSetItem(this.setIdentifier, this.itemClassName);
         
         this.data.push(newId);
         

@@ -353,7 +353,7 @@ class PatternBrowser {
         if (!observationIdentifier) {
             if (field !== "observationInterpretations" && newValue === undefined) return "";
             // Lazy initialize the observation as will need to return a list which might be empty but could get used
-            observationIdentifier = "Observation:" + generateRandomUuid();
+            observationIdentifier = generateRandomUuid("Observation");
             // TODO: Ideally should not be creating entry just for looking at it
             this.project.tripleStore.addTriple(this.catalysisReportObservationSetIdentifier, patternReference, observationIdentifier);
             // Need this for printing later so know what questions & pattern go with the observation
@@ -413,7 +413,7 @@ class PatternBrowser {
         var setIdentifier = this.project.tripleStore.queryLatestC(catalysisReportIdentifier, "catalysisReport_observations");
         
         if (!setIdentifier) {
-            setIdentifier = "ObservationSet:" + generateRandomUuid();
+            setIdentifier = generateRandomUuid("ObservationSet");
             this.project.tripleStore.addTriple(catalysisReportIdentifier, "catalysisReport_observations", setIdentifier);
         }
 

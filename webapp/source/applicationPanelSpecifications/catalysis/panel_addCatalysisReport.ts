@@ -3,7 +3,7 @@ import kludgeForUseStrict = require("../../kludgeForUseStrict");
 
 var panel: Panel = {
     id: "panel_addCatalysisReport",
-    displayName: "CatalysysReport",
+    modelClass: "CatalysisReport",
     panelFields: [
         {
             id: "catalysisReport_shortName",

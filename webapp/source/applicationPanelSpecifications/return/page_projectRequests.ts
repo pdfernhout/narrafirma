@@ -26,7 +26,7 @@ var panel: Panel = {
                 }
             },
             displayName: "Help requests",
-            displayPrompt: "These are the requests you have recorded so far.",
+            displayPrompt: "These are the requests you have recorded so far."
         }
     ]
 };

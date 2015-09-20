@@ -267,7 +267,7 @@ export function copyInterpretationsToClusteringDiagram() {
                 text: interpretation.name,
                 "type": "item",
                 url: interpretation.text,
-                uuid: generateRandomUuid(),
+                uuid: generateRandomUuid("ClusteringDiagramItem"),
                 x: 100 + addedItemCount * shiftPerItem,
                 y: 100 + addedItemCount * shiftPerItem
             });

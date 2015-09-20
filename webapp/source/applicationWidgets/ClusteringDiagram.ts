@@ -13,8 +13,8 @@ import m = require("mithril");
 var defaultSurfaceWidthInPixels = 800;
 var defaultSurfaceHeightInPixels = 500;
 
-function uuidFast() {
-    return generateRandomUuid();
+function uuidFast(className: string) {
+    return generateRandomUuid(className);
 }
 
 // Caution: "this" may be undefined for functions called by this unless "bind" or "hitch" is used
@@ -213,7 +213,7 @@ class ClusteringDiagram {
     setupMainSurface() {
         var divForResizing = document.createElement("div");
         this.divForResizing = divForResizing;
-        var divUUID = "ResizeableCanvasHolder_" + generateRandomUuid(); 
+        var divUUID = generateRandomUuid("ResizeableCanvasHolder"); 
         divForResizing.setAttribute("id", divUUID);
         //divForResizing.setAttribute("style", "width: " + this.diagram.surfaceWidthInPixels + "px; height: " + this.diagram.surfaceHeightInPixels + "px; border: solid 1px; position: relative");
         //divForResizing.setAttribute("style", "resize: auto; border: solid 1px");
@@ -658,7 +658,7 @@ class ClusteringDiagram {
             url: url,
             x: 200,
             y: 200,
-            uuid: uuidFast(),
+            uuid: uuidFast("ClusteringDiagramItem"),
             type: "item"
         };
         // item.bodyColor = defaultBodyColor;

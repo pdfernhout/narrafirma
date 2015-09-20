@@ -330,13 +330,13 @@ export function buildSurveyForm(surveyDiv, questionnaire, doneCallback, surveyOp
         __type: "org.workingwithstories.QuestionnaireResponse",
         // TODO: Think about whether to include entire questionnaire or something else perhaps
         questionnaire: questionnaire,
-        responseID: generateRandomUuid(),
+        responseID: generateRandomUuid("QuestionnaireResponse"),
         stories: [],
         participantData: null,
         timestampStart: "" + timestampStart.toISOString()
     };
     
-    var participantID = generateRandomUuid();
+    var participantID = generateRandomUuid("Participant");
     var participantDataModel = {
         __type: "org.workingwithstories.ParticipantData",
         participantID: participantID
@@ -353,7 +353,7 @@ export function buildSurveyForm(surveyDiv, questionnaire, doneCallback, surveyOp
     function addStory() {
         var storyQuestionsModel = {
             __type: "org.workingwithstories.Story",
-            storyID: generateRandomUuid(),
+            storyID: generateRandomUuid("Story"),
             participantID: participantID,
             elicitingQuestion: undefined
         };
