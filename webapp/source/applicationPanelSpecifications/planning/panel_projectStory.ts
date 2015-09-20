@@ -12,12 +12,12 @@ var panel: Panel = {
                 "ask me anything",
                 "magic ears",
                 "fly on the wall",
-                "project aspects",
+                "because of (something about the project)",
                 "my own scenario type"
             ],
             displayType: "select",
             displayName: "Scenario",
-            displayPrompt: "Start by choosing a <strong>scenario</strong> for your project story. (Click the Help button for explanations of these scenario types.)"
+            displayPrompt: "Start by choosing a <strong>scenario</strong> for your project story. (Click \"Help\" for explanations of these scenario types.)"
         },
         {
             id: "projectStory_outcome",
