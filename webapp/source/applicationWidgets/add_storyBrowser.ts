@@ -261,7 +261,7 @@ class StoryBrowser {
     choices = [];
     allStories = [];
     filteredStories = [];
-    itemPanelSpecification = {panelFields: []};
+    itemPanelSpecification = {id: "temporary", modelClass: "Story", panelFields: []};
     gridFieldSpecification = null;
     
     // Embedded components
@@ -394,9 +394,10 @@ class StoryBrowser {
         // TODO: add more participant and survey info, like timestamps and participant ID
         
         var itemPanelSpecification = {
-             id: "storyBrowserQuestions",
-             panelFields: questions,
-             buildPanel: this.buildStoryDisplayPanel.bind(this)
+            id: "storyBrowserQuestions",
+            modelClass: "Story",
+            panelFields: questions,
+            buildPanel: this.buildStoryDisplayPanel.bind(this)
         };
         
         return itemPanelSpecification;

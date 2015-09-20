@@ -143,7 +143,8 @@ function makeTemplateListChooser(panelBuilder: PanelBuilder, dialogConfiguration
      }
      
      var itemPanelSpecification = {
-         id: "page_template",
+         id: "panel_template",
+         modelClass: "Template",
          displayType: "panel",
          isHeader: false,
          panelFields: pageQuestions,

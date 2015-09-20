@@ -22,7 +22,8 @@ var minimumStoryCountRequiredForTest = 20;
 var nominalQuestionTypes = ["select", "boolean", "checkbox", "checkboxes", "radiobuttons", "text"];
 
 var patternsPanelSpecification = {
-    "id": "patternsPanel",
+    id: "patternsPanel",
+    modelClass: "Pattern",
     panelFields: [
         {id: "id", displayName: "Index"},
         {id: "patternName", displayName: "Pattern name", valueOptions: []},
@@ -140,6 +141,7 @@ function makeItemPanelSpecificationForQuestions(questions) {
     
     var storyItemPanelSpecification = {
          id: "patternBrowserQuestions",
+         modelClass: "Story",
          panelFields: questions,
          buildPanel: buildStoryDisplayPanel
     };
@@ -216,6 +218,7 @@ class PatternBrowser {
                 itemPanelSpecification: storyItemPanelSpecification,
                 gridConfiguration: storyGridConfiguration
             },
+            // TODO: Why is gridConfiguration in here twice?
             gridConfiguration: storyGridConfiguration
         };
 
