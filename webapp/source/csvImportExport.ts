@@ -204,7 +204,7 @@ function processCSVContentsForStories(contents) {
         if (progressModel.cancelled) {
             alert("Cancelled after sending " + storyIndexToSend + " stories");
         } else if (storyIndexToSend >= surveyResults.length) {
-            alert("Done sending stores");
+            alert("Finished sending stories to server.");
             progressModel.hideDialogMethod();
             progressModel.redraw();
         } else {
