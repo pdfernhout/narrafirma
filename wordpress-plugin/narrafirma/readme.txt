@@ -1,7 +1,7 @@
 === Plugin Name ===
 Contributors: cfkurtz, pdfernhout
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=DGVVDT2D49QA8
-Tags: stories, narrative, inquiry, survey, form, social, research, organizations, communities, conflict, PNI
+Tags: stories, narrative, inquiry, survey, social, research, organizations, communities, conflict, participation, PNI
 Requires at least: 3.0.1
 Tested up to: 3.4
 Stable tag: 4.3
@@ -29,37 +29,83 @@ Participatory Narrative Inquiry in a box. Gather stories and make sense of chall
 
 == Description ==
 
-NarraFirma is a companion to the textbook [Working with Stories in Your Community Or Organization: Participatory Narrative
+NarraFirma is companion software to the textbook [Working with Stories in Your Community Or Organization: Participatory Narrative
 Inquiry](http://www.workingwithstories.org).
 
+Participatory narrative inquiry is an approach in which groups of people participate in gathering and working with 
+raw stories of personal experience in order to make sense of complex patterns for better decision making. PNI focuses on 
+the profound consideration of values, beliefs, feelings, and perspectives through the recounting and interpretation of 
+lived experience.
 
+= What is NarraFirma? =
 
+* It's a checklist. NarraFirma provides practical guidance as you work, with questions for you to answer, 
+recommendations based on the conditions you describe, activities that help you make decisions, and just-in-time advice.
 
+* It's a journal. NarraFirma helps you keep careful records about what happened in your project, and it 
+gives you places to reflect on what happened. This reminds you to keep learning as you work, and it helps you to 
+document your project for future reference.
 
+* It's a kiosk. NarraFirma helps you collect stories, on-line and/or off-line, based on question forms you 
+design (with sample questions you can copy). Because story collection is integrated, there is no need to 
+export or import data.
 
-This is the long description.  No limit, and you can use Markdown (as well as in the following sections).
+* It's a workstation. NarraFirma helps you explore and interpret patterns in your data (stories and answers to 
+questions about stories), creating annotated visualizations you can use to make sense of the stories you collected.
+
+= Why choose NarraFirma? =
+
+* It's portable. You can install NarraFirma anywhere, as a WordPress plugin or a Node.js web application. Web hosting 
+is inexpensive, popular, and well supported. You can also install NarraFirma on your local computer and use it off-line.
+(Whichever installation method you choose, we strongly suggest that you set up SSL security on your web site before collecting 
+or entering confidential or important information. Many hosting providers can help you with this task.) 
+
+* It's a team player. With NarraFirma your team can work on projects together in real time without having to hand 
+files back and forth. You can plan your project, collect stories, discover patterns, and reflect on what you've 
+learned - together.
+
+* It's an open book. NarraFirma is open source software. So if you have a question about how something works, 
+you can just look at the source code to find out. If you need the software to do something it can't do, you can 
+add new functionality yourself or ask someone else to add it.
+
+* It works in the real world. One NarraFirma installation supports multiple projects, forms, data sets, and reports. 
+Why? Because real-life story projects are rarely simple or predictable. So go ahead and make a mess. NarraFirma 
+is ready for it.
 
 == Installation ==
 
-This section describes how to install the plugin and get it working.
+To install NarraFirma:
 
-e.g.
-
-1. Upload `plugin-name.php` to the `/wp-content/plugins/` directory
-1. Activate the plugin through the 'Plugins' menu in WordPress
-1. Place `<?php do_action('plugin_name_hook'); ?>` in your templates
-
+1. Downlaod the NarraFirma plugin (in zip format) from the [NarraFirma web site](narrafirma.com).
+2. In your WordPress dashboard, click on "Plugins," then click "Add New." 
+3. In the "Add Plugins" page, click "Upload Plugin."
+4. Click "Browse," then choose the zip file you downloaded.
+5. Click "Install Now."
+6. You should see a new "NarraFirma" menu item in your dashboard menu.
+ 
 == Frequently Asked Questions ==
 
-= A question that someone might have =
+= Where can I found out more about participatory narrative inquiry? =
 
-An answer to that question.
+You're in luck! I wrote a 650-page textbook about it. Check it out at [workingwithstories.org](workingwithstories.org).
 
-= What about foo bar? =
+= Does NarraFirma work for other kinds of surveys and projects? =
 
-Answer to foo bar dilemma.
+Well, it's meant to work mainly with PNI, but if you want to collect stories for some other reason, you could still use
+NarraFirma for that. It's pretty flexible.
+
+= What about web security? =
+
+We strongly suggest that you set up any web site on which you intend to install NarraFirma 
+with SSL (secure sockets). Your hosting provider should be able to help you do that.
+
+= What can I do to help? =
+
+You can donate, volunteer, and spread the word. Visit [narrafirma.com](narrafirma.com) for details.
 
 == Screenshots ==
+
+CFK ADD THESE
 
 1. This screen shot description corresponds to screenshot-1.(png|jpg|jpeg|gif). Note that the screenshot is taken from
 the /assets directory or the directory that contains the stable readme.txt (tags or trunk). Screenshots in the /assets 
@@ -70,47 +116,11 @@ directory take precedence. For example, `/assets/screenshot-1.png` would win ove
 == Changelog ==
 
 = 1.0 =
-* A change since the previous version.
-* Another change.
+* This is the first publicly released version of NarraFirma. For (highly detailed and entertaining) 
+change logs, see the [GitHub repository](https://github.com/pdfernhout/narrafirma).
 
-= 0.5 =
-* List versions from most recent at top to oldest at bottom.
+== Need some help? ==
 
-== Upgrade Notice ==
+I offer training in the use of NarraFirma and consulting for PNI projects. If you are interested,
+check out my web site at [cfkurtz.com](cfkurtz.com), or send me a note at cfkurtz at cfkurtz dot com.
 
-= 1.0 =
-Upgrade notices describe the reason a user should upgrade.  No more than 300 characters.
-
-= 0.5 =
-This version fixes a security related bug.  Upgrade immediately.
-
-== Arbitrary section ==
-
-You may provide arbitrary sections, in the same format as the ones above.  This may be of use for extremely complicated
-plugins where more information needs to be conveyed that doesn't fit into the categories of "description" or
-"installation."  Arbitrary sections will be shown below the built-in sections outlined above.
-
-== A brief Markdown Example ==
-
-Ordered list:
-
-1. Some feature
-1. Another feature
-1. Something else about the plugin
-
-Unordered list:
-
-* something
-* something else
-* third thing
-
-Here's a link to [WordPress](http://wordpress.org/ "Your favorite software") and one to [Markdown's Syntax Documentation][markdown syntax].
-Titles are optional, naturally.
-
-[markdown syntax]: http://daringfireball.net/projects/markdown/syntax
-            "Markdown is what the parser uses to process much of the readme file"
-
-Markdown uses email style notation for blockquotes and I've been told:
-> Asterisks for *emphasis*. Double it up  for **strong**.
-
-`<?php code(); // goes in backticks ?>`
