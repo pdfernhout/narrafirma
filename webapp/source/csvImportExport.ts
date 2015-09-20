@@ -6,6 +6,7 @@ import surveyCollection = require("./surveyCollection");
 import surveyStorage = require("./surveyStorage");
 import dialogSupport = require("./panelBuilder/dialogSupport");
 import Globals = require("./Globals");
+import m = require("mithril");
 
 "use strict";
 
@@ -251,12 +252,27 @@ function processCSVContentsForQuestionnaire(contents) {
     });
     console.log("processCSVContentsForQuestionnaire headerAndItems", headerAndItems);
     
-    var shortName = prompt("Please enter a short name for this story form.");
+    var shortName = prompt("Please enter a short name for a new story form.");
     if (!shortName) return;
     if (questionnaireGeneration.buildQuestionnaire(shortName)) {
         alert('A story form already exists with that name: "' + shortName + '"');
         return;
     }
+    
+    var storyCollectionsListIdentifier = project.getFieldValue("project_storyCollections");
+    console.log("storyCollectionsListIdentifier");
+ 
+    // TODO: Generalize random uuid function to take class name
+    // TODO: Maybe rename quesitonForm_ to storyForm_ ?
+
+    var template = {
+        id: "StoryForm:" + generateRandomUuid(),
+        questionForm_shortName: shortName
+    };
+    
+    project.tripleStore.makeNewSetItem(storyCollectionsListIdentifier, template);
+    
+    /*
     
     // For now, no eliciting questions, so the default one would be used
     
@@ -301,6 +317,10 @@ function processCSVContentsForQuestionnaire(contents) {
     console.log("CSV questionnaire made", questionnaire);
     lastQuestionnaireUploaded = questionnaire;
     return questionnaire;
+    
+    */
+    
+    m.redraw();
 }
 
 function questionForItem(item, prefixQPA: string) {
