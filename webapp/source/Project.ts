@@ -126,6 +126,17 @@ class Project {
         return null;
     }
     
+    /*
+    allStoryFormShortNames(): string[] {
+        var result = [];
+        var questionnaires: Array<string> = this.getListForField("project_storyForms");
+        for (var i = 0; i < questionnaires.length; i++) {
+            result.push(this.tripleStore.queryLatestC(questionnaires[i], "questionForm_shortName"));
+        }
+        return result;
+    }
+    */
+    
     findStoryCollection(shortName): string {
         var storyCollections: Array<string> = this.getListForField("project_storyCollections");
         for (var i = 0; i < storyCollections.length; i++) {
