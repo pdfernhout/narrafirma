@@ -45,6 +45,9 @@ class TripleStore {
     
     addTriple(a, b, c, callback = undefined) {
         console.log("TripleStore addTriple", a, b, c);
+        if (a === undefined || b === undefined || c === undefined) {
+            throw new Error("Triple should not have undefined fields");
+        }
         
         var triple = {
             a: a,
@@ -315,6 +318,10 @@ class TripleStore {
         
         if (template) {
             newId = template[idProperty];
+            if (!newId) {
+                newId = this.newIdForSetItem(itemClassName);
+                template[idProperty] = newId;
+            }
         } else {
             newId = this.newIdForSetItem(itemClassName);
         }
