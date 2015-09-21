@@ -1,9 +1,6 @@
 ==== NarraFirma TODO list:
 
 EXPORT/IMPORT
-H Add page to do export of entire project
-H Make a SIMPLE Project Administration section to go with home page button for use with import/export/backup/reporting or other settings and functions
-H Move "export story form" and story collection buttons from "Enter stories" page to "review incoming" page
 H When import story form, need to create questions in project
 H Fix story form export so story form is defined
 H Include story annotations in export and import
@@ -63,9 +60,9 @@ X Improve how options are specified for questions in question designer rather th
 X Make sure that short name IDs entered by user when defining questions are unique among themselves and don't have a leading underscore (or at least aren't "_id")
 
 EXPORT/IMPORT
+M Make project report page work in Administration to show all data entered in human-readable form
 L Improve import process to remove two seperate buttons as two stages (questionnaire and data) or handle in some other way
 X Add way to clear out or reset old survey results? Or maybe partition them by survey?
-X Backup
 
 LOGGING
 X Think through logging in the server, perhaps using a library
@@ -162,8 +159,11 @@ L After you enter a story, it shows an alert that the story has been saved, but 
 L would like to make "focus rectangle" or "rubber band" over graphs when selecting - see http://bl.ocks.org/mbostock/1667367
 L Histograms should have mean and standard deviation marked (and maybe median and mode, skewness and kurtosis as numbers).
 
-
 ==== Wish list:
+
+Thnk about issue of including project name in stories and triple a field in realation to backup/restore
+
+Add templates for annotation questions and re-add button removed in commit 2dde70086198417d2d005e3a6707045c18823d22 2015-09-20 19:09:57
 
 Recommendation button has different shape than others
 
@@ -887,4 +887,9 @@ DONE Implement exportPresentationOutline in domain buttonClicked - in Return, "P
 DONE Implement "export session agenda" (to HTML) for story collection
 DONE Implement "export session agenda" (to HTML) for sensemaking
 DONE Make all display "name" fields longer by includign type to help with printing
-
+DONE Support multiple story collections in a catalysis report
+DONE Prepend item or set name in front of all UUIDs being generated to make it easier to debug data storage use
+DONE Move "export story form" and story collection buttons from "Enter stories" page to "review incoming" page [moved elsewhere]
+DONE Make a SIMPLE Project Administration section to go with home page button for use with import/export/backup/reporting or other settings and functions
+DONE Add page to do export of entire project [and also import]
+DONE Backup [Same as above]
