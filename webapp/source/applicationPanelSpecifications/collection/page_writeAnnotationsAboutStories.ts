@@ -12,7 +12,7 @@ var panel: Panel = {
             displayPrompt: "On this page you can write questions you will use to <strong>annotate</strong> stories with additional information. You can add more annotation questions after you start collecting stories."
         },
         {
-            id: "project_storyAnnotationsList",
+            id: "project_annotationQuestionsList",
             valueType: "array",
             displayType: "grid",
             displayConfiguration: "panel_addAnnotationQuestion",

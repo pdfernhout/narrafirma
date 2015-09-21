@@ -173,7 +173,7 @@ class Project {
     }
     
     collectAllAnnotationQuestions() {
-        var questions = this.collectAllQuestionsForQuestionList("project_storyAnnotationsList");
+        var questions = this.collectAllQuestionsForQuestionList("project_annotationQuestionsList");
         return questions;
     }
     
