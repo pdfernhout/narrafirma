@@ -481,11 +481,16 @@ export function exportQuestionnaire() {
     var storyCollectionIdentifier = Globals.clientState().storyCollectionIdentifier();
     if (!storyCollectionIdentifier) {
         alert("Please select a story collection first");
+        return;
     }
     console.log("exportStoryCollection", storyCollectionIdentifier);
     
     var currentQuestionnaire = surveyCollection.getQuestionnaireForStoryCollection(storyCollectionIdentifier);
-    console.log("exportQuestionnaire", currentQuestionnaire);
+    if (!currentQuestionnaire) {
+        alert("The story collection has not been initialized with a story form: " + storyCollectionIdentifier);
+        return;
+    }
+    console.log("currentQuestionnaire", currentQuestionnaire);
     
     // Order Long name   Short name  Type    About   Answers
     var output = "";
@@ -537,10 +542,17 @@ export function exportQuestionnaire() {
 
 export function exportStoryCollection() {
     var storyCollectionIdentifier = Globals.clientState().storyCollectionIdentifier();
-    
+    if (!storyCollectionIdentifier) {
+        alert("Please select a story collection first");
+        return;
+    }
     console.log("exportStoryCollection", storyCollectionIdentifier);
+    
     var currentQuestionnaire = surveyCollection.getQuestionnaireForStoryCollection(storyCollectionIdentifier);
-    console.log("currentQuestionnaire", currentQuestionnaire);
+    if (!currentQuestionnaire) {
+        alert("The story collection has not been initialized with a story form: " + storyCollectionIdentifier);
+        return;
+    }
 
     var allStories = surveyCollection.getStoriesForStoryCollection(storyCollectionIdentifier, true);
     console.log("allStories", allStories);
