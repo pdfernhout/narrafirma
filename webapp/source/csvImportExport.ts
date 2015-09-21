@@ -272,67 +272,106 @@ function processCSVContentsForQuestionnaire(contents) {
 
     var template = {
         id: generateRandomUuid("StoryForm"),
-        questionForm_shortName: shortName
+        questionForm_shortName: shortName,
+        questionForm_elicitingQuestions: project.tripleStore.newIdForSet("ElicitingQuestionChoiceSet"),
+        questionForm_storyQuestions: project.tripleStore.newIdForSet("StoryQuestionChoiceSet"),
+        questionForm_participantQuestions: project.tripleStore.newIdForSet("ParticipantQuestionChoiceSet")
     };
     
     project.tripleStore.makeNewSetItem(storyFormListIdentifier, "StoryForm", template);
     
-    /*
-    
-    // For now, no eliciting questions, so the default one would be used
-    
-    // Add story questions
-    // TODO: What if questions with the same shortName but different options already exist?
-    
-    var questionnaire = {
-        title: shortName,
-        startText: "",
-        image: "",
-        elicitingQuestions: [],
-        storyQuestions: [],
-        participantQuestions: [],
-        endText: ""
-    };
+    // For all items:
+    //   Check if one with that name already exists; warn if options or type is different
+    //   If does not exist, create it in the related set
+    //   Add a reference to the question in the story form
+        
+    var questionTypeCounts = {};
     
     var items = headerAndItems.items;
     for (var itemIndex = 0; itemIndex < items.length; itemIndex++) {
         var item = items[itemIndex];
         var about = item.About;
+        var reference;
+        var question;
         if (about === "story") {
-            questionnaire.storyQuestions.push(questionForItem(item, "S_"));
+            question = questionForItem(item, "storyQuestion");
+            reference = ensureQuestionExists(question, "storyQuestion");
+            addReferenceToList(template.questionForm_storyQuestions, reference, "storyQuestion", "StoryQuestionChoice");
         } else if (about === "participant") {
-            questionnaire.participantQuestions.push(questionForItem(item, "P_"));
+            question = questionForItem(item, "participantQuestion");
+            reference = ensureQuestionExists(question, "participantQuestion");
+            addReferenceToList(template.questionForm_participantQuestions, reference, "participantQuestion", "ParticipantQuestionChoice");
+        } else if (about === "annotation") {
+            question = questionForItem(item, "annotationQuestion");
+            reference = ensureQuestionExists(question, "annotationQuestion");
+            // addReference(template.questionForm_annotationQuestions, reference, "annotationQuestion", "AnnotationQuestionChoice");
         } else if (about === "eliciting") {
-            var temp = questionForItem(item, "");
-            temp.valueOptions.forEach(function (elicitingQuestionDefinition) {
+            var answers = item["Answers"];
+            answers.forEach(function (elicitingQuestionDefinition) {
                 if (!elicitingQuestionDefinition) elicitingQuestionDefinition = "ERROR:MissingElicitingText";
                 var sections = elicitingQuestionDefinition.split("|");
                 // If only one section, use it as both id and text
                 if (sections.length < 2) {
                     sections.push(sections[0]);
                 }
-                questionnaire.elicitingQuestions.push({id: sections[0].trim(), text: sections[1].trim()});
+                var elicitingQuestion = {
+                    elicitingQuestion_text: sections[1].trim(),
+                    elicitingQuestion_shortName: sections[0].trim(),
+                    elicitingQuestion_type: {}
+                };
+                reference = ensureQuestionExists(elicitingQuestion, "elicitingQuestion");
+                addReferenceToList(template.questionForm_elicitingQuestions, reference, "elicitingQuestion", "ElicitingQuestionChoice");
             });
         } else {
             console.log("Error: unexpected About type of", about);
         }
     }
     
-    questionnaireGeneration.ensureAtLeastOneElicitingQuestion(questionnaire);
-    console.log("CSV questionnaire made", questionnaire);
-    lastQuestionnaireUploaded = questionnaire;
-    return questionnaire;
-    
-    */
-    
     m.redraw();
+    
+    function addReferenceToList(listIdentifier: string, reference: string, fieldName: string, className: string) {
+        var order = questionTypeCounts[fieldName];
+        if (!order) {
+            order = 0;
+        }
+        order = order + 1;
+        questionTypeCounts[fieldName] = order;
+        
+        var choice = {
+            order: order
+        };
+        choice[fieldName] = reference;
+        
+        project.tripleStore.makeNewSetItem(listIdentifier, className, choice);
+    }
 }
 
-function questionForItem(item, prefixQPA: string) {
+function ensureQuestionExists(question, questionCategory: string) {
+    var idAccessor = questionCategory + "_shortName";
+    var existingQuestionsInCategory = project.questionsForCategory(questionCategory);
+    var matchingQuestion = null;
+    existingQuestionsInCategory.forEach((existingQuestion) => {
+        if (existingQuestion[idAccessor] === question[idAccessor]) matchingQuestion = existingQuestion;
+    });
+    if (!matchingQuestion) {
+        console.log("adding question that does not exist yet", question, questionCategory); 
+        project.addQuestionForCategory(question, questionCategory);
+    } else {
+        // TODO: What if questions with the same shortName but different options already exist?
+        // TODO: Should check type as well
+        if (matchingQuestion[questionCategory + "_options"] !== question[questionCategory + "_options"]) {
+            console.log("IMPORT ISSUE: options don't match for questions", question, matchingQuestion);
+            alert("Options do not match for existing question: " + question[idAccessor]);
+        }
+    } 
+
+    return question[idAccessor];
+}
+
+function questionForItem(item, questionCategory) {
     var valueType = "string";
     var questionType = "text";
     var valueOptions;
-    var displayConfiguration;
     var answers = item["Answers"];
     
     var itemType = item["Type"].trim();
@@ -342,7 +381,7 @@ function questionForItem(item, prefixQPA: string) {
     } else if (itemType === "Scale") {
         valueType = "number";
         questionType = "slider";
-        displayConfiguration = [answers[0], answers[1]];
+        valueOptions = [answers[0], answers[1]];
     } else if (itemType === "Multiple choice") {
         questionType = "checkboxes";
         valueOptions = item["Answers"];
@@ -355,21 +394,19 @@ function questionForItem(item, prefixQPA: string) {
         questionType = "text";
     } else if (itemType === "Textarea") {
         questionType = "textarea";
-    } else if (itemType === "Eliciting question") {
-        questionType = "eliciting";
-        valueOptions = item["Answers"];
     } else {
         console.log("IMPORT ERROR: unsupported question type: ", itemType);
     }
-    return {
-        valueType: valueType,
-        displayType: questionType,
-        id: prefixQPA + item["Short name"], 
-        valueOptions: valueOptions,
-        displayName: item["Short name"], 
-        displayPrompt: item["Long name"],
-        displayConfiguration: displayConfiguration
-    };
+    
+    var question = {};
+    question[questionCategory + "_type"] = questionType;
+    question[questionCategory + "_shortName"] = item["Short name"];
+    question[questionCategory + "_text"] = item["Long name"];
+    if (valueOptions) {
+        question[questionCategory + "_options"] = valueOptions.join("\n");
+    }
+    
+    return question;
 }
 
 function chooseCSVFileToImport(callback) {
