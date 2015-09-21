@@ -144,6 +144,16 @@ function processCSVContentsForStories(contents) {
             question = questionnaire.participantQuestions[i];
             newSurveyResult.participantData[question.id] = item[question.id.substring("P_".length)];
         }
+        
+        // Add any annotations
+        project.collectAllAnnotationQuestions().forEach((annotationQuestion) => {
+            var id = annotationQuestion.annotationQuestion_shortName;
+            var value = item[id];
+            if (value !== null && value !== undefined) {
+                newSurveyResult.participantData["A_" + id] = value;
+            }
+        });
+        
         console.log("newSurveyResult", newSurveyResult);
         surveyResults.push(newSurveyResult);
     }
@@ -534,6 +544,10 @@ export function exportQuestionnaire() {
     dataForQuestions(currentQuestionnaire.storyQuestions, "story");
     dataForQuestions(currentQuestionnaire.participantQuestions, "participant");
     
+    var annotationQuestions = project.collectAllAnnotationQuestions();
+    var adjustedAnnotationQuestions = questionnaireGeneration.convertEditorQuestions(annotationQuestions, "A_");
+    dataForQuestions(adjustedAnnotationQuestions, "annotation");
+        
      // Export questionnaire
     var questionnaireBlob = new Blob([output], {type: "text/csv;charset=utf-8"});
     // TODO: This seems to clear the console in FireFox 40; why?
@@ -587,6 +601,10 @@ export function exportStoryCollection() {
     headersForQuestions(currentQuestionnaire.storyQuestions);
     headersForQuestions(currentQuestionnaire.participantQuestions);
     
+    var annotationQuestions = project.collectAllAnnotationQuestions();
+    var adjustedAnnotationQuestions = questionnaireGeneration.convertEditorQuestions(annotationQuestions, "A_");
+    headersForQuestions(adjustedAnnotationQuestions);
+  
     console.log("header1", header1);
     console.log("header2", header2);
     
@@ -602,6 +620,7 @@ export function exportStoryCollection() {
         for (var i = 0; i < questions.length; i++) {
             var question = questions[i];
             var value = story.fieldValue(question.id);
+            if (value === undefined || value === null) value = "";
             if (question.valueOptions && question.displayType === "checkboxes") {
                question.valueOptions.forEach(function(option) {
                    outputLine.push(value[option] ? option : "");   
@@ -619,6 +638,7 @@ export function exportStoryCollection() {
         outputLine.push(story.elicitingQuestion());
         dataForQuestions(currentQuestionnaire.storyQuestions, story, outputLine);
         dataForQuestions(currentQuestionnaire.participantQuestions, story, outputLine);
+        dataForQuestions(adjustedAnnotationQuestions, story, outputLine);
         addOutputLine(outputLine);
     }); 
     

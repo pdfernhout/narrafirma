@@ -34,7 +34,7 @@ var displayTypeToValueTypeMap = {
     storiesList: 'none'
 };
 
-function convertEditorQuestions(editorQuestions, prefixQPA) {
+export function convertEditorQuestions(editorQuestions, prefixQPA) {
     var adjustedQuestions = [];
     var valueOptions;
     var displayConfiguration;
