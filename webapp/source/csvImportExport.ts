@@ -7,11 +7,9 @@ import surveyStorage = require("./surveyStorage");
 import dialogSupport = require("./panelBuilder/dialogSupport");
 import Globals = require("./Globals");
 import m = require("mithril");
+import toaster = require("./panelBuilder/toaster");
 
 "use strict";
-
-// TODO: Fix big kludge of this module level variable across the app!
-var lastQuestionnaireUploaded = null;
 
 var project: Project;
 
@@ -62,13 +60,13 @@ function processCSVContents(contents, callbackForItem) {
 }
 
 function processCSVContentsForStories(contents) {
-    var storyCollectionIdentifier = prompt("Please give this new story collection a name.");
-    if (!storyCollectionIdentifier) return;
-    
-    if (surveyCollection.getQuestionnaireForStoryCollection(storyCollectionIdentifier)) {
-        alert("A story collection with that name already exists: " + storyCollectionIdentifier);
-        return;
+    var storyCollectionIdentifier = Globals.clientState().storyCollectionIdentifier();
+    if (!storyCollectionIdentifier) {
+        alert("No story collection has been selected");
     }
+    
+    var questionnaire = surveyCollection.getQuestionnaireForStoryCollection(storyCollectionIdentifier, true);
+    if (!questionnaire) return;
     
     var progressModel = dialogSupport.openProgressDialog("Processing CSV file...", "Progress writing imported stories", "Cancel", dialogCancelled);
   
@@ -109,7 +107,7 @@ function processCSVContentsForStories(contents) {
             __type: "org.workingwithstories.QuestionnaireResponse",
             // TODO: Think about whether to include entire questionnaire or something else perhaps
             // TODO: Big kludge to use (module) global here!!!
-            questionnaire: lastQuestionnaireUploaded,
+            questionnaire: questionnaire,
             responseID: generateRandomUuid("QuestionnaireResponse"),
             stories: [],
             participantData: {
@@ -124,7 +122,7 @@ function processCSVContentsForStories(contents) {
             importedBy: importedByUserIdentifier
         };
         
-        var elicitingQuestion = item["Eliciting question"] || lastQuestionnaireUploaded.elicitingQuestions[0].id;
+        var elicitingQuestion = item["Eliciting question"] || questionnaire.elicitingQuestions[0].id;
         var story = {
             __type: "org.workingwithstories.Story",
             // TODO: Can this "id" field be safely removed? id: generateRandomUuid("TODO:???"),
@@ -137,34 +135,19 @@ function processCSVContentsForStories(contents) {
     
         var i;
         var question;
-        for (i = 0; i < lastQuestionnaireUploaded.storyQuestions.length; i++) {
-            question = lastQuestionnaireUploaded.storyQuestions[i];
+        for (i = 0; i < questionnaire.storyQuestions.length; i++) {
+            question = questionnaire.storyQuestions[i];
             story[question.id] = item[question.id.substring("S_".length)];
         }
         newSurveyResult.stories.push(story);
-        for (i = 0; i < lastQuestionnaireUploaded.participantQuestions.length; i++) {
-            question = lastQuestionnaireUploaded.participantQuestions[i];
+        for (i = 0; i < questionnaire.participantQuestions.length; i++) {
+            question = questionnaire.participantQuestions[i];
             newSurveyResult.participantData[question.id] = item[question.id.substring("P_".length)];
         }
         console.log("newSurveyResult", newSurveyResult);
         surveyResults.push(newSurveyResult);
     }
-    
-    var newStoryCollection = {
-        id: generateRandomUuid("StoryCollection"),
-        storyCollection_shortName: storyCollectionIdentifier,
-        storyCollection_questionnaireIdentifier: lastQuestionnaireUploaded.title,
-        storyCollection_activeOnWeb: false,
-        storyCollection_notes: "imported by: " + importedByUserIdentifier + " at: " + new Date().toISOString(),
-        questionnaire: lastQuestionnaireUploaded
-    };
-    
-    var storyCollections = project.getFieldValue("project_storyCollections");
-    if (!storyCollections) {
-        storyCollections = project.tripleStore.newIdForSet("StoryCollectionSet");
-        project.setFieldValue("project_storyCollections", storyCollections);
-    }
-    
+       
     if (!surveyResults.length) {
         alert("No stories to write");
         progressModel.hideDialogMethod();
@@ -172,8 +155,27 @@ function processCSVContentsForStories(contents) {
         return;
     }
     
+    /*
+    var newStoryCollection = {
+        id: generateRandomUuid("StoryCollection"),
+        storyCollection_shortName: storyCollectionIdentifier,
+        storyCollection_questionnaireIdentifier: questionnaire.title,
+        storyCollection_activeOnWeb: false,
+        storyCollection_notes: "imported by: " + importedByUserIdentifier + " at: " + new Date().toISOString(),
+        questionnaire: questionnaire
+    };
+    
+    var storyCollections = project.getFieldValue("project_storyCollections");
+    if (!storyCollections) {
+        storyCollections = project.tripleStore.newIdForSet("StoryCollectionSet");
+        project.setFieldValue("project_storyCollections", storyCollections);
+    }
+
     project.tripleStore.makeNewSetItem(storyCollections, "StoryCollection", newStoryCollection);
      
+    */
+
+    
     var totalStoryCount = surveyResults.length;
 
     function dialogCancelled(dialogConfiguration, hideDialogMethod) {
@@ -329,6 +331,8 @@ function processCSVContentsForQuestionnaire(contents) {
     
     m.redraw();
     
+    toaster.toast("Done importing story form: " + shortName);
+    
     function addReferenceToList(listIdentifier: string, reference: string, fieldName: string, className: string) {
         var order = questionTypeCounts[fieldName];
         if (!order) {
@@ -429,8 +433,10 @@ function chooseCSVFileToImport(callback) {
 }
 
 export function importCSVStories() {
-	// TODO: Translate
-    if (!lastQuestionnaireUploaded) return alert("You need to import a story form before you can import story data into a collection.");
+    if (!Globals.clientState().storyCollectionIdentifier()) {
+        // TODO: Translate
+        return alert("You need to select a story collection before you can import stories.");
+    }
     chooseCSVFileToImport(processCSVContentsForStories);
 }
 
@@ -473,8 +479,11 @@ var exportQuestionTypeMap = {
 
 export function exportQuestionnaire() {
     var storyCollectionIdentifier = Globals.clientState().storyCollectionIdentifier();
-    
+    if (!storyCollectionIdentifier) {
+        alert("Please select a story collection first");
+    }
     console.log("exportStoryCollection", storyCollectionIdentifier);
+    
     var currentQuestionnaire = surveyCollection.getQuestionnaireForStoryCollection(storyCollectionIdentifier);
     console.log("exportQuestionnaire", currentQuestionnaire);
     
@@ -500,7 +509,7 @@ export function exportQuestionnaire() {
             var question = questions[i];
             outputLine.push("" + (++lineIndex));
             outputLine.push(question.displayPrompt);
-            outputLine.push(question.displayName);
+            outputLine.push(question.displayName.substring("S_".length));
             var questionType = exportQuestionTypeMap[question.displayType];
             if (!questionType) {
                 console.log("EXPORT ERROR: unsupported question type: ", question.displayType);
@@ -555,10 +564,10 @@ export function exportStoryCollection() {
             // TODO: Maybe should export ID instead? Or more header lines with ID and prompt?
             if (storyQuestion.valueOptions && storyQuestion.displayType === "checkboxes") {
                storyQuestion.valueOptions.forEach(function(option) {
-                   header(storyQuestion.displayName, option);   
+                   header(storyQuestion.displayName.substring("S_".length), option);   
                });
             } else {
-                header(storyQuestion.displayName);
+                header(storyQuestion.displayName.substring("S_".length));
             }
         }
     }
