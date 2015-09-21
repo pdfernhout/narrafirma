@@ -165,6 +165,56 @@ class Project {
         var questions = this.collectAllQuestionsForQuestionList("project_storyAnnotationsList");
         return questions;
     }
+    
+    questionsForCategory(questionCategory: string) {
+        switch (questionCategory) {
+            case "elicitingQuestion":
+                return this.collectAllElicitingQuestions();
+            case "storyQuestion":
+                return this.collectAllStoryQuestions();
+            case "participantQuestion":
+                return this.collectAllParticipantQuestions();
+            case "annotationQuestion":
+                return this.collectAllAnnotationQuestions();
+            default:
+                throw new Error("Unexpected question category: " + questionCategory);
+        }
+    }
+    
+    addQuestionForCategory(question, questionCategory: string) {
+        var questionListName;
+        var questionClass;
+        
+        switch (questionCategory) {
+            case "elicitingQuestion":
+                questionListName = "project_elicitingQuestionsList";
+                questionClass = "ElicitingQuestion";
+                break;
+            case "storyQuestion":
+                questionListName = "project_storyQuestionsList";
+                questionClass = "StoryQuestion";
+                break;
+            case "participantQuestion":
+                questionListName = "project_participantQuestionsList";
+                questionClass = "ParticipantQuestion";
+                break;
+            case "annotationQuestion":
+                questionListName = "project_annotationQuestionsList";
+                questionClass = "AnnotationQuestion";
+                break;
+            default:
+                throw new Error("Unexpected question category: " + questionCategory);
+        }
+        
+        var setIdentifier = this.getFieldValue(questionListName);
+        if (!setIdentifier) {
+            // Need to create list
+            setIdentifier = this.tripleStore.newIdForSet(questionClass + "Set");
+            console.log("Making set for ", questionListName, setIdentifier); 
+            this.setFieldValue(questionListName, setIdentifier);
+        }
+        this.tripleStore.makeNewSetItem(setIdentifier, questionClass, question);
+    }
 }
 
 export = Project;
