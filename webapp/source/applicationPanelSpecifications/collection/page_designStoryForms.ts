@@ -31,14 +31,7 @@ var panel: Panel = {
             displayType: "button",
             displayConfiguration: "importCSVQuestionnaire",
             displayPrompt: "Import story form from CSV file ..."
-        },
-        {
-            id: "project_exportStoryForm",
-            valueType: "none",
-            displayType: "button",
-            displayConfiguration: "exportQuestionnaire",
-            displayPrompt: "Export story form..."
-        },
+        }
     ]
 };
 

@@ -42,6 +42,13 @@ var panel: Panel = {
             displayPrompt: "Import story data from CSV file into story collection ..."
         },
         {
+            id: "project_exportStoryForm",
+            valueType: "none",
+            displayType: "button",
+            displayConfiguration: "exportQuestionnaire",
+            displayPrompt: "Export story form..."
+        },
+        {
             id: "project_exportStories",
             valueType: "none",
             displayType: "button",
