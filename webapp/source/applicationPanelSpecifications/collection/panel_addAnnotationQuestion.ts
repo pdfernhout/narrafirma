@@ -6,14 +6,14 @@ var panel: Panel = {
     modelClass: "AnnotationQuestion",
     panelFields: [
         {
-            id: "storyQuestion_text",
+            id: "annotationQuestion_text",
             valueType: "string",
             displayType: "textarea",
             displayName: "Question",
             displayPrompt: "Enter a <strong>question</strong> you will use to annotate stories after they have been collected."
         },
         {
-            id: "storyQuestion_type",
+            id: "annotationQuestion_type",
             valueType: "string",
             valueOptions: [
                 "boolean",
@@ -32,14 +32,14 @@ var panel: Panel = {
             displayPrompt: "What <strong>type</strong> of question is this?"
         },
         {
-            id: "storyQuestion_shortName",
+            id: "annotationQuestion_shortName",
             valueType: "string",
             displayType: "text",
             displayName: "Short name",
             displayPrompt: "Please enter a <strong>short name</strong> we can use to refer to the question. (It must be unique within the project.)"
         },
         {
-            id: "storyQuestion_options",
+            id: "annotationQuestion_options",
             valueType: "string",
             displayType: "textarea",
             displayName: "Options",

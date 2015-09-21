@@ -42,14 +42,14 @@ function convertEditorQuestions(editorQuestions, prefixQPA) {
     for (var questionIndex = 0; questionIndex < editorQuestions.length; questionIndex++) {
         var question = editorQuestions[questionIndex];
         // console.log("question", question);
-        var shortName = question.storyQuestion_shortName || question.participantQuestion_shortName;
+        var shortName = question.storyQuestion_shortName || question.participantQuestion_shortName || question.annotationQuestion_shortName;
         // Including "S_" or "P_" or "A_" prefix for user-supplied question ID to prevent collisions with application fields like storyText and JavaScript functions and __proto__
         var id = prefixQPA + shortName;
-        var questionType = question.storyQuestion_type || question.participantQuestion_type;
-        var prompt = question.storyQuestion_text || question.participantQuestion_text;
+        var questionType = question.storyQuestion_type || question.participantQuestion_type || question.annotationQuestion_type;
+        var prompt = question.storyQuestion_text || question.participantQuestion_text || question.annotationQuestion_text;
         
         var options = [];
-        var optionsString = question.storyQuestion_options || question.participantQuestion_options;
+        var optionsString = question.storyQuestion_options || question.participantQuestion_options || question.annotationQuestion_options;
         if (optionsString) {
             // TODO: Improve option handling so can have standard IDs for options
             var splitOptions = optionsString.split("\n");
