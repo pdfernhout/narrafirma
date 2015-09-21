@@ -38,6 +38,13 @@ var panel: Panel = {
             displayPrompt: "Which <strong>group</strong> (or groups) of participants will tell stories using this method?"
         },
         {
+            id: "storyCollectionMethod_participantGroupsMixing",
+            valueType: "string",
+            displayType: "textarea",
+            displayName: "Mixing",
+            displayPrompt: "What are your general plans for keeping participant groups <strong>together or apart</strong>?"
+        },
+        {
             id: "storyCollectionMethod_timeline",
             valueType: "string",
             displayType: "textarea",

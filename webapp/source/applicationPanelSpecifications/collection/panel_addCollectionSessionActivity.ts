@@ -10,7 +10,7 @@ var panel: Panel = {
             valueType: "string",
             displayType: "text",
             displayName: "Order",
-            displayPrompt: "Specify the order in which to do this collection activity (e.g. 1, 2a, 2b, 3)"
+            displayPrompt: "Specify the <strong>order</strong> in which to do this collection activity (e.g., 1, 2a, 2b, 3)."
         },
         {
             id: "collectionSessionActivity_name",

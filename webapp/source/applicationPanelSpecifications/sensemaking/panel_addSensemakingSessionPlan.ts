@@ -20,6 +20,13 @@ var panel: Panel = {
             displayPrompt: "Which participant <strong>group</strong> (or groups) will be involved?"
         },
         {
+            id: "sensemakingSessionPlan_participantGroupsMixing",
+            valueType: "string",
+            displayType: "textarea",
+            displayName: "Mixing",
+            displayPrompt: "What are your plans for keeping participant groups <strong>together or apart</strong>?"
+        },
+        {
             id: "sensemakingSessionPlan_repetitions",
             valueType: "string",
             displayType: "text",
