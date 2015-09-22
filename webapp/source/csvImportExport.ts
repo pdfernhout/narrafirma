@@ -334,6 +334,8 @@ function processCSVContentsForQuestionnaire(contents) {
                 reference = ensureQuestionExists(elicitingQuestion, "elicitingQuestion");
                 addReferenceToList(template.questionForm_elicitingQuestions, reference, "elicitingQuestion", "ElicitingQuestionChoice");
             });
+        } else if (about === "ignore") {
+            // Ignore value so do nothing
         } else {
             console.log("Error: unexpected About type of", about);
         }
