@@ -19,6 +19,7 @@ import m = require("mithril");
 import navigationSections = require("./applicationPanelSpecifications/navigation");
 import PanelSetup = require("./PanelSetup");
 import Globals = require("./Globals");
+import versions = require("./versions");
 
 "use strict";
 
@@ -86,7 +87,7 @@ class Application {
         
         // TODO: Translate
         
-        var statusText = "Project: " + Globals.project().journalIdentifier.substring(narrafirmaProjectPrefix.length) + "; Server status: (" + status + ") " + text;
+        var statusText = "Version: " + versions.narrafirmaApplication + " Project: " + Globals.project().journalIdentifier.substring(narrafirmaProjectPrefix.length) + "; Server status: (" + status + ") " + text;
     
         if (status === "ok") {
             nameDiv.className = "narrafirma-serverstatus-ok";
