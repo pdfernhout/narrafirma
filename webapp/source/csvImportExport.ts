@@ -406,6 +406,8 @@ function questionForItem(item, questionCategory) {
         valueOptions = item["Answers"];
     } else if (itemType === "Boolean") {
         questionType = "boolean";
+    } else if (itemType === "Checkbox") {
+        questionType = "checkbox";
     } else if (itemType === "Text") {
         questionType = "text";
     } else if (itemType === "Textarea") {
@@ -480,11 +482,12 @@ function addCSVOutputLine(output, line) {
 }
 
 var exportQuestionTypeMap = {
-    "checkboxes": "Multiple choice",
     "select": "Single choice",
     "slider": "Scale",
-    "boolean": "Boolean",
+    "checkboxes": "Multiple choice",
     "radiobuttons": "Radiobuttons",
+    "boolean": "Boolean",
+    "checkbox": "Checkbox",
     "text": "Text",
     "textarea": "Textarea"
 };
