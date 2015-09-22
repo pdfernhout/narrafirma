@@ -15,8 +15,6 @@ H Finish Mann-Whitney U test
 H Test statistical tests for validity - run same tests in spreadsheet on same data
 
 GENERAL
-H Display version numer in application
-H Display version number in WordPress configuration
 H Think about and improve issue of values that can be set only once like catalysis report name and story collection
 H Test readonly use as anonymous under WordPress
 H Display total count of all answers when displaying question name in Story Browser or Catalysis Report configuration
@@ -894,3 +892,5 @@ DONE Fix story form export so story form is chosen
 DONE When import story collection, need to display name of form in select
 DONE Fix story collection export so story collection is chosen
 DONE Include story annotations in export and import
+DONE Display version number in WordPress configuration
+DONE Display version number in application
