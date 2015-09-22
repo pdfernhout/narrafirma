@@ -45,7 +45,7 @@
                 " ",
                 m("button", {onclick: saveChanges.bind(null, controller), disabled: isJSONUnchanged}, "Save changes"),
                 m("br"),
-                "Note: New projects are not saved until you click the \"Save changes\" button.",
+                "New projects are not saved until you click the \"Save changes\" button. Deleting a project will make it unavailable, but the data will still be stored and can be re-accessed by creating a project with the same name.",
                 m("hr"),
                 m("span", {"for": "narrafirma-displayJSON"}, "Edit project permissions directly as JSON"),
                 m("input[type=checkbox]", {id: "narrafirma-displayJSON", onclick: m.withAttr("checked", showJSONChecked.bind(null, controller)), checked: controller.showJSON})

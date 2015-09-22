@@ -1,18 +1,39 @@
 <?php
 /*
 Plugin Name: NarraFirma
+Plugin URI: http://narrafirma.com
 Description: Participatory Narrative Inquiry in a box. Gather stories and make sense of challenges and opportunities in your community or organization.
 Author: Cynthia F. Kurtz and Paul D. Fernhout
-Version: 0.2
+Version: 0.3.0
+Author URI: http://cfkurtz.com
+License: GPLv2 or later
 */
+
+/*
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+*/
+
+defined( 'ABSPATH' ) or die( 'Plugin must be run from inside WordPress' );
+
+$NARRAFIRMA_VERSION = '0.3.0';
+
+$pointrelServerVersion = "pointrel20150417-0.0.4-wp";
 
 // TODO: Ensure unique prefixed names for all functions or wrap in uniquely named objects
 
 // Uses an option called "narrafirma" which is JSON text
-
-defined( 'ABSPATH' ) or die( 'Plugin must be run from inside WordPress' );
-
-$pointrelServerVersion = "pointrel20150417-0.0.4-wp";
 
 class NarraFirmaSettingsPage
 {
@@ -27,7 +48,7 @@ class NarraFirmaSettingsPage
     public function __construct() {
         register_activation_hook(__FILE__, array( $this, 'activate')); 
         register_deactivation_hook( __FILE__, array( $this, 'deactivate' ));
-        register_uninstall_hook( __FILE__, array( 'NarraFirmaSettingsPage', 'uninstall' ));
+        // register_uninstall_hook( __FILE__, array( 'NarraFirmaSettingsPage', 'uninstall' ));
         
         add_action( 'admin_menu', array( $this, 'add_plugin_page' ) );
         add_action( 'admin_init', array( $this, 'page_init' ) );
@@ -77,6 +98,8 @@ class NarraFirmaSettingsPage
      * Options page callback
      */
     public function create_admin_page() {
+        global $NARRAFIRMA_VERSION;
+    
         // Set class property
         $this->options = get_option( 'narrafirma_admin_settings' );
         
@@ -87,15 +110,15 @@ class NarraFirmaSettingsPage
         ?>
 <div class="wrap">
 
-    <h2>NarraFirma</h2>
-    <p>NarraFirma is a web application that supports Participatory Narrative Inquiry (PNI). 
+    <h2><?php echo "NarraFirma $NARRAFIRMA_VERSION"; ?></h2>
+    <p>The NarraFirma&trade; web application supports Participatory Narrative Inquiry (PNI). 
     PNI is a method in which ordinary people share ordinary stories in a way that helps them 
     discover insights they can use. To learn more about PNI, visit <a href="http://www.narrafirma.com" target="_blank">narrafirma.com</a>
     and <a href="http://www.workingwithstories.org" target="_blank">workingwithstories.org</a>.
     </p>
     <p>
-    <i>Note: The NarraFirma plugin uses WordPress as an application server, 
-    user authentication system, and data store. Using WordPress in this way makes NarraFirma easier to install and 
+    <i>The NarraFirma plugin uses WordPress as an application server, 
+    user authentication system, and data store. Using WordPress in this way makes the NarraFirma software easier to install and 
     configure. The NarraFirma application is not otherwise integrated with WordPress pages 
     and runs in its own web page.</i>
     </p>
