@@ -34,8 +34,7 @@ class Project {
         // var topicIdentifier = "project001";
         // pointrelClient.topicIdentifier = topicIdentifier;
         
-        // TODO: Change the hardcoded topic here from "testing".
-        this.tripleStore = new TripleStore(this.pointrelClient, "testing");
+        this.tripleStore = new TripleStore(this.pointrelClient, "narrafirmaProject");
         console.log("tripleStore", this.tripleStore);
         
         // Redraw on any new tripleStore message (however, the ones we send will not get callbacks)
