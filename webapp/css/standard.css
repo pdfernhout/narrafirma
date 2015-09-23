@@ -271,6 +271,13 @@ button {
     border-radius: 12px;
 }
 
+.htmlWidget, .narrafirma-image {
+    margin-bottom: 4px;
+    border-radius: 12px;
+    padding: 8px;
+    margin: 8px; 
+}
+
 .questionPrompt {
     padding-top: 8px;
     padding-bottom: 8px;
