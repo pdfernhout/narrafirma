@@ -12,8 +12,8 @@ var sections = [
         pages: [
             "page_administration",
             "page_introduction",
-            "page_importExport",
-            "page_printProjectReport"
+            "page_importExport"
+            // "page_printProjectReport"
         ]
     },
     {
