@@ -13,7 +13,6 @@ var sections = [
             "page_administration",
             "page_introduction",
             "page_importExport"
-            // "page_printProjectReport"
         ]
     },
     {
