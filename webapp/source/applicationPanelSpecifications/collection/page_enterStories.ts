@@ -13,7 +13,7 @@ var panel: Panel = {
         },
         {
             id: "storyCollectionChoice_enterStories",
-            valuePath: "/clientState/storyCollectionIdentifier",
+            valuePath: "/clientState/storyCollectionName",
             valueType: "string",
             valueOptions: "project_storyCollections",
             valueOptionsSubfield: "storyCollection_shortName",

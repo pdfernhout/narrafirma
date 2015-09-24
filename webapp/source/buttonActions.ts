@@ -64,15 +64,15 @@ function openMithrilSurveyDialog(questionnaire, callback, previewModeTitleText =
 function openSurveyDialog() {
     console.log("openSurveyDialog");
     
-    var storyCollectionIdentifier: string = clientState.storyCollectionIdentifier();
+    var storyCollectionName: string = clientState.storyCollectionName();
     
-    if (!storyCollectionIdentifier) {
+    if (!storyCollectionName) {
         // TODO: translate
         alert("Please select a story collection first.");
         return null;
     }
 
-    var questionnaire = surveyCollection.getQuestionnaireForStoryCollection(storyCollectionIdentifier, true);
+    var questionnaire = surveyCollection.getQuestionnaireForStoryCollection(storyCollectionName, true);
     if (!questionnaire) return;
 
     var surveyDialog = openMithrilSurveyDialog(questionnaire, finished);
@@ -80,7 +80,7 @@ function openSurveyDialog() {
     function finished(status, surveyResult, wizardPane) {
         console.log("surveyResult", status, surveyResult);
         if (status === "submitted") {
-            surveyStorage.storeSurveyResult(project.pointrelClient, project.projectIdentifier, storyCollectionIdentifier, surveyResult, wizardPane);
+            surveyStorage.storeSurveyResult(project.pointrelClient, project.projectIdentifier, storyCollectionName, surveyResult, wizardPane);
         }
     }
 }
@@ -173,8 +173,7 @@ export function previewQuestionForm(model, fieldSpecification) {
 }
 
 export function copyInterpretationsToClusteringDiagram() {
-    // TODO: Finish this
-    var shortName = clientState.catalysisReportIdentifier;
+    var shortName = clientState.catalysisReportName();
     console.log("copyInterpretationsToClusteringDiagram", shortName);
     
     if (!shortName) {
@@ -238,7 +237,7 @@ export function copyInterpretationsToClusteringDiagram() {
     
     if (!confirm("Copy intepretations for this catalysys report into clustering diagram?")) return;
     
-    var clusteringDiagram = project.tripleStore.queryLatestC(shortName, "interpretationsClusteringDiagram");
+    var clusteringDiagram = project.tripleStore.queryLatestC(catalysisReportIdentifier, "interpretationsClusteringDiagram");
     
     console.log("clusteringDiagram before", clusteringDiagram);
     
@@ -277,9 +276,32 @@ export function copyInterpretationsToClusteringDiagram() {
 
     console.log("clusteringDiagram after", clusteringDiagram);
     
-    project.tripleStore.addTriple(shortName, "interpretationsClusteringDiagram", clusteringDiagram);
+    project.tripleStore.addTriple(catalysisReportIdentifier, "interpretationsClusteringDiagram", clusteringDiagram);
 
     toaster.toast("Added " + addedItemCount + " interpretations");
+}
+
+export function copyPerspectives() {
+    var shortName = clientState.catalysisReportName();
+    console.log("copyInterpretationsToClusteringDiagram", shortName);
+    
+    if (!shortName) {
+        alert("Please pick a catalysis report to work with.");
+        return;
+    }
+    
+    var catalysisReportIdentifier = project.findCatalysisReport(shortName);
+    if (!catalysisReportIdentifier) {
+        alert("Problem finding catalysisReportIdentifier");
+        return;
+    }
+    
+    var diagram = project.tripleStore.queryLatestC(catalysisReportIdentifier, "interpretationsClusteringDiagram");
+    
+    console.log("diagram", diagram);
+    
+    alert("unfinished");
+    
 }
 
 export var enterSurveyResult = openSurveyDialog;

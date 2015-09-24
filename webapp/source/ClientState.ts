@@ -1,4 +1,5 @@
 import PanelSetup = require("./PanelSetup");
+import Project = require("./Project");
 
 "use strict";
 
@@ -33,11 +34,14 @@ function getHashParameters(hash): any {
 class ClientState {
     private _projectIdentifier: string = null;
     private _pageIdentifier: string = null;
-    private _storyCollectionIdentifier: string = null;
-    private _catalysisReportIdentifier: string = null;
+    private _storyCollectionName: string = null;
+    private _catalysisReportName: string = null;
     private _debugMode: string = null;
     private _serverStatus: string = "narrafirma-serverstatus-ok";
     private _serverStatusText: string = "";
+    
+    // This should only be set by Globals
+    _project: Project = null;
     
     projectIdentifier(newValue: string = undefined): string {
         if (newValue !== undefined) {
@@ -53,18 +57,29 @@ class ClientState {
         return this._pageIdentifier;
     }
 
-    storyCollectionIdentifier(newValue: string = undefined): string {
+    storyCollectionName(newValue: string = undefined): string {
         if (newValue !== undefined) {
-            this._storyCollectionIdentifier = newValue;
+            this._storyCollectionName = newValue;
         }
-        return this._storyCollectionIdentifier;
+        return this._storyCollectionName;
     }
     
-    catalysisReportIdentifier(newValue: string = undefined): string {
+    catalysisReportName(newValue: string = undefined): string {
         if (newValue !== undefined) {
-            this._catalysisReportIdentifier = newValue;
+            this._catalysisReportName = newValue;
         }
-        return this._catalysisReportIdentifier;
+        return this._catalysisReportName;
+    }
+    
+    // Read-only convenience accessor
+    catalysisReportIdentifier(newValue) {
+        if (newValue) throw new Error("catalysisReportIdentifier: setting value is not supported");
+        var catalysisReportIdentifier = this._project.findCatalysisReport(this._catalysisReportName);
+        if (!catalysisReportIdentifier) {
+            console.log("Problem finding catalysisReportIdentifier for: " + this._catalysisReportName);
+            return null;
+        }
+        return catalysisReportIdentifier;
     }
     
     debugMode(newValue: string = undefined): string {
@@ -94,8 +109,8 @@ class ClientState {
         var initialHashParameters = getHashParameters(fragment);
         if (initialHashParameters["project"]) this._projectIdentifier = initialHashParameters["project"];
         if (initialHashParameters["page"]) this._pageIdentifier = "page_" + initialHashParameters["page"];
-        if (initialHashParameters["storyCollection"]) this._storyCollectionIdentifier = initialHashParameters["storyCollection"];
-        if (initialHashParameters["catalysisReport"]) this._catalysisReportIdentifier = initialHashParameters["catalysisReport"];
+        if (initialHashParameters["storyCollection"]) this._storyCollectionName = initialHashParameters["storyCollection"];
+        if (initialHashParameters["catalysisReport"]) this._catalysisReportName = initialHashParameters["catalysisReport"];
         if (initialHashParameters["debugMode"]) this._debugMode = initialHashParameters["debugMode"];
         
         // Ensure defaults
@@ -164,14 +179,14 @@ class ClientState {
             this._pageIdentifier = selectedPage;
         }
         
-        if (hashParameters.storyCollection && hashParameters.storyCollection !== this._storyCollectionIdentifier) {
+        if (hashParameters.storyCollection && hashParameters.storyCollection !== this._storyCollectionName) {
             // console.log("changing client state for storyCollection", this._storyCollectionIdentifier, hashParameters.storyCollection);
-            this._storyCollectionIdentifier = hashParameters.storyCollection;
+            this._storyCollectionName = hashParameters.storyCollection;
         }
         
-        if (hashParameters.catalysisReport && hashParameters.catalysisReport !== this._catalysisReportIdentifier) {
+        if (hashParameters.catalysisReport && hashParameters.catalysisReport !== this._catalysisReportName) {
             // console.log("changing client state for catalysisReport", this._catalysisReportIdentifier, hashParameters.catalysisReport);
-            this._catalysisReportIdentifier = hashParameters.catalysisReport;
+            this._catalysisReportName = hashParameters.catalysisReport;
         }
         
         if (hashParameters.debugMode && hashParameters.debugMode !== this._debugMode) {

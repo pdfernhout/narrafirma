@@ -13,7 +13,7 @@ var panel: Panel = {
         },
         {
             id: "catalysisReportPrint_selected",
-            valuePath: "/clientState/catalysisReportIdentifier",
+            valuePath: "/clientState/catalysisReportName",
             valueType: "string",
             valueOptions: "project_catalysisReports",
             valueOptionsSubfield: "catalysisReport_shortName",
@@ -23,7 +23,7 @@ var panel: Panel = {
         },
         {
             id: "catalysisReportPrint_printButton",
-            valuePath: "/clientState/catalysisReportIdentifier",
+            valuePath: "/clientState/catalysisReportName",
             valueType: "none",
             displayType: "button",
             displayPrompt: "Print selected catalysis report",

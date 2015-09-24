@@ -3,10 +3,11 @@ import PointrelClient = require("./pointrel20150417/PointrelClient");
 
 "use strict";
 
-export function storeSurveyResult(pointrelClient: PointrelClient, projectIdentifier, storyCollectionIdentifier, completedSurvey, wizardPane) {
+export function storeSurveyResult(pointrelClient: PointrelClient, projectIdentifier, storyCollectionName, completedSurvey, wizardPane) {
     var surveyResultWrapper  = {
         projectIdentifier: projectIdentifier,
-        storyCollectionIdentifier: storyCollectionIdentifier,
+        // TODO: Mismatch of stored string's intent and the field name
+        storyCollectionIdentifier: storyCollectionName,
         surveyResult: completedSurvey
     };
     

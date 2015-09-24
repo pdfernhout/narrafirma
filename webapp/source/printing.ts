@@ -241,15 +241,15 @@ function generateHTMLForQuestionnaire(questionnaire) {
 export function printStoryForm(model, fieldSpecification, value) {
     console.log("printStoryForm unfinished");
     
-    var storyCollectionIdentifier: string = Globals.clientState().storyCollectionIdentifier();
+    var storyCollectionName: string = Globals.clientState().storyCollectionName();
     
-    if (!storyCollectionIdentifier) {
+    if (!storyCollectionName) {
         // TODO: translate
         alert("Please select a story collection first.");
         return null;
     }
 
-    var questionnaire = surveyCollection.getQuestionnaireForStoryCollection(storyCollectionIdentifier);
+    var questionnaire = surveyCollection.getQuestionnaireForStoryCollection(storyCollectionName);
     if (!questionnaire) return;
     
     var output = generateHTMLForQuestionnaire(questionnaire);
@@ -260,13 +260,13 @@ export function printStoryForm(model, fieldSpecification, value) {
 export function printStoryCards() {
     console.log("printStoryCards");
     
-    if (!Globals.clientState().storyCollectionIdentifier()) {
+    if (!Globals.clientState().storyCollectionName()) {
         alert("Please select a story collection for which to print story cards");
         return;
     }
     
-    var storyCollectionIdentifier = Globals.clientState().storyCollectionIdentifier();
-    var allStoriesInStoryCollection = surveyCollection.getStoriesForStoryCollection(storyCollectionIdentifier);
+    var storyCollectionName = Globals.clientState().storyCollectionName();
+    var allStoriesInStoryCollection = surveyCollection.getStoriesForStoryCollection(storyCollectionName);
     console.log("allStoriesInStoryCollection", allStoriesInStoryCollection);
     
     var storyDivs = [];
@@ -279,7 +279,7 @@ export function printStoryCards() {
         storyDivs.push(storyDiv);
     }
     
-   var htmlForPage = generateHTMLForPage("Story cards for: " + storyCollectionIdentifier, "/css/standard.css", storyDivs);
+   var htmlForPage = generateHTMLForPage("Story cards for: " + storyCollectionName, "/css/standard.css", storyDivs);
    printHTML(htmlForPage);
 }
 
@@ -387,15 +387,15 @@ function createGraphResultsPane(): HTMLElement {
 export function printCatalysisReport() {
     var project = Globals.project();
     
-    var catalysisReportShortName = Globals.clientState().catalysisReportIdentifier();
-    console.log("printCatalysisReport", catalysisReportShortName);
+    var catalysisReportName = Globals.clientState().catalysisReportName();
+    console.log("printCatalysisReport", catalysisReportName);
     
-    if (!catalysisReportShortName) {
+    if (!catalysisReportName) {
         alert("Please pick a catalysis report to print.");
         return;
     }
     
-    var catalysisReport = project.findCatalysisReport(catalysisReportShortName);
+    var catalysisReport = project.findCatalysisReport(catalysisReportName);
     console.log("catalysisReport", catalysisReport);
     
     var allStories = storiesForCatalysisReport(project.tripleStore, catalysisReport);

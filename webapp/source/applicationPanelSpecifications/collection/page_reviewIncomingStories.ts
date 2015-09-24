@@ -13,7 +13,7 @@ var panel: Panel = {
         },
         {
             id: "storyCollectionChoiceX",
-            valuePath: "/clientState/storyCollectionIdentifier",
+            valuePath: "/clientState/storyCollectionName",
             valueType: "string",
             valueOptions: "project_storyCollections",
             valueOptionsSubfield: "storyCollection_shortName",
@@ -23,7 +23,7 @@ var panel: Panel = {
         },
         {
             id: "webStoryCollection_collectedStoriesDuringCollection",
-            valuePath: "/clientState/storyCollectionIdentifier",
+            valuePath: "/clientState/storyCollectionName",
             valueType: "none",
             displayType: "storyBrowser",
             displayPrompt: "Collected stories"

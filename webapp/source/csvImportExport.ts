@@ -60,12 +60,12 @@ function processCSVContents(contents, callbackForItem) {
 }
 
 function processCSVContentsForStories(contents) {
-    var storyCollectionIdentifier = Globals.clientState().storyCollectionIdentifier();
-    if (!storyCollectionIdentifier) {
+    var storyCollectionName = Globals.clientState().storyCollectionName();
+    if (!storyCollectionName) {
         alert("No story collection has been selected");
     }
     
-    var questionnaire = surveyCollection.getQuestionnaireForStoryCollection(storyCollectionIdentifier, true);
+    var questionnaire = surveyCollection.getQuestionnaireForStoryCollection(storyCollectionName, true);
     if (!questionnaire) return;
     
     var progressModel = dialogSupport.openProgressDialog("Processing CSV file...", "Progress writing imported stories", "Cancel", dialogCancelled);
@@ -224,7 +224,7 @@ function processCSVContentsForStories(contents) {
             // TODO: Translate
             progressModel.progressText = "Sending " + storyIndexToSend + " of " + totalStoryCount + " stories";
             progressModel.redraw();
-            surveyStorage.storeSurveyResult(project.pointrelClient, project.projectIdentifier, storyCollectionIdentifier, surveyResult, wizardPane);
+            surveyStorage.storeSurveyResult(project.pointrelClient, project.projectIdentifier, storyCollectionName, surveyResult, wizardPane);
         }
     }
     
@@ -447,7 +447,7 @@ function chooseCSVFileToImport(callback) {
 }
 
 export function importCSVStories() {
-    if (!Globals.clientState().storyCollectionIdentifier()) {
+    if (!Globals.clientState().storyCollectionName()) {
         // TODO: Translate
         return alert("You need to select a story collection before you can import stories.");
     }
@@ -493,16 +493,16 @@ var exportQuestionTypeMap = {
 };
 
 export function exportQuestionnaire() {
-    var storyCollectionIdentifier = Globals.clientState().storyCollectionIdentifier();
-    if (!storyCollectionIdentifier) {
+    var storyCollectionName = Globals.clientState().storyCollectionName();
+    if (!storyCollectionName) {
         alert("Please select a story collection first");
         return;
     }
-    console.log("exportStoryCollection", storyCollectionIdentifier);
+    console.log("exportStoryCollection", storyCollectionName);
     
-    var currentQuestionnaire = surveyCollection.getQuestionnaireForStoryCollection(storyCollectionIdentifier);
+    var currentQuestionnaire = surveyCollection.getQuestionnaireForStoryCollection(storyCollectionName);
     if (!currentQuestionnaire) {
-        alert("The story collection has not been initialized with a story form: " + storyCollectionIdentifier);
+        alert("The story collection has not been initialized with a story form: " + storyCollectionName);
         return;
     }
     console.log("currentQuestionnaire", currentQuestionnaire);
@@ -556,24 +556,24 @@ export function exportQuestionnaire() {
      // Export questionnaire
     var questionnaireBlob = new Blob([output], {type: "text/csv;charset=utf-8"});
     // TODO: This seems to clear the console in FireFox 40; why?
-    saveAs(questionnaireBlob, "export_story_form_" + storyCollectionIdentifier + ".csv");
+    saveAs(questionnaireBlob, "export_story_form_" + storyCollectionName + ".csv");
 }
 
 export function exportStoryCollection() {
-    var storyCollectionIdentifier = Globals.clientState().storyCollectionIdentifier();
-    if (!storyCollectionIdentifier) {
+    var storyCollectionName = Globals.clientState().storyCollectionName();
+    if (!storyCollectionName) {
         alert("Please select a story collection first");
         return;
     }
-    console.log("exportStoryCollection", storyCollectionIdentifier);
+    console.log("exportStoryCollection", storyCollectionName);
     
-    var currentQuestionnaire = surveyCollection.getQuestionnaireForStoryCollection(storyCollectionIdentifier);
+    var currentQuestionnaire = surveyCollection.getQuestionnaireForStoryCollection(storyCollectionName);
     if (!currentQuestionnaire) {
-        alert("The story collection has not been initialized with a story form: " + storyCollectionIdentifier);
+        alert("The story collection has not been initialized with a story form: " + storyCollectionName);
         return;
     }
 
-    var allStories = surveyCollection.getStoriesForStoryCollection(storyCollectionIdentifier, true);
+    var allStories = surveyCollection.getStoriesForStoryCollection(storyCollectionName, true);
     console.log("allStories", allStories);
     
     var header1 = [];
@@ -654,5 +654,5 @@ export function exportStoryCollection() {
     // Export story collection
     var storyCollectionBlob = new Blob([output], {type: "text/csv;charset=utf-8"});
     // TODO: This seems to clear the console in FireFox 40; why?
-    saveAs(storyCollectionBlob, "export_story_collection_" + storyCollectionIdentifier + ".csv");
+    saveAs(storyCollectionBlob, "export_story_collection_" + storyCollectionName + ".csv");
 }

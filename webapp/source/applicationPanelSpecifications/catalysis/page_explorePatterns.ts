@@ -13,7 +13,7 @@ var panel: Panel = {
         },
         {
             id: "catalysisReportExplorePatterns",
-            valuePath: "/clientState/catalysisReportIdentifier",
+            valuePath: "/clientState/catalysisReportName",
             valueType: "string",
             valueOptions: "project_catalysisReports",
             valueOptionsSubfield: "catalysisReport_shortName",
@@ -36,7 +36,7 @@ var panel: Panel = {
         },
         {
             id: "explorePatterns_display",
-            valuePath: "/clientState/catalysisReportIdentifier",
+            valuePath: "/clientState/catalysisReportName",
             valueType: "none",
             displayType: "patternExplorer",
             displayPrompt: "Pattern explorer"

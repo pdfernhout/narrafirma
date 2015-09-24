@@ -1,4 +1,4 @@
-import kludgeForUseStrict = require("../../kludgeForUseStrict");
+import Globals = require("../../Globals");
 "use strict";
 
 var panel: Panel = {
@@ -13,7 +13,7 @@ var panel: Panel = {
         },
         {
             id: "catalysisReportDescriptPerspectives",
-            valuePath: "/clientState/catalysisReportIdentifier",
+            valuePath: "/clientState/catalysisReportName",
             valueType: "string",
             valueOptions: "project_catalysisReports",
             valueOptionsSubfield: "catalysisReport_shortName",
@@ -22,13 +22,23 @@ var panel: Panel = {
             displayPrompt: "Choose a catalysis report to work on"
         },
         {
+            id: "copyPerspectivesButton",
+            valueType: "none",
+            displayType: "button",
+            displayConfiguration: "copyPerspectives",
+            displayPrompt: "Copy perspectives from interpretations clustering diagram to table"
+            //displayVisible: function(panelBuilder, model) {
+            //    return !!Globals.clientState().catalysisReportIdentifier();
+            //}
+        },
+        {
             id: "project_perspectivesList",
-            valuePath: "/clientState/catalysisReportIdentifier",
+            valuePath: "/clientState/catalysisReportName",
             valueType: "array",
             displayType: "grid",
             displayConfiguration: "panel_addPerspective",
             displayName: "Catalysis perspectives",
-            displayPrompt: "These are the perspectives you have created from interpretations."
+            displayPrompt: "These are the perspectives you created from interpretations. You can add notes on them below."
         }
     ]
 };

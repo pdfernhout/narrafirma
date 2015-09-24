@@ -13,7 +13,7 @@ var panel: Panel = {
         },
         {
             id: "catalysisReportClusterInterpretations",
-            valuePath: "/clientState/catalysisReportIdentifier",
+            valuePath: "/clientState/catalysisReportName",
             valueType: "string",
             valueOptions: "project_catalysisReports",
             valueOptionsSubfield: "catalysisReport_shortName",
@@ -27,7 +27,7 @@ var panel: Panel = {
             displayType: "label",
             displayPrompt: "<strong>Please select a catalysis report above to get a clustering diagram here.</strong>",
             displayVisible: function(panelBuilder, model) {
-                return !Globals.clientState().catalysisReportIdentifier();
+                return !Globals.clientState().catalysisReportName();
             }
         },
         {
@@ -37,7 +37,7 @@ var panel: Panel = {
             displayConfiguration: "copyInterpretationsToClusteringDiagram",
             displayPrompt: "Copy interpretations to clustering diagram",
             displayVisible: function(panelBuilder, model) {
-                return !!Globals.clientState().catalysisReportIdentifier();
+                return !!Globals.clientState().catalysisReportName();
             }
         },
         {
@@ -47,7 +47,7 @@ var panel: Panel = {
             displayType: "clusteringDiagram",
             displayPrompt: "Cluster interpretations into perspectives",
             displayVisible: function(panelBuilder, model) {
-                return !!Globals.clientState().catalysisReportIdentifier();
+                return !!Globals.clientState().catalysisReportName();
             }
         }
     ]

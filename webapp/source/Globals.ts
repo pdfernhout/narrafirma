@@ -21,6 +21,7 @@ class Globals {
         if (newValue !== undefined) {
             if (Globals._project) throw new Error("Global project was previously initalized");
             Globals._project = newValue;
+            Globals._clientState._project = newValue;
         }
         return Globals._project;
     }

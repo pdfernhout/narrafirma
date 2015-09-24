@@ -13,7 +13,7 @@ var panel: Panel = {
         },
         {
             id: "storyCollectionChoiceY",
-            valuePath: "/clientState/storyCollectionIdentifier",
+            valuePath: "/clientState/storyCollectionName",
             valueType: "string",
             valueOptions: "project_storyCollections",
             valueOptionsSubfield: "storyCollection_shortName",
@@ -23,7 +23,7 @@ var panel: Panel = {
         },
         {
             id: "graphBrowserDisplay",
-            valuePath: "/clientState/storyCollectionIdentifier",
+            valuePath: "/clientState/storyCollectionName",
             valueType: "none",
             displayType: "graphBrowser",
             displayPrompt: "Choose one or two <strong>questions</strong> to explore."
