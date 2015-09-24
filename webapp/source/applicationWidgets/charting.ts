@@ -1045,13 +1045,18 @@ function setCurrentSelection(chart, graphBrowserInstance: GraphHolder, extent) {
     // console.log("setCurrentSelection", extent, chart.width, chart.height, chart.chartType);
     
     /* Chart types and scaling
+    
     Bar
     X Ordinal
     X in screen coordinates
     
+    Table
+    X Ordinal
+    Y Ordinal    
+    X, Y needed to be scaled
+
     Histogram
     X Linear
-    Y Linear
     X was already scaled to 100
     
     Scatter
@@ -1059,10 +1064,6 @@ function setCurrentSelection(chart, graphBrowserInstance: GraphHolder, extent) {
     Y Linear
     X, Y were already scaled to 100
     
-    Table
-    X Ordinal
-    Y Ordinal    
-    X, Y needed to be scaled
     */
      
     var x1;
