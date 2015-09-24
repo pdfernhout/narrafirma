@@ -123,8 +123,8 @@ class ClientState {
         var fields = [
             {id: "_projectIdentifier", key: "project"},
             {id: "_pageIdentifier", key: "page"},
-            {id: "_storyCollectionIdentifier", key: "storyCollection"},
-            {id: "_catalysisReportIdentifier", key: "catalysisReport"},
+            {id: "_storyCollectionName", key: "storyCollection"},
+            {id: "_catalysisReportName", key: "catalysisReport"},
             {id: "_debugMode", key: "debugMode"}
         ];
         
@@ -185,7 +185,7 @@ class ClientState {
         }
         
         if (hashParameters.catalysisReport && hashParameters.catalysisReport !== this._catalysisReportName) {
-            // console.log("changing client state for catalysisReport", this._catalysisReportIdentifier, hashParameters.catalysisReport);
+            // console.log("changing client state for catalysisReport", this._catalysisReportName, hashParameters.catalysisReport);
             this._catalysisReportName = hashParameters.catalysisReport;
         }
         
