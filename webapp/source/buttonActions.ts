@@ -281,29 +281,6 @@ export function copyInterpretationsToClusteringDiagram() {
     toaster.toast("Added " + addedItemCount + " interpretations");
 }
 
-export function copyPerspectives() {
-    var shortName = clientState.catalysisReportName();
-    console.log("copyInterpretationsToClusteringDiagram", shortName);
-    
-    if (!shortName) {
-        alert("Please pick a catalysis report to work with.");
-        return;
-    }
-    
-    var catalysisReportIdentifier = project.findCatalysisReport(shortName);
-    if (!catalysisReportIdentifier) {
-        alert("Problem finding catalysisReportIdentifier");
-        return;
-    }
-    
-    var diagram = project.tripleStore.queryLatestC(catalysisReportIdentifier, "interpretationsClusteringDiagram");
-    
-    console.log("diagram", diagram);
-    
-    alert("unfinished");
-    
-}
-
 export var enterSurveyResult = openSurveyDialog;
 export var toggleWebActivationOfSurvey = surveyCollection.toggleWebActivationOfSurvey;
 export var storyCollectionStop = surveyCollection.storyCollectionStop;

@@ -82,15 +82,12 @@ var sections = [
             "page_startCatalysisReport",
             "page_explorePatterns",
             "page_clusterInterpretations",
-            "page_describePerspectives",
             "page_printCatalysisReport"
         ],
         panels: [
             "panel_addCatalysisReport",
             "panel_chooseStoryCollection",
-            "panel_addInterpretation",
-            "panel_addPerspective",
-            "panel_annotateInterpretationForPerspective"
+            "panel_addInterpretation"
         ]
     },
     {
