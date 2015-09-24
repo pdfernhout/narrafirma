@@ -63,3 +63,17 @@ interface Panel {
     displayName?: string;
     panelFields: PanelField[];
 }
+
+interface ClusteringDiagramItem {
+    uuid: string;
+    "type": string;
+    name: string;
+    notes: string;
+    x: number;
+    y: number;
+    bodyColor?;
+    borderColor?;
+    borderWidth?;
+    radius?: number;
+    textStyle?;
+}

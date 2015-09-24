@@ -96,7 +96,7 @@ class ClusteringDiagram {
     
     storageFunction: Function;
     autosave: boolean = false;
-    lastSelectedItem = null;
+    lastSelectedItem: ClusteringDiagramItem  = null;
     diagram = null;
     divForResizing: HTMLElement = null;
     _mainSurface: d3.Selection<any> = null;
@@ -110,8 +110,8 @@ class ClusteringDiagram {
     
     itemsMade = 0;
     
-    itemBeingEdited = null;
-    itemBeingEditedCopy = null;
+    itemBeingEdited: ClusteringDiagramItem = null;
+    itemBeingEditedCopy: ClusteringDiagramItem = null;
     isEditedItemNew = false;
 
     static defaultBodyColor = "#abb6ce"; // light blue
@@ -178,11 +178,11 @@ class ClusteringDiagram {
         }
         
         var textForItemName = "";
-        var textForItemUrl = "";
+        var textForItemNotes = "";
         if (this.lastSelectedItem) {
             // TODO: Translate labels
-            textForItemName = "Name: " + (this.lastSelectedItem.text || "");
-            textForItemUrl = "Notes: " + (this.lastSelectedItem.url || "");
+            textForItemName = "Name: " + (this.lastSelectedItem.name || "");
+            textForItemNotes = "Notes: " + (this.lastSelectedItem.notes || "");
         }
         
         return m("div", [
@@ -303,14 +303,13 @@ class ClusteringDiagram {
         
         // TODO: Translate
         this.newButton("newItemButton", "New item", () => {
-            var newItem = this.newItem();
-            this.openEntryDialog(newItem, false);
+            var aNewItem = this.newItem("item");
+            this.openEntryDialog(aNewItem, false);
         });
         
         this.newButton("newClusterButton", "New cluster", () => {
-            var newItem = this.newItem();
-            newItem.type = "cluster";
-            this.openEntryDialog(newItem, false);
+            var aNewItem = this.newItem("cluster");
+            this.openEntryDialog(aNewItem, false);
         });
         
         // TODO: Translate
@@ -330,7 +329,7 @@ class ClusteringDiagram {
                 alert("Please select an item to delete first.");
                 return;
             }
-            dialogSupport.confirm("Are you sure you want to delete the item or cluster called '" + this.lastSelectedItem.text + "'?", () => {
+            dialogSupport.confirm("Are you sure you want to delete the item or cluster called '" + this.lastSelectedItem.name + "'?", () => {
                 this.updateDisplayForChangedItem(this.lastSelectedItem, "delete");
                 removeItemFromArray(this.lastSelectedItem, this.diagram.items);
                 this.clearSelection();
@@ -372,32 +371,6 @@ class ClusteringDiagram {
         displayObject.remove();
         var newDisplayObject = this.addDisplayObjectForItem(this.mainSurface, item);
         this.itemToDisplayObjectMap[item.uuid] = newDisplayObject;
-    }
-    
-    clickedEntryOK(dialogHolder, model, event) {
-        console.log("clickedEntryOK", this, dialogHolder, model, event);
-        dialogHolder.dialog.hide();
-        console.log("Clicked OK", event, model);
-        var text = model.get("text");
-        if (text === undefined) text = "";
-        var url = model.get("url");
-        var bodyColor = model.get("bodyColor");
-        console.log("data", text, url, bodyColor);
-        var item = dialogHolder.item;
-        item.text = text;
-        item.url = url;
-        // Documentation for ColorPalette says it returns a "Color" but it seems to really return a hex string
-        if (bodyColor) item.bodyColor = bodyColor;
-        if (!dialogHolder.isExistingItem) {
-            console.log("not existing item", dialogHolder);
-            this.diagram.items.push(item);
-            var displayObject = this.addDisplayObjectForItem(this.mainSurface, item);
-        } else {
-            this.updateDisplayForChangedItem(item, "update");
-        }
-        console.log("items", this.diagram.items);
-        this.incrementChangesCount();
-        this.selectItem(item);
     }
     
      openCanvasSizeDialog() {
@@ -447,13 +420,22 @@ class ClusteringDiagram {
         */
 
        return m("div.overlay", m("div.modal-content", [
-            "Edit item",
+            "Edit " + this.itemBeingEditedCopy.type,
+            m("br"),
             m("br"),
             m('label', {"for": "itemDialog_name"}, "Name:"),
             m('input[type=text]', {
                 id: "itemDialog_name",
-                value: this.itemBeingEditedCopy.text,
-                onchange: (event) => { this.itemBeingEditedCopy.text = event.target.value; }
+                value: this.itemBeingEditedCopy.name || "",
+                onchange: (event) => { this.itemBeingEditedCopy.name = event.target.value; }
+            }),
+            m('br'),
+            m('br'),
+            m('label', {"for": "itemDialog_notes"}, "Notes:"),
+            m('textarea[class=narrafirma-textbox]', {
+                id: "itemDialog_notes",
+                value: this.itemBeingEditedCopy.notes || "",
+                onchange: (event) => { this.itemBeingEditedCopy.notes = event.target.value; }
             }),
             m("br"),
             m("button", {
@@ -466,7 +448,8 @@ class ClusteringDiagram {
                 onclick: () => {
                     this.showEntryDialog = false;
                     console.log("copy", this.itemBeingEditedCopy);
-                    this.itemBeingEdited.text = this.itemBeingEditedCopy.text;
+                    this.itemBeingEdited.name = this.itemBeingEditedCopy.name;
+                    this.itemBeingEdited.notes = this.itemBeingEditedCopy.notes;
                     if (this.isEditedItemNew) {
                         console.log("not existing item");
                         this.diagram.items.push(this.itemBeingEdited);
@@ -480,105 +463,6 @@ class ClusteringDiagram {
                 }
             }, "OK")
         ]));
-        
-        /*
-    
-        var layout = new TableContainer({
-            cols: 4,
-            showLabels: false,
-            orientation: "horiz"
-        });
-        
-        var nameTextBox = new TextBox({
-            colspan: 3,
-            name: 'name',
-            value: at(model, "text"),
-            placeHolder: "Name"
-        });
-    
-        var urlTextBox = new TextBox({
-            colspan: 3,
-            name: 'url',
-            value: at(model, "url"),
-            placeHolder: "Notes or URL with more information"
-        });
-        
-        var colorPalette = new ColorPalette({
-            // palette: "7x10",
-            palette: "3x4",
-            colspan: 3,
-            value: at(model, "bodyColor")
-            // onChange: function(val){ console.log("color: ", val); } 
-        });
-        
-        // Indirect way to hold onto dialog so can pass a reference to the dialog to button clicked function so that function can hide the dialog
-        // The problem this solves is that a hoisted dialog is undefined at this point, and also hitch uses the current value not a reference to the variable
-        var dialogHolder = {
-            dialog: undefined,
-            item: undefined,
-            isExistingItem: undefined
-        };
-        
-        // TODO: Translate
-        var type = "item";
-        if (item.type) type = item.type;
-        var buttonLabel = "Create " + type;
-        if (isExistingItem) buttonLabel = "Update " + type;
-        
-        var okButton = new Button({
-            colspan: 1,
-            // TODO: Translate
-            label: buttonLabel,
-            type: "button",
-            title: '',
-            onClick: this.clickedEntryOK.bind(this, dialogHolder, model)
-        });
-        
-        var cancelButton = new Button({
-            colspan: 1,
-            // TODO: Translate
-            label: "Cancel",
-            type: "button",
-            title: '',
-            onClick: function () { dialogHolder.dialog.hide(); }
-        });
-        
-         // TODO: Translate
-        layout.addChild(new ContentPane({content: "Name", style: "text-align: right;"}));
-        layout.addChild(nameTextBox);
-         // TODO: Translate
-        layout.addChild(new ContentPane({content: "Notes", style: "text-align: right;"}));
-        layout.addChild(urlTextBox);
-        // TODO: Translate
-        layout.addChild(new ContentPane({content: "Color", style: "text-align: right;"}));
-        layout.addChild(colorPalette);
-        layout.addChild(new ContentPane({content: ""}));
-        layout.addChild(new ContentPane({content: ""}));
-        layout.addChild(okButton);
-        layout.addChild(cancelButton);
-        
-        // TODO: Translate
-        var title = "New " + type;
-        if (isExistingItem) title = "Change " + type;
-    
-        var dialog = new Dialog({
-            title: title,
-            style: "width: 400px",
-            content: layout
-        });
-    
-        dialogHolder.dialog = dialog;
-        dialogHolder.item = item;
-        dialogHolder.isExistingItem = isExistingItem;
-        
-        // This will free the dialog when we are done with it whether from OK or Cancel
-        dialog.connect(dialog, "onHide", function(e) {
-            console.log("destroying entryDialog");
-            dialog.destroyRecursive(); 
-        });
-        
-        dialog.show();
-        */
     }
     
     updateSourceClicked(text, hideDialogMethod) {     
@@ -651,15 +535,15 @@ class ClusteringDiagram {
         this.storageFunction(this.diagram);
     }
     
-    newItem(text = null, url = "") {
-        if (text === null) text = "Untitled#" + (++this.itemsMade);
-        var item = {
-            text: text,
-            url: url,
+    newItem(itemType = "item", name = null, notes = "") {
+        if (name === null) name = "Untitled " + itemType + " #" + (++this.itemsMade);
+        var item: ClusteringDiagramItem = {
+            "type": itemType,
+            name: name,
+            notes: notes,
             x: 200,
             y: 200,
-            uuid: uuidFast("ClusteringDiagramItem"),
-            type: "item"
+            uuid: uuidFast("ClusteringDiagramItem")
         };
         // item.bodyColor = defaultBodyColor;
         // item.borderWidth = defaultBorderWidth;
@@ -697,7 +581,7 @@ class ClusteringDiagram {
         m.redraw();
     }
     
-    addDisplayObjectForItem(surface, item) {
+    addDisplayObjectForItem(surface, item: ClusteringDiagramItem) {
         console.log("addDisplayObjectForItem item", item);
         
         var bodyColor = item.bodyColor;
@@ -733,9 +617,6 @@ class ClusteringDiagram {
         // console.log("group etc.", group, item, bodyColor, borderColor, borderWidth, radius, textStyle);
     
         if (item.type === "cluster") {
-            // TODO: Maybe no longer set a different color based on url if you can set border color yourself?? 
-            // if (item.url) item.borderColor = defaultHasNoteBorderColor;
-        
             var clusterRectangleOuter = group.append("circle")
                 .attr("r", radius * 3)
                 .attr("cx", 0)
@@ -761,9 +642,6 @@ class ClusteringDiagram {
             group.circle = clusterRectangleOuter;
             
         } else {
-            // TODO: Maybe no longer set a different color based on url if you can set border color yourself?? 
-            // if (item.url) item.borderColor = defaultHasNoteBorderColor;
-        
             var itemCircle = group.append("circle")
                 .attr("r", radius)
                 .attr("cx", 0)
@@ -777,10 +655,15 @@ class ClusteringDiagram {
             group.circle = itemCircle;
         }
         
+        var hoverText = item.name;
+        if (item.notes) hoverText += "\n----------\n" + item.notes;
+        group.append("title")
+            .text(hoverText);
+        
         group.borderColor = borderColor;
         group.borderWidth = borderWidth;
         
-        this.addText(group, item.text, radius * 1.5, textStyle);
+        this.addText(group, item.name, radius * 1.5, textStyle);
     
         // console.log("group", group);
         // console.log("itemCircle", itemCircle);
@@ -830,6 +713,7 @@ class ClusteringDiagram {
     }
     
     addText(group, itemText, maxWidth, textStyle) {
+        if (itemText === undefined) itemText = "[missing text]";
         var text = group.append("text")
             // .text(itemText)
             .style("font-family", textStyle.family)

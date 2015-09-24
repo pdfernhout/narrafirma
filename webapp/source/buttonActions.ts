@@ -263,14 +263,15 @@ export function copyInterpretationsToClusteringDiagram() {
     allInterpretations.forEach((interpretation) => {
         if (!existingItemNames[interpretation.name]) {
             addedItemCount++;
-            clusteringDiagram.items.push({
-                text: interpretation.name,
+            var item: ClusteringDiagramItem = {
+                name: interpretation.name,
                 "type": "item",
-                url: interpretation.text,
+                notes: interpretation.text,
                 uuid: generateRandomUuid("ClusteringDiagramItem"),
                 x: 100 + addedItemCount * shiftPerItem,
                 y: 100 + addedItemCount * shiftPerItem
-            });
+            };
+            clusteringDiagram.items.push(item);
         }
     });
 
