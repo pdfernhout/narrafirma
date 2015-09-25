@@ -269,7 +269,7 @@ class TripleStore {
         };
     }
     
-   makeObject(a, isKeyJSON = false): any {
+   makeObject(a, isKeyJSON = true): any {
         if (a === undefined) {
             throw new Error("expected a to be defined");
         }
