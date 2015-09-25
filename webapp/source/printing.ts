@@ -4,6 +4,8 @@ import Globals = require("./Globals");
 import m = require("mithril");
 import sanitizeHTML = require("./sanitizeHTML");
 import add_patternExplorer = require("./applicationWidgets/add_patternExplorer");
+import ClusteringDiagram = require("./applicationWidgets/ClusteringDiagram");
+import Project = require("./Project");
 
 var makeGraph: Function = add_patternExplorer["makeGraph"];
 var storiesForCatalysisReport: Function = add_patternExplorer["storiesForCatalysisReport"];
@@ -384,49 +386,9 @@ function createGraphResultsPane(): HTMLElement {
     return pane;
 }
 
-export function printCatalysisReport() {
-    var project = Globals.project();
-    
-    var catalysisReportName = Globals.clientState().catalysisReportName();
-    console.log("printCatalysisReport", catalysisReportName);
-    
-    if (!catalysisReportName) {
-        alert("Please pick a catalysis report to print.");
-        return;
-    }
-    
-    var catalysisReport = project.findCatalysisReport(catalysisReportName);
-    console.log("catalysisReport", catalysisReport);
-    
-    var allStories = storiesForCatalysisReport(project.tripleStore, catalysisReport);
-    console.log("allStories", allStories);
-    
-    var catalysisReportObservationSetIdentifier = project.tripleStore.queryLatestC(catalysisReport, "catalysisReport_observations");
-    
-    console.log("catalysisReportObservationSetIdentifier", catalysisReportObservationSetIdentifier);
- 
-    if (!catalysisReportObservationSetIdentifier) {
-        console.log("catalysisReportObservationSetIdentifier not defined");
-        return;
-    }
-       
-    var observationList = project.tripleStore.getListForSetIdentifier(catalysisReportObservationSetIdentifier);
-    
-    console.log("observationList", observationList);
-    
-    var printItems = [
-        m("div", "Catalysis report observation list (FIXME) generated " + new Date()),
-        printReturnAndBlankLine()
-    ];
-    
-    /*
-    printItems.push([
-        printItem(sensemakingSessionAgenda, {sensemakingSessionPlan_activitiesList: true}),
-        printReturnAndBlankLine()
-    ]);
-    */
-    
-    printItems.push(printList(observationList, {}, function (item) {
+function printObservationList(observationList, allStories) {
+    // For now, just print all observations
+    return printList(observationList, {}, function (item) {
         // TODO: pattern
         var pattern = item.pattern;
         console.log("pattern", pattern);
@@ -452,22 +414,100 @@ export function printCatalysisReport() {
             m.trust(graphHolder.graphResultsPane.outerHTML),
             printReturnAndBlankLine(),
         ];
-    }));
-    
-    var htmlForPage = generateHTMLForPage("Catalysis report observation list (FIXME)", "/css/standard.css", printItems);
-    printHTML(htmlForPage);
+    });
+}
 
+function makeObservationListForInterpretation(project: Project, allObservations, intepretationName) {
+    console.log("makeObservationListForInterpretation", intepretationName);
+    var result = [];
+    allObservations.forEach((observation) => {
+        console.log("observation", observation);
+        var intepretationsListIdentifier = project.tripleStore.queryLatestC(observation, "observationInterpretations");
+        console.log("intepretationsListIdentifier", intepretationsListIdentifier);
+        var intepretationsList = project.tripleStore.getListForSetIdentifier(intepretationsListIdentifier);
+        console.log("intepretationsList", intepretationsList);
+        intepretationsList.forEach((interpretationIdentifier) => {
+            var interpretation = project.tripleStore.makeObject(interpretationIdentifier, true);
+            var name = interpretation.interpretation_name;
+            if (name === intepretationName) {
+                console.log("found observation that has matching interpretation", interpretation, observation);
+                result.push(observation);
+            }
+        });
+    });
+    return result;
+}
+     
+export function printCatalysisReport() {
+    var project = Globals.project();
+    
+    var catalysisReportName = Globals.clientState().catalysisReportName();
+    console.log("printCatalysisReport", catalysisReportName);
+    
+    if (!catalysisReportName) {
+        alert("Please pick a catalysis report to print.");
+        return;
+    }
+    
+    var catalysisReportIdentifier = project.findCatalysisReport(catalysisReportName);
+    console.log("catalysisReport", catalysisReportIdentifier);
+    
+    var clusteringDiagram = project.tripleStore.queryLatestC(catalysisReportIdentifier, "interpretationsClusteringDiagram");
+    console.log("clusteringDiagram", clusteringDiagram);
+    
+    var todo = ClusteringDiagram.calculateClusteringForDiagram(clusteringDiagram);
+    
+    console.log("clusteringDiagram with clusters", clusteringDiagram);
+    
+    var allStories = storiesForCatalysisReport(project.tripleStore, catalysisReportIdentifier);
+    console.log("allStories", allStories);
+    
+    var catalysisReportObservationSetIdentifier = project.tripleStore.queryLatestC(catalysisReportIdentifier, "catalysisReport_observations");
+    
+    console.log("catalysisReportObservationSetIdentifier", catalysisReportObservationSetIdentifier);
+ 
+    if (!catalysisReportObservationSetIdentifier) {
+        console.log("catalysisReportObservationSetIdentifier not defined");
+        return;
+    }
+       
+    var allObservations = project.tripleStore.getListForSetIdentifier(catalysisReportObservationSetIdentifier);
+    
+    console.log("allObservations", allObservations);
+    
+    var printItems = [
+        m("div", "Catalysis report observation list (FIXME) generated " + new Date()),
+        printReturnAndBlankLine()
+    ];
     
     /*
-    H Create catalysis report - including results (graphs, statistical results)
+    printItems.push([
+        printItem(sensemakingSessionAgenda, {sensemakingSessionPlan_activitiesList: true}),
+        printReturnAndBlankLine()
+    ]);
+    */
+    
+    /*
+    Create catalysis report - including results (graphs, statistical results)
     Perspective
        Interpretation
            Observation
                Pattern (graph)
-    */
+    */  
     
-    // For now, just print all observations
+    var perspectives = clusteringDiagram.clusters;
     
+    perspectives.forEach((perspective) => {
+        printItems.push(m("hr"));
+        printItems.push(m("div", "Perspective: " + perspective.name));
+        var interpretations = perspective.items;
+        interpretations.forEach((intepretation) => {
+            printItems.push(m("div", "Interpretation: " + intepretation.name));
+            var observationList = makeObservationListForInterpretation(project, allObservations, intepretation.name);
+            printItems.push(printObservationList(observationList, allStories));
+        });
+    });
     
-    
+    var htmlForPage = generateHTMLForPage("Catalysis report observation list (FIXME)", "/css/standard.css", printItems);
+    printHTML(htmlForPage);   
 }

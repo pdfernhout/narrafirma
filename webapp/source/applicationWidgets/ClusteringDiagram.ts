@@ -724,6 +724,47 @@ class ClusteringDiagram {
         myWrap(text, itemText, textStyle, maxWidth);
         // wrap(text, maxWidth, textStyle);
     }
+    
+    static calculateClusteringForDiagram(clusteringDiagram: any) {
+        var result = [];
+        
+        if (!clusteringDiagram) return result;
+        
+        var clusters = clusteringDiagram.items.filter(function (item) {
+            return item.type === "cluster";
+        });
+        
+        console.log("clusters", clusters);
+        
+        var items = clusteringDiagram.items.filter(function (item) {
+            return item.type === "item";
+        });
+        
+        console.log("items", items);
+        
+        items.forEach((item) => {
+            item.clusterDistance = Number.MAX_VALUE;
+            item.cluster = null;
+            clusters.forEach((cluster) => {
+                var dx = item.x - cluster.x;
+                var dy = item.y - cluster.y;
+                var distance = Math.sqrt(dx * dx + dy * dy);
+                if (distance < item.clusterDistance) {
+                    item.clusterDistance = distance;
+                    item.cluster = cluster;
+                }
+            });
+        });
+        
+        clusters.forEach((cluster) => {
+            cluster.items = [];
+            items.forEach((item) => {
+                if (item.cluster === cluster) cluster.items.push(item);
+            });
+        });
+        
+        clusteringDiagram.clusters = clusters;
+    }
 }
 
 export = ClusteringDiagram;
