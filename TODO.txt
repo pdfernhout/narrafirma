@@ -7,6 +7,8 @@ H Create catalysis report - including results (graphs, statistical results)
        Interpretation
            Observation
                Pattern (graph)
+H Add page to select questions and thresholds to be considered in pattern explorer
+H Mark questions as don't pay any attention to question / Discard question from catalysis
 
 GRAPH BROWSER
 H Support graphBrowser standard deviation and mean for histograms
@@ -23,7 +25,7 @@ H Display total count of all answers when displaying question name in Story Brow
 
 H Create help
 H On Story question page, move "what type of question is this" extra text to help
-H Clean up introduction page
+H Clean up introduction page (move to help pages?)
 H Fix wording on dashboard pages (and all wording related to reminders) - finish this
 H Create full demo project to go with sample data
 
@@ -81,7 +83,6 @@ CLUSTERING (CATALYSIS)
 CATALYSIS REPORT
 
 CATALYSIS
-M Mark questions as don't pay any attention to question / Discard question from catalysis
 X Need to be able to select text in existing story to AddToExcerpts
 X Support storiesList -- for choosing a resonant story
 
@@ -162,6 +163,7 @@ Recommendation button has different shape than others
 
 Ensure timestamp for latest triple store messages is being set on server and not client
 Simplify Pointrel system further, like to not have message trace adding so PHP WordPress plugin code can be simpler and quicker
+Simplify Pointrel system further, like to only store triples instead of general arbitrary message objects
 
 Autosave for current textarea or input text based on timer even if you don't leave it
 
@@ -894,3 +896,7 @@ DONE Fix story collection export so story collection is chosen
 DONE Include story annotations in export and import
 DONE Display version number in WordPress configuration
 DONE Display version number in application
+DONE Add support for "ignore" questions in csvImportExport and for Checkbox questionType
+DONE Improve the introduction page
+DONE Clarify difference between name and indentifier in ClientState for storyCollection and catalysisReport
+DONE Remove page_describePerspectives and instead improve ClusteringDiagram to support notes
