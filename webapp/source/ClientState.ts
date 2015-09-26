@@ -72,7 +72,7 @@ class ClientState {
     }
     
     // Read-only convenience accessor
-    catalysisReportIdentifier(newValue) {
+    catalysisReportIdentifier(newValue = undefined) {
         if (newValue) throw new Error("catalysisReportIdentifier: setting value is not supported");
         var catalysisReportIdentifier = this._project.findCatalysisReport(this._catalysisReportName);
         if (!catalysisReportIdentifier) {
