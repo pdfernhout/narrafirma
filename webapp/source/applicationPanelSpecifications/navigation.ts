@@ -79,6 +79,7 @@ var sections = [
         pages: [
             "page_catalysis",
             "page_startCatalysisReport",
+            "page_configureCatalysisReport",
             "page_explorePatterns",
             "page_clusterInterpretations",
             "page_printCatalysisReport"

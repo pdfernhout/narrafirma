@@ -22,19 +22,6 @@ var panel: Panel = {
             displayPrompt: "Choose a catalysis report to work on"
         },
         {
-            id: "explorePatterns_minSubsetSize",
-            valueType: "string",
-            valueOptions: [
-                "20",
-                "30",
-                "40",
-                "50"
-            ],
-            displayType: "select",
-            displayName: "Minimum subset size",
-            displayPrompt: "How large should subsets of stories be to be considered for comparison?"
-        },
-        {
             id: "explorePatterns_display",
             valuePath: "/clientState/catalysisReportName",
             valueType: "none",
