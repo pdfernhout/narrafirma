@@ -500,9 +500,14 @@ export function printCatalysisReport() {
     perspectives.forEach((perspective) => {
         printItems.push(m("hr"));
         printItems.push(m("div", "Perspective: " + perspective.name));
+        if (perspective.notes) printItems.push(m("div", "Perspective notes: " + perspective.notes));
+        printItems.push(m("br"));
         var interpretations = perspective.items;
         interpretations.forEach((intepretation) => {
             printItems.push(m("div", "Interpretation: " + intepretation.name));
+            if (intepretation.notes) printItems.push(m("div", "Interpretation notes: " + intepretation.notes));
+            printItems.push(m("br"));
+            
             var observationList = makeObservationListForInterpretation(project, allObservations, intepretation.name);
             printItems.push(printObservationList(observationList, allStories));
         });
