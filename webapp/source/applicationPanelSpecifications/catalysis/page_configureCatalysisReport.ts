@@ -53,7 +53,7 @@ var panel: Panel = {
         {
             id: "configureCatalysisReport_chooseQuestions",
             valueType: "object",
-            valuePath: "/clientState/catalysisReportIdentifier",
+            valuePath: "/clientState/catalysisReportIdentifier/questionsToInclude",
             displayType: "catalysisReportQuestionChooser",
             displayPrompt: "Choose questions to include in the catalysis report",
             displayVisible: function(panelBuilder, model) {
