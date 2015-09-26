@@ -164,6 +164,7 @@ button {
     padding-left: 16px;
     float: right;
     font-size: 0.9em;
+    color: red;
 }
 
 #narrafirma-next-page.narrafirma-link-disabled,  #narrafirma-previous-page.narrafirma-link-disabled {
