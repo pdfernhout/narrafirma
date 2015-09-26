@@ -255,6 +255,10 @@ class PatternBrowser {
                     displayName: "Observation",
                     displayPrompt: "Enter an <strong>summary title</strong> about the pattern here.",
                     displayType: "text"
+                    //Maybe TODO: Tab order problem if hide this is not visible when tab out of previous field -- it will skip to page notes
+                    //displayVisible: function(panelBuilder, model) {
+                    //    return model.currentObservationDescription();
+                    //}
                 },
                 {
                     id: "observationPanel_interpretationsList",
@@ -263,7 +267,10 @@ class PatternBrowser {
                     displayType: "grid",
                     displayConfiguration: "panel_addInterpretation",
                     displayName: "Interpretation",
-                    displayPrompt: "Enter at least two <strong>competing interpretations</strong> for the observation here."
+                    displayPrompt: "Enter at least two <strong>competing interpretations</strong> for the observation here.",
+                    displayVisible: function(panelBuilder, model) {
+                        return model.currentObservationDescription() || model.currentObservationTitle();
+                    }
                 }
             ]
         };
