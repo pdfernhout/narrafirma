@@ -35,6 +35,7 @@ function add_catalysisReportQuestionChooser(panelBuilder: PanelBuilder, model, f
         storageFunction(map);
     }
     
+    /*
     function countResponses(id) {
         var count = 0;
         allStories.forEach((story) => {
@@ -43,17 +44,81 @@ function add_catalysisReportQuestionChooser(panelBuilder: PanelBuilder, model, f
         });
         return count;
     }
+    */
+    
+    function increment(theObject, fieldName) {
+        var count = theObject[fieldName] || 0;
+        count++;
+        theObject[fieldName] = count;
+    }
+    
+    function bin(value) {
+        var bin = Math.floor(value / 10);
+        var high = bin * 10 + 9;
+        if (bin >= 9) {
+            bin = 9;
+            high = 100;
+        }
+        var low = bin * 10;
+        return "" + low + " - " + high;
+    }
+    
+    function countAnswers(id, questionType) {
+        var answerCounts = {};
+        var answeredQuestionsCount = 0;
+        var naCount = 0;
+        allStories.forEach((story) => {
+            var value = story.fieldValue(id);
+            if (value !== undefined && value !== null && value !== {} && value !== "") {
+                answeredQuestionsCount++;
+                if (questionType === "slider") {
+                    // Bin the sliders
+                    increment(answerCounts, bin(value));
+                } else if (typeof value === "string" || typeof value === "number") {
+                    increment(answerCounts, value);
+                } else {
+                    for (var key in value) {
+                        if (value[key]) {
+                            increment(answerCounts, key);
+                        }                   
+                    }
+                }
+            } else {
+                naCount++;
+            }
+        });
+        if (naCount) answerCounts["{N/A}"] = naCount;
+        
+        var sortedAnswerCounts = {};
+        Object.keys(answerCounts).sort().forEach((key) => {
+            sortedAnswerCounts[key] = answerCounts[key];
+        });
+        
+        return {
+            answeredQuestionsCount: answeredQuestionsCount,
+            answerCounts: sortedAnswerCounts
+        };
+    }
+    
     
     function buildQuestionCheckbox(shortName, questionType, questionCategory): any {
         var id = questionCategory + shortName;
         if (questionType === "textarea" || (questionCategory !== "A_" && questionType === "text")) return [];
-        return m("div", [
+        var counts = countAnswers(id, questionType);
+        var answersHover = id + " has " + counts.answeredQuestionsCount + " answers:\n" + JSON.stringify(counts.answerCounts, null, 2);
+        
+        return m("div", {title: answersHover}, [
             m("input[type=checkbox]", {id: id, checked: isChecked(id), onchange: function(event) { isChecked(id, event.target.checked); }}),
             m("label", {"for": id}, shortName),
-            " (",
-            countResponses(id),
-            ")",
             m("br")
+            /*
+            "^--- ",
+            counts.answeredQuestionsCount,
+            " answers: ",
+            JSON.stringify(counts.answerCounts, null, 2),
+            m("br"),
+            m("br")
+            */
         ]);
     }
     
@@ -63,19 +128,22 @@ function add_catalysisReportQuestionChooser(panelBuilder: PanelBuilder, model, f
         m("div", ["Total number of stories: " + allStories.length]),
         m("div", [
             m("br"),
-            "Story questions:",   
+            "Story questions:",
+            m("br"),  
             allStoryQuestions.map((question) => {
                 return buildQuestionCheckbox(question.storyQuestion_shortName, question.storyQuestion_type, "S_");
             }),
             allStoryQuestions.length ? [] : "[No questions]",
             m("br"),
-            "Participant questions:", 
+            "Participant questions:",
+            m("br"),
             allParticipantQuestions.map((question) => {
                 return buildQuestionCheckbox(question.participantQuestion_shortName, question.participantQuestion_type, "P_");
             }),
             allParticipantQuestions.length ? [] : "[No questions]",
             m("br"),
-            "Annotation questions:", 
+            "Annotation questions:",
+            m("br"),
             allAnnotationQuestions.map((question) => {
                 return buildQuestionCheckbox(question.annotationQuestion_shortName, question.annotationQuestion_type, "A_");
             }),
