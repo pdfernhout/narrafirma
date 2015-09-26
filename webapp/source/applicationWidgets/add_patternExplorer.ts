@@ -255,10 +255,10 @@ class PatternBrowser {
                     displayName: "Observation",
                     displayPrompt: "Enter an <strong>summary title</strong> about the pattern here.",
                     displayType: "text"
-                    //Maybe TODO: Tab order problem if hide this is not visible when tab out of previous field -- it will skip to page notes
-                    //displayVisible: function(panelBuilder, model) {
-                    //    return model.currentObservationDescription();
-                    //}
+                    // Maybe TODO: Tab order problem if hide this is not visible when tab out of previous field -- it will skip to page notes
+                    // displayVisible: function(panelBuilder, model) {
+                    //     return model.currentObservationDescription();
+                    // }
                 },
                 {
                     id: "observationPanel_interpretationsList",
