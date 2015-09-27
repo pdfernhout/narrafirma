@@ -1,15 +1,5 @@
 ==== NarraFirma TODO list:
 
-CATALYSIS REPORT
-H Print catalysis report
-H Create catalysis report - including results (graphs, statistical results)
-   Perspective
-       Interpretation
-           Observation
-               Pattern (graph)
-H Add page to select questions and thresholds to be considered in pattern explorer
-H Mark questions as don't pay any attention to question / Discard question from catalysis
-
 GRAPH BROWSER
 H Support graphBrowser standard deviation and mean for histograms
 H Support graphBrowser contingency table with statistical results - chi squared
@@ -81,6 +71,8 @@ L Move options (how large should subsets, what significance threshold) to popup 
 CLUSTERING (CATALYSIS)
 
 CATALYSIS REPORT
+M Improve look of catalysis report
+M Figure out a way that catalysis report can be reliably imported in Word, like by generatign PNGs for graphs
 
 CATALYSIS
 X Need to be able to select text in existing story to AddToExcerpts
@@ -900,3 +892,7 @@ DONE Add support for "ignore" questions in csvImportExport and for Checkbox ques
 DONE Improve the introduction page
 DONE Clarify difference between name and indentifier in ClientState for storyCollection and catalysisReport
 DONE Remove page_describePerspectives and instead improve ClusteringDiagram to support notes
+DONE Print catalysis report
+DONE Create catalysis report - including results (graphs, statistical results) Perspective / Interpretation / Observation /Pattern (graph)
+DONE Add page to select questions and thresholds to be considered in pattern explorer
+DONE Mark questions as don't pay any attention to question / Discard question from catalysis
