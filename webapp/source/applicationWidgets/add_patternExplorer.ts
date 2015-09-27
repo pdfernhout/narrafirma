@@ -171,6 +171,7 @@ class PatternBrowser {
     catalysisReportIdentifier: string = null;
     catalysisReportObservationSetIdentifier: string = null;
     
+    questionsToInclude = null;
     modelForPatternsGrid = {patterns: []};
     patternsGrid: GridWithItemPanel;
     
@@ -277,6 +278,7 @@ class PatternBrowser {
         
         // Pattern grid initialization
         
+        this.questionsToInclude = this.project.tripleStore.queryLatestC(this.catalysisReportIdentifier, "questionsToInclude"); 
         this.modelForPatternsGrid.patterns = this.buildPatternList();
         
         var patternsGridConfiguration = {
@@ -329,6 +331,8 @@ class PatternBrowser {
         
         if (!this.catalysisReportIdentifier) {
             parts = [m("div.narrafirma-choose-catalysis-report", "Please select a catalysis report to work with")];
+        } else if (!this.questionsToInclude) {
+            parts = [m("div.narrafirma-choose-questions-to-include", "Please select some questions to include in the report (on the previous page)")];
         } else {
             parts = [
                 this.patternsGrid.calculateView(),
@@ -447,6 +451,7 @@ class PatternBrowser {
         this.questions = questionnaireGeneration.collectAllQuestions();
         // console.log("questions", this.questions);
         
+        this.questionsToInclude = this.project.tripleStore.queryLatestC(this.catalysisReportIdentifier, "questionsToInclude"); 
         this.modelForPatternsGrid.patterns = this.buildPatternList();
         // console.log("patterns", this.modelForPatternsGrid.patterns);
         this.patternsGrid.updateData();
@@ -519,15 +524,19 @@ class PatternBrowser {
         var nominalQuestions = [];
         var ratioQuestions = [];
         
+        if (!this.questionsToInclude) return result;
+        
         // TODO: create all supported graphable permutations of questions
-        this.questions.forEach(function (question) {
-            if (question.displayType === "slider") {
-                ratioQuestions.push(question);
-            } else if (nominalQuestionTypes.indexOf(question.displayType) !== -1)  {
-                // Ony use text questions that are annotations
-                if (question.displayType === "text" && (question.id || "").substring(2) !== "A_") return;
-                
-                nominalQuestions.push(question);
+        this.questions.forEach((question) => {
+            // Skip questions that are not included in configuration
+            if (this.questionsToInclude[question.id]) {
+                if (question.displayType === "slider") {
+                    ratioQuestions.push(question);
+                } else if (nominalQuestionTypes.indexOf(question.displayType) !== -1)  {
+                    // Ony use text questions that are annotations
+                    if (question.displayType === "text" && (question.id || "").substring(2) !== "A_") return;
+                    nominalQuestions.push(question);
+                }
             }
         });
         
