@@ -26,7 +26,7 @@ var panel: Panel = {
             valuePath: "/clientState/catalysisReportName",
             valueType: "none",
             displayType: "patternExplorer",
-            displayPrompt: "Pattern explorer"
+            displayPrompt: ""
         }
     ]
 };
