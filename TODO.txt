@@ -7,12 +7,10 @@ H Finish Mann-Whitney U test
 H Test statistical tests for validity - run same tests in spreadsheet on same data
 
 CATALYSIS REPORT
-Make use of question threshold selection (configureCatalysisReport_minimumSubsetSize) to limit graphs in catalsis report
+H Make use of question threshold selection (configureCatalysisReport_minimumSubsetSize) to limit graphs in catalsis report
 
 GENERAL
-H Think about and improve issue of values that can be set only once like catalysis report name and story collection
 H Test readonly use as anonymous under WordPress
-H Display total count of all answers when displaying question name in Story Browser
 
 ======= CYNTHIA
 
@@ -121,7 +119,8 @@ L Way to select a different project to switch to (other than editing the URL or 
 GENERAL
 M Create script or procedure to deal with SVN for WordPress
 M When a Grid item is added but no data is entered like for a catalysis report, the entry in a select looks wrong
-M Text search function (at least for stories)
+M Display total count of all answers when displaying question name in Story Browser
+L Text search function (at least for stories)
 
 UNSURE
 X Way to retrieve data about project participant groups [Is this still relevant? Probably yes, if we did "checkboxes with pull" for picking what groups an activity applies to instead of text entry]
@@ -904,3 +903,6 @@ DONE Mark questions as don't pay any attention to question / Discard question fr
 DONE Display total count of all answers when displaying question name in Catalysis Report configuration
 DONE Add clear all and select all buttons for catalysis question configuration
 DONE Fix issue where stories with missing title do not seem to get imported (and give them "Untitled #..." names)
+DONE Include annotations in story card
+DONE Think about and improve issue of values that can be set only once like catalysis report name and story collection
+DONE Improve how panel_addStoryCollection updates story forms
