@@ -100,7 +100,6 @@ function add_catalysisReportQuestionChooser(panelBuilder: PanelBuilder, model, f
         };
     }
     
-    
     function buildQuestionCheckbox(shortName, questionType, questionCategory): any {
         var id = questionCategory + shortName;
         if (questionType === "textarea" || (questionCategory !== "A_" && questionType === "text")) return [];
@@ -122,9 +121,30 @@ function add_catalysisReportQuestionChooser(panelBuilder: PanelBuilder, model, f
         ]);
     }
     
+    function selectAll() {
+        var map = {};
+        allStoryQuestions.forEach((question) => {
+            map["S_" + question.storyQuestion_shortName] = true;
+        });
+        allParticipantQuestions.forEach((question) => {
+            map["P_" + question.participantQuestion_shortName] = true;
+        });
+        allAnnotationQuestions.forEach((question) => {
+            map["A_" + question.annotationQuestion_shortName] = true;
+        });
+        storageFunction(map);
+    }
+    
+    function clearAll() {
+        storageFunction({});
+    }
+    
     // TODO: Translate
     return m("div", [
         prompt,
+        m("button", { onclick: selectAll }, "Select all"),
+        m("button", { onclick: clearAll }, "Clear all"),
+        m("br"),
         m("div", ["Total number of stories: " + allStories.length]),
         m("div", [
             m("br"),
