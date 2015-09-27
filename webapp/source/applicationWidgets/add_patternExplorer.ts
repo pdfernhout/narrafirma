@@ -329,10 +329,18 @@ class PatternBrowser {
         
         var parts;
         
+        function isMissingQuestionsToInclude(questionsToInclude) {
+            if (!questionsToInclude) return true;
+            for (var keys in questionsToInclude) {
+                return false;
+            }
+            return true; 
+        }
+        
         if (!this.catalysisReportIdentifier) {
-            parts = [m("div.narrafirma-choose-catalysis-report", "Please select a catalysis report to work with")];
-        } else if (!this.questionsToInclude) {
-            parts = [m("div.narrafirma-choose-questions-to-include", "Please select some questions to include in the report (on the previous page)")];
+            parts = [m("div.narrafirma-choose-catalysis-report", "Please select a catalysis report to work with.")];
+        } else if (isMissingQuestionsToInclude(this.questionsToInclude)) {
+            parts = [m("div.narrafirma-choose-questions-to-include", "Please select some questions to include in the report (on the previous page).")];
         } else {
             parts = [
                 this.patternsGrid.calculateView(),
