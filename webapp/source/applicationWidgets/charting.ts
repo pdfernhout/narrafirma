@@ -692,7 +692,7 @@ export function d3HistogramChart(graphBrowserInstance: GraphHolder, scaleQuestio
         .attr("y1", yHeightScale(0))
         .attr("x2", xScale(mean))
         .attr("y2", yHeightScale(maxValue))
-        .style("stroke", "rgb(6,120,155)");
+        .style("stroke", "rgb(155,6,6)");
     
     // Draw standard deviation
     // console.log("standard deviation", standardDeviation, valuesAsNumbers);
@@ -703,13 +703,13 @@ export function d3HistogramChart(graphBrowserInstance: GraphHolder, scaleQuestio
         .attr("y1", yHeightScale(0))
         .attr("x2", xScale(sdLow))
         .attr("y2", yHeightScale(maxValue))
-        .style("stroke", "rgb(155,6,6)");
+        .style("stroke", "rgb(6,120,155)");
     chartBody.append("line")
         .attr("x1", xScale(sdHigh))
         .attr("y1", yHeightScale(0))
         .attr("x2", xScale(sdHigh))
         .attr("y2", yHeightScale(maxValue))
-        .style("stroke", "rgb(155,6,6)");
+        .style("stroke", "rgb(6,120,155)");
     
     function isPlotItemSelected(extent, plotItem) {
         // We don't want to compute a midPoint based on plotItem.value which can be anywhere in the bin; we want to use the stored bin.x.
