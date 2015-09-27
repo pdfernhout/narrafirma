@@ -14,9 +14,6 @@ H Think about and improve issue of values that can be set only once like catalys
 H Test readonly use as anonymous under WordPress
 H Display total count of all answers when displaying question name in Story Browser
 
-IMPORT
-Fix issue where stories with missing title do not seem to get imported
-
 ======= CYNTHIA
 
 H Create help
@@ -124,6 +121,7 @@ L Way to select a different project to switch to (other than editing the URL or 
 GENERAL
 M Create script or procedure to deal with SVN for WordPress
 M When a Grid item is added but no data is entered like for a catalysis report, the entry in a select looks wrong
+M Text search function (at least for stories)
 
 UNSURE
 X Way to retrieve data about project participant groups [Is this still relevant? Probably yes, if we did "checkboxes with pull" for picking what groups an activity applies to instead of text entry]
@@ -905,3 +903,4 @@ DONE Add page to select questions and thresholds to be considered in pattern exp
 DONE Mark questions as don't pay any attention to question / Discard question from catalysis
 DONE Display total count of all answers when displaying question name in Catalysis Report configuration
 DONE Add clear all and select all buttons for catalysis question configuration
+DONE Fix issue where stories with missing title do not seem to get imported (and give them "Untitled #..." names)
