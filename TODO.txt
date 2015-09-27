@@ -6,10 +6,16 @@ H Support graphBrowser contingency table with statistical results - chi squared
 H Finish Mann-Whitney U test
 H Test statistical tests for validity - run same tests in spreadsheet on same data
 
+CATALYSIS REPORT
+Make use of question threshold selection (configureCatalysisReport_minimumSubsetSize) to limit graphs in catalsis report
+
 GENERAL
 H Think about and improve issue of values that can be set only once like catalysis report name and story collection
 H Test readonly use as anonymous under WordPress
-H Display total count of all answers when displaying question name in Story Browser or Catalysis Report configuration
+H Display total count of all answers when displaying question name in Story Browser
+
+IMPORT
+Fix issue where stories with missing title do not seem to get imported
 
 ======= CYNTHIA
 
@@ -73,6 +79,7 @@ CLUSTERING (CATALYSIS)
 CATALYSIS REPORT
 M Improve look of catalysis report
 M Figure out a way that catalysis report can be reliably imported in Word, like by generatign PNGs for graphs
+M Show percentages for question answers in title hover over questions
 
 CATALYSIS
 X Need to be able to select text in existing story to AddToExcerpts
@@ -147,7 +154,7 @@ L Histograms should have mean and standard deviation marked (and maybe median an
 
 ==== Wish list:
 
-Thnk about issue of including project name in stories and triple a field in realation to backup/restore
+Think about issue of including project name in stories and triple a field in realation to backup/restore
 
 Add templates for annotation questions and re-add button removed in commit 2dde70086198417d2d005e3a6707045c18823d22 2015-09-20 19:09:57
 
@@ -896,3 +903,5 @@ DONE Print catalysis report
 DONE Create catalysis report - including results (graphs, statistical results) Perspective / Interpretation / Observation /Pattern (graph)
 DONE Add page to select questions and thresholds to be considered in pattern explorer
 DONE Mark questions as don't pay any attention to question / Discard question from catalysis
+DONE Display total count of all answers when displaying question name in Catalysis Report configuration
+DONE Add clear all and select all buttons for catalysis question configuration
