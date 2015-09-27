@@ -9,20 +9,40 @@ var panel: Panel = {
         {
             id: "storyCollection_shortName",
             valueType: "string",
-            valueImmutable: true,
+            // valueImmutable: true,
             displayType: "text",
             displayName: "Story collection name",
-            displayPrompt: "Please give this story collection a short <strong>name</strong>, so we can refer to it.<br><br><span.narrafirma-special-warning>This name cannot be changed after the story collection is created. Also, the name must be unique within the project.</span>"
+            displayPrompt: `
+                Please give this story collection a short <strong>name</strong>, so we can refer to it.<br><br>
+                <span.narrafirma-special-warning>This name should not be changed after you start using the story collection.
+                Also, the name should be unique within the project.</span>
+            `
         },
         {
             id: "storyCollection_questionnaireIdentifier",
             valueType: "string",
-            valueImmutable: true,
+            // valueImmutable: true,
             valueOptions: "/project/project_storyForms",
             valueOptionsSubfield: "questionForm_shortName",
             displayType: "select",
             displayName: "Story form",
-            displayPrompt: "Please select a <strong>story form</strong> to use for this story collection.<br><br><span.narrafirma-special-warning>The first time you choose a story form here and click the OK button below, a <strong>copy</strong> of the story form, <em>as it is at that moment</em>, will be placed into the new story collection. Any changes you make to the story form afterwards will <em>not</em> be reflected in the copy stored in the story collection. Also, you cannot change which form is used in an existing story collection. To use a different or revised form, create a new story collection.</span>"
+            displayPrompt: `
+                Please select a <strong>story form</strong> to use for this story collection.<br><br>
+                <span.narrafirma-special-warning>The first time you choose a story form here and click the Close button,
+                a <strong>copy</strong> of the story form, <em>as it is at that moment</em>, will be placed into the new story collection.
+                Any changes you make to the story form afterwards will <em>not</em> be automatically reflected in the copy stored in the story collection.
+                To start using new changes to a story form (like during testing), press the "Update Story Form button" below.
+                However, it is not recommended to update a story form after data collection has begun (except perhaps for minor typographical errors).
+                Also, you should not change which form is used in an existing story collection.
+                To use a different or significantly revised story form after story collection has begun, create a new story collection.</span>
+            `
+        },
+        {
+            id: "storyCollection_updateStoryForm",
+            valueType: "none",
+            displayType: "button",
+            displayConfiguration: "updateQuestionnaireForStoryCollection",
+            displayPrompt: "Update Story Form (see caution above)"
         },
         {
             id: "storyCollection_activeOnWeb",

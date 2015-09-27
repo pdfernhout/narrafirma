@@ -164,11 +164,8 @@ class Application {
             return surveyCollection.isStoryCollectingEnabled();
         } else if (functionName === "storeQuestionnaireInStoryCollection") {
             var storyCollectionIdentifier = fieldSpecification.value;
-            var questionnaireName = Globals.project().tripleStore.queryLatestC(storyCollectionIdentifier, "storyCollection_questionnaireIdentifier");
-            var questionnaire = questionnaireGeneration.buildQuestionnaire(questionnaireName);
-            if (!questionnaire) return ["Questionnaire could not be created for: " + questionnaireName];
-            Globals.project().tripleStore.addTriple(storyCollectionIdentifier, "questionnaire", questionnaire);
-            return null;
+            var success = buttonActions.setQuestionnaireForStoryCollection(storyCollectionIdentifier);
+            return success ? null : ["Questionnaire could not be created for story collection"];
         } else {
             console.log("TODO: calculateFunctionResultForGUI ", functionName, fieldSpecification);
             return "calculateFunctionResultForGUI UNFINISHED: " + functionName + " for: " + fieldSpecification.id;

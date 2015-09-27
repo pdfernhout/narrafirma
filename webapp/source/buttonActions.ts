@@ -282,6 +282,46 @@ export function copyInterpretationsToClusteringDiagram() {
     toaster.toast("Added " + addedItemCount + " interpretations");
 }
 
+export function setQuestionnaireForStoryCollection(storyCollectionIdentifier): boolean {
+    console.log("setQuestionnaireForStoryCollection", storyCollectionIdentifier);
+    
+    if (!storyCollectionIdentifier) return false;
+    var questionnaireName = project.tripleStore.queryLatestC(storyCollectionIdentifier, "storyCollection_questionnaireIdentifier");
+    var questionnaire = questionnaireGeneration.buildQuestionnaire(questionnaireName);
+    if (!questionnaire) return false;
+    project.tripleStore.addTriple(storyCollectionIdentifier, "questionnaire", questionnaire);
+    return true;
+}
+
+export function updateQuestionnaireForStoryCollection(storyCollectionIdentifier) {
+    console.log("updateQuestionnaireForStoryCollection", storyCollectionIdentifier);
+    if (!storyCollectionIdentifier) {
+        alert("Problem: No storyCollectionIdentifier");
+        return;
+    }
+    
+    var storyCollectionName = project.tripleStore.queryLatestC(storyCollectionIdentifier, "storyCollection_shortName");
+    if (!storyCollectionName) {
+        alert("Problem: No storyCollectionName");
+        return;
+    }
+    
+    // TODO: Translate
+    var confirmResult = confirm('Update story form for story collection "' + storyCollectionName + '"?"\n(Updating is not recommended once data collection has begun.)');
+    if (!confirmResult) return;
+    
+    var updateResult = setQuestionnaireForStoryCollection(storyCollectionIdentifier);
+
+    if (!updateResult) {
+        alert("Problem: No questionnaire could be created");
+        return;
+    }
+    
+    toaster.toast("Updated story form");
+    
+    return;
+}
+
 export var enterSurveyResult = openSurveyDialog;
 export var toggleWebActivationOfSurvey = surveyCollection.toggleWebActivationOfSurvey;
 export var storyCollectionStop = surveyCollection.storyCollectionStop;
