@@ -1,5 +1,7 @@
 import m = require("mithril");
 import surveyCollection = require("surveyCollection");
+import questionnaireGeneration = require("./questionnaireGeneration");
+import Globals = require("./Globals");
 
 "use strict";
 
@@ -94,6 +96,7 @@ function displayHTMLForField(storyModel: surveyCollection.Story, fieldSpecificat
 
 interface Options {
     excludeElicitingQuestion?: boolean;
+    excludeAnnotations?: boolean;
     storyTextAtTop?: boolean;
     questionnaire?: any;
 }
@@ -113,6 +116,12 @@ export function generateStoryCardContent(storyModel, options: Options = {}) {
     
     if (questionnaire) questions = questions.concat(questionnaire.storyQuestions);
     if (questionnaire) questions = questions.concat(questionnaire.participantQuestions);
+    
+    if (!options.excludeAnnotations) {
+        var annotationQuestions = Globals.project().collectAllAnnotationQuestions();
+        var adjustedAnnotationQuestions = questionnaireGeneration.convertEditorQuestions(annotationQuestions, "A_");
+        questions = questions.concat(adjustedAnnotationQuestions);
+    }
     
     var question;
     var i;
