@@ -1,5 +1,6 @@
 import d3 = require("d3");
 import m = require("mithril");
+import simple_statistics = require("../statistics/simple_statistics");
 
 "use strict";
 
@@ -560,6 +561,11 @@ export function d3HistogramChart(graphBrowserInstance: GraphHolder, scaleQuestio
         }
     }
     
+    // Calculate descriptive statistics
+    var valuesAsNumbers = values.map((plotItem) => { return parseFloat(plotItem.value); });
+    var mean = simple_statistics.mean(valuesAsNumbers);
+    var standardDeviation = simple_statistics.standard_deviation(valuesAsNumbers);
+    
     var resultIndex = 1;
     
     // Build chart
@@ -678,6 +684,32 @@ export function d3HistogramChart(graphBrowserInstance: GraphHolder, scaleQuestio
         });
     
     supportStartingDragOverStoryDisplayItemOrCluster(chartBody, storyDisplayItems);
+    
+    // Draw mean
+    // console.log("mean", mean, valuesAsNumbers);
+    chartBody.append("line")
+        .attr("x1", xScale(mean))
+        .attr("y1", yHeightScale(0))
+        .attr("x2", xScale(mean))
+        .attr("y2", yHeightScale(maxValue))
+        .style("stroke", "rgb(6,120,155)");
+    
+    // Draw standard deviation
+    // console.log("standard deviation", standardDeviation, valuesAsNumbers);
+    var sdLow = mean - standardDeviation;
+    var sdHigh = mean + standardDeviation;
+    chartBody.append("line")
+        .attr("x1", xScale(sdLow))
+        .attr("y1", yHeightScale(0))
+        .attr("x2", xScale(sdLow))
+        .attr("y2", yHeightScale(maxValue))
+        .style("stroke", "rgb(155,6,6)");
+    chartBody.append("line")
+        .attr("x1", xScale(sdHigh))
+        .attr("y1", yHeightScale(0))
+        .attr("x2", xScale(sdHigh))
+        .attr("y2", yHeightScale(maxValue))
+        .style("stroke", "rgb(155,6,6)");
     
     function isPlotItemSelected(extent, plotItem) {
         // We don't want to compute a midPoint based on plotItem.value which can be anywhere in the bin; we want to use the stored bin.x.
