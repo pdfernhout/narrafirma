@@ -28,8 +28,8 @@ function processCSVContents(contents, callbackForItem) {
     
     for (var rowIndex = 0; rowIndex < rows.length; rowIndex++) {
         var row = rows[rowIndex];
-        // Throw away initial blank lines and comment lines
-        if (!row.length || !row[0] || row[0].trim().charAt(0) === ";") {
+        // Throw away comment lines and lines with blanks at first two positions
+        if (!row.length || row.length < 2 || (!row[0].trim() && !row[1].trim()) || row[0].trim().charAt(0) === ";") {
             console.log("comment", row[0]);
         } else {
             if (!header) {
@@ -59,6 +59,12 @@ function processCSVContents(contents, callbackForItem) {
     return {header: header, items: items};
 }
 
+function padLeadingZeros(num: number, size: number) {
+    var result = num + "";
+    while (result.length < size) result = "0" + result;
+    return result;
+}
+
 function processCSVContentsForStories(contents) {
     var storyCollectionName = Globals.clientState().storyCollectionName();
     if (!storyCollectionName) {
@@ -70,12 +76,11 @@ function processCSVContentsForStories(contents) {
     
     var progressModel = dialogSupport.openProgressDialog("Processing CSV file...", "Progress writing imported stories", "Cancel", dialogCancelled);
   
-    // Throws away line after header which starts with a blank
     var headerAndItems = processCSVContents(contents, function (header, row) {
         var newItem = {};
         for (var fieldIndex = 0; fieldIndex < header.length; fieldIndex++) {
             var fieldName = header[fieldIndex];
-            // TODO: Should the value really be trimmed?
+            // Note the value is trimmed
             var value = row[fieldIndex].trim();
             if (newItem[fieldName] === undefined) {
                 newItem[fieldName] = value;
@@ -92,11 +97,13 @@ function processCSVContentsForStories(contents) {
                 }
             }
         }
+        
         return newItem;
     });
     console.log("processCSVContentsForStories headerAndItems", headerAndItems);
     var items = headerAndItems.items;
     var surveyResults = [];
+    var untitledCount = 0;
     // TODO: this is a kludgy way to get a string and seems brittle
     var importedByUserIdentifier = project.userIdentifier.userIdentifier;
     for (var itemIndex = 0; itemIndex < items.length; itemIndex++) {
@@ -130,7 +137,7 @@ function processCSVContentsForStories(contents) {
             participantID: newSurveyResult.participantData.participantID,
             elicitingQuestion: elicitingQuestion,
             storyText: item["Story text"],
-            storyName: item["Story title"]
+            storyName: item["Story title"] || ("Untitled #" + padLeadingZeros(++untitledCount, 4))
         };
     
         var i;
