@@ -8,9 +8,6 @@ H Test statistical tests for validity - run same tests in spreadsheet on same da
 CATALYSIS REPORT
 H Make use of question threshold selection (configureCatalysisReport_minimumSubsetSize) to limit graphs in catalysis report
 
-GENERAL
-H Test readonly use as anonymous under WordPress
-
 ======= CYNTHIA
 
 H Create help
@@ -907,3 +904,4 @@ NOT DOING Make sections optional in loadAllPanelSpecifications to make that code
 DONE Support graphBrowser standard deviation and mean for histograms
 DONE Restore third clustering diagram in create project story elements in planning section [also dded fourth]
 DONE Add buttons to copy clustering diagram clusters or items to next step in project story elements page in planning section
+DONE Test readonly use as anonymous under WordPress
