@@ -77,3 +77,10 @@ interface ClusteringDiagramItem {
     radius?: number;
     textStyle?;
 }
+
+interface ClusteringDiagramModel {
+    surfaceWidthInPixels: number;
+    surfaceHeightInPixels: number;
+    items: ClusteringDiagramItem[];
+    changesCount: number;
+}
