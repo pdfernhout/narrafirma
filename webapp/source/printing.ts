@@ -454,8 +454,13 @@ export function printCatalysisReport() {
     
     var clusteringDiagram = project.tripleStore.queryLatestC(catalysisReportIdentifier, "interpretationsClusteringDiagram");
     console.log("clusteringDiagram", clusteringDiagram);
-    
-    var todo = ClusteringDiagram.calculateClusteringForDiagram(clusteringDiagram);
+    if (!clusteringDiagram) {
+        console.log("clusteringDiagram not defined");
+        alert("Please cluster interpretations before printing.");
+        return;
+    }
+        
+    ClusteringDiagram.calculateClusteringForDiagram(clusteringDiagram);
     
     console.log("clusteringDiagram with clusters", clusteringDiagram);
     
