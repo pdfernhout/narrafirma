@@ -34,8 +34,8 @@ var panel: Panel = {
         {
             id: "project_storyElements_storiesList",
             valueType: "object",
+            valuePath: "project_projectStoriesList",
             displayType: "storiesList",
-            displayConfiguration: "project_projectStoryElementsAnswersClusteringDiagram",
             displayPrompt: `
                 <b>2</b>. These are your project stories.
                 Click on the button below to copy them as clusters to the first diagram.

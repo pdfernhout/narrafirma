@@ -10,8 +10,9 @@ function add_storiesList(panelBuilder: PanelBuilder, model, fieldSpecification) 
 
     var tripleStore = Globals.project().tripleStore;
 
-    // TODO: Generalize this so it can be abut more than just project stories
-    var storyIdentifierList = Globals.project().getListForField("project_projectStoriesList");
+    // TODO: Generalize this so it can handle more complex value paths than just a project field name
+    var storyIdentifierList = Globals.project().getListForField(fieldSpecification.valuePath);
+    
     var storyNameField = "projectStory_name";
     var storyTextField = "projectStory_text";
    

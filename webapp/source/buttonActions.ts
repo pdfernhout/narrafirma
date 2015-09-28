@@ -349,34 +349,55 @@ function copyClusteringDiagramElements(fromDiagramField: string, fromType: strin
     }
 }
 
-// "project_storyElements_projectStoriesList"
-
 export function copyPlanningStoriesToClusteringDiagram(model) {
     console.log("copyPlanningStoriesToClusteringDiagram", model);
-}
+    
+    var list = project.getListForField("project_projectStoriesList");
+    console.log("copyPlanningStoriesToClusteringDiagram", list);
+    
+    var toDiagramField = "project_storyElements_answersClusteringDiagram";
+    
+    var toDiagram: ClusteringDiagramModel = project.getFieldValue(toDiagramField) || ClusteringDiagram.newDiagramModel();
+    console.log("toDiagram", toDiagram);
 
-// "project_storyElements_answersClusteringDiagram"
+    var addedItemCount = 0;
+        
+    list.forEach((projectStoryIdentifier) => {
+        var projectStory = project.tripleStore.makeObject(projectStoryIdentifier);
+        console.log("projectStory", projectStory);
+        
+        var storyName = projectStory.projectStory_name;
+        var storyText = projectStory.projectStory_text;
+        
+        if (!isNamedItemInDiagram(toDiagram, storyName, "cluster")) {
+            ClusteringDiagram.addNewItemToDiagram(toDiagram, "cluster", storyName, storyText);
+            addedItemCount++;
+        }    
+    });
+    
+    if (addedItemCount) {
+        toaster.toast("Updating diagram");
+        project.setFieldValue(toDiagramField, toDiagram);
+    } else {
+        toaster.toast("No changes were needed to diagram");
+    }
+
+}
 
 export function copyAnswersToClusteringDiagram(model) {
     console.log("copyAnswersToClusteringDiagram", model);
     copyClusteringDiagramElements("project_storyElements_answersClusteringDiagram", "item", "project_storyElements_answerClustersClusteringDiagram", "item");
 }
 
-// "project_storyElements_answerClustersClusteringDiagram"
-
 export function copyAnswerClustersToClusteringDiagram(model) {
     console.log("copyAnswerClustersToClusteringDiagram", model);
     copyClusteringDiagramElements("project_storyElements_answerClustersClusteringDiagram", "cluster", "project_storyElements_attributesClusteringDiagram", "cluster");
 }
 
-// "project_storyElements_attributesClusteringDiagram"
-
 export function copyAttributesToClusteringDiagram(model) {
     console.log("copyAttributesToClusteringDiagram", model);
     copyClusteringDiagramElements("project_storyElements_attributesClusteringDiagram", "item", "project_storyElements_attributeClustersClusteringDiagram", "item");
 }
-
-// "project_storyElements_attributeClustersClusteringDiagram"
 
 export var enterSurveyResult = openSurveyDialog;
 export var toggleWebActivationOfSurvey = surveyCollection.toggleWebActivationOfSurvey;
