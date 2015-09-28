@@ -1,7 +1,6 @@
 ==== NarraFirma TODO list:
 
 GRAPH BROWSER
-H Support graphBrowser standard deviation and mean for histograms
 H Support graphBrowser contingency table with statistical results - chi squared
 H Finish Mann-Whitney U test
 H Test statistical tests for validity - run same tests in spreadsheet on same data
@@ -21,10 +20,6 @@ H Fix wording on dashboard pages (and all wording related to reminders) - finish
 H Create full demo project to go with sample data
 
 ----------------------- THINGS REMOVED FROM HIGH PRIORITY LIST
-
-PLANNING
-M Restore third clustering diagram in create project story elements in planning section
-M Add buttons to copy clustering diagram clusters or items to next step in project story elements page in planning section
 
 SURVEY GENERAL
 L Display how many stories and/or survey results have been collected
@@ -48,6 +43,7 @@ X Survey - back button in browser -- deal with so don't lose data
 IDs
 X Improve how options are specified for questions in question designer rather than use text box
 X Make sure that short name IDs entered by user when defining questions are unique among themselves
+Remove S_ etc. from displayed labels
 
 EXPORT/IMPORT
 M Make project report page work in Administration to show all data entered in human-readable form
@@ -70,6 +66,7 @@ X Page to cluster themes into final themes
 GRAPH BROWSER
 M Support multiple scatter plots across individual question answers
 L Support graphBrowser common maximum for multiple histograms
+M Show skewness and curtosis on histogram
 
 PATTERN BROWSER
 L Move options (how large should subsets, what significance threshold) to popup under patterns list
@@ -907,3 +904,6 @@ DONE Think about and improve issue of values that can be set only once like cata
 DONE Improve how panel_addStoryCollection updates story forms
 NOT DOING Remove panel's displayName, isHeader, and section fields since now defined by navigation and that is duplicated information [simplified navigation instead]
 NOT DOING Make sections optional in loadAllPanelSpecifications to make that code more reuseable
+DONE Support graphBrowser standard deviation and mean for histograms
+DONE Restore third clustering diagram in create project story elements in planning section [also dded fourth]
+DONE Add buttons to copy clustering diagram clusters or items to next step in project story elements page in planning section
