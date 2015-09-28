@@ -125,7 +125,7 @@ class ClusteringDiagram {
     static defaultRadius = 44;
 
     constructor(storageFunction: Function, autosave) {
-        console.log("Creating ClusteringDiagram");
+        // console.log("Creating ClusteringDiagram");
     
         this.storageFunction = storageFunction; 
         this.autosave = autosave;
@@ -149,7 +149,7 @@ class ClusteringDiagram {
             this.diagram.changesCount = 0;
         }
         
-        console.log("diagram", JSON.stringify(this.diagram, null, 2));
+        // console.log("diagram", JSON.stringify(this.diagram, null, 2));
         
         this.setupMainButtons();
     
@@ -157,12 +157,12 @@ class ClusteringDiagram {
     }
     
     static controller(args) {
-        console.log("Making ClusteringDiagram: ", args);
+        // console.log("Making ClusteringDiagram: ", args);
         return new ClusteringDiagram(args.storageFunction, args.autosave);
     }
     
     static view(controller, args) {
-        console.log("ClusteringDiagram view called");
+        // console.log("ClusteringDiagram view called");
         
         return controller.calculateView(args);
     }
@@ -195,7 +195,7 @@ class ClusteringDiagram {
     }
     
     configSurface(element: HTMLElement, isInitialized: boolean, context: any) {
-        console.log("configSurface called");
+        // console.log("configSurface called");
         if (!isInitialized) {
             element.appendChild(this.divForResizing);
         }
@@ -238,7 +238,7 @@ class ClusteringDiagram {
             .style('stroke-width', '3')
             .style('stroke', '#a7a5a5')
             .on("mousedown", () => {
-                console.log("mousedown in background");
+                // console.log("mousedown in background");
                 this.selectItem(null);
                 // console.log("mousedown item", item);
             });
@@ -272,7 +272,7 @@ class ClusteringDiagram {
         var newWidth = this.divForResizing.clientWidth;
         var newHeight = this.divForResizing.clientHeight;
         
-        console.log("resize from ResizeHandle drag", newWidth, newHeight);
+        // console.log("resize from ResizeHandle drag", newWidth, newHeight);
         this._mainSurface.attr("width", newWidth).attr("height", newHeight);
         this.background.attr('width', newWidth).attr('height', newHeight);
         
@@ -286,7 +286,7 @@ class ClusteringDiagram {
         var newWidth = this.diagram.surfaceWidthInPixels;
         var newHeight = this.diagram.surfaceHeightInPixels;
         
-        console.log("resize from model change", newWidth, newHeight);
+        // console.log("resize from model change", newWidth, newHeight);
         this.divForResizing.setAttribute("style", "width: " + this.diagram.surfaceWidthInPixels + "px; height: " + this.diagram.surfaceHeightInPixels + "px; border: solid 1px; position: relative");
         this._mainSurface.attr("width", newWidth).attr("height", newHeight);
         this.background.attr('width', newWidth).attr('height', newHeight);
@@ -345,7 +345,7 @@ class ClusteringDiagram {
         if (!this.autosave) {
             // TODO: Translate
             this.newButton("saveChangesButton", "Save Changes", () => {
-                console.log("About to save");
+                // console.log("About to save");
                 this.saveChanges();
             });
         }
@@ -374,7 +374,7 @@ class ClusteringDiagram {
     }
     
      openCanvasSizeDialog() {
-        console.log("openCanvasSizeDialog");  
+        // console.log("openCanvasSizeDialog");  
         // alert("This should open a dialog");
         
         // TODO: Make a single dialog
@@ -400,7 +400,7 @@ class ClusteringDiagram {
     }
     
     openEntryDialog(item, isExistingItem) {
-        console.log("openEntryDialog", item, isExistingItem);
+        // console.log("openEntryDialog", item, isExistingItem);
         this.itemBeingEdited = item;
         this.itemBeingEditedCopy = JSON.parse(JSON.stringify(item));
         this.isEditedItemNew = !isExistingItem;
@@ -441,13 +441,13 @@ class ClusteringDiagram {
             m("button", {
                 onclick: () => {
                     this.showEntryDialog = false;
-                    console.log("copy", this.itemBeingEditedCopy);
+                    // console.log("cancel", this.itemBeingEditedCopy);
                 }
             }, "Cancel"),
             m("button", {
                 onclick: () => {
                     this.showEntryDialog = false;
-                    console.log("copy", this.itemBeingEditedCopy);
+                    // console.log("ok", this.itemBeingEditedCopy);
                     this.itemBeingEdited.name = this.itemBeingEditedCopy.name;
                     this.itemBeingEdited.notes = this.itemBeingEditedCopy.notes;
                     if (this.isEditedItemNew) {
@@ -457,7 +457,7 @@ class ClusteringDiagram {
                     } else {
                         this.updateDisplayForChangedItem(this.itemBeingEdited, "update");
                     }
-                    console.log("items", this.diagram.items);
+                    // console.log("items", this.diagram.items);
                     this.incrementChangesCount();
                     this.selectItem(this.itemBeingEdited);
                 }
@@ -466,7 +466,7 @@ class ClusteringDiagram {
     }
     
     updateSourceClicked(text, hideDialogMethod) {     
-        console.log("updateSourceClicked", text);
+        // console.log("updateSourceClicked", text);
     
         var newDiagram;
         try {
@@ -477,7 +477,7 @@ class ClusteringDiagram {
         }
         hideDialogMethod();
     
-        console.log("parsed diagram", newDiagram);
+        // console.log("parsed diagram", newDiagram);
         this.updateDiagram(newDiagram);
         this.incrementChangesCount();
     }
@@ -582,7 +582,7 @@ class ClusteringDiagram {
     }
     
     addDisplayObjectForItem(surface, item: ClusteringDiagramItem) {
-        console.log("addDisplayObjectForItem item", item);
+        // console.log("addDisplayObjectForItem item", item);
         
         var bodyColor = item.bodyColor;
         if (!bodyColor) bodyColor = ClusteringDiagram.defaultBodyColor;
@@ -734,13 +734,13 @@ class ClusteringDiagram {
             return item.type === "cluster";
         });
         
-        console.log("clusters", clusters);
+        // console.log("clusters", clusters);
         
         var items = clusteringDiagram.items.filter(function (item) {
             return item.type === "item";
         });
         
-        console.log("items", items);
+        // console.log("items", items);
         
         items.forEach((item) => {
             item.clusterDistance = Number.MAX_VALUE;
