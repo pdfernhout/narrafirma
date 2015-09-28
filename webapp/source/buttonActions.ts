@@ -14,6 +14,7 @@ import toaster = require("./panelBuilder/toaster");
 import ClientState = require("./ClientState");
 import printing = require("./printing");
 import projectImportExport = require("./projectImportExport");
+import ClusteringDiagram = require("./applicationWidgets/ClusteringDiagram");
 
 "use strict";
 
@@ -237,24 +238,18 @@ export function copyInterpretationsToClusteringDiagram() {
     
     if (!confirm("Copy intepretations for this catalysys report into clustering diagram?")) return;
     
-    var clusteringDiagram = project.tripleStore.queryLatestC(catalysisReportIdentifier, "interpretationsClusteringDiagram");
+    var clusteringDiagram: ClusteringDiagramModel = project.tripleStore.queryLatestC(catalysisReportIdentifier, "interpretationsClusteringDiagram");
     
     console.log("clusteringDiagram before", clusteringDiagram);
     
     if (!clusteringDiagram) {
-        // TODO: This shoudl be done by clustering diagram library -- redundant code
-        clusteringDiagram = {
-            surfaceWidthInPixels: 800,
-            surfaceHeightInPixels: 500,
-            items: [],
-            changesCount: 0
-        };
+        clusteringDiagram = ClusteringDiagram.newDiagramModel();
     }
     
     var existingItemNames = {};
     
     clusteringDiagram.items.forEach((item) => {
-        existingItemNames[item.text] = true;
+        existingItemNames[item.name] = true;
     });
     
     var addedItemCount = 0;
@@ -263,15 +258,7 @@ export function copyInterpretationsToClusteringDiagram() {
     allInterpretations.forEach((interpretation) => {
         if (!existingItemNames[interpretation.name]) {
             addedItemCount++;
-            var item: ClusteringDiagramItem = {
-                name: interpretation.name,
-                "type": "item",
-                notes: interpretation.text,
-                uuid: generateRandomUuid("ClusteringDiagramItem"),
-                x: 100 + addedItemCount * shiftPerItem,
-                y: 100 + addedItemCount * shiftPerItem
-            };
-            clusteringDiagram.items.push(item);
+            ClusteringDiagram.addNewItemToDiagram(clusteringDiagram, "item", interpretation.name, interpretation.text);
         }
     });
 
@@ -322,6 +309,46 @@ export function updateQuestionnaireForStoryCollection(storyCollectionIdentifier)
     return;
 }
 
+function isNamedItemInDiagram(diagram: ClusteringDiagramModel, name: string, itemType: string = null) {
+    diagram.items.forEach((item) => {
+        if (!itemType || item.type === itemType) {
+            if (item.name === name) {
+                return true;
+            }
+        }
+    });
+    return false;
+}
+
+function copyClusteringDiagramElements(fromDiagramField: string, fromType: string, toDiagramField: string, toType: string) {
+    console.log("copyClusteringDagramElements", fromDiagramField, fromType, toDiagramField, toType);
+
+    var fromDiagram: ClusteringDiagramModel = project.getFieldValue(fromDiagramField);
+    console.log("fromDiagram", fromDiagram);
+    if (!fromDiagram || !fromDiagram.items.length) return;
+    
+    var toDiagram: ClusteringDiagramModel = project.getFieldValue(toDiagramField) || ClusteringDiagram.newDiagramModel();
+    console.log("toDiagram", toDiagram);
+    
+    var addedItemCount = 0;
+    
+    fromDiagram.items.forEach((item) => {
+        if (item.type === fromType) {
+            if (!isNamedItemInDiagram(toDiagram, item.name, toType)) {
+                ClusteringDiagram.addNewItemToDiagram(toDiagram, toType, item.name, item.notes);
+                addedItemCount++;
+            }
+        }
+    });
+    
+    if (addedItemCount) {
+        toaster.toast("Updating diagram");
+        project.setFieldValue(toDiagramField, toDiagram);
+    } else {
+        toaster.toast("No changes were needed to diagram");
+    }
+}
+
 // "project_storyElements_projectStoriesList"
 
 export function copyPlanningStoriesToClusteringDiagram(model) {
@@ -332,18 +359,21 @@ export function copyPlanningStoriesToClusteringDiagram(model) {
 
 export function copyAnswersToClusteringDiagram(model) {
     console.log("copyAnswersToClusteringDiagram", model);
+    copyClusteringDiagramElements("project_storyElements_answersClusteringDiagram", "item", "project_storyElements_answerClustersClusteringDiagram", "item");
 }
 
 // "project_storyElements_answerClustersClusteringDiagram"
 
 export function copyAnswerClustersToClusteringDiagram(model) {
     console.log("copyAnswerClustersToClusteringDiagram", model);
+    copyClusteringDiagramElements("project_storyElements_answerClustersClusteringDiagram", "cluster", "project_storyElements_attributesClusteringDiagram", "cluster");
 }
 
 // "project_storyElements_attributesClusteringDiagram"
 
 export function copyAttributesToClusteringDiagram(model) {
     console.log("copyAttributesToClusteringDiagram", model);
+    copyClusteringDiagramElements("project_storyElements_attributesClusteringDiagram", "item", "project_storyElements_attributeClustersClusteringDiagram", "item");
 }
 
 // "project_storyElements_attributeClustersClusteringDiagram"
