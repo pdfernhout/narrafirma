@@ -7,7 +7,7 @@ import valuePathResolver = require("../panelBuilder/valuePathResolver");
 
 function add_clusteringDiagram(panelBuilder: PanelBuilder, model, fieldSpecification) {
     // clustering diagram using a list of 2D objects
-    console.log("add_clusteringDiagram", model, fieldSpecification);
+    // console.log("add_clusteringDiagram", model, fieldSpecification);
     
     var prompt = panelBuilder.buildQuestionLabel(fieldSpecification);
         
