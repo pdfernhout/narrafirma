@@ -191,6 +191,10 @@ class Application {
             buttonActions.logoutButtonClicked();
         };
         
+        window["narrafirma_loginClicked"] = () => {
+            buttonActions.loginButtonClicked();
+        };
+        
         window["narrafirma_helpClicked"] = (pageIdentifier) => {
             buttonActions.helpButtonClicked();
         };
@@ -222,8 +226,11 @@ class Application {
                 return;
             }
             console.log("initialize response", response);
-            this.userIdentifier = response.userIdentifier;
-            if (this.userIdentifier === undefined) this.userIdentifier = "anonymous";
+            var userIdentifier = response.userIdentifier;
+            if (userIdentifier === undefined || userIdentifier === null || userIdentifier === false) {
+                userIdentifier = "anonymous";
+            }  
+            this.userIdentifier = userIdentifier;
             var projects = [];
             for (var key in response.journalPermissions) {
                 if (!_.startsWith(key, narrafirmaProjectPrefix)) continue;
