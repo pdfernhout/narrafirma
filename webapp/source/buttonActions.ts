@@ -322,6 +322,32 @@ export function updateQuestionnaireForStoryCollection(storyCollectionIdentifier)
     return;
 }
 
+// "project_storyElements_projectStoriesList"
+
+export function copyPlanningStoriesToClusteringDiagram(model) {
+    console.log("copyPlanningStoriesToClusteringDiagram", model);
+}
+
+// "project_storyElements_answersClusteringDiagram"
+
+export function copyAnswersToClusteringDiagram(model) {
+    console.log("copyAnswersToClusteringDiagram", model);
+}
+
+// "project_storyElements_answerClustersClusteringDiagram"
+
+export function copyAnswerClustersToClusteringDiagram(model) {
+    console.log("copyAnswerClustersToClusteringDiagram", model);
+}
+
+// "project_storyElements_attributesClusteringDiagram"
+
+export function copyAttributesToClusteringDiagram(model) {
+    console.log("copyAttributesToClusteringDiagram", model);
+}
+
+// "project_storyElements_attributeClustersClusteringDiagram"
+
 export var enterSurveyResult = openSurveyDialog;
 export var toggleWebActivationOfSurvey = surveyCollection.toggleWebActivationOfSurvey;
 export var storyCollectionStop = surveyCollection.storyCollectionStop;
