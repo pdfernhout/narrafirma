@@ -1,18 +1,21 @@
 import kludgeForUseStrict = require("../../kludgeForUseStrict");
 "use strict";
 
+// TODO: Maybe store one set of diagrams for each type of question?
+// TODO: Maybe remove storiesList use and also supporting code?
+
 var panel: Panel = {
     id: "page_createProjectStoryElements",
     displayName: "Create project story elements",
     panelFields: [
         {
-            id: "project_projectStoryElementsInstructions",
+            id: "project_storyElements_instructions",
             valueType: "none",
             displayType: "label",
             displayPrompt: "On this page you will use your project stories to create <b>story elements</b>. Story elements are abstract representations of the meanings found in stories. Going through this exercise can help you think about what you want to happen in your project. (You can also do this exercise on paper. If you do that, skip to the bottom of this page to enter the story elements you created.)"
         },
         {
-            id: "project_projectStoryElementsType",
+            id: "project_storyElements__questionType",
             valueType: "string",
             valueOptions: [
                 {value: "characters", label: "Characters: Who is doing things in this story?"},
@@ -29,7 +32,7 @@ var panel: Panel = {
             displayPrompt: "<b>1</b>. Choose a <b>type</b> of story element to create."
         },
         {
-            id: "project_projectStoryElements_storiesList",
+            id: "project_storyElements_storiesList",
             valueType: "object",
             displayType: "storiesList",
             displayConfiguration: "project_projectStoryElementsAnswersClusteringDiagram",
@@ -39,24 +42,23 @@ var panel: Panel = {
             `
         },
         {
-            id: "project_copyPlanningStoriesToClusteringDiagram",
+            id: "project_storyElements_copyButton1",
             valueType: "none",
             displayType: "button",
             displayPrompt: "Copy planning stories to clustering diagram",
             displayConfiguration: "copyPlanningStoriesToClusteringDiagram"
         },
         {
-            id: "project_projectStoryElementsAnswersClusteringDiagram",
+            id: "project_storyElements_answersClusteringDiagram",
             valueType: "object",
             displayType: "clusteringDiagram",
             displayPrompt: `
                 <b>3</b>. For each story, come up with as many <b>answers</b> to the above question as you can.
                 For each answer, click the <b>New item</b> button to add it to the diagram below.
             `
-
         },
         {
-            id: "project_copyPlanningStoriesToClusteringDiagramLabel",
+            id: "project_storyElements_copyButton2Label",
             valueType: "none",
             displayType: "label",
             displayPrompt: `
@@ -65,40 +67,40 @@ var panel: Panel = {
             `
         },        
         {
-            id: "project_copyNewAnswersToClusteringDiagram",
+            id: "project_storyElements_copyButton2",
             valueType: "none",
             displayType: "button",
             displayPrompt: "Copy new answers to next clustering diagram",
-            displayConfiguration: "copyNewAnswersToClusteringDiagram"
+            displayConfiguration: "copyAnswersToClusteringDiagram"
         },
         {
-            id: "project_projectStoryElementsAnswersClusteringDiagram",
+            id: "project_storyElements_answerClustersClusteringDiagram",
             valueType: "object",
             displayType: "clusteringDiagram",
             displayPrompt: `
                 <b>4</b>. Now <b>cluster</b> your answers together. 
                 Drag the circles to place like with like.<br> 
                 <b>5</b>. Give each cluster of answers a <b>name</b>. 
-                Click the <b>New cluster</b> button to represent each cluster name on the diagram.
+                Click the <b>New cluster</b> button to represent each answer cluster name on the diagram.
             `
         },
         {
-            id: "project_copyNewClustersToClusteringDiagramLabel",
+            id: "project_storyElements_copyButton3Label",
            valueType: "none",
             displayType: "label",
             displayPrompt: `
-                <b>6</b>. Press the button below to copy the cluster names to the next clustering diagram. 
+                <b>6</b>. Press the button below to copy the answer cluster names to the next clustering diagram. 
             `
         },        
         {
-            id: "project_copyNewClustersToClusteringDiagram",
+            id: "project_storyElements_copyButton3",
             valueType: "none",
             displayType: "button",
             displayPrompt: "Copy new answers to next clustering diagram",
-            displayConfiguration: "copyNewClustersToClusteringDiagram"
+            displayConfiguration: "copyAnswerClustersToClusteringDiagram"
         },
         {
-            id: "project_projectStoryElementsAttributesClusteringDiagram",
+            id: "project_storyElements_attributesClusteringDiagram",
             valueType: "object",
             displayType: "clusteringDiagram",
             displayPrompt: `
@@ -110,7 +112,7 @@ var panel: Panel = {
             `
         },
         {
-            id: "project_projectStoryElementsLabelStep8",
+            id: "project_storyElements_copyButton4Label",
             valueType: "none",
             displayType: "label",
             displayPrompt: `
@@ -118,14 +120,14 @@ var panel: Panel = {
             `
         },        
         {
-            id: "project_copyNewAttributesToClusteringDiagram",
+            id: "project_storyElements_copyButton4",
             valueType: "none",
             displayType: "button",
             displayPrompt: "Copy new attributes to next clustering diagram",
-            displayConfiguration: "copyNewAttributesToClusteringDiagram"
+            displayConfiguration: "copyAttributesToClusteringDiagram"
         },
         {
-            id: "project_projectStoryElementsAttributeGroupsClusteringDiagram",
+            id: "project_storyElements_attributeClustersClusteringDiagram",
             valueType: "object",
             displayType: "clusteringDiagram",
             displayPrompt: `
