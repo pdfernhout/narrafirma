@@ -898,6 +898,9 @@ export function d3ContingencyTable(graphBrowserInstance: GraphHolder, xAxisQuest
     //columnLabels["{Total}"] = 0;
     //rowLabels["{Total}"] = 0;
     
+    var xHasCheckboxes = xAxisQuestion.displayType === "checkboxes";
+    var yHasCheckboxes = yAxisQuestion.displayType === "checkboxes";
+    
     // collect data
     var results = {};
     var plotItemStories = {};
@@ -908,8 +911,6 @@ export function d3ContingencyTable(graphBrowserInstance: GraphHolder, xAxisQuest
         var xValue = correctForUnanswered(xAxisQuestion, story.fieldValue(xAxisQuestion.id));
         var yValue = correctForUnanswered(yAxisQuestion, story.fieldValue(yAxisQuestion.id));
         
-        var xHasCheckboxes = _.isObject(xValue);
-        var yHasCheckboxes = _.isObject(yValue);
         // fast path
         if (!xHasCheckboxes && !yHasCheckboxes) {
             incrementMapSlot(results, JSON.stringify({x: xValue, y: yValue}));
@@ -924,19 +925,23 @@ export function d3ContingencyTable(graphBrowserInstance: GraphHolder, xAxisQuest
             var yValues = [];
             if (xHasCheckboxes) {
                 // checkboxes
-                for (key in xValue) {
-                    if (xValue[key]) xValues.push(key);
+                for (key in xValue || {}) {
+                    if (xValue[key]) {
+                        xValues.push(key);
+                    }
                 }
             } else {
-                xValues.push(xValue);                
+                xValues.push(xValue);
             }
             if (yHasCheckboxes) {
                 // checkboxes
-                for (key in yValue) {
-                    if (yValue[key]) yValues.push(key);
+                for (key in yValue || {}) {
+                    if (yValue[key]) {
+                        yValues.push(key);
+                    } 
                 }
             } else {
-                yValues.push(yValue);                
+                yValues.push(yValue);  
             }
             for (var xIndex in xValues) {
                 for (var yIndex in yValues) {
@@ -963,16 +968,31 @@ export function d3ContingencyTable(graphBrowserInstance: GraphHolder, xAxisQuest
     }
     var rowCount = rowLabelsArray.length;
     
-    var allPlotItems = [];
+    var observedPlotItems = [];
+    var expectedPlotItems = [];
     for (var ci in columnLabelsArray) {
         var c = columnLabelsArray[ci];
         for (var ri in rowLabelsArray) {
             var r = rowLabelsArray[ri];
-            var indexSelector = JSON.stringify({x: c, y: r});
-            var value = results[indexSelector] || 0;
-            var storiesForNewPlotItem = plotItemStories[indexSelector] || [];
-            var plotItem = {x: c, y: r, value: value, stories: storiesForNewPlotItem};
-            allPlotItems.push(plotItem);
+            var xySelector = JSON.stringify({x: c, y: r});
+            
+            var observedValue = results[xySelector] || 0;
+            var storiesForNewPlotItem = plotItemStories[xySelector] || [];
+            var observedPlotItem = {x: c, y: r, value: observedValue, stories: storiesForNewPlotItem};
+            observedPlotItems.push(observedPlotItem);
+            
+            if (!xHasCheckboxes && !yHasCheckboxes) {
+                // Can only calculate expected and do chi-square if choices are exclusive
+                var columnSelector = JSON.stringify({x: c});
+                var columnTotal = results[columnSelector] || 0;
+                
+                var rowSelector = JSON.stringify({y: r});
+                var rowTotal = results[rowSelector] || 0; 
+            
+                var expectedValue = (columnTotal * rowTotal) / stories.length;
+                var expectedPlotItem = {x: c, y: r, value: expectedValue};
+                expectedPlotItems.push(expectedPlotItem);
+            }
         }
     }
     
@@ -1017,12 +1037,12 @@ export function d3ContingencyTable(graphBrowserInstance: GraphHolder, xAxisQuest
     chart.brush = createBrush(chartBody, xScale, yScale, brushend);
     
     // Compute a scaling factor to map plotItem values onto a widgth and height
-    var maxPlotItemValue = d3.max(allPlotItems, function(plotItem) { return plotItem.value; });
+    var maxPlotItemValue = d3.max(observedPlotItems, function(plotItem) { return plotItem.value; });
     var xValueMultiplier = xScale.rangeBand() / maxPlotItemValue / 2.0;
     var yValueMultiplier = yScale.rangeBand() / maxPlotItemValue / 2.0;
 
     var storyDisplayClusters = chartBody.selectAll(".storyCluster")
-            .data(allPlotItems)
+            .data(observedPlotItems)
         .enter().append("ellipse")
             .attr("class", "storyCluster observed")
             // TODO: Scale size of plot item
@@ -1030,7 +1050,19 @@ export function d3ContingencyTable(graphBrowserInstance: GraphHolder, xAxisQuest
             .attr("ry", function (plotItem) { return yValueMultiplier * plotItem.value; } )
             .attr("cx", function (plotItem) { return xScale(plotItem.x) + xScale.rangeBand() / 2.0; } )
             .attr("cy", function (plotItem) { return yScale(plotItem.y) + yScale.rangeBand() / 2.0; } );
-    
+
+    if (expectedPlotItems.length) {
+        var expectedDisplayClusters = chartBody.selectAll(".expected")
+                .data(expectedPlotItems)
+            .enter().append("ellipse")
+                .attr("class", "expected")
+                // TODO: Scale size of plot item
+                .attr("rx", function (plotItem) { return xValueMultiplier * plotItem.value; } )
+                .attr("ry", function (plotItem) { return yValueMultiplier * plotItem.value; } )
+                .attr("cx", function (plotItem) { return xScale(plotItem.x) + xScale.rangeBand() / 2.0; } )
+                .attr("cy", function (plotItem) { return yScale(plotItem.y) + yScale.rangeBand() / 2.0; } );
+    }
+
     // Add tooltips
     storyDisplayClusters.append("svg:title")
         .text(function(plotItem) {

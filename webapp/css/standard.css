@@ -519,7 +519,7 @@ form {
 }
 
 .contingencyChart .storyCluster.observed {
-  stroke-width: 2px;
+  stroke-width: 3px;
   stroke: #2e4a85;
   fill: #d5dae6;
 }
@@ -531,8 +531,9 @@ form {
 }
 
 .contingencyChart .expected {
-  stroke-width: 2px;
-  stroke: #3e3739;
+  stroke-width: 1px;
+  stroke: #8e8789;
+  stroke-dasharray: "5,5";
   fill: none;
 }
 
