@@ -147,13 +147,16 @@ class ClusteringDiagram {
     }
     
     static bumpedItemCount = 0;
-    static bumpShiftPerItem = 10;
-    static initialDisplacement = 200;
-
+    static bumpXShiftPerItem = 50;
+    static bumpYShiftPerItem = 50;
+    static initialDisplacement = 100;
+    static bumpXRange = 400;
+    static bumpYRange = 400;
+    
     static bumpXYOfItem(item: ClusteringDiagramItem) {
         ClusteringDiagram.bumpedItemCount++;
-        item.x = item.x + (ClusteringDiagram.bumpedItemCount * ClusteringDiagram.bumpShiftPerItem) % ClusteringDiagram.initialDisplacement;
-        item.y = item.y + (ClusteringDiagram.bumpedItemCount * ClusteringDiagram.bumpShiftPerItem) % ClusteringDiagram.initialDisplacement;
+        item.x = item.x + (ClusteringDiagram.bumpedItemCount * ClusteringDiagram.bumpXShiftPerItem) % ClusteringDiagram.bumpXRange;
+        item.y = item.y + (ClusteringDiagram.bumpedItemCount / 10 * ClusteringDiagram.bumpYShiftPerItem) % ClusteringDiagram.bumpYRange;
     }
     
     static addNewItemToDiagram(diagram: ClusteringDiagramModel, itemType: string, name: string, notes: string = "") {
