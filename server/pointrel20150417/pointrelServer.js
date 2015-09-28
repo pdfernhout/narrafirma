@@ -843,7 +843,7 @@ function processRequest(apiRequest, callback, request) {
         // Requests not requiring a specific journal
         
         if (requestType === "pointrel20150417_currentUserInformation") {
-            return respondForCurrentUserInformation(userIdentifierFromServerRequest, callback);
+            return respondForCurrentUserInformation(userIdentifier, callback);
         }
         
         // Requests requiring a specific journal
