@@ -310,14 +310,15 @@ export function updateQuestionnaireForStoryCollection(storyCollectionIdentifier)
 }
 
 function isNamedItemInDiagram(diagram: ClusteringDiagramModel, name: string, itemType: string = null) {
-    diagram.items.forEach((item) => {
+    // Array.some returns true or false depending on whether there is soem item that tests true 
+    return diagram.items.some((item) => {
         if (!itemType || item.type === itemType) {
             if (item.name === name) {
                 return true;
             }
         }
+        return false;
     });
-    return false;
 }
 
 function copyClusteringDiagramElements(fromDiagramField: string, fromType: string, toDiagramField: string, toType: string) {
