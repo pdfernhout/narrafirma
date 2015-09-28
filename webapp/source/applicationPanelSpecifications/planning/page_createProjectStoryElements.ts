@@ -130,39 +130,8 @@ var panel: Panel = {
             displayType: "clusteringDiagram",
             displayPrompt: `
                 <b>9</b>. <b>Rearrange</b> the attributes into <em>new</em> clusters, placing like with like as you did before.<br>
-                <b>10</b>. <b>Create new clusters</b> with new names. These are your story elements.
+                <b>10</b>. <b>Create new clusters</b> with new names and descriptions. These are your story elements.
             `
-        },
-        {
-            id: "project_projectStoryElementsLabelStep11",
-            valueType: "none",
-            displayType: "label",
-            displayPrompt: `
-                <b>11</b>. Press the button below to copy the story elements (final cluster names) to the table below.
-            `
-        },        
-        {
-            id: "project_copyAttributeGroupsToStoryElementTable",
-            valueType: "none",
-            displayType: "button",
-            displayPrompt: "Copy attribute clusters to story element table",
-            displayConfiguration: "copyAttributeGroupsToStoryElementTable"
-        },
-        {
-            id: "project_projectStoryElementsLabelStep12",
-            valueType: "none",
-            displayType: "label",
-            displayPrompt: `
-                <b>12</b>. Revew the list of story elements below and edit them to select the type and add descriptive notes.
-            `
-        },        
-        {
-            id: "project_projectStoryElementsList",
-            valueType: "array",
-            displayType: "grid",
-            displayConfiguration: "panel_addStoryElement",
-            displayName: "Story elements",
-            displayPrompt: "These are the story elements you have entered so far."
         }
     ]
 };

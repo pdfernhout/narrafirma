@@ -32,8 +32,7 @@ var sections = [
         ],
         panels: [
             "panel_addParticipantGroup",
-            "panel_projectStory",
-            "panel_addStoryElement"
+            "panel_projectStory"
         ]
     },
     {
