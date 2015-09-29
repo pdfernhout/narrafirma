@@ -2,9 +2,6 @@ import PanelBuilder = require("../panelBuilder/PanelBuilder");
 import m = require("mithril");
 import valuePathResolver = require("../panelBuilder/valuePathResolver");
 import Globals = require("../Globals");
-import add_patternExplorer = require("./add_patternExplorer");
-
-var storiesForCatalysisReport: Function = add_patternExplorer["storiesForCatalysisReport"];
 
 "use strict";
 
@@ -20,7 +17,7 @@ function add_catalysisReportQuestionChooser(panelBuilder: PanelBuilder, model, f
         
     var storageFunction = valuePathResolver.newValuePathForFieldSpecification(model, fieldSpecification);
 
-    var allStories = storiesForCatalysisReport(project.tripleStore, catalysisReportIdentifier);
+    var allStories = project.storiesForCatalysisReport(catalysisReportIdentifier);
     
     var allStoryQuestions = project.collectAllStoryQuestions();
     var allParticipantQuestions = project.collectAllParticipantQuestions();

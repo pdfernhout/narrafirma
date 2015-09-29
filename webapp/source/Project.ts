@@ -225,6 +225,26 @@ class Project {
         }
         this.tripleStore.makeNewSetItem(setIdentifier, questionClass, question);
     }
+    
+    storiesForCatalysisReport(catalysisReportIdentifier) {
+        var result = [];
+        
+        var storyCollectionsIdentifier = this.tripleStore.queryLatestC(catalysisReportIdentifier, "catalysisReport_storyCollections");
+        var storyCollectionItems = this.tripleStore.getListForSetIdentifier(storyCollectionsIdentifier);
+        
+        if (storyCollectionItems.length === 0) return [];
+        
+        storyCollectionItems.forEach((storyCollectionPointer) => {
+            if (storyCollectionPointer) {
+                var storyCollectionIdentifier = this.tripleStore.queryLatestC(storyCollectionPointer, "storyCollection");
+                result = result.concat(surveyCollection.getStoriesForStoryCollection(storyCollectionIdentifier));
+            } else {
+                console.log("ERROR: null or undefined storyCollectionPointer", catalysisReportIdentifier);
+            }
+        });
+        
+        return result;
+    }
 }
 
 export = Project;

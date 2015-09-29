@@ -3,12 +3,9 @@ import storyCardDisplay = require("./storyCardDisplay");
 import Globals = require("./Globals");
 import m = require("mithril");
 import sanitizeHTML = require("./sanitizeHTML");
-import add_patternExplorer = require("./applicationWidgets/add_patternExplorer");
+import PatternExplorer = require("./applicationWidgets/PatternExplorer");
 import ClusteringDiagram = require("./applicationWidgets/ClusteringDiagram");
 import Project = require("./Project");
-
-var makeGraph: Function = add_patternExplorer["makeGraph"];
-var storiesForCatalysisReport: Function = add_patternExplorer["storiesForCatalysisReport"];
 
 "use strict";
 
@@ -402,7 +399,7 @@ function printObservationList(observationList, allStories) {
             currentSelectionExtentPercentages: null
         };
         
-        var graph = makeGraph(pattern, graphHolder, selectionCallback);
+        var graph = PatternExplorer.makeGraph(pattern, graphHolder, selectionCallback);
         console.log("graph", graph);
         console.log("graphHolder", graphHolder);
         
@@ -464,7 +461,7 @@ export function printCatalysisReport() {
     
     console.log("clusteringDiagram with clusters", clusteringDiagram);
     
-    var allStories = storiesForCatalysisReport(project.tripleStore, catalysisReportIdentifier);
+    var allStories = project.storiesForCatalysisReport(catalysisReportIdentifier);
     console.log("allStories", allStories);
     
     var catalysisReportObservationSetIdentifier = project.tripleStore.queryLatestC(catalysisReportIdentifier, "catalysisReport_observations");
