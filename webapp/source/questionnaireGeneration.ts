@@ -91,7 +91,6 @@ export function convertEditorQuestions(editorQuestions, prefixQPA) {
     return adjustedQuestions;
 }
 
-/*
 // Undo adding prefix to field name
 export function trimQuestionTypeFromFieldName(fieldName) {
     if (!fieldName || fieldName.length < 2) return fieldName;
@@ -104,7 +103,6 @@ export function trimQuestionTypeFromFieldName(fieldName) {
     }
     return fieldName;
 }
-*/
 
 function buildIdToItemMap(itemListField, idField: string) {
     var project = Globals.project();
