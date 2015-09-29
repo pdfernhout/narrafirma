@@ -73,7 +73,7 @@ CLUSTERING (CATALYSIS)
 CATALYSIS REPORT
 M Improve look of catalysis report
 M Figure out a way that catalysis report can be reliably imported in Word, like by generatign PNGs for graphs
-M Show percentages for question answers in title hover over questions
+M Show percentages for question answers in title hover over questions in catalysis report configuration
 
 CATALYSIS
 M Support an exceprt list somehow
@@ -905,3 +905,5 @@ DONE Support graphBrowser standard deviation and mean for histograms
 DONE Restore third clustering diagram in create project story elements in planning section [also dded fourth]
 DONE Add buttons to copy clustering diagram clusters or items to next step in project story elements page in planning section
 DONE Test readonly use as anonymous under WordPress
+DONE Refactor code to have GraphBrowser, StoryBrowser, PatternExplorer in their own files
+DONE Consolidate redundant code for createGraphResultsPane
