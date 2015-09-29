@@ -198,7 +198,8 @@ function makeChartFramework(chartPane: HTMLElement, chartType, isSmallFormat, ma
     var chartBackground = chart.append("rect")
         .attr('width', fullWidth)
         .attr('height', fullHeight)
-        .attr('class', 'chartBackground');
+        .attr('class', 'chartBackground')
+        .attr('style', 'fill: none;');
     
     var chartBody = chart.append('g')
         .attr('width', width)
@@ -209,7 +210,8 @@ function makeChartFramework(chartPane: HTMLElement, chartType, isSmallFormat, ma
     var chartBodyBackground = chartBody.append("rect")
         .attr('width', width)
         .attr('height', height)
-        .attr('class', 'chartBodyBackground');
+        .attr('class', 'chartBodyBackground')
+        .attr('style', 'fill: none;');
     
     return {
         fullWidth: fullWidth,
@@ -486,7 +488,7 @@ export function d3BarChart(graphBrowserInstance: GraphHolder, question, storiesS
     var barBackground = bars.append("rect")
         // .attr("style", "stroke: rgb(0,0,0); fill: white;")
         .attr("x", function(plotItem) { return 0; })
-        .attr("y", function(plotItem) { return 0; })
+        .attr("y", function(plotItem) { return yHeightScale(-plotItem.value); })
         .attr("height", function(plotItem) { return yHeightScale(plotItem.value); })
         .attr("width", xScale.rangeBand());
     
