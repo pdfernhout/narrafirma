@@ -26,7 +26,6 @@ X Only store reference to questionnaire file resource, not the resource itself [
 X Support translations or other categories for multiple question texts or choice texts for a survey
 X Some easy way for two or more survey sliders to be close together under the same label
 W Better mobile support for taking survey on cell phones
-W User can enter small number of HTML tags in questions (b, i, ul, ol, blockquote, etc)
 W User can enter text for (print and web): Please choose a question to which you would like to respond; Please enter your response in the box below; Please give your story a name; Would you like to tell another story; Yes, I'd like to tell another story; About you
 
 SURVEY QUESTIONS
@@ -40,7 +39,6 @@ X Survey - back button in browser -- deal with so don't lose data
 IDs
 X Improve how options are specified for questions in question designer rather than use text box
 X Make sure that short name IDs entered by user when defining questions are unique among themselves
-Remove S_ etc. from displayed labels
 
 EXPORT/IMPORT
 M Make project report page work in Administration to show all data entered in human-readable form
@@ -76,7 +74,7 @@ M Figure out a way that catalysis report can be reliably imported in Word, like 
 M Show percentages for question answers in title hover over questions in catalysis report configuration
 
 CATALYSIS
-M Support an exceprt list somehow
+M Support an excerpt list somehow
 X Need to be able to select text in existing story to AddToExcerpts
 X Support storiesList -- for choosing a resonant story
 
@@ -794,6 +792,7 @@ DONE Upload to GitHub
 DONE Improve README file for GitHub in Markdown and with screenshots
 DONE When you submit survey with multiple stories, it still only said "your story" instead of "your stories"
 DONE Improve how sanitizing of user-supplied content is done and remove most uses of m.trust to help prevent XSS
+DONE User can enter small number of HTML tags in questions (b, i, ul, ol, blockquote, etc) [same as above]
 DONE Procedure for making WordPress plugin zip file [use: "npm run build-wp" from the project root directory]
 DONE Improve WordPress plugin install directions
 DONE visual clustering in planning phase (Cynthia improved)
@@ -907,3 +906,5 @@ DONE Add buttons to copy clustering diagram clusters or items to next step in pr
 DONE Test readonly use as anonymous under WordPress
 DONE Refactor code to have GraphBrowser, StoryBrowser, PatternExplorer in their own files
 DONE Consolidate redundant code for createGraphResultsPane
+DONE Remove S_ etc. from displayed labels
+DONE Sort questions and options displayed in choice lists and graph labels
