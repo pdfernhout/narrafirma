@@ -423,11 +423,13 @@ export function d3BarChart(graphBrowserInstance: GraphHolder, question, storiesS
         allPlotItems.push({name: key, stories: results[key], value: results[key].length});
     }
     
+    /*
     xLabels.sort(function(a, b) {
         if (a.toLowerCase() < b.toLowerCase()) return -1;
         if (a.toLowerCase() > b.toLowerCase()) return 1;
         return 0;
     });
+    */
 
     // Build chart
     // TODO: Improve the way labels are drawn or ellipsed based on chart size and font size and number of bars
@@ -499,16 +501,18 @@ export function d3BarChart(graphBrowserInstance: GraphHolder, question, storiesS
             .attr("width", xScale.rangeBand());
     
     // Add tooltips
-    storyDisplayItems.append("svg:title")
-        .text(function(storyItem: PlotItem) {
-            var story = storyItem.story;
-            var tooltipText =
-                "Title: " + story.storyName() +
-                // "\nID: " + story.storyID() + 
-                "\n" + nameForQuestion(question) + ": " + displayTextForAnswer(story.fieldValue(question.id)) +
-                "\nText: " + limitStoryTextLength(story.storyText());
-            return tooltipText;
-        });
+    if (!graphBrowserInstance.excludeStoryTooltips) {
+        storyDisplayItems.append("svg:title")
+            .text(function(storyItem: PlotItem) {
+                var story = storyItem.story;
+                var tooltipText =
+                    "Title: " + story.storyName() +
+                    // "\nID: " + story.storyID() + 
+                    "\n" + nameForQuestion(question) + ": " + displayTextForAnswer(story.fieldValue(question.id)) +
+                    "\nText: " + limitStoryTextLength(story.storyText());
+                return tooltipText;
+            });
+    }
     
     supportStartingDragOverStoryDisplayItemOrCluster(chartBody, storyDisplayItems);
     
@@ -675,15 +679,17 @@ export function d3HistogramChart(graphBrowserInstance: GraphHolder, scaleQuestio
             .attr("width", xScale(data[0].dx) - 1);
     
     // Add tooltips
-    storyDisplayItems.append("svg:title")
-        .text(function(plotItem: PlotItem) {
-            var story = plotItem.story;
-            var tooltipText =
-                "Title: " + story.storyName() +
-                "\n" + nameForQuestion(scaleQuestion) + ": " + plotItem.value +
-                "\nText: " + limitStoryTextLength(story.storyText());
-            return tooltipText;
-        });
+    if (!graphBrowserInstance.excludeStoryTooltips) {
+        storyDisplayItems.append("svg:title")
+            .text(function(plotItem: PlotItem) {
+                var story = plotItem.story;
+                var tooltipText =
+                    "Title: " + story.storyName() +
+                    "\n" + nameForQuestion(scaleQuestion) + ": " + plotItem.value +
+                    "\nText: " + limitStoryTextLength(story.storyText());
+                return tooltipText;
+            });
+    }
     
     supportStartingDragOverStoryDisplayItemOrCluster(chartBody, storyDisplayItems);
     
@@ -760,11 +766,13 @@ export function multipleHistograms(graphBrowserInstance: GraphHolder, choiceQues
     }
     // TODO: Could push extra options based on actual data choices (in case question changed at some point)
     
+    /*
     options.sort(function(a, b) {
         if (a.toLowerCase() < b.toLowerCase()) return -1;
         if (a.toLowerCase() > b.toLowerCase()) return 1;
         return 0;
     });
+    */
     
     // TODO: This styling may be wrong
     var chartPane = newChartPane(graphBrowserInstance, "noStyle");
@@ -868,17 +876,19 @@ export function d3ScatterPlot(graphBrowserInstance: GraphHolder, xAxisQuestion, 
             .attr("cy", function (plotItem) { return yScale(plotItem.y); } );
     
     // Add tooltips
-    storyDisplayItems
-        .append("svg:title")
-        .text(function(plotItem) {
-            var tooltipText =
-                "Title: " + plotItem.story.storyName() +
-                // "\nID: " + plotItem.story.storyID() + 
-                "\nX (" + nameForQuestion(xAxisQuestion) + "): " + plotItem.x +
-                "\nY (" + nameForQuestion(yAxisQuestion) + "): " + plotItem.y +
-                "\nText: " + limitStoryTextLength(plotItem.story.storyText());
-            return tooltipText;
-        });
+    if (!graphBrowserInstance.excludeStoryTooltips) {
+        storyDisplayItems
+            .append("svg:title")
+            .text(function(plotItem) {
+                var tooltipText =
+                    "Title: " + plotItem.story.storyName() +
+                    // "\nID: " + plotItem.story.storyID() + 
+                    "\nX (" + nameForQuestion(xAxisQuestion) + "): " + plotItem.x +
+                    "\nY (" + nameForQuestion(yAxisQuestion) + "): " + plotItem.y +
+                    "\nText: " + limitStoryTextLength(plotItem.story.storyText());
+                return tooltipText;
+            });
+    }
     
     supportStartingDragOverStoryDisplayItemOrCluster(chartBody, storyDisplayItems);
 
@@ -970,11 +980,13 @@ export function d3ContingencyTable(graphBrowserInstance: GraphHolder, xAxisQuest
     }
     var columnCount = columnLabelsArray.length;
     
+    /*
     columnLabelsArray.sort(function(a, b) {
         if (a.toLowerCase() < b.toLowerCase()) return -1;
         if (a.toLowerCase() > b.toLowerCase()) return 1;
         return 0;
     });
+    */
     
     var rowLabelsArray = [];
     for (var rowName in rowLabels) {
@@ -982,11 +994,13 @@ export function d3ContingencyTable(graphBrowserInstance: GraphHolder, xAxisQuest
     }
     var rowCount = rowLabelsArray.length;
     
+    /*
     rowLabelsArray.sort(function(a, b) {
         if (a.toLowerCase() < b.toLowerCase()) return -1;
         if (a.toLowerCase() > b.toLowerCase()) return 1;
         return 0;
     });
+    */
     
     var observedPlotItems = [];
     var expectedPlotItems = [];
@@ -1084,23 +1098,25 @@ export function d3ContingencyTable(graphBrowserInstance: GraphHolder, xAxisQuest
     }
 
     // Add tooltips
-    storyDisplayClusters.append("svg:title")
-        .text(function(plotItem) {
-            var tooltipText = 
-            "X (" + nameForQuestion(xAxisQuestion) + "): " + plotItem.x +
-            "\nY (" + nameForQuestion(yAxisQuestion) + "): " + plotItem.y;
-            if (!plotItem.stories || plotItem.stories.length === 0) {
-                tooltipText += "\n------ No stories ------";
-            } else {
-                tooltipText += "\n------ Stories (" + plotItem.stories.length + ") ------";
-                for (var i = 0; i < plotItem.stories.length; i++) {
-                    var story = plotItem.stories[i];
-                    tooltipText += "\n" + story.storyName();
+    if (!graphBrowserInstance.excludeStoryTooltips) {
+        storyDisplayClusters.append("svg:title")
+            .text(function(plotItem) {
+                var tooltipText = 
+                "X (" + nameForQuestion(xAxisQuestion) + "): " + plotItem.x +
+                "\nY (" + nameForQuestion(yAxisQuestion) + "): " + plotItem.y;
+                if (!plotItem.stories || plotItem.stories.length === 0) {
+                    tooltipText += "\n------ No stories ------";
+                } else {
+                    tooltipText += "\n------ Stories (" + plotItem.stories.length + ") ------";
+                    for (var i = 0; i < plotItem.stories.length; i++) {
+                        var story = plotItem.stories[i];
+                        tooltipText += "\n" + story.storyName();
+                    }
                 }
-            }
-            return tooltipText;
-        });
-
+                return tooltipText;
+            });
+    }
+    
     supportStartingDragOverStoryDisplayItemOrCluster(chartBody, storyDisplayClusters);
 
     function isPlotItemSelected(extent, plotItem) {

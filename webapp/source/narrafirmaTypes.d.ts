@@ -15,6 +15,7 @@ interface GraphHolder {
     allStories: Array<any>;
     currentGraph: any;
     currentSelectionExtentPercentages: GraphSelection;
+    excludeStoryTooltips: boolean;
 }
 
 // Possible Grid configuration options

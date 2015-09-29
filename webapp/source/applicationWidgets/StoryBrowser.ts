@@ -146,6 +146,7 @@ function optionsFromQuestion(question, stories) {
         options.push({label: unansweredIndicator + " (" +  count + ")", value: unansweredIndicator});
     }
     
+    /*
     // Sort options by their name -- only if not slider numbers which are already ordered
     if (question.displayType !== "slider") {
         options.sort(function(a, b) {
@@ -154,6 +155,8 @@ function optionsFromQuestion(question, stories) {
             return 0;
         });
     }
+    */
+    
     return options;
 }
 
