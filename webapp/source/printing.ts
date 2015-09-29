@@ -384,7 +384,7 @@ function printObservationList(observationList, allStories) {
     return printList(observationList, {}, function (item) {
         // TODO: pattern
         var pattern = item.pattern;
-        console.log("pattern", pattern);
+        // console.log("pattern", pattern);
         
         var selectionCallback = function() { return this; };
         var graphHolder = {
@@ -397,11 +397,11 @@ function printObservationList(observationList, allStories) {
         };
         
         var graph = PatternExplorer.makeGraph(pattern, graphHolder, selectionCallback);
-        console.log("graph", graph);
-        console.log("graphHolder", graphHolder);
+        // console.log("graph", graph);
+        // console.log("graphHolder", graphHolder);
         
         var graphNode: HTMLElement = <HTMLElement>graphHolder.graphResultsPane.firstChild;
-        console.log("graphNode", graphNode);
+        // console.log("graphNode", graphNode);
         
         var styleNode = document.createElement("style");
         styleNode.type = 'text/css';
@@ -506,21 +506,21 @@ function printObservationList(observationList, allStories) {
         
         styleNode.innerHTML = css;
         
-        console.log("styleNode", styleNode);
+        // console.log("styleNode", styleNode);
         
         graphNode.firstChild.insertBefore(styleNode, graphNode.firstChild.firstChild);
         
-        console.log("graphNode", graphNode);
+        // console.log("graphNode", graphNode);
         
         var svgText = (<HTMLElement>graphNode).innerHTML;
    
-        console.log("svgText", svgText);
+        // console.log("svgText", svgText);
 
         var canvas = document.createElement("canvas");
         canvg(canvas, svgText);
         var imgData = canvas.toDataURL("image/png");
         
-        console.log("imgData", imgData);
+        // console.log("imgData", imgData);
         
         // m.trust(graphHolder.graphResultsPane.outerHTML),
         var imageForGraph = m("img", {
@@ -544,19 +544,19 @@ function printObservationList(observationList, allStories) {
 }
 
 function makeObservationListForInterpretation(project: Project, allObservations, intepretationName) {
-    console.log("makeObservationListForInterpretation", intepretationName);
+    // console.log("makeObservationListForInterpretation", intepretationName);
     var result = [];
     allObservations.forEach((observation) => {
-        console.log("observation", observation);
+        // console.log("observation", observation);
         var intepretationsListIdentifier = project.tripleStore.queryLatestC(observation, "observationInterpretations");
-        console.log("intepretationsListIdentifier", intepretationsListIdentifier);
+        // console.log("intepretationsListIdentifier", intepretationsListIdentifier);
         var intepretationsList = project.tripleStore.getListForSetIdentifier(intepretationsListIdentifier);
-        console.log("intepretationsList", intepretationsList);
+        // console.log("intepretationsList", intepretationsList);
         intepretationsList.forEach((interpretationIdentifier) => {
             var interpretation = project.tripleStore.makeObject(interpretationIdentifier, true);
             var name = interpretation.interpretation_name;
             if (name === intepretationName) {
-                console.log("found observation that has matching interpretation", interpretation, observation);
+                // console.log("found observation that has matching interpretation", interpretation, observation);
                 result.push(observation);
             }
         });
@@ -576,10 +576,10 @@ export function printCatalysisReport() {
     }
     
     var catalysisReportIdentifier = project.findCatalysisReport(catalysisReportName);
-    console.log("catalysisReport", catalysisReportIdentifier);
+    // console.log("catalysisReport", catalysisReportIdentifier);
     
     var clusteringDiagram = project.tripleStore.queryLatestC(catalysisReportIdentifier, "interpretationsClusteringDiagram");
-    console.log("clusteringDiagram", clusteringDiagram);
+    // console.log("clusteringDiagram", clusteringDiagram);
     if (!clusteringDiagram) {
         console.log("clusteringDiagram not defined");
         alert("Please cluster interpretations before printing.");
@@ -588,14 +588,14 @@ export function printCatalysisReport() {
         
     ClusteringDiagram.calculateClusteringForDiagram(clusteringDiagram);
     
-    console.log("clusteringDiagram with clusters", clusteringDiagram);
+    // console.log("clusteringDiagram with clusters", clusteringDiagram);
     
     var allStories = project.storiesForCatalysisReport(catalysisReportIdentifier);
-    console.log("allStories", allStories);
+    // console.log("allStories", allStories);
     
     var catalysisReportObservationSetIdentifier = project.tripleStore.queryLatestC(catalysisReportIdentifier, "catalysisReport_observations");
     
-    console.log("catalysisReportObservationSetIdentifier", catalysisReportObservationSetIdentifier);
+    // console.log("catalysisReportObservationSetIdentifier", catalysisReportObservationSetIdentifier);
  
     if (!catalysisReportObservationSetIdentifier) {
         console.log("catalysisReportObservationSetIdentifier not defined");
@@ -604,10 +604,12 @@ export function printCatalysisReport() {
        
     var allObservations = project.tripleStore.getListForSetIdentifier(catalysisReportObservationSetIdentifier);
     
-    console.log("allObservations", allObservations);
+    // console.log("allObservations", allObservations);
+    
+    var reportTitle = "Catalysis report for " + project.projectIdentifier + " on " + new Date().toISOString();
     
     var printItems = [
-        m("div", "Catalysis report observation list (FIXME) generated " + new Date()),
+        m("div.narrafirma-catalysisreport-title", reportTitle),
         printReturnAndBlankLine()
     ];
     
@@ -645,6 +647,6 @@ export function printCatalysisReport() {
     });
     
     // "/css/standard.css"
-    var htmlForPage = generateHTMLForPage("Catalysis report observation list (FIXME)", null, printItems);
+    var htmlForPage = generateHTMLForPage(reportTitle, null, printItems);
     printHTML(htmlForPage);   
 }
