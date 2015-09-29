@@ -6,6 +6,7 @@ import sanitizeHTML = require("./sanitizeHTML");
 import PatternExplorer = require("./applicationWidgets/PatternExplorer");
 import ClusteringDiagram = require("./applicationWidgets/ClusteringDiagram");
 import Project = require("./Project");
+import charting = require("./applicationWidgets/charting");
 
 "use strict";
 
@@ -376,13 +377,6 @@ export function printSensemakingSessionAgenda(itemID) {
     printHTML(htmlForPage);
 }
 
-// TODO: Duplicate of what is in add_graphBrowser and add_patternExplorer
-function createGraphResultsPane(): HTMLElement {
-    var pane = document.createElement("div");
-    pane.className = "narrafirma-graph-results-pane chartEnclosure";
-    return pane;
-}
-
 function printObservationList(observationList, allStories) {
     // For now, just print all observations
     return printList(observationList, {}, function (item) {
@@ -392,7 +386,7 @@ function printObservationList(observationList, allStories) {
         
         var selectionCallback = function() { return this; };
         var graphHolder = {
-            graphResultsPane: createGraphResultsPane(),
+            graphResultsPane: charting.createGraphResultsPane("narrafirma-graph-results-pane chartEnclosure"),
             chartPanes: [],
             allStories: allStories,
             currentGraph: null,

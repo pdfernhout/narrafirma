@@ -17,12 +17,6 @@ function questionForID(questions, id) {
     return null;
 }
 
-function createGraphResultsPane(): HTMLElement {
-    var pane = document.createElement("div");
-    pane.className = "narrafirma-graph-results-pane";
-    return pane;
-}
-
 class GraphBrowser {
     xAxisSelectValue = null;
     yAxisSelectValue = null;
@@ -35,7 +29,7 @@ class GraphBrowser {
     
     constructor(args) {
         this.graphHolder = {
-            graphResultsPane: createGraphResultsPane(),
+            graphResultsPane: charting.createGraphResultsPane("narrafirma-graph-results-pane"),
             chartPanes: [],
             allStories: [],
             currentGraph: null,

@@ -105,14 +105,6 @@ function decodeBraces(optionText) {
     return optionText.replace("&#123;", "{").replace("&#125;", "}"); 
 }
 
-// TODO: Duplicate of what is in add_graphBrowser
-// title: "Graph results",
-function createGraphResultsPane(): HTMLElement {
-    var pane = document.createElement("div");
-    pane.className = "narrafirma-graph-results-pane chartEnclosure";
-    return pane;
-}
-
 class PatternExplorer {
     project: Project = null;
     catalysisReportIdentifier: string = null;
@@ -140,7 +132,7 @@ class PatternExplorer {
        // Graph display initializaiton
         
        this.graphHolder = {
-            graphResultsPane: createGraphResultsPane(),
+            graphResultsPane: charting.createGraphResultsPane("narrafirma-graph-results-pane chartEnclosure"),
             chartPanes: [],
             allStories: [],
             currentGraph: null,

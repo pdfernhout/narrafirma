@@ -4,7 +4,11 @@ import simple_statistics = require("../statistics/simple_statistics");
 
 "use strict";
 
-// TODO: Need to be able to associate related stories with everything on screen so can browse them when clicked
+export function createGraphResultsPane(theClass): HTMLElement {
+    var pane = document.createElement("div");
+    pane.className = theClass;
+    return pane;
+}
 
 interface PlotItem {
     story: any;
