@@ -321,7 +321,7 @@ function addYAxis(chart, yScale, configure = null) {
     }
         
     labels.append("svg:title").text(function(d, i) {
-        console.log("addYAxis label", d, i);
+        // console.log("addYAxis label", d, i);
         return d;
     }); 
     return yAxis;
