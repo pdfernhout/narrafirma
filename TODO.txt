@@ -70,7 +70,7 @@ CLUSTERING (CATALYSIS)
 
 CATALYSIS REPORT
 M Improve look of catalysis report
-M Figure out a way that catalysis report can be reliably imported in Word, like by generatign PNGs for graphs
+M Test that catalysis report can be reliably imported in Word using the inline images or from intermediate PDF doc printed on Mac
 M Show percentages for question answers in title hover over questions in catalysis report configuration
 
 CATALYSIS
@@ -908,3 +908,5 @@ DONE Refactor code to have GraphBrowser, StoryBrowser, PatternExplorer in their 
 DONE Consolidate redundant code for createGraphResultsPane
 DONE Remove S_ etc. from displayed labels
 DONE Sort questions and options displayed in choice lists and graph labels
+DONE Generate Catalysis report with inline images instead of SVG
+DONE Figure out a way to convert catalysis report from html to OpenOffice ODF format (use online tool on report with inline images)
