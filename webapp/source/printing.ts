@@ -14,7 +14,7 @@ import charting = require("./applicationWidgets/charting");
 
 function printHTML(htmlToPrint: string) {
     // Display HTML in a new window
-    console.log(printHTML, htmlToPrint);
+    // onsole.log("printHTML", htmlToPrint);
     var w = window.open();
     w.document.write(htmlToPrint);
     w.document.close();
@@ -377,6 +377,8 @@ export function printSensemakingSessionAgenda(itemID) {
     printHTML(htmlForPage);
 }
 
+declare var canvg;
+
 function printObservationList(observationList, allStories) {
     // For now, just print all observations
     return printList(observationList, {}, function (item) {
@@ -390,20 +392,153 @@ function printObservationList(observationList, allStories) {
             chartPanes: [],
             allStories: allStories,
             currentGraph: null,
-            currentSelectionExtentPercentages: null
+            currentSelectionExtentPercentages: null,
+            excludeStoryTooltips: true
         };
         
         var graph = PatternExplorer.makeGraph(pattern, graphHolder, selectionCallback);
         console.log("graph", graph);
         console.log("graphHolder", graphHolder);
         
+        var graphNode: HTMLElement = <HTMLElement>graphHolder.graphResultsPane.firstChild;
+        console.log("graphNode", graphNode);
+        
+        var styleNode = document.createElement("style");
+        styleNode.type = 'text/css';
+        
+        // TODO: Rules should be read from loaded stylesheet
+        var css = `
+            .narrafirma-graph-results-pane {
+                width: 850px;
+                margin: 5px auto 0px auto;
+            }
+            
+            .chartBackground {
+                width: 700px;
+                fill: none;
+            }
+            
+            .chartBodyBackground {
+                fill: none;
+            }
+            
+            .brush .extent {
+              fill-opacity: 0.1;
+              stroke: #fff;
+              shape-rendering: crispEdges;
+            }
+            
+            .chart {
+                background-color: white;
+            }
+            
+            .scatterPlot .story {
+              stroke: #3e3739;
+              stroke-width: 0.2px;
+              fill: #3e3739;
+              fill-opacity: 0.7;
+            }
+            
+            .scatterPlot .story.selected {
+              stroke: #3b5fab;
+              fill: #3b5fab;
+            }
+            
+            .bar {
+              fill: none;
+            }
+            
+            .story.even {
+              fill: #3e3739;
+            }
+            
+            .story.odd {
+              fill: #a7a5a5;
+            }
+            
+            .story.even.selected {
+              fill: #3b5fab;
+            }
+            
+            .story.odd.selected {
+              fill: #abb6ce;
+            }
+            
+            .contingencyChart .storyCluster.observed {
+              stroke-width: 3px;
+              stroke: #2e4a85;
+              fill: #d5dae6;
+            }
+            
+            .contingencyChart .storyCluster.observed.selected {
+              stroke-width: 2px;
+              stroke: #2e4a85;
+              fill: #3b5fab;
+            }
+            
+            .contingencyChart .expected {
+              stroke-width: 1px;
+              stroke: #8e8789;
+              stroke-dasharray: "5,5";
+              fill: none;
+            }
+            
+            .contingencyChart .axis path {
+              display: none;
+            }
+            
+            .contingencyChart .axis line {
+              shape-rendering: crispEdges;
+              stroke: gray;
+            }
+        `;
+        
+        css = "<![CDATA[" + css + "]]>";
+        
+        /*
+        if (styleNode.styleSheet) {
+            // IE support; cast to silence TypeScript warning
+            (<any>styleNode.styleSheet).cssText = css;
+        } else {
+            styleNode.appendChild(document.createTextNode(css));
+        }
+        */
+        
+        styleNode.innerHTML = css;
+        
+        console.log("styleNode", styleNode);
+        
+        graphNode.firstChild.insertBefore(styleNode, graphNode.firstChild.firstChild);
+        
+        console.log("graphNode", graphNode);
+        
+        var svgText = (<HTMLElement>graphNode).innerHTML;
+   
+        console.log("svgText", svgText);
+
+        var canvas = document.createElement("canvas");
+        canvg(canvas, svgText);
+        var imgData = canvas.toDataURL("image/png");
+        
+        console.log("imgData", imgData);
+        
+        // m.trust(graphHolder.graphResultsPane.outerHTML),
+        var imageForGraph = m("img", {
+            //src: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO9TXL0Y4OHwAAAABJRU5ErkJggg==",
+            //src: `data:image/svg+xml;utf8,<svg width="400" height="110"><rect width="300" height="100" style="fill:rgb(0,0,255);stroke-width:3;stroke:rgb(0,0,0)"></rect>Sorry, your browser does not support inline SVG.</svg>`,
+            src: imgData,
+            alt: "Graph!!!"
+        });
+        
         return [
             m("div", "Observation title: " + item.observationTitle),
             printReturn(),
             m("div", "Observation description: " + ": " + item.observationDescription),
             printReturnAndBlankLine(),
-            m.trust(graphHolder.graphResultsPane.outerHTML),
+            imageForGraph,
             printReturnAndBlankLine(),
+            // m.trust(graphHolder.graphResultsPane.outerHTML),
+            printReturnAndBlankLine()
         ];
     });
 }
@@ -509,6 +644,7 @@ export function printCatalysisReport() {
         });
     });
     
-    var htmlForPage = generateHTMLForPage("Catalysis report observation list (FIXME)", "/css/standard.css", printItems);
+    // "/css/standard.css"
+    var htmlForPage = generateHTMLForPage("Catalysis report observation list (FIXME)", null, printItems);
     printHTML(htmlForPage);   
 }
