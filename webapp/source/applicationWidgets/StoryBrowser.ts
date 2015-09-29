@@ -67,14 +67,6 @@ function optionsFromQuestion(question, stories) {
     
     var count;
     
-    // TODO: Maybe should not add the unanswered indicator if zero?
-    // Always add the unanswered indicator if not checkboxes or checkbox
-    if (question.displayType !== "checkbox" && question.displayType !== "checkboxes") {
-        count = totals[unansweredIndicator];
-        if (!count) count = 0;
-        options.push({label: unansweredIndicator + " (" +  count + ")", value: unansweredIndicator});
-    }
-    
     if (question.displayType === "select") {
         // console.log("select", question, question.valueOptions);
         question.valueOptions.forEach(function(each) {
@@ -104,7 +96,16 @@ function optionsFromQuestion(question, stories) {
         for (var sliderTick = 0; sliderTick <= 100; sliderTick++) {
             count = totals[sliderTick];
             if (!count) count = 0;
-            options.push({label: sliderTick + " (" +  count + ")", value: sliderTick});
+            var sliderTickText = "" + sliderTick;
+            /*
+            if (sliderTickText.length < 2) {
+                sliderTickText = "0" + sliderTickText;
+            }
+            if (sliderTickText.length < 3) {
+                sliderTickText = "0" + sliderTickText;
+            }
+            */
+            options.push({label: sliderTickText + " (" +  count + ")", value: sliderTick});
         }
     } else if (question.displayType === "boolean") {
         // console.log("boolean", question);
@@ -135,6 +136,23 @@ function optionsFromQuestion(question, stories) {
     } else {
         console.log("ERROR: question type not supported: ", question.displayType, question);
         options.push({label: "*ALL*" + " (" +  stories.length + ")", value: "*ALL*"});
+    }
+    
+    // TODO: Maybe should not add the unanswered indicator if zero?
+    // Always add the unanswered indicator if not checkboxes or checkbox
+    if (question.displayType !== "checkbox" && question.displayType !== "checkboxes") {
+        count = totals[unansweredIndicator];
+        if (!count) count = 0;
+        options.push({label: unansweredIndicator + " (" +  count + ")", value: unansweredIndicator});
+    }
+    
+    // Sort options by their name -- only if not slider numbers which are already ordered
+    if (question.displayType !== "slider") {
+        options.sort(function(a, b) {
+            if (a.label.toLowerCase() < b.label.toLowerCase()) return -1;
+            if (a.label.toLowerCase() > b.label.toLowerCase()) return 1;
+            return 0;
+        });
     }
     return options;
 }

@@ -418,18 +418,16 @@ export function d3BarChart(graphBrowserInstance: GraphHolder, question, storiesS
         }
     }
     
-    // Keep unanswered at start if present
-    key = unansweredKey;
-    if (results[key]) {
+    for (key in results) {
         xLabels.push(key);
         allPlotItems.push({name: key, stories: results[key], value: results[key].length});
     }
     
-    for (key in results) {
-        if (key === unansweredKey) continue;
-        xLabels.push(key);
-        allPlotItems.push({name: key, stories: results[key], value: results[key].length});
-    }
+    xLabels.sort(function(a, b) {
+        if (a.toLowerCase() < b.toLowerCase()) return -1;
+        if (a.toLowerCase() > b.toLowerCase()) return 1;
+        return 0;
+    });
 
     // Build chart
     // TODO: Improve the way labels are drawn or ellipsed based on chart size and font size and number of bars
@@ -762,6 +760,12 @@ export function multipleHistograms(graphBrowserInstance: GraphHolder, choiceQues
     }
     // TODO: Could push extra options based on actual data choices (in case question changed at some point)
     
+    options.sort(function(a, b) {
+        if (a.toLowerCase() < b.toLowerCase()) return -1;
+        if (a.toLowerCase() > b.toLowerCase()) return 1;
+        return 0;
+    });
+    
     // TODO: This styling may be wrong
     var chartPane = newChartPane(graphBrowserInstance, "noStyle");
     
@@ -966,11 +970,23 @@ export function d3ContingencyTable(graphBrowserInstance: GraphHolder, xAxisQuest
     }
     var columnCount = columnLabelsArray.length;
     
+    columnLabelsArray.sort(function(a, b) {
+        if (a.toLowerCase() < b.toLowerCase()) return -1;
+        if (a.toLowerCase() > b.toLowerCase()) return 1;
+        return 0;
+    });
+    
     var rowLabelsArray = [];
     for (var rowName in rowLabels) {
         rowLabelsArray.push(rowName);
     }
     var rowCount = rowLabelsArray.length;
+    
+    rowLabelsArray.sort(function(a, b) {
+        if (a.toLowerCase() < b.toLowerCase()) return -1;
+        if (a.toLowerCase() > b.toLowerCase()) return 1;
+        return 0;
+    });
     
     var observedPlotItems = [];
     var expectedPlotItems = [];

@@ -273,5 +273,11 @@ export function optionsForAllQuestions(questions, excludeTextQuestionsFlag = nul
             }
         }
     });
+    // Sort options by their name
+    questionOptions.sort(function(a, b) {
+        if (a.label.toLowerCase() < b.label.toLowerCase()) return -1;
+        if (a.label.toLowerCase() > b.label.toLowerCase()) return 1;
+        return 0;
+    });
     return questionOptions;
 }

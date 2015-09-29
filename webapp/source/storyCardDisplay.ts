@@ -75,6 +75,7 @@ function displayHTMLForField(storyModel: surveyCollection.Story, fieldSpecificat
     var value = storyModel.fieldValue(fieldSpecification.id);
     // TODO: extra checking here for problems with test data -- could probably be changed back to just displayName eventually
     var fieldName = fieldSpecification.displayName || fieldSpecification.displayPrompt;
+    
     var result = [];
     if (fieldSpecification.displayType === "slider") {
         result.push(displayHTMLForSlider(fieldSpecification, fieldName, value));
@@ -122,6 +123,17 @@ export function generateStoryCardContent(storyModel, options: Options = {}) {
         var adjustedAnnotationQuestions = questionnaireGeneration.convertEditorQuestions(annotationQuestions, "A_");
         questions = questions.concat(adjustedAnnotationQuestions);
     }
+    
+    questions.sort(function(a, b) {
+       var aName = a.displayName || a.displayPrompt;
+       aName = aName.toLowerCase();
+       var bName = b.displayName || b.displayPrompt;
+       bName = bName.toLowerCase();
+            
+        if (aName < bName) return -1;
+        if (aName > bName) return 1;
+        return 0;
+    });
     
     var question;
     var i;
