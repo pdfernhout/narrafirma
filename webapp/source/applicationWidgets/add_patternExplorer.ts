@@ -166,7 +166,7 @@ function createGraphResultsPane(): HTMLElement {
     return pane;
 }
 
-class PatternBrowser {
+class PatternExplorer {
     project: Project = null;
     catalysisReportIdentifier: string = null;
     catalysisReportObservationSetIdentifier: string = null;
@@ -306,7 +306,7 @@ class PatternBrowser {
     
     static controller(args) {
         // console.log("Making PatternBrowser: ", args);
-        return new PatternBrowser(args);
+        return new PatternExplorer(args);
     }
     
     static view(controller, args) {
@@ -829,7 +829,7 @@ class PatternBrowser {
 function add_patternExplorer(panelBuilder: PanelBuilder, model, fieldSpecification) {
     var prompt = panelBuilder.buildQuestionLabel(fieldSpecification);
     
-    var patternBrowser = m.component(<any>PatternBrowser, {key: fieldSpecification.id, panelBuilder: panelBuilder, model: model, fieldSpecification: fieldSpecification});
+    var patternBrowser = m.component(<any>PatternExplorer, {key: fieldSpecification.id, panelBuilder: panelBuilder, model: model, fieldSpecification: fieldSpecification});
  
     return m("div", [
         prompt,
