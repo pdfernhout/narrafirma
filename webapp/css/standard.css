@@ -2,6 +2,8 @@
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ All pages ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 /* NOTE: the mnemonic for margin or padding order is TROUBLE: Top Right Bottom Left */
 
+/* A CSS stylesheet is like a GUI control system for twidling with widget options */
+
 /* html, body, pleaseWaitOverlay - are in survey.css */
 
 /* the NarraFirma color palette is (going darker from left to right)
@@ -458,7 +460,6 @@ form {
 }
 
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ d3 charting ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
-/* A CSS stylesheet is like a GUI control system for twidling with widget options */
 
 .narrafirma-graph-results-pane {
 	width: 850px;
