@@ -15,8 +15,7 @@ import Globals = require("../Globals");
 
 "use strict";
 
-// TODO: retrieve value from UI
-var minimumStoryCountRequiredForTest = 20;
+var defaultMinimumStoryCountRequiredForTest = 20;
 
 // Question types that have data associated with them for filters and graphs
 var nominalQuestionTypes = ["select", "boolean", "checkbox", "checkboxes", "radiobuttons", "text"];
@@ -126,10 +125,12 @@ class PatternExplorer {
     
     observationPanelSpecification = null;
     
+    minimumStoryCountRequiredForTest = defaultMinimumStoryCountRequiredForTest;
+    
     constructor(args) {
         this.project = Globals.project();
-        
-       // Graph display initializaiton
+         
+       // Graph display initialization
         
        this.graphHolder = {
             graphResultsPane: charting.createGraphResultsPane("narrafirma-graph-results-pane chartEnclosure"),
@@ -389,6 +390,14 @@ class PatternExplorer {
             return;
         }
         
+        var minimumStoryCountRequiredForTest = this.project.tripleStore.queryLatestC(this.catalysisReportIdentifier, "minimumSubsetSize");
+        if (minimumStoryCountRequiredForTest) {
+            this.minimumStoryCountRequiredForTest = parseInt(minimumStoryCountRequiredForTest, 10);
+        } else {
+            this.minimumStoryCountRequiredForTest = defaultMinimumStoryCountRequiredForTest;
+        }
+        console.log("minimumStoryCountRequiredForTest", this.minimumStoryCountRequiredForTest);
+        
         this.catalysisReportObservationSetIdentifier = this.getObservationSetIdentifier(catalysisReportIdentifier);
         
         this.graphHolder.allStories = this.project.storiesForCatalysisReport(catalysisReportIdentifier);
@@ -538,57 +547,77 @@ class PatternExplorer {
         */
     
         result.forEach((pattern) => {
-            this.calculateStatisticsForPattern(pattern, minimumStoryCountRequiredForTest);        
+            this.calculateStatisticsForPattern(pattern);        
         });
         
         // console.log("buildPatternsList", result);
         return result;
     }
     
-    calculateStatisticsForPattern(pattern, minimumStoryCountRequiredForTest) {
+    calculateStatisticsForPattern(pattern) {
         var graphType = pattern.graphType;
-        var significance;
-        var statResult;
-        var stories = this.graphHolder.allStories;
         
         if (graphType === "bar") {
-            // not calculating statistics for bar graph
+            this.calculateStatisticsForBarGraph(pattern);
         } else if (graphType === "table") {
-            // both not continuous -- look for a 'correspondence' between counts using Chi-squared test
-            // TODO: Fix this
-            // TODO: test for missing patterns[1]
-            var counts = countsForFieldChoices(stories, pattern.questions[0].id, pattern.questions[1].id);
-            // console.log("counts", counts);
-            var values = collectValues(counts);
-            // console.log("values", values);
-            if (values.length < minimumStoryCountRequiredForTest) {
-                significance = "";
-            } else {
-                // return {chi_squared: chi_squared, testSignificance: testSignificance}
-                statResult = simpleStatistics.chi_squared_goodness_of_fit(values, simpleStatistics.poisson_distribution, 0.05);
-                significance = statResult.testSignificance;
-            }
+            this.calculateStatisticsForTable(pattern);
         } else if (graphType === "histogram") {
-            // TODO: ? look for differences of means on a distribution using Student's T test if normal, otherwise Kruskal-Wallis or maybe Mann-Whitney
-            // TODO: Fix this - could report on normality
-            significance = "";
+            this.calculateStatisticsForHistogram(pattern);
         } else if (graphType === "multiple histogram") {
-            // TODO: ? one of each continuos and not -- for each option, look for differences of means on a distribution using Student's T test if normal, otherwise Kruskal-Wallis or maybe Mann-Whitney
-            // TODO: Fix this - t-test - differences between means of histograms
-            significance = -1.0;
+            this.calculateStatisticsForMultipleHistogram(pattern);
         } else if (graphType === "scatter") {
-            // TODO: both continuous -- look for correlation with Pearson's R (if normal distribution) or Spearman's R / Kendall's Tau (if not normal distribution)"
-            var data1 = collectDataForField(stories, pattern.questions[0].id);
-            var data2 = collectDataForField(stories, pattern.questions[1].id);
-            statResult = kendallsTau(data1, data2);
-            significance = statResult.prob.toFixed(4);
+            this.calculateStatisticsForScatterPlot(pattern);
         } else if (graphType ===  "multiple scatter") {
             console.log("ERROR: Not suported graphType: " + graphType);
+            throw new Error("ERROR: Not suported graphType: " + graphType);
         } else {
             console.log("ERROR: Unexpected graphType: " + graphType);
+            throw new Error("ERROR: Not suported graphType: " + graphType);
         }
-        
-        if (significance !== undefined) pattern.significance = significance;
+    }
+    
+    calculateStatisticsForBarGraph(pattern) {
+        // not calculating statistics for bar graph
+        pattern.significance = "N/A";
+    }
+    
+    calculateStatisticsForTable(pattern) {
+        // both not continuous -- look for a 'correspondence' between counts using Chi-squared test
+        // TODO: Fix this
+        // TODO: test for missing patterns[1]
+        var stories = this.graphHolder.allStories;
+        var counts = countsForFieldChoices(stories, pattern.questions[0].id, pattern.questions[1].id);
+        // console.log("counts", counts);
+        var values = collectValues(counts);
+        // console.log("values", values);
+        if (values.length < this.minimumStoryCountRequiredForTest) {
+            pattern.significance = "N/A";
+        } else {
+            // return {chi_squared: chi_squared, testSignificance: testSignificance}
+            var statResult = simpleStatistics.chi_squared_goodness_of_fit(values, simpleStatistics.poisson_distribution, 0.05);
+            pattern.significance = statResult.testSignificance;
+        }
+    }
+    
+    calculateStatisticsForHistogram(pattern) {
+        // TODO: ? look for differences of means on a distribution using Student's T test if normal, otherwise Kruskal-Wallis or maybe Mann-Whitney
+        // TODO: Fix this - could report on normality
+        pattern.significance = "N/A";
+    }
+    
+    calculateStatisticsForMultipleHistogram(pattern) {
+        // TODO: ? one of each continuous and not -- for each option, look for differences of means on a distribution using Student's T test if normal, otherwise Kruskal-Wallis or maybe Mann-Whitney
+        // TODO: Fix this - t-test - differences between means of histograms
+        pattern.significance = "N/A";
+    }
+    
+    calculateStatisticsForScatterPlot(pattern) {
+        // TODO: both continuous -- look for correlation with Pearson's R (if normal distribution) or Spearman's R / Kendall's Tau (if not normal distribution)"
+        var stories = this.graphHolder.allStories;
+        var data1 = collectDataForField(stories, pattern.questions[0].id);
+        var data2 = collectDataForField(stories, pattern.questions[1].id);
+        var statResult = kendallsTau(data1, data2);
+        pattern.significance = statResult.prob.toFixed(4);
     }
     
     chooseGraph(pattern) {
