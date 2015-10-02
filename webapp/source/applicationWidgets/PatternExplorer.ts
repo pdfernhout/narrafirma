@@ -583,6 +583,7 @@ class PatternExplorer {
     
     calculateStatisticsForTable(pattern) {
         // both not continuous -- look for a 'correspondence' between counts using Chi-squared test
+        // Can't calculate a statistic if one or both are mutiple answer checkboxes
         // TODO: Fix this
         // TODO: test for missing patterns[1]
         var stories = this.graphHolder.allStories;
@@ -608,6 +609,7 @@ class PatternExplorer {
     calculateStatisticsForMultipleHistogram(pattern) {
         // TODO: ? one of each continuous and not -- for each option, look for differences of means on a distribution using Student's T test if normal, otherwise Kruskal-Wallis or maybe Mann-Whitney
         // TODO: Fix this - t-test - differences between means of histograms
+        // TODO: Probably can't calculate a statistic if one or both are mutiple answer checkboxes?
         pattern.significance = "N/A";
     }
     
