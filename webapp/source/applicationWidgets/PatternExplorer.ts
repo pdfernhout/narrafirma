@@ -15,6 +15,9 @@ import Globals = require("../Globals");
 
 "use strict";
 
+// Library for statistics, imported by narrafirma.html
+declare var jStat;
+
 var defaultMinimumStoryCountRequiredForTest = 20;
 
 // Question types that have data associated with them for filters and graphs
@@ -40,22 +43,42 @@ function nameForQuestion(question) {
     return question.id;
 }
 
-function collectDataForField(stories, fieldName) {
+function collectDataForField(stories: surveyCollection.Story[], fieldName) {
     var result = [];
     for (var i = 0; i < stories.length; i++) {
-        var value = stories[i][fieldName];
+        var value = stories[i].fieldValue(fieldName);
+        if (value === null || value === undefined) continue;
         result.push(value);
     }
     return result;
 }
 
-function countsForFieldChoices(stories, field1, field2) {
+function isValidNumber(value) {
+    // console.log("isValidNumber", JSON.stringify(value));
+    return value !== "" && !isNaN(value);
+}
+
+function collectXYDataForFields(stories: surveyCollection.Story[], xFieldName, yFieldName) {
+    var xResult = [];
+    var yResult = [];
+    for (var i = 0; i < stories.length; i++) {
+        var xValue = stories[i].fieldValue(xFieldName);
+        if (!isValidNumber(xValue)) continue;
+        var yValue = stories[i].fieldValue(yFieldName);
+        if (!isValidNumber(yValue)) continue;
+        xResult.push(xValue);
+        yResult.push(yValue);
+    }
+    return {x: xResult, y: yResult};
+}
+
+function countsForFieldChoices(stories: surveyCollection.Story[], field1, field2) {
     // console.log("countsForFieldChoices", stories, field1, field2);
     // TODO: Need to add in fields that were not selected with a zero count, using definition from questionnaire
     var counts = {};
     for (var i = 0; i < stories.length; i++) {
-        var value1 = stories[i][field1];
-        var value2 = stories[i][field2];
+        var value1 = stories[i].fieldValue(field1);
+        var value2 = stories[i].fieldValue(field2);
         var value = JSON.stringify([value1, value2]);
         // console.log("value", value, value1, value2);
         var count = counts[value];
@@ -603,6 +626,7 @@ class PatternExplorer {
     calculateStatisticsForHistogram(pattern) {
         // TODO: ? look for differences of means on a distribution using Student's T test if normal, otherwise Kruskal-Wallis or maybe Mann-Whitney
         // TODO: Fix this - could report on normality
+        // if (
         pattern.significance = "N/A";
     }
     
@@ -615,11 +639,18 @@ class PatternExplorer {
     
     calculateStatisticsForScatterPlot(pattern) {
         // TODO: both continuous -- look for correlation with Pearson's R (if normal distribution) or Spearman's R / Kendall's Tau (if not normal distribution)"
-        var stories = this.graphHolder.allStories;
-        var data1 = collectDataForField(stories, pattern.questions[0].id);
-        var data2 = collectDataForField(stories, pattern.questions[1].id);
-        var statResult = kendallsTau(data1, data2);
-        pattern.significance = statResult.prob.toFixed(4);
+        var stories: surveyCollection.Story[] = this.graphHolder.allStories;
+        var data = collectXYDataForFields(stories, pattern.questions[0].id, pattern.questions[1].id);
+        // var statResult = kendallsTau(data1, data2);
+        // pattern.significance = statResult.prob.toFixed(4);
+        // TODO: Use Pearson's R if normally distributed
+        var r = jStat.spearmancoeff(data.x, data.y);
+        // https://en.wikipedia.org/wiki/Spearman's_rank_correlation_coefficient#Determining_significance
+        var n = data.x.length;
+        var t = r * Math.sqrt((n - 2.0) / (1.0 - r * r));
+        var p = jStat.ttest(t, n, 2);
+        pattern.significance = "p = " + p + " r = " + r + " n = " + n;
+        // console.log("calculateStatisticsForScatterPlot", pattern, n, t, p);
     }
     
     chooseGraph(pattern) {
