@@ -1,6 +1,5 @@
 import charting = require("./charting");
 import kendallsTau = require("../statistics/kendallsTau");
-import simpleStatistics = require("../statistics/simple_statistics");
 import storyCardDisplay = require("../storyCardDisplay");
 import questionnaireGeneration = require("../questionnaireGeneration");
 import surveyCollection = require("../surveyCollection");
@@ -618,8 +617,10 @@ class PatternExplorer {
             pattern.significance = "N/A";
         } else {
             // return {chi_squared: chi_squared, testSignificance: testSignificance}
-            var statResult = simpleStatistics.chi_squared_goodness_of_fit(values, simpleStatistics.poisson_distribution, 0.05);
-            pattern.significance = statResult.testSignificance;
+            // TODO:
+            // var statResult = simpleStatistics.chi_squared_goodness_of_fit(values, simpleStatistics.poisson_distribution, 0.05);
+            // pattern.significance = "" + statResult.testSignificance;
+            pattern.significance = "TODO";
         }
     }
     
@@ -641,15 +642,17 @@ class PatternExplorer {
         // TODO: both continuous -- look for correlation with Pearson's R (if normal distribution) or Spearman's R / Kendall's Tau (if not normal distribution)"
         var stories: surveyCollection.Story[] = this.graphHolder.allStories;
         var data = collectXYDataForFields(stories, pattern.questions[0].id, pattern.questions[1].id);
-        // var statResult = kendallsTau(data1, data2);
+        
+        var statResult = kendallsTau(data.x, data.y);
         // pattern.significance = statResult.prob.toFixed(4);
+        
         // TODO: Use Pearson's R if normally distributed
         var r = jStat.spearmancoeff(data.x, data.y);
         // https://en.wikipedia.org/wiki/Spearman's_rank_correlation_coefficient#Determining_significance
         var n = data.x.length;
         var t = r * Math.sqrt((n - 2.0) / (1.0 - r * r));
         var p = jStat.ttest(t, n, 2);
-        pattern.significance = "p = " + p + " r = " + r + " n = " + n;
+        pattern.significance = "p=" + p.toFixed(3) + " r=" + r.toFixed(3) + " t=" + statResult.prob.toFixed(3) + " n=" + n ;
         // console.log("calculateStatisticsForScatterPlot", pattern, n, t, p);
     }
     
