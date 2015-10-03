@@ -1,5 +1,6 @@
 import charting = require("./charting");
 import kendallsTau = require("../statistics/kendallsTau");
+import friedmanchisquare = require("../statistics/friedmanchisquare");
 import storyCardDisplay = require("../storyCardDisplay");
 import questionnaireGeneration = require("../questionnaireGeneration");
 import surveyCollection = require("../surveyCollection");
@@ -620,14 +621,22 @@ class PatternExplorer {
             // TODO:
             // var statResult = simpleStatistics.chi_squared_goodness_of_fit(values, simpleStatistics.poisson_distribution, 0.05);
             // pattern.significance = "" + statResult.testSignificance;
-            pattern.significance = "TODO";
+            
+            // TODO: Continue testing and imporving
+            // var statResult = friedmanchisquare();
+            // pattern.significance = "" + "p=" + statResult.p.toFixed(3) + " chisq=" + statResult.chisq.toFixed(3);
+            pattern.significance = "N/A";
         }
     }
     
     calculateStatisticsForHistogram(pattern) {
         // TODO: ? look for differences of means on a distribution using Student's T test if normal, otherwise Kruskal-Wallis or maybe Mann-Whitney
         // TODO: Fix this - could report on normality
-        // if (
+        
+        var stories = this.graphHolder.allStories;
+        var counts = collectDataForField(stories, pattern.questions[0].id);
+        // console.log("counts", counts);
+        
         pattern.significance = "N/A";
     }
     
@@ -652,7 +661,7 @@ class PatternExplorer {
         var n = data.x.length;
         var t = r * Math.sqrt((n - 2.0) / (1.0 - r * r));
         var p = jStat.ttest(t, n, 2);
-        pattern.significance = "p=" + p.toFixed(3) + " r=" + r.toFixed(3) + " t=" + statResult.prob.toFixed(3) + " n=" + n ;
+        pattern.significance = "p=" + p.toFixed(3) + " r=" + r.toFixed(3) + " n=" + n + " tt=" + statResult.test.toFixed(3) + " tz=" + statResult.z.toFixed(3) + " tp=" + statResult.prob.toFixed(3) ;
         // console.log("calculateStatisticsForScatterPlot", pattern, n, t, p);
     }
     
@@ -715,7 +724,6 @@ class PatternExplorer {
         return newGraph;
     }
 
-    
     updateStoriesPane(stories) {
         this.modelForStoryGrid.storiesSelectedInGraph = stories;
         this.storyGrid.updateData();
