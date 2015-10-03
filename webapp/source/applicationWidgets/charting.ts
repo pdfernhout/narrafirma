@@ -1,8 +1,10 @@
 import d3 = require("d3");
 import m = require("mithril");
-import simple_statistics = require("../statistics/simple_statistics");
 
 "use strict";
+
+// Library for statistics, imported by narrafirma.html
+declare var jStat;
 
 export function createGraphResultsPane(theClass): HTMLElement {
     var pane = document.createElement("div");
@@ -571,8 +573,8 @@ export function d3HistogramChart(graphBrowserInstance: GraphHolder, scaleQuestio
     
     // Calculate descriptive statistics
     var valuesAsNumbers = values.map((plotItem) => { return parseFloat(plotItem.value); });
-    var mean = simple_statistics.mean(valuesAsNumbers);
-    var standardDeviation = simple_statistics.standard_deviation(valuesAsNumbers);
+    var mean = jStat.mean(valuesAsNumbers);
+    var standardDeviation = jStat.stdev(valuesAsNumbers, true);
     
     var resultIndex = 1;
     
