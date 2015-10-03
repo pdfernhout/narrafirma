@@ -1,5 +1,8 @@
-import kludgeForUseStrict = require("../kludgeForUseStrict");
+import statisticsCommon = require("./statisticsCommon");
 "use strict";
+
+// Library for statistics, imported by narrafirma.html
+declare var jStat;
 
 // Calculates Mann-Whitney U test
 // Derived from older SciPy: http://web.mit.edu/6.863/spring2011/packages/scipy_src/scipy/stats/stats.py
@@ -11,7 +14,7 @@ function mannWhitneyU(x: number[], y: number[]) {
     var n1 = x.length;
     var n2 = y.length;
     
-    var ranked = rankdata(x.concat(y));
+    var ranked = statisticsCommon.rankdata(x.concat(y));
     
     // get the x-ranks
     var rankx = ranked.slice(0, n1);    
@@ -20,7 +23,7 @@ function mannWhitneyU(x: number[], y: number[]) {
     var ranky = ranked.slice(n1);
     
     // calc U for x
-    var u1 = n1 * n2 + (n1 * (n1 + 1)) / 2.0 - sum(rankx);
+    var u1 = n1 * n2 + (n1 * (n1 + 1)) / 2.0 - jStat.sum(rankx);
     
     // remainder is U for y
     var u2 = n1 * n2 - u1;
@@ -31,84 +34,45 @@ function mannWhitneyU(x: number[], y: number[]) {
     // correction factor for tied scores
     var T = Math.sqrt(tiecorrect(ranked));
     if (T === 0) {
-        throw new Error("ValueError: All numbers are identical in amannwhitneyu");
+        throw new Error("ValueError: All numbers are identical in mannWhitneyU");
     }
     var sd = Math.sqrt(T * n1 * n2 * (n1 + n2 + 1) / 12.0);
     
     // normal approximation for prob calc
     var z = Math.abs((bigu - n1 * n2 / 2.0) / sd);
     
-    return {u: smallu, p: 1.0 - zprob(z)};
+    // TODO: Is the call to jStat.ztest correct, and should it be 1 or 2 sides?
+    return {u: smallu, p: 1.0 - jStat.ztest(z, 1)};
 }
 
-function sum(values: number[]): number {
-    return values.reduce(function(a, b) { return a + b; });
-}
+function tiecorrect(rankvals: number[]): number {
+    /*
+    Tie-corrector for ties in Mann Whitney U and Kruskal Wallis H tests.
+    See Siegel, S. (1956) Nonparametric Statistics for the Behavioral
+    Sciences.  New York: McGraw-Hill.  Code adapted from |Stat rankind.c
+    code.
 
-//    Ranks the data in a, dealing with ties appropriately.
-//
-//    Equal values are assigned a rank that is the average of the ranks that
-//    would have been otherwise assigned to all of the values within that set.
-//    Ranks begin at 1, not 0.
-//
-//    Example
-//    -------
-//    In [15]: stats.rankdata([0, 2, 2, 3])
-//    Out[15]: array([ 1. ,  2.5,  2.5,  4. ])
-//
-//    Parameters
-//    ----------
-//    a : array
-//        This array is first flattened.
-//
-//    Returns
-//    -------
-//    An array of length equal to the size of a, containing rank scores.
-function rankdata(a: number[]): number[] {
-    a = ravel(a);
-    var n = a.length;
-    var svec = [];
-    var ivec = [];
-    // TODO: svec, ivec = fastsort(a);
-    var sumranks = 0;
-    var dupcount = 0;
-    var newarray = newFilledArray(n, 0);
-    for (var i = 0; i < n; i++) {
-        sumranks += i;
-        dupcount += 1;
-        if (i === n - 1 || svec[i] !== svec[i + 1]) {
-            var averank = sumranks / dupcount + 1;
-            for (var j = i - dupcount + 1; j < i + 1; j++) {
-                newarray[ivec[j]] = averank;
+    Returns: T correction factor for U or H
+    */
+    
+    var sorted = rankvals.slice().sort();
+    
+    var n = sorted.length;
+    var T = 0.0;
+    var i = 0;
+    while (i < n - 1) {
+        if (sorted[i] === sorted[i + 1]) {
+            var nties = 1;
+            while ((i < n - 1) && (sorted[i] === sorted[i + 1])) {
+                nties = nties + 1;
+                i = i + 1;
             }
-            sumranks = 0;
-            dupcount = 0;
+            T = T + nties * nties * nties - nties;
+        i = i + 1;
         }
     }
-    return newarray;
-}
-
-function newFilledArray(length: number, val: number): number[] {
-    var array = [];
-    for (var i = 0; i < length; i++) {
-        array[i] = val;
-    }
-    return array;
-}
-
-// Flattens an array
-function ravel(values: number[]): number[] {
-    return [].concat.apply([], values);
-}
-
-function tiecorrect(values: number[]): number {
-    // TODO
-    return 0;
-}
-
-function zprob(d: number): number {
-    // TODO
-    return 0;
+    T = T / (n * n * n - n);
+    return 1.0 - T;
 }
 
 export = mannWhitneyU;

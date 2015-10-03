@@ -1,4 +1,4 @@
-import kludgeForUseStrict = require("../kludgeForUseStrict");
+import statisticsCommon = require("./statisticsCommon");
 "use strict";
 
 // Library for statistics, imported by narrafirma.html
@@ -43,13 +43,13 @@ function friedmanchisquare(table: number[][]) {
     var data = table;
     
     for (i = 0; i < data.length; i++) {
-        data[i] = rankdata(data[i]);
+        data[i] = statisticsCommon.rankdata(data[i]);
     }
     
     // Handle ties
     var ties = 0;
     for (i = 0; i < data.length; i++) {
-        var repnum = repeatCounts(data[i]);
+        var repnum = statisticsCommon.repeatCounts(data[i]);
         for (var y = 0; y <  repnum.length; y++) {
             var t = repnum[y];
             ties += t * (t * t - 1);
@@ -66,83 +66,6 @@ function friedmanchisquare(table: number[][]) {
     var chisq = ( 12.0 / (k * n * (k + 1)) * ssbn - 3 * n * (k + 1) ) / c;
     
     return {chisq: chisq, p: jStat.chisquare.cdf(chisq, k - 1)};
-}
-
-function repeatCounts(array) {
-    var values = {};
-    
-    for (var i = 0; i < array.length; i++) {
-        var value = array[i];
-        if (values[value] !== undefined) {
-            values[value] += 1;
-        } else {
-            values[value] = 1;
-        }
-    }
-    
-    var result = [];
-    for (var key in values) {
-        var count = values[key];
-        if (count > 1) result.push(count);
-    }
-    return result;
-}
-
-function rankdata(a) {
-    /*
-    Ranks the data in a, dealing with ties appropriately.
-
-    Equal values are assigned a rank that is the average of the ranks that
-    would have been otherwise assigned to all of the values within that set.
-    Ranks begin at 1, not 0.
-
-    Example
-    -------
-    In [15]: stats.rankdata([0, 2, 2, 3])
-    Out[15]: array([ 1. ,  2.5,  2.5,  4. ])
-
-    Parameters
-    ----------
-    a : array
-
-    Returns
-    -------
-    An array of length equal to the size of a, containing rank scores.
-   
-    */
-    var n = a.length;
-    
-    var i;
-    var j;
-    
-    var sortedArray = [];
-    for (i = 0; i < n; i++) {
-        sortedArray.push({originalPosition: i, value: a[i]});
-    }
-    
-    sortedArray.sort(function(a, b) { return a.value - b.value; });
-    
-    var newarray = [];
-    for (i = 0; i < n; i++) {
-        newarray.push(0);
-    }
-    
-    var sumranks = 0;
-    var dupcount = 0;
-    
-    for (i = 0; i < n; i++) {
-        sumranks += i;
-        dupcount += 1;
-        if (i === n - 1 || sortedArray[i].value !== sortedArray[i + 1].value) {
-            var averank = sumranks / dupcount + 1;
-            for (j = i - dupcount + 1; j < i + 1; j++) {
-                newarray[sortedArray[j].originalPosition] = averank;
-            }
-            sumranks = 0;
-            dupcount = 0;
-        }
-    }
-    return newarray;
 }
 
 export = friedmanchisquare
