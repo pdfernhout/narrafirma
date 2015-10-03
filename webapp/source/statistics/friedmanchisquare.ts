@@ -40,8 +40,8 @@ function friedmanchisquare(table: number[][]) {
     }
 
     // Rank data
-    var data = apply(_support.abut, args);
-    data = data.astype(float);
+    var data = table;
+    
     for (i = 0; i < data.length; i++) {
         data[i] = rankdata(data[i]);
     }
@@ -88,8 +88,9 @@ function repeatCounts(array) {
     return result;
 }
 
-def rankdata(a):
-    """Ranks the data in a, dealing with ties appropriately.
+function rankdata(a) {
+    /*
+    Ranks the data in a, dealing with ties appropriately.
 
     Equal values are assigned a rank that is the average of the ranks that
     would have been otherwise assigned to all of the values within that set.
@@ -103,28 +104,45 @@ def rankdata(a):
     Parameters
     ----------
     a : array
-        This array is first flattened.
 
     Returns
     -------
     An array of length equal to the size of a, containing rank scores.
-    """
-    a = np.ravel(a)
-    n = len(a)
-    svec, ivec = fastsort(a)
-    sumranks = 0
-    dupcount = 0
-    newarray = np.zeros(n, float)
-    for i in xrange(n):
-        sumranks += i
-        dupcount += 1
-        if i==n-1 or svec[i] != svec[i+1]:
-            averank = sumranks / float(dupcount) + 1
-            for j in xrange(i-dupcount+1,i+1):
-                newarray[ivec[j]] = averank
-            sumranks = 0
-            dupcount = 0
-    return newarray
-
+   
+    */
+    var n = a.length;
+    
+    var i;
+    var j;
+    
+    var sortedArray = [];
+    for (i = 0; i < n; i++) {
+        sortedArray.push({originalPosition: i, value: a[i]});
+    }
+    
+    sortedArray.sort(function(a, b) { return a.value - b.value; });
+    
+    var newarray = [];
+    for (i = 0; i < n; i++) {
+        newarray.push(0);
+    }
+    
+    var sumranks = 0;
+    var dupcount = 0;
+    
+    for (i = 0; i < n; i++) {
+        sumranks += i;
+        dupcount += 1;
+        if (i === n - 1 || sortedArray[i].value !== sortedArray[i + 1].value) {
+            var averank = sumranks / dupcount + 1;
+            for (j = i - dupcount + 1; j < i + 1; j++) {
+                newarray[sortedArray[j].originalPosition] = averank;
+            }
+            sumranks = 0;
+            dupcount = 0;
+        }
+    }
+    return newarray;
+}
 
 export = friedmanchisquare
