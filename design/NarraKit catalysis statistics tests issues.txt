@@ -21,8 +21,8 @@ Example: How memorable is story as range, subsets based on another questions (ag
 Significance (called p) between 0 and 1 -- generally only considered significant if less than 0.05 (or 0.01)
 Test result is called t-value
 
-Chi-squared test -- contingency test between two choice questions (can be multiple answers per question)
-How many people have dogs, how many have cats, how many have birds
+Chi-squared test -- contingency test between two choice questions (can't be used directly if multiple answers allowed per question liek with checkboxes)
+How many people prefer dogs, how many prefer cats, how many prefer birds (exclusive of each other)
 How many like pizza, how many like bread, how many like lettuce
 Test tells you whether the distribution of these counts is difference than what expect by chance
 Look for a "correspondence" between counts (technically not called "correlation")
@@ -48,7 +48,7 @@ See also for an overview of parametric vs. non-parametric tests:
 http://changingminds.org/explanations/research/analysis/parametric_non-parametric.htm
 
 People like report on normality
-Mean, medium, mode, standard deviation for any distribution
+Mean, median, mode, standard deviation for any distribution
 
 === Response sizes
 
