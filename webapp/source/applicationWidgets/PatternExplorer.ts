@@ -693,32 +693,12 @@ class PatternExplorer {
         }
         
         var stories = this.graphHolder.allStories;
+        
         var counts = countsForTableChoices(stories, pattern.questions[0].id, pattern.questions[1].id);
-        // console.log("counts", counts);
-        // var values = collectValues(counts);
-        // console.log("values", values);
-        
-        // if (values.length < this.minimumStoryCountRequiredForTest) {
-        //    pattern.significance = "N/A";
-        //  } else {
-        
-        // return {chi_squared: chi_squared, testSignificance: testSignificance}
-        // TODO:
-        // var statResult = simpleStatistics.chi_squared_goodness_of_fit(values, simpleStatistics.poisson_distribution, 0.05);
-        // pattern.significance = "" + statResult.testSignificance;
-        
-        // TODO: Continue testing and imporving
-        // var statResult = friedmanchisquare();
-        // pattern.significance = "p=" + statResult.p.toFixed(3) + " chisq=" + statResult.chisq.toFixed(3);
-        // pattern.significance = "N/A";
-        // pattern.significance = "test: " + chiSquare.chiSquare([1, 2, 3], [1, 2, 3], 2);
-        
-        // {counts: count, field1Options: field1Options, field2Options: field2Options}
+        console.log("counts", counts);
         
         var observed = [];
         var expected = [];
-        
-        console.log("counts", counts);
         
         for (var field1Option in counts.field1Options) {
             for (var field2Option in counts.field2Options) {
