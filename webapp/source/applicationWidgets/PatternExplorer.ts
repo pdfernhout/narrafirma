@@ -604,31 +604,6 @@ class PatternExplorer {
         pattern.significance = "N/A";
     }
     
-    calculateStatisticsForTable(pattern) {
-        // both not continuous -- look for a 'correspondence' between counts using Chi-squared test
-        // Can't calculate a statistic if one or both are mutiple answer checkboxes
-        // TODO: Fix this
-        // TODO: test for missing patterns[1]
-        var stories = this.graphHolder.allStories;
-        var counts = countsForFieldChoices(stories, pattern.questions[0].id, pattern.questions[1].id);
-        // console.log("counts", counts);
-        var values = collectValues(counts);
-        // console.log("values", values);
-        if (values.length < this.minimumStoryCountRequiredForTest) {
-            pattern.significance = "N/A";
-        } else {
-            // return {chi_squared: chi_squared, testSignificance: testSignificance}
-            // TODO:
-            // var statResult = simpleStatistics.chi_squared_goodness_of_fit(values, simpleStatistics.poisson_distribution, 0.05);
-            // pattern.significance = "" + statResult.testSignificance;
-            
-            // TODO: Continue testing and imporving
-            // var statResult = friedmanchisquare();
-            // pattern.significance = "" + "p=" + statResult.p.toFixed(3) + " chisq=" + statResult.chisq.toFixed(3);
-            pattern.significance = "N/A";
-        }
-    }
-    
     calculateStatisticsForHistogram(pattern) {
         // TODO: ? look for differences of means on a distribution using Student's T test if normal, otherwise Kruskal-Wallis or maybe Mann-Whitney
         // TODO: Fix this - could report on normality
@@ -652,17 +627,44 @@ class PatternExplorer {
         var stories: surveyCollection.Story[] = this.graphHolder.allStories;
         var data = collectXYDataForFields(stories, pattern.questions[0].id, pattern.questions[1].id);
         
-        var statResult = kendallsTau(data.x, data.y);
+        // TODO: Add a flag somewhere to use Kendall's Tau instead of Pearson/Spearman's R
+        // var statResult = kendallsTau(data.x, data.y);
         // pattern.significance = statResult.prob.toFixed(4);
         
-        // TODO: Use Pearson's R if normally distributed
+        // TODO: Use Pearson's R instead of Spearman if normally distributed
         var r = jStat.spearmancoeff(data.x, data.y);
         // https://en.wikipedia.org/wiki/Spearman's_rank_correlation_coefficient#Determining_significance
         var n = data.x.length;
         var t = r * Math.sqrt((n - 2.0) / (1.0 - r * r));
         var p = jStat.ttest(t, n, 2);
-        pattern.significance = "p=" + p.toFixed(3) + " r=" + r.toFixed(3) + " n=" + n + " tt=" + statResult.test.toFixed(3) + " tz=" + statResult.z.toFixed(3) + " tp=" + statResult.prob.toFixed(3) ;
+        pattern.significance = "p=" + p.toFixed(3) + " r=" + r.toFixed(3) + " n=" + n;
+        //  + " tt=" + statResult.test.toFixed(3) + " tz=" + statResult.z.toFixed(3) + " tp=" + statResult.prob.toFixed(3) ;
         // console.log("calculateStatisticsForScatterPlot", pattern, n, t, p);
+    }
+    
+    calculateStatisticsForTable(pattern) {
+        // both not continuous -- look for a 'correspondence' between counts using Chi-squared test
+        // Can't calculate a statistic if one or both are mutiple answer checkboxes
+        // TODO: Fix this
+        // TODO: test for missing patterns[1]
+        var stories = this.graphHolder.allStories;
+        var counts = countsForFieldChoices(stories, pattern.questions[0].id, pattern.questions[1].id);
+        // console.log("counts", counts);
+        var values = collectValues(counts);
+        // console.log("values", values);
+        if (values.length < this.minimumStoryCountRequiredForTest) {
+            pattern.significance = "N/A";
+        } else {
+            // return {chi_squared: chi_squared, testSignificance: testSignificance}
+            // TODO:
+            // var statResult = simpleStatistics.chi_squared_goodness_of_fit(values, simpleStatistics.poisson_distribution, 0.05);
+            // pattern.significance = "" + statResult.testSignificance;
+            
+            // TODO: Continue testing and imporving
+            // var statResult = friedmanchisquare();
+            // pattern.significance = "" + "p=" + statResult.p.toFixed(3) + " chisq=" + statResult.chisq.toFixed(3);
+            pattern.significance = "N/A";
+        }
     }
     
     chooseGraph(pattern) {
