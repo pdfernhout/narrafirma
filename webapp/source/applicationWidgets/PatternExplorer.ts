@@ -1,6 +1,6 @@
 import charting = require("./charting");
 import kendallsTau = require("../statistics/kendallsTau");
-import friedmanchisquare = require("../statistics/friedmanchisquare");
+import chiSquare = require("../statistics/chiSquare");
 import storyCardDisplay = require("../storyCardDisplay");
 import questionnaireGeneration = require("../questionnaireGeneration");
 import surveyCollection = require("../surveyCollection");
@@ -87,6 +87,43 @@ function countsForFieldChoices(stories: surveyCollection.Story[], field1, field2
         counts[value] = count;
     }
     return counts;
+}
+
+function increment(countHolder, fieldName) {
+    var count = countHolder[fieldName];
+    if (!count) count = 0;
+    count++;
+    countHolder[fieldName] = count;
+}
+
+function valueTag(field1, field2) {
+    if (field1 === null || field1 === undefined) field1 = "{N/A}";
+    if (field2 === null || field2 === undefined) field2 = "{N/A}";
+    var result = JSON.stringify([field1, field2]);
+    // console.log("valueTag", result);
+    return result;
+}
+
+function countsForTableChoices(stories: surveyCollection.Story[], field1, field2) {
+    // console.log("countsForFieldChoices", stories, field1, field2);
+    // TODO: Maybe need to add in fields that were not selected with a zero count, using definition from questionnaire?
+    var counts = {};
+    var field1Options = {};
+    var field2Options = {};
+    var total = 0;
+    for (var i = 0; i < stories.length; i++) {
+        var value1 = stories[i].fieldValue(field1);
+        if (value1 === null || value1 === undefined) continue; // value1 = "{N/A}";
+        var value2 = stories[i].fieldValue(field2);
+        if (value2 === null || value2 === undefined) continue; // value2 = "{N/A}";
+        increment(counts, valueTag(value1, value2));
+        increment(field1Options, "" + value1);
+        increment(field2Options, "" + value2);
+        total++;
+    }
+    var result = {counts: counts, field1Options: field1Options, field2Options: field2Options, total: total};
+    // console.log("countsForTableChoices", result);
+    return result;
 }
 
 function collectValues(valueHolder) {
@@ -647,24 +684,97 @@ class PatternExplorer {
         // Can't calculate a statistic if one or both are mutiple answer checkboxes
         // TODO: Fix this
         // TODO: test for missing patterns[1]
-        var stories = this.graphHolder.allStories;
-        var counts = countsForFieldChoices(stories, pattern.questions[0].id, pattern.questions[1].id);
-        // console.log("counts", counts);
-        var values = collectValues(counts);
-        // console.log("values", values);
-        if (values.length < this.minimumStoryCountRequiredForTest) {
-            pattern.significance = "N/A";
-        } else {
-            // return {chi_squared: chi_squared, testSignificance: testSignificance}
-            // TODO:
-            // var statResult = simpleStatistics.chi_squared_goodness_of_fit(values, simpleStatistics.poisson_distribution, 0.05);
-            // pattern.significance = "" + statResult.testSignificance;
-            
-            // TODO: Continue testing and imporving
-            // var statResult = friedmanchisquare();
-            // pattern.significance = "" + "p=" + statResult.p.toFixed(3) + " chisq=" + statResult.chisq.toFixed(3);
-            pattern.significance = "N/A";
+        
+        console.log("calculateStatisticsForTable", pattern);
+        
+        if (pattern.questions[0].displayType === "checkboxes" || pattern.questions[1].displayType === "checkboxes") {
+            pattern.significance = "N/A (checkboxes)";
+            return;
         }
+        
+        var stories = this.graphHolder.allStories;
+        var counts = countsForTableChoices(stories, pattern.questions[0].id, pattern.questions[1].id);
+        // console.log("counts", counts);
+        // var values = collectValues(counts);
+        // console.log("values", values);
+        
+        // if (values.length < this.minimumStoryCountRequiredForTest) {
+        //    pattern.significance = "N/A";
+        //  } else {
+        
+        // return {chi_squared: chi_squared, testSignificance: testSignificance}
+        // TODO:
+        // var statResult = simpleStatistics.chi_squared_goodness_of_fit(values, simpleStatistics.poisson_distribution, 0.05);
+        // pattern.significance = "" + statResult.testSignificance;
+        
+        // TODO: Continue testing and imporving
+        // var statResult = friedmanchisquare();
+        // pattern.significance = "p=" + statResult.p.toFixed(3) + " chisq=" + statResult.chisq.toFixed(3);
+        // pattern.significance = "N/A";
+        // pattern.significance = "test: " + chiSquare.chiSquare([1, 2, 3], [1, 2, 3], 2);
+        
+        // {counts: count, field1Options: field1Options, field2Options: field2Options}
+        
+        var observed = [];
+        var expected = [];
+        
+        console.log("counts", counts);
+        
+        for (var field1Option in counts.field1Options) {
+            for (var field2Option in counts.field2Options) {
+                var field1Total = counts.field1Options[field1Option];
+                var field2Total = counts.field2Options[field2Option];
+                var observedValue = counts.counts[valueTag(field1Option, field2Option)] ||  0;
+                observed.push(observedValue);
+                var expectedValue = field1Total * field2Total / counts.total;
+                expected.push(expectedValue);
+            }
+        }
+        
+        var n1 = Object.keys(counts.field1Options).length;
+        var n2 = Object.keys(counts.field2Options).length;
+        
+        var degreesOfFreedom = (n1 - 1) * (n2 - 1);        
+        
+        // Conditions needed for test according to: https://en.wikipedia.org/wiki/Pearson's_chi-squared_test
+        var tooLowCount = 0;
+        var zeroInCell = false;
+        for (var i = 0; i < expected.length; i++) {
+            if (expected[i] < 5) tooLowCount++;
+            if (expected[i] === 0) zeroInCell = true;
+        }
+        
+        if (zeroInCell) {
+            pattern.significance = "N/A (zero in expected cell)";
+            return;
+        }
+        
+        if (n1 <= 2 && n2 <= 2 && tooLowCount > 0) {
+            pattern.significance = "N/A (2X2 with expected cell < 5)";
+            return;
+        }
+        
+        if (tooLowCount / observed.length > 0.2) {
+            pattern.significance = "N/A (less than 80% expected cells >= 5)";
+            return;
+        }
+
+        console.log("observed", observed);
+        console.log("expected", expected);
+        console.log("degreesOfFreedom", degreesOfFreedom);
+        
+        var statResult = chiSquare.chiSquare(observed, expected, degreesOfFreedom);
+        console.log("statResult.n", statResult.n);
+        
+        if (statResult.n !== n1 * n2) {
+            throw new Error("unexpected n1 * n2");
+        }
+        
+        if (statResult.n === degreesOfFreedom) {
+            throw new Error("unexpected statResult.n");
+        }
+        
+        pattern.significance = "p=" + statResult.p.toFixed(3) + " x^2=" + statResult.x2.toFixed(3) + " k=" + statResult.k + " n=" + statResult.n;
     }
     
     chooseGraph(pattern) {
