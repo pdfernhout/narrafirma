@@ -1,12 +1,13 @@
 ==== NarraFirma TODO list:
 
-GRAPH BROWSER
-H Support graphBrowser contingency table with statistical results - chi squared
-H Finish Mann-Whitney U test
-H Test statistical tests for validity - run same tests in spreadsheet on same data
+STORY CARDS
+M Select questions for story cards
+M Select story positioning and visibility for story cards
+M Select title positioning and visibility for story cards
 
 CATALYSIS REPORT
-H Make use of question threshold selection (configureCatalysisReport_minimumSubsetSize) to limit graphs in catalysis report
+H Use Mann-Whitney or equivalent test for comparing multiple histograms in catalysis Pattern Explorer
+M Support multiple scatter plots per nominal question
 
 ======= CYNTHIA
 
@@ -59,12 +60,15 @@ X Page to enter themes for stories
 X Page to cluster themes into final themes
 
 GRAPH BROWSER
+M Test the Mann-Whitney U test with known data
+M Test all statistical tests for validity more -- run same tests in spreadsheet on same data
 M Support multiple scatter plots across individual question answers
 L Support graphBrowser common maximum for multiple histograms
 M Show skewness and curtosis on histogram
+M Show statistical test results on charts the same as showing in pattern explorer list
 
-PATTERN BROWSER
-L Move options (how large should subsets, what significance threshold) to popup under patterns list
+PATTERN EXPLORER
+M Make use of question threshold selection (configureCatalysisReport_minimumSubsetSize) to limit graphs in catalysis report
 
 CLUSTERING (CATALYSIS)
 
@@ -910,3 +914,10 @@ DONE Remove S_ etc. from displayed labels
 DONE Sort questions and options displayed in choice lists and graph labels
 DONE Generate Catalysis report with inline images instead of SVG
 DONE Figure out a way to convert catalysis report from html to OpenOffice ODF format (use online tool on report with inline images)
+DONE Move options (how large should subsets, what significance threshold) to popup under patterns list [moved to its own page with question selection]
+DONE Make Spearman test work for catalysis Pattern Explorer scatter plots
+DONE Finish Mann-Whitney U test
+DONE Support graphBrowser contingency table with statistical results - chi squared
+DONE Make chi square test work for catalysis Pattern Explorer contingency tables [same as above]
+NOT DOING Hide statistical result column in catalysis report (until working)
+NOT DOING Hide question threshold widget in catalysis report configuration
