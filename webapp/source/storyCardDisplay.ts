@@ -128,9 +128,9 @@ export function generateStoryCardContent(storyModel, options: Options = {}) {
     }
     
     questions.sort(function(a, b) {
-       var aName = a.displayName || a.displayPrompt;
+       var aName = a.displayName || a.displayPrompt || "";
        aName = aName.toLowerCase();
-       var bName = b.displayName || b.displayPrompt;
+       var bName = b.displayName || b.displayPrompt || "";
        bName = bName.toLowerCase();
             
         if (aName < bName) return -1;
