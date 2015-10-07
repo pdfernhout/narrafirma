@@ -504,31 +504,19 @@ class PatternExplorer {
     }
     
     makePattern(id, graphType, questions) {
-        // For bar and table
-        var q1Type = "C";
-        // Some graphs don't use q2Type and it is left as the default, used by table
-        var q2Type = "C";
-        
-        if (graphType === "histogram" || graphType === "multiple histogram" || graphType === "scatter" || graphType === "multiple scatter") {
-            q1Type = "S";
-        }
-        
-        if (graphType === "scatter" || graphType === "multiple scatter") {
-            q2Type = "S";
-        }
-        
         var pattern; 
 
         if (questions.length === 1) {
-            pattern = {id: id, observation: null, graphType: graphType, patternName: nameForQuestion(questions[0]) + " (" + q1Type + ")", questions: questions};
+            pattern = {id: id, observation: null, graphType: graphType, patternName: nameForQuestion(questions[0]), questions: questions};
         } else if (questions.length === 2) {
-            pattern = {id: id, observation: null, graphType: graphType, patternName: nameForQuestion(questions[0]) + " (" + q1Type + ") vs. " + nameForQuestion(questions[1]) + " (" + q2Type + ")", questions: questions};
+            pattern = {id: id, observation: null, graphType: graphType, patternName: nameForQuestion(questions[0]) + " vs. " + nameForQuestion(questions[1]), questions: questions};
         } else {
             console.log("Unexpected number of questions", questions);
             throw new Error("Unexpected number of questions: " + questions.length);
         }
         
         var observation = this.observationAccessor.bind(this, pattern, "observationDescription");
+        
         // Next assignment creates a circular reference
         pattern.observation = observation;
         
@@ -655,7 +643,16 @@ class PatternExplorer {
     calculateStatisticsForMultipleHistogram(pattern) {
         // TODO: ? one of each continuous and not -- for each option, look for differences of means on a distribution using Student's T test if normal, otherwise Kruskal-Wallis or maybe Mann-Whitney
         // TODO: Fix this - t-test - differences between means of histograms
-        // TODO: Probably can't calculate a statistic if one or both are mutiple answer checkboxes?
+        
+        var ratioQuestion = pattern.questions[0];
+        var nominalQuestion = pattern.questions[1];
+        
+        // Probably can't calculate a statistic if one or both are mutiple answer checkboxes?
+        if (nominalQuestion.displayType === "checkboxes") {
+            pattern.significance = "N/A (checkboxes)";
+            return;
+        }
+        
         pattern.significance = "N/A";
     }
     
