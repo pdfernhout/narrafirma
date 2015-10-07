@@ -7,6 +7,7 @@
 var fs = require('fs');
 var http = require('http');
 var https = require('https');
+var util = require('util');
 
 // The modules below require npm installation
 var express = require('express');
@@ -108,7 +109,7 @@ app.use(function(err, req, res, next){
 var server = http.createServer(app).listen(8080, function () {
   var host = server.address().address;
   var port = server.address().port;
-  applicationLog("NarraFirmaServer app listening at http://%s:%s", host, port);
+  applicationLog(util.format("NarraFirmaServer app listening at http://%s:%s", host, port));
 });
 
 // http://stackoverflow.com/questions/5998694/how-to-create-an-https-server-in-node-js
@@ -123,6 +124,6 @@ var sslOptions = {
 var server2 = https.createServer(sslOptions, app).listen(8081, function () {
   var host = server2.address().address;
   var port = server2.address().port;
-  applicationLog("NarraFirmaServer app listening at https://%s:%s", host, port);
+  applicationLog(util.format("NarraFirmaServer app listening at https://%s:%s", host, port));
 });
 
