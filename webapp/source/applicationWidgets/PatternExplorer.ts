@@ -1,6 +1,7 @@
 import charting = require("./charting");
 import kendallsTau = require("../statistics/kendallsTau");
 import chiSquare = require("../statistics/chiSquare");
+import mannWhitneyU = require("../statistics/mannWhitneyU");
 import storyCardDisplay = require("../storyCardDisplay");
 import questionnaireGeneration = require("../questionnaireGeneration");
 import surveyCollection = require("../surveyCollection");
@@ -43,6 +44,7 @@ function nameForQuestion(question) {
     return question.id;
 }
 
+/*
 function collectDataForField(stories: surveyCollection.Story[], fieldName) {
     var result = [];
     for (var i = 0; i < stories.length; i++) {
@@ -52,6 +54,7 @@ function collectDataForField(stories: surveyCollection.Story[], fieldName) {
     }
     return result;
 }
+*/
 
 function isValidNumber(value) {
     // console.log("isValidNumber", JSON.stringify(value));
@@ -72,6 +75,31 @@ function collectXYDataForFields(stories: surveyCollection.Story[], xFieldName, y
     return {x: xResult, y: yResult};
 }
 
+
+function addValue(arrayHolder, fieldName, value) {
+    var values = arrayHolder[fieldName];
+    if (!values) values = [];
+    values.push(value);
+    arrayHolder[fieldName] = values;
+}
+
+function valuesForFieldChoices(stories: surveyCollection.Story[], scaleQuestionID, choiceQuestionID) {
+    // console.log("countsForFieldChoices", stories, field1, field2);
+    // TODO: Need to add in fields that were not selected with a zero count, using definition from questionnaire
+    var values = {};
+    for (var i = 0; i < stories.length; i++) {
+        var scaleValue = stories[i].fieldValue(scaleQuestionID);
+        if (scaleValue === null || scaleValue === undefined || scaleValue === "") continue; // value1 = "{N/A}";
+
+        var choiceValue = stories[i].fieldValue(choiceQuestionID);
+        if (choiceValue === null || choiceValue === undefined || scaleValue === "") continue; // value1 = "{N/A}";
+
+        addValue(values, choiceValue, scaleValue);
+    }
+    return values;
+}
+
+/*
 function countsForFieldChoices(stories: surveyCollection.Story[], field1, field2) {
     // console.log("countsForFieldChoices", stories, field1, field2);
     // TODO: Need to add in fields that were not selected with a zero count, using definition from questionnaire
@@ -88,6 +116,21 @@ function countsForFieldChoices(stories: surveyCollection.Story[], field1, field2
     }
     return counts;
 }
+*/
+
+/*
+function countsForFieldChoice(stories: surveyCollection.Story[], field1) {
+    // console.log("countsForFieldChoice", stories, field1);
+    // TODO: Need to add in fields that were not selected with a zero count, using definition from questionnaire
+    var counts = {};
+    for (var i = 0; i < stories.length; i++) {
+        var value1 = stories[i].fieldValue(field1);
+        if (value1 === null || value1 === undefined) continue; // value1 = "{N/A}";
+        increment(counts, "" + value1);
+    }
+    return counts;
+}
+*/
 
 function increment(countHolder, fieldName) {
     var count = countHolder[fieldName];
@@ -126,6 +169,7 @@ function countsForTableChoices(stories: surveyCollection.Story[], field1, field2
     return result;
 }
 
+/*
 function collectValues(valueHolder) {
     var values = [];
     for (var key in valueHolder) {
@@ -133,6 +177,7 @@ function collectValues(valueHolder) {
     }
     return values;
 }
+*/
 
 // TODO: Next two functions from add_storyBrowser and so are duplicate code
 
@@ -633,27 +678,51 @@ class PatternExplorer {
         // TODO: ? look for differences of means on a distribution using Student's T test if normal, otherwise Kruskal-Wallis or maybe Mann-Whitney
         // TODO: Fix this - could report on normality
         
-        var stories = this.graphHolder.allStories;
-        var counts = collectDataForField(stories, pattern.questions[0].id);
+        // var stories = this.graphHolder.allStories;
+        // var counts = collectDataForField(stories, pattern.questions[0].id);
         // console.log("counts", counts);
         
         pattern.significance = "N/A";
     }
     
     calculateStatisticsForMultipleHistogram(pattern) {
-        // TODO: ? one of each continuous and not -- for each option, look for differences of means on a distribution using Student's T test if normal, otherwise Kruskal-Wallis or maybe Mann-Whitney
-        // TODO: Fix this - t-test - differences between means of histograms
+        // One of each continuous and not
+        // for each option, look for differences of means on a distribution using Student's T test if normal, otherwise Kruskal-Wallis or maybe Mann-Whitney
         
+        // TODO: use t-test when normal 
+
         var ratioQuestion = pattern.questions[0];
         var nominalQuestion = pattern.questions[1];
         
-        // Probably can't calculate a statistic if one or both are mutiple answer checkboxes?
+        // Can't calculate a statistic if one or both are mutiple answer checkboxes
         if (nominalQuestion.displayType === "checkboxes") {
             pattern.significance = "N/A (checkboxes)";
             return;
         }
         
-        pattern.significance = "N/A";
+        var stories: surveyCollection.Story[] = this.graphHolder.allStories;
+
+        // var data = collectDataForField(stories, nominalQuestion.id);
+        // var counts = countsForFieldChoice(stories, nominalQuestion.id);
+        var values = valuesForFieldChoices(stories, ratioQuestion.id, nominalQuestion.id);
+        var options = Object.keys(values);
+        
+        // console.log("calculateStatisticsForMultipleHistogram options", options, values);
+        
+        // For every pair, compute test, and take best p score
+        var pLowest = 1;
+        
+        for (var i = 0; i < options.length; i++) {
+            var x = values[options[i]];
+            for (var j = i + 1; j < options.length; j++) {
+                var y = values[options[j]];
+                var statResult = mannWhitneyU(x, y);
+                // console.log("calculateStatisticsForMultipleHistogram statResult", statResult);
+                pLowest = Math.min(pLowest, statResult.p);
+            }
+        }
+ 
+        pattern.significance = " p=" + pLowest.toFixed(3);
     }
     
     calculateStatisticsForScatterPlot(pattern) {
@@ -682,7 +751,7 @@ class PatternExplorer {
         // TODO: Fix this
         // TODO: test for missing patterns[1]
         
-        console.log("calculateStatisticsForTable", pattern);
+        // console.log("calculateStatisticsForTable", pattern);
         
         if (pattern.questions[0].displayType === "checkboxes" || pattern.questions[1].displayType === "checkboxes") {
             pattern.significance = "N/A (checkboxes)";
@@ -692,7 +761,7 @@ class PatternExplorer {
         var stories = this.graphHolder.allStories;
         
         var counts = countsForTableChoices(stories, pattern.questions[0].id, pattern.questions[1].id);
-        console.log("counts", counts);
+        // console.log("counts", counts);
         
         var observed = [];
         var expected = [];
@@ -736,12 +805,12 @@ class PatternExplorer {
             return;
         }
 
-        console.log("observed", observed);
-        console.log("expected", expected);
-        console.log("degreesOfFreedom", degreesOfFreedom);
+        // console.log("observed", observed);
+        // console.log("expected", expected);
+        // console.log("degreesOfFreedom", degreesOfFreedom);
         
         var statResult = chiSquare.chiSquare(observed, expected, degreesOfFreedom);
-        console.log("statResult.n", statResult.n);
+        // console.log("statResult.n", statResult.n);
         
         if (statResult.n !== n1 * n2) {
             throw new Error("unexpected n1 * n2");
