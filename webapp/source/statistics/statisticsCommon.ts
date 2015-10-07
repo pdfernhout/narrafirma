@@ -18,7 +18,7 @@ export function repeatCounts(array) {
     return result;
 }
 
-export function rankdata(a) {
+export function rankdata(a: number[]) {
     /*
     Ranks the data in a, dealing with ties appropriately.
 
@@ -71,6 +71,14 @@ export function rankdata(a) {
     }
     return newarray;
 }
+
+function rankdata_test() {
+    var result = rankdata([0, 2, 2, 3]);
+    console.log("rankdata self-test", result);
+    // Should be: [ 1, 2.5, 2.5, 4 ]
+}
+
+// rankdata_test();
 
 export function newFilledArray(length: number, val: number = 0): number[] {
     var array = [];
