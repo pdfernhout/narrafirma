@@ -6,7 +6,6 @@ M Select story positioning and visibility for story cards
 M Select title positioning and visibility for story cards
 
 CATALYSIS REPORT
-H Use Mann-Whitney or equivalent test for comparing multiple histograms in catalysis Pattern Explorer
 M Support multiple scatter plots per nominal question
 
 ======= CYNTHIA
@@ -123,6 +122,9 @@ M Create script or procedure to deal with SVN for WordPress
 M When a Grid item is added but no data is entered like for a catalysis report, the entry in a select looks wrong
 M Display total count of all answers when displaying question name in Story Browser
 L Text search function (at least for stories)
+
+COMMUNICATIONS
+M When import story form, hundreds of triples can be geenrated which take minutes to send to the server (with no progress feedback, even though done in background)
 
 UNSURE
 X Way to retrieve data about project participant groups [Is this still relevant? Probably yes, if we did "checkboxes with pull" for picking what groups an activity applies to instead of text entry]
@@ -921,3 +923,4 @@ DONE Support graphBrowser contingency table with statistical results - chi squar
 DONE Make chi square test work for catalysis Pattern Explorer contingency tables [same as above]
 NOT DOING Hide statistical result column in catalysis report (until working)
 NOT DOING Hide question threshold widget in catalysis report configuration
+DONE Use Mann-Whitney or equivalent test for comparing multiple histograms in catalysis Pattern Explorer
