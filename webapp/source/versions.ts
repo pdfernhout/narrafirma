@@ -5,13 +5,10 @@ import kludgeForUseStrict = require("./kludgeForUseStrict");
 var versions = {
     narrafirmaApplication: "0.3.0",
     
-    projectAnswersContentType: "org.workingwithstories.PNIWorkbook",
-    projectAnswersContentVersion: "0.1.0",
-    
-    questionnaireContentType: "org.workingwithstories.Questionnaire",
+    questionnaireContentType: "org.workingwithstories.NarraFirmaQuestionnaire",
     questionnaireContentVersion: "0.1.0",
     
-    surveyResultContentType: "org.workingwithstories.PNIWorkbookSurveyResult",
+    surveyResultContentType: "org.workingwithstories.NarraFirmaSurveyResult",
     surveyResultContentVersion: "0.1.0"
 };
     

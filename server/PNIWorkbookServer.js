@@ -54,7 +54,7 @@ function applicationLog() {
     console.log.apply(console, newArguments);
 }
 
-applicationLog("================== PNIWorkbookServer server for nodejs started ================");
+applicationLog("================== NarraFirma server for nodejs started ================");
 
 applicationLog("__dirname", __dirname);
 
@@ -108,7 +108,7 @@ app.use(function(err, req, res, next){
 var server = http.createServer(app).listen(8080, function () {
   var host = server.address().address;
   var port = server.address().port;
-  applicationLog("PNIWorkbookServer app listening at http://%s:%s", host, port);
+  applicationLog("NarraFirmaServer app listening at http://%s:%s", host, port);
 });
 
 // http://stackoverflow.com/questions/5998694/how-to-create-an-https-server-in-node-js
@@ -123,6 +123,6 @@ var sslOptions = {
 var server2 = https.createServer(sslOptions, app).listen(8081, function () {
   var host = server2.address().address;
   var port = server2.address().port;
-  applicationLog("PNIWorkbookServer app listening at https://%s:%s", host, port);
+  applicationLog("NarraFirmaServer app listening at https://%s:%s", host, port);
 });
 

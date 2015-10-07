@@ -143,9 +143,9 @@ function makeResponse(responseNumber) {
         "__type": "org.pointrel.pointrel20141201.PointrelContentEnvelope",
         "id": "test-" + responseNumber,
         "tags": [
-            "Test-PNIWorkbook-003-Surveys"
+            "Test-NarraFirma-003-Surveys"
         ],
-        "contentType": "org.workingwithstories.PNIWorkbookSurveyResult",
+        "contentType": "org.workingwithstories.NarraFirmaSurveyResult",
         "committer": "anonymous",
         "timestamp": "2014-12-13T04:18:29.182Z",
         "content": {
