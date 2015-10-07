@@ -7,6 +7,8 @@ M Select title positioning and visibility for story cards
 
 CATALYSIS REPORT
 M Support multiple scatter plots per nominal question
+M Somehow display statistical results for graphs
+M For P=0.000 maybe show < somehow as in p<0.001
 
 ======= CYNTHIA
 
@@ -124,7 +126,7 @@ M Display total count of all answers when displaying question name in Story Brow
 L Text search function (at least for stories)
 
 COMMUNICATIONS
-M When import story form, hundreds of triples can be geenrated which take minutes to send to the server (with no progress feedback, even though done in background)
+M When import story form, hundreds of triples can be geenrated which take minutes to send to the server (with no progress feedback, even though done in background) -- may be related to console logging
 
 UNSURE
 X Way to retrieve data about project participant groups [Is this still relevant? Probably yes, if we did "checkboxes with pull" for picking what groups an activity applies to instead of text entry]
