@@ -91,8 +91,8 @@ function writeTestPage(request, response, config) {
     // response.sendFile(baseDirectoryNormalized + "narrafirma.html");
     writePageStart(request, response, "start");
     // response.write("Example of authentication with passport; authenticated " + request.isAuthenticated());
-    if (request.isAuthenticated()) response.write('<br><a href="/narrafirma.html">Start NarraFirma project application</a>');
-    if (request.isAuthenticated()) response.write('<br><a href="/admin.html">Start NarraFirma administration</a>');
+    if (request.isAuthenticated()) response.write('<br>Start <a href="/narrafirma.html">NarraFirma project application</a><br>');
+    if (request.isAuthenticated()) response.write('<br>Start <a href="/admin.html">NarraFirma administration tool</a>');
     writePageEnd(request, response);
 }
 
