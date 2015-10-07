@@ -674,7 +674,7 @@ class PatternExplorer {
         var n = data.x.length;
         var t = r * Math.sqrt((n - 2.0) / (1.0 - r * r));
         var p = jStat.ttest(t, n, 2);
-        pattern.significance = "p=" + p.toFixed(3) + " r=" + r.toFixed(3) + " n=" + n;
+        pattern.significance = " p=" + p.toFixed(3) + " r=" + r.toFixed(3) + " n=" + n;
         //  + " tt=" + statResult.test.toFixed(3) + " tz=" + statResult.z.toFixed(3) + " tp=" + statResult.prob.toFixed(3) ;
         // console.log("calculateStatisticsForScatterPlot", pattern, n, t, p);
     }
@@ -754,7 +754,7 @@ class PatternExplorer {
             throw new Error("unexpected statResult.n");
         }
         
-        pattern.significance = "p=" + statResult.p.toFixed(3) + " x^2=" + statResult.x2.toFixed(3) + " k=" + statResult.k + " n=" + statResult.n;
+        pattern.significance = " p=" + statResult.p.toFixed(3) + " x^2=" + statResult.x2.toFixed(3) + " k=" + statResult.k + " n=" + statResult.n;
     }
     
     chooseGraph(pattern) {
