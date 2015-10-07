@@ -113,7 +113,6 @@ function processCSVContentsForStories(contents) {
         var newSurveyResult = {
             __type: "org.workingwithstories.QuestionnaireResponse",
             // TODO: Think about whether to include entire questionnaire or something else perhaps
-            // TODO: Big kludge to use (module) global here!!!
             questionnaire: questionnaire,
             responseID: generateRandomUuid("QuestionnaireResponse"),
             stories: [],
