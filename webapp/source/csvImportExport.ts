@@ -349,7 +349,8 @@ function processCSVContentsForQuestionnaire(contents) {
     
     m.redraw();
     
-    toaster.toast("Done importing story form: " + shortName);
+    toaster.toast("Finished reading story form: " + shortName);
+    toaster.toast("Updating server in progress in background");
     
     function addReferenceToList(listIdentifier: string, reference: string, fieldName: string, className: string) {
         var order = questionTypeCounts[fieldName];
