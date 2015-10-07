@@ -38,7 +38,7 @@ export function chiSquare(observed: number[], expected: number[], degreesOfFreed
     var p = 1 - jStat.chisquare.cdf(x2, degreesOfFreedom);
     
     var result = {x2: x2, p: p, k: degreesOfFreedom, n: observed.length};
-    console.log("chiSquare", result);
+    // console.log("chiSquare", result);
     return result;
 }
 
