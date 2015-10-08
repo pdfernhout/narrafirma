@@ -299,7 +299,7 @@ class PatternExplorer {
                     id: "observationPanel_title",
                     valuePath: "currentObservationTitle",
                     displayName: "Observation",
-                    displayPrompt: "Enter an <strong>summary title</strong> about the pattern here.",
+                    displayPrompt: "Please give this observation a <strong>name</strong>.",
                     displayType: "text"
                     // Maybe TODO: Tab order problem if hide this is not visible when tab out of previous field -- it will skip to page notes
                     // displayVisible: function(panelBuilder, model) {
@@ -396,7 +396,7 @@ class PatternExplorer {
                         panelBuilder.buildPanel(this.observationPanelSpecification, this)
                     ] :
                     // TODO: Translate
-                    m("div.narrafirma-choose-pattern", "Please select a pattern to view as a graph")
+                    m("div.narrafirma-choose-pattern", "Please select a pattern to view as a graph.")
             ];
         }
         
