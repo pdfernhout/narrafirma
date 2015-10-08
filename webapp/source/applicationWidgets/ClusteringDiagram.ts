@@ -9,6 +9,8 @@ import m = require("mithril");
 // TODO: Maybe add tooltip with notes for item? And then don't display item info at bottom?
 // TODO: Select and move groups of items
 
+// TODO: Make a systemic communications fix to PointrelClient so can stop using Math.round to ensure x and y are integers to avoid JSON conversion errors and sha256 error in WordPress plugin due to PHP and numeric precision (2015-10-08)
+
 var defaultSurfaceWidthInPixels = 800;
 var defaultSurfaceHeightInPixels = 500;
 
@@ -135,8 +137,8 @@ class ClusteringDiagram {
             "type": itemType,
             name: name,
             notes: notes,
-            x: x,
-            y: y
+            x: Math.round(x),
+            y: Math.round(y)
         };
         // item.bodyColor = defaultBodyColor;
         // item.borderWidth = defaultBorderWidth;
@@ -155,8 +157,8 @@ class ClusteringDiagram {
     
     static bumpXYOfItem(item: ClusteringDiagramItem) {
         ClusteringDiagram.bumpedItemCount++;
-        item.x = item.x + (ClusteringDiagram.bumpedItemCount * ClusteringDiagram.bumpXShiftPerItem) % ClusteringDiagram.bumpXRange;
-        item.y = item.y + (ClusteringDiagram.bumpedItemCount / 10 * ClusteringDiagram.bumpYShiftPerItem) % ClusteringDiagram.bumpYRange;
+        item.x = Math.round(item.x + (ClusteringDiagram.bumpedItemCount * ClusteringDiagram.bumpXShiftPerItem) % ClusteringDiagram.bumpXRange);
+        item.y = Math.round(item.y + (ClusteringDiagram.bumpedItemCount / 10 * ClusteringDiagram.bumpYShiftPerItem) % ClusteringDiagram.bumpYRange);
     }
     
     static addNewItemToDiagram(diagram: ClusteringDiagramModel, itemType: string, name: string, notes: string = "") {
@@ -718,8 +720,8 @@ class ClusteringDiagram {
         drag.on("drag", function () {
             // console.log("drag item", item);
             // TODO: Casting to any as workaround to silence TypeScritp error for maybe incomplete d3 typing file
-            item.x += (<any>d3.event).dx;
-            item.y += (<any>d3.event).dy;
+            item.x = Math.round(item.x + (<any>d3.event).dx);
+            item.y = Math.round(item.y + (<any>d3.event).dy);
             group.attr('transform', 'translate(' + item.x + ',' + item.y + ')');
             moved = true;
         });
