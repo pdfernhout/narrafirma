@@ -6,7 +6,7 @@ var panel: Panel = {
     displayName: "Introduction",
     panelFields: [
         {
-            id: "project_narrafirma_whatis_header",
+            id: "project_narrafirma_whatisnf_header",
             valueType: "none",
             displayType: "header",
             displayPrompt: "What is NarraFirma?"
@@ -31,7 +31,7 @@ var panel: Panel = {
             displayPrompt: ""
         },
         {
-            id: "project_narrafirma_whatis_header",
+            id: "project_narrafirma_whatispni_header",
             valueType: "none",
             displayType: "header",
             displayPrompt: "What is participatory narrative inquiry?"
@@ -54,7 +54,7 @@ var panel: Panel = {
         },
         
         {
-            id: "project_narrafirma_whatis_header",
+            id: "project_narrafirma_whatdoesnfdo_header",
             valueType: "none",
             displayType: "header",
             displayPrompt: "How does NarraFirma help with PNI?"
@@ -107,7 +107,7 @@ var panel: Panel = {
         
         
         {
-            id: "project_narrafirma_whatis_header",
+            id: "project_narrafirma_howcaniusenf_header",
             valueType: "none",
             displayType: "header",
             displayPrompt: "How can I use NarraFirma?"
@@ -125,13 +125,13 @@ var panel: Panel = {
         },
         
         {
-            id: "project_narrafirma_whatis_header",
+            id: "project_narrafirma_wheredidnfcomefrom_header",
             valueType: "none",
             displayType: "header",
             displayPrompt: "Where did NarraFirma come from?"
         },
         {
-            id: "project_narrafirmaSoftwareLink",
+            id: "project_whoWroteNF",
             valueType: "none",
             displayType: "html",
             displayPrompt: `
@@ -141,13 +141,13 @@ var panel: Panel = {
         },
 
         {
-            id: "project_narrafirma_whatis_header",
+            id: "project_narrafirma_howcanigethelp_header",
             valueType: "none",
             displayType: "header",
             displayPrompt: "How can I get help with NarraFirma?"
         },
         {
-            id: "project_wwsBookAndHelpLink",
+            id: "project_consultingLink",
             valueType: "none",
             displayType: "html",
             displayPrompt: `
@@ -157,7 +157,7 @@ var panel: Panel = {
 
         
         {
-            id: "project_narrafirma_whatis_header",
+            id: "project_narrafirma_whendoesnfsavedata_header",
             valueType: "none",
             displayType: "header",
             displayPrompt: "When does NarraFirma save my data? Where is the Save button?"
