@@ -6,18 +6,18 @@ var panel: Panel = {
     modelClass: "Interpretation",
     panelFields: [
         {
-            id: "interpretation_name",
-            valueType: "string",
-            displayType: "text",
-            displayName: "Intepretation name",
-            displayPrompt: "Please give this interpretation a <strong>name</strong>."
-        },
-        {
             id: "interpretation_text",
             valueType: "string",
             displayType: "textarea",
             displayName: "Description",
             displayPrompt: "Please <strong>describe</strong> this interpretation. What does the pattern mean, from this perspective?"
+        },
+        {
+            id: "interpretation_name",
+            valueType: "string",
+            displayType: "text",
+            displayName: "Intepretation name",
+            displayPrompt: "Please give this interpretation a <strong>name</strong>."
         },
         {
             id: "interpretation_idea",
