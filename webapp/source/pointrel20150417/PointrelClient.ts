@@ -640,7 +640,7 @@ class PointrelClient {
                 if (debugMessaging) console.log("Got store response", response);
                 self.outstandingServerRequestSentAtTimestamp = null;
                 if (!response.success) {
-                    console.log("ERROR: Message store failure", response, self.outgoingMessageQueue[0]);
+                    console.log("ERROR: Message store failure", response, self.outgoingMessageQueue[0], JSON.stringify(self.outgoingMessageQueue[0]));
                     
                     if (callback) {
                         self.serverStatus("failure", "Message store failure: " + response.statusCode + " :: " + response.description);
