@@ -161,7 +161,7 @@ export function collectAllQuestions(): any[]  {
     var allQuestions = getLeadingStoryQuestions(elicitingQuestions);
     allQuestions = allQuestions.concat(storyQuestions, participantQuestions, annotationQuestions);
     
-    console.log("collectAllQuestions", allQuestions);
+    // console.log("collectAllQuestions", allQuestions);
     return allQuestions;
 }
 
@@ -210,7 +210,7 @@ export function buildQuestionnaire(shortName) {
     var questionnaireTemplate = project.findQuestionnaireTemplate(shortName);
     if (!questionnaireTemplate) return null;
     
-    console.log("questionnaireTemplate", questionnaireTemplate);
+    // console.log("questionnaireTemplate", questionnaireTemplate);
     
     return buildQuestionnaireFromTemplate(questionnaireTemplate);
 }
@@ -259,7 +259,7 @@ export function buildQuestionnaireFromTemplate(questionnaireTemplate: string) {
     var allElicitingQuestions = buildIdToItemMap("project_elicitingQuestionsList", "elicitingQuestion_shortName");
     var elicitingQuestionIdentifiers = project.tripleStore.getListForSetIdentifier(project.tripleStore.queryLatestC(questionnaireTemplate, "questionForm_elicitingQuestions"));
     var elicitingQuestions = buildItemListFromIdList(allElicitingQuestions, elicitingQuestionIdentifiers, "elicitingQuestion");       
-    console.log("elicitingQuestions", elicitingQuestions);
+    // console.log("elicitingQuestions", elicitingQuestions);
     
     questionnaire.elicitingQuestions = convertElicitingQuestions(elicitingQuestions);
     
@@ -275,7 +275,7 @@ export function buildQuestionnaireFromTemplate(questionnaireTemplate: string) {
     ensureUniqueQuestionIDs(usedIDs, participantQuestions);      
     questionnaire.participantQuestions = convertEditorQuestions(participantQuestions, "P_");
     
-    console.log("buildQuestionnaire result", questionnaire);
+    // console.log("buildQuestionnaire result", questionnaire);
     return questionnaire;
 }
 

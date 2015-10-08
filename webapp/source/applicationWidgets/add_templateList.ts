@@ -40,9 +40,9 @@ var add_templateList_activityQuestions = [
 ];
 
 function useButtonClicked(panelBuilder: PanelBuilder, templateListChoice, model, hideDialogCallback, gridWithItemPanel: GridWithItemPanel) {
-   console.log("useButtonClicked", gridWithItemPanel);
+   // console.log("useButtonClicked", gridWithItemPanel);
    var selectedTemplate = gridWithItemPanel.getSelectedItem();
-   console.log("grid selectedTemplate", selectedTemplate);
+   // console.log("grid selectedTemplate", selectedTemplate);
     
     var storeValueInModel = Globals.project().tripleStore.makeModelFunction(model);
    
@@ -92,7 +92,7 @@ function useButtonClicked(panelBuilder: PanelBuilder, templateListChoice, model,
                console.log(message);
                alert(message);
            }
-           console.log("about to call hideDialogCallback");
+           // console.log("about to call hideDialogCallback");
            hideDialogCallback();
        });
    } else {
@@ -109,10 +109,10 @@ function makeTemplateListChooser(panelBuilder: PanelBuilder, dialogConfiguration
     // TODO: questionContentPane.set("style", "min-height: 400px; min-width: 600px; max-width: 900px");
     
     var templateListChoice = fieldSpecification.displayConfiguration;
-    console.log("templateListChoice", templateListChoice);
+    // console.log("templateListChoice", templateListChoice);
     
     var templateCollection = templates[templateListChoice];
-    console.log("templateCollection", templateCollection);
+    // console.log("templateCollection", templateCollection);
     
     var templateQuestions;
     if (templateCollection) {

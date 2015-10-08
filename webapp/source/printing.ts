@@ -239,7 +239,7 @@ function generateHTMLForQuestionnaire(questionnaire) {
 }
 
 export function printStoryForm(model, fieldSpecification, value) {
-    console.log("printStoryForm unfinished");
+    // console.log("printStoryForm");
     
     var storyCollectionName: string = Globals.clientState().storyCollectionName();
     
@@ -258,7 +258,7 @@ export function printStoryForm(model, fieldSpecification, value) {
 }
 
 export function printStoryCards() {
-    console.log("printStoryCards");
+    // console.log("printStoryCards");
     
     if (!Globals.clientState().storyCollectionName()) {
         alert("Please select a story collection for which to print story cards");
@@ -267,7 +267,7 @@ export function printStoryCards() {
     
     var storyCollectionName = Globals.clientState().storyCollectionName();
     var allStoriesInStoryCollection = surveyCollection.getStoriesForStoryCollection(storyCollectionName);
-    console.log("allStoriesInStoryCollection", allStoriesInStoryCollection);
+    // console.log("allStoriesInStoryCollection", allStoriesInStoryCollection);
     
     var storyDivs = [];
     
@@ -568,7 +568,7 @@ export function printCatalysisReport() {
     var project = Globals.project();
     
     var catalysisReportName = Globals.clientState().catalysisReportName();
-    console.log("printCatalysisReport", catalysisReportName);
+    // console.log("printCatalysisReport", catalysisReportName);
     
     if (!catalysisReportName) {
         alert("Please pick a catalysis report to print.");
@@ -581,7 +581,7 @@ export function printCatalysisReport() {
     var clusteringDiagram = project.tripleStore.queryLatestC(catalysisReportIdentifier, "interpretationsClusteringDiagram");
     // console.log("clusteringDiagram", clusteringDiagram);
     if (!clusteringDiagram) {
-        console.log("clusteringDiagram not defined");
+        // console.log("clusteringDiagram not defined");
         alert("Please cluster interpretations before printing.");
         return;
     }

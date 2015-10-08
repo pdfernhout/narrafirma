@@ -95,7 +95,7 @@ class PanelSpecificationCollection {
     
     // This builds a specific model based on the name of the model, using data from one or more pages or panels that define that model
     buildModel(modelName) {
-        console.log("buildModel request", modelName);
+        // console.log("buildModel request", modelName);
         var model = {__type: modelName};
         var modelFieldSpecifications = this.modelClassToModelFieldSpecificationsMap[modelName];
         if (!modelFieldSpecifications) {
@@ -110,7 +110,7 @@ class PanelSpecificationCollection {
                 model[fieldSpecification.id] = this.initialDataForField(fieldSpecification);
             }
         }
-        console.log("buildModel result", modelName, model);
+        // console.log("buildModel result", modelName, model);
         return model;
     }
     

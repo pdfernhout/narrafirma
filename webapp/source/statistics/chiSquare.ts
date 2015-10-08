@@ -1,8 +1,6 @@
 import kludgeForUseStrict = require("../kludgeForUseStrict");
 "use strict";
 
-console.log("import chiSquare");
-
 // Library for statistics, imported by narrafirma.html
 declare var jStat;
 
@@ -30,7 +28,7 @@ export function chiSquare(observed: number[], expected: number[], degreesOfFreed
     }
     
     if (observedTotal !== Math.round(expectedTotal)) {
-        console.log("observedTotal", observedTotal, "expectedTotal", expectedTotal);
+        console.log("Error chiSquare observedTotal", observedTotal, "expectedTotal", expectedTotal);
         throw new Error("chiSquare: observedTotal !== expectedTotal");
     }
     

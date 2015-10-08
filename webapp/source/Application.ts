@@ -137,7 +137,7 @@ class Application {
     
     // dispatch the button click
     buttonClicked(panelBuilder: PanelBuilder, model, fieldSpecification, value) {
-         console.log("buttonClicked", fieldSpecification);
+         // console.log("buttonClicked", fieldSpecification);
          
          var functionName = fieldSpecification.id;
          if (fieldSpecification.displayConfiguration) {

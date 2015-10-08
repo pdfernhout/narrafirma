@@ -35,7 +35,7 @@ class Project {
         // pointrelClient.topicIdentifier = topicIdentifier;
         
         this.tripleStore = new TripleStore(this.pointrelClient, "narrafirmaProject");
-        console.log("tripleStore", this.tripleStore);
+        // console.log("tripleStore", this.tripleStore);
         
         // Redraw on any new tripleStore message (however, the ones we send will not get callbacks)
         this.tripleStore.subscribe(undefined, undefined, undefined, this.redrawCallback.bind(this));
@@ -220,7 +220,7 @@ class Project {
         if (!setIdentifier) {
             // Need to create list
             setIdentifier = this.tripleStore.newIdForSet(questionClass + "Set");
-            console.log("Making set for ", questionListName, setIdentifier); 
+            // console.log("Making set for ", questionListName, setIdentifier); 
             this.setFieldValue(questionListName, setIdentifier);
         }
         this.tripleStore.makeNewSetItem(setIdentifier, questionClass, question);

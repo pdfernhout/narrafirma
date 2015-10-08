@@ -433,7 +433,7 @@ class PatternExplorer {
             this.project.tripleStore.addTriple(observationIdentifier, "pattern", patternCopyWithoutAccessorFunction);
         }
 
-        console.log("observationAccessor", pattern.questions, observationIdentifier, newValue);
+        // console.log("observationAccessor", pattern.questions, observationIdentifier, newValue);
         if (newValue === undefined) {
             var result = this.project.tripleStore.queryLatestC(observationIdentifier, field);
             if (result === undefined || result === null) {
@@ -501,7 +501,7 @@ class PatternExplorer {
         } else {
             this.minimumStoryCountRequiredForTest = defaultMinimumStoryCountRequiredForTest;
         }
-        console.log("minimumStoryCountRequiredForTest", this.minimumStoryCountRequiredForTest);
+        // console.log("minimumStoryCountRequiredForTest", this.minimumStoryCountRequiredForTest);
         
         this.catalysisReportObservationSetIdentifier = this.getObservationSetIdentifier(catalysisReportIdentifier);
         

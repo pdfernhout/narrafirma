@@ -71,7 +71,7 @@ export function importEntireProject() {
         var messageIndexToSend = 0;
     
         function sendNextMessage() {
-            console.log("sendNextMessage", messageIndexToSend);
+            // console.log("sendNextMessage", messageIndexToSend);
             if (progressModel.cancelled) {
                 alert("Cancelled after importing " + messageIndexToSend + " messages");
             } else if (messageIndexToSend >= importObject.messages.length) {

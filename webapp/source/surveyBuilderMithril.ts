@@ -592,7 +592,7 @@ export function buildSurveyForm(surveyDiv, questionnaire, doneCallback, surveyOp
     };
     
     function redraw(source = "gui") {
-        console.log("About to redraw");
+        // console.log("About to redraw");
         if (surveyDiv) {
             m.render(surveyDiv, view());
         } else {

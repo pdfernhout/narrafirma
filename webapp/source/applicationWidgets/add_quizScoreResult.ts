@@ -14,7 +14,7 @@ function calculate_quizScoreResult(panelSpecificationCollection, modelFunction: 
     for (var dependsOnIndex = 0; dependsOnIndex < dependsOn.length; dependsOnIndex++) {
         var questionID = dependsOn[dependsOnIndex];
         var questionAnswer = modelFunction(questionID);
-        console.log("questionAnswer", questionAnswer, questionID);
+        // console.log("questionAnswer", questionAnswer, questionID);
         var answerWeight = 0;
         var index = 0;
         if (questionAnswer) {

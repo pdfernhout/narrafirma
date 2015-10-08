@@ -456,7 +456,7 @@ class ClusteringDiagram {
         this.itemBeingEdited.notes = this.itemBeingEditedCopy.notes;
         
         if (this.isEditedItemNew) {
-            console.log("not existing item");
+            // console.log("not existing item");
             this.model.items.push(this.itemBeingEdited);
             this.addDisplayObjectForItem(this.mainSurface, this.itemBeingEdited);
         } else {

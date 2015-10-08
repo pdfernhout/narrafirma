@@ -25,7 +25,7 @@ var PageDisplayer: any = {
     view: function(controller, args) {
         var contentsDiv;
         
-        console.log("========== view called in PageDisplayer ==========", currentPageID);
+        // console.log("========== view called in PageDisplayer ==========", currentPageID);
             
         // Setting the hash may trigger another call to the showPage function eventually, but as the new page will already be set, it should not loop further
         clientState.updateHashIfNeededForChangedClientState();
@@ -100,7 +100,7 @@ export function showPage(pageID, forceRefresh = false, isRedrawAlreadyQueued = f
     
     // Make sure the hash is pointing to this page if this is not a forced refresh
     if (currentPageID !== pageID || badPage) {
-        console.log("setting currentPageID to", pageID);
+        // console.log("setting currentPageID to", pageID);
         currentPageID = pageID;
         currentPageSpecification = pageSpecification;
         clientState.pageIdentifier(currentPageID);

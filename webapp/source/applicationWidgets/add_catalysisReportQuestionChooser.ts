@@ -6,7 +6,7 @@ import Globals = require("../Globals");
 "use strict";
 
 function add_catalysisReportQuestionChooser(panelBuilder: PanelBuilder, model, fieldSpecification) {
-    console.log("add_catalysisReportQuestionChooser", model, fieldSpecification);
+    // console.log("add_catalysisReportQuestionChooser", model, fieldSpecification);
     
     var project = Globals.project();
     

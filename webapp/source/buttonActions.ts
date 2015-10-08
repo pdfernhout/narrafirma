@@ -29,7 +29,7 @@ export function initialize(theProject: Project, theClientState: ClientState) {
 
 export function helpButtonClicked() {
     var pageSpecification = navigationPane.getCurrentPageSpecification();
-    console.log("helpButtonClicked", pageSpecification);
+    // console.log("helpButtonClicked", pageSpecification);
     if (!pageSpecification) {
         console.log("no pageSpecification for current page");
         return;
@@ -37,7 +37,7 @@ export function helpButtonClicked() {
     
     var helpURL = 'help/' + pageSpecification.section + "/help_" + pageSpecification.id + '.html';
     
-    console.log("opening help url", helpURL);
+    // console.log("opening help url", helpURL);
     
     browser.launchApplication(helpURL, 'help');
 }
@@ -45,7 +45,7 @@ export function helpButtonClicked() {
 // Caller should call wizard.forward() on successful save to see the last page, and provide a retry message otherwise
 // Caller may also want to call (the returned) surveyDialog.hide() to close the window, or let the user do it.
 function openMithrilSurveyDialog(questionnaire, callback, previewModeTitleText = null) {  
-    console.log("openSurveyDialog questionnaire", questionnaire);
+    // console.log("openSurveyDialog questionnaire", questionnaire);
    
     var surveyDiv = document.createElement("div");
     var surveyViewFunction = surveyBuilder.buildSurveyForm(null, questionnaire, callback, {previewMode: !!previewModeTitleText, ignoreTitleChange: true});
@@ -63,7 +63,7 @@ function openMithrilSurveyDialog(questionnaire, callback, previewModeTitleText =
 }
 
 function openSurveyDialog() {
-    console.log("openSurveyDialog");
+    // console.log("openSurveyDialog");
     
     var storyCollectionName: string = clientState.storyCollectionName();
     
@@ -94,7 +94,7 @@ export function copyStoryFormURL() {
 
 export function guiOpenSection(model, fieldSpecification, value) {
     var section = fieldSpecification.displayConfiguration.section;
-    console.log("guiOpenSection", section, fieldSpecification);
+    // console.log("guiOpenSection", section, fieldSpecification);
     
     // Don't queue an extra redraw as one is already queued since this code get called by a button press
     var isRedrawAlreadyQueued = true;
@@ -179,7 +179,7 @@ function previewQuestionForm(model, fieldSpecification) {
 */
 
 export function previewQuestionForm(model, fieldSpecification) {
-    console.log("previewQuestionForm", model);
+    // console.log("previewQuestionForm", model);
     var questionnaire = questionnaireGeneration.buildQuestionnaireFromTemplate(model);
     window["narraFirma_previewQuestionnaire"] = questionnaire;
     
@@ -188,7 +188,7 @@ export function previewQuestionForm(model, fieldSpecification) {
 
 export function copyInterpretationsToClusteringDiagram() {
     var shortName = clientState.catalysisReportName();
-    console.log("copyInterpretationsToClusteringDiagram", shortName);
+    // console.log("copyInterpretationsToClusteringDiagram", shortName);
     
     if (!shortName) {
         alert("Please pick a catalysis report to work with.");
@@ -205,7 +205,7 @@ export function copyInterpretationsToClusteringDiagram() {
     var allInterpretations = [];
         
     var observationSetIdentifier = project.tripleStore.queryLatestC(catalysisReportIdentifier, "catalysisReport_observations");
-    console.log("observationSetIdentifier", observationSetIdentifier);
+    // console.log("observationSetIdentifier", observationSetIdentifier);
     
     if (!observationSetIdentifier) {
         alert("No observations have been made yet in the Pattern Browser");
@@ -247,13 +247,13 @@ export function copyInterpretationsToClusteringDiagram() {
         alert("No interpretations have been found for this catalysis report");
     }
     
-    console.log("allInterpretations", allInterpretations);
+    // console.log("allInterpretations", allInterpretations);
     
     if (!confirm("Copy intepretations for this catalysys report into clustering diagram?")) return;
     
     var clusteringDiagram: ClusteringDiagramModel = project.tripleStore.queryLatestC(catalysisReportIdentifier, "interpretationsClusteringDiagram");
     
-    console.log("clusteringDiagram before", clusteringDiagram);
+    // console.log("clusteringDiagram before", clusteringDiagram);
     
     if (!clusteringDiagram) {
         clusteringDiagram = ClusteringDiagram.newDiagramModel();
@@ -275,7 +275,7 @@ export function copyInterpretationsToClusteringDiagram() {
         }
     });
 
-    console.log("clusteringDiagram after", clusteringDiagram);
+    // console.log("clusteringDiagram after", clusteringDiagram);
     
     project.tripleStore.addTriple(catalysisReportIdentifier, "interpretationsClusteringDiagram", clusteringDiagram);
 
@@ -283,7 +283,7 @@ export function copyInterpretationsToClusteringDiagram() {
 }
 
 export function setQuestionnaireForStoryCollection(storyCollectionIdentifier): boolean {
-    console.log("setQuestionnaireForStoryCollection", storyCollectionIdentifier);
+    // console.log("setQuestionnaireForStoryCollection", storyCollectionIdentifier);
     
     if (!storyCollectionIdentifier) return false;
     var questionnaireName = project.tripleStore.queryLatestC(storyCollectionIdentifier, "storyCollection_questionnaireIdentifier");
@@ -294,7 +294,7 @@ export function setQuestionnaireForStoryCollection(storyCollectionIdentifier): b
 }
 
 export function updateQuestionnaireForStoryCollection(storyCollectionIdentifier) {
-    console.log("updateQuestionnaireForStoryCollection", storyCollectionIdentifier);
+    // console.log("updateQuestionnaireForStoryCollection", storyCollectionIdentifier);
     if (!storyCollectionIdentifier) {
         alert("Problem: No storyCollectionIdentifier");
         return;
@@ -335,14 +335,14 @@ function isNamedItemInDiagram(diagram: ClusteringDiagramModel, name: string, ite
 }
 
 function copyClusteringDiagramElements(fromDiagramField: string, fromType: string, toDiagramField: string, toType: string) {
-    console.log("copyClusteringDagramElements", fromDiagramField, fromType, toDiagramField, toType);
+    // console.log("copyClusteringDagramElements", fromDiagramField, fromType, toDiagramField, toType);
 
     var fromDiagram: ClusteringDiagramModel = project.getFieldValue(fromDiagramField);
-    console.log("fromDiagram", fromDiagram);
+    // console.log("fromDiagram", fromDiagram);
     if (!fromDiagram || !fromDiagram.items.length) return;
     
     var toDiagram: ClusteringDiagramModel = project.getFieldValue(toDiagramField) || ClusteringDiagram.newDiagramModel();
-    console.log("toDiagram", toDiagram);
+    // console.log("toDiagram", toDiagram);
     
     var addedItemCount = 0;
     
@@ -364,21 +364,21 @@ function copyClusteringDiagramElements(fromDiagramField: string, fromType: strin
 }
 
 export function copyPlanningStoriesToClusteringDiagram(model) {
-    console.log("copyPlanningStoriesToClusteringDiagram", model);
+    // console.log("copyPlanningStoriesToClusteringDiagram", model);
     
     var list = project.getListForField("project_projectStoriesList");
-    console.log("copyPlanningStoriesToClusteringDiagram", list);
+    // console.log("copyPlanningStoriesToClusteringDiagram", list);
     
     var toDiagramField = "project_storyElements_answersClusteringDiagram";
     
     var toDiagram: ClusteringDiagramModel = project.getFieldValue(toDiagramField) || ClusteringDiagram.newDiagramModel();
-    console.log("toDiagram", toDiagram);
+    // console.log("toDiagram", toDiagram);
 
     var addedItemCount = 0;
         
     list.forEach((projectStoryIdentifier) => {
         var projectStory = project.tripleStore.makeObject(projectStoryIdentifier);
-        console.log("projectStory", projectStory);
+        // console.log("projectStory", projectStory);
         
         var storyName = projectStory.projectStory_name;
         var storyText = projectStory.projectStory_text;
@@ -399,17 +399,17 @@ export function copyPlanningStoriesToClusteringDiagram(model) {
 }
 
 export function copyAnswersToClusteringDiagram(model) {
-    console.log("copyAnswersToClusteringDiagram", model);
+    // console.log("copyAnswersToClusteringDiagram", model);
     copyClusteringDiagramElements("project_storyElements_answersClusteringDiagram", "item", "project_storyElements_answerClustersClusteringDiagram", "item");
 }
 
 export function copyAnswerClustersToClusteringDiagram(model) {
-    console.log("copyAnswerClustersToClusteringDiagram", model);
+    // console.log("copyAnswerClustersToClusteringDiagram", model);
     copyClusteringDiagramElements("project_storyElements_answerClustersClusteringDiagram", "cluster", "project_storyElements_attributesClusteringDiagram", "cluster");
 }
 
 export function copyAttributesToClusteringDiagram(model) {
-    console.log("copyAttributesToClusteringDiagram", model);
+    // console.log("copyAttributesToClusteringDiagram", model);
     copyClusteringDiagramElements("project_storyElements_attributesClusteringDiagram", "item", "project_storyElements_attributeClustersClusteringDiagram", "item");
 }
 

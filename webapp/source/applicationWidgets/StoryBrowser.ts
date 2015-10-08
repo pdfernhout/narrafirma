@@ -188,18 +188,18 @@ class Filter {
     }
     
     static controller(args) {
-        console.log("Making Filter: ", args.name);
+        // console.log("Making Filter: ", args.name);
         return new Filter(args);
     }
     
     static view(controller, args) {
-        console.log("Filter view called");
+        // console.log("Filter view called");
         
         return controller.calculateView();
     }
         
     calculateView() {
-        console.log("calculateView this", this);
+        // console.log("calculateView this", this);
         var choices = this.storyBrowser.choices || [];
         // console.log("^^^^^^^^^^^^ filter choices", choices);
         var selectOptions = choices.map((option) => {
@@ -312,18 +312,18 @@ class StoryBrowser {
     }
 
     static controller(args) {
-        console.log("Making StoryBrowser: ", args.name);
+        // console.log("Making StoryBrowser: ", args.name);
         return new StoryBrowser(args);
     }
     
     static view(controller, args) {
-        console.log("StoryBrowser view called");
+        // console.log("StoryBrowser view called");
         
         return controller.calculateView(args);
     }
     
     calculateView(args) {
-        console.log("StoryBrowser view");
+        // console.log("StoryBrowser view");
         var panelBuilder = args.panelBuilder;
         
         // Handling of caching of questions and stories
@@ -331,7 +331,7 @@ class StoryBrowser {
         if (storyCollectionIdentifier !== this.storyCollectionIdentifier) {
             // TODO: Maybe need to handle tracking if list changed so can keep sorted list?
             this.storyCollectionIdentifier = storyCollectionIdentifier;
-            console.log("storyCollectionIdentifier changed", this.storyCollectionIdentifier);
+            // console.log("storyCollectionIdentifier changed", this.storyCollectionIdentifier);
             this.currentStoryCollectionChanged(this.storyCollectionIdentifier);
             
             // What to do about resetting the filters?
@@ -368,7 +368,7 @@ class StoryBrowser {
     }
     
     currentStoryCollectionChanged(storyCollectionIdentifier) {
-        console.log("currentStoryCollectionChanged", this, storyCollectionIdentifier);
+        // console.log("currentStoryCollectionChanged", this, storyCollectionIdentifier);
         
         // Update filters
         this.questions = questionnaireGeneration.collectAllQuestions();
@@ -428,10 +428,10 @@ class StoryBrowser {
         // console.log("filter pressed", storyBrowserInstance);
         var question1Choice = this.filter1.selectedQuestion;
         var answers1Choices = this.filter1.selectedAnswers;
-        console.log("question1", question1Choice, "answers1", answers1Choices);
+        // console.log("question1", question1Choice, "answers1", answers1Choices);
         var question2Choice = this.filter2.selectedQuestion;
         var answers2Choices = this.filter2.selectedAnswers;
-        console.log("question2", question2Choice, "answers2", answers2Choices);  
+        // console.log("question2", question2Choice, "answers2", answers2Choices);  
         var filterFunction = function (item) {
             var match1 = isMatch(item, question1Choice, answers1Choices);
             var match2 = isMatch(item, question2Choice, answers2Choices);
@@ -444,7 +444,7 @@ class StoryBrowser {
     
     setStoryListForCurrentFilters() {
         var filteredResults = this.getFilteredStoryList();
-        console.log("Filtered results", filteredResults);
+        // console.log("Filtered results", filteredResults);
         this.filteredStories = filteredResults;
         this.grid.updateData();
         // console.log("finished setting list with filtered results", filteredResults);

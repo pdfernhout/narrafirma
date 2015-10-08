@@ -29,7 +29,7 @@ function add_storiesList(panelBuilder: PanelBuilder, model, fieldSpecification) 
         m("table", [
             m("tr", [m("th", "Story name"), m("th", "Story text")]),
             storyIdentifierList.map((storyIdentifier) => {
-                console.log("storyIdentifier", storyIdentifier);
+                // console.log("storyIdentifier", storyIdentifier);
                 return [
                     m("tr"),
                     [m("td", tripleStore.queryLatestC(storyIdentifier, storyNameField)),
