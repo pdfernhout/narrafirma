@@ -1,47 +1,194 @@
 <!DOCTYPE html> 
 <html>
-
 <head>
-
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-
-    <title>NarraFirma help on catalysis :: Explore patterns</title>
-
+    <title>NarraFirma Help: Catalysis: Explore patterns</title>
     <link rel="stylesheet" href="../../css/help.css">
-
 </head>
-
 <body>
-
-<a href="../helpIndex.html#page_explorePatterns" class="narrafirma-helpindex-backlink">Go to main help index</a><br><br>
-<div id="page_explorePatterns" class="page">
-
-<div class="pageHeader">
-    <span class="pageName">Explore patterns</span>
-    <span class="section">catalysis</span>
+<div class="header">
+	<span class="narrafirma-name">NarraFirma&trade; Help</span>
+	<span class="breadcrumb">
+	<a href="../dashboard/help_page_dashboard.html">Home</a> &gt; 
+	<a href="help_page_catalysis.html">Catalysis</a> &gt; 
+	Explore patterns
+	</span>
 </div>
 
-<div id="explorePatternsLabel" class="field">
-    <span class="fieldType">label</span>
-    <span class="fieldPrompt">On this page you will look over the most significant statistical results
-and save some to observations for later use.</span>
+<div id="page-explore-patterns" class="page">
+
+<div class="page-title">Explore patterns</div>
+<div class="text">
+<p>
+This page where you can do narrative catalysis. Here you can look at all of the graphs 
+describing your data, make observations about them, and interpret those observations.
+</p>
 </div>
 
-<div id="explorePatterns_minSubsetSize" class="field">
-    <span class="fieldName">Minimum subset size</span>
-    <span class="fieldType">select</span>
-    <span class="fieldPrompt">How large should subsets of stories be to be considered for comparison?</span>
+<div class="heading">What to do here</div>
+
+<div class="text">
+<p>
+Start by choosing a catalysis report to work with. Then look at the graphs NarraFirma has generated.
+Click on a graph name in the table to see the graph below the table. You can use
+the arrow buttons to move systematically through the list of graphs.
+</p>
+<p>
+As you are looking at a graph, hover the mouse to see the stories, thus:
+<ul>
+<li>In a bar graph (one choice question) or histogram (scale question), hover over any 
+bar segment to see the story there.</li>
+<li>In a table (two choice questions considered together), hover over any 
+intersection to see a list of the story names represented by the "bubble" there.</li>
+<li>In a scatter plot (two scale questions), hover over any dot to see the 
+story it represents.</li>
+</ul>
+<p>
+When you are looking at any graph, click and drag to look at the subset of stories
+in any part of the graph. The stories in that selection will appear in the list
+under the graph. 
+</p>
+<p>
+If you think a pattern is worth noting in your report, fill in an observation
+under the graph, and give the observation a name. Then enter at least two
+competing interpretations &mdash; that is, two things reasonable people with different viewpoints might say about
+what the observation means.
+</p>
+<p>
+When you look back at the table at the top of the page, you will be able 
+to sort it by whether you have marked the graph with an observation.
+In that way you can first go through your patterns looking for interesting
+patterns, then go back to the patterns you marked to think about them more
+deeply.
+</p>
 </div>
 
-<div id="explorePatterns_significanceThreshold" class="field">
-    <span class="fieldName">Significance threshold</span>
-    <span class="fieldType">select</span>
-    <span class="fieldPrompt">What significance threshold do you want reported?</span>
+<div class="heading">Frequently-asked questions</div>
+
+<div class="question">
+What do the buttons about the "graph selection" do?
+</div>
+<div class="question-answer">
+<p>
+If you've made a selection of stories in one part of a graph (say in the upper right corner of a
+scatter plot), you might want to remember those stories when you look back at your observation
+again. Click "Save graph selection," and a representation of what you selected will appear in the observation
+text box. 
+</p>
+<p>
+When you return to the observation again and want to see the same stories, 
+click inside that text representation, then click "Display chosen graph selection." 
+The same stories should appear in the list. 
+</p>
+<p>
+You can record and use more than one selection in your observation, and you can
+(carefully) edit the representations by hand, if you want to.
+</p>
 </div>
 
-<div id="explorePatterns_display" class="field">
-    <span class="fieldType">patternExplorer</span>
-    <span class="fieldPrompt">Pattern explorer</span>
+<div class="question">
+What statistical tests are being reported?
+</div>
+<div class="question-answer">
+<ul>
+<li>
+For a contingency graph (two choice questions), the statistic is the 
+<a href="https://en.wikipedia.org/wiki/Chi-squared_test">chi-squared test</a>.</li>
+<li>For multiple histograms with mutually exclusive choices, 
+the test is the 
+<a href="https://en.wikipedia.org/wiki/Mann%E2%80%93Whitney_U_test">Mann-Whitney U test</a> 
+for differences between means. (The lowest significance level for any pair of subsets is reported.)</li>
+<li>
+For scatter plots, the test is 
+<a href="https://en.wikipedia.org/wiki/Spearman's_rank_correlation_coefficient">Spearman's ranked correlation coefficient</a>. 
+</li>
+</ul>
+<p>
+The non-parametric Mann-Whitney U test and Spearman's test are used without testing whether
+the data is normally distributed, to be conservative.
+</p>
+</div>
+
+<div class="question">
+What are the extra circles on the "table" diagrams with two choice questions?
+</div>
+<div class="question-answer">
+<p>
+Those are the counts of stories that would be in each "cell" of the table
+if the two sets of choices were distributed only by chance. You could call
+them the "expected" counts, as against the counts actually observed.
+Tables of count results where the expected counts are very different
+from the observed counts are likely to produce significant test
+results from the chi-squared test.
+</p>
+</div>
+
+<div class="question">
+Why do some of the table rows say "N/A (checkboxes)"?
+</div>
+<div class="question-answer">
+<p>
+That's because some of the tests (chi-squared, Mann-Whitney U) can only be run on mutually exclusive choices. Any questions 
+where people could choose more than one answer will have no test values when they 
+are combined with other questions.
+</p>
+</div>
+
+<div class="question">
+What are the little colored lines on the histograms?
+</div>
+<div class="question-answer">
+<p>
+The red line is the mean (average) of the distribution. The blue lines
+mark one standard deviation away from the mean.
+</p>
+</div>
+
+<div class="question">
+Why should I write two competing interpretations for each observation?
+</div>
+<div class="question-answer">
+<p>
+Here is an excerpt from <em><a href="http://www.workingwithstories.org">Working with Stories</a></em>
+(from page 272) that can explains why writing competing interpretations
+is worth doing.
+</p>
+<div class="book-quote">
+<p>
+My placement of the generation of multiple interpretations at the center of catalysis is 
+based on my observations of how people react to single interpretations of patterns. When people encounter 
+one interpretation, you can see them taking sides: do I agree or don’t I? Their attention 
+is on the interpretation, not on their own feelings or beliefs or experiences. They put on their armor 
+and prepare to do battle. It’s clear to them that the one interpretation they see is the interpretation 
+held by the author of the report: why else would they write it? And as the interpretations build 
+throughout the report, people build explanations about the whole report: it’s biased, 
+or the author doesn’t know what they are talking about, or the reasoning is flawed. All
+of this stops sensemaking short and destroys any hope of productive thought or discussion.
+</p>
+<p>
+In contrast, when you give people two or more <em>competing</em> interpretations of the same pattern, 
+they turn their attention away from attacking or defending the interpretations and toward 
+<em>exploring their own experiences</em>. This is what you want people to do. You want people to dwell 
+on messy ambiguities, and to use them, until they resolve themselves naturally (or don’t). If the 
+author of the report has written two interpretations, the reader <em>can’t</em> tell which is the 
+author’s own, so there is nothing to attack or defend, and there are no larger explanations about 
+bias or ineptitude to build. The report author essentially walks out of the picture 
+and lets the reader think. The reader can put away their armor and get out their maps 
+and spyglasses. They can explore.
+</p>
+<p>
+Let me give you a more concrete example of how this works. Say I am looking at stories people 
+told about their telephone service. Say I’ve seen a pattern that the younger the participant, 
+the more likely they were to say they felt disappointed by the events in their story. If I give people 
+one interpretation &mdash; that younger people are not happy with their telephone service &mdash; people start 
+turning their binary switches off and on. Yes that’s right, no that’s wrong. But what happens if I say 
+that younger people might not be happy with their telephone service, or older people might not 
+understand the question, or younger people might be more willing to admit to disappointment 
+(whereas older people might feel more pressure to say everything’s fine), or younger people 
+might be more disappointed about other things and it drifts over, and so on? I’ve marked out a space 
+for exploration and invited people on a journey, instead of setting up a straw man to be knocked down.
+</p>
+</div>
 </div>
 
 </div>

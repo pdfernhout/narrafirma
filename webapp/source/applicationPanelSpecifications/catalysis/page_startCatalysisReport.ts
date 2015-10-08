@@ -9,7 +9,7 @@ var panel: Panel = {
             id: "catalysis_createCatalysisReportLabel",
             valueType: "none",
             displayType: "label",
-            displayPrompt: "On this page you will create one or more story catalysis reports, which you will fill out on later. These reports are used to store observations and interpretations derived from stories in one or more story collections. You should only create a catalysis report after you are done collecting stories for it. Otherwise, the report may be incorrect or incomplete relative to the new data."
+            displayPrompt: "On this page you can create one or more catalysis reports: sets of <strong>observations</strong> and <strong>interpretations</strong> based on <strong>patterns</strong> you find in one or more story collections.<br><br>Note: You should only create a catalysis report when your story collection is complete. Otherwise, the report may be incorrect or incomplete (because new data might change the patterns you see)."
         },
         {
             id: "project_catalysisReports",
@@ -26,7 +26,7 @@ var panel: Panel = {
                 }
             },
             displayName: "Catalysis reports",
-            displayPrompt: "Add one or more catalysis reports"
+            displayPrompt: "These are the catalysis reports you have created so far."
         }
     ]
 };

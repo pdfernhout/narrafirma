@@ -10,8 +10,8 @@ var panel: Panel = {
             valueType: "none",
             displayType: "label",
             displayPrompt: `
-                On this page you will choose the questions you want to explore in your catalysis report.
-                You can also specifiy a threshold for some tests.
+                On this page you can choose the <strong>questions</strong> you want to explore in your catalysis report.
+                You can also specify a threshold for statistical tests.
             `
         },
         {
@@ -22,7 +22,7 @@ var panel: Panel = {
             valueOptionsSubfield: "catalysisReport_shortName",
             displayType: "select",
             displayName: "Catalysis report",
-            displayPrompt: "Choose a catalysis report to work on"
+            displayPrompt: "Choose a catalysis report to work on."
         },
         {
             id: "configureCatalysisReport_promptToSelectCatalysisReportForInterpretations",
@@ -38,14 +38,20 @@ var panel: Panel = {
             valuePath: "/clientState/catalysisReportIdentifier/minimumSubsetSize",
             valueType: "string",
             valueOptions: [
+                "5",
+                "10",
+                "15",
                 "20",
+                "25",
                 "30",
+                "35",
                 "40",
+                "45",
                 "50"
             ],
             displayType: "select",
             displayName: "Minimum subset size",
-            displayPrompt: "How large should subsets of stories be to be considered for comparison?",
+            displayPrompt: "How large should subsets of stories be to be considered for statistical tests?",
             displayVisible: function(panelBuilder, model) {
                 return !!Globals.clientState().catalysisReportName();
             }

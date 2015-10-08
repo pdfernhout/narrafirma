@@ -9,7 +9,7 @@ var panel: Panel = {
             id: "project_interpretationsClusteringLabel",
             valueType: "none",
             displayType: "label",
-            displayPrompt: "On this page you will cluster together the interpretations you have collected (based on observations)\nto create perspectives for your catalysis report.\nNote: Do not cluster your interpretations unless you are sure you have finished collecting them."
+            displayPrompt: "On this page you will draw together the interpretations you have collected (on the previous page) into <strong>perspectives</strong> that will become the headings of your catalysis report.<br><br>Note: Do not cluster your interpretations until you are sure you have finished collecting them."
         },
         {
             id: "catalysisReportClusterInterpretations",
@@ -19,7 +19,7 @@ var panel: Panel = {
             valueOptionsSubfield: "catalysisReport_shortName",
             displayType: "select",
             displayName: "Catalysis report",
-            displayPrompt: "Choose a catalysis report to work on"
+            displayPrompt: "Choose a catalysis report to work on."
         },
         {
             id: "promptToSelectCatalysisReportForInterpretations",
@@ -45,7 +45,7 @@ var panel: Panel = {
             valueType: "object",
             valuePath: "/clientState/catalysisReportIdentifier/interpretationsClusteringDiagram",
             displayType: "clusteringDiagram",
-            displayPrompt: "Cluster interpretations into perspectives",
+            displayPrompt: "Place similar interpretations together. Then name and describe each cluster of interpretations. Those clusters, or <strong>perspectives</strong>, will become the headings of your catalysis report.",
             displayVisible: function(panelBuilder, model) {
                 return !!Globals.clientState().catalysisReportName();
             }

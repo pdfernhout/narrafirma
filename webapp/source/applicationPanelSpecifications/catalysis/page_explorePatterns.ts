@@ -9,7 +9,13 @@ var panel: Panel = {
             id: "explorePatternsLabel",
             valueType: "none",
             displayType: "label",
-            displayPrompt: "On this page you will look over the most significant statistical results\nand save some to observations for later use."
+            displayPrompt: `
+            On this page you will explore <strong>patterns</strong> in the data you 
+            collected, make <strong>observations</strong> on the patterns,
+            and <strong>interpret</strong> the observations. The
+            <strong>catalysis report</strong> you build here can help other people 
+            make sense of what the story collection has to say.
+            `
         },
         {
             id: "catalysisReportExplorePatterns",
@@ -19,7 +25,7 @@ var panel: Panel = {
             valueOptionsSubfield: "catalysisReport_shortName",
             displayType: "select",
             displayName: "Catalysis report",
-            displayPrompt: "Choose a catalysis report to work on"
+            displayPrompt: "Choose a catalysis report to work on."
         },
         {
             id: "explorePatterns_display",
