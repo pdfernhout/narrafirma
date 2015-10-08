@@ -19,7 +19,7 @@ import Globals = require("../Globals");
 // Library for statistics, imported by narrafirma.html
 declare var jStat;
 
-var defaultMinimumStoryCountRequiredForTest = 20;
+var defaultMinimumStoryCountRequiredForTest = 0;
 
 // Question types that have data associated with them for filters and graphs
 var nominalQuestionTypes = ["select", "boolean", "checkbox", "checkboxes", "radiobuttons", "text"];
@@ -710,16 +710,23 @@ class PatternExplorer {
         // console.log("calculateStatisticsForMultipleHistogram options", options, values);
         
         // For every pair, compute test, and take best p score
-        var pLowest = 1;
+        var pLowest = 2;
         
         for (var i = 0; i < options.length; i++) {
             var x = values[options[i]];
+            if (x.length < this.minimumStoryCountRequiredForTest) continue;
             for (var j = i + 1; j < options.length; j++) {
                 var y = values[options[j]];
+                if (y.length < this.minimumStoryCountRequiredForTest) continue;
                 var statResult = mannWhitneyU(x, y);
                 // console.log("calculateStatisticsForMultipleHistogram statResult", statResult);
                 pLowest = Math.min(pLowest, statResult.p);
             }
+        }
+        
+        if (pLowest === 2) {
+            pattern.significance = "N/A (below threshold)";
+            return;
         }
  
         pattern.significance = " p=" + pLowest.toFixed(3);
@@ -729,6 +736,11 @@ class PatternExplorer {
         // TODO: both continuous -- look for correlation with Pearson's R (if normal distribution) or Spearman's R / Kendall's Tau (if not normal distribution)"
         var stories: surveyCollection.Story[] = this.graphHolder.allStories;
         var data = collectXYDataForFields(stories, pattern.questions[0].id, pattern.questions[1].id);
+        
+        if (data.x.length < this.minimumStoryCountRequiredForTest) {
+            pattern.significance = "N/A (below threshold)";
+            return;
+        }
         
         // TODO: Add a flag somewhere to use Kendall's Tau instead of Pearson/Spearman's R
         // var statResult = kendallsTau(data.x, data.y);
@@ -767,18 +779,25 @@ class PatternExplorer {
         var expected = [];
         
         for (var field1Option in counts.field1Options) {
+            var field1Total = counts.field1Options[field1Option];
+            if (field1Total < this.minimumStoryCountRequiredForTest) continue;
             for (var field2Option in counts.field2Options) {
-                var field1Total = counts.field1Options[field1Option];
                 var field2Total = counts.field2Options[field2Option];
+                if (field2Total < this.minimumStoryCountRequiredForTest) continue;
                 var observedValue = counts.counts[valueTag(field1Option, field2Option)] ||  0;
                 observed.push(observedValue);
                 var expectedValue = field1Total * field2Total / counts.total;
                 expected.push(expectedValue);
             }
         }
-        
+   
         var n1 = Object.keys(counts.field1Options).length;
         var n2 = Object.keys(counts.field2Options).length;
+        
+        if (n1 <= 1 || n2 <= 1) {
+            pattern.significance = "N/A (below threshold)";
+            return;
+        }
         
         var degreesOfFreedom = (n1 - 1) * (n2 - 1);        
         
