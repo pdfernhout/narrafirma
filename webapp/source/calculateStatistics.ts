@@ -142,34 +142,30 @@ function collectValues(valueHolder) {
 }
 */
 
-export function calculateStatisticsForBarGraph(pattern, stories: surveyCollection.Story[], minimumStoryCountRequiredForTest: number = 0) {
+export function calculateStatisticsForBarGraph(nominalQuestion, stories: surveyCollection.Story[], minimumStoryCountRequiredForTest: number = 0) {
     // not calculating statistics for bar graph
-    pattern.significance = "N/A";
+    return {significance: "N/A", calculated: false};
 }
 
-export function calculateStatisticsForHistogram(pattern, stories: surveyCollection.Story[], minimumStoryCountRequiredForTest: number = 0) {
+export function calculateStatisticsForHistogram(ratioQuestion, stories: surveyCollection.Story[], minimumStoryCountRequiredForTest: number = 0) {
     // TODO: ? look for differences of means on a distribution using Student's T test if normal, otherwise Kruskal-Wallis or maybe Mann-Whitney
     // TODO: Fix this - could report on normality
     
-    // var counts = collectDataForField(stories, pattern.questions[0].id);
+    // var counts = collectDataForField(stories, ratioQuestion.id);
     // console.log("counts", counts);
     
-    pattern.significance = "N/A";
+    return {significance: "N/A", calculated: false};
 }
 
-export function calculateStatisticsForMultipleHistogram(pattern, stories: surveyCollection.Story[], minimumStoryCountRequiredForTest: number = 0) {
+export function calculateStatisticsForMultipleHistogram(ratioQuestion, nominalQuestion, stories: surveyCollection.Story[], minimumStoryCountRequiredForTest: number = 0) {
     // One of each continuous and not
     // for each option, look for differences of means on a distribution using Student's T test if normal, otherwise Kruskal-Wallis or maybe Mann-Whitney
     
     // TODO: use t-test when normal 
 
-    var ratioQuestion = pattern.questions[0];
-    var nominalQuestion = pattern.questions[1];
-    
     // Can't calculate a statistic if one or both are mutiple answer checkboxes
     if (nominalQuestion.displayType === "checkboxes") {
-        pattern.significance = "N/A (checkboxes)";
-        return;
+        return {significance: "N/A (checkboxes)", calculated: false};
     }
     
 
@@ -202,25 +198,23 @@ export function calculateStatisticsForMultipleHistogram(pattern, stories: survey
     }
     
     if (pLowest === Number.MAX_VALUE) {
-        pattern.significance = "N/A (below threshold)";
-        return;
+        return {significance: "N/A (below threshold)", calculated: false};
     }
 
-    pattern.significance = " p=" + pLowest.toFixed(3) + " U=" + uLowest + " n=" + n;
+    var significance = " p=" + pLowest.toFixed(3) + " U=" + uLowest + " n=" + n;
+    return {significance: significance, calculated: true, p: pLowest, U: uLowest, n: n};
 }
 
-export function calculateStatisticsForScatterPlot(pattern, stories: surveyCollection.Story[], minimumStoryCountRequiredForTest: number = 0) {
+export function calculateStatisticsForScatterPlot(rationQuestion1, rationQuestion2, stories: surveyCollection.Story[], minimumStoryCountRequiredForTest: number = 0) {
     // TODO: both continuous -- look for correlation with Pearson's R (if normal distribution) or Spearman's R / Kendall's Tau (if not normal distribution)"
-    var data = collectXYDataForFields(stories, pattern.questions[0].id, pattern.questions[1].id);
+    var data = collectXYDataForFields(stories, rationQuestion1.id, rationQuestion2.id);
     
     if (data.x.length < minimumStoryCountRequiredForTest) {
-        pattern.significance = "N/A (below threshold)";
-        return;
+        return {significance: "N/A (below threshold)", calculated: false};
     }
     
     // TODO: Add a flag somewhere to use Kendall's Tau instead of Pearson/Spearman's R
     // var statResult = kendallsTau(data.x, data.y);
-    // pattern.significance = statResult.prob.toFixed(4);
     
     // TODO: Use Pearson's R instead of Spearman if normally distributed
     var r = jStat.spearmancoeff(data.x, data.y);
@@ -228,25 +222,23 @@ export function calculateStatisticsForScatterPlot(pattern, stories: surveyCollec
     var n = data.x.length;
     var t = r * Math.sqrt((n - 2.0) / (1.0 - r * r));
     var p = jStat.ttest(t, n, 2);
-    pattern.significance = " p=" + p.toFixed(3) + " rho=" + r.toFixed(3) + " n=" + n;
+    var significance = " p=" + p.toFixed(3) + " rho=" + r.toFixed(3) + " n=" + n;
     //  + " tt=" + statResult.test.toFixed(3) + " tz=" + statResult.z.toFixed(3) + " tp=" + statResult.prob.toFixed(3) ;
-    // console.log("calculateStatisticsForScatterPlot", pattern, n, t, p);
+    // console.log("calculateStatisticsForScatterPlot", rationQuestion1, rationQuestion2, n, t, p);
+    return {significance: significance, calculated: true, p: p, rho: r, n: n};
 }
 
-export function calculateStatisticsForTable(pattern, stories: surveyCollection.Story[], minimumStoryCountRequiredForTest: number = 0) {
+export function calculateStatisticsForTable(nominalQuestion1, nominalQuestion2, stories: surveyCollection.Story[], minimumStoryCountRequiredForTest: number = 0) {
     // both not continuous -- look for a 'correspondence' between counts using Chi-squared test
     // Can't calculate a statistic if one or both are mutiple answer checkboxes
-    // TODO: Fix this
-    // TODO: test for missing patterns[1]
     
-    // console.log("calculateStatisticsForTable", pattern);
+    // console.log("calculateStatisticsForTable", nominalQuestion1, nominalQuestion2);
     
-    if (pattern.questions[0].displayType === "checkboxes" || pattern.questions[1].displayType === "checkboxes") {
-        pattern.significance = "N/A (checkboxes)";
-        return;
+    if (nominalQuestion1.displayType === "checkboxes" || nominalQuestion2.displayType === "checkboxes") {
+        return {significance: "N/A (checkboxes)", calculated: false};
     }
     
-    var counts = countsForTableChoices(stories, pattern.questions[0].id, pattern.questions[1].id);
+    var counts = countsForTableChoices(stories, nominalQuestion1.id, nominalQuestion2.id);
     // console.log("counts", counts);
     
     var observed = [];
@@ -269,8 +261,8 @@ export function calculateStatisticsForTable(pattern, stories: surveyCollection.S
     var n2 = Object.keys(counts.field2Options).length;
     
     if (n1 <= 1 || n2 <= 1) {
-        pattern.significance = "N/A (below threshold)";
-        return;
+        return {significance: "N/A (below threshold)", calculated: false};
+
     }
     
     var degreesOfFreedom = (n1 - 1) * (n2 - 1);        
@@ -284,18 +276,15 @@ export function calculateStatisticsForTable(pattern, stories: surveyCollection.S
     }
     
     if (zeroInCell) {
-        pattern.significance = "N/A (zero in expected cell)";
-        return;
+        return {significance: "N/A (zero in expected cell)", calculated: false};
     }
     
     if (n1 <= 2 && n2 <= 2 && tooLowCount > 0) {
-        pattern.significance = "N/A (2X2 with expected cell < 5)";
-        return;
+        return {significance: "N/A (2X2 with expected cell < 5)", calculated: false};
     }
     
     if (tooLowCount / observed.length > 0.2) {
-        pattern.significance = "N/A (less than 80% expected cells >= 5)";
-        return;
+        return {significance: "N/A (less than 80% expected cells >= 5)", calculated: false};
     }
 
     // console.log("observed", observed);
@@ -313,5 +302,6 @@ export function calculateStatisticsForTable(pattern, stories: surveyCollection.S
         throw new Error("unexpected statResult.n");
     }
     
-    pattern.significance = " p=" + statResult.p.toFixed(3) + " x2=" + statResult.x2.toFixed(3) + " k=" + statResult.k + " n=" + statResult.n;
+    var significance = " p=" + statResult.p.toFixed(3) + " x2=" + statResult.x2.toFixed(3) + " k=" + statResult.k + " n=" + statResult.n;
+    return {significance: significance, calculated: true, x2: statResult.x2, k: statResult.k, n: statResult.n};
 }

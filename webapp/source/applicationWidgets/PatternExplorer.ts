@@ -509,23 +509,30 @@ class PatternExplorer {
     calculateStatisticsForPattern(pattern) {
         var graphType = pattern.graphType;
         var stories = this.graphHolder.allStories;
+        var statistics = null;
 
         if (graphType === "bar") {
-            calculateStatistics.calculateStatisticsForBarGraph(pattern, stories, this.minimumStoryCountRequiredForTest);
+            statistics = calculateStatistics.calculateStatisticsForBarGraph(pattern.questions[0], stories, this.minimumStoryCountRequiredForTest);
         } else if (graphType === "table") {
-            calculateStatistics.calculateStatisticsForTable(pattern, stories, this.minimumStoryCountRequiredForTest);
+            statistics = calculateStatistics.calculateStatisticsForTable(pattern.questions[0], pattern.questions[1], stories, this.minimumStoryCountRequiredForTest);
         } else if (graphType === "histogram") {
-            calculateStatistics.calculateStatisticsForHistogram(pattern, stories, this.minimumStoryCountRequiredForTest);
+            statistics = calculateStatistics.calculateStatisticsForHistogram(pattern.questions[0], stories, this.minimumStoryCountRequiredForTest);
         } else if (graphType === "multiple histogram") {
-            calculateStatistics.calculateStatisticsForMultipleHistogram(pattern, stories, this.minimumStoryCountRequiredForTest);
+            statistics = calculateStatistics.calculateStatisticsForMultipleHistogram(pattern.questions[0], pattern.questions[1], stories, this.minimumStoryCountRequiredForTest);
         } else if (graphType === "scatter") {
-            calculateStatistics.calculateStatisticsForScatterPlot(pattern, stories, this.minimumStoryCountRequiredForTest);
+            statistics = calculateStatistics.calculateStatisticsForScatterPlot(pattern.questions[0], pattern.questions[1], stories, this.minimumStoryCountRequiredForTest);
         } else if (graphType ===  "multiple scatter") {
             console.log("ERROR: Not suported graphType: " + graphType);
             throw new Error("ERROR: Not suported graphType: " + graphType);
         } else {
             console.log("ERROR: Unexpected graphType: " + graphType);
             throw new Error("ERROR: Not suported graphType: " + graphType);
+        }
+        
+        if (statistics) {
+            pattern.significance = statistics.significance;
+        } else {
+            pattern.significance = "ERROR";
         }
     }
         
