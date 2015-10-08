@@ -857,10 +857,12 @@ class DataStore {
     sortData(fieldIdentifier: string, sortDirection: string) {
         // TODO: This may need work for set???
         this.data.sort((a, b) => {
-            var aValue = this.valueForField(a, fieldIdentifier);
+            var aValue: string = this.valueForField(a, fieldIdentifier);
             if (aValue === null || aValue === undefined) aValue = "";
-            var bValue = this.valueForField(b, fieldIdentifier);
+            if (typeof aValue === "string") aValue = aValue.toLowerCase();
+            var bValue: string = this.valueForField(b, fieldIdentifier);
             if (bValue === null || bValue === undefined) bValue = "";
+            if (typeof bValue === "string") bValue = bValue.toLowerCase();
             return aValue > bValue ? 1 : aValue < bValue ? -1 : 0;
         });
         
