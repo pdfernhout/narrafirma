@@ -545,7 +545,7 @@ class PointrelClient {
         /*
         var shaObj = new JS_SHA("SHA-256", "TEXT");
         shaObj.update(minimalJSON);
-        console.log("Without string conversion", shaObj.getHash("HEX"));
+        // console.log("Without string conversion", shaObj.getHash("HEX"));
         */
         
         var sha256 = PointrelClient.calculateSHA256(minimalJSON);
@@ -705,7 +705,7 @@ class PointrelClient {
         
         // Ignore the message if we already have it
         if (this.sha256AndLengthToMessageMap[message.__pointrel_sha256AndLength]) {
-            console.log("Message already received", message.__pointrel_sha256AndLength);
+            // console.log("Message already received", message.__pointrel_sha256AndLength);
             return;
         }
         

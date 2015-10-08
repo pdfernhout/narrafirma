@@ -44,7 +44,7 @@ class TripleStore {
     }
     
     addTriple(a, b, c, callback = undefined) {
-        console.log("TripleStore addTriple", a, b, c);
+        // console.log("TripleStore addTriple", a, b, c);
         if (a === undefined || b === undefined || c === undefined) {
             throw new Error("Triple should not have undefined fields");
         }
@@ -135,7 +135,7 @@ class TripleStore {
             if (this.tripleMessagesBySHA256AndLength[message.__pointrel_sha256AndLength]) {
                 // MAYBE: Could check JSON of stored and received to confirm they are identical
                 // console.log("compare previous/new", previouslyReceivedMessage, message);
-                console.log("TripleStore message previously received, so ignoring", message);
+                // console.log("TripleStore message previously received, so ignoring", message);
                 return;
             }
             
