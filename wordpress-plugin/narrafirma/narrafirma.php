@@ -56,12 +56,12 @@ class NarraFirmaSettingsPage
     
     // Runs when plugin is activated
     function activate() {
-        error_log("narrafirma plugin activate");
+        // error_log("narrafirma plugin activate");
     }
     
     // Runs on plugin deactivation
     function deactivate() {
-        error_log("narrafirma plugin deactivate");
+        // error_log("narrafirma plugin deactivate");
     }
     
     function install() {
@@ -78,7 +78,7 @@ class NarraFirmaSettingsPage
     
     // Runs on plugin uninstall
     function uninstall() {
-        error_log("narrafirma plugin uninstall");
+        // error_log("narrafirma plugin uninstall");
         
         // Leave the option around for now during testing...
         // delete_option("narrafirma");
@@ -197,7 +197,7 @@ class NarraFirmaSettingsPage
         
         foreach($journals as $name => $permissions) {
             if (!doesJournalTableExist($name)) {
-                error_log("ensureAllJournalsExists about to create table for: " . $name);
+                // error_log("ensureAllJournalsExists about to create table for: " . $name);
                 makeJournalTable($name);
             }
         }
@@ -220,7 +220,7 @@ if ( is_admin() ) {
 }
 
 function nararfirma_admin_enqueue_scripts($hook) {
-    error_log("nararfirma_admin_enqueue_scripts $hook");
+    // error_log("nararfirma_admin_enqueue_scripts $hook");
     
     // TODO: Maybe this name chould be assigned to a global on page creation?
     if ($hook != "toplevel_page_narrafirma-settings-admin") return;
@@ -425,7 +425,7 @@ function pointrel20150417() {
 }
 
 function pointrel20150417_dispatch() {
-    error_log("Called pointrel20150417 ajax by '" . wp_get_current_user()->user_login ."'");
+    // error_log("Called pointrel20150417 ajax by '" . wp_get_current_user()->user_login ."'");
     
     $apiRequest = json_decode( file_get_contents( 'php://input' ) );
     
@@ -457,7 +457,7 @@ function pointrel20150417_dispatch() {
         pointrel20150417_queryForLatestMessage($apiRequest);
     }
     
-    error_log("pointrel20150417 ajax no implemented: $requestType");
+    error_log("pointrel20150417 ajax not implemented: $requestType");
     $response = makeFailureResponse(501, "Not Implemented: requestType not supported", array("requestType" => $requestType));
     
     wp_send_json( $response );
@@ -467,7 +467,7 @@ function pointrel20150417_currentUserInformation($apiRequest) {
 	$currentUser = wp_get_current_user();
 	$userID = $currentUser->user_login;
 	
-	error_log("Called pointrel20150417_currentUserInformation " . $userID . " " . current_user_can( 'manage_options' ));
+	// error_log("Called pointrel20150417_currentUserInformation " . $userID . " " . current_user_can( 'manage_options' ));
     
 	// if ($userID == 0) $userID = "anonymous";
 	
@@ -496,7 +496,7 @@ function pointrel20150417_currentUserInformation($apiRequest) {
 }
 
 function pointrel20150417_createJournal($apiRequest) {
-    error_log("Called pointrel20150417_createJournal");
+    // error_log("Called pointrel20150417_createJournal");
     
 	if (!current_user_can( 'manage_options' )) {
 	    wp_send_json( makeFailureResponse(403, "Forbidden -- User is not an admin") );
@@ -521,7 +521,7 @@ function pointrel20150417_reportJournalStatus($apiRequest) {
     global $pointrelServerVersion;
     global $wpdb;
     
-    error_log("Called pointrel20150417_reportJournalStatus");
+    // error_log("Called pointrel20150417_reportJournalStatus");
 
     $userID = wp_get_current_user()->user_login;
         
@@ -594,7 +594,7 @@ function pointrel20150417_reportJournalStatus($apiRequest) {
 function pointrel20150417_queryForNextMessage($apiRequest) {
     global $wpdb;
 
-    error_log("Called pointrel20150417_queryForNextMessage");
+    // error_log("Called pointrel20150417_queryForNextMessage");
     
     $now = getCurrentUniqueTimestamp();
     
@@ -688,7 +688,7 @@ function pointrel20150417_queryForNextMessage($apiRequest) {
 function pointrel20150417_queryForLatestMessage($apiRequest) {
     global $wpdb;
 
-    error_log("Called pointrel20150417_queryForLatestMessage");
+    // error_log("Called pointrel20150417_queryForLatestMessage");
 
     $now = getCurrentUniqueTimestamp();
     
@@ -767,7 +767,7 @@ function pointrel20150417_storeMessage($apiRequest) {
     global $wpdb;
 
     $message = $apiRequest->message;
-    error_log("Called pointrel20150417_storeMessage with: " . json_encode($message));
+    // error_log("Called pointrel20150417_storeMessage with: " . json_encode($message));
     
     $journalIdentifier = $apiRequest->journalIdentifier;
     
@@ -885,7 +885,7 @@ function pointrel20150417_storeMessage($apiRequest) {
     
     $insert_id = $wpdb->insert_id;
     
-    error_log("pointrel20150417_storeMessage inserted row " . $insert_id);
+    // error_log("pointrel20150417_storeMessage inserted row " . $insert_id);
         
     $response = makeSuccessResponse(200, "Success", array(
         'detail' => 'Wrote content',
