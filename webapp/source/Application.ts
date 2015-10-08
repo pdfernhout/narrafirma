@@ -114,7 +114,7 @@ class Application {
                 if (this.readOnly) {
                     // toaster.toast("Project is read only; changes are not being saved.");
                     nameDiv.className = "narrafirma-serverstatus-ok";
-                    this.lastServerError = "Read only OK";
+                    this.lastServerError = "Read-only OK";
                 } else {
                     toaster.toast("Server lost recent change:\n" + text);
                 }
@@ -377,7 +377,7 @@ class Application {
                     Globals.project().readOnly = this.readOnly;
                     // this.panelBuilder.readOnly = isReadOnly;
                     if (this.readOnly) {
-                        toaster.toast("Project is read only for this user");
+                        toaster.toast("Project is read-only for this user");
                         Globals.project().pointrelClient.suspendOutgoingMessages(true);
                     }
                 });
@@ -439,6 +439,13 @@ class Application {
                 document.getElementById("pageDiv").style.display = "block";
                 
                 this.runningAfterInitialIdle = true;
+                
+                // TODO: Polling for changes by a read-only client should be an option somewhere; hard-coding it for now to reduce server load on NarraFirma.com
+                if (this.readOnly) {
+                    console.log("Shutting down polling for updates by read-only client");
+                    Globals.project().pointrelClient.shutdown();
+                    // toaster.toast("Reload the page to see changes for read-only client");
+                }
                 
                 // toaster.toast("Started up!!!");
             };
