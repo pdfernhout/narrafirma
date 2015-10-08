@@ -710,26 +710,32 @@ class PatternExplorer {
         // console.log("calculateStatisticsForMultipleHistogram options", options, values);
         
         // For every pair, compute test, and take best p score
-        var pLowest = 2;
+        var pLowest = Number.MAX_VALUE;
+        var uLowest = NaN;
+        var n = 0;
         
         for (var i = 0; i < options.length; i++) {
             var x = values[options[i]];
             if (x.length < this.minimumStoryCountRequiredForTest) continue;
+            n += x.length;
             for (var j = i + 1; j < options.length; j++) {
                 var y = values[options[j]];
                 if (y.length < this.minimumStoryCountRequiredForTest) continue;
                 var statResult = mannWhitneyU(x, y);
                 // console.log("calculateStatisticsForMultipleHistogram statResult", statResult);
-                pLowest = Math.min(pLowest, statResult.p);
+                if (statResult.p <= pLowest) {
+                    pLowest = statResult.p;
+                    uLowest = statResult.u;
+                }
             }
         }
         
-        if (pLowest === 2) {
+        if (pLowest === Number.MAX_VALUE) {
             pattern.significance = "N/A (below threshold)";
             return;
         }
  
-        pattern.significance = " p=" + pLowest.toFixed(3);
+        pattern.significance = " p=" + pLowest.toFixed(3) + " U=" + uLowest + " n=" + n;
     }
     
     calculateStatisticsForScatterPlot(pattern) {
@@ -752,7 +758,7 @@ class PatternExplorer {
         var n = data.x.length;
         var t = r * Math.sqrt((n - 2.0) / (1.0 - r * r));
         var p = jStat.ttest(t, n, 2);
-        pattern.significance = " p=" + p.toFixed(3) + " r=" + r.toFixed(3) + " n=" + n;
+        pattern.significance = " p=" + p.toFixed(3) + " rho=" + r.toFixed(3) + " n=" + n;
         //  + " tt=" + statResult.test.toFixed(3) + " tz=" + statResult.z.toFixed(3) + " tp=" + statResult.prob.toFixed(3) ;
         // console.log("calculateStatisticsForScatterPlot", pattern, n, t, p);
     }
@@ -839,7 +845,7 @@ class PatternExplorer {
             throw new Error("unexpected statResult.n");
         }
         
-        pattern.significance = " p=" + statResult.p.toFixed(3) + " x^2=" + statResult.x2.toFixed(3) + " k=" + statResult.k + " n=" + statResult.n;
+        pattern.significance = " p=" + statResult.p.toFixed(3) + " x2=" + statResult.x2.toFixed(3) + " k=" + statResult.k + " n=" + statResult.n;
     }
     
     chooseGraph(pattern) {
