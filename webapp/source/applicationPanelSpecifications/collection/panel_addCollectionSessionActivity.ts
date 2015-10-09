@@ -34,11 +34,13 @@ var panel: Panel = {
                 "sharing stories (no task)",
                 "sharing stories (simple task)",
                 "discussing stories",
+                "looking for patterns in stories",
                 "twice-told stories exercise",
                 "timeline exercise",
                 "landscape exercise",
                 "my own exercise",
                 "break",
+                "wrap-up",
                 "other"
             ],
             displayType: "select",
@@ -86,6 +88,13 @@ var panel: Panel = {
             displayType: "textarea",
             displayName: "Facilitation",
             displayPrompt: "What sort of <strong>facilitation</strong> will be necessary for this activity?"
+        },
+        {
+            id: "collectionSessionActivity_helping",
+            valueType: "string",
+            displayType: "textarea",
+            displayName: "Helpers",
+            displayPrompt: "What will <strong>helpers</strong> do during this activity?"
         },
         {
             id: "SPECIAL_templates_storyCollectionActivities",

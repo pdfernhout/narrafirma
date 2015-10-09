@@ -44,6 +44,7 @@ var panel: Panel = {
                 "composite stories exercise",
                 "my own exercise",
                 "break",
+                "wrap-up",
                 "other"
             ],
             displayType: "select",
@@ -91,6 +92,13 @@ var panel: Panel = {
             displayType: "textarea",
             displayName: "Facilitation",
             displayPrompt: "What sort of <strong>facilitation</strong> will be necessary for this activity?"
+        },
+        {
+            id: "sensemakingSessionActivity_helping",
+            valueType: "string",
+            displayType: "textarea",
+            displayName: "Help",
+            displayPrompt: "What will <strong>helpers</strong> do during this activity?"
         },
         {
             id: "templates_sensemakingActivities",
