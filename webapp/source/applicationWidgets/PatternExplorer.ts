@@ -413,7 +413,9 @@ class PatternExplorer {
             throw new Error("Unexpected number of questions: " + questions.length);
         }
         
-        var observation = this.observationAccessor.bind(this, pattern, "observationDescription");
+        var observation = () => {
+            return this.observationAccessor(pattern, "observationTitle") || this.observationAccessor(pattern, "observationDescription");
+        };
         
         // Next assignment creates a circular reference
         pattern.observation = observation;
