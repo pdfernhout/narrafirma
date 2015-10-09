@@ -499,7 +499,7 @@ export function d3BarChart(graphBrowserInstance: GraphHolder, question, storiesS
     var chart = makeChartFramework(chartPane, "barChart", false, margin);
     var chartBody = chart.chartBody;
     
-    var statistics = calculateStatistics.calculateStatisticsForBarGraph(question, stories);
+    var statistics = calculateStatistics.calculateStatisticsForBarGraph(question, stories, graphBrowserInstance.minimumStoryCountRequiredForTest);
     addStatisticsPanelForChart(chartPane, statistics); 
     
     // draw the x axis
@@ -658,7 +658,7 @@ export function d3HistogramChart(graphBrowserInstance: GraphHolder, scaleQuestio
     var chart = makeChartFramework(chartPane, "histogram", isSmallFormat, margin);
     var chartBody = chart.chartBody;
     
-    var statistics = calculateStatistics.calculateStatisticsForHistogram(scaleQuestion, matchingStories);
+    var statistics = calculateStatistics.calculateStatisticsForHistogram(scaleQuestion, matchingStories, graphBrowserInstance.minimumStoryCountRequiredForTest);
     addStatisticsPanelForChart(chartPane, statistics);
     
     var mean = statistics.mean;
@@ -866,7 +866,7 @@ export function multipleHistograms(graphBrowserInstance: GraphHolder, choiceQues
     graphBrowserInstance.graphResultsPane.appendChild(clearFloat);
     
     // Add these statistics at the bottom after all other graphs
-    var statistics = calculateStatistics.calculateStatisticsForMultipleHistogram(scaleQuestion, choiceQuestion, graphBrowserInstance.allStories);
+    var statistics = calculateStatistics.calculateStatisticsForMultipleHistogram(scaleQuestion, choiceQuestion, graphBrowserInstance.allStories, graphBrowserInstance.minimumStoryCountRequiredForTest);
     addStatisticsPanelForChart(graphBrowserInstance.graphResultsPane, statistics);
   
     return charts;
@@ -903,7 +903,7 @@ export function d3ScatterPlot(graphBrowserInstance: GraphHolder, xAxisQuestion, 
     var chart = makeChartFramework(chartPane, "scatterPlot", false, margin);
     var chartBody = chart.chartBody;
     
-    var statistics = calculateStatistics.calculateStatisticsForScatterPlot(xAxisQuestion, yAxisQuestion, stories);
+    var statistics = calculateStatistics.calculateStatisticsForScatterPlot(xAxisQuestion, yAxisQuestion, stories, graphBrowserInstance.minimumStoryCountRequiredForTest);
     addStatisticsPanelForChart(chartPane, statistics);
     
     // draw the x axis
@@ -1113,7 +1113,7 @@ export function d3ContingencyTable(graphBrowserInstance: GraphHolder, xAxisQuest
     var chart = makeChartFramework(chartPane, "contingencyChart", false, margin);
     var chartBody = chart.chartBody;
     
-    var statistics = calculateStatistics.calculateStatisticsForTable(xAxisQuestion, yAxisQuestion, stories);
+    var statistics = calculateStatistics.calculateStatisticsForTable(xAxisQuestion, yAxisQuestion, stories, graphBrowserInstance.minimumStoryCountRequiredForTest);
     addStatisticsPanelForChart(chartPane, statistics);
   
     // X axis and label

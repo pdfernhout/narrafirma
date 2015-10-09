@@ -17,6 +17,7 @@ class Project {
     pointrelClient: PointrelClient;
     tripleStore: TripleStore;
     redrawCallback: Function;
+    static defaultMinimumStoryCountRequiredForTest = 20;
     
     // The activeQuestionnaires field tracks what should be available to survey users and to construct related messages
     activeQuestionnaires = {};
@@ -244,6 +245,18 @@ class Project {
         });
         
         return result;
+    }
+     
+    minimumStoryCountRequiredForTest(catalysisReportIdentifier) {
+        if (!catalysisReportIdentifier) {
+            throw new Error("catalysisReportIdentifier was not supplied");
+        }
+        var minimumStoryCountRequiredForTest = this.tripleStore.queryLatestC(catalysisReportIdentifier, "minimumSubsetSize");
+        if (minimumStoryCountRequiredForTest) {
+            return parseInt(minimumStoryCountRequiredForTest, 10);
+        } else {
+            return Project.defaultMinimumStoryCountRequiredForTest;
+        }
     }
 }
 

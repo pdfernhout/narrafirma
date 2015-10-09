@@ -379,21 +379,24 @@ export function printSensemakingSessionAgenda(itemID) {
 
 declare var canvg;
 
-function printObservationList(observationList, allStories) {
+function printObservationList(observationList, allStories, minimumStoryCountRequiredForTest: number) {
     // For now, just print all observations
     return printList(observationList, {}, function (item) {
+        var project = Globals.project();
+        
         // TODO: pattern
         var pattern = item.pattern;
         // console.log("pattern", pattern);
         
         var selectionCallback = function() { return this; };
-        var graphHolder = {
+        var graphHolder: GraphHolder = {
             graphResultsPane: charting.createGraphResultsPane("narrafirma-graph-results-pane chartEnclosure"),
             chartPanes: [],
             allStories: allStories,
             currentGraph: null,
             currentSelectionExtentPercentages: null,
-            excludeStoryTooltips: true
+            excludeStoryTooltips: true,
+            minimumStoryCountRequiredForTest: minimumStoryCountRequiredForTest
         };
         
         var graph = PatternExplorer.makeGraph(pattern, graphHolder, selectionCallback);
@@ -629,6 +632,7 @@ export function printCatalysisReport() {
     */  
     
     var perspectives = clusteringDiagram.clusters;
+    var minimumStoryCountRequiredForTest = project.minimumStoryCountRequiredForTest(catalysisReportIdentifier);
     
     perspectives.forEach((perspective) => {
         printItems.push(m("hr"));
@@ -642,7 +646,7 @@ export function printCatalysisReport() {
             printItems.push(m("br"));
             
             var observationList = makeObservationListForInterpretation(project, allObservations, intepretation.name);
-            printItems.push(printObservationList(observationList, allStories));
+            printItems.push(printObservationList(observationList, allStories, minimumStoryCountRequiredForTest));
         });
     });
     

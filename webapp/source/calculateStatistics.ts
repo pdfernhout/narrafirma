@@ -8,8 +8,6 @@ import surveyCollection = require("./surveyCollection");
 // Library for statistics, imported by narrafirma.html
 declare var jStat;
 
-var defaultMinimumStoryCountNeeded = 20;
-
 function collectDataForField(stories: surveyCollection.Story[], fieldName, conversionFunction = null) {
     var result = [];
     for (var i = 0; i < stories.length; i++) {
@@ -143,7 +141,7 @@ function collectValues(valueHolder) {
 }
 */
 
-export function calculateStatisticsForBarGraph(nominalQuestion, stories: surveyCollection.Story[], minimumStoryCountRequiredForTest: number = defaultMinimumStoryCountNeeded) {
+export function calculateStatisticsForBarGraph(nominalQuestion, stories: surveyCollection.Story[], minimumStoryCountRequiredForTest: number) {
     // not calculating statistics for bar graph
     var values = collectDataForField(stories, nominalQuestion.id);
     
@@ -152,7 +150,7 @@ export function calculateStatisticsForBarGraph(nominalQuestion, stories: surveyC
     return {significance: "N/A", calculated: ["n"], n: n};
 }
 
-export function calculateStatisticsForHistogram(ratioQuestion, stories: surveyCollection.Story[], minimumStoryCountRequiredForTest: number = defaultMinimumStoryCountNeeded) {
+export function calculateStatisticsForHistogram(ratioQuestion, stories: surveyCollection.Story[], minimumStoryCountRequiredForTest: number) {
     // TODO: ? look for differences of means on a distribution using Student's T test if normal, otherwise Kruskal-Wallis or maybe Mann-Whitney
     // TODO: Fix this - could report on normality
     
@@ -171,7 +169,7 @@ export function calculateStatisticsForHistogram(ratioQuestion, stories: surveyCo
     return {significance: "N/A", calculated: ["mean", "sd", "skewness", "kurtosis", "n"], mean: mean, sd: sd, skewness: skewness, kurtosis: kurtosis, n: n};
 }
 
-export function calculateStatisticsForMultipleHistogram(ratioQuestion, nominalQuestion, stories: surveyCollection.Story[], minimumStoryCountRequiredForTest: number = defaultMinimumStoryCountNeeded): any {
+export function calculateStatisticsForMultipleHistogram(ratioQuestion, nominalQuestion, stories: surveyCollection.Story[], minimumStoryCountRequiredForTest: number): any {
     // One of each continuous and not
     // for each option, look for differences of means on a distribution using Student's T test if normal, otherwise Kruskal-Wallis or maybe Mann-Whitney
     
@@ -221,7 +219,7 @@ export function calculateStatisticsForMultipleHistogram(ratioQuestion, nominalQu
     return {significance: significance, calculated: ["p", "U", "n"], p: pLowest, U: uLowest, n: n, allResults: allResults};
 }
 
-export function calculateStatisticsForScatterPlot(rationQuestion1, rationQuestion2, stories: surveyCollection.Story[], minimumStoryCountRequiredForTest: number = defaultMinimumStoryCountNeeded): any {
+export function calculateStatisticsForScatterPlot(rationQuestion1, rationQuestion2, stories: surveyCollection.Story[], minimumStoryCountRequiredForTest: number): any {
     // TODO: both continuous -- look for correlation with Pearson's R (if normal distribution) or Spearman's R / Kendall's Tau (if not normal distribution)"
     var data = collectXYDataForFields(stories, rationQuestion1.id, rationQuestion2.id);
     
@@ -244,7 +242,7 @@ export function calculateStatisticsForScatterPlot(rationQuestion1, rationQuestio
     return {significance: significance, calculated: ["p", "rho", "n"], p: p, rho: r, n: n};
 }
 
-export function calculateStatisticsForTable(nominalQuestion1, nominalQuestion2, stories: surveyCollection.Story[], minimumStoryCountRequiredForTest: number = defaultMinimumStoryCountNeeded): any {
+export function calculateStatisticsForTable(nominalQuestion1, nominalQuestion2, stories: surveyCollection.Story[], minimumStoryCountRequiredForTest: number): any {
     // both not continuous -- look for a 'correspondence' between counts using Chi-squared test
     // Can't calculate a statistic if one or both are mutiple answer checkboxes
     
@@ -259,24 +257,61 @@ export function calculateStatisticsForTable(nominalQuestion1, nominalQuestion2, 
     
     var observed = [];
     var expected = [];
+    
+    // Only calculate observed and expected considering the fields which pass threshold and are actually used
+    
     var field1OptionsUsed = {};
     var field2OptionsUsed = {};
+    var field1Option;
+    var field2Option;
+    var field1Total;
+    var field2Total;
+    var observedValue;
     
-    for (var field1Option in counts.field1Options) {
-        var field1Total = counts.field1Options[field1Option];
+    for (field1Option in counts.field1Options) {
+        field1Total = counts.field1Options[field1Option];
         if (field1Total < minimumStoryCountRequiredForTest) continue;
-        for (var field2Option in counts.field2Options) {
-            var field2Total = counts.field2Options[field2Option];
-            if (field2Total < minimumStoryCountRequiredForTest) continue;
-            var observedValue = counts.counts[valueTag(field1Option, field2Option)] ||  0;
-            observed.push(observedValue);
-            var expectedValue = field1Total * field2Total / counts.total;
-            expected.push(expectedValue);
-            field1OptionsUsed[field1Option] = true;
-            field2OptionsUsed[field2Option] = true;
-        }
+        field1OptionsUsed[field1Option] = 0;
+    }
+    
+    for (field2Option in counts.field2Options) {
+        field2Total = counts.field2Options[field2Option];
+        if (field2Total < minimumStoryCountRequiredForTest) continue;
+        field2OptionsUsed[field2Option] = 0;
     }
 
+    var usedTotal = 0;
+    for (field1Option in field1OptionsUsed) {
+        field1Total = 0;
+        for (field2Option in field2OptionsUsed) {
+            observedValue = counts.counts[valueTag(field1Option, field2Option)] ||  0;
+            field1Total += observedValue;
+            usedTotal += observedValue;
+        }
+        field1OptionsUsed[field1Option] = field1Total;
+    }
+    
+    for (field2Option in field2OptionsUsed) {
+        field2Total = 0;
+        for (field1Option in field1OptionsUsed) {
+            observedValue = counts.counts[valueTag(field1Option, field2Option)] ||  0;
+            field2Total += observedValue;
+        }
+        field2OptionsUsed[field1Option] = field2Total;
+    }    
+    
+
+    for (field1Option in field1OptionsUsed) {
+        field1Total = field1OptionsUsed[field1Option];
+        for (field2Option in field2OptionsUsed) {
+            field2Total = field2OptionsUsed[field2Option];
+            observedValue = counts.counts[valueTag(field1Option, field2Option)] ||  0;
+            observed.push(observedValue);
+            var expectedValue = field1Total * field2Total / usedTotal;
+            expected.push(expectedValue);           
+        }
+    }
+    
     var n1 = Object.keys(field1OptionsUsed).length;
     var n2 = Object.keys(field2OptionsUsed).length;
     

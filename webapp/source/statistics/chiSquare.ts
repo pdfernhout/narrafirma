@@ -28,7 +28,7 @@ export function chiSquare(observed: number[], expected: number[], degreesOfFreed
     }
     
     if (observedTotal !== Math.round(expectedTotal)) {
-        console.log("Error chiSquare observedTotal", observedTotal, "expectedTotal", expectedTotal);
+        console.log("Error chiSquare observedTotal", observedTotal, "expectedTotal", expectedTotal, "observed", observed, "expected", expected);
         throw new Error("chiSquare: observedTotal !== expectedTotal");
     }
     

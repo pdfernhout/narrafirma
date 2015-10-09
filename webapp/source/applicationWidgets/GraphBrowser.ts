@@ -3,6 +3,7 @@ import questionnaireGeneration = require("../questionnaireGeneration");
 import surveyCollection = require("../surveyCollection");
 import valuePathResolver = require("../panelBuilder/valuePathResolver");
 // import PanelBuilder = require("../panelBuilder/PanelBuilder");
+import Project = require("../Project");
 import m = require("mithril");
 
 "use strict";
@@ -33,7 +34,8 @@ class GraphBrowser {
             chartPanes: [],
             allStories: [],
             currentGraph: null,
-            currentSelectionExtentPercentages: null
+            currentSelectionExtentPercentages: null,
+            minimumStoryCountRequiredForTest: Project.defaultMinimumStoryCountRequiredForTest
         }; 
     }
     

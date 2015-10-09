@@ -13,8 +13,6 @@ import Globals = require("../Globals");
 
 "use strict";
 
-var defaultMinimumStoryCountRequiredForTest = 0;
-
 // Question types that have data associated with them for filters and graphs
 var nominalQuestionTypes = ["select", "boolean", "checkbox", "checkboxes", "radiobuttons", "text"];
 
@@ -89,7 +87,7 @@ class PatternExplorer {
     
     observationPanelSpecification = null;
     
-    minimumStoryCountRequiredForTest = defaultMinimumStoryCountRequiredForTest;
+    minimumStoryCountRequiredForTest = Project.defaultMinimumStoryCountRequiredForTest;
     
     constructor(args) {
         this.project = Globals.project();
@@ -101,7 +99,8 @@ class PatternExplorer {
             chartPanes: [],
             allStories: [],
             currentGraph: null,
-            currentSelectionExtentPercentages: null
+            currentSelectionExtentPercentages: null,
+            minimumStoryCountRequiredForTest: Project.defaultMinimumStoryCountRequiredForTest
         };
         
         // Story grid initialization
@@ -354,12 +353,7 @@ class PatternExplorer {
             return;
         }
         
-        var minimumStoryCountRequiredForTest = this.project.tripleStore.queryLatestC(this.catalysisReportIdentifier, "minimumSubsetSize");
-        if (minimumStoryCountRequiredForTest) {
-            this.minimumStoryCountRequiredForTest = parseInt(minimumStoryCountRequiredForTest, 10);
-        } else {
-            this.minimumStoryCountRequiredForTest = defaultMinimumStoryCountRequiredForTest;
-        }
+        this.minimumStoryCountRequiredForTest = this.project.minimumStoryCountRequiredForTest(catalysisReportIdentifier);
         // console.log("minimumStoryCountRequiredForTest", this.minimumStoryCountRequiredForTest);
         
         this.catalysisReportObservationSetIdentifier = this.getObservationSetIdentifier(catalysisReportIdentifier);
