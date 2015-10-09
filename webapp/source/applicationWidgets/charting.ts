@@ -408,33 +408,43 @@ function htmlForLabelAndValue(key, object) {
     if (key !== "n" && key !== "n1" && key !== "n2" && key !== "k" && key !== "U") {
         value = value.toFixed(3);
     }
-    return key + ": " + value + "\n";
+    return '<span class="statistics-name">' + key + '</span>: <span class="statistics-value">' + value + "</span>";
 }
 
 function addStatisticsPanelForChart(chartPane: HTMLElement, statistics) {
-    var html = "<pre>";
+    var html = "";
     if (statistics.calculated.length === 0) {
-        html += statistics.significance + "\n";
+        html += statistics.significance;
     } else {
-        // html += "statistics:\n";
+        // html += "statistics: ";
     }
     if (statistics.allResults) {
-        html += "\nMann-Whitney U test results for multiple histograms\n";
+        html += '<br><span class="narrafirma-mann-whitney-title">Mann-Whitney U test results for multiple histograms</span><br>\n';
     }
     for (var i = 0; i < statistics.calculated.length; i++) {
-        html += htmlForLabelAndValue(statistics.calculated[i], statistics);
+        html += htmlForLabelAndValue(statistics.calculated[i], statistics) + "<br>\n";
     }
     if (statistics.allResults) {
+        html += "<br>\n";
+        html += '<table class="narrafirma-mw-all-results">\n';
         for (var resultKey in statistics.allResults) {
             var result = statistics.allResults[resultKey];
-            html += "\n" + resultKey + "\n";
+            html += '<tr><td class="narrafirma-mw-nested-title">' + resultKey + '</td><td class="narrafirma-mw-nested-stats">';
+            var first = true;
             for (var key in result) {
+                if (!first) {
+                    html += "; ";
+                } else {
+                    first = false;
+                }
                 html += htmlForLabelAndValue(key, result);
            }
+           html += "</td></tr>\n";
         }
+        html += "</table>\n";
     }
-    html += "</pre>";
     var statsPane = document.createElement("div");
+    statsPane.className = "narrafirma-statistics-panel";
     statsPane.innerHTML = html;
     chartPane.appendChild(statsPane);
 }
