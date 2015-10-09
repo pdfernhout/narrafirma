@@ -40,11 +40,11 @@ var panel: Panel = {
             displayPrompt: "Why did this pattern <strong>stand out</strong>?"
         },
         {
-            id: "sensemakingSessionRecord_resonantPattern_groups",
+            id: "sensemakingSessionRecord_resonantPattern_peopleSaid",
             valueType: "string",
-            displayType: "text",
-            displayName: "Groups",
-            displayPrompt: "For which participant <strong>group</strong>  (or groups) was this pattern important?"
+            displayType: "textarea",
+            displayName: "People said",
+            displayPrompt: "What did people <strong>say</strong> about this pattern?"
         },
         {
             id: "sensemakingSessionRecord_resonantPattern_notes",

@@ -30,7 +30,7 @@ var panel: Panel = {
             valueType: "string",
             displayType: "textarea",
             displayName: "Story text",
-            displayPrompt: "You can type (or paste) the story <strong>text</strong> (or description) here."
+            displayPrompt: "You can type (or paste) the story <strong>text</strong> (or summary) here."
         },
         {
             id: "sensemakingSessionRecord_resonantStory_reason",
@@ -40,11 +40,11 @@ var panel: Panel = {
             displayPrompt: "Why did this story <strong>stand out</strong>?"
         },
         {
-            id: "sensemakingSessionRecord_resonantStory_groups",
+            id: "sensemakingSessionRecord_resonantStory_peopleSaid",
             valueType: "string",
-            displayType: "text",
-            displayName: "Groups",
-            displayPrompt: "For which participant <strong>group</strong>  (or groups) was this story important?"
+            displayType: "textarea",
+            displayName: "People said",
+            displayPrompt: "What did people <strong>say</strong> about this story?"
         },
         {
             id: "sensemakingSessionRecord_resonantStory_notes",
