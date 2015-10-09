@@ -466,6 +466,65 @@ export function printSensemakingSessionAgenda(itemID) {
 
 declare var canvg;
 
+function displayForGraph(graphHolder: GraphHolder, graph) {
+    var graphNode: HTMLElement = <HTMLElement>graphHolder.graphResultsPane.firstChild;
+    console.log("graphNode", graphNode);
+    
+    var styleNode = document.createElement("style");
+    styleNode.type = 'text/css';
+    
+    /*
+    if (styleNode.styleSheet) {
+        // IE support; cast to silence TypeScript warning
+        (<any>styleNode.styleSheet).cssText = css;
+    } else {
+        styleNode.appendChild(document.createTextNode(css));
+    }
+    */
+    
+    styleNode.innerHTML = "<![CDATA[" + graphResultsPaneCSS + "]]>";
+    
+    // console.log("styleNode", styleNode);
+    
+    graphNode.firstChild.insertBefore(styleNode, graphNode.firstChild.firstChild);
+    
+    // console.log("graphNode", graphNode);
+    
+    var imageForGraph = null;
+    // remove the statistics panel
+    var statisticsPanel = <HTMLElement>graphNode.childNodes.item(1);
+    if (statisticsPanel) {
+        graphNode.removeChild(statisticsPanel);
+    
+        var svgText = (<HTMLElement>graphNode).innerHTML;
+   
+        // console.log("svgText", svgText);
+
+        var canvas = document.createElement("canvas");
+        canvg(canvas, svgText);
+        var imgData = canvas.toDataURL("image/png");
+        
+        // console.log("imgData", imgData);
+        
+        // m.trust(graphHolder.graphResultsPane.outerHTML),
+        imageForGraph = m("img", {
+            //src: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO9TXL0Y4OHwAAAABJRU5ErkJggg==",
+            //src: `data:image/svg+xml;utf8,<svg width="400" height="110"><rect width="300" height="100" style="fill:rgb(0,0,255);stroke-width:3;stroke:rgb(0,0,0)"></rect>Sorry, your browser does not support inline SVG.</svg>`,
+            src: imgData,
+            alt: "Graph!!!"
+        });
+    } else {
+        // multiple histogram
+    }
+    
+    return [
+        imageForGraph || [],
+        printReturnAndBlankLine(),
+        statisticsPanel ? m.trust(statisticsPanel.outerHTML) : [],
+        printReturnAndBlankLine()
+    ];
+}
+
 function printObservationList(observationList, allStories, minimumStoryCountRequiredForTest: number) {
     // For now, just print all observations
     return printList(observationList, {}, function (item) {
@@ -486,64 +545,17 @@ function printObservationList(observationList, allStories, minimumStoryCountRequ
             minimumStoryCountRequiredForTest: minimumStoryCountRequiredForTest
         };
         
-        var graph = PatternExplorer.makeGraph(pattern, graphHolder, selectionCallback);
-        // console.log("graph", graph);
         // console.log("graphHolder", graphHolder);
-        
-        var graphNode: HTMLElement = <HTMLElement>graphHolder.graphResultsPane.firstChild;
-        console.log("graphNode", graphNode);
-        
-        var styleNode = document.createElement("style");
-        styleNode.type = 'text/css';
-        
-        /*
-        if (styleNode.styleSheet) {
-            // IE support; cast to silence TypeScript warning
-            (<any>styleNode.styleSheet).cssText = css;
-        } else {
-            styleNode.appendChild(document.createTextNode(css));
-        }
-        */
-        
-        styleNode.innerHTML = "<![CDATA[" + graphResultsPaneCSS + "]]>";
-        
-        // console.log("styleNode", styleNode);
-        
-        graphNode.firstChild.insertBefore(styleNode, graphNode.firstChild.firstChild);
-        
-        // console.log("graphNode", graphNode);
-        
-        // remove the statistics panel
-        var statisticsPanel = <HTMLElement>graphNode.childNodes.item(1);
-        if (statisticsPanel) graphNode.removeChild(statisticsPanel);
-        
-        var svgText = (<HTMLElement>graphNode).innerHTML;
-   
-        console.log("svgText", svgText);
 
-        var canvas = document.createElement("canvas");
-        canvg(canvas, svgText);
-        var imgData = canvas.toDataURL("image/png");
-        
-        // console.log("imgData", imgData);
-        
-        // m.trust(graphHolder.graphResultsPane.outerHTML),
-        var imageForGraph = m("img", {
-            //src: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO9TXL0Y4OHwAAAABJRU5ErkJggg==",
-            //src: `data:image/svg+xml;utf8,<svg width="400" height="110"><rect width="300" height="100" style="fill:rgb(0,0,255);stroke-width:3;stroke:rgb(0,0,0)"></rect>Sorry, your browser does not support inline SVG.</svg>`,
-            src: imgData,
-            alt: "Graph!!!"
-        });
-        
+        var graph = PatternExplorer.makeGraph(pattern, graphHolder, selectionCallback);
+        console.log("graph", graph);
+           
         return [
             m("div", "Observation title: " + item.observationTitle),
             printReturn(),
             m("div", "Observation description: " + ": " + item.observationDescription),
             printReturnAndBlankLine(),
-            imageForGraph,
-            printReturnAndBlankLine(),
-            statisticsPanel ? m.trust(statisticsPanel.outerHTML) : [],
-            // m.trust(graphHolder.graphResultsPane.outerHTML),
+            displayForGraph(graphHolder, graph),
             printReturnAndBlankLine()
         ];
     });
