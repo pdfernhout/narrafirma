@@ -16,8 +16,15 @@ var panel: Panel = {
             id: "sensemakingSessionPlan_activity_name",
             valueType: "string",
             displayType: "text",
-            displayName: "Sensemaking activity name",
+            displayName: "Name",
             displayPrompt: "Please give this activity a <strong>name</strong>."
+        },
+        {
+            id: "sensemakingSessionPlan_activity_duration",
+            valueType: "string",
+            displayType: "text",
+            displayName: "Length",
+            displayPrompt: "<strong>How long</strong> will this activity take?"
         },
         {
             id: "sensemakingSessionPlan_activity_type",
@@ -53,13 +60,6 @@ var panel: Panel = {
             displayType: "textarea",
             displayName: "Optional elaborations",
             displayPrompt: "Describe any optional <strong>elaborations</strong> you might or might not use in this activity."
-        },
-        {
-            id: "sensemakingSessionPlan_activity_duration",
-            valueType: "string",
-            displayType: "text",
-            displayName: "Length",
-            displayPrompt: "<strong>How long</strong> will this activity take?"
         },
         {
             id: "sensemakingSessionPlan_activity_recording",

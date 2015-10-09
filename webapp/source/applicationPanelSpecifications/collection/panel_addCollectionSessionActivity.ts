@@ -16,8 +16,15 @@ var panel: Panel = {
             id: "collectionSessionActivity_name",
             valueType: "string",
             displayType: "text",
-            displayName: "Collection session activity name",
+            displayName: "Name",
             displayPrompt: "Please give this activity a <strong>name</strong>."
+        },
+        {
+            id: "collectionSessionActivity_duration",
+            valueType: "string",
+            displayType: "text",
+            displayName: "Length",
+            displayPrompt: "<strong>How long</strong> will this activity take?"
         },
         {
             id: "collectionSessionActivity_type",
@@ -51,13 +58,6 @@ var panel: Panel = {
             displayType: "textarea",
             displayName: "Optional elaborations",
             displayPrompt: "Describe any optional <strong>elaborations</strong> you might or might not use in this activity."
-        },
-        {
-            id: "collectionSessionActivity_duration",
-            valueType: "string",
-            displayType: "text",
-            displayName: "Length",
-            displayPrompt: "<strong>How long</strong> will this activity take?"
         },
         {
             id: "collectionSessionActivity_recording",
