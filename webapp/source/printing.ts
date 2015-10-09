@@ -467,15 +467,16 @@ export function printSensemakingSessionAgenda(itemID) {
 declare var canvg;
 
 function displayForGraphHolder(graphHolder: GraphHolder) {
-    console.log("displayForGraph graphHolder", graphHolder);
+    // console.log("displayForGraph graphHolder", graphHolder);
     
     if (graphHolder.chartPanes.length > 1) {
         // multiple histograms
-        var result = [];
+        var charts = [];
         for (var i = 1; i < graphHolder.chartPanes.length; i++) {
             var graphPane = graphHolder.chartPanes[i];
-            result.push(displayForGraph(graphPane));
+            charts.push(m("td", displayForGraph(graphPane)));
         }
+        var result = [m("table", {"class": "narrafirma-print-multiple-histograms"}, m("tr", charts))];
         var statisticsPanel = <HTMLElement>graphHolder.graphResultsPane.lastChild;
         result.push(m.trust(statisticsPanel.outerHTML));
         
@@ -486,7 +487,7 @@ function displayForGraphHolder(graphHolder: GraphHolder) {
 }
     
 function displayForGraph(graphNode: HTMLElement) {
-    console.log("graphNode", graphNode);
+    // console.log("graphNode", graphNode);
     
     var styleNode = document.createElement("style");
     styleNode.type = 'text/css';
@@ -561,7 +562,7 @@ function printObservationList(observationList, allStories, minimumStoryCountRequ
         };
         
         var graph = PatternExplorer.makeGraph(pattern, graphHolder, selectionCallback);
-        console.log("graph", graph);
+        // console.log("graph", graph);
            
         return [
             m("div", "Observation title: " + item.observationTitle),
