@@ -471,7 +471,15 @@ function displayForGraphHolder(graphHolder: GraphHolder) {
     
     if (graphHolder.chartPanes.length > 1) {
         // multiple histograms
-        return ["UNFINISHED!!!!"];
+        var result = [];
+        for (var i = 1; i < graphHolder.chartPanes.length; i++) {
+            var graphPane = graphHolder.chartPanes[i];
+            result.push(displayForGraph(graphPane));
+        }
+        var statisticsPanel = <HTMLElement>graphHolder.graphResultsPane.lastChild;
+        result.push(m.trust(statisticsPanel.outerHTML));
+        
+        return result;
     } else {
         return displayForGraph(<HTMLElement>graphHolder.graphResultsPane.firstChild);
     }
@@ -527,7 +535,7 @@ function displayForGraph(graphNode: HTMLElement) {
     return [
         imageForGraph || [],
         printReturnAndBlankLine(),
-        statisticsPanel ? m.trust(statisticsPanel.outerHTML) : [],
+        m.trust(statisticsPanel.outerHTML),
         printReturnAndBlankLine()
     ];
 }
