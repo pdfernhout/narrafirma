@@ -7,7 +7,6 @@ M Select title positioning and visibility for story cards
 
 CATALYSIS REPORT
 M Support multiple scatter plots per nominal question
-M Somehow display statistical results for graphs
 M For P=0.000 maybe show < somehow as in p<0.001
 
 ======= CYNTHIA
@@ -58,15 +57,11 @@ X Page to enter themes for stories
 X Page to cluster themes into final themes
 
 GRAPH BROWSER
-M Test the Mann-Whitney U test with known data
 M Test all statistical tests for validity more -- run same tests in spreadsheet on same data
 M Support multiple scatter plots across individual question answers
 L Support graphBrowser common maximum for multiple histograms
-M Show skewness and curtosis on histogram
-M Show statistical test results on charts the same as showing in pattern explorer list
 
 PATTERN EXPLORER
-M Make use of question threshold selection (configureCatalysisReport_minimumSubsetSize) to limit graphs in catalysis report
 
 CLUSTERING (CATALYSIS)
 
@@ -150,7 +145,6 @@ THINGS CYNTHIA NOTICED WHILE DOING HELP (probably redundant but just in case)
 M Slider should have a "does not apply" option
 L After you enter a story, it shows an alert that the story has been saved, but it doesn't get rid of the window. the popup window should go away
 L would like to make "focus rectangle" or "rubber band" over graphs when selecting - see http://bl.ocks.org/mbostock/1667367
-L Histograms should have mean and standard deviation marked (and maybe median and mode, skewness and kurtosis as numbers).
 
 ==== Wish list:
 
@@ -918,12 +912,27 @@ DONE Figure out a way to convert catalysis report from html to OpenOffice ODF fo
 DONE Move options (how large should subsets, what significance threshold) to popup under patterns list [moved to its own page with question selection]
 DONE Make Spearman test work for catalysis Pattern Explorer scatter plots
 DONE Finish Mann-Whitney U test
+DONE Test the Mann-Whitney U test with known data
 DONE Support graphBrowser contingency table with statistical results - chi squared
 DONE Make chi square test work for catalysis Pattern Explorer contingency tables [same as above]
 NOT DOING Hide statistical result column in catalysis report (until working)
 NOT DOING Hide question threshold widget in catalysis report configuration
 DONE Use Mann-Whitney or equivalent test for comparing multiple histograms in catalysis Pattern Explorer
-DONE Create help
-NOT DOING On Story question page, move "what type of question is this" extra text to help
-DONE Clean up introduction page (move to help pages?)
-NOT DOING Fix wording on dashboard pages (and all wording related to reminders) - finish this
+DONE Create help (CFK)
+NOT DOING On Story question page, move "what type of question is this" extra text to help (CFK)
+DONE Clean up introduction page (move to help pages?)  (CFK)
+NOT DOING Fix wording on dashboard pages (and all wording related to reminders) - finish this  (CFK)
+DONE Add extra error handling when sorting fields by name in storyCardDisplay
+DONE Use case-insensitive sort for grid columns
+DONE Comment out most debug console logging
+DONE Ensure console.log is always defined
+DONE Determing cause of sha256 mismatch with WordPress plugin
+DONE Add workaround for sha256 mismatch with WordPress plugin due to floating point number formatting and ClusteringDiagram item positions
+DONE Shut down polling in read-only projects to reduce server load (might reconsider or add option for polling later)
+DONE Make css path relative to work with WordPress plugin
+DONE Display better statistical summary text for multiple histograms to include test result and n
+DONE Somehow display statistical results for graphs
+DONE Show statistical test results on charts the same as showing in pattern explorer list
+DONE Show skewness and curtosis on histogram
+DONE Histograms should have mean and standard deviation marked (and maybe median and mode, skewness and kurtosis as numbers).
+DONE Make use of question threshold selection (configureCatalysisReport_minimumSubsetSize) to limit graphs in catalysis report
