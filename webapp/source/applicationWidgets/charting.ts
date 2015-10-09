@@ -7,12 +7,6 @@ import calculateStatistics = require("../calculateStatistics");
 // Library for statistics, imported by narrafirma.html
 declare var jStat;
 
-export function createGraphResultsPane(theClass): HTMLElement {
-    var pane = document.createElement("div");
-    pane.className = theClass;
-    return pane;
-}
-
 interface PlotItem {
     story: any;
     value: number;
@@ -400,6 +394,13 @@ function addStatsHoverForChart(chart, stats) {
 }
 */
 
+// escapeHtml is from: http://shebang.brandonmintern.com/foolproof-html-escaping-in-javascript/
+function escapeHtml(str) {
+    var div = document.createElement('div');
+    div.appendChild(document.createTextNode(str));
+    return div.innerHTML;
+};
+
 function htmlForLabelAndValue(key, object) {
     var value = object[key];
     if (value === undefined) {
@@ -429,7 +430,7 @@ function addStatisticsPanelForChart(chartPane: HTMLElement, statistics) {
         html += '<table class="narrafirma-mw-all-results">\n';
         for (var resultKey in statistics.allResults) {
             var result = statistics.allResults[resultKey];
-            html += '<tr><td class="narrafirma-mw-nested-title">' + resultKey + '</td><td class="narrafirma-mw-nested-stats">';
+            html += '<tr><td class="narrafirma-mw-nested-title">' + escapeHtml(resultKey) + '</td><td class="narrafirma-mw-nested-stats">';
             var first = true;
             for (var key in result) {
                 if (!first) {
@@ -1360,3 +1361,10 @@ function newChartPane(graphBrowserInstance: GraphHolder, styleClass: string): HT
 
     return chartPane;
 }
+
+export function createGraphResultsPane(theClass): HTMLElement {
+    var pane = document.createElement("div");
+    pane.className = theClass;
+    return pane;
+}
+
