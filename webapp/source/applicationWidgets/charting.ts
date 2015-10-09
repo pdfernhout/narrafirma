@@ -297,16 +297,14 @@ function addYAxis(chart, yScale, configure = null) {
         .scale(yScale)
         .orient('left');
     
-    /*
     if (configure.labelLengthLimit) {
         yAxis.tickFormat(function (label) {
             return limitLabelLength(label, configure.labelLengthLimit); 
         });
     } else {
-        // TODO: Is this really needed?
+        // This seems needed to ensure small numbers for labels don't get ".0" appended to them
         yAxis.tickFormat(d3.format("d"));
     }
-    */
     
     if (configure.isSmallFormat) yAxis.tickValues(yScale.domain());
     
@@ -628,6 +626,8 @@ export function d3HistogramChart(graphBrowserInstance: GraphHolder, scaleQuestio
             matchingStories.push(story);
         }
     }
+    
+    // console.log("d3HistogramChart values", values.map(function(item) { return item.value; }), choiceQuestion);
     
     var resultIndex = 1;
     
