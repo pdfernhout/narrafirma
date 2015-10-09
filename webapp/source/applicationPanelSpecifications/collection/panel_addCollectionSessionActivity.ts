@@ -31,6 +31,7 @@ var panel: Panel = {
                 "timeline exercise",
                 "landscape exercise",
                 "my own exercise",
+                "break",
                 "other"
             ],
             displayType: "select",

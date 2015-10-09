@@ -33,6 +33,7 @@ var panel: Panel = {
                 "story elements exercise",
                 "composite stories exercise",
                 "my own exercise",
+                "break",
                 "other"
             ],
             displayType: "select",
