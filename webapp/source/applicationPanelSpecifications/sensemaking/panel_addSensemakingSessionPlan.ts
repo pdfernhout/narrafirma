@@ -15,7 +15,7 @@ var panel: Panel = {
         {
             id: "sensemakingSessionPlan_groups",
             valueType: "string",
-            displayType: "text",
+            displayType: "textarea",
             displayName: "Participant groups",
             displayPrompt: "Which participant <strong>group</strong> (or groups) will be involved?"
         },
@@ -57,7 +57,7 @@ var panel: Panel = {
         {
             id: "sensemakingSessionPlan_numPeople",
             valueType: "string",
-            displayType: "text",
+            displayType: "textarea",
             displayName: "Number of people",
             displayPrompt: "<strong>How many people</strong> will be invited to each repetition of this session?"
         },
@@ -67,6 +67,13 @@ var panel: Panel = {
             displayType: "textarea",
             displayName: "Materials",
             displayPrompt: "What <strong>materials</strong> will this session plan require?"
+        },
+        {
+            id: "sensemakingSessionPlan_smallGroups",
+            valueType: "string",
+            displayType: "textarea",
+            displayName: "Groups",
+            displayPrompt: "What sorts of <strong>small groups</strong> will be formed in this session?"
         },
         {
             id: "sensemakingSessionPlan_details",

@@ -22,7 +22,7 @@ var panel: Panel = {
         {
             id: "sensemakingSessionRecord_groups",
             valueType: "string",
-            displayType: "text",
+            displayType: "textarea",
             displayName: "Participant groups",
             displayPrompt: "Which participant <strong>group</strong> (or groups) attended the session?"
         },
