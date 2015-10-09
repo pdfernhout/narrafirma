@@ -12,6 +12,93 @@ import charting = require("./applicationWidgets/charting");
 
 // TODO: Translate
 
+// TODO: Rules should be read from loaded stylesheet
+var graphResultsPaneCSS = `
+    .narrafirma-graph-results-pane {
+        width: 850px;
+        margin: 5px auto 0px auto;
+    }
+    
+    .chartBackground {
+        width: 700px;
+        fill: none;
+    }
+    
+    .chartBodyBackground {
+        fill: none;
+    }
+    
+    .brush .extent {
+      fill-opacity: 0.1;
+      stroke: #fff;
+      shape-rendering: crispEdges;
+    }
+    
+    .chart {
+        background-color: white;
+    }
+    
+    .scatterPlot .story {
+      stroke: #3e3739;
+      stroke-width: 0.2px;
+      fill: #3e3739;
+      fill-opacity: 0.7;
+    }
+    
+    .scatterPlot .story.selected {
+      stroke: #3b5fab;
+      fill: #3b5fab;
+    }
+    
+    .bar {
+      fill: none;
+    }
+    
+    .story.even {
+      fill: #3e3739;
+    }
+    
+    .story.odd {
+      fill: #a7a5a5;
+    }
+    
+    .story.even.selected {
+      fill: #3b5fab;
+    }
+    
+    .story.odd.selected {
+      fill: #abb6ce;
+    }
+    
+    .contingencyChart .storyCluster.observed {
+      stroke-width: 3px;
+      stroke: #2e4a85;
+      fill: #d5dae6;
+    }
+    
+    .contingencyChart .storyCluster.observed.selected {
+      stroke-width: 2px;
+      stroke: #2e4a85;
+      fill: #3b5fab;
+    }
+    
+    .contingencyChart .expected {
+      stroke-width: 1px;
+      stroke: #8e8789;
+      stroke-dasharray: "5,5";
+      fill: none;
+    }
+    
+    .contingencyChart .axis path {
+      display: none;
+    }
+    
+    .contingencyChart .axis line {
+      shape-rendering: crispEdges;
+      stroke: gray;
+    }
+`;
+
 function printHTML(htmlToPrint: string) {
     // Display HTML in a new window
     // onsole.log("printHTML", htmlToPrint);
@@ -409,95 +496,6 @@ function printObservationList(observationList, allStories, minimumStoryCountRequ
         var styleNode = document.createElement("style");
         styleNode.type = 'text/css';
         
-        // TODO: Rules should be read from loaded stylesheet
-        var css = `
-            .narrafirma-graph-results-pane {
-                width: 850px;
-                margin: 5px auto 0px auto;
-            }
-            
-            .chartBackground {
-                width: 700px;
-                fill: none;
-            }
-            
-            .chartBodyBackground {
-                fill: none;
-            }
-            
-            .brush .extent {
-              fill-opacity: 0.1;
-              stroke: #fff;
-              shape-rendering: crispEdges;
-            }
-            
-            .chart {
-                background-color: white;
-            }
-            
-            .scatterPlot .story {
-              stroke: #3e3739;
-              stroke-width: 0.2px;
-              fill: #3e3739;
-              fill-opacity: 0.7;
-            }
-            
-            .scatterPlot .story.selected {
-              stroke: #3b5fab;
-              fill: #3b5fab;
-            }
-            
-            .bar {
-              fill: none;
-            }
-            
-            .story.even {
-              fill: #3e3739;
-            }
-            
-            .story.odd {
-              fill: #a7a5a5;
-            }
-            
-            .story.even.selected {
-              fill: #3b5fab;
-            }
-            
-            .story.odd.selected {
-              fill: #abb6ce;
-            }
-            
-            .contingencyChart .storyCluster.observed {
-              stroke-width: 3px;
-              stroke: #2e4a85;
-              fill: #d5dae6;
-            }
-            
-            .contingencyChart .storyCluster.observed.selected {
-              stroke-width: 2px;
-              stroke: #2e4a85;
-              fill: #3b5fab;
-            }
-            
-            .contingencyChart .expected {
-              stroke-width: 1px;
-              stroke: #8e8789;
-              stroke-dasharray: "5,5";
-              fill: none;
-            }
-            
-            .contingencyChart .axis path {
-              display: none;
-            }
-            
-            .contingencyChart .axis line {
-              shape-rendering: crispEdges;
-              stroke: gray;
-            }
-        `;
-        
-        css = "<![CDATA[" + css + "]]>";
-        
         /*
         if (styleNode.styleSheet) {
             // IE support; cast to silence TypeScript warning
@@ -507,7 +505,7 @@ function printObservationList(observationList, allStories, minimumStoryCountRequ
         }
         */
         
-        styleNode.innerHTML = css;
+        styleNode.innerHTML = "<![CDATA[" + graphResultsPaneCSS + "]]>";
         
         // console.log("styleNode", styleNode);
         
