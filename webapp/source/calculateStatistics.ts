@@ -8,6 +8,8 @@ import surveyCollection = require("./surveyCollection");
 // Library for statistics, imported by narrafirma.html
 declare var jStat;
 
+var defaultMinimumStoryCountNeeded = 20;
+
 function collectDataForField(stories: surveyCollection.Story[], fieldName, conversionFunction = null) {
     var result = [];
     for (var i = 0; i < stories.length; i++) {
@@ -141,7 +143,7 @@ function collectValues(valueHolder) {
 }
 */
 
-export function calculateStatisticsForBarGraph(nominalQuestion, stories: surveyCollection.Story[], minimumStoryCountRequiredForTest: number = 0) {
+export function calculateStatisticsForBarGraph(nominalQuestion, stories: surveyCollection.Story[], minimumStoryCountRequiredForTest: number = defaultMinimumStoryCountNeeded) {
     // not calculating statistics for bar graph
     var values = collectDataForField(stories, nominalQuestion.id);
     
@@ -150,7 +152,7 @@ export function calculateStatisticsForBarGraph(nominalQuestion, stories: surveyC
     return {significance: "N/A", calculated: ["n"], n: n};
 }
 
-export function calculateStatisticsForHistogram(ratioQuestion, stories: surveyCollection.Story[], minimumStoryCountRequiredForTest: number = 0) {
+export function calculateStatisticsForHistogram(ratioQuestion, stories: surveyCollection.Story[], minimumStoryCountRequiredForTest: number = defaultMinimumStoryCountNeeded) {
     // TODO: ? look for differences of means on a distribution using Student's T test if normal, otherwise Kruskal-Wallis or maybe Mann-Whitney
     // TODO: Fix this - could report on normality
     
@@ -169,7 +171,7 @@ export function calculateStatisticsForHistogram(ratioQuestion, stories: surveyCo
     return {significance: "N/A", calculated: ["mean", "sd", "skewness", "kurtosis", "n"], mean: mean, sd: sd, skewness: skewness, kurtosis: kurtosis, n: n};
 }
 
-export function calculateStatisticsForMultipleHistogram(ratioQuestion, nominalQuestion, stories: surveyCollection.Story[], minimumStoryCountRequiredForTest: number = 0): any {
+export function calculateStatisticsForMultipleHistogram(ratioQuestion, nominalQuestion, stories: surveyCollection.Story[], minimumStoryCountRequiredForTest: number = defaultMinimumStoryCountNeeded): any {
     // One of each continuous and not
     // for each option, look for differences of means on a distribution using Student's T test if normal, otherwise Kruskal-Wallis or maybe Mann-Whitney
     
@@ -202,7 +204,7 @@ export function calculateStatisticsForMultipleHistogram(ratioQuestion, nominalQu
             var y = values[options[j]];
             if (y.length < minimumStoryCountRequiredForTest) continue;
             var statResult = mannWhitneyU(x, y);
-            allResults[options[i] + " X " + options[j]] = {p: statResult.p, u: statResult.u};
+            allResults[options[i] + " X " + options[j]] = {p: statResult.p, u: statResult.u, n1: statResult.n1, n2: statResult.n2};
             // console.log("calculateStatisticsForMultipleHistogram statResult", statResult);
             if (statResult.p <= pLowest) {
                 pLowest = statResult.p;
@@ -219,7 +221,7 @@ export function calculateStatisticsForMultipleHistogram(ratioQuestion, nominalQu
     return {significance: significance, calculated: ["p", "U", "n"], p: pLowest, U: uLowest, n: n, allResults: allResults};
 }
 
-export function calculateStatisticsForScatterPlot(rationQuestion1, rationQuestion2, stories: surveyCollection.Story[], minimumStoryCountRequiredForTest: number = 0): any {
+export function calculateStatisticsForScatterPlot(rationQuestion1, rationQuestion2, stories: surveyCollection.Story[], minimumStoryCountRequiredForTest: number = defaultMinimumStoryCountNeeded): any {
     // TODO: both continuous -- look for correlation with Pearson's R (if normal distribution) or Spearman's R / Kendall's Tau (if not normal distribution)"
     var data = collectXYDataForFields(stories, rationQuestion1.id, rationQuestion2.id);
     
@@ -242,7 +244,7 @@ export function calculateStatisticsForScatterPlot(rationQuestion1, rationQuestio
     return {significance: significance, calculated: ["p", "rho", "n"], p: p, rho: r, n: n};
 }
 
-export function calculateStatisticsForTable(nominalQuestion1, nominalQuestion2, stories: surveyCollection.Story[], minimumStoryCountRequiredForTest: number = 0): any {
+export function calculateStatisticsForTable(nominalQuestion1, nominalQuestion2, stories: surveyCollection.Story[], minimumStoryCountRequiredForTest: number = defaultMinimumStoryCountNeeded): any {
     // both not continuous -- look for a 'correspondence' between counts using Chi-squared test
     // Can't calculate a statistic if one or both are mutiple answer checkboxes
     

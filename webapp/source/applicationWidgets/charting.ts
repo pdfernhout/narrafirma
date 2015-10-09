@@ -407,7 +407,7 @@ function htmlForLabelAndValue(key, object) {
     if (value === undefined) {
         console.log("value is undefined");
     }
-    if (key !== "n" && key !== "k" && key !== "U") {
+    if (key !== "n" && key !== "n1" && key !== "n2" && key !== "k" && key !== "U") {
         value = value.toFixed(3);
     }
     return key + ": " + value + "\n";

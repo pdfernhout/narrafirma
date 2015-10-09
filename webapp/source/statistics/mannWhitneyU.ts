@@ -56,7 +56,7 @@ function mannWhitneyU(x: number[], y: number[]) {
     var p = 1.0 - jStat.normal.cdf(z, 0, 1);
     // console.log("mannWhitneyU p", p);
     
-    return {u: smallu, p: p};
+    return {p: p, u: smallu, n1: n1, n2: n2};
 }
 
 function tiecorrect(rankvals: number[]): number {
