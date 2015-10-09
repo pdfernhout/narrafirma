@@ -619,15 +619,13 @@ export function d3HistogramChart(graphBrowserInstance: GraphHolder, scaleQuestio
                 if (choiceValue !== choice) skip = true;
             }
             if (skip) continue;
-            matchingStories.push(story);
-        } else {
-            matchingStories.push(story);
         }
         var newPlotItem = {story: story, value: xValue};
         if (xValue === unansweredKey) {
             unanswered.push(newPlotItem);
         } else {
             values.push(newPlotItem);
+            matchingStories.push(story);
         }
     }
     
@@ -650,7 +648,7 @@ export function d3HistogramChart(graphBrowserInstance: GraphHolder, scaleQuestio
     
     var margin = {top: 20, right: 15, bottom: 60, left: 60};
     if (isSmallFormat) {
-        margin.left = 25;
+        margin.left = 35;
     } else if (scaleQuestion.displayType === "slider") {
         margin.bottom += 30;
     }
