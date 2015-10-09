@@ -402,6 +402,17 @@ function addStatsHoverForChart(chart, stats) {
 }
 */
 
+function htmlForLabelAndValue(key, object) {
+    var value = object[key];
+    if (value === undefined) {
+        console.log("value is undefined");
+    }
+    if (key !== "n" && key !== "k" && key !== "U") {
+        value = value.toFixed(3);
+    }
+    return key + ": " + value + "\n";
+}
+
 function addStatisticsPanelForChart(chartPane: HTMLElement, statistics) {
     var html = "<pre>";
     if (statistics.calculated.length === 0) {
@@ -409,13 +420,20 @@ function addStatisticsPanelForChart(chartPane: HTMLElement, statistics) {
     } else {
         // html += "statistics:\n";
     }
+    if (statistics.allResults) {
+        html += "\nMann-Whitney U test results for multiple histograms\n";
+    }
     for (var i = 0; i < statistics.calculated.length; i++) {
-        var key = statistics.calculated[i];
-        var value = statistics[key];
-        if (key !== "n" && key !== "k") {
-            value = value.toFixed(3);
+        html += htmlForLabelAndValue(statistics.calculated[i], statistics);
+    }
+    if (statistics.allResults) {
+        for (var resultKey in statistics.allResults) {
+            var result = statistics.allResults[resultKey];
+            html += "\n" + resultKey + "\n";
+            for (var key in result) {
+                html += htmlForLabelAndValue(key, result);
+           }
         }
-        html += key + ": " + value + "\n";
     }
     html += "</pre>";
     var statsPane = document.createElement("div");
@@ -823,10 +841,7 @@ export function multipleHistograms(graphBrowserInstance: GraphHolder, choiceQues
     
     // TODO: This styling may be wrong
     var chartPane = newChartPane(graphBrowserInstance, "noStyle");
-    
-    var statistics = calculateStatistics.calculateStatisticsForMultipleHistogram(scaleQuestion, choiceQuestion, graphBrowserInstance.allStories);
-    addStatisticsPanelForChart(chartPane, statistics);
-    
+      
     var title = "" + nameForQuestion(scaleQuestion) + " vs. " + nameForQuestion(choiceQuestion) + " ...";
     
     var content = m("span", {style: "text-align: center;"}, [m("b", title), m("br")]);
@@ -850,6 +865,10 @@ export function multipleHistograms(graphBrowserInstance: GraphHolder, choiceQues
     clearFloat.style.clear = "left";
     graphBrowserInstance.graphResultsPane.appendChild(clearFloat);
     
+    // Add these statistics at the bottom after all other graphs
+    var statistics = calculateStatistics.calculateStatisticsForMultipleHistogram(scaleQuestion, choiceQuestion, graphBrowserInstance.allStories);
+    addStatisticsPanelForChart(graphBrowserInstance.graphResultsPane, statistics);
+  
     return charts;
 }
 

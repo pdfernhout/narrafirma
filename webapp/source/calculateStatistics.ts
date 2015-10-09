@@ -202,7 +202,7 @@ export function calculateStatisticsForMultipleHistogram(ratioQuestion, nominalQu
             var y = values[options[j]];
             if (y.length < minimumStoryCountRequiredForTest) continue;
             var statResult = mannWhitneyU(x, y);
-            allResults[options[i] + " X " + options[j]] = statResult;
+            allResults[options[i] + " X " + options[j]] = {p: statResult.p, u: statResult.u};
             // console.log("calculateStatisticsForMultipleHistogram statResult", statResult);
             if (statResult.p <= pLowest) {
                 pLowest = statResult.p;
