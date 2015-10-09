@@ -702,12 +702,10 @@ textarea.textEditorInDialog {
 
 .singleChartStyle {
     width: 700px;
-    height: 500px;
 }
 
 .multipleChartStyle {
     width: 200px;
-    height: 200;
     float: left;
 }
 

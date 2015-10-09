@@ -1,5 +1,6 @@
 import d3 = require("d3");
 import m = require("mithril");
+import calculateStatistics = require("../calculateStatistics");
 
 "use strict";
 
@@ -388,6 +389,40 @@ function addYAxisLabel(chart, label, labelLengthLimit = 64, textAnchor = "middle
     }
 }
 
+/*
+function addStatsHoverForChart(chart, stats) {
+    var widget = chart.chart || d3.select(chart).append('svg');
+    var rect = widget.append("rect")
+        .attr("style", "stroke: rgb(255,255,255); fill: red;")
+        .attr("x", 0)
+        .attr("y", 0)
+        .attr("height", 20)
+        .attr("width", 20);
+    rect.append("svg:title").text("Statistics: " + JSON.stringify(stats));
+}
+*/
+
+function addStatisticsPanelForChart(chartPane: HTMLElement, statistics) {
+    var html = "<pre>";
+    if (statistics.calculated.length === 0) {
+        html += statistics.significance + "\n";
+    } else {
+        // html += "statistics:\n";
+    }
+    for (var i = 0; i < statistics.calculated.length; i++) {
+        var key = statistics.calculated[i];
+        var value = statistics[key];
+        if (key !== "n" && key !== "k") {
+            value = value.toFixed(3);
+        }
+        html += key + ": " + value + "\n";
+    }
+    html += "</pre>";
+    var statsPane = document.createElement("div");
+    statsPane.innerHTML = html;
+    chartPane.appendChild(statsPane);
+}
+
 // ---- Charts
 
 export function d3BarChart(graphBrowserInstance: GraphHolder, question, storiesSelectedCallback) {
@@ -445,6 +480,9 @@ export function d3BarChart(graphBrowserInstance: GraphHolder, question, storiesS
     var margin = {top: 20, right: 15, bottom: 90, left: 60};
     var chart = makeChartFramework(chartPane, "barChart", false, margin);
     var chartBody = chart.chartBody;
+    
+    var statistics = calculateStatistics.calculateStatisticsForBarGraph(question, stories);
+    addStatisticsPanelForChart(chartPane, statistics); 
     
     // draw the x axis
 
@@ -547,6 +585,7 @@ export function d3HistogramChart(graphBrowserInstance: GraphHolder, scaleQuestio
     // TODO: Put a total for unanswered somewhere
     var unanswered = [];
     var values = [];
+    var matchingStories = [];
     
     var stories = graphBrowserInstance.allStories;
     for (var storyIndex in stories) {
@@ -562,6 +601,9 @@ export function d3HistogramChart(graphBrowserInstance: GraphHolder, scaleQuestio
                 if (choiceValue !== choice) skip = true;
             }
             if (skip) continue;
+            matchingStories.push(story);
+        } else {
+            matchingStories.push(story);
         }
         var newPlotItem = {story: story, value: xValue};
         if (xValue === unansweredKey) {
@@ -570,11 +612,6 @@ export function d3HistogramChart(graphBrowserInstance: GraphHolder, scaleQuestio
             values.push(newPlotItem);
         }
     }
-    
-    // Calculate descriptive statistics
-    var valuesAsNumbers = values.map((plotItem) => { return parseFloat(plotItem.value); });
-    var mean = jStat.mean(valuesAsNumbers);
-    var standardDeviation = jStat.stdev(valuesAsNumbers, true);
     
     var resultIndex = 1;
     
@@ -602,6 +639,12 @@ export function d3HistogramChart(graphBrowserInstance: GraphHolder, scaleQuestio
     
     var chart = makeChartFramework(chartPane, "histogram", isSmallFormat, margin);
     var chartBody = chart.chartBody;
+    
+    var statistics = calculateStatistics.calculateStatisticsForHistogram(scaleQuestion, matchingStories);
+    addStatisticsPanelForChart(chartPane, statistics);
+    
+    var mean = statistics.mean;
+    var standardDeviation = statistics.sd;
     
     // Draw the x axis
     
@@ -781,6 +824,9 @@ export function multipleHistograms(graphBrowserInstance: GraphHolder, choiceQues
     // TODO: This styling may be wrong
     var chartPane = newChartPane(graphBrowserInstance, "noStyle");
     
+    var statistics = calculateStatistics.calculateStatisticsForMultipleHistogram(scaleQuestion, choiceQuestion, graphBrowserInstance.allStories);
+    addStatisticsPanelForChart(chartPane, statistics);
+    
     var title = "" + nameForQuestion(scaleQuestion) + " vs. " + nameForQuestion(choiceQuestion) + " ...";
     
     var content = m("span", {style: "text-align: center;"}, [m("b", title), m("br")]);
@@ -837,6 +883,9 @@ export function d3ScatterPlot(graphBrowserInstance: GraphHolder, xAxisQuestion, 
     var margin = {top: 20, right: 15 + 205, bottom: 90, left: 90};
     var chart = makeChartFramework(chartPane, "scatterPlot", false, margin);
     var chartBody = chart.chartBody;
+    
+    var statistics = calculateStatistics.calculateStatisticsForScatterPlot(xAxisQuestion, yAxisQuestion, stories);
+    addStatisticsPanelForChart(chartPane, statistics);
     
     // draw the x axis
     
@@ -1045,6 +1094,9 @@ export function d3ContingencyTable(graphBrowserInstance: GraphHolder, xAxisQuest
     var chart = makeChartFramework(chartPane, "contingencyChart", false, margin);
     var chartBody = chart.chartBody;
     
+    var statistics = calculateStatistics.calculateStatisticsForTable(xAxisQuestion, yAxisQuestion, stories);
+    addStatisticsPanelForChart(chartPane, statistics);
+  
     // X axis and label
     
     var xScale = d3.scale.ordinal()

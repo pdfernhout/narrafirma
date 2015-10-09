@@ -8,11 +8,12 @@ import surveyCollection = require("./surveyCollection");
 // Library for statistics, imported by narrafirma.html
 declare var jStat;
 
-function collectDataForField(stories: surveyCollection.Story[], fieldName) {
+function collectDataForField(stories: surveyCollection.Story[], fieldName, conversionFunction = null) {
     var result = [];
     for (var i = 0; i < stories.length; i++) {
         var value = stories[i].fieldValue(fieldName);
-        if (value === null || value === undefined) continue;
+        if (value === null || value === undefined || value === "") continue;
+        if (conversionFunction) value = conversionFunction(value);
         result.push(value);
     }
     return result;
@@ -101,8 +102,8 @@ function increment(countHolder, fieldName) {
 }
 
 function valueTag(field1, field2) {
-    if (field1 === null || field1 === undefined) field1 = "{N/A}";
-    if (field2 === null || field2 === undefined) field2 = "{N/A}";
+    if (field1 === null || field1 === undefined || field1 === "") field1 = "{N/A}";
+    if (field2 === null || field2 === undefined || field2 === "") field2 = "{N/A}";
     var result = JSON.stringify([field1, field2]);
     // console.log("valueTag", result);
     return result;
@@ -117,9 +118,9 @@ function countsForTableChoices(stories: surveyCollection.Story[], field1, field2
     var total = 0;
     for (var i = 0; i < stories.length; i++) {
         var value1 = stories[i].fieldValue(field1);
-        if (value1 === null || value1 === undefined) continue; // value1 = "{N/A}";
+        if (value1 === null || value1 === undefined || value1 === "") continue; // value1 = "{N/A}";
         var value2 = stories[i].fieldValue(field2);
-        if (value2 === null || value2 === undefined) continue; // value2 = "{N/A}";
+        if (value2 === null || value2 === undefined || value2 === "") continue; // value2 = "{N/A}";
         increment(counts, valueTag(value1, value2));
         increment(field1Options, "" + value1);
         increment(field2Options, "" + value2);
@@ -156,14 +157,16 @@ export function calculateStatisticsForHistogram(ratioQuestion, stories: surveyCo
     // var counts = collectDataForField(stories, ratioQuestion.id);
     // console.log("counts", counts);
     
-    var values = collectDataForField(stories, ratioQuestion.id);
+    var values = collectDataForField(stories, ratioQuestion.id, parseFloat);
+    // console.log("calculateStatisticsForHistogram values", values);
     
     var n = values.length;
     var mean = jStat.mean(values);
+    var sd = jStat.stdev(values, true);
     var skewness = jStat.skewness(values);
     var kurtosis = jStat.kurtosis(values);
     
-    return {significance: "N/A", calculated: ["mean", "skewness", "kurtosis", "n"], mean: mean, skewness: skewness, kurtosis: kurtosis, n: n};
+    return {significance: "N/A", calculated: ["mean", "sd", "skewness", "kurtosis", "n"], mean: mean, sd: sd, skewness: skewness, kurtosis: kurtosis, n: n};
 }
 
 export function calculateStatisticsForMultipleHistogram(ratioQuestion, nominalQuestion, stories: surveyCollection.Story[], minimumStoryCountRequiredForTest: number = 0): any {
@@ -313,5 +316,5 @@ export function calculateStatisticsForTable(nominalQuestion1, nominalQuestion2, 
     }
     
     var significance = " p=" + statResult.p.toFixed(3) + " x2=" + statResult.x2.toFixed(3) + " k=" + statResult.k + " n=" + statResult.n;
-    return {significance: significance, calculated: ["x2", "k", "n"], x2: statResult.x2, k: statResult.k, n: statResult.n};
+    return {significance: significance, calculated: ["p", "x2", "k", "n"], p: statResult.p, x2: statResult.x2, k: statResult.k, n: statResult.n};
 }
