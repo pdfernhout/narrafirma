@@ -259,6 +259,8 @@ export function calculateStatisticsForTable(nominalQuestion1, nominalQuestion2, 
     
     var observed = [];
     var expected = [];
+    var field1OptionsUsed = {};
+    var field2OptionsUsed = {};
     
     for (var field1Option in counts.field1Options) {
         var field1Total = counts.field1Options[field1Option];
@@ -270,11 +272,13 @@ export function calculateStatisticsForTable(nominalQuestion1, nominalQuestion2, 
             observed.push(observedValue);
             var expectedValue = field1Total * field2Total / counts.total;
             expected.push(expectedValue);
+            field1OptionsUsed[field1Option] = true;
+            field2OptionsUsed[field2Option] = true;
         }
     }
 
-    var n1 = Object.keys(counts.field1Options).length;
-    var n2 = Object.keys(counts.field2Options).length;
+    var n1 = Object.keys(field1OptionsUsed).length;
+    var n2 = Object.keys(field2OptionsUsed).length;
     
     if (n1 <= 1 || n2 <= 1) {
         return {significance: "N/A (below threshold)", calculated: []};
@@ -310,6 +314,7 @@ export function calculateStatisticsForTable(nominalQuestion1, nominalQuestion2, 
     // console.log("statResult.n", statResult.n);
     
     if (statResult.n !== n1 * n2) {
+        console.log("unexpected n1 * n2: ", n1, n2, statResult, observed, expected);
         throw new Error("unexpected n1 * n2");
     }
     
