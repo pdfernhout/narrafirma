@@ -491,7 +491,7 @@ function printObservationList(observationList, allStories, minimumStoryCountRequ
         // console.log("graphHolder", graphHolder);
         
         var graphNode: HTMLElement = <HTMLElement>graphHolder.graphResultsPane.firstChild;
-        // console.log("graphNode", graphNode);
+        console.log("graphNode", graphNode);
         
         var styleNode = document.createElement("style");
         styleNode.type = 'text/css';
@@ -513,9 +513,13 @@ function printObservationList(observationList, allStories, minimumStoryCountRequ
         
         // console.log("graphNode", graphNode);
         
+        // remove the statistics panel
+        var statisticsPanel = <HTMLElement>graphNode.childNodes.item(1);
+        if (statisticsPanel) graphNode.removeChild(statisticsPanel);
+        
         var svgText = (<HTMLElement>graphNode).innerHTML;
    
-        // console.log("svgText", svgText);
+        console.log("svgText", svgText);
 
         var canvas = document.createElement("canvas");
         canvg(canvas, svgText);
@@ -538,6 +542,7 @@ function printObservationList(observationList, allStories, minimumStoryCountRequ
             printReturnAndBlankLine(),
             imageForGraph,
             printReturnAndBlankLine(),
+            statisticsPanel ? m.trust(statisticsPanel.outerHTML) : [],
             // m.trust(graphHolder.graphResultsPane.outerHTML),
             printReturnAndBlankLine()
         ];
