@@ -162,11 +162,12 @@ export function calculateStatisticsForHistogram(ratioQuestion, stories: surveyCo
     
     var n = values.length;
     var mean = jStat.mean(values);
+    var median = jStat.median(values);
     var sd = jStat.stdev(values, true);
     var skewness = jStat.skewness(values);
     var kurtosis = jStat.kurtosis(values);
     
-    return {significance: "N/A", calculated: ["mean", "sd", "skewness", "kurtosis", "n"], mean: mean, sd: sd, skewness: skewness, kurtosis: kurtosis, n: n};
+    return {significance: "N/A", calculated: ["mean", "median", "sd", "skewness", "kurtosis", "n"], mean: mean, median: median, sd: sd, skewness: skewness, kurtosis: kurtosis, n: n};
 }
 
 export function calculateStatisticsForMultipleHistogram(ratioQuestion, nominalQuestion, stories: surveyCollection.Story[], minimumStoryCountRequiredForTest: number): any {
