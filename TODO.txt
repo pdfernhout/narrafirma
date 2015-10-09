@@ -1,13 +1,11 @@
 ==== NarraFirma TODO list:
 
-STORY CARDS
-M Select questions for story cards
-M Select story positioning and visibility for story cards
-M Select title positioning and visibility for story cards
+EXPORT/IMPORT
+M Make project report page work in Administration to show all data entered in human-readable form
+M Export project as JSON without history [same as above]
 
 CATALYSIS REPORT
-M Support multiple scatter plots per nominal question
-M For P=0.000 maybe show < somehow as in p<0.001
+M Progress dialog when creating catalysis report
 
 ======= CYNTHIA
 
@@ -39,8 +37,7 @@ X Improve how options are specified for questions in question designer rather th
 X Make sure that short name IDs entered by user when defining questions are unique among themselves
 
 EXPORT/IMPORT
-M Make project report page work in Administration to show all data entered in human-readable form
-L Improve import process to remove two seperate buttons as two stages (questionnaire and data) or handle in some other way
+M Import project from exported JSON
 X Add way to clear out or reset old survey results? Or maybe partition them by survey?
 
 LOGGING
@@ -56,16 +53,24 @@ X Support storyThemer -- a widget where people look at each story, give it 1-3 t
 X Page to enter themes for stories
 X Page to cluster themes into final themes
 
+STORY CARDS
+M Select questions for printing story cards
+M Select story positioning and visibility for printing story cards
+M Select title positioning and visibility for printing story cards
+
 GRAPH BROWSER
 M Test all statistical tests for validity more -- run same tests in spreadsheet on same data
 M Support multiple scatter plots across individual question answers
 L Support graphBrowser common maximum for multiple histograms
 
 PATTERN EXPLORER
+L Show number of intepretations in table in PatternExplorer
 
 CLUSTERING (CATALYSIS)
 
 CATALYSIS REPORT
+M Support multiple scatter plots per nominal question
+M For P=0.000 maybe show < somehow as in p<0.001
 M Improve look of catalysis report
 M Test that catalysis report can be reliably imported in Word using the inline images or from intermediate PDF doc printed on Mac
 M Show percentages for question answers in title hover over questions in catalysis report configuration
@@ -882,6 +887,7 @@ DONE Include story annotations in export and import
 DONE Display version number in WordPress configuration
 DONE Display version number in application
 DONE Add support for "ignore" questions in csvImportExport and for Checkbox questionType
+DONE Improve import process to remove two seperate buttons as two stages (questionnaire and data) or handle in some other way
 DONE Improve the introduction page
 DONE Clarify difference between name and indentifier in ClientState for storyCollection and catalysisReport
 DONE Remove page_describePerspectives and instead improve ClusteringDiagram to support notes
