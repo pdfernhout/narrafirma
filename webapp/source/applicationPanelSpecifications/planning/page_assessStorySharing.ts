@@ -201,7 +201,7 @@ var panel: Panel = {
             ],
             displayType: "select",
             displayName: "Vitality",
-            displayPrompt: "How lively were the <strong>negotiations</strong> you heard going on between storytellers and audiences?"
+            displayPrompt: "How often did you see <strong>negotiations</strong> between storytellers and audiences?"
         },
         {
             id: "assessment_cotelling",
