@@ -16,14 +16,14 @@ var panel: Panel = {
             id: "interpretation_name",
             valueType: "string",
             displayType: "text",
-            displayName: "Intepretation name",
+            displayName: "Name",
             displayPrompt: "Please give this interpretation a <strong>name</strong>."
         },
         {
             id: "interpretation_idea",
             valueType: "string",
             displayType: "textarea",
-            displayName: "First interpretation idea",
+            displayName: "Idea",
             displayPrompt: "If you like, you can record an <strong>idea</strong> that follows from this interpretation."
         }
     ]
