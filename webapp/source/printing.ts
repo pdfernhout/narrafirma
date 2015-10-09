@@ -466,8 +466,18 @@ export function printSensemakingSessionAgenda(itemID) {
 
 declare var canvg;
 
-function displayForGraph(graphHolder: GraphHolder, graph) {
-    var graphNode: HTMLElement = <HTMLElement>graphHolder.graphResultsPane.firstChild;
+function displayForGraphHolder(graphHolder: GraphHolder) {
+    console.log("displayForGraph graphHolder", graphHolder);
+    
+    if (graphHolder.chartPanes.length > 1) {
+        // multiple histograms
+        return ["UNFINISHED!!!!"];
+    } else {
+        return displayForGraph(<HTMLElement>graphHolder.graphResultsPane.firstChild);
+    }
+}
+    
+function displayForGraph(graphNode: HTMLElement) {
     console.log("graphNode", graphNode);
     
     var styleNode = document.createElement("style");
@@ -493,29 +503,26 @@ function displayForGraph(graphHolder: GraphHolder, graph) {
     var imageForGraph = null;
     // remove the statistics panel
     var statisticsPanel = <HTMLElement>graphNode.childNodes.item(1);
-    if (statisticsPanel) {
-        graphNode.removeChild(statisticsPanel);
     
-        var svgText = (<HTMLElement>graphNode).innerHTML;
-   
-        // console.log("svgText", svgText);
+    graphNode.removeChild(statisticsPanel);
 
-        var canvas = document.createElement("canvas");
-        canvg(canvas, svgText);
-        var imgData = canvas.toDataURL("image/png");
-        
-        // console.log("imgData", imgData);
-        
-        // m.trust(graphHolder.graphResultsPane.outerHTML),
-        imageForGraph = m("img", {
-            //src: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO9TXL0Y4OHwAAAABJRU5ErkJggg==",
-            //src: `data:image/svg+xml;utf8,<svg width="400" height="110"><rect width="300" height="100" style="fill:rgb(0,0,255);stroke-width:3;stroke:rgb(0,0,0)"></rect>Sorry, your browser does not support inline SVG.</svg>`,
-            src: imgData,
-            alt: "Graph!!!"
-        });
-    } else {
-        // multiple histogram
-    }
+    var svgText = (<HTMLElement>graphNode).innerHTML;
+
+    // console.log("svgText", svgText);
+
+    var canvas = document.createElement("canvas");
+    canvg(canvas, svgText);
+    var imgData = canvas.toDataURL("image/png");
+    
+    // console.log("imgData", imgData);
+    
+    // m.trust(graphHolder.graphResultsPane.outerHTML),
+    imageForGraph = m("img", {
+        //src: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO9TXL0Y4OHwAAAABJRU5ErkJggg==",
+        //src: `data:image/svg+xml;utf8,<svg width="400" height="110"><rect width="300" height="100" style="fill:rgb(0,0,255);stroke-width:3;stroke:rgb(0,0,0)"></rect>Sorry, your browser does not support inline SVG.</svg>`,
+        src: imgData,
+        alt: "Graph!!!"
+    });
     
     return [
         imageForGraph || [],
@@ -545,8 +552,6 @@ function printObservationList(observationList, allStories, minimumStoryCountRequ
             minimumStoryCountRequiredForTest: minimumStoryCountRequiredForTest
         };
         
-        // console.log("graphHolder", graphHolder);
-
         var graph = PatternExplorer.makeGraph(pattern, graphHolder, selectionCallback);
         console.log("graph", graph);
            
@@ -555,7 +560,7 @@ function printObservationList(observationList, allStories, minimumStoryCountRequ
             printReturn(),
             m("div", "Observation description: " + ": " + item.observationDescription),
             printReturnAndBlankLine(),
-            displayForGraph(graphHolder, graph),
+            displayForGraphHolder(graphHolder),
             printReturnAndBlankLine()
         ];
     });
