@@ -235,7 +235,7 @@ function generateHTMLForQuestionnaire(questionnaire) {
         printText(questionnaire.endText)
     ]);
 
-    return generateHTMLForPage(questionnaire.title, "/css/survey.css", vdom);
+    return generateHTMLForPage(questionnaire.title, "css/survey.css", vdom);
 }
 
 export function printStoryForm(model, fieldSpecification, value) {
@@ -279,7 +279,7 @@ export function printStoryCards() {
         storyDivs.push(storyDiv);
     }
     
-   var htmlForPage = generateHTMLForPage("Story cards for: " + storyCollectionName, "/css/standard.css", storyDivs);
+   var htmlForPage = generateHTMLForPage("Story cards for: " + storyCollectionName, "css/standard.css", storyDivs);
    printHTML(htmlForPage);
 }
 
@@ -327,7 +327,7 @@ export function exportPresentationOutline() {
     
     printItems.push(printList(presentationElementsList));
     
-    var htmlForPage = generateHTMLForPage("Presentation Outline", "/css/standard.css", printItems);
+    var htmlForPage = generateHTMLForPage("Presentation Outline", "css/standard.css", printItems);
     printHTML(htmlForPage);
 }
 
@@ -350,7 +350,7 @@ export function exportCollectionSessionAgenda(itemID) {
     
     printItems.push(printList(activitiesList));
     
-    var htmlForPage = generateHTMLForPage("Story collection session agenda", "/css/standard.css", printItems);
+    var htmlForPage = generateHTMLForPage("Story collection session agenda", "css/standard.css", printItems);
     printHTML(htmlForPage);
 }
 
@@ -373,7 +373,7 @@ export function printSensemakingSessionAgenda(itemID) {
     
     printItems.push(printList(activitiesList));
     
-    var htmlForPage = generateHTMLForPage("Sensemaking session agenda", "/css/standard.css", printItems);
+    var htmlForPage = generateHTMLForPage("Sensemaking session agenda", "css/standard.css", printItems);
     printHTML(htmlForPage);
 }
 
@@ -646,7 +646,7 @@ export function printCatalysisReport() {
         });
     });
     
-    // "/css/standard.css"
+    // "css/standard.css"
     var htmlForPage = generateHTMLForPage(reportTitle, null, printItems);
     printHTML(htmlForPage);   
 }
