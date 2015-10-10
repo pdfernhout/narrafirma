@@ -22,9 +22,9 @@ function correctForUnanswered(question, value) {
 }
 
 function nameForQuestion(question) {
-    if (question.displayName) return question.displayName;
-    if (question.displayPrompt) return question.displayPrompt;
-    return question.id;
+    if (question.displayName) return escapeHtml(question.displayName);
+    if (question.displayPrompt) return escapeHtml(question.displayPrompt);
+    return escapeHtml(question.id);
 }
 
 function positionForQuestionAnswer(question, answer) {
