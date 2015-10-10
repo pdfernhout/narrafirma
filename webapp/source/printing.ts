@@ -471,12 +471,20 @@ function displayForGraphHolder(graphHolder: GraphHolder) {
     
     if (graphHolder.chartPanes.length > 1) {
         // multiple histograms
+        var result = [];
+        
+        // Add the title
+        result.push(m.trust(graphHolder.chartPanes[0].outerHTML));
+        
+        // Add the charts
         var charts = [];
         for (var i = 1; i < graphHolder.chartPanes.length; i++) {
             var graphPane = graphHolder.chartPanes[i];
             charts.push(m("td", displayForGraph(graphPane)));
         }
-        var result = [m("table", {"class": "narrafirma-print-multiple-histograms"}, m("tr", charts))];
+        result.push(m("table", {"class": "narrafirma-print-multiple-histograms"}, m("tr", charts)));
+        
+        // Add the statistics
         var statisticsPanel = <HTMLElement>graphHolder.graphResultsPane.lastChild;
         result.push(m.trust(statisticsPanel.outerHTML));
         
