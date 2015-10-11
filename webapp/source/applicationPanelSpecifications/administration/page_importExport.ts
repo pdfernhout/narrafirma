@@ -23,7 +23,7 @@ var panel: Panel = {
             valueType: "none",
             displayType: "button",
             displayConfiguration: "importEntireProject",
-            displayPrompt: "Import entire project with history (and survey results)"
+            displayPrompt: "Import entire project with history"
         },
         {
             id: "project_projectFileUploaderForForm",
@@ -35,7 +35,14 @@ var panel: Panel = {
             id: "importExport_exportCurrentProjectSummary",
             valueType: "none",
             displayType: "button",
-            displayConfiguration: "exportProjectCurrentState",
+            displayConfiguration: "exportProjectCurrentStateWithSurveyResults",
+            displayPrompt: "Export current state of project (with survey results)"
+        },
+        {
+            id: "importExport_exportCurrentProjectSummaryWithoutSurveyResults",
+            valueType: "none",
+            displayType: "button",
+            displayConfiguration: "exportProjectCurrentStateWithoutSurveyResults",
             displayPrompt: "Export current state of project (without survey results)"
         },
         {
@@ -43,7 +50,7 @@ var panel: Panel = {
             valueType: "none",
             displayType: "button",
             displayConfiguration: "importProjectCurrentState",
-            displayPrompt: "Import current state of project (without survey results)"
+            displayPrompt: "Import current state of project"
         },
     ]
 };

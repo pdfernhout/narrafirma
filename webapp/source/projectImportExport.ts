@@ -1,5 +1,6 @@
 import Globals = require("./Globals");
 import dialogSupport = require("./panelBuilder/dialogSupport");
+import surveyStorage = require("./surveyStorage");
 
 // Library for saving files, imported by narrafirma.html
 declare var saveAs;
@@ -8,7 +9,7 @@ var allMessagesExportType = "NarraFirma_allMessages";
 var allMessagesExportFormat = "0.1.0";
 
 var currentProjectStateExportType = "NarraFirma_currentProjectState";
-var currentProjectStateExportFormat = "0.1.0";
+var currentProjectStateExportFormat = "0.1.1";
 
 export function exportEntireProject() {
     if (!confirm("Export entire project?\n(This may take a while.)")) return;
@@ -122,8 +123,12 @@ export function importEntireProject() {
     });
 }
 
-export function exportProjectCurrentState() {
-    if (!confirm("Export current state of project?")) return;
+function exportProjectCurrentState(includeSurveyResults) {
+    // TODO: Translate
+    var promptMessage = includeSurveyResults ?
+        "Export current state of project with survey results?" :
+        "Export current state of project without survey results?";
+    if (!confirm(promptMessage)) return;
     
     var project = Globals.project();
     var tripleStore = project.tripleStore;
@@ -151,19 +156,56 @@ export function exportProjectCurrentState() {
     
     // console.log("exportProjectCurrentState", projectCurrentState);
     
+    var activeQuestionnaires = null;
+    var storyCollections = null;
+  
+    if (includeSurveyResults) {
+        var questionnaireMessages = project.pointrelClient.filterMessages((message) => {
+            return message._topicIdentifier === "questionnaires";
+        });
+
+        if (questionnaireMessages.length) activeQuestionnaires = questionnaireMessages[questionnaireMessages.length - 1].change;
+    
+        var surveyResultMessages = project.pointrelClient.filterMessages((message) => {
+            return message._topicIdentifier === "surveyResults";
+        });
+        
+        storyCollections = {};
+
+        surveyResultMessages.forEach((message) => {
+            var storyCollectionIdentifier = message.change.storyCollectionIdentifier;
+            var storyCollection = storyCollections[storyCollectionIdentifier];
+            if (!storyCollection) {
+                storyCollection = [];
+                storyCollections[storyCollectionIdentifier] = storyCollection;
+            }
+            storyCollection.push(message.change.surveyResult);
+        });
+    }
+              
     var exportObject =  {
         projectIdentifier: project.projectIdentifier,
         timestamp: new Date().toISOString(),
         exportType: currentProjectStateExportType,
         exportFormat: currentProjectStateExportFormat,
         userIdentifier: project.pointrelClient.userIdentifier,
-        projectCurrentState: projectCurrentState
+        projectCurrentState: projectCurrentState,
+        activeQuestionnaires: activeQuestionnaires,
+        storyCollections: storyCollections
     };
     
     var json = JSON.stringify(exportObject, null, 4);
     
     var questionnaireBlob = new Blob([json], {type: "application/json;charset=utf-8"});
     saveAs(questionnaireBlob, exportObject.projectIdentifier + " current state exported at " + exportObject.timestamp + ".json");
+}
+
+export function exportProjectCurrentStateWithSurveyResults() {
+    exportProjectCurrentState(true);
+}
+
+export function exportProjectCurrentStateWithoutSurveyResults() {
+    exportProjectCurrentState(false);
 }
 
 export function importProjectCurrentState() {
@@ -200,7 +242,7 @@ export function importProjectCurrentState() {
             hideDialogMethod();
         }
         
-        var triplesToAdd = [];
+        var messagesToSend = [];
         
         // Prepare triples for adding
         var aKeys = Object.keys(importObject.projectCurrentState);
@@ -222,29 +264,57 @@ export function importProjectCurrentState() {
                 var bKey = bKeys[bKeyIndex];
                 var bKeyObject = JSON.parse(bKey);
                 var cValue = aObject[bKey];
-                triplesToAdd.push([aKeyObject, bKeyObject, cValue]);
+                messagesToSend.push([aKeyObject, bKeyObject, cValue]);
             }
         }
         
-        var triplesAddedCount = 0;
+        // Prepare activeQuestionnaires for adding
+        if (importObject.activeQuestionnaires) {
+            var questionnaireMessage = project.pointrelClient.createChangeMessage("questionnaires", "questionnairesMessage", importObject.activeQuestionnaires, null);
+            messagesToSend.push(questionnaireMessage);
+        }
         
-        // console.log("triplesToAdd", triplesToAdd);
- 
+        // Prepare surveyResults for adding
+        if (importObject.storyCollections) {
+            for (var storyCollectionName in importObject.storyCollections) {
+                var surveyResults = importObject.storyCollections[storyCollectionName];
+                surveyResults.forEach((surveyResult) => {
+                    //var questionnaireMessage = project.pointrelClient.createChangeMessage("questionnaires", "questionnairesMessage", importObject.activeQuestionnaires, null);
+                    var surveyResultMessage = surveyStorage.makeSurveyResultMessage(project.pointrelClient, project.projectIdentifier, storyCollectionName, surveyResult);
+                    messagesToSend.push(surveyResultMessage);
+                });
+            }
+        }
+        
+        var messagesSentCount = 0;
+        
+        // console.log("messagesToSend", messagesToSend);
+        
         function sendNextMessage() {
             // console.log("sendNextMessage", messageIndexToSend);
             if (progressModel.cancelled) {
-                alert("Cancelled after adding " + triplesAddedCount + " triples");
-            } else if (triplesAddedCount >= triplesToAdd.length) {
-                alert("Done importing triples");
+                alert("Cancelled after adding " + messagesSentCount + " project triples");
+            } else if (messagesSentCount >= messagesToSend.length) {
+                alert("Done importing project triples");
                 progressModel.hideDialogMethod();
                 progressModel.redraw();
             } else {
-                var triple = triplesToAdd[triplesAddedCount++];
+                var message = messagesToSend[messagesSentCount++];
+                var triple = null;
+                if (Array.isArray(message)) {
+                    triple = message;
+                }
                 
                 // TODO: Translate
-                progressModel.progressText = "Sending " + triplesAddedCount + " of " + triplesToAdd.length + " triples";
+                progressModel.progressText = "Sending " + messagesSentCount + " of " + messagesToSend.length + " triples";
                 progressModel.redraw();
-                setTimeout(function() { project.tripleStore.addTriple(triple[0], triple[1], triple[2], sendNextMessage); }, 0);
+                setTimeout(function() {
+                    if (triple) {
+                        project.tripleStore.addTriple(triple[0], triple[1], triple[2], sendNextMessage);
+                    } else {
+                        project.pointrelClient.sendMessage(message, sendNextMessage);
+                    }
+                }, 0);
             }
         }
         

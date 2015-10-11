@@ -424,7 +424,8 @@ export var exportStoryCollection = csvImportExport.exportStoryCollection;
 
 export var exportEntireProject = projectImportExport.exportEntireProject;
 export var importEntireProject = projectImportExport.importEntireProject;
-export var exportProjectCurrentState = projectImportExport.exportProjectCurrentState;
+export var exportProjectCurrentStateWithSurveyResults = projectImportExport.exportProjectCurrentStateWithSurveyResults;
+export var exportProjectCurrentStateWithoutSurveyResults = projectImportExport.exportProjectCurrentStateWithoutSurveyResults;
 export var importProjectCurrentState = projectImportExport.importProjectCurrentState;
 
 export var printStoryForm = printing.printStoryForm;
