@@ -16,7 +16,14 @@ var panel: Panel = {
             valueType: "none",
             displayType: "button",
             displayConfiguration: "exportEntireProject",
-            displayPrompt: "Export entire project"
+            displayPrompt: "Export entire project with history (includes survey results)"
+        },
+        {
+            id: "importExport_exportCurrentProjectSummary",
+            valueType: "none",
+            displayType: "button",
+            displayConfiguration: "exportProjectCurrentState",
+            displayPrompt: "Export current state of project (without survey results)"
         },
         {
             id: "project_projectFileUploaderForForm",
@@ -29,7 +36,7 @@ var panel: Panel = {
             valueType: "none",
             displayType: "button",
             displayConfiguration: "importEntireProject",
-            displayPrompt: "Import entire project"
+            displayPrompt: "Import entire project with history (and survey results)"
         }
     ]
 };

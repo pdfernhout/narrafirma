@@ -423,6 +423,7 @@ export var exportQuestionnaire = csvImportExport.exportQuestionnaire;
 export var exportStoryCollection = csvImportExport.exportStoryCollection;
 
 export var exportEntireProject = projectImportExport.exportEntireProject;
+export var exportProjectCurrentState = projectImportExport.exportProjectCurrentState;
 export var importEntireProject = projectImportExport.importEntireProject;
 
 export var printStoryForm = printing.printStoryForm;

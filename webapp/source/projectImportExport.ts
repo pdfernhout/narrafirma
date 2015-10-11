@@ -101,3 +101,8 @@ export function importEntireProject() {
         sendNextMessage();
     });
 }
+
+export function exportProjectCurrentState() {
+    if (!confirm("Export current state of project?\n(This may take a while.)")) return;
+    alert("unfinished");
+}
