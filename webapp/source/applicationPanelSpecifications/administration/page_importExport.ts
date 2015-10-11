@@ -19,11 +19,11 @@ var panel: Panel = {
             displayPrompt: "Export entire project with history (includes survey results)"
         },
         {
-            id: "importExport_exportCurrentProjectSummary",
+            id: "importExport_import",
             valueType: "none",
             displayType: "button",
-            displayConfiguration: "exportProjectCurrentState",
-            displayPrompt: "Export current state of project (without survey results)"
+            displayConfiguration: "importEntireProject",
+            displayPrompt: "Import entire project with history (and survey results)"
         },
         {
             id: "project_projectFileUploaderForForm",
@@ -32,12 +32,19 @@ var panel: Panel = {
             displayPrompt: '<input type="file" id="projectFileUploader" name="files" title="Import Project from JSON File" style="display:none"/>'
         },
         {
-            id: "importExport_import",
+            id: "importExport_exportCurrentProjectSummary",
             valueType: "none",
             displayType: "button",
-            displayConfiguration: "importEntireProject",
-            displayPrompt: "Import entire project with history (and survey results)"
-        }
+            displayConfiguration: "exportProjectCurrentState",
+            displayPrompt: "Export current state of project (without survey results)"
+        },
+        {
+            id: "importExport_importCurrentProjectSummary",
+            valueType: "none",
+            displayType: "button",
+            displayConfiguration: "importProjectCurrentState",
+            displayPrompt: "Import current state of project (without survey results)"
+        },
     ]
 };
 

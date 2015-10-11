@@ -57,6 +57,8 @@ function chooseProjectFileToImport(callback) {
 export function importEntireProject() {
     var project = Globals.project();
     
+    if (!confirm("Import entire project?")) return;
+    
     console.log("importEntireProject");
     chooseProjectFileToImport((contents) => {
         // console.log("contents", contents);
@@ -66,7 +68,7 @@ export function importEntireProject() {
         //    console.log("message", message._topicIdentifier);
         //});
         
-        // TODO: Similar to what is in scvImportExport -- could any duplication be refactored out?
+        // TODO: Similar to what is in csvImportExport -- could any duplication be refactored out?
         
         if (importObject.exportType !== allMessagesExportType) {
             alert('Wrong export file type; expected exportType of "' + allMessagesExportType + '" but found: "' + importObject.exportType + '"');
@@ -162,4 +164,91 @@ export function exportProjectCurrentState() {
     
     var questionnaireBlob = new Blob([json], {type: "application/json;charset=utf-8"});
     saveAs(questionnaireBlob, exportObject.projectIdentifier + " current state exported at " + exportObject.timestamp + ".json");
+}
+
+export function importProjectCurrentState() {
+    var project = Globals.project();
+    
+    if (!confirm("Import current project state?\n(This should ideally only be done with a new empty project.)")) return;
+  
+    console.log("importProjectCurrentState");
+    chooseProjectFileToImport((contents) => {
+        // console.log("contents", contents);
+        var importObject = JSON.parse(contents);
+        // importObject.messages.forEach((message) => {
+        //    // if (message._topicIdentifier === "surveyResults")
+        //    console.log("message", message._topicIdentifier);
+        //});
+        
+        // TODO: Similar to what is in csvImportExport -- could any duplication be refactored out?
+        
+        if (importObject.exportType !== currentProjectStateExportType) {
+            alert('Wrong export file type; expected exportType of "' + currentProjectStateExportType + '" but found: "' + importObject.exportType + '"');
+            return;
+        }
+        
+        if (importObject.exportFormat > currentProjectStateExportFormat) {
+            if (!confirm("The file has an export format of: " + importObject.exportFormat + " which is later than this application's of: " + allMessagesExportFormat + "\nTry importing anyway (not recommended)?")) {
+                return;
+            }
+        }
+        
+        var progressModel = dialogSupport.openProgressDialog("Importing current project state...", "Progress importing current project state", "Cancel", dialogCancelled);
+  
+        function dialogCancelled(dialogConfiguration, hideDialogMethod) {
+            progressModel.cancelled = true;
+            hideDialogMethod();
+        }
+        
+        var triplesToAdd = [];
+        
+        // Prepare triples for adding
+        var aKeys = Object.keys(importObject.projectCurrentState);
+        // console.log("aKeys", aKeys);
+        for (var aKeyIndex = 0; aKeyIndex < aKeys.length; aKeyIndex++) {
+            var aKey = aKeys[aKeyIndex];
+            var aKeyObject = JSON.parse(aKey);
+            var aObject = importObject.projectCurrentState[aKey];
+            // console.log("aKey", aKey);
+            // console.log("aObject", aObject);
+            // Rewrite project references in triples
+            if (aKeyObject === importObject.projectIdentifier) {
+                aKeyObject = project.projectIdentifier;
+            }
+            
+            var bKeys = Object.keys(aObject);
+            // console.log("bKeys", bKeys);
+            for (var bKeyIndex = 0; bKeyIndex < bKeys.length; bKeyIndex++) {
+                var bKey = bKeys[bKeyIndex];
+                var bKeyObject = JSON.parse(bKey);
+                var cValue = aObject[bKey];
+                triplesToAdd.push([aKeyObject, bKeyObject, cValue]);
+            }
+        }
+        
+        var triplesAddedCount = 0;
+        
+        // console.log("triplesToAdd", triplesToAdd);
+ 
+        function sendNextMessage() {
+            // console.log("sendNextMessage", messageIndexToSend);
+            if (progressModel.cancelled) {
+                alert("Cancelled after adding " + triplesAddedCount + " triples");
+            } else if (triplesAddedCount >= triplesToAdd.length) {
+                alert("Done importing triples");
+                progressModel.hideDialogMethod();
+                progressModel.redraw();
+            } else {
+                var triple = triplesToAdd[triplesAddedCount++];
+                
+                // TODO: Translate
+                progressModel.progressText = "Sending " + triplesAddedCount + " of " + triplesToAdd.length + " triples";
+                progressModel.redraw();
+                setTimeout(function() { project.tripleStore.addTriple(triple[0], triple[1], triple[2], sendNextMessage); }, 0);
+            }
+        }
+        
+        // Start sending project messages
+        sendNextMessage();
+    });
 }
