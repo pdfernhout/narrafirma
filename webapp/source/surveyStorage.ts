@@ -3,7 +3,7 @@ import PointrelClient = require("./pointrel20150417/PointrelClient");
 
 "use strict";
 
-export function storeSurveyResult(pointrelClient: PointrelClient, projectIdentifier, storyCollectionName, completedSurvey, wizardPane) {
+export function makeSurveyResultMessage(pointrelClient: PointrelClient, projectIdentifier, storyCollectionName, completedSurvey) {
     var surveyResultWrapper  = {
         projectIdentifier: projectIdentifier,
         // TODO: Mismatch of stored string's intent and the field name
@@ -11,9 +11,17 @@ export function storeSurveyResult(pointrelClient: PointrelClient, projectIdentif
         surveyResult: completedSurvey
     };
     
-    console.log("storeSurveyResult", surveyResultWrapper);
+    var message = pointrelClient.createChangeMessage("surveyResults", "surveyResult", surveyResultWrapper, null);
     
-    pointrelClient.createAndSendChangeMessage("surveyResults", "surveyResult", surveyResultWrapper, null, function(error, result) {
+    return message; 
+}
+
+export function storeSurveyResult(pointrelClient: PointrelClient, projectIdentifier, storyCollectionName, completedSurvey, wizardPane) {
+
+    var message = makeSurveyResultMessage(pointrelClient, projectIdentifier, storyCollectionName, completedSurvey);
+    console.log("storeSurveyResult", message);
+
+    pointrelClient.sendMessage(message, function(error, result) {
         if (error) {
             console.log("Problem saving survey result", error);
             if (wizardPane && wizardPane.failed) {
