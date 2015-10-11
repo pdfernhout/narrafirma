@@ -208,8 +208,11 @@ function build_listChooserDialogContent(dialogConfiguration, hideDialogMethod) {
         m("br"),
         dialogConfiguration.dialogOKButtonLabel,
         m("br"),
-        dialogConfiguration.choices.map((choice) => {
-            return m("button", {onclick: selectionMade.bind(null, dialogConfiguration, choice)}, choice.name);
+        dialogConfiguration.choices.sort((a, b) => {return a.name.localeCompare(b.name); }).map((choice) => {
+            return [
+                m("button", {onclick: selectionMade.bind(null, dialogConfiguration, choice)}, choice.name),
+                m("br")
+            ];
         }),
         m("br"),
         dialogConfiguration.isNewAllowed ?
