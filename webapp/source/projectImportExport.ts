@@ -4,6 +4,12 @@ import dialogSupport = require("./panelBuilder/dialogSupport");
 // Library for saving files, imported by narrafirma.html
 declare var saveAs;
 
+var allMessagesExportType = "NarraFirma_allMessages";
+var allMessagesExportFormat = "0.1.0";
+
+var currentProjectStateExportType = "NarraFirma_currentProjectState";
+var currentProjectStateExportFormat = "0.1.0";
+
 export function exportEntireProject() {
     if (!confirm("Export entire project?\n(This may take a while.)")) return;
     
@@ -13,7 +19,8 @@ export function exportEntireProject() {
     var exportObject =  {
         projectIdentifier: project.projectIdentifier,
         timestamp: new Date().toISOString(),
-        exportFormat: "0.1.0",
+        exportType: allMessagesExportType,
+        exportFormat: allMessagesExportFormat,
         userIdentifier: project.pointrelClient.userIdentifier,
         messages: project.pointrelClient.messagesSortedByReceivedTimeArray
     };
@@ -59,7 +66,18 @@ export function importEntireProject() {
         //    console.log("message", message._topicIdentifier);
         //});
         
-        // TODO: Similar to what is in scvImportExport -- coudll any duplication be refactored out?
+        // TODO: Similar to what is in scvImportExport -- could any duplication be refactored out?
+        
+        if (importObject.exportType !== allMessagesExportType) {
+            alert('Wrong export file type; expected exportType of "' + allMessagesExportType + '" but found: "' + importObject.exportType + '"');
+            return;
+        }
+        
+        if (importObject.exportFormat > allMessagesExportFormat) {
+            if (!confirm("The file has an export format of: " + importObject.exportFormat + " which is later than this application's of: " + allMessagesExportFormat + "\nTry importing anyway (not recommended)?")) {
+                return;
+            }
+        }
         
         var progressModel = dialogSupport.openProgressDialog("Importing project messages...", "Progress importing project messsages", "Cancel", dialogCancelled);
   
@@ -103,6 +121,45 @@ export function importEntireProject() {
 }
 
 export function exportProjectCurrentState() {
-    if (!confirm("Export current state of project?\n(This may take a while.)")) return;
-    alert("unfinished");
+    if (!confirm("Export current state of project?")) return;
+    
+    var project = Globals.project();
+    var tripleStore = project.tripleStore;
+    
+    var projectCurrentState = {};
+    
+    var aKeys = Object.keys(tripleStore.indexABC);
+    // console.log("aKeys", aKeys);
+    aKeys.sort();
+    for (var aKeyIndex = 0; aKeyIndex < aKeys.length; aKeyIndex++) {
+        var aKey = aKeys[aKeyIndex];
+        // console.log("aKey", aKey);
+        var aObject = tripleStore.indexABC[aKey];
+        // console.log("aObject", aObject);
+        var bResult = {};
+        projectCurrentState[aKey] = bResult;
+        var bKeys = Object.keys(aObject);
+        bKeys.sort();
+        // console.log("bKeys", bKeys);
+        for (var bKeyIndex = 0; bKeyIndex < bKeys.length; bKeyIndex++) {
+            var bKey = bKeys[bKeyIndex];
+            bResult[bKey] = aObject[bKey].latestC;
+        }
+    }
+    
+    // console.log("exportProjectCurrentState", projectCurrentState);
+    
+    var exportObject =  {
+        projectIdentifier: project.projectIdentifier,
+        timestamp: new Date().toISOString(),
+        exportType: currentProjectStateExportType,
+        exportFormat: currentProjectStateExportFormat,
+        userIdentifier: project.pointrelClient.userIdentifier,
+        projectCurrentState: projectCurrentState
+    };
+    
+    var json = JSON.stringify(exportObject, null, 4);
+    
+    var questionnaireBlob = new Blob([json], {type: "application/json;charset=utf-8"});
+    saveAs(questionnaireBlob, exportObject.projectIdentifier + " current state exported at " + exportObject.timestamp + ".json");
 }
