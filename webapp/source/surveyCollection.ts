@@ -81,7 +81,8 @@ export function getStoriesForStoryCollection(storyCollectionIdentifier, includeI
             var surveyResult = message.change.surveyResult;
             var stories = surveyResult.stories;
             for (var storyIndex in stories) {
-                var story = stories[storyIndex];
+                // Make a copy of the story so as not to modify original in message
+                var story = JSON.parse(JSON.stringify(stories[storyIndex]));
                 // console.log("=== story", story);
                 
                 // Add participant info for story
