@@ -43,8 +43,7 @@ class TripleStore {
         this.subscriptions = [];
     }
     
-    addTriple(a, b, c, callback = undefined) {
-        // console.log("TripleStore addTriple", a, b, c);
+    makeAddTripleMessage(a, b, c) {
         if (a === undefined || b === undefined || c === undefined) {
             throw new Error("Triple should not have undefined fields");
         }
@@ -69,6 +68,14 @@ class TripleStore {
             userIdentifier: this.pointrelClient.userIdentifier
         };
         
+        return message;
+    }
+    
+    addTriple(a, b, c, callback = undefined) {
+        // console.log("TripleStore addTriple", a, b, c);
+
+        var message = this.makeAddTripleMessage(a, b, c);
+
         this.pointrelClient.sendMessage(message, callback);
         
         // Process locally to have current value

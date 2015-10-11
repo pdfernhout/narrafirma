@@ -195,7 +195,7 @@ class PointrelClient {
         httpRequest.send(data);
     }
     
-    createAndSendChangeMessage(topicIdentifier, messageType, change, other, callback) {
+    createChangeMessage(topicIdentifier, messageType, change, other) {
         var timestamp = this.getCurrentUniqueTimestamp();
         
         var message = {
@@ -215,13 +215,18 @@ class PointrelClient {
                 message[key] = other[key];
             }
         }
-        
-        this.sendMessage(message, callback);
-        
+           
         return message;
     }
     
-    // Deprecated to for client to call directly; use createAndSendMessage
+    createAndSendChangeMessage(topicIdentifier, messageType, change, other, callback) {
+        var message = this.createChangeMessage(topicIdentifier, messageType, change, other);
+        this.sendMessage(message, callback);
+     
+        return message;
+    }
+    
+    // Suggested to use createAndSendChangeMessage instead, unless you are doing a special import
     sendMessage(message, callback) {
         if (debugMessaging) console.log("sendMessage", this.areOutgoingMessagesSuspended, message);
         
