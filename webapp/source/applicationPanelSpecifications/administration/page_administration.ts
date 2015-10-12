@@ -1,4 +1,4 @@
-import kludgeForUseStrict = require("../../kludgeForUseStrict");
+import versions = require("../../versions");
 "use strict";
 
 var panel: Panel = {
@@ -9,8 +9,7 @@ var panel: Panel = {
             id: "administrationVersionLabel",
             valueType: "none",
             displayType: "label",
-            // TODO: This is hard coded. Replace with lookup later.
-            displayPrompt: "NarraFirma version: 0.9.0."
+            displayPrompt: "NarraFirma version: " + versions.narrafirmaApplication
         },
         {
             id: "administrationIntroLabel",
