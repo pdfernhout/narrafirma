@@ -1,12 +1,5 @@
 ==== NarraFirma TODO list:
 
-EXPORT/IMPORT
-M Make project report page work in Administration to show all data entered in human-readable form
-M Export project as JSON without history [same as above]
-
-CATALYSIS REPORT
-M Progress dialog when creating catalysis report
-
 ======= CYNTHIA
 
 H Create full demo project to go with sample data
@@ -37,7 +30,6 @@ X Improve how options are specified for questions in question designer rather th
 X Make sure that short name IDs entered by user when defining questions are unique among themselves
 
 EXPORT/IMPORT
-M Import project from exported JSON
 X Add way to clear out or reset old survey results? Or maybe partition them by survey?
 
 LOGGING
@@ -61,6 +53,10 @@ M Select title positioning and visibility for printing story cards
 GRAPH BROWSER
 M Test all statistical tests for validity more -- run same tests in spreadsheet on same data
 M Support multiple scatter plots across individual question answers
+M Sometimes labels at bottom of graph overlap if many items in a scatter plot
+M Should mutiple histograms perhap have stats calculated between them even if checkboxes?
+L For multiple histograms, the "N/A (checkboxes)" should have a blank line above it
+L In general, size graphs better based on window size
 L Support graphBrowser common maximum for multiple histograms
 
 PATTERN EXPLORER
@@ -942,3 +938,8 @@ DONE Show statistical test results on charts the same as showing in pattern expl
 DONE Show skewness and curtosis on histogram
 DONE Histograms should have mean and standard deviation marked (and maybe median and mode, skewness and kurtosis as numbers).
 DONE Make use of question threshold selection (configureCatalysisReport_minimumSubsetSize) to limit graphs in catalysis report
+DONE Make project report page work in Administration to show all data entered in human-readable form
+DONE Export project as JSON without history [same as above]
+DONE Import project from exported JSON without history
+DONE Show project list as one button per line
+DONE Progress dialog when creating catalysis report
