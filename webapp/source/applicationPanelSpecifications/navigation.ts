@@ -11,7 +11,6 @@ var sections = [
         sectionName: "Administration",
         pages: [
             "page_administration",
-            "page_introduction",
             "page_importExport"
         ]
     },
