@@ -235,8 +235,14 @@ export function calculateStatisticsForScatterPlot(rationQuestion1, rationQuestio
     var r = jStat.spearmancoeff(data.x, data.y);
     // https://en.wikipedia.org/wiki/Spearman's_rank_correlation_coefficient#Determining_significance
     var n = data.x.length;
-    var t = r * Math.sqrt((n - 2.0) / (1.0 - r * r));
-    var p = jStat.ttest(t, n, 2);
+    var p;
+    if (r >= 1) {
+        // Perfectly correlated; handle sepearetly to avoid divide by zero error otherwise
+        p = 0;
+    } else {
+        var t = r * Math.sqrt((n - 2.0) / (1.0 - r * r));
+        p = jStat.ttest(t, n, 2);
+    }
     var significance = " p=" + p.toFixed(3) + " rho=" + r.toFixed(3) + " n=" + n;
     //  + " tt=" + statResult.test.toFixed(3) + " tz=" + statResult.z.toFixed(3) + " tp=" + statResult.prob.toFixed(3) ;
     // console.log("calculateStatisticsForScatterPlot", rationQuestion1, rationQuestion2, n, t, p);
