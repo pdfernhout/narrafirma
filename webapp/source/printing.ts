@@ -7,6 +7,7 @@ import PatternExplorer = require("./applicationWidgets/PatternExplorer");
 import ClusteringDiagram = require("./applicationWidgets/ClusteringDiagram");
 import Project = require("./Project");
 import charting = require("./applicationWidgets/charting");
+import dialogSupport = require("./panelBuilder/dialogSupport");
 
 "use strict";
 
@@ -626,10 +627,6 @@ export function printCatalysisReport() {
         return;
     }
         
-    ClusteringDiagram.calculateClusteringForDiagram(clusteringDiagram);
-    
-    // console.log("clusteringDiagram with clusters", clusteringDiagram);
-    
     var allStories = project.storiesForCatalysisReport(catalysisReportIdentifier);
     // console.log("allStories", allStories);
     
@@ -641,7 +638,9 @@ export function printCatalysisReport() {
         console.log("catalysisReportObservationSetIdentifier not defined");
         return;
     }
-       
+    
+    var progressModel = dialogSupport.openProgressDialog("Starting up...", "Progress generating catalysis report", "Cancel", dialogCancelled);
+ 
     var allObservations = project.tripleStore.getListForSetIdentifier(catalysisReportObservationSetIdentifier);
     
     // console.log("allObservations", allObservations);
@@ -668,26 +667,70 @@ export function printCatalysisReport() {
                Pattern (graph)
     */  
     
+    ClusteringDiagram.calculateClusteringForDiagram(clusteringDiagram);
+    // console.log("clusteringDiagram with clusters", clusteringDiagram);
+    
     var perspectives = clusteringDiagram.clusters;
     var minimumStoryCountRequiredForTest = project.minimumStoryCountRequiredForTest(catalysisReportIdentifier);
     
-    perspectives.forEach((perspective) => {
-        printItems.push(m("hr"));
-        printItems.push(m("div", "Perspective: " + perspective.name));
-        if (perspective.notes) printItems.push(m("div", "Perspective notes: " + perspective.notes));
-        printItems.push(m("br"));
-        var interpretations = perspective.items;
-        interpretations.forEach((intepretation) => {
-            printItems.push(m("div", "Interpretation: " + intepretation.name));
-            if (intepretation.notes) printItems.push(m("div", "Interpretation notes: " + intepretation.notes));
-            printItems.push(m("br"));
-            
-            var observationList = makeObservationListForInterpretation(project, allObservations, intepretation.name);
-            printItems.push(printObservationList(observationList, allStories, minimumStoryCountRequiredForTest));
-        });
-    });
+    function progressText(perspectiveIndex: number, intepretationIndex: number) {
+        return "Generated " + (perspectiveIndex + 1) + " of " + perspectives.length + " perspectives; intepretation: " + (intepretationIndex + 1) + " of " + perspectives[perspectiveIndex].items.length;
+    }
     
-    // "css/standard.css"
-    var htmlForPage = generateHTMLForPage(reportTitle, null, printItems);
-    printHTML(htmlForPage);   
+    function dialogCancelled(dialogConfiguration, hideDialogMethod) {
+        progressModel.cancelled = true;
+        hideDialogMethod();
+    }
+    
+    var perspectiveIndex = 0;
+    var intepretationIndex = 0;
+    
+    function printNextPerspective() {
+        // console.log("printNextPerspective", perspectiveIndex, intepretationIndex);
+        // console.log("sendNextMessage", messageIndexToSend);
+        if (progressModel.cancelled) {
+            alert("Cancelled after working on " + (perspectiveIndex + 1) + " perspective(s)");
+        } else if (perspectiveIndex >= perspectives.length) {
+            progressModel.hideDialogMethod();
+            // Trying to avoid popup warning if open window from timeout by using finish dialog button press to display results
+            var finishModel = dialogSupport.openFinishedDialog("Done generating report; display it?", "Finished", "Display", "Cancel", function(dialogConfiguration, hideDialogMethod) {
+                // "css/standard.css"
+                var htmlForPage = generateHTMLForPage(reportTitle, null, printItems);
+                printHTML(htmlForPage);
+                hideDialogMethod();
+                progressModel.redraw();
+            });
+            finishModel.redraw();
+        } else {
+            var perspective = perspectives[perspectiveIndex];
+            if (intepretationIndex === 0) {
+                printItems.push(m("hr"));
+                printItems.push(m("div", "Perspective: " + perspective.name));
+                if (perspective.notes) printItems.push(m("div", "Perspective notes: " + perspective.notes));
+                printItems.push(m("br"));
+            }
+            var interpretations = perspective.items;
+            if (intepretationIndex >= interpretations.length) {
+                perspectiveIndex++;
+                intepretationIndex = 0;
+            } else {
+                var intepretation = interpretations[intepretationIndex];
+                printItems.push(m("div", "Interpretation: " + intepretation.name));
+                if (intepretation.notes) printItems.push(m("div", "Interpretation notes: " + intepretation.notes));
+                printItems.push(m("br"));
+                
+                var observationList = makeObservationListForInterpretation(project, allObservations, intepretation.name);
+                printItems.push(printObservationList(observationList, allStories, minimumStoryCountRequiredForTest));
+                
+                // TODO: Translate
+                progressModel.progressText = progressText(perspectiveIndex, intepretationIndex);
+                progressModel.redraw();
+                intepretationIndex++;
+            }
+   
+            setTimeout(function() { printNextPerspective(); }, 0);
+        }
+    }
+    
+    setTimeout(function() { printNextPerspective(); }, 0);
 }

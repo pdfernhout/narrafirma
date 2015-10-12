@@ -164,6 +164,40 @@ function build_progressDialogContent(dialogConfiguration, hideDialogMethod) {
     return m("div", dialogConfiguration.dialogModel.progressText);
 }
 
+export function openFinishedDialog(finishedText, dialogTitle, okButtonLabel, cancelButtonLabel, dialogOKCallback) {
+    // console.log("openProgressDialog called");
+    if (!dialogTitle) dialogTitle = "Finished";
+    if (!okButtonLabel) okButtonLabel = "OK";
+    if (!cancelButtonLabel) cancelButtonLabel = "Cancel";
+    
+    var model = {
+        finishedText: finishedText,
+        hideDialogMethod: hideDialogMethod,
+        redraw: m.redraw,
+        cancelled: false,
+        failed: false
+    };
+    
+    var dialogConfiguration = {
+        dialogModel: model,
+        dialogTitle: dialogTitle,
+        dialogStyle: undefined,
+        dialogConstructionFunction: build_finishedDialogContent,
+        // Use OK button instead of Cancel because it has a callback and represents the action button
+        dialogOKButtonLabel: okButtonLabel,
+        dialogOKCallback: function(dialogConfiguration, hideDialogMethod) { dialogOKCallback(dialogConfiguration, hideDialogMethod); },
+        dialogCancelButtonLabel: cancelButtonLabel
+    };
+    
+    openDialog(dialogConfiguration);
+    
+    return model;
+}
+
+function build_finishedDialogContent(dialogConfiguration, hideDialogMethod) {
+    return m("div", dialogConfiguration.dialogModel.finishedText);
+}
+
 // columns are currently ignored
 // choices should be a list of objects with a name field, like: {name: "test", other: "???}
 export function openListChoiceDialog(initialChoice, choices, columns, dialogTitle, dialogOKButtonLabel, isNewAllowed, dialogOKCallback) {
