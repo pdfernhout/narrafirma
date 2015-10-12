@@ -9,7 +9,7 @@ var panel: Panel = {
             id: "sensemakingSessionRecord_outcome_name",
             valueType: "string",
             displayType: "text",
-            displayName: "Sensemaking outcome name",
+            displayName: "Name",
             displayPrompt: "Please give this outcome a <strong>name</strong>."
         },
         {
@@ -23,6 +23,8 @@ var panel: Panel = {
                 "recommendation",
                 "perspective",
                 "dilemma",
+                "discussion",
+                "priority",
                 "other"
             ],
             displayType: "select",
