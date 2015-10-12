@@ -87,7 +87,7 @@ class Application {
         
         // TODO: Translate
         
-        var statusText = "Version: " + versions.narrafirmaApplication + " Project: " + Globals.project().journalIdentifier.substring(narrafirmaProjectPrefix.length) + "; Server status: (" + status + ") " + text;
+        var statusText = "Project: " + Globals.project().journalIdentifier.substring(narrafirmaProjectPrefix.length) + "; Server status: (" + status + ") " + text;
     
         if (status === "ok") {
             nameDiv.className = "narrafirma-serverstatus-ok";

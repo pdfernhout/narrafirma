@@ -56,9 +56,12 @@ textarea, input, select { /* override because expanded in survey */
 }
 
 #narrafirma-name {
-    margin-left: 0.5em; 
-    margin-right: 0.5em; 
-    padding: 8px;
+    margin-left: 0.25em; 
+}
+
+#narrafirma-version {
+    margin-right: 1.0em;
+    font-size: 75%;
 }
 
 .narrafirma-serverstatus-ok {

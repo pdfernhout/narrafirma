@@ -1,6 +1,7 @@
 import m = require("mithril");
 import PanelSetup = require("./PanelSetup");
 import Globals = require("./Globals");
+import versions = require("./versions");
 
 "use strict";
 
@@ -34,6 +35,7 @@ var Navigation: any = {
                 "class": Globals.clientState().serverStatus(),
                 "title": Globals.clientState().serverStatusText()
             }, "NarraFirma™"),
+            m("span[id=narrafirma-version]", versions.narrafirmaApplication),
             m("span[id=narrafirma-breadcrumbs]", buildBreadcrumbs(controller)),
             Globals.project().readOnly ? m("span[id=narrafirma-read-only]", {title: "Project is read-only for this user. Local changes can be made, but they will not be saved on the server and will be lost if the page is reloaded."}, "[READONLY!]") : [],
             // These next four links float right and so are added in reverse order
