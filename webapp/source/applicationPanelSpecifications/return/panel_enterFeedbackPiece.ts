@@ -9,14 +9,14 @@ var panel: Panel = {
             id: "feedback_name",
             valueType: "string",
             displayType: "text",
-            displayName: "Feedback piece name",
+            displayName: "Name",
             displayPrompt: "Please give this piece of feedback a <strong>name</strong>."
         },
         {
             id: "feedback_text",
             valueType: "string",
             displayType: "textarea",
-            displayName: "Feedback",
+            displayName: "Description",
             displayPrompt: "What did someone <strong>say or do</strong>?"
         },
         {
@@ -25,6 +25,8 @@ var panel: Panel = {
             valueOptions: [
                 "a reference to something from the project",
                 "a concern or complaint",
+                "a thank you",
+                "a suggestion",
                 "a hope or wish",
                 "a statement of fact",
                 "an opinion",
@@ -47,14 +49,14 @@ var panel: Panel = {
             id: "feedback_prompt",
             valueType: "string",
             displayType: "textarea",
-            displayName: "Prompt",
+            displayName: "What led to it",
             displayPrompt: "What did you say or do (if anything) that <strong>led to</strong> this feedback?"
         },
         {
             id: "feedback_response",
             valueType: "string",
             displayType: "textarea",
-            displayName: "Response",
+            displayName: "What I said back",
             displayPrompt: "What did you say or do (if anything) <strong>in response</strong>?"
         },
         {
