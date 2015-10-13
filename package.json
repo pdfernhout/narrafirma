@@ -1,8 +1,8 @@
 {
     "name": "NarraFirma",
     "description": "NarraFirma webapp for Participatory Narrative Inquiry (PNI)",
-    "version": "0.2.0",
-    "keywords": ["JavaScript", "NarraFirma", "PNI", "SPA", "Mithril", "D3", "Pointrel"],
+    "version": "0.9.0",
+    "keywords": ["JavaScript", "NarraFirma", "PNI", "SPA", "Mithril", "D3", "Pointrel", "Community", "PNI", "Participatory Narrative Inquiry"],
     "maintainers": [{
         "name": "Paul D. Fernhout"
     },{
