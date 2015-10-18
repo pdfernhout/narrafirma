@@ -25,58 +25,44 @@ declare var require: (moduleId: string[], any) => any;
  ]
  */
 
-// loadingBase should be something like:
-// var loadingBase = "lib/text!js/applicationPanelSpecifications/";
-
 function loadAllPanelSpecifications(panelSpecificationCollection, navigationSections, loadingBase, callback) {
     // console.log("loadAllPanelSpecifications", loadingBase, navigationSections);
-    var requireList = [];
     var panelMetadata = [];
+    var navigationModules = navigationSections["navigationModules"];
+    var panelSpecification;
     
     for (var sectionIndex = 0; sectionIndex < navigationSections.length; sectionIndex++) {
         var sectionInfo = navigationSections[sectionIndex];
         for (var pageIndex = 0; pageIndex < sectionInfo.pages.length; pageIndex++) {
             var pageID = sectionInfo.pages[pageIndex];
-            requireList.push(loadingBase + sectionInfo.section + "/" + pageID + ".js");
-            panelMetadata.push({
-                panelID: pageID,
-                displayType: "page",
-                section: sectionInfo.section,
-                isHeader: pageIndex === 0
-            });
+            panelSpecification = navigationModules[pageID];
+            if (panelSpecification.id !== pageID) {
+                console.log("pageID mismatch; expected:", pageID, panelSpecification);
+                throw new Error("pageID does not match id in file for pae: " + pageID);
+            }
+            panelSpecification.section = sectionInfo.section;
+            panelSpecification.isHeader = pageIndex === 0 || false;
+            panelSpecification.displayType = "page";
+            panelSpecificationCollection.addPanelSpecification(panelSpecification);
         }
         if (sectionInfo.panels) {
             for (var extraPanelIndex = 0; extraPanelIndex < sectionInfo.panels.length; extraPanelIndex++) {
                 var extraPanelID = sectionInfo.panels[extraPanelIndex];
-                requireList.push(loadingBase + sectionInfo.section + "/" + extraPanelID + ".js");
-                panelMetadata.push({
-                    panelID: extraPanelID,
-                    displayType: "panel",
-                    section: sectionInfo.section
-                });
+                panelSpecification = navigationModules[extraPanelID];
+                if (panelSpecification.id !== extraPanelID) {
+                    console.log("panelID mismatch; expected:", extraPanelID, panelSpecification);
+                    throw new Error("panelID does not match id in file for panel: " + extraPanelID);
+                }
+                panelSpecification.section = sectionInfo.section;
+                panelSpecification.isHeader = pageIndex === 0 || false;
+                panelSpecification.displayType = "panel";
+                panelSpecificationCollection.addPanelSpecification(panelSpecification);
             }
         }
     }
     
-    // console.log("requireList", requireList);
-    
-    // Asynchronous call that may take a while to get all the files
-    require(requireList, function() {
-        // Using "arguments" to get the results
-        for (var panelIndex = 0; panelIndex < requireList.length; panelIndex++) {
-            var panelInfo = panelMetadata[panelIndex];
-            var panelSpecification = arguments[panelIndex];
-            if (panelSpecification.id !== panelInfo.panelID) {
-                console.log("panelID mismatch", panelInfo, panelSpecification);
-                throw new Error("panelID does not match id in file for panel: " + panelInfo.panelID);
-            }
-            panelSpecification.section = panelInfo.section;
-            panelSpecification.isHeader = panelInfo.isHeader || false;
-            panelSpecification.displayType = panelInfo.displayType;
-            panelSpecificationCollection.addPanelSpecification(panelSpecification);
-        }
-        callback();
-    });
+    // TODO: Legacy: Used to be asynchronous require, but now page and panel modules are loaded at startup
+    callback();
 }
 
 export = loadAllPanelSpecifications;
