@@ -204,6 +204,9 @@ class Application {
     public initialize() {
         console.log("=======", new Date().toISOString(), "application.initialize() called");
         
+        // TODO: Translate
+        document.getElementById("pleaseWaitDiv").innerHTML = "Retrieving user information from server; please wait...";
+        
         // Cast to silence TypeScript warning about use of translate.configure
         (<any>translate).configure({}, applicationMessages.root);
         
@@ -362,6 +365,9 @@ class Application {
         console.log("openProject", Globals.project());
         
         surveyCollection.setProject(Globals.project());
+        
+        // TODO: Translate
+        document.getElementById("pleaseWaitDiv").innerHTML = "Retrieving project data from server; please wait...";
         
         Globals.project().startup((error) => {
             if (error) {
