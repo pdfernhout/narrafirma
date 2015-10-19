@@ -9,7 +9,6 @@ X Support translations or other categories for multiple question texts or choice
 X Some easy way for two or more survey sliders to be close together under the same label
 W Better mobile support for taking survey on cell phones
 W User can enter text for (print and web): Please choose a question to which you would like to respond; Please enter your response in the box below; Please give your story a name; Would you like to tell another story; Yes, I'd like to tell another story; About you
-L Print story form title says "undefined"
 
 SURVEY QUESTIONS
 L Remove "What type of question is this?" question from story-eliciting questions page
@@ -114,7 +113,7 @@ M Display total count of all answers when displaying question name in Story Brow
 L Text search function (at least for stories)
 
 COMMUNICATIONS
-M When import story form, hundreds of triples can be geenrated which take minutes to send to the server (with no progress feedback, even though done in background) -- may be related to console logging
+M When import story form, hundreds of triples can be generated which take minutes to send to the server (with no progress feedback, even though done in background) -- may be related to console logging
 
 UNSURE
 X Way to retrieve data about project participant groups [Is this still relevant? Probably yes, if we did "checkboxes with pull" for picking what groups an activity applies to instead of text entry]
@@ -181,6 +180,7 @@ Think about what happens to data if questions change somehow in future versions 
 Improve dashboards, perhaps with green checkmarks and thinking through completion feedback to be better
 
 Support for socket.io to track recently added survey results and whether survey is enabled
+Support for socket.io to replace the need for polling for changes
 
 Add support for surveys that can be in multiple languages
 Add support for providing story browser filter options based on analyzing data from surveys to collect all actual choices as well as current questionnaire(s)
@@ -221,3 +221,7 @@ DONE Move DONE items for release 0.9.0 from TODO.txt to TODO-done.txt with relea
 DONE Learn how to use some build or packaging process to minimize application for deployment [using requirejs]
 DONE Load pages and panels via regular imports instead of later via dynamic loading to make bundling easier with requirejs
 DONE Update package.json to include packaging step to create bundles
+
+---- Release 0.9.2
+DONE Improve starting up feedback to show whether loading app, getting user information, or retrieving project data
+DONE Print story form title says "undefined"
