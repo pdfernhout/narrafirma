@@ -4,7 +4,7 @@ Plugin Name: NarraFirma
 Plugin URI: http://narrafirma.com
 Description: Participatory Narrative Inquiry in a box. Gather stories and make sense of challenges and opportunities in your community or organization.
 Author: Cynthia F. Kurtz and Paul D. Fernhout
-Version: 0.9.0
+Version: 0.9.1
 Author URI: http://cfkurtz.com
 License: GPLv2 or later
 */
@@ -27,7 +27,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 defined( 'ABSPATH' ) or die( 'Plugin must be run from inside WordPress' );
 
-$NARRAFIRMA_VERSION = '0.9.0';
+$NARRAFIRMA_VERSION = '0.9.1';
 
 $pointrelServerVersion = "pointrel20150417-0.0.4-wp";
 
