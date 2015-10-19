@@ -13,6 +13,7 @@
         rgbcolor: "lib/canvg/rgbcolor",
         canvgModule: "lib/canvg/canvg"
     },
+    include: ["lib/text"],
     name: "js/main",
     out: "narrafirma/webapp/bundle-narrafirma.js",
     optimize: "none"
