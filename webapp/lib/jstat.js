@@ -20,6 +20,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
+define(function() {
+    
 this.j$ = this.jStat = (function(Math, undefined) {
 
 // For quick reference.
@@ -3597,3 +3599,7 @@ jStat.extend(jStat.fn, {
 });
 
 }(this.jStat, Math));
+
+return this.jStat;
+
+});
