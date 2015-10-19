@@ -4,7 +4,7 @@
         js: "js",
         mithril: "lib/mithril/mithril",
         humane: "lib/humane/humane",
-        lib: "lib"
+        lodash: "lib/lodash"
     },
     name: "js/projectAdmin",
     out: "narrafirma/webapp/bundle-admin.js",

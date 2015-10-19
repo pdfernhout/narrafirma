@@ -3,8 +3,7 @@
     paths: {
         js: "js",
         mithril: "lib/mithril/mithril",
-        humane: "lib/humane/humane",
-        lib: "lib"
+        humane: "lib/humane/humane"
     },
     name: "js/survey-main-mithril",
     out: "narrafirma/webapp/bundle-survey.js",
