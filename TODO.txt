@@ -1,9 +1,5 @@
 ==== NarraFirma TODO list:
 
-======= CYNTHIA
-
-H Create full demo project to go with sample data
-
 ----------------------- THINGS REMOVED FROM HIGH PRIORITY LIST
 
 SURVEY GENERAL
@@ -943,3 +939,4 @@ DONE Export project as JSON without history [same as above]
 DONE Import project from exported JSON without history
 DONE Show project list as one button per line
 DONE Progress dialog when creating catalysis report
+DONE Create full demo project to go with sample data (CFK)
