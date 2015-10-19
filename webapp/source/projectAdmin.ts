@@ -1,7 +1,7 @@
 import toaster = require("./panelBuilder/toaster");
 import PointrelClient = require("./pointrel20150417/PointrelClient");
 import m = require("mithril");
-import _ = require('lodash');
+import _ = require("lodash");
 
 "use strict";
 

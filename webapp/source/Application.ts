@@ -18,7 +18,7 @@ import navigationSections = require("./applicationPanelSpecifications/navigation
 import PanelSetup = require("./PanelSetup");
 import Globals = require("./Globals");
 import versions = require("./versions");
-import _ = require('lodash');
+import _ = require("lodash");
 
 "use strict";
 

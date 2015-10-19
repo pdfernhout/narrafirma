@@ -10,7 +10,7 @@ import Project = require("../Project");
 import GridWithItemPanel = require("../panelBuilder/GridWithItemPanel");
 import generateRandomUuid = require("../pointrel20150417/generateRandomUuid");
 import Globals = require("../Globals");
-import _ = require('lodash');
+import _ = require("lodash");
 
 "use strict";
 

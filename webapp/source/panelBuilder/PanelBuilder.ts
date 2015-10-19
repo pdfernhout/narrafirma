@@ -4,7 +4,7 @@ import m = require("mithril");
 import GridWithItemPanel = require("./GridWithItemPanel");
 import standardWidgets = require("./standardWidgets");
 import sanitizeHTML = require("../sanitizeHTML");
-import _ = require('lodash');
+import _ = require("lodash");
 
 // TODO: Ideally shoudl not import Project; also a circular dependency
 import Project = require("../Project");

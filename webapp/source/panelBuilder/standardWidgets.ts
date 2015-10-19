@@ -3,7 +3,7 @@ import PanelBuilder = require("../panelBuilder/PanelBuilder");
 import valuePathResolver = require("./valuePathResolver");
 import translate = require("./translate");
 import Globals = require("../Globals");
-import _ = require('lodash');
+import _ = require("lodash");
 
 "use strict";
 

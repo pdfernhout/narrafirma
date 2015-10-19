@@ -1,7 +1,7 @@
 import d3 = require("d3");
 import m = require("mithril");
 import calculateStatistics = require("../calculateStatistics");
-import _ = require('lodash');
+import _ = require("lodash");
 
 "use strict";
 
