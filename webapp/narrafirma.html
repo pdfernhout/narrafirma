@@ -63,14 +63,13 @@ var require = {
     <div id="toasterDiv"></div>
     <div id="dialogDiv"></div>
     <script>
-    // Load text with plugins here because TypeScript IDE does not like it elsehwere
+    // Load text with plugins here because TypeScript IDE does not like it elsewhere
+    // Any modules loaded here other than js/main need to be in an include statement in build-narrafirma.js to be added to bundle 
     require([
-        "Blob",
         "js/main",
         "lib/text!recommendations/recommendations_filledin.csv",
         "lib/text!recommendations/recommendations_intervention_filledin.csv"
     ], function(
-        discardBlobPolyfillResult,
         main,
         recommendationsText,
         recommendationsInterventionText

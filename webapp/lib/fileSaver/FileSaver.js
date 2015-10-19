@@ -243,9 +243,10 @@ var saveAs = saveAs || (function(view) {
 // with an attribute `content` that corresponds to the window
 
 if (typeof module !== "undefined" && module.exports) {
+  // TODO: Would need to load Blob polyfill somehow...
   module.exports.saveAs = saveAs;
 } else if ((typeof define !== "undefined" && define !== null) && (define.amd != null)) {
-  define([], function() {
+  define(["Blob"], function(discardBlobPolyfillResult) {
     return saveAs;
   });
 }

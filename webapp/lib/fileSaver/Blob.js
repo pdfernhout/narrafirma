@@ -14,6 +14,8 @@
 
 /*! @source http://purl.eligrey.com/github/Blob.js/blob/master/Blob.js */
 
+define(function() {
+ 
 (function (view) {
 	"use strict";
 
@@ -209,3 +211,5 @@
 	};
 	view.Blob.prototype = getPrototypeOf(new view.Blob());
 }(typeof self !== "undefined" && self || typeof window !== "undefined" && window || this.content || this));
+
+});
