@@ -320,10 +320,10 @@ function generateHTMLForQuestionnaire(questionnaire) {
     
         printReturnAndBlankLine(),
         
-        printText(questionnaire.endText)
+        printText(questionnaire.endText || "")
     ]);
 
-    return generateHTMLForPage(questionnaire.title, "css/survey.css", vdom);
+    return generateHTMLForPage(questionnaire.title || "NarraFirma Story Form", "css/survey.css", vdom);
 }
 
 export function printStoryForm(model, fieldSpecification, value) {
