@@ -1,6 +1,7 @@
 ==== NarraFirma TODO list:
 
 SURVEY GENERAL
+M If logged in, survey should not use "anonymous" user to connect (or should ask)
 L Display how many stories and/or survey results have been collected
 L Ideally, all responses for selections (other than numerical sliders) should have unique IDs for each response and the stored response should have the ID as well as the chosen text at the time.
     Add support for short names (ids) for all options for survey questions
@@ -89,8 +90,7 @@ X Translate report answers as needed for those types like selections
 X Final review of all strings in code looking for TODO translate items or similar
 
 BUILD
-Move any loaded plain JavaScript libraries into bundles
-Remove Lodash dependency
+Remove Lodash dependency (maybe?)
 
 VALIDATION
 X Think about validation and how or when or if it should be done
@@ -107,9 +107,12 @@ NAVIGATION
 L Way to select a different project to switch to (other than editing the URL or logging out)
 
 GENERAL
-M Create script or procedure to deal with SVN for WordPress
+M Report when a project can't be read by the current user even if the survey can be read (fix limitation of lumping permissions)
+M Create script or procedure to deal with SVN for WordPress' plugin archive
 M When a Grid item is added but no data is entered like for a catalysis report, the entry in a select looks wrong
 M Display total count of all answers when displaying question name in Story Browser
+M Improve reporting on startup for loading project data with some kind of progress indicator or remaining count
+M Put a copy of install help from NarraFirma website into source tree as a README file 
 L Text search function (at least for stories)
 
 COMMUNICATIONS
@@ -225,3 +228,5 @@ DONE Update package.json to include packaging step to create bundles
 ---- Release 0.9.2
 DONE Improve starting up feedback to show whether loading app, getting user information, or retrieving project data
 DONE Print story form title says "undefined"
+DONE Move any loaded plain JavaScript libraries into bundles
+DONE Improve bundling so recommendations text is included in bundle
