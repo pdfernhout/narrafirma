@@ -8,6 +8,7 @@ import dialogSupport = require("./panelBuilder/dialogSupport");
 import Globals = require("./Globals");
 import m = require("mithril");
 import toaster = require("./panelBuilder/toaster");
+import saveAs = require("FileSaver");
 
 "use strict";
 
@@ -464,9 +465,6 @@ export function importCSVStories() {
 export function importCSVQuestionnaire() {
     chooseCSVFileToImport(processCSVContentsForQuestionnaire);
 }
-
-// Library for saving files, imported by narrafirma.html
-declare var saveAs;
 
 function addCSVOutputLine(output, line) {
     // console.log("line", line);

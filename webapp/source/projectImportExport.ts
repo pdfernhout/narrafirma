@@ -1,9 +1,9 @@
 import Globals = require("./Globals");
 import dialogSupport = require("./panelBuilder/dialogSupport");
 import surveyStorage = require("./surveyStorage");
+import saveAs = require("FileSaver");
 
-// Library for saving files, imported by narrafirma.html
-declare var saveAs;
+"use strict";
 
 var allMessagesExportType = "NarraFirma_allMessages";
 var allMessagesExportFormat = "0.1.0";

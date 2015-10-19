@@ -6,7 +6,8 @@
         d3: "lib/d3/d3",
         humane: "lib/humane/humane",
         lodash: "lib/lodash",
-        jstat: "lib/jstat"
+        jstat: "lib/jstat",
+        FileSaver: "lib/fileSaver/FileSaver"
     },
     name: "js/main",
     out: "narrafirma/webapp/bundle-narrafirma.js",
