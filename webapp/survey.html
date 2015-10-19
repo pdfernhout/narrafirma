@@ -28,7 +28,7 @@ var require = {
 </script>
 
 <script src="lib/require.min.js"></script>
-    
+
 <script>
     function calculateAjaxPath() {
         if (!window["ajaxurl"]) {
@@ -43,6 +43,9 @@ var require = {
     }
     calculateAjaxPath();
 </script>
+
+<!-- the next script might not load if the app has not been build -->
+<script src="bundle-survey.js"></script>
 
 </head>
 
