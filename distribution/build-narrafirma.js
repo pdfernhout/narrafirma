@@ -7,7 +7,10 @@
         humane: "lib/humane/humane",
         lodash: "lib/lodash",
         jstat: "lib/jstat",
-        FileSaver: "lib/fileSaver/FileSaver"
+        FileSaver: "lib/fileSaver/FileSaver",
+        stackblur: "lib/canvg/StackBlur",
+        rgbcolor: "lib/canvg/rgbcolor",
+        canvgModule: "lib/canvg/canvg"
     },
     name: "js/main",
     out: "narrafirma/webapp/bundle-narrafirma.js",

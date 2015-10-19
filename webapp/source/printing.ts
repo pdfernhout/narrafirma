@@ -8,6 +8,9 @@ import ClusteringDiagram = require("./applicationWidgets/ClusteringDiagram");
 import Project = require("./Project");
 import charting = require("./applicationWidgets/charting");
 import dialogSupport = require("./panelBuilder/dialogSupport");
+import canvg = require("canvgModule");
+
+console.log("======= canvg is", canvg);
 
 "use strict";
 
@@ -464,8 +467,6 @@ export function printSensemakingSessionAgenda(itemID) {
     var htmlForPage = generateHTMLForPage("Sensemaking session agenda", "css/standard.css", printItems);
     printHTML(htmlForPage);
 }
-
-declare var canvg;
 
 function displayForGraphHolder(graphHolder: GraphHolder) {
     // console.log("displayForGraph graphHolder", graphHolder);
