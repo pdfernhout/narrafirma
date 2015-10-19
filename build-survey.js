@@ -9,9 +9,9 @@
         humane: "lib/humane/humane",
         lib: "lib"
     },
-    name: "js/main",
-    out: "narrafirma-built.js",
+    name: "js/survey-main-mithril",
+    out: "survey-built.js",
     optimize: "none"
 })
 
-// node ../node_modules/.bin/r.js -o build-narrafirma.js
+// node ../node_modules/.bin/r.js -o build-survey.js
