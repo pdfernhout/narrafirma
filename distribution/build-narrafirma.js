@@ -1,7 +1,5 @@
-// TODO: This is not yet finished... Just experimenting....
-
 ({
-    baseUrl: "distribution/narrafirma/webapp/",
+    baseUrl: "narrafirma/webapp/",
     paths: {
         js: "js",
         mithril: "lib/mithril/mithril",
@@ -10,8 +8,6 @@
         lib: "lib"
     },
     name: "js/main",
-    out: "narrafirma-built.js",
+    out: "narrafirma/webapp/bundle-narrafirma.js",
     optimize: "none"
 })
-
-// node ../node_modules/.bin/r.js -o build-narrafirma.js
