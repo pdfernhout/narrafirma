@@ -397,7 +397,7 @@ var Latin1 = {
     }
 };
 
-// Make availabel deprecated functions
+// Make available deprecated functions
 declare var escape;
 declare var unescape;
 
