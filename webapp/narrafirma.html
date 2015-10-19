@@ -13,6 +13,20 @@
 <script>
 if (console === undefined) console = {"log": function(){ } };
 
+//This is to distinguish between running under WordPress or running under Node.js
+function calculateAjaxPath() {
+    if (!window["ajaxurl"]) {
+        var path = window.location.href;
+        console.log("window.location.href", path);
+        var baseDirectoryPosition = path.indexOf("/wp-content/");
+        if (baseDirectoryPosition !== -1) {
+            window["ajaxurl"] = path.substring(0, baseDirectoryPosition) + "/wp-admin/admin-ajax.php";
+            console.log("set ajaxurl to", window["ajaxurl"]);
+        }
+    }
+}
+calculateAjaxPath();
+
 var require = {
     baseUrl: '',
     waitSeconds: 60,
@@ -33,21 +47,6 @@ var require = {
 <script type='text/javascript' src="lib/fileSaver/Blob.js"></script>
 <script type='text/javascript' src="lib/fileSaver/FileSaver.js"></script>
 <script src="lib/require.min.js"></script>
-
-<script>
-    function calculateAjaxPath() {
-        if (!window["ajaxurl"]) {
-            var path = window.location.href;
-            console.log("window.location.href", path);
-            var baseDirectoryPosition = path.indexOf("/wp-content/");
-            if (baseDirectoryPosition !== -1) {
-                window["ajaxurl"] = path.substring(0, baseDirectoryPosition) + "/wp-admin/admin-ajax.php";
-                console.log("set ajaxurl to", window["ajaxurl"]);
-            }
-        }
-    }
-    calculateAjaxPath();
-</script>
 
 <!-- the next script might not load if the app has not been build -->
 <script src="bundle-narrafirma.js"></script>
