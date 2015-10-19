@@ -7,6 +7,7 @@
         humane: "lib/humane/humane",
         lodash: "lib/lodash",
         jstat: "lib/jstat",
+        Blob: "lib/fileSaver/Blob",
         FileSaver: "lib/fileSaver/FileSaver",
         stackblur: "lib/canvg/StackBlur",
         rgbcolor: "lib/canvg/rgbcolor",

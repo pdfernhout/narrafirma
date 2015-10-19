@@ -37,6 +37,7 @@ var require = {
         humane: "lib/humane/humane",
         lodash: "lib/lodash",
         jstat: "lib/jstat",
+        Blob: "lib/fileSaver/Blob",
         FileSaver: "lib/fileSaver/FileSaver",
         stackblur: "lib/canvg/StackBlur",
         rgbcolor: "lib/canvg/rgbcolor",
@@ -45,7 +46,6 @@ var require = {
 };
 </script>
 
-<script type='text/javascript' src="lib/fileSaver/Blob.js"></script>
 <script src="lib/require.min.js"></script>
 
 <!-- the next script might not load if the app has not been build -->
@@ -65,10 +65,12 @@ var require = {
     <script>
     // Load text with plugins here because TypeScript IDE does not like it elsehwere
     require([
+        "Blob",
         "js/main",
         "lib/text!recommendations/recommendations_filledin.csv",
         "lib/text!recommendations/recommendations_intervention_filledin.csv"
     ], function(
+        discardBlobPolyfillResult,
         main,
         recommendationsText,
         recommendationsInterventionText
