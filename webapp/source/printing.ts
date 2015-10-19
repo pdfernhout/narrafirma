@@ -10,8 +10,6 @@ import charting = require("./applicationWidgets/charting");
 import dialogSupport = require("./panelBuilder/dialogSupport");
 import canvg = require("canvgModule");
 
-console.log("======= canvg is", canvg);
-
 "use strict";
 
 // TODO: Translate
