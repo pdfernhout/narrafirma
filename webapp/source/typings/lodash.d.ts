@@ -3,7 +3,7 @@
 // Definitions by: Brian Zengel <https://github.com/bczengel>
 // Definitions: https://github.com/borisyankov/DefinitelyTyped
 
-declare var _: _.LoDashStatic;
+declare var _lodash: _.LoDashStatic;
 
 declare module _ {
     interface LoDashStatic {
@@ -6469,7 +6469,7 @@ declare module _ {
         * Reverts the '_' variable to its previous value and returns a reference to the lodash function.
         * @return The lodash function.
         **/
-        noConflict(): typeof _;
+        noConflict(): typeof _lodash;
     }
 
     //_.property
@@ -6523,7 +6523,7 @@ declare module _ {
         * @param context The context object
         * @returns The lodash function.
         **/
-        runInContext(context: any): typeof _;
+        runInContext(context: any): typeof _lodash;
     }
 
     //_.template
@@ -6674,5 +6674,5 @@ declare module _ {
 }
 
 declare module "lodash" {
-    export = _;
+    export = _lodash;
 }
