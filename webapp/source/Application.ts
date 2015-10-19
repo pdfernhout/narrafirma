@@ -1,5 +1,3 @@
-/// <reference path="typings/lodash.d.ts"/>
-// declare var _: _.LoDashStatic;
 import applicationMessages = require("./nls/applicationMessages");
 import buttonActions = require("./buttonActions");
 import csvImportExport = require("./csvImportExport");
@@ -20,6 +18,7 @@ import navigationSections = require("./applicationPanelSpecifications/navigation
 import PanelSetup = require("./PanelSetup");
 import Globals = require("./Globals");
 import versions = require("./versions");
+import _ = require('lodash');
 
 "use strict";
 

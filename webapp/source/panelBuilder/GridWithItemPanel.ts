@@ -5,6 +5,7 @@ import generateRandomUuid = require("../pointrel20150417/generateRandomUuid");
 import TripleStore = require("../pointrel20150417/TripleStore");
 import valuePathResolver = require("./valuePathResolver");
 import Globals = require("../Globals");
+import _ = require('lodash');
 
 "use strict";
 
