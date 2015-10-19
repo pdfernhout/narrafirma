@@ -1,7 +1,5 @@
 ==== NarraFirma TODO list:
 
------------------------ THINGS REMOVED FROM HIGH PRIORITY LIST
-
 SURVEY GENERAL
 L Display how many stories and/or survey results have been collected
 L Ideally, all responses for selections (other than numerical sliders) should have unique IDs for each response and the stored response should have the ID as well as the chosen text at the time.
@@ -92,7 +90,8 @@ X Translate report answers as needed for those types like selections
 X Final review of all strings in code looking for TODO translate items or similar
 
 BUILD
-X Learn how to use some build or packaging process to minimize application for deployment
+Move any loaded plain JavaScript libraries into bundles
+Remove Lodash dependency
 
 VALIDATION
 X Think about validation and how or when or if it should be done
@@ -217,3 +216,8 @@ Support storyBrowserCount
 ==== DONE
 
 ---- Release 0.9.1
+
+DONE Move DONE items for release 0.9.0 from TODO.txt to TODO-done.txt with release label for them
+DONE Learn how to use some build or packaging process to minimize application for deployment [using requirejs]
+DONE Load pages and panels via regular imports instead of later via dynamic loading to make bundling easier with requirejs
+DONE Update package.json to include packaging step to create bundles
