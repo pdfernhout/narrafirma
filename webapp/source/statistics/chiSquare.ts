@@ -1,8 +1,6 @@
-import kludgeForUseStrict = require("../kludgeForUseStrict");
-"use strict";
+import jStat = require("jstat");
 
-// Library for statistics, imported by narrafirma.html
-declare var jStat;
+"use strict";
 
 // Derived from: https://en.wikipedia.org/wiki/Pearson's_chi-squared_test
 

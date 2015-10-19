@@ -1,8 +1,6 @@
-import kludgeForUseStrict = require("../kludgeForUseStrict");
-"use strict";
+import jStat = require("jstat");
 
-// Library for statistics, imported by narrafirma.html
-declare var jStat;
+"use strict";
 
 // Calculates Kendall's tau, a correlation measure for ordinal data, and an associated p-value.
 // Returns: Kendall's tau, two-tailed p-value

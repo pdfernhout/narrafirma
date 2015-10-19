@@ -1,8 +1,7 @@
+import jStat = require("jstat");
 import statisticsCommon = require("./statisticsCommon");
-"use strict";
 
-// Library for statistics, imported by narrafirma.html
-declare var jStat;
+"use strict";
 
 // Calculates Kendall's tau, a correlation measure for ordinal data, and an associated p-value.
 // Returns: Kendall's tau, two-tailed p-value

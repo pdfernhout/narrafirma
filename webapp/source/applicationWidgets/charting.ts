@@ -1,12 +1,10 @@
+import jStat = require("jstat");
 import d3 = require("d3");
 import m = require("mithril");
 import calculateStatistics = require("../calculateStatistics");
 import _ = require("lodash");
 
 "use strict";
-
-// Library for statistics, imported by narrafirma.html
-declare var jStat;
 
 interface PlotItem {
     story: any;

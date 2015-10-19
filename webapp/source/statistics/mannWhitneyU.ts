@@ -1,8 +1,7 @@
+import jStat = require("jstat");
 import statisticsCommon = require("./statisticsCommon");
-"use strict";
 
-// Library for statistics, imported by narrafirma.html
-declare var jStat;
+"use strict";
 
 // Calculates Mann-Whitney U test
 // Derived from older SciPy: http://web.mit.edu/6.863/spring2011/packages/scipy_src/scipy/stats/stats.py

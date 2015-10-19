@@ -1,12 +1,10 @@
+import jStat = require("jstat");
 import kendallsTau = require("./statistics/kendallsTau");
 import chiSquare = require("./statistics/chiSquare");
 import mannWhitneyU = require("./statistics/mannWhitneyU");
 import surveyCollection = require("./surveyCollection");
 
 "use strict";
-
-// Library for statistics, imported by narrafirma.html
-declare var jStat;
 
 function collectDataForField(stories: surveyCollection.Story[], fieldName, conversionFunction = null) {
     var result = [];
