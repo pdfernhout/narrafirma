@@ -1,6 +1,4 @@
 import toaster = require("./panelBuilder/toaster");
-import PanelBuilder = require("./panelBuilder/PanelBuilder");
-import PanelSpecificationCollection = require("./panelBuilder/PanelSpecificationCollection");
 import PointrelClient = require("./pointrel20150417/PointrelClient");
 import m = require("mithril");
 
