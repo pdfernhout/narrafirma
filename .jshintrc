@@ -11,6 +11,5 @@
   "sub": true,
   "undef": true,
   "globals": {
-    "_": false
   }
 }
