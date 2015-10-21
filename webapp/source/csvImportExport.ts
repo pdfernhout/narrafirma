@@ -528,13 +528,16 @@ export function exportQuestionnaire() {
     });
     addOutputLine(elicitingLine);
     
-    function dataForQuestions(questions, about) {
+    function outputQuestions(questions, about) {
         for (var i = 0; i < questions.length; i++) {
             var outputLine = [];
             var question = questions[i];
             outputLine.push("" + (++lineIndex));
-            outputLine.push(question.displayPrompt);
-            outputLine.push(question.displayName.substring("S_".length));
+            outputLine.push(question.displayPrompt || "");
+            
+            var displayName = question.displayName || "S_";
+            outputLine.push(displayName.substring("S_".length));
+            
             var questionType = exportQuestionTypeMap[question.displayType];
             if (!questionType) {
                 console.log("EXPORT ERROR: unsupported question type: ", question.displayType);
@@ -551,12 +554,12 @@ export function exportQuestionnaire() {
         }
     }
     
-    dataForQuestions(currentQuestionnaire.storyQuestions, "story");
-    dataForQuestions(currentQuestionnaire.participantQuestions, "participant");
+    outputQuestions(currentQuestionnaire.storyQuestions, "story");
+    outputQuestions(currentQuestionnaire.participantQuestions, "participant");
     
     var annotationQuestions = project.collectAllAnnotationQuestions();
     var adjustedAnnotationQuestions = questionnaireGeneration.convertEditorQuestions(annotationQuestions, "A_");
-    dataForQuestions(adjustedAnnotationQuestions, "annotation");
+    outputQuestions(adjustedAnnotationQuestions, "annotation");
         
      // Export questionnaire
     var questionnaireBlob = new Blob([output], {type: "text/csv;charset=utf-8"});
