@@ -1,36 +1,25 @@
 === Plugin Name ===
 Contributors: cfkurtz, pdfernhout
-Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=DGVVDT2D49QA8
+Plugin Name: NarraFirma
+Plugin URI: https://www.narrafirma.com
 Tags: stories, narrative, inquiry, survey, social, research, organizations, communities, conflict, participation, PNI
-Requires at least: 3.0.1
-Tested up to: 3.4
-Stable tag: 4.3
+Author URI: http://www.cfkurtz.com
+Author: Cynthia Kurtz and Paul Fernhout
+Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=DGVVDT2D49QA8
+Requires at least: 4.3.1
+Tested up to: 4.3.1
+Stable tag: 0.9
+Version: 0.9.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-/////////////////////////////////////////////////// REMOVE LATER
-*   "Requires at least" is the lowest version that the plugin will work on
-*   "Tested up to" is the highest version that you've *successfully used to test the plugin*. Note that it might work on
-    higher versions... this is just the highest one you've verified.
-*   Stable tag should indicate the Subversion "tag" of the latest stable version, or "trunk," if you use `/trunk/` for
-    stable.
- Note that the `readme.txt` of the stable tag is the one that is considered the defining one for the plugin, so
-if the `/trunk/readme.txt` file says that the stable tag is `4.3`, then it is `/tags/4.3/readme.txt` that'll be used
-for displaying information about the plugin.  In this situation, the only thing considered from the trunk `readme.txt`
-is the stable tag pointer.  Thus, if you develop in trunk, you can update the trunk `readme.txt` to reflect changes in
-your in-development version, without having that information incorrectly disclosed about the current stable version
-that lacks those changes -- as long as the trunk's `readme.txt` points to the correct stable tag.
-
-    If no stable tag is provided, it is assumed that trunk is stable, but you should specify "trunk" if that's where
-you put the stable version, in order to eliminate any doubt.
-///////////////////////////////////////////////////
-
-Participatory Narrative Inquiry in a box. Gather stories and make sense of challenges and opportunities in your community or organization.
+Participatory Narrative Inquiry in a box. Gather stories and make sense of challenges and opportunities 
+in your community or organization.
 
 == Description ==
 
-NarraFirma is companion software to the textbook [Working with Stories in Your Community Or Organization: Participatory Narrative
-Inquiry](http://www.workingwithstories.org).
+NarraFirma is companion software to the textbook [Working with Stories in Your Community Or Organization: 
+Participatory Narrative Inquiry](http://www.workingwithstories.org).
 
 Participatory narrative inquiry is an approach in which groups of people participate in gathering and working with 
 raw stories of personal experience in order to make sense of complex patterns for better decision making. PNI focuses on 
@@ -81,43 +70,106 @@ To install NarraFirma:
 3. In the "Add Plugins" page, click "Upload Plugin."
 4. Click "Browse," then choose the zip file you downloaded.
 5. Click "Install Now."
-6. You should see a new "NarraFirma" menu item in your dashboard menu.
+6. Click "Activate."
+7. You should see a new "NarraFirma" menu item in your dashboard menu. Click it.
+8. In the screen that appears, create a new project and add some users who can access it.
  
 == Frequently Asked Questions ==
 
 = Where can I found out more about participatory narrative inquiry? =
 
-You're in luck! I wrote a 650-page textbook about it. Check it out at [workingwithstories.org](workingwithstories.org).
+Take a look at the book behind NarraFirma, [Working with Stories in Your Community Or Organization: 
+Participatory Narrative Inquiry](http://www.workingwithstories.org)
 
 = Does NarraFirma work for other kinds of surveys and projects? =
 
-Well, it's meant to work mainly with PNI, but if you want to collect stories for some other reason, you could still use
-NarraFirma for that. It's pretty flexible.
+NarraFirma is meant to work mainly with participatory narrative inquiry. But if you want to collect 
+stories for some other reason, you could still use NarraFirma for that. It's pretty flexible.
 
 = What about web security? =
 
 We strongly suggest that you set up any web site on which you intend to install NarraFirma 
 with SSL (secure sockets). Your hosting provider should be able to help you do that.
 
-= What can I do to help? =
+= What should I do if I find a bug? =
 
-You can donate, volunteer, and spread the word. Visit [narrafirma.com](narrafirma.com) for details.
+Tell us about it on the WordPress support forum or the 
+[GitHub issues list](https://github.com/pdfernhout/narrafirma/issues).
 
 == Screenshots ==
 
-CFK ADD THESE
+1. This is the main page of NarraFirma. The sections of the software (and the phases of PNI)
+are shown in the diagram and on the list to the right. Clicking on any of these buttons
+leads to that section.
 
-1. This screen shot description corresponds to screenshot-1.(png|jpg|jpeg|gif). Note that the screenshot is taken from
-the /assets directory or the directory that contains the stable readme.txt (tags or trunk). Screenshots in the /assets 
-directory take precedence. For example, `/assets/screenshot-1.png` would win over `/tags/4.3/screenshot-1.png` 
-(or jpg, jpeg, gif).
-2. This is the second screen shot
+2. This the main page for the NarraFirma planning section. Links to all the pages in that section
+are listed. You can enter reminders for any page; they show up on this page.
+
+3. Here the NarraFirma user is describing the groups of people who will be participating in their project.
+Describing your groups helps you think about how you should collect stories and what
+you should do with them.
+
+4. Here the NarraFirma user is doing a little sensmaking exercise based on some "project stories"
+they told, about what might happen when they do the project. Thinking in stories
+during project planning helps to make better decisions about how to carry out the project.
+
+5. Here the NarraFirma user is deciding how they will collect stories. They are looking at recommendations
+the software is giving them based on the answers they gave to the questions about their
+participant groups (see screenshot 3). 
+
+6. Here the NarraFirma user is creating questions they will ask people about their stories.
+
+7. Here is the NarraFirma survey form participants see when they tell their stories (or NarraFirma
+users see when they enter the stories they collected off-line).
+
+8. Here the NarraFirma user is looking at stories as they come in to the collection. They are
+looking here only at stories told by older people who said the person in their story
+wanted to be heard.
+
+9. Here the user is looking at patterns in the data (answers to questions) collected.
+They seee thNarraFirma at older people did not often say they felt "satisfied" about their story.
+They are looking at the stories to understand why.
+
+10. Here the NarraFirma user is designing a plan for a sensemaking session,
+where people will work with the collected stories and patterns to make sense of the topic
+being explored.
+
+11. Here the NarraFirma user is ansewring questions about the outcomes of the project
+for each participant group. Those outcomes will determine recommendations for
+interventions.
+
+12. Here the NarraFirma user is reflecting on the entire project, to learn from it
+and to keep good records for the future.
 
 == Changelog ==
 
-= 1.0 =
+= 0.9.0 =
+
 * This is the first publicly released version of NarraFirma. For (highly detailed and entertaining) 
 change logs, see the [GitHub repository](https://github.com/pdfernhout/narrafirma).
+
+= 0.9.1 = 
+
+* Improvements to bundling of JavaScript code for faster loading.
+
+= 0.9.2 =
+
+* More improvements to bundling of JavaScript for faster loading. Also improved startup feedback to show
+loading application, getting user information, or retrieving project data.
+
+== Upgrade Notice ==
+
+= 0.9.1 =
+This upgrade affects performance only.
+
+= 0.9.2 =
+This upgrade affects loading time, and there is a small cosmetic change.
+
+== Donations ==
+
+We have spent a lot of time developing NarraFirma. We appreciate donations, and will use them to 
+keep working on it. You can donate
+at [PayPal](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=DGVVDT2D49QA8).
 
 == Need some help? ==
 
