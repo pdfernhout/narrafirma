@@ -76,9 +76,6 @@ function displayHTMLForField(storyModel: surveyCollection.Story, fieldSpecificat
     // TODO: extra checking here for problems with test data -- could probably be changed back to just displayName eventually
     var fieldName = fieldSpecification.displayName || fieldSpecification.displayPrompt;
     
-    // Remove later -- legacy support for now for older questionnaires
-    fieldName = questionnaireGeneration.trimQuestionTypeFromFieldName(fieldName);
-    
     var result = [];
     if (fieldSpecification.displayType === "slider") {
         result.push(displayHTMLForSlider(fieldSpecification, fieldName, value));

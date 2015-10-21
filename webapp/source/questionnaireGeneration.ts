@@ -91,19 +91,6 @@ export function convertEditorQuestions(editorQuestions, prefixQPA) {
     return adjustedQuestions;
 }
 
-// Undo adding prefix to field name
-export function trimQuestionTypeFromFieldName(fieldName) {
-    if (!fieldName || fieldName.length < 2) return fieldName;
-    var prefix = fieldName.substring(0, 2);
-    switch (prefix) {
-        case "S_": // fallthrough
-        case "P_": // fallthrough
-        case "A_":
-           return fieldName.substring(2);
-    }
-    return fieldName;
-}
-
 function buildIdToItemMap(itemListField, idField: string) {
     var project = Globals.project();
     var itemList = project.getListForField(itemListField);
