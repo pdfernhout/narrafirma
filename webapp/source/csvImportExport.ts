@@ -534,9 +534,7 @@ export function exportQuestionnaire() {
             var question = questions[i];
             outputLine.push("" + (++lineIndex));
             outputLine.push(question.displayPrompt || "");
-            
-            var displayName = question.displayName || "S_";
-            outputLine.push(displayName.substring("S_".length));
+            outputLine.push(question.displayName || "");
             
             var questionType = exportQuestionTypeMap[question.displayType];
             if (!questionType) {
@@ -603,10 +601,10 @@ export function exportStoryCollection() {
             // TODO: Maybe should export ID instead? Or more header lines with ID and prompt?
             if (storyQuestion.valueOptions && storyQuestion.displayType === "checkboxes") {
                storyQuestion.valueOptions.forEach(function(option) {
-                   header(storyQuestion.displayName.substring("S_".length), option);   
+                   header(storyQuestion.displayName, option);   
                });
             } else {
-                header(storyQuestion.displayName.substring("S_".length));
+                header(storyQuestion.displayName);
             }
         }
     }
