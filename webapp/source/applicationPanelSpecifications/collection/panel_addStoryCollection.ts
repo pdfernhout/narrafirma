@@ -7,6 +7,17 @@ var panel: Panel = {
     modelClass: "StoryCollection",
     panelFields: [
         {
+            
+            id: "storyCollection_note",
+            valueType: "none",
+            displayType: "label",
+            displayPrompt: `
+                The story collection is only created when you click the <strong>Close</strong> button.
+                If you forget to click the Close button when you create the story collection, 
+                you can come back to this panel, set the story form, and click the "Update Story Form" button.
+            `
+        },
+        {
             id: "storyCollection_shortName",
             valueType: "string",
             // valueImmutable: true,
@@ -50,7 +61,7 @@ var panel: Panel = {
             displayType: "checkbox",
             displayReadOnly: true,
             displayName: "Active on web?",
-            displayPrompt: "Is this survey currently active on the web server?"
+            displayPrompt: "If this survey is currently <strong>active</strong> on the web server, this check box will be checked."
         },
         {
             id: "storyCollection_webFormAddress",
