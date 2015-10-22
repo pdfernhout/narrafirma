@@ -157,6 +157,13 @@ change logs, see the [GitHub repository](https://github.com/pdfernhout/narrafirm
 * More improvements to bundling of JavaScript for faster loading. Also improved startup feedback to show
 loading application, getting user information, or retrieving project data.
 
+= 0.9.3 =
+
+* Fixed problem where first two characters of display name are being truncated during CSV export of story form.
+* Added arrows to sliders in survey form to make it more useful in narrow mobile displays.
+* Added warning about story collection creation.
+* Fixed some typos.
+
 == Upgrade Notice ==
 
 = 0.9.1 =
@@ -164,6 +171,9 @@ This upgrade affects performance only.
 
 = 0.9.2 =
 This upgrade affects loading time, and there is a small cosmetic change.
+
+= 0.9.3 =
+This upgrade fixes a bug (in CSV export) and a few cosmetic issues.
 
 == Donations ==
 
