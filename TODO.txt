@@ -230,3 +230,10 @@ DONE Improve starting up feedback to show whether loading app, getting user info
 DONE Print story form title says "undefined"
 DONE Move any loaded plain JavaScript libraries into bundles
 DONE Improve bundling so recommendations text is included in bundle
+
+--- Release 0.9.3
+
+DONE Finish WordPress readme.txt file
+DONE Add arrows to sliders to make them more understandable when looking at them on a mobile device with a narrow screen.
+DONE Fix problem where first two characters of display name are being truncated during CSV export of story form.
+DONE Add warning about story collection creation.
