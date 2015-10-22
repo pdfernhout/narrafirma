@@ -581,7 +581,7 @@ class GridWithItemPanel {
             var errors = this.validateItem(item);
             if (errors.length) {
                 // TODO: Translate
-                alert("The are validation errors:\n" + errors);
+                alert("There are validation errors:\n" + errors);
                 return;
             }
         }
