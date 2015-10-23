@@ -237,3 +237,8 @@ DONE Finish WordPress readme.txt file
 DONE Add arrows to sliders to make them more understandable when looking at them on a mobile device with a narrow screen.
 DONE Fix problem where first two characters of display name are being truncated during CSV export of story form.
 DONE Add warning about story collection creation.
+
+--- Release 0.9.4
+
+DONE Use NarraFirma namespace in WordPress plugin PHP to conform with WordPress guidelines
+DONE Fix WordPress plugin survey bug where always returning first questionnaire added in a topic instead of the last one
