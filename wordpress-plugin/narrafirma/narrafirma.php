@@ -25,6 +25,8 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
+namespace NarraFirma;
+
 defined( 'ABSPATH' ) or die( 'Plugin must be run from inside WordPress' );
 
 $NARRAFIRMA_VERSION = '0.9.4';
@@ -48,7 +50,7 @@ class NarraFirmaSettingsPage
     public function __construct() {
         register_activation_hook(__FILE__, array( $this, 'activate')); 
         register_deactivation_hook( __FILE__, array( $this, 'deactivate' ));
-        // register_uninstall_hook( __FILE__, array( 'NarraFirmaSettingsPage', 'uninstall' ));
+        // register_uninstall_hook( __FILE__, array( 'NarraFirma\\NarraFirmaSettingsPage', 'uninstall' ));
         
         add_action( 'admin_menu', array( $this, 'add_plugin_page' ) );
         add_action( 'admin_init', array( $this, 'page_init' ) );
@@ -219,8 +221,8 @@ if ( is_admin() ) {
     $narrafirma_settings_page = new NarraFirmaSettingsPage();
 }
 
-function nararfirma_admin_enqueue_scripts($hook) {
-    // error_log("nararfirma_admin_enqueue_scripts $hook");
+function narrafirma_admin_enqueue_scripts($hook) {
+    // error_log("narrafirma_admin_enqueue_scripts $hook");
     
     // TODO: Maybe this name chould be assigned to a global on page creation?
     if ($hook != "toplevel_page_narrafirma-settings-admin") return;
@@ -228,12 +230,12 @@ function nararfirma_admin_enqueue_scripts($hook) {
     wp_enqueue_script( 'mithril', plugin_dir_url( __FILE__ ) . 'webapp/lib/mithril/mithril.js' );
     wp_enqueue_script( 'narrafirma-admin-js', plugin_dir_url( __FILE__ ) . 'narrafirmaWordPressAdmin.js' );
 }
-add_action( 'admin_enqueue_scripts', 'nararfirma_admin_enqueue_scripts' );
+add_action( 'admin_enqueue_scripts', 'NarraFirma\\narrafirma_admin_enqueue_scripts' );
 
 // TODO: Move these functions into a class...
 
-add_action( 'wp_ajax_pointrel20150417', 'pointrel20150417' );
-add_action( 'wp_ajax_nopriv_pointrel20150417', 'pointrel20150417' );
+add_action( 'wp_ajax_pointrel20150417', 'NarraFirma\\pointrel20150417' );
+add_action( 'wp_ajax_nopriv_pointrel20150417', 'NarraFirma\\pointrel20150417' );
 
 function getCurrentUniqueTimestamp() {
     // TODO: Probably need extra digits and to assure unique...
@@ -746,7 +748,7 @@ function isSHA256AndLengthIndexed($journal, $sha256AndLength) {
 
 function copyObjectWithSortedKeys($value) {
     if (is_array($value)) {
-        return array_map("copyObjectWithSortedKeys", $value);
+        return array_map("NarraFirma\\copyObjectWithSortedKeys", $value);
     } else if (is_object($value)) {
         $valueCopyWithSortedKeys = array();
 
