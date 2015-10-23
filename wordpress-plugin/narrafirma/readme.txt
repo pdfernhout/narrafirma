@@ -164,6 +164,11 @@ loading application, getting user information, or retrieving project data.
 * Added warning about story collection creation.
 * Fixed some typos.
 
+= 0.9.4 =
+
+* Now uses NarraFirma namespace in WordPress plugin PHP to conform with WordPress guidelines.
+* Fixed WordPress plugin survey bug where always returning first questionnaire added in a topic instead of the last one.
+
 == Upgrade Notice ==
 
 = 0.9.1 =
@@ -174,6 +179,10 @@ This upgrade affects loading time, and there is a small cosmetic change.
 
 = 0.9.3 =
 This upgrade fixes a bug (in CSV export) and a few cosmetic issues.
+
+= 0.9.4 =
+This upgrade fixes a bug where the web survey always used the first version of a question form and would never disable it.
+It also uses a NarraFirma namespace in the WordPress plugin PHP file to conform with WordPress guidelines.
 
 == Donations ==
 
