@@ -716,7 +716,7 @@ function pointrel20150417_queryForLatestMessage($apiRequest) {
         $query = $query . " WHERE topic_sha256 = '$topicSHA256'";
     }
 
-    $rows = $wpdb->get_results("$query ORDER BY received_timestamp LIMIT 1", OBJECT);
+    $rows = $wpdb->get_results("$query ORDER BY received_timestamp DESC LIMIT 1", OBJECT);
     
     if (count($rows) == 0) {
         $latestRecord = null;
