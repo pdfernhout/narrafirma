@@ -46,10 +46,10 @@ As Malcom Gladwell has [said](http://venturebeat.com/2015/07/24/gladwell-on-data
 ## Configuring and running the NarraFirma server
 
 - You need to have a TypeScript compiler installed to compile the source (typically via "npm install -g typescript").
-- For Node.js, you need to run "tsc" to compile those TypeScript source files to JavaScript before running the Node.js server (or have your IDE do it for you). Otherwise you will get error messages about missing JavaScipt files when you open the webapp in your browser.
+- For Node.js, you need to run "tsc" to compile those TypeScript source files to JavaScript before running the Node.js server (or have your IDE do it for you). Otherwise you will get error messages about missing JavaScript files when you open the webapp in your browser.
 - For WordPress, the TypeScript compiler is called during the creation of the WordPress zip file.
 - For more details on installation or setup of NarraFirma from source see [INSTALL.md](INSTALL.md).
-- For more details on installation or setup of NarraFirma from a distribution, including tips on settign up WordPress or Node.js, see [this webpage](https://narrafirma.com/home/setting-up-narrafirma-on-your-local-computer/).
+- For more details on installation or setup of NarraFirma from a pre-built distribution, including tips on setting up WordPress or Node.js, see [this webpage](https://narrafirma.com/home/setting-up-narrafirma-on-your-local-computer/).
 
 ---
 
