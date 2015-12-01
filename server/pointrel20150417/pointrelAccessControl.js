@@ -93,13 +93,15 @@ function readSuperuserInformation(superuserInformationFilename) {
 function isMatchingPassword(storedAuthenticationInformation, suppliedUserCredentials) {
     // TODO: client-side hashing of password: var hashOfPassword = PointrelClient.calculateSHA256(salt + PointrelClient.calculateSHA256("irony" + newUserIdentifier + password));
     // console.log("isMatchingPassword", storedAuthenticationInformation, suppliedUserCredentials);
-    var calculatedHash = utility.calculateSHA256("" + storedAuthenticationInformation.salt + suppliedUserCredentials.userPassword);
+    var userPassword = suppliedUserCredentials.userPassword;
+    if (userPassword) userPassword = userPassword.trim();
+    var calculatedHash = utility.calculateSHA256("" + storedAuthenticationInformation.salt + userPassword);
     // console.log("calculatedHash", calculatedHash);
     return storedAuthenticationInformation.hashOfPassword === calculatedHash;
 }
 
 function isAuthenticated(userIdentifier, userCredentials) {
-    console.log("isAuthenticated", userIdentifier, userCredentials);
+    // console.log("isAuthenticated", userIdentifier, userCredentials);
     var result = false;
     
     if (superuserInformation && userIdentifier === superuserInformation.userIdentifier) {
@@ -108,11 +110,11 @@ function isAuthenticated(userIdentifier, userCredentials) {
     } else {
         // Handle regular user
         var authenticationInformation = getAuthenticationInformationForUser(userIdentifier);
-        console.log("authenticationInformation", authenticationInformation);
+        // console.log("authenticationInformation", authenticationInformation);
         if (authenticationInformation && isMatchingPassword(authenticationInformation, userCredentials)) result = true;
     }
     
-    console.log("isAuthenticated:", result);
+    console.log("isAuthenticated:", userIdentifier, result);
     return result;
 }
 
