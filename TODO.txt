@@ -242,3 +242,10 @@ DONE Add warning about story collection creation.
 
 DONE Use NarraFirma namespace in WordPress plugin PHP to conform with WordPress guidelines
 DONE Fix WordPress plugin survey bug where always returning first questionnaire added in a topic instead of the last one
+
+--- Release 0.9.5
+
+Remove leading and trailing spaces from passwords set via Node.js admin command line tool to deal with Windows issue
+Do not log password under Node.js
+Improve README.md and add SETUP.md to have better setup information (including the need to compile TypeScript files)
+Include doctype and other metadata in Node.js login html pages
