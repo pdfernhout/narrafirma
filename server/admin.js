@@ -84,8 +84,8 @@ function readPassword(callback) {
     console.log("Type password and then press enter:");
     process.stdin.on('data', function (password) {
         process.stdin.pause();
-        // Remove the new line
-        if (password) password = password.substring(0, password.length - 1);
+        // Remove the new line, carriage return under Windows (if any), and leading and trailing whitespace
+        if (password) password = password.trim();
         // console.log('received data:', util.inspect(password));
         callback(password);
     });
