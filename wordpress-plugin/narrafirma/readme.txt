@@ -65,7 +65,7 @@ is ready for it.
 
 To install NarraFirma:
 
-1. Downlaod the NarraFirma plugin (in zip format) from the [NarraFirma web site](narrafirma.com).
+1. Download the NarraFirma plugin (in zip format) from WordPress.org or the [NarraFirma web site](narrafirma.com).
 2. In your WordPress dashboard, click on "Plugins," then click "Add New." 
 3. In the "Add Plugins" page, click "Upload Plugin."
 4. Click "Browse," then choose the zip file you downloaded.
