@@ -49,7 +49,7 @@ passport.use(new LocalStrategy(
 
 function writePageStart(request, response, pageType) {
     var user = request.user;
-    response.write("<html><body>");
+    response.write('<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"></head><body>');
     if (!user) {
         response.write("<p>");
         // response.write('<a href="/">Home</a> | ');
