@@ -9,7 +9,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Requires at least: 4.3.1
 Tested up to: 4.3.1
 Stable tag: 0.9
-Version: 0.9.4
+Version: 0.9.5
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -169,6 +169,10 @@ loading application, getting user information, or retrieving project data.
 * Now uses NarraFirma namespace in WordPress plugin PHP to conform with WordPress guidelines.
 * Fixed WordPress plugin survey bug where always returning first questionnaire added in a topic instead of the last one.
 
+= 0.9.5 =
+
+Improvements for Node.js version and README/SETUP for installation.
+
 == Upgrade Notice ==
 
 = 0.9.1 =
@@ -183,6 +187,9 @@ This upgrade fixes a bug (in CSV export) and a few cosmetic issues.
 = 0.9.4 =
 This upgrade fixes a bug where the web survey always used the first version of a question form and would never disable it.
 It also uses a NarraFirma namespace in the WordPress plugin PHP file to conform with WordPress guidelines.
+
+= 0.9.5 =
+Improvements for Node.js version and README/SETUP for installation. There is no need to upgrade to this version for WordPress users.
 
 == Donations ==
 
