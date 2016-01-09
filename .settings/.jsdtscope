@@ -4,6 +4,5 @@
 	<classpathentry kind="src" path="experiments"/>
 	<classpathentry kind="src" path="tools"/>
 	<classpathentry kind="con" path="org.eclipse.wst.jsdt.launching.baseBrowserLibrary"/>
-	<classpathentry kind="con" path="org.eclipse.wst.jsdt.USER_LIBRARY/dojo"/>
 	<classpathentry kind="output" path=""/>
 </classpath>
