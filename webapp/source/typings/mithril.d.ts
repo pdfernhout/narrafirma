@@ -2,7 +2,7 @@
 declare module _mithril {
 	interface MithrilStatic {
 
-		<T extends MithrilController>(selector: string, attributes: MithrilAttributes, ...children: Array<string|MithrilVirtualElement|MithrilComponent<T>>): MithrilVirtualElement;
+		<T extends MithrilController>(selector: string, attributes: Object, ...children: Array<string|MithrilVirtualElement|MithrilComponent<T>>): MithrilVirtualElement;
 		<T extends MithrilController>(selector: string, ...children: Array<string|MithrilVirtualElement|MithrilComponent<T>>): MithrilVirtualElement;
 
 		prop<T>(promise: MithrilPromise<T>) : MithrilPromiseProperty<T>;
