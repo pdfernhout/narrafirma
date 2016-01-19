@@ -9,7 +9,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Requires at least: 4.3.1
 Tested up to: 4.3.1
 Stable tag: 0.9
-Version: 0.9.5
+Version: 0.9.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -173,6 +173,10 @@ loading application, getting user information, or retrieving project data.
 
 Improvements for Node.js version and README/SETUP for installation.
 
+= 0.9.5 =
+
+Sanitize SQL input in WordPress plugin.
+
 == Upgrade Notice ==
 
 = 0.9.1 =
@@ -190,6 +194,9 @@ It also uses a NarraFirma namespace in the WordPress plugin PHP file to conform 
 
 = 0.9.5 =
 Improvements for Node.js version and README/SETUP for installation. There is no need to upgrade to this version for WordPress users.
+
+= 0.9.6 =
+WordPress users should upgrade to this version as it contains a security fix.
 
 == Donations ==
 
