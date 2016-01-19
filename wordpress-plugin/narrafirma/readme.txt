@@ -173,9 +173,10 @@ loading application, getting user information, or retrieving project data.
 
 Improvements for Node.js version and README/SETUP for installation.
 
-= 0.9.5 =
+= 0.9.6 =
 
 Sanitize SQL input in WordPress plugin.
+Improve TypeScript typings for tsc 1.6.
 
 == Upgrade Notice ==
 
