@@ -81,7 +81,8 @@ class PatternExplorer {
     questions = [];
     
     modelForStoryGrid = {storiesSelectedInGraph: []};
-    storyGridFieldSpecification: GridDisplayConfiguration = null;
+    // TODO: Improve typing here that was GridDisplayConfiguration
+    storyGridFieldSpecification: any = null;
     storyGrid: GridWithItemPanel = null;
      
     currentPattern = null;

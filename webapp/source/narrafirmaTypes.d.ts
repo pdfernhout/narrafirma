@@ -41,6 +41,7 @@ interface GridConfiguration {
 }
 
 interface GridDisplayConfiguration {
+    id: string;
     itemPanelID: string;
     itemPanelSpecification: any;
     gridConfiguration: GridConfiguration;
@@ -54,16 +55,22 @@ interface PanelField {
     displayType: string;
     displayPrompt: string;
     valuePath?: string;
-    valueOptions?: string | string[];
+    valueOptions?: string | string[] | Object;
     valueOptionsSubfield?: string;
     displayName?: string;
-    displayConfiguration?: string;
+    displayConfiguration?: any;
+    displayVisible?: any;
+    displayReadOnly?: any;
+    displayTransformValue?: any;
+    displayPreventBreak?: any;
+    displayDataOptionField?: any;
 }
 
 interface Panel {
     id: string;
     displayName?: string;
     panelFields: PanelField[];
+    modelClass?: string;
 }
 
 interface ClusteringDiagramItem {
