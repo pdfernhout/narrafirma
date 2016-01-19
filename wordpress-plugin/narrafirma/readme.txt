@@ -143,19 +143,19 @@ and to keep good records for the future.
 
 == Changelog ==
 
-= 0.9.0 =
+= 0.9.6 =
 
-* This is the first publicly released version of NarraFirma. For (highly detailed and entertaining) 
-change logs, see the [GitHub repository](https://github.com/pdfernhout/narrafirma).
+* Sanitize SQL input in WordPress plugin.
+* Improve TypeScript typings for tsc 1.6.
 
-= 0.9.1 = 
+= 0.9.5 =
 
-* Improvements to bundling of JavaScript code for faster loading.
+* Improvements for Node.js version and README/SETUP for installation.
 
-= 0.9.2 =
+= 0.9.4 =
 
-* More improvements to bundling of JavaScript for faster loading. Also improved startup feedback to show
-loading application, getting user information, or retrieving project data.
+* Now uses NarraFirma namespace in WordPress plugin PHP to conform with WordPress guidelines.
+* Fixed WordPress plugin survey bug where always returning first questionnaire added in a topic instead of the last one.
 
 = 0.9.3 =
 
@@ -164,40 +164,40 @@ loading application, getting user information, or retrieving project data.
 * Added warning about story collection creation.
 * Fixed some typos.
 
-= 0.9.4 =
+= 0.9.2 =
 
-* Now uses NarraFirma namespace in WordPress plugin PHP to conform with WordPress guidelines.
-* Fixed WordPress plugin survey bug where always returning first questionnaire added in a topic instead of the last one.
+* More improvements to bundling of JavaScript for faster loading. Also improved startup feedback to show
+loading application, getting user information, or retrieving project data.
 
-= 0.9.5 =
+= 0.9.1 = 
 
-Improvements for Node.js version and README/SETUP for installation.
+* Improvements to bundling of JavaScript code for faster loading.
 
-= 0.9.6 =
+= 0.9.0 =
 
-Sanitize SQL input in WordPress plugin.
-Improve TypeScript typings for tsc 1.6.
+* This is the first publicly released version of NarraFirma. For (highly detailed and entertaining) 
+change logs, see the [GitHub repository](https://github.com/pdfernhout/narrafirma).
 
 == Upgrade Notice ==
 
-= 0.9.1 =
-This upgrade affects performance only.
+= 0.9.6 =
+WordPress users should upgrade to this version as it contains a security fix.
 
-= 0.9.2 =
-This upgrade affects loading time, and there is a small cosmetic change.
-
-= 0.9.3 =
-This upgrade fixes a bug (in CSV export) and a few cosmetic issues.
+= 0.9.5 =
+Improvements for Node.js version and README/SETUP for installation. There is no need to upgrade to this version for WordPress users.
 
 = 0.9.4 =
 This upgrade fixes a bug where the web survey always used the first version of a question form and would never disable it.
 It also uses a NarraFirma namespace in the WordPress plugin PHP file to conform with WordPress guidelines.
 
-= 0.9.5 =
-Improvements for Node.js version and README/SETUP for installation. There is no need to upgrade to this version for WordPress users.
+= 0.9.3 =
+This upgrade fixes a bug (in CSV export) and a few cosmetic issues.
 
-= 0.9.6 =
-WordPress users should upgrade to this version as it contains a security fix.
+= 0.9.2 =
+This upgrade affects loading time, and there is a small cosmetic change.
+
+= 0.9.1 =
+This upgrade affects performance only.
 
 == Donations ==
 
