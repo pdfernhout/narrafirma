@@ -249,3 +249,9 @@ Remove leading and trailing spaces from passwords set via Node.js admin command 
 Do not log password under Node.js
 Improve README.md and add SETUP.md to have better setup information (including the need to compile TypeScript files)
 Include doctype and other metadata in Node.js login html pages
+
+--- Release 0.9.6
+
+Sanitize SQL input for WordPress plugin
+Improve TypeScript typings so compiles under TypeScript 1.6
+
