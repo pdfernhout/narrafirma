@@ -7,7 +7,7 @@ Author URI: http://www.cfkurtz.com
 Author: Cynthia Kurtz and Paul Fernhout
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=DGVVDT2D49QA8
 Requires at least: 4.3.1
-Tested up to: 4.3.1
+Tested up to: 4.4.1
 Stable tag: 0.9
 Version: 0.9.6
 License: GPLv2 or later
