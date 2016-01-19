@@ -4,7 +4,7 @@ Plugin Name: NarraFirma
 Plugin URI: http://narrafirma.com
 Description: Participatory Narrative Inquiry in a box. Gather stories and make sense of challenges and opportunities in your community or organization.
 Author: Cynthia F. Kurtz and Paul D. Fernhout
-Version: 0.9.5
+Version: 0.9.6
 Author URI: http://cfkurtz.com
 License: GPLv2 or later
 */
@@ -29,11 +29,9 @@ namespace NarraFirma;
 
 defined( 'ABSPATH' ) or die( 'Plugin must be run from inside WordPress' );
 
-$NARRAFIRMA_VERSION = '0.9.5';
+$NARRAFIRMA_VERSION = '0.9.6';
 
 $pointrelServerVersion = "pointrel20150417-0.0.4-wp";
-
-// TODO: Ensure unique prefixed names for all functions or wrap in uniquely named objects
 
 // Uses an option called "narrafirma" which is JSON text
 
@@ -224,15 +222,13 @@ if ( is_admin() ) {
 function narrafirma_admin_enqueue_scripts($hook) {
     // error_log("narrafirma_admin_enqueue_scripts $hook");
     
-    // TODO: Maybe this name chould be assigned to a global on page creation?
+    // TODO: Maybe this name should be assigned to a global on page creation?
     if ($hook != "toplevel_page_narrafirma-settings-admin") return;
         
     wp_enqueue_script( 'mithril', plugin_dir_url( __FILE__ ) . 'webapp/lib/mithril/mithril.js' );
     wp_enqueue_script( 'narrafirma-admin-js', plugin_dir_url( __FILE__ ) . 'narrafirmaWordPressAdmin.js' );
 }
 add_action( 'admin_enqueue_scripts', 'NarraFirma\\narrafirma_admin_enqueue_scripts' );
-
-// TODO: Move these functions into a class...
 
 add_action( 'wp_ajax_pointrel20150417', 'NarraFirma\\pointrel20150417' );
 add_action( 'wp_ajax_nopriv_pointrel20150417', 'NarraFirma\\pointrel20150417' );
@@ -433,8 +429,6 @@ function pointrel20150417_dispatch() {
     
     $requestType = $apiRequest->action;
     
-    // TODO: Check permissions
-    
     if ($requestType == "pointrel20150417_currentUserInformation") {
         pointrel20150417_currentUserInformation($apiRequest);
     }
@@ -615,16 +609,16 @@ function pointrel20150417_queryForNextMessage($apiRequest) {
     
     $table_name = tableNameForJournal($journalIdentifier);
     
-    // TODO: Need to sanitize $lastReceivedTimestampConsidered !!!!
     $fromTimestampExclusive = $apiRequest->fromTimestampExclusive;
     if (! $fromTimestampExclusive) {
         $fromTimestampExclusive = "0";
     }
+    $fromTimestampExclusive = esc_sql($fromTimestampExclusive);
     
     $includeMessageContents = $apiRequest->includeMessageContents;
     
     // TODO: Use constant here for maximum
-    $limitCount = max(1, min(100, $apiRequest->limitCount));
+    $limitCount = max(1, min(100, intval($apiRequest->limitCount)));
     
     /*
         id int(9) UNSIGNED NOT NULL AUTO_INCREMENT,
