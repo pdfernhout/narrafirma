@@ -7,7 +7,7 @@ Some panels are used as "pages" to be displayed.
 Some panels are used by widgets (especially the grid widget) to display nested information inside an enclosing panel.
 
 These panels are defined by relatively simple JavaScript modules.
-Thes modules are essentially JSON definitions of "field specifications" to include in the panel.
+These modules are essentially JSON definitions of "field specifications" to include in the panel.
 These fields are an array of simple objects.
 These objects have these fields:
 {

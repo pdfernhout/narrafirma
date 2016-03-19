@@ -45,6 +45,7 @@ M Select story positioning and visibility for printing story cards
 M Select title positioning and visibility for printing story cards
 
 GRAPH BROWSER
+M Add Eliciting question to catalysis - seems like it is not there (!)
 M Test all statistical tests for validity more -- run same tests in spreadsheet on same data
 M Support multiple scatter plots across individual question answers
 M Sometimes labels at bottom of graph overlap if many items in a scatter plot
@@ -54,7 +55,7 @@ L In general, size graphs better based on window size
 L Support graphBrowser common maximum for multiple histograms
 
 PATTERN EXPLORER
-L Show number of intepretations in table in PatternExplorer
+L Show number of interpretations in table in PatternExplorer
 
 CLUSTERING (CATALYSIS)
 
