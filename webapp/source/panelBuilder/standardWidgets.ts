@@ -4,6 +4,7 @@ import valuePathResolver = require("./valuePathResolver");
 import translate = require("./translate");
 import Globals = require("../Globals");
 import _ = require("lodash");
+import sanitizeHTML = require("../sanitizeHTML");
 
 "use strict";
 
@@ -168,7 +169,7 @@ export function displayQuestion(panelBuilder: PanelBuilder, model, fieldSpecific
                 var optionID = getIdForText(fieldID + "_" + option);
                 return [
                     m("input[type=checkbox]", {id: optionID, disabled: disabled, checked: !!value[option], onchange: function(event) {value[option] = event.target.checked; change(null, value); } }),
-                    m("label", {"for": optionID}, option),
+                    m("label", {"for": optionID}, sanitizeHTML.generateSmallerSetOfSanitizedHTMLForMithril(option)), 
                     m("br")
                 ];
             })
@@ -183,7 +184,7 @@ export function displayQuestion(panelBuilder: PanelBuilder, model, fieldSpecific
                 var optionID = getIdForText(fieldID + "_" + option);
                 return [
                     m("input[type=radio]", {id: optionID, value: option, name: fieldSpecification.id, disabled: disabled, checked: value === option, onchange: change.bind(null, null, option) }),
-                    m("label", {"for": optionID}, option), 
+                    m("label", {"for": optionID}, sanitizeHTML.generateSmallerSetOfSanitizedHTMLForMithril(option)),
                     m("br")
                 ];
             })

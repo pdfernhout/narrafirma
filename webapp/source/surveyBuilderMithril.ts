@@ -153,7 +153,7 @@ function displayQuestion(builder, model, fieldSpecification) {
                 var optionID = getIdForText(fieldID + "_" + option);
                 return [
                     m("input[type=checkbox]", {id: optionID, checked: !!value[optionValue], onchange: function(event) {value[optionValue] = event.target.checked; change(null, optionValue); } }),
-                    m("label", {"for": optionID}, optionName),
+                    m("label", {"for": optionID}, sanitizeHTML.generateSmallerSetOfSanitizedHTMLForMithril(optionName)),
                     m("br")
                 ];
             })
@@ -177,7 +177,7 @@ function displayQuestion(builder, model, fieldSpecification) {
                 var optionID = getIdForText(fieldID + "_" + optionValue);
                 return [
                     m("input[type=radio]", {id: optionID, value: optionValue, name: fieldSpecification.id, checked: value === optionValue, onchange: change.bind(null, null, optionValue) }),
-                    m("label", {"for": optionID}, optionName), 
+                    m("label", {"for": optionID}, sanitizeHTML.generateSmallerSetOfSanitizedHTMLForMithril(optionName)), 
                     m("br")
                 ];
             })

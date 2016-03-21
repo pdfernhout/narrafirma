@@ -54,11 +54,33 @@ var allowedHTMLTags = {
     ul: 1
 };
 
+var smallerSubsetOfAllowedHTMLTags = {
+    b: 1,
+    big: 1,
+    em: 1,
+    i: 1,
+    s: 1,
+    small: 1,
+    sup: 1,
+    sub: 1,
+    strong: 1,
+    strike: 1,
+    u: 1
+};
+
 var allowedCSSClasses = {
     "narrafirma-special-warning": 1
 };
 
 export function generateSanitizedHTMLForMithril(html) {
+    return generateSpecificTypeOfSanitizedHTMLForMithril(html, allowedHTMLTags);
+}
+
+export function generateSmallerSetOfSanitizedHTMLForMithril(html) {
+    return generateSpecificTypeOfSanitizedHTMLForMithril(html, smallerSubsetOfAllowedHTMLTags);
+}
+
+export function generateSpecificTypeOfSanitizedHTMLForMithril(html, specifiedHTMLTags) {
     // console.log("html", html);
     
     if (html === undefined || html === null) {
@@ -125,11 +147,11 @@ export function generateSanitizedHTMLForMithril(html) {
                 cssClass = startTag.cssClass;
             }
             
-            if (!allowedHTMLTags[tagName]) {
+            if (!specifiedHTMLTags[tagName]) {
                 throw new Error("tag is not allowed: " + tagName);
             }
             
-            if (allowedHTMLTags[tagName] === 2) {
+            if (specifiedHTMLTags[tagName] === 2) {
                 // self-closing tag like BR
                 output.push([]);
                 closing = true;
