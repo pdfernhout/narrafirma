@@ -543,10 +543,23 @@ export function exportQuestionnaire() {
             }
             outputLine.push(questionType);
             outputLine.push(about);
-            if (question.valueOptions) {
-               question.valueOptions.forEach(function(option) {
-                   outputLine.push(option);   
-               });
+            
+            if (question.displayType === "slider") {
+                if (question.displayConfiguration) {
+                    if (question.displayConfiguration.length === 1) {
+                        outputLine.push(question.displayConfiguration);
+                    } else if (question.displayConfiguration.length > 1) {
+                        question.displayConfiguration.forEach(function(option) {
+                           outputLine.push(option);   
+                       });
+                    }
+               }
+            } else {
+                if (question.valueOptions) {
+                   question.valueOptions.forEach(function(option) {
+                       outputLine.push(option);   
+                   });
+                }
             }
             addOutputLine(outputLine);
         }
