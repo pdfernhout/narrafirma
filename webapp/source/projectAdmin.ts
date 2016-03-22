@@ -97,6 +97,10 @@ var AdminPageDisplayer: any = {
             m("br"),
             m("hr", {style: "display: block; clear: both;"}),
             m("div", [
+                "A journal name can have alphanumeric characters, underscores, dashes, and dots (one dot at a time). " +
+                "It cannot include spaces, forward slashes, two or more dots in a row, or non-alphanumeric characters.",
+                m("br"),
+                m("br"),
                 m("label", {"for": "jn1"}, "Journal name: " + narrafirmaProjectPrefix),
                 m("input", {id: "jn1", value: journalName(), onchange: m.withAttr("value", journalName)}),
                 m("br"),

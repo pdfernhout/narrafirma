@@ -105,6 +105,11 @@ function calculateCanonicalSHA256AndLengthForObject(someObject, doNotSortFlag) {
 //-- Sanitizing
 
 function sanitizeFileName(fileName) {
+	// replace with underscore: 
+	//		space
+	//		two or more dots
+	//		anything that is not (an alphanumeric character or underscore or dot or dash)
+	// 		forward slash
     return fileName.replace(/\s/g, "_").replace(/\.[\.]+/g, "_").replace(/[^\w_\.\-]/g, "_").replace(/\//g, "_");
 }
 
