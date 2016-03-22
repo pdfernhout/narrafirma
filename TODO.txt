@@ -1,5 +1,9 @@
 ==== NarraFirma TODO list:
 
+NEW
+M Consider putting annotations at TOP of "Review stories" list so they are easier to add
+M Labels in graphs run into each other if they are long or there are many labels
+
 SURVEY GENERAL
 M If logged in, survey should not use "anonymous" user to connect (or should ask)
 L Display how many stories and/or survey results have been collected
