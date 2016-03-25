@@ -134,9 +134,6 @@ export function generateStoryCardContent(storyModel, options: Options = {}) {
     var otherFields = [];
     
     var questions = [];
-    
-    console.log("options", options);
-    
     var questionnaire = storyModel.questionnaire();
     if (options.questionnaire) questionnaire = options.questionnaire;
     
