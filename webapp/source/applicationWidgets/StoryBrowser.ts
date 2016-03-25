@@ -371,7 +371,7 @@ class StoryBrowser {
         // console.log("currentStoryCollectionChanged", this, storyCollectionIdentifier);
         
         // Update filters
-        this.questions = questionnaireGeneration.collectAllQuestions();
+        this.questions = questionnaireGeneration.collectAllQuestions("putAnnotationQuestionsUpFront");
                 
         this.choices = surveyCollection.optionsForAllQuestions(this.questions);
         
@@ -380,12 +380,13 @@ class StoryBrowser {
         
         this.itemPanelSpecification = this.makeItemPanelSpecificationForQuestions(this.questions);
         
-        this.itemPanelSpecification.panelFields.unshift({
+        this.itemPanelSpecification.panelFields.push({
             id: "ignore",
             valueType: "string",
             displayType: "text",
             displayName: "Ignore",
-            displayPrompt: "Reason to ignore this story?"
+            displayPrompt: "Reason to ignore story (enter any text here to leave this story out of all graphs and reports)",
+            displayClass: "narrafirma-ignore-story"
         });
         
         /*
@@ -403,7 +404,7 @@ class StoryBrowser {
     buildStoryDisplayPanel(panelBuilder: PanelBuilder, storyModel: surveyCollection.Story) {
         var storyDisplay;
         if (panelBuilder.readOnly) {
-            storyDisplay = storyCardDisplay.generateStoryCardContent(storyModel);
+            storyDisplay = storyCardDisplay.generateStoryCardContent(storyModel, {"location": "storyBrowser"});
         } else {
             storyDisplay = panelBuilder.buildFields(this.questions, storyModel);
         }

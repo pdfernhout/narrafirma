@@ -272,7 +272,11 @@ export function displayQuestion(panelBuilder: PanelBuilder, model, fieldSpecific
         parts = questionLabel.concat(parts);
     }
     
-    var classString = "questionExternal narrafirma-question-type-" + displayType;
+    var classString = "questionExternal";
+    var isAnnotationQuestion = fieldSpecification.id.indexOf("A_") >= 0;
+    if (isAnnotationQuestion) classString += "-annotation"; 
+    classString += " narrafirma-question-type-" + displayType;
+    
     if (fieldSpecification.displayClass) {
         classString += " " + fieldSpecification.displayClass;
     }

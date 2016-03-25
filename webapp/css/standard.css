@@ -268,6 +268,18 @@ button {
     margin: 8px;
 }
 
+.questionExternal-annotation {
+	background-color: #b2c07f;
+	margin-bottom: 4px;
+    border-radius: 12px;
+    padding: 8px;
+    margin: 8px;
+}
+
+.narrafirma-ignore-story {
+	border: 2px solid #231f20;
+}
+
 .questionExternal.narrafirma-question-type-label {
     background-color: white;
     margin-bottom: 4px;
@@ -378,15 +390,28 @@ form {
     font-weight: bold;
 }
 
-.narrafirma-story-card-story-text {
-	background-color: white;
+.narrafirma-story-card-story-text-in-story-browser {
 	border: 1px solid black;
 	border-radius: 12px; 
 	padding: 10px;
+	margin: 10px;
+}
+
+.narrafirma-story-card-story-text-in-printed-story-cards {
+	padding: 10px 20px 0px 20px;
+	margin: 10px 20px 0px 20px;
 }
 
 .narrafirma-story-card-eliciting-question {
-    font-size: 75%;
+    font-size: 100%;
+}
+
+.narrafirma-story-card-field-name {
+	font-size: 100%;
+}
+
+.narrafirma-story-card-eliciting-question-name {
+	font-size: 100%;
 }
 
 .narrafirma-story-card-select-selected, .narrafirma-story-card-checkboxes-selected, .narrafirma-story-card-radiobuttons-selected {
@@ -415,6 +440,10 @@ form {
 
 .narrafirma-story-card-slider-contents {
     padding: 1em;
+}
+
+.narrafirma-story-card-annotations {
+	font-size: 100%;
 }
 
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Adjustments for particular pages ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */

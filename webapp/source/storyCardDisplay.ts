@@ -41,49 +41,52 @@ function displayHTMLForSlider(fieldSpecification, fieldName, value) {
 
 function displayHTMLForCheckboxes(fieldSpecification, fieldName, value) {
     var options = [];
+    options.push(wrap("span", "narrafirma-story-card-field-name", fieldName + ": "));
     // TODO: What if value is not current available option?
     for (var i = 0; i < fieldSpecification.valueOptions.length; i++) {
         var option = fieldSpecification.valueOptions[i];
         //console.log("checkboxes", option, fieldSpecification, value);
-        if (options.length) options.push(", ");
+        if (options.length-1) options.push(", ");
         if (value && value[option]) {
             options.push(wrap("span", "narrafirma-story-card-checkboxes-selected", option));
         } else {
             options.push(wrap("span", "narrafirma-story-card-checkboxes-unselected", option));
         }
     }
-    return [fieldName + ": ", options];
+    return options;
 }
 
 function displayHTMLForRadioButtons(fieldSpecification, fieldName, value) {
     var options = [];
+    options.push(wrap("span", "narrafirma-story-card-field-name", fieldName + ": "));
     // TODO: What if value is not current available option?
     for (var i = 0; i < fieldSpecification.valueOptions.length; i++) {
         var option = fieldSpecification.valueOptions[i];
         //console.log("checkboxes", option, fieldSpecification, value);
-        if (options.length) options.push(", ");
+        if (options.length-1) options.push(", ");
         if (value && value === option) {
             options.push(wrap("span", "narrafirma-story-card-radiobuttons-selected", option));
         } else {
             options.push(wrap("span", "narrafirma-story-card-radiobuttons-unselected", option));
         }
     }
-    return [fieldName + ": ", options];
+    return options;
 }
 
 function displayHTMLForSelect(fieldSpecification, fieldName, value) {
     var options = [];
+    options.push(wrap("span", "narrafirma-story-card-field-name", fieldName + ": "));
     // TODO: What if value is not current available option?
     for (var i = 0; i < fieldSpecification.valueOptions.length; i++) {
         var option = fieldSpecification.valueOptions[i];
-        if (options.length) options.push(", ");
+        if (options.length-1) options.push(", ");
         if (value && value === option) {
             options.push(wrap("span", "narrafirma-story-card-select-selected", option));
         } else {
             options.push(wrap("span", "narrafirma-story-card-select-unselected", option));
         }
     }
-    return [fieldName + ": ", options];
+    return options;
 }
 
 function displayHTMLForField(storyModel: surveyCollection.Story, fieldSpecification, nobreak = null) {
@@ -93,6 +96,7 @@ function displayHTMLForField(storyModel: surveyCollection.Story, fieldSpecificat
     var fieldName = fieldSpecification.displayName || fieldSpecification.displayPrompt;
     
     var result = [];
+    
     if (fieldSpecification.displayType === "slider") {
         result.push(displayHTMLForSlider(fieldSpecification, fieldName, value));
     } else if (fieldSpecification.displayType === "checkboxes") {
@@ -103,13 +107,14 @@ function displayHTMLForField(storyModel: surveyCollection.Story, fieldSpecificat
         result.push(displayHTMLForRadioButtons(fieldSpecification, fieldName, value));
     } else {
         // TODO: May need more handling here for other cases
-        result.push(fieldName + ": ");
+        result.push(wrap("span", "narrafirma-story-card-field-name", fieldName) + ": ");
         result.push(value);
     }
     if (!nobreak) {
         result.push(m("br"));
         result.push(m("br"));
     }
+    
     return result;  
 }
 
@@ -130,17 +135,13 @@ export function generateStoryCardContent(storyModel, options: Options = {}) {
     
     var questions = [];
     
+    console.log("options", options);
+    
     var questionnaire = storyModel.questionnaire();
     if (options.questionnaire) questionnaire = options.questionnaire;
     
     if (questionnaire) questions = questions.concat(questionnaire.storyQuestions);
     if (questionnaire) questions = questions.concat(questionnaire.participantQuestions);
-    
-    if (!options.excludeAnnotations) {
-        var annotationQuestions = Globals.project().collectAllAnnotationQuestions();
-        var adjustedAnnotationQuestions = questionnaireGeneration.convertEditorQuestions(annotationQuestions, "A_");
-        questions = questions.concat(adjustedAnnotationQuestions);
-    }
     
     questions.sort(function(a, b) {
        var aName = a.displayName || a.displayPrompt || "";
@@ -160,7 +161,6 @@ export function generateStoryCardContent(storyModel, options: Options = {}) {
     for (i = 0; i < questions.length; i++) {
         question = questions[i];
         if (question.displayType !== "slider") continue;
-        // console.log("making slider", question);
         otherFields.push(displayHTMLForField(storyModel, question, "nobreak"));
     }
     if (otherFields.length) otherFields = [m("table", otherFields), m("br")];
@@ -168,7 +168,6 @@ export function generateStoryCardContent(storyModel, options: Options = {}) {
     for (i = 0; i < questions.length; i++) {
         question = questions[i];
         if (question.displayType === "slider") continue;
-        // console.log("making other than slider", question);
         otherFields.push(displayHTMLForField(storyModel, question));
     }
     
@@ -176,16 +175,48 @@ export function generateStoryCardContent(storyModel, options: Options = {}) {
     
     var textForElicitingQuestion: any = [];
     if (!options.excludeElicitingQuestion) {
-        textForElicitingQuestion = m(".narrafirma-story-card-eliciting-question", ["Eliciting question: ", elicitingQuestion, m("br")]);
+        textForElicitingQuestion = m(
+            ".narrafirma-story-card-eliciting-question", 
+            [wrap("span", "narrafirma-story-card-eliciting-question-name", "Eliciting question: "), 
+            elicitingQuestion, m("br")]);
     }
     
     var storyTextAtTop: any = [];
-    var storyTextAtBottom = wrap("div", "narrafirma-story-card-story-text", storyText);
+    var storyTextClass = "";
+    if (options["location"] && options["location"] === "storyBrowser") {
+        storyTextClass = "narrafirma-story-card-story-text-in-story-browser";
+    } else {
+        storyTextClass = "narrafirma-story-card-story-text-in-printed-story-cards";
+    }
+    var storyTextAtBottom = wrap("div", storyTextClass, storyText);
     
     if (options.storyTextAtTop) {
         storyTextAtTop = storyTextAtBottom;
         storyTextAtBottom = [];
     }
+    
+    // place annotations at bottom (so they don't appear the same as the other questions)
+    
+    if (!options.excludeAnnotations) {
+        var annotationQuestions = Globals.project().collectAllAnnotationQuestions();
+        var adjustedAnnotationQuestions = questionnaireGeneration.convertEditorQuestions(annotationQuestions, "A_");
+        //questions = questions.concat(adjustedAnnotationQuestions);
+    }
+    
+    var annotationFields: any = [];
+    for (i = 0; i < adjustedAnnotationQuestions.length; i++) {
+        question = adjustedAnnotationQuestions[i];
+        if (question.displayType !== "slider") continue;
+        annotationFields.push(displayHTMLForField(storyModel, question, "nobreak"));
+    }
+    if (annotationFields.length) annotationFields = [m("table", annotationFields), m("br")];
+    
+    for (i = 0; i < adjustedAnnotationQuestions.length; i++) {
+        question = adjustedAnnotationQuestions[i];
+        if (question.displayType === "slider") continue;
+        annotationFields.push(displayHTMLForField(storyModel, question));
+    }
+    if (annotationFields.length) annotationFields = [wrap("span", "narrafirma-story-card-annotations", annotationFields)];
     
     var storyCardContent = m("div[class=storyCard]", [
         wrap("div", "narrafirma-story-card-story-title", storyName),
@@ -195,6 +226,8 @@ export function generateStoryCardContent(storyModel, options: Options = {}) {
         storyTextAtBottom,
         m("br"),
         textForElicitingQuestion,
+        m("br"),
+        annotationFields,
         m("hr")
     ]);
     
