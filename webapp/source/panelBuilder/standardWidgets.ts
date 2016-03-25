@@ -154,7 +154,14 @@ export function displayQuestion(panelBuilder: PanelBuilder, model, fieldSpecific
     } else if (displayType === "checkbox") {
         makeLabel();
         parts = [
-             m("input[type=checkbox]", {id: getIdForText(fieldID), disabled: disabled, checked: value, onchange: function(event) {change(null, event.target.checked); }}),
+             m("input[type=checkbox]", {
+                id: getIdForText(fieldID), 
+                disabled: disabled, 
+                checked: value, 
+                onchange: function(event) {
+                    change(null, event.target.checked); 
+                }
+             }),
              m("br")
          ];
     } else if (displayType === "checkboxes") {
@@ -163,12 +170,28 @@ export function displayQuestion(panelBuilder: PanelBuilder, model, fieldSpecific
         if (!value) {
             value = {};
             change(null, value);
+        // this else is here because of a bug (fixed) in the survey code that caused checkbox answers
+        // to be stored as strings instead of dictionaries
+        // this will convert the string to a dictionary without losing the (one) value that was set
+        } else if (typeof(value) === "string") {
+            var option = value;
+            value = {}
+            value[option] = true;
+            change(null, value);
         }
         parts = [
             fieldSpecification.valueOptions.map(function (option, index) {
                 var optionID = getIdForText(fieldID + "_" + option);
                 return [
-                    m("input[type=checkbox]", {id: optionID, disabled: disabled, checked: !!value[option], onchange: function(event) {value[option] = event.target.checked; change(null, value); } }),
+                    m("input[type=checkbox]", {
+                        id: optionID, 
+                        disabled: disabled, 
+                        checked: !!value[option], 
+                        onchange: function(event) {
+                            value[option] = event.target.checked; 
+                            change(null, value); 
+                        } 
+                    }),
                     m("label", {"for": optionID}, sanitizeHTML.generateSmallerSetOfSanitizedHTMLForMithril(option)), 
                     m("br")
                 ];
@@ -183,7 +206,14 @@ export function displayQuestion(panelBuilder: PanelBuilder, model, fieldSpecific
             fieldSpecification.valueOptions.map(function (option, index) {
                 var optionID = getIdForText(fieldID + "_" + option);
                 return [
-                    m("input[type=radio]", {id: optionID, value: option, name: fieldSpecification.id, disabled: disabled, checked: value === option, onchange: change.bind(null, null, option) }),
+                    m("input[type=radio]", {
+                        id: optionID, 
+                        value: option, 
+                        name: fieldSpecification.id, 
+                        disabled: disabled, 
+                        checked: value === option, 
+                        onchange: change.bind(null, null, option) 
+                    }),
                     m("label", {"for": optionID}, sanitizeHTML.generateSmallerSetOfSanitizedHTMLForMithril(option)),
                     m("br")
                 ];

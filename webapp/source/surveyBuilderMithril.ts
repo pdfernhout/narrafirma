@@ -152,7 +152,14 @@ function displayQuestion(builder, model, fieldSpecification) {
                 }
                 var optionID = getIdForText(fieldID + "_" + option);
                 return [
-                    m("input[type=checkbox]", {id: optionID, checked: !!value[optionValue], onchange: function(event) {value[optionValue] = event.target.checked; change(null, optionValue); } }),
+                    m("input[type=checkbox]", {
+                        id: optionID, 
+                        checked: !!value[optionValue], 
+                        onchange: function(event) {
+                            value[optionValue] = event.target.checked; 
+                            change(null, value); 
+                        } 
+                    }),
                     m("label", {"for": optionID}, sanitizeHTML.generateSmallerSetOfSanitizedHTMLForMithril(optionName)),
                     m("br")
                 ];
