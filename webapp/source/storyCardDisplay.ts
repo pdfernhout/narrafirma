@@ -44,12 +44,28 @@ function displayHTMLForCheckboxes(fieldSpecification, fieldName, value) {
     // TODO: What if value is not current available option?
     for (var i = 0; i < fieldSpecification.valueOptions.length; i++) {
         var option = fieldSpecification.valueOptions[i];
-        // console.log("checkboxes", option, fieldSpecification, value);
+        //console.log("checkboxes", option, fieldSpecification, value);
         if (options.length) options.push(", ");
         if (value && value[option]) {
             options.push(wrap("span", "narrafirma-story-card-checkboxes-selected", option));
         } else {
             options.push(wrap("span", "narrafirma-story-card-checkboxes-unselected", option));
+        }
+    }
+    return [fieldName + ": ", options];
+}
+
+function displayHTMLForRadioButtons(fieldSpecification, fieldName, value) {
+    var options = [];
+    // TODO: What if value is not current available option?
+    for (var i = 0; i < fieldSpecification.valueOptions.length; i++) {
+        var option = fieldSpecification.valueOptions[i];
+        //console.log("checkboxes", option, fieldSpecification, value);
+        if (options.length) options.push(", ");
+        if (value && value === option) {
+            options.push(wrap("span", "narrafirma-story-card-radiobuttons-selected", option));
+        } else {
+            options.push(wrap("span", "narrafirma-story-card-radiobuttons-unselected", option));
         }
     }
     return [fieldName + ": ", options];
@@ -61,7 +77,7 @@ function displayHTMLForSelect(fieldSpecification, fieldName, value) {
     for (var i = 0; i < fieldSpecification.valueOptions.length; i++) {
         var option = fieldSpecification.valueOptions[i];
         if (options.length) options.push(", ");
-        if (value === option) {
+        if (value && value === option) {
             options.push(wrap("span", "narrafirma-story-card-select-selected", option));
         } else {
             options.push(wrap("span", "narrafirma-story-card-select-unselected", option));
@@ -83,6 +99,8 @@ function displayHTMLForField(storyModel: surveyCollection.Story, fieldSpecificat
         result.push(displayHTMLForCheckboxes(fieldSpecification, fieldName, value));
     } else if (fieldSpecification.displayType === "select") {
         result.push(displayHTMLForSelect(fieldSpecification, fieldName, value));
+    } else if (fieldSpecification.displayType === "radiobuttons") {
+        result.push(displayHTMLForRadioButtons(fieldSpecification, fieldName, value));
     } else {
         // TODO: May need more handling here for other cases
         result.push(fieldName + ": ");
@@ -139,7 +157,6 @@ export function generateStoryCardContent(storyModel, options: Options = {}) {
     var i;
     
     // Put sliders in a table at the start, so loop twice with different conditions
-    
     for (i = 0; i < questions.length; i++) {
         question = questions[i];
         if (question.displayType !== "slider") continue;
@@ -175,8 +192,9 @@ export function generateStoryCardContent(storyModel, options: Options = {}) {
         storyTextAtTop,
         m("br"),
         otherFields,
-        textForElicitingQuestion,
         storyTextAtBottom,
+        m("br"),
+        textForElicitingQuestion,
         m("hr")
     ]);
     

@@ -289,6 +289,7 @@ button {
 
 .questionInternal {
     padding: 8px;
+    margin-left: 12px;
 }
 
 .narrafirma-textbox {
@@ -378,18 +379,22 @@ form {
 }
 
 .narrafirma-story-card-story-text {
+	background-color: white;
+	border: 1px solid black;
+	border-radius: 12px; 
+	padding: 10px;
 }
 
 .narrafirma-story-card-eliciting-question {
     font-size: 75%;
 }
 
-.narrafirma-story-card-select-selected, .narrafirma-story-card-checkboxes-selected {
+.narrafirma-story-card-select-selected, .narrafirma-story-card-checkboxes-selected, .narrafirma-story-card-radiobuttons-selected {
     font-size: 150%;
     font-weight: bold; 
 }
 
-.narrafirma-story-card-select-unselected, .narrafirma-story-card-checkboxes-unselected {
+.narrafirma-story-card-select-unselected, .narrafirma-story-card-checkboxes-unselected, .narrafirma-story-card-radiobuttons-unselected {
     font-size: 75%;
 }
 
