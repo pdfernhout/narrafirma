@@ -123,6 +123,10 @@ export function displayQuestion(panelBuilder: PanelBuilder, model, fieldSpecific
         valueProperty(value);
     }
     
+    function isEmpty(value) {
+        return value === undefined || value === null || value === "";
+    }
+    
     var readOnly = panelBuilder.readOnly || fieldSpecification.displayReadOnly || (fieldSpecification.valueImmutable && value) || undefined;
     // var disabled = (readOnly && displayType === "select") || undefined;
     var disabled = readOnly || undefined;
@@ -225,10 +229,22 @@ export function displayQuestion(panelBuilder: PanelBuilder, model, fieldSpecific
         // The for attribute of the label element must refer to a form control.
         delete questionLabel[0].attrs["for"];
         parts = [
-            m("input[type=radio]", {id: getIdForText(fieldID + "_yes"), value: true, name: fieldSpecification.id, disabled: disabled, checked: value === true, onchange: change.bind(null, null, true) }),
+            m("input[type=radio]", {
+                id: getIdForText(fieldID + "_yes"), 
+                value: true, 
+                name: fieldSpecification.id, 
+                disabled: disabled, 
+                checked: value === true, 
+                onchange: change.bind(null, null, true) }),
             m("label", {"for": getIdForText(fieldID + "_yes")}, "yes"),
             m("br"),
-            m("input[type=radio]", {id: getIdForText(fieldID + "_no"), value: false, name: fieldSpecification.id, disabled: disabled, checked: value === false, onchange: change.bind(null, null, false) }),
+            m("input[type=radio]", {
+                id: getIdForText(fieldID + "_no"), 
+                value: false, 
+                name: fieldSpecification.id, 
+                disabled: disabled, 
+                checked: value === false, 
+                onchange: change.bind(null, null, false) }),
             m("label", {"for": getIdForText(fieldID + "_no")}, "no"),
             m("br")
         ];
@@ -250,12 +266,38 @@ export function displayQuestion(panelBuilder: PanelBuilder, model, fieldSpecific
         ];
     } else if (displayType === "slider") {
         makeLabel();
-        // Could suggest 0-100 to support <IE10 that don't have range input -- or could do polyfill
+        var checkboxID = getIdForText(fieldID) + "_doesNotApply";
+        var sliderValueOptions = {
+            value: value,
+            id: getIdForText(fieldID),
+            onchange: change,
+            readOnly: readOnly,
+            disabled: disabled,
+            min: 0,
+            max: 100,
+            step: 1
+        };
+       // Could suggest 0-100 to support <IE10 that don't have range input -- or could do polyfill
         // if (fieldSpecification.displayPrompt) questionLabel[0].children = fieldSpecification.displayPrompt + " (0-100)";
         parts = [
             m("span", {"class": "narrafirma-survey-low"}, "◀ " + fieldSpecification.displayConfiguration[0]),
-            m('span', {"class": "narrafirma-survey-slider"}, m('input[type="range"]', standardValueOptions)),
-            m('span', {"class": "narrafirma-survey-high"}, fieldSpecification.displayConfiguration[1] + " ▶")
+            m('span', {"class": "narrafirma-survey-slider"}, m('input[type="range"]', sliderValueOptions)),
+            m('span', {"class": "narrafirma-survey-high"}, fieldSpecification.displayConfiguration[1] + " ▶"),
+            m("br"),
+            m('input[type="checkbox"]', {
+                "class": "narrafirma-survey-does-not-apply",
+                id: checkboxID,
+                checked: isEmpty(sliderValueOptions.value),
+                onclick: function(event) { 
+                    var isChecked = event.target.checked; 
+                    if (isChecked) { 
+                        valueProperty(""); 
+                    } else {
+                        valueProperty("50");
+                    }
+                }
+            }),
+            m("label", {"for": checkboxID}, "Does not apply")
         ];
     } else {
         parts = [
@@ -265,7 +307,7 @@ export function displayQuestion(panelBuilder: PanelBuilder, model, fieldSpecific
     }
 
     if (parts.length) {
-        parts = m("div", {"class": "questionInternal"}, parts);
+        parts = m("div", {"class": "questionInternal narrafirma-question-type-" + displayType}, parts);
     }
     
     if (questionLabel) {

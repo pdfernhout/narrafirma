@@ -118,6 +118,16 @@ textarea, input, select {
     white-space: nowrap;
 }
 
+.narrafirma-survey-value {
+	text-align: left;
+	font-size: 75%;
+	margin-top: 8px;
+}
+
+.narrafirma-survey-does-not-apply {
+	margin-top: 12px;
+}
+
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ tell another story, delete story ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 .narrafirma-survey-tell-another-story-button-panel {

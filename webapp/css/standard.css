@@ -276,8 +276,12 @@ button {
     margin: 8px;
 }
 
-.narrafirma-ignore-story {
-	border: 2px solid #231f20;
+.questionExternal.narrafirma-question-type-text.narrafirma-ignore-story {
+	background-color: #a7a5a5;
+}
+
+.questionInternal.narrafirma-question-type-slider {
+    text-align: center;
 }
 
 .questionExternal.narrafirma-question-type-label {
