@@ -24,7 +24,7 @@ function displayHTMLForSlider(fieldSpecification, fieldName, value) {
     for (var i = 0; i < bucketCount; i++) {
         var bucketLow = i * bucketSize;
         var bucketHigh = i * bucketSize + bucketSize;
-        if (!placed && ((value < bucketHigh) || (value && i === bucketCount - 1))) {
+        if (!placed && value && ((value < bucketHigh) || (value && i === bucketCount - 1))) {
             sliderText.push(m("b", "|"));
             placed = true;
         } else {
