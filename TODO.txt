@@ -1,7 +1,6 @@
 ==== NarraFirma TODO list:
 
 NEW
-M Consider putting annotations at TOP of "Review stories" list so they are easier to add
 M Labels in graphs run into each other if they are long or there are many labels
 
 SURVEY GENERAL
@@ -138,14 +137,10 @@ W Ideally way to do conditional question or answer (piping), especially to pick 
 W If entering a story and decide not to, can't remove window without adding story. (But seems to work during local test using "CLose" button)
 W After enter story in story thing, form contents don't change (in noticeable way). Rest of form looks the same and no indication. Maybe could improve somehow (like clear). Different needs for data entry -- want to clear and enter new one.
 W Need "other" field for radiobuttons and checkboxes (maybe dropdown, probably not)
-W Sliders
-  Need "does not apply" for sliders
-  Sliders too tiny (hard to see color) 
-  Need to jiggle slider button or it records nothing (needs work)
-  Need a flip axis for slider for catalysis when graphing
+W Sliders - Sliders too tiny (hard to see color) 
+W Need a flip axis for slider for catalysis when graphing
 
 THINGS CYNTHIA NOTICED WHILE DOING HELP (probably redundant but just in case)
-M Slider should have a "does not apply" option
 L After you enter a story, it shows an alert that the story has been saved, but it doesn't get rid of the window. the popup window should go away
 L would like to make "focus rectangle" or "rubber band" over graphs when selecting - see http://bl.ocks.org/mbostock/1667367
 
@@ -222,6 +217,18 @@ Support imageUploader
 Support storyBrowserCount
 
 ==== DONE
+
+---- Release 0.9.?? (fill in later)
+
+DONE Need "does not apply" for sliders
+DONE Slider should have a "does not apply" option
+DONE Need to jiggle slider button or it records nothing (needs work)
+DONE Fix bug with checkbox questions not storing data correctly
+DONE Consider putting annotations at TOP of "Review stories" list so they are easier to add
+DONE Show annotations in different color in "Review stories" list so they are easier to pick out 
+DONE Move "Reason to ignore story" thing to end of "Review stories" list so it doesn't get in the way when editing
+DONE Show story text more prominently on story card display
+DONE Move annotations to bottom of story card display
 
 ---- Release 0.9.1
 
