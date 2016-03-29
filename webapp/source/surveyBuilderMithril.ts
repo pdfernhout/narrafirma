@@ -134,8 +134,16 @@ function displayQuestion(builder, model, fieldSpecification) {
         ];
     } else if (displayType === "checkbox") {
         makeLabel();
+        var checkboxText = "";
+        if (fieldSpecification.displayConfiguration) {
+            checkboxText = fieldSpecification.displayConfiguration;
+        }
         parts = [
-             m("input[type=checkbox]", {id: getIdForText(fieldID), checked: value, onchange: function(event) { change(null, event.target.checked); }}),
+             m("input[type=checkbox]", {
+                    id: getIdForText(fieldID), 
+                    checked: value, 
+                    onchange: function(event) { change(null, event.target.checked); }}),
+             m("label", {"for": getIdForText(fieldID)}, checkboxText),
              m("br")
          ];
     } else if (displayType === "checkboxes") {
@@ -253,12 +261,26 @@ function displayQuestion(builder, model, fieldSpecification) {
             max: 100,
             step: 1
         };
+        
+        var leftSideText = "";
+        var rightSideText = "";
+        var doesNotApplyText = "Does not apply";
+        if (fieldSpecification.displayConfiguration) {
+            if (fieldSpecification.displayConfiguration.length > 1) {
+                leftSideText = fieldSpecification.displayConfiguration[0];
+                rightSideText = fieldSpecification.displayConfiguration[1];
+            }
+            if (fieldSpecification.displayConfiguration.length > 2) {
+                doesNotApplyText = fieldSpecification.displayConfiguration[2];
+            }
+        }
+        
         // Could suggest 0-100 to support <IE10 that don't have range input -- or could do polyfill
         // if (fieldSpecification.displayPrompt) questionLabel[0].children = fieldSpecification.displayPrompt + " (0-100)";
         parts = [
-            m("span", {"class": "narrafirma-survey-low"}, "◀ " + fieldSpecification.displayConfiguration[0]),
+            m("span", {"class": "narrafirma-survey-low"}, "◀ " + leftSideText),
             m('span', {"class": "narrafirma-survey-slider"}, m('input[type="range"]', sliderValueOptions)),
-            m('span', {"class": "narrafirma-survey-high"}, fieldSpecification.displayConfiguration[1] + " ▶"),
+            m('span', {"class": "narrafirma-survey-high"}, rightSideText + " ▶"),
             m("br"),
             m('input[type="checkbox"]', {
                 "class": "narrafirma-survey-does-not-apply",
@@ -275,7 +297,7 @@ function displayQuestion(builder, model, fieldSpecification) {
                     }
                 }
             }),
-            m("label", {"for": checkboxID}, "Does not apply")
+            m("label", {"for": checkboxID}, doesNotApplyText)
         ];
     } else {
         parts = [

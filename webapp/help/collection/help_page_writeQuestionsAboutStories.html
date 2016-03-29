@@ -70,6 +70,72 @@ You don't set the question order here. You only create the questions here. You s
 </div>
 
 <div class="question">
+What do the question types mean?
+</div>
+<div class="question-answer">
+<p>
+A <strong>boolean</strong> question shows the options "yes" and "no," of which people can choose only one.
+</p>
+<p>
+A <strong>label</strong> is just some plain text. It's not really a question. Nothing gets stored. 
+It's a way to talk to people between your questions.
+</p>
+<p>
+A <strong>header</strong> is the same as a label, only it's formatted as <strong>bold text</strong>.
+</p>
+<p>
+A <strong>checkbox</strong> question has one solitary check box. It starts out unchecked. 
+To add a label to the checkbox (e.g., "Yes, I think so"), enter it into the <strong>choices</strong> box. 
+</p>
+<p>
+A <strong>checkboxes</strong> question has any number of check box answers, and people can tick as many 
+as they like. Enter labels for your check boxes in the <strong>choices</strong> box.
+(There is no way to limit people to a fixed number of answers. Use your question text
+to ask them to limit their choices, for example "Please choose up to three answers.") 
+</p>
+<p>
+A <strong>text</strong> question has a one-line text box, for short but free-text answers.
+</p>
+<p>
+A <strong>textarea</strong> question has a multi-line, extendible text box, for paragraph-length free-text answers.
+</p>
+<p>
+A <strong>select</strong> question has a single-choice drop-down list. Enter your list items
+in the <strong>choices</strong> box.
+</p>
+<p>
+A <strong>radiobuttons</strong> question has any number of answers,
+from which people can choose only one. These are like buttons on a radio: when you click one choice, 
+all the others "pop up." Enter the answers you want to make available in the <strong>choices</strong> box.
+</p>
+<p>
+A <strong>slider</strong> question has a line with a button that you drag. Labels on the left
+and right show people what they are choosing between. In the <strong>choices</strong> box,
+enter first the left-side slider label, then (on the second line), the right-side slider label.
+If you want special text for the "Does not apply" checkbox under the slider (meaning, I don't
+want to set a value), write it in the third line of the <strong>choices</strong> box. For example,
+you might write:
+</p>
+<ul>
+<li>a little</li>
+<li>a lot</li>
+<li>I don't know</li>
+</ul>
+<p>
+If you don't specify a third-line label, the checkbox will say "Does not apply."
+</p>
+</div>
+
+<div class="question">
+What's the difference between a "boolean" and a "check box"?
+</div>
+<div class="question-answer">
+<p>
+A check box has only two possible answers: yes and no. It starts out unchecked, and you can't tell whether people meant to say "no" or didn't touch it. A boolean question, in contrast, has three possible answers: yes, no, and unanswered. It starts out with neither radio button clicked, and you can tell whether people clicked "no" or didn't click anything.
+</p>
+</div>
+
+<div class="question">
 Can I use HTML formatting for questions?
 </div>
 <div class="question-answer">
@@ -87,33 +153,6 @@ They are stripped out when you print your story form.
 </p>
 <p>
 To protect your NarraFirma installation from hacking, you cannot use attributes (such as "id") on any of these tags.
-</p>
-</div>
-
-<div class="question">
-What do the question types mean?
-</div>
-<div class="question-answer">
-<ul>
-<li>boolean: the options "yes" and "no" with radio buttons</li>
-<li>label: just some plain text (not really a question; nothing gets stored)</li>
-<li>header: some bold text (not really a question; nothing gets stored)</li>
-<li>checkbox: one check box (unchecked by default)</li>
-<li>checkboxes: any number of check boxes (multiple choice, all unchecked by default)</li>
-<li>text: a one-line text box</li>
-<li>textarea: a multi-line (and extendible) text box</li>
-<li>select: a single-choice drop-down</li>
-<li>radiobuttons: any number of radio buttons (single choice)</li>
-<li>slider: a line with a button you drag, with labels on the left and right</li>
-</ul>
-</div>
-
-<div class="question">
-What's the difference between a "boolean" and a "check box"?
-</div>
-<div class="question-answer">
-<p>
-A check box has only two possible answers: yes and no. It starts out unchecked, and you can't tell whether people meant to say "no" or didn't touch it. A boolean question, in contrast, has three possible answers: yes, no, and unanswered. It starts out with neither radio button clicked, and you can tell whether people clicked "no" or didn't click anything.
 </p>
 </div>
 

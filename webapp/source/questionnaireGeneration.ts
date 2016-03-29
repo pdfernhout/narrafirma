@@ -50,6 +50,7 @@ export function convertEditorQuestions(editorQuestions, prefixQPA) {
         
         var options = [];
         var optionsString = question.storyQuestion_options || question.participantQuestion_options || question.annotationQuestion_options;
+        
         if (optionsString) {
             // TODO: Improve option handling so can have standard IDs for options
             var splitOptions = optionsString.split("\n");
@@ -72,7 +73,7 @@ export function convertEditorQuestions(editorQuestions, prefixQPA) {
             valueOptions = options;
         } else {
             if (options.length === 1) {
-                displayConfiguration = options[1];
+                displayConfiguration = options[0];
             } else if (options.length > 1) {
                 displayConfiguration = options;
             }

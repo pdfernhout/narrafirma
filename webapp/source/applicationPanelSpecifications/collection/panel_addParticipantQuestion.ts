@@ -29,7 +29,7 @@ var panel: Panel = {
             ],
             displayType: "select",
             displayName: "Type",
-            displayPrompt: "What <strong>type</strong> of question is this?"
+            displayPrompt: "What <strong>type</strong> of question is this? (For an explanation of the question types, click the Help button.)"
         },
         {
             id: "participantQuestion_shortName",
@@ -43,7 +43,14 @@ var panel: Panel = {
             valueType: "string",
             displayType: "textarea",
             displayName: "Options",
-            displayPrompt: "If your question requires <strong>choices</strong>, enter them here (one per line). For a slider, enter the texts to place on the left and right sides (on separate lines)."
+            displayPrompt: `
+                If your question requires <strong>choices</strong>, enter them here. 
+                Write each choice on a separate line.
+                <br><br>
+                For a slider, enter the texts to place on the left and right sides of the slider, 
+                then the text to show on the \"Does not apply\" checkbox (or leave the third line blank
+                to use \"Does not apply\"). 
+            `
         },
         {
             id: "SPECIAL_templates_participantQuestions",
