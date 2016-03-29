@@ -123,6 +123,7 @@ interface Options {
     excludeAnnotations?: boolean;
     storyTextAtTop?: boolean;
     questionnaire?: any;
+    location?: string;
 }
 
 export function generateStoryCardContent(storyModel, options: Options = {}) {
