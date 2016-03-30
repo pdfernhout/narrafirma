@@ -94,9 +94,7 @@ function displayHTMLForField(storyModel: surveyCollection.Story, fieldSpecificat
     var value = storyModel.fieldValue(fieldSpecification.id);
     // TODO: extra checking here for problems with test data -- could probably be changed back to just displayName eventually
     var fieldName = fieldSpecification.displayName || fieldSpecification.displayPrompt;
-    
     var result = [];
-    
     if (fieldSpecification.displayType === "slider") {
         result.push(displayHTMLForSlider(fieldSpecification, fieldName, value));
     } else if (fieldSpecification.displayType === "checkboxes") {
@@ -107,7 +105,7 @@ function displayHTMLForField(storyModel: surveyCollection.Story, fieldSpecificat
         result.push(displayHTMLForRadioButtons(fieldSpecification, fieldName, value));
     } else {
         // TODO: May need more handling here for other cases
-        result.push(wrap("span", "narrafirma-story-card-field-name", fieldName) + ": ");
+        result.push(wrap("span", "narrafirma-story-card-field-name", fieldName + ": "));
         result.push(value);
     }
     if (!nobreak) {
