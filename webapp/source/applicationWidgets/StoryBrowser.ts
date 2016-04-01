@@ -306,8 +306,8 @@ class StoryBrowser {
             }
         };
         
-        this.filter1 = new Filter({key: "Filter 1", name: "Filter 1", storyBrowser: this});
-        this.filter2 = new Filter({key: "Filter 2", name: "Filter 2", storyBrowser: this});
+        this.filter1 = new Filter({key: "First filter", name: "First filter", storyBrowser: this});
+        this.filter2 = new Filter({key: "Second filter", name: "Second filter", storyBrowser: this});
         this.grid = new GridWithItemPanel({panelBuilder: args.panelBuilder, model: this, fieldSpecification: this.gridFieldSpecification});
     }
 
@@ -344,7 +344,8 @@ class StoryBrowser {
             this.grid.updateDisplayConfigurationAndData(this.gridFieldSpecification.displayConfiguration);
         }
         
-        var prompt = panelBuilder.buildQuestionLabel(args.fieldSpecification);
+        var promptText = panelBuilder.addAllowedHTMLToPrompt(args.fieldSpecification.displayPrompt) + " (" + this.allStories.length + ")";
+        var prompt =  m("span", {"class": "questionPrompt"}, promptText);
         
         var parts;
         
@@ -356,12 +357,10 @@ class StoryBrowser {
                 m("td", this.filter2.calculateView())
             ]));
             
-            var numStories = this.filteredStories.length;
-            var storiesText = " stories";
-            if (numStories === 1) { storiesText = " story"; } 
-            var countText = m("div.narrafirma-story-browser-count", numStories + storiesText);
+            // TODO: Translation
+            var filteredCountText = m("div.narrafirma-story-browser-filtered-stories-count", "Filtered stories (" + this.filteredStories.length + ")");
 
-            parts = [prompt, filter, countText, this.grid.calculateView()];
+            parts = [prompt, filter, filteredCountText, this.grid.calculateView()];
         }
         
         return m("div", {"class": "questionExternal narrafirma-question-type-questionAnswer"}, parts);

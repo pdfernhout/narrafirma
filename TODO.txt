@@ -113,7 +113,6 @@ GENERAL
 M Report when a project can't be read by the current user even if the survey can be read (fix limitation of lumping permissions)
 M Create script or procedure to deal with SVN for WordPress' plugin archive
 M When a Grid item is added but no data is entered like for a catalysis report, the entry in a select looks wrong
-M Display total count of all answers when displaying question name in Story Browser
 M Improve reporting on startup for loading project data with some kind of progress indicator or remaining count
 M Put a copy of install help from NarraFirma website into source tree as a README file 
 L Text search function (at least for stories)
@@ -219,6 +218,7 @@ Support storyBrowserCount
 
 ---- Release 0.9.?? (fill in later)
 
+DONE Display total count of all answers when displaying question name in Story Browser (did not do this, but put total count above filters)
 DONE Display how many stories and/or survey results have been collected (in story browser)
 DONE Need "does not apply" for sliders
 DONE Slider should have a "does not apply" option
