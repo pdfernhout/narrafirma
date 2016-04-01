@@ -5,7 +5,6 @@ M Labels in graphs run into each other if they are long or there are many labels
 
 SURVEY GENERAL
 M If logged in, survey should not use "anonymous" user to connect (or should ask)
-L Display how many stories and/or survey results have been collected
 L Ideally, all responses for selections (other than numerical sliders) should have unique IDs for each response and the stored response should have the ID as well as the chosen text at the time.
     Add support for short names (ids) for all options for survey questions
 X Only store reference to questionnaire file resource, not the resource itself [maybe leaving as is?]
@@ -220,6 +219,7 @@ Support storyBrowserCount
 
 ---- Release 0.9.?? (fill in later)
 
+DONE Display how many stories and/or survey results have been collected (in story browser)
 DONE Need "does not apply" for sliders
 DONE Slider should have a "does not apply" option
 DONE Need to jiggle slider button or it records nothing (needs work)

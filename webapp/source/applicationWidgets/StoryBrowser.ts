@@ -356,7 +356,12 @@ class StoryBrowser {
                 m("td", this.filter2.calculateView())
             ]));
             
-            parts = [prompt, filter, this.grid.calculateView()];
+            var numStories = this.filteredStories.length;
+            var storiesText = " stories";
+            if (numStories === 1) { storiesText = " story"; } 
+            var countText = m("div.narrafirma-story-browser-count", numStories + storiesText);
+
+            parts = [prompt, filter, countText, this.grid.calculateView()];
         }
         
         return m("div", {"class": "questionExternal narrafirma-question-type-questionAnswer"}, parts);
