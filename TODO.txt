@@ -12,6 +12,7 @@ X Support translations or other categories for multiple question texts or choice
 X Some easy way for two or more survey sliders to be close together under the same label
 W Better mobile support for taking survey on cell phones
 W User can enter text for (print and web): Please choose a question to which you would like to respond; Please enter your response in the box below; Please give your story a name; Would you like to tell another story; Yes, I'd like to tell another story; About you
+W After "update story form", is correct in "review incoming stories" under Edit but not under View (does not update for new form)
 
 SURVEY QUESTIONS
 L Remove "What type of question is this?" question from story-eliciting questions page
