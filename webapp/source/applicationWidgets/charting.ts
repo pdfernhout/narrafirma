@@ -246,7 +246,7 @@ function addXAxis(chart, xScale, configure = null) {
     if (!configure.rotateAxisLabels) {
         var labels = chart.chartBody.append('g')
             .attr('transform', 'translate(0,' + chart.height + ')')
-            .attr('class', 'x axis')
+            .attr('class', 'x-axis')
             .call(xAxis).selectAll("text");
         
         if (configure.labelLengthLimit) {
@@ -268,7 +268,7 @@ function addXAxis(chart, xScale, configure = null) {
         // TODO: These do not have hovers
         chart.chartBody.append('g')
             .attr('transform', 'translate(0,' + chart.height + ')')
-            .attr('class', 'x axis')
+            .attr('class', 'x-axis')
             .call(xAxis).selectAll("text")
                 .style("text-anchor", "end")
                 .attr("dx", "-0.8em")
@@ -305,7 +305,7 @@ function addYAxis(chart, yScale, configure = null) {
 
     var labels = chart.chartBody.append('g')
         // .attr('transform', 'translate(0,0)')
-        .attr('class', 'y axis')
+        .attr('class', 'y-axis')
         .call(yAxis).selectAll("text");
 
     if (configure.labelLengthLimit) {
@@ -337,7 +337,7 @@ function addXAxisLabel(chart, label, labelLengthLimit = 64, textAnchor = "middle
     }
     
     var shortenedLabelSVG = chart.chart.append("text")
-        .attr("class", "x label")
+        .attr("class", "x-axis-label")
         .attr("text-anchor", textAnchor)
         .attr("x", xPosition)
         .attr("y", yPosition)
@@ -366,7 +366,7 @@ function addYAxisLabel(chart, label, labelLengthLimit = 64, textAnchor = "middle
     }
     
     var shortenedLabelSVG = chart.chart.append("text")
-        .attr("class", "y label")
+        .attr("class", "y-axis-label")
         .attr("text-anchor", textAnchor)
         // Y and X are flipped because of the rotate
         .attr("y", yPosition)
@@ -770,11 +770,11 @@ export function d3HistogramChart(graphBrowserInstance: GraphHolder, scaleQuestio
         // Draw mean
         // console.log("mean", mean, valuesAsNumbers);
         chartBody.append("line")
+            .attr('class', "histogram-mean")
             .attr("x1", xScale(mean))
             .attr("y1", yHeightScale(0))
             .attr("x2", xScale(mean))
-            .attr("y2", yHeightScale(maxValue))
-            .style("stroke", "rgb(155,6,6)");
+            .attr("y2", yHeightScale(maxValue));
 
         if (!isNaN(standardDeviation)) {
             // Draw standard deviation
@@ -782,17 +782,17 @@ export function d3HistogramChart(graphBrowserInstance: GraphHolder, scaleQuestio
             var sdLow = mean - standardDeviation;
             var sdHigh = mean + standardDeviation;
             chartBody.append("line")
+                .attr('class', "histogram-standard-deviation-low")
                 .attr("x1", xScale(sdLow))
                 .attr("y1", yHeightScale(0))
                 .attr("x2", xScale(sdLow))
-                .attr("y2", yHeightScale(maxValue))
-                .style("stroke", "rgb(6,120,155)");
+                .attr("y2", yHeightScale(maxValue));
             chartBody.append("line")
+                .attr('class', "histogram-standard-deviation-high")
                 .attr("x1", xScale(sdHigh))
                 .attr("y1", yHeightScale(0))
                 .attr("x2", xScale(sdHigh))
-                .attr("y2", yHeightScale(maxValue))
-                .style("stroke", "rgb(6,120,155)");
+                .attr("y2", yHeightScale(maxValue));
         }
     }
     

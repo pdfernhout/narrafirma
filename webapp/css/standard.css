@@ -11,7 +11,7 @@
 Gray - [extra: e4e4e4] - d3d2d2 - a7a5a5 - 3e3739 - 231f20
 Brown - e7ddd0 - cfbba2 - b5731e - 895717
 Green - e0e6cc - b2c07f - 8db500 - 658200
-Orange - f4e0cc - eac199 - ff7d00 - cc6400
+Orange - f4e0cc - eac199 - ff7d00 - [extra: e0a266] - cc6400
 Blue - d5dae6 - abb6ce - [extra: 7b8cb2] - 3b5fab - 2e4a85
 
 */
@@ -499,6 +499,14 @@ form {
 
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ d3 charting ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
+/* 
+Gray - [extra: e4e4e4] - d3d2d2 - a7a5a5 - 3e3739 - 231f20
+Brown - e7ddd0 - cfbba2 - b5731e - 895717
+Green - e0e6cc - b2c07f - 8db500 - 658200
+Orange - f4e0cc - eac199 - ff7d00 - [extra: e0a266] - cc6400
+Blue - d5dae6 - abb6ce - [extra: 7b8cb2] - 3b5fab - 2e4a85
+*/
+
 .narrafirma-graph-results-pane {
 	width: 850px;
 	margin: 5px auto 0px auto;
@@ -513,46 +521,105 @@ form {
     fill: none;
 }
 
-.brush .extent {
-  fill-opacity: 0.1;
-  stroke: #fff;
-  shape-rendering: crispEdges;
-}
-
 .chart {
 	background-color: white;
-}
-
-.scatterPlot .story {
-  stroke: #3e3739;
-  stroke-width: 0.2px;
-  fill: #3e3739;
-  fill-opacity: 0.7;
-}
-
-.scatterPlot .story.selected {
-  stroke: #3b5fab;
-  fill: #3b5fab;
 }
 
 .bar {
   fill: none;
 }
 
+.x-axis {
+	fill: none;
+	stroke: #231f20;
+	stroke-width: 1px;
+	shape-rendering: crispEdges;	
+}
+
+.x-axis text {
+	fill: #231f20;
+	stroke-width: 0.5px;
+	font-family: sans-serif;
+	font-size: 1em;
+}
+
+.y-axis {
+	fill: none;
+	stroke: #231f20;
+	stroke-width: 1px;
+	shape-rendering: crispEdges;	
+}
+
+.y-axis text {
+	fill: #231f20;
+	stroke-width: 0.5px;
+	font-family: sans-serif;
+	font-size: 1em;
+}
+
+.x-axis-label {
+	fill: #231f20;
+	stroke-width: 0.5px;
+	font-family: sans-serif;
+	font-size: 1.1em;
+}
+
+.y-axis-label {
+	fill: #231f20;
+	stroke-width: 0.5px;
+	font-family: sans-serif;
+	font-size: 1.1em;
+}
+
 .story.even {
-  fill: #3e3739;
+  fill: #2e4a85;
 }
 
 .story.odd {
-  fill: #a7a5a5;
+  fill: #7b8cb2;
 }
 
 .story.even.selected {
-  fill: #3b5fab;
+  fill: #e0a266;
 }
 
 .story.odd.selected {
-  fill: #abb6ce;
+  fill: #cc6400;
+}
+
+.brush .extent {
+  fill-opacity: 0.3;
+  fill: #ff7d00;
+  stroke: #cc6400;
+  stroke-width: 1px;
+  shape-rendering: auto; /* was crispEdges; auto turns on anti-aliasing */
+}
+
+.histogram-mean {
+	stroke: red;
+	stroke-width: 2px;
+}
+
+.histogram-standard-deviation-low {
+	stroke: #8db500;
+	stroke-width: 1.5px;
+}
+
+.histogram-standard-deviation-high {
+	stroke: #8db500;	
+	stroke-width: 1.5px;
+}
+
+.scatterPlot .story {
+  stroke: #2e4a85;
+  stroke-width: 0.2px;
+  fill: #2e4a85;
+  fill-opacity: 0.7;
+}
+
+.scatterPlot .story.selected {
+  stroke: #cc6400;
+  fill: #cc6400;
 }
 
 .contingencyChart .storyCluster.observed {
@@ -563,8 +630,8 @@ form {
 
 .contingencyChart .storyCluster.observed.selected {
   stroke-width: 2px;
-  stroke: #2e4a85;
-  fill: #3b5fab;
+  stroke: #cc6400;
+  fill: #e0a266;
 }
 
 .contingencyChart .expected {
