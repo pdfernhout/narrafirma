@@ -413,13 +413,14 @@ function htmlForLabelAndValue(key, object) {
 
 function addStatisticsPanelForChart(chartPane: HTMLElement, statistics) {
     var html = "";
+    //html += '<div class="narrafirma-statistics-panel-header">Statistics</div>';
     if (statistics.calculated.length === 0) {
-        html += statistics.significance;
+        html += "Statistics: " + statistics.significance;
     } else {
         // html += "statistics: ";
     }
     if (statistics.allResults) {
-        html += '<br><span class="narrafirma-mann-whitney-title">Mann-Whitney U test results for multiple histograms</span><br>\n';
+        html += '<span class="narrafirma-mann-whitney-title">Mann-Whitney U test results for multiple histograms</span><br>\n';
     }
     for (var i = 0; i < statistics.calculated.length; i++) {
         html += htmlForLabelAndValue(statistics.calculated[i], statistics) + "<br>\n";

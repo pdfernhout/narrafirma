@@ -145,7 +145,7 @@ export function calculateStatisticsForBarGraph(nominalQuestion, stories: surveyC
     
     var n = values.length;
     
-    return {significance: "N/A", calculated: ["n"], n: n};
+    return {significance: "None", calculated: ["n"], n: n};
 }
 
 export function calculateStatisticsForHistogram(ratioQuestion, stories: surveyCollection.Story[], minimumStoryCountRequiredForTest: number) {
@@ -165,7 +165,7 @@ export function calculateStatisticsForHistogram(ratioQuestion, stories: surveyCo
     var skewness = jStat.skewness(values);
     var kurtosis = jStat.kurtosis(values);
     
-    return {significance: "N/A", calculated: ["mean", "median", "sd", "skewness", "kurtosis", "n"], mean: mean, median: median, sd: sd, skewness: skewness, kurtosis: kurtosis, n: n};
+    return {significance: "None", calculated: ["mean", "median", "sd", "skewness", "kurtosis", "n"], mean: mean, median: median, sd: sd, skewness: skewness, kurtosis: kurtosis, n: n};
 }
 
 export function calculateStatisticsForMultipleHistogram(ratioQuestion, nominalQuestion, stories: surveyCollection.Story[], minimumStoryCountRequiredForTest: number): any {
@@ -176,7 +176,7 @@ export function calculateStatisticsForMultipleHistogram(ratioQuestion, nominalQu
 
     // Can't calculate a statistic if one or both are mutiple answer checkboxes
     if (nominalQuestion.displayType === "checkboxes") {
-        return {significance: "N/A (checkboxes)", calculated: []};
+        return {significance: "None (choices not mutually exclusive)", calculated: []};
     }
     
     // var data = collectDataForField(stories, nominalQuestion.id);
@@ -211,7 +211,7 @@ export function calculateStatisticsForMultipleHistogram(ratioQuestion, nominalQu
     }
     
     if (pLowest === Number.MAX_VALUE) {
-        return {significance: "N/A (below threshold)", calculated: []};
+        return {significance: "None (count below threshold)", calculated: []};
     }
 
     var significance = " p=" + pLowest.toFixed(3) + " U=" + uLowest + " n=" + n;
@@ -223,7 +223,7 @@ export function calculateStatisticsForScatterPlot(rationQuestion1, rationQuestio
     var data = collectXYDataForFields(stories, rationQuestion1.id, rationQuestion2.id);
     
     if (data.x.length < minimumStoryCountRequiredForTest) {
-        return {significance: "N/A (below threshold)", calculated: []};
+        return {significance: "None (count below threshold)", calculated: []};
     }
     
     // TODO: Add a flag somewhere to use Kendall's Tau instead of Pearson/Spearman's R
@@ -254,7 +254,7 @@ export function calculateStatisticsForTable(nominalQuestion1, nominalQuestion2, 
     // console.log("calculateStatisticsForTable", nominalQuestion1, nominalQuestion2);
     
     if (nominalQuestion1.displayType === "checkboxes" || nominalQuestion2.displayType === "checkboxes") {
-        return {significance: "N/A (checkboxes)", calculated: []};
+        return {significance: "None (choices not mutually exclusive)", calculated: []};
     }
     
     var counts = countsForTableChoices(stories, nominalQuestion1.id, nominalQuestion2.id);
@@ -321,7 +321,7 @@ export function calculateStatisticsForTable(nominalQuestion1, nominalQuestion2, 
     var n2 = Object.keys(field2OptionsUsed).length;
     
     if (n1 <= 1 || n2 <= 1) {
-        return {significance: "N/A (below threshold)", calculated: []};
+        return {significance: "None (counts below threshold)", calculated: []};
     }
     
     var degreesOfFreedom = (n1 - 1) * (n2 - 1);        
@@ -335,15 +335,15 @@ export function calculateStatisticsForTable(nominalQuestion1, nominalQuestion2, 
     }
     
     if (zeroInCell) {
-        return {significance: "N/A (zero in expected cell)", calculated: []};
+        return {significance: "None (zero in expected cell)", calculated: []};
     }
     
     if (n1 <= 2 && n2 <= 2 && tooLowCount > 0) {
-        return {significance: "N/A (2X2 with expected cell < 5)", calculated: []};
+        return {significance: "None (2X2 with expected cell < 5)", calculated: []};
     }
     
     if (tooLowCount / observed.length > 0.2) {
-        return {significance: "N/A (less than 80% expected cells >= 5)", calculated: []};
+        return {significance: "None (less than 80% expected cells >= 5)", calculated: []};
     }
 
     // console.log("observed", observed);

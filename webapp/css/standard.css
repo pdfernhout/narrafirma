@@ -497,6 +497,20 @@ form {
     background-color: #d3d2d2;
 }
 
+
+.narrafirma-statistics-panel-header {
+	margin: 0.5em 0 0.5em 0;
+	font-weight: 700;
+}
+
+.narrafirma-statistics-panel {
+	background-color: #e0e6cc;
+	border: 1px solid #8db500;
+	padding: 6px;
+	margin: 6px 4px 0 0;
+	font-size: 0.9em;
+}
+
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ d3 charting ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 /* 
