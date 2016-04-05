@@ -252,6 +252,7 @@ class PatternExplorer {
                 this.currentPattern ?
                     [
                         m("div", {config: this.insertGraphResultsPaneConfig.bind(this)}),
+                        m("div.narrafirma-pattern-browser-selected-stories-header", "Selected stories (" + this.modelForStoryGrid.storiesSelectedInGraph.length + ")"),
                         this.storyGrid.calculateView(),
                         panelBuilder.buildPanel(this.observationPanelSpecification, this)
                     ] :
