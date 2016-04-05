@@ -1188,9 +1188,15 @@ export function d3ContingencyTable(graphBrowserInstance: GraphHolder, xAxisQuest
     
     // Compute a scaling factor to map plotItem values onto a widgth and height
     var maxPlotItemValue = d3.max(observedPlotItems, function(plotItem) { return plotItem.value; });
-    var xValueMultiplier = xScale.rangeBand() / maxPlotItemValue / 2.0;
-    var yValueMultiplier = yScale.rangeBand() / maxPlotItemValue / 2.0;
-
+    
+    if (maxPlotItemValue === 0) {
+        var xValueMultiplier = 0;
+        var yValueMultiplier = 0;
+    } else {
+        var xValueMultiplier = xScale.rangeBand() / maxPlotItemValue / 2.0;
+        var yValueMultiplier = yScale.rangeBand() / maxPlotItemValue / 2.0;
+    }
+    
     var storyDisplayClusters = chartBody.selectAll(".storyCluster")
             .data(observedPlotItems)
         .enter().append("ellipse")
