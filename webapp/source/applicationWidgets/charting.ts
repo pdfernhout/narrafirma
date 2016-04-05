@@ -488,6 +488,16 @@ export function d3BarChart(graphBrowserInstance: GraphHolder, question, storiesS
         allPlotItems.push({name: key, stories: results[key], value: results[key].length});
     }
     
+    var labelLengthLimit = 20;
+    var longestLabelText = "";
+    for (var label in results) {
+        if (label.length > longestLabelText.length) {
+            longestLabelText = label;
+        }
+    }
+    var longestLabelTextLength = longestLabelText.length;
+    if (longestLabelTextLength > labelLengthLimit) { longestLabelTextLength = labelLengthLimit + 3; }
+    
     /*
     xLabels.sort(function(a, b) {
         if (a.toLowerCase() < b.toLowerCase()) return -1;
@@ -503,7 +513,7 @@ export function d3BarChart(graphBrowserInstance: GraphHolder, question, storiesS
     
     var chartTitle = "" + nameForQuestion(question);
 
-    var margin = {top: 20, right: 15, bottom: 90, left: 60};
+    var margin = {top: 20, right: 15, bottom: 90 + longestLabelTextLength * 5, left: 60};
     var chart = makeChartFramework(chartPane, "barChart", false, margin);
     var chartBody = chart.chartBody;
     
@@ -519,7 +529,7 @@ export function d3BarChart(graphBrowserInstance: GraphHolder, question, storiesS
     chart.xScale = xScale;
     chart.xQuestion = question;
 
-    var xAxis = addXAxis(chart, xScale, {labelLengthLimit: 9});
+    var xAxis = addXAxis(chart, xScale, {labelLengthLimit: labelLengthLimit, rotateAxisLabels: true});
     
     addXAxisLabel(chart, nameForQuestion(question));
     
@@ -1058,6 +1068,16 @@ export function d3ContingencyTable(graphBrowserInstance: GraphHolder, xAxisQuest
         }
     }
     
+    var labelLengthLimit = 20;
+    var longestColumnText = "";
+    for (var columnName in columnLabels) {
+        if (columnName.length > longestColumnText.length) {
+            longestColumnText = columnName;
+        }
+    }
+    var longestColumnTextLength = longestColumnText.length;
+    if (longestColumnTextLength > labelLengthLimit) { longestColumnTextLength = labelLengthLimit + 3; }
+    
     var columnLabelsArray = [];
     for (var columnName in columnLabels) {
         columnLabelsArray.push(columnName);
@@ -1071,6 +1091,15 @@ export function d3ContingencyTable(graphBrowserInstance: GraphHolder, xAxisQuest
         return 0;
     });
     */
+    
+    var longestRowText = "";
+    for (var rowName in rowLabels) {
+        if (rowName.length > longestRowText.length) {
+            longestRowText = rowName;
+        }
+    }
+    var longestRowTextLength = longestRowText.length;
+    if (longestRowTextLength > labelLengthLimit) { longestRowTextLength = labelLengthLimit + 3; }
     
     var rowLabelsArray = [];
     for (var rowName in rowLabels) {
@@ -1121,7 +1150,7 @@ export function d3ContingencyTable(graphBrowserInstance: GraphHolder, xAxisQuest
     
     var chartTitle = "" + nameForQuestion(xAxisQuestion) + " vs. " + nameForQuestion(yAxisQuestion);
 
-    var margin = {top: 20, right: 15, bottom: 60, left: 140};
+    var margin = {top: 20, right: 15, bottom: 90 + longestColumnTextLength * 3, left: 90 + longestRowTextLength * 5};
     var chart = makeChartFramework(chartPane, "contingencyChart", false, margin);
     var chartBody = chart.chartBody;
     
@@ -1137,7 +1166,7 @@ export function d3ContingencyTable(graphBrowserInstance: GraphHolder, xAxisQuest
     chart.xScale = xScale;
     chart.xQuestion = xAxisQuestion;
     
-    var xAxis = addXAxis(chart, xScale, {labelLengthLimit: 11, drawLongAxisLines: true, rotateAxisLabels: false});
+    var xAxis = addXAxis(chart, xScale, {labelLengthLimit: labelLengthLimit, drawLongAxisLines: true, rotateAxisLabels: true});
     
     addXAxisLabel(chart, nameForQuestion(xAxisQuestion));
     
@@ -1150,7 +1179,7 @@ export function d3ContingencyTable(graphBrowserInstance: GraphHolder, xAxisQuest
     chart.yScale = yScale;
     chart.yQuestion = yAxisQuestion;
     
-    var yAxis = addYAxis(chart, yScale, {labelLengthLimit: 15, drawLongAxisLines: true});
+    var yAxis = addYAxis(chart, yScale, {labelLengthLimit: labelLengthLimit, drawLongAxisLines: true});
     
     addYAxisLabel(chart, nameForQuestion(yAxisQuestion));
     
