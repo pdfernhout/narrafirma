@@ -1,21 +1,35 @@
 {
-    "name": "NarraFirma",
-    "description": "NarraFirma webapp for Participatory Narrative Inquiry (PNI)",
-    "version": "0.9.7",
-    "keywords": ["JavaScript", "NarraFirma", "PNI", "SPA", "Mithril", "D3", "Pointrel", "Community", "PNI", "Participatory Narrative Inquiry"],
-    "license": "GPL-2.0+",
-    "maintainers": [{
-        "name": "Paul D. Fernhout"
-    },{
-        "name": "Cynthia F. Kurtz"
-    }],
-    "main": "src",
-    "homepage": "http://workingwithstories.com/",
-    "repository": {
-      "type": "git",
-      "url": "git@github.com:pdfernhout/narrafirma.git"
+  "name": "NarraFirma",
+  "description": "NarraFirma webapp for Participatory Narrative Inquiry (PNI)",
+  "version": "0.9.7",
+  "keywords": [
+    "JavaScript",
+    "NarraFirma",
+    "PNI",
+    "SPA",
+    "Mithril",
+    "D3",
+    "Pointrel",
+    "Community",
+    "PNI",
+    "Participatory Narrative Inquiry"
+  ],
+  "license": "GPL-2.0+",
+  "maintainers": [
+    {
+      "name": "Paul D. Fernhout"
     },
-    "scripts": {
-        "build-wp": "rm -rf distribution/narrafirma.zip && rm -rf distribution/narrafirma && mkdir distribution/narrafirma && tsc && cp -r webapp wordpress-plugin/narrafirma/* distribution/narrafirma && cd distribution && node ../node_modules/requirejs/bin/r.js -o build-survey.js && node ../node_modules/requirejs/bin/r.js -o build-admin.js && node ../node_modules/requirejs/bin/r.js -o build-narrafirma.js && rm -rf narrafirma/webapp/js && zip -qr narrafirma.zip narrafirma/* && cd .. && rm -rf distribution/narrafirma && echo Done building NarraFirma WordPress plugin"
-     }
+    {
+      "name": "Cynthia F. Kurtz"
+    }
+  ],
+  "main": "src",
+  "homepage": "http://workingwithstories.com/",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:pdfernhout/narrafirma.git"
+  },
+  "scripts": {
+    "build-wp": "rm -rf distribution/narrafirma.zip && rm -rf distribution/narrafirma && mkdir distribution/narrafirma && tsc && cp -r webapp wordpress-plugin/narrafirma/* distribution/narrafirma && cd distribution && node ../node_modules/requirejs/bin/r.js -o build-survey.js && node ../node_modules/requirejs/bin/r.js -o build-admin.js && node ../node_modules/requirejs/bin/r.js -o build-narrafirma.js && rm -rf narrafirma/webapp/js && zip -qr narrafirma.zip narrafirma/* && cd .. && rm -rf distribution/narrafirma && echo Done building NarraFirma WordPress plugin"
+  }
 }
