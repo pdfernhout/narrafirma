@@ -3,6 +3,16 @@ module.exports = function(grunt) {
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
     shell: {
+    	serve: {
+    		command: function () {
+    			return 'node NarraFirmaServer.js';
+    		},
+    		options: {
+    			execOptions: {
+    				cwd: 'server'
+    			}
+    		}
+    	},
     	tsc: {
     		command: function () {
     			return 'node_modules/ntypescript/bin/tsc';
@@ -10,5 +20,5 @@ module.exports = function(grunt) {
     	}
     }
   });
-  grunt.registerTask('default', ['shell:tsc']);
+  grunt.registerTask('default', ['shell:tsc','shell:serve']);
 }
