@@ -35,5 +35,9 @@
   "dependencies": {
     "ntypescript": "^1.201604090006.1",
     "requirejs": "^2.2.0"
+  },
+  "devDependencies": {
+    "grunt": "^1.0.1",
+    "grunt-shell": "^1.2.1"
   }
 }
