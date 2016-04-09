@@ -217,20 +217,6 @@ Support storyBrowserCount
 
 ==== DONE
 
----- Release 0.9.?? (fill in later)
-
-DONE Display total count of all answers when displaying question name in Story Browser (did not do this, but put total count above filters)
-DONE Display how many stories and/or survey results have been collected (in story browser)
-DONE Need "does not apply" for sliders
-DONE Slider should have a "does not apply" option
-DONE Need to jiggle slider button or it records nothing (needs work)
-DONE Fix bug with checkbox questions not storing data correctly
-DONE Consider putting annotations at TOP of "Review stories" list so they are easier to add
-DONE Show annotations in different color in "Review stories" list so they are easier to pick out 
-DONE Move "Reason to ignore story" thing to end of "Review stories" list so it doesn't get in the way when editing
-DONE Show story text more prominently on story card display
-DONE Move annotations to bottom of story card display
-
 ---- Release 0.9.1
 
 DONE Move DONE items for release 0.9.0 from TODO.txt to TODO-done.txt with release label for them
@@ -267,4 +253,23 @@ Include doctype and other metadata in Node.js login html pages
 
 Sanitize SQL input for WordPress plugin
 Improve TypeScript typings so compiles under TypeScript 1.6
+
+---- Release 0.9.7
+
+DONE Add count of selected stories in Explore patterns
+DONE Improve look of statistical results
+DONE Improve axis labeling on graphs with rotated names under graphs so they don't run together
+DONE Improve graph colors
+DONE Display total count of all answers when displaying question name in Story Browser (did not do this, but put total count above filters)
+DONE Display how many stories and/or survey results have been collected (in story browser)
+DONE Need "does not apply" for sliders
+DONE Slider should have a "does not apply" option
+DONE Need to jiggle slider button or it records nothing (needs work)
+DONE Fix bug with checkbox questions not storing data correctly
+DONE Consider putting annotations at TOP of "Review stories" list so they are easier to add
+DONE Show annotations in different color in "Review stories" list so they are easier to pick out 
+DONE Move "Reason to ignore story" thing to end of "Review stories" list so it doesn't get in the way when editing
+DONE Show story text more prominently on story card display
+DONE Move annotations to bottom of story card display
+
 

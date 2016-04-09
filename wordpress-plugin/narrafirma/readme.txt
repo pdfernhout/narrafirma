@@ -7,9 +7,9 @@ Author URI: http://www.cfkurtz.com
 Author: Cynthia Kurtz and Paul Fernhout
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=DGVVDT2D49QA8
 Requires at least: 4.3.1
-Tested up to: 4.4.1
-Stable tag: 0.9
-Version: 0.9.6
+Tested up to: 4.4.2
+Stable tag: trunk
+Version: 0.9.7
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -143,6 +143,16 @@ and to keep good records for the future.
 
 == Changelog ==
 
+= 0.9.7 =
+
+* Fixed bug in checkbox questions where data was not being stored correctly.
+* Improved colors, labels, spacing of graphs.
+* Added story counts to Review stories and Explore patterns screens.
+* Added "does not apply" check box (configurable) to slider questions.
+* Improved help on question types.
+* Improved look of story card display.
+* Moved annotations to top of Review stories list; colored in green so they stand out.
+
 = 0.9.6 =
 
 * Sanitize SQL input in WordPress plugin.
@@ -179,6 +189,11 @@ loading application, getting user information, or retrieving project data.
 change logs, see the [GitHub repository](https://github.com/pdfernhout/narrafirma).
 
 == Upgrade Notice ==
+
+= 0.9.7 =
+WordPress users should upgrade to this version. 
+It contains a fix for a bug that could lose data in checkbox survey questions. A "Does not apply" option
+was added for slider questions. There are also some improvements to graphs and usability.
 
 = 0.9.6 =
 WordPress users should upgrade to this version as it contains a security fix.
