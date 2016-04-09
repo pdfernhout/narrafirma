@@ -34,7 +34,7 @@
   },
   "dependencies": {
     "ntypescript": "^1.201604090006.1",
-    "requirejs": "^2.2.0"
+    "requirejs": "^2.1.20"
   },
   "devDependencies": {
     "grunt": "^1.0.1",
