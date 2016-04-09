@@ -33,7 +33,7 @@
     "build-wp": "rm -rf distribution/narrafirma.zip && rm -rf distribution/narrafirma && mkdir distribution/narrafirma && tsc && cp -r webapp wordpress-plugin/narrafirma/* distribution/narrafirma && cd distribution && node ../node_modules/requirejs/bin/r.js -o build-survey.js && node ../node_modules/requirejs/bin/r.js -o build-admin.js && node ../node_modules/requirejs/bin/r.js -o build-narrafirma.js && rm -rf narrafirma/webapp/js && zip -qr narrafirma.zip narrafirma/* && cd .. && rm -rf distribution/narrafirma && echo Done building NarraFirma WordPress plugin"
   },
   "dependencies": {
-    "requirejs": "^2.2.0",
-    "tsc": "^1.20150623.0"
+    "ntypescript": "^1.201604090006.1",
+    "requirejs": "^2.2.0"
   }
 }
