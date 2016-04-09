@@ -21,4 +21,5 @@ module.exports = function(grunt) {
     }
   });
   grunt.registerTask('default', ['shell:tsc','shell:serve']);
+  grunt.registerTask('tsc', ['shell:tsc']);
 }
