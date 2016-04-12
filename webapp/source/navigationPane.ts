@@ -51,6 +51,8 @@ var Navigation: any = {
 
 function previousPageTitle() {
     if (!currentPageSpecification || !currentPageSpecification.previousPageID) return "No previous page";
+    var previousPage = panelSpecificationCollection.getPageSpecificationForPageID(currentPageSpecification.previousPageID);
+    if (previousPage) return "Previous page (" + previousPage.displayName + ")";
     return "Previous page";
 }
 
@@ -66,6 +68,8 @@ function previousPageLink() {
 
 function nextPageTitle() {
     if (!currentPageSpecification || !currentPageSpecification.nextPageID) return "No next page";
+    var nextPage = panelSpecificationCollection.getPageSpecificationForPageID(currentPageSpecification.nextPageID);
+    if (nextPage) return "Next page (" + nextPage.displayName + ")";
     return "Next page";
 }
 
