@@ -1,7 +1,9 @@
 ==== NarraFirma TODO list:
 
 NEW
-M Labels in graphs run into each other if they are long or there are many labels
+
+M Need to improve look of printed/exported story cards
+M Need to improve look of printed/exported catalysis report
 
 SURVEY GENERAL
 M If logged in, survey should not use "anonymous" user to connect (or should ask)
@@ -51,9 +53,7 @@ GRAPH BROWSER
 M Add Eliciting question to catalysis - seems like it is not there (!)
 M Test all statistical tests for validity more -- run same tests in spreadsheet on same data
 M Support multiple scatter plots across individual question answers
-M Sometimes labels at bottom of graph overlap if many items in a scatter plot
 M Should mutiple histograms perhap have stats calculated between them even if checkboxes?
-L For multiple histograms, the "N/A (checkboxes)" should have a blank line above it
 L In general, size graphs better based on window size
 L Support graphBrowser common maximum for multiple histograms
 
@@ -141,7 +141,6 @@ W Need a flip axis for slider for catalysis when graphing
 
 THINGS CYNTHIA NOTICED WHILE DOING HELP (probably redundant but just in case)
 L After you enter a story, it shows an alert that the story has been saved, but it doesn't get rid of the window. the popup window should go away
-L would like to make "focus rectangle" or "rubber band" over graphs when selecting - see http://bl.ocks.org/mbostock/1667367
 
 ==== Wish list:
 
@@ -259,7 +258,11 @@ Improve TypeScript typings so compiles under TypeScript 1.6
 DONE Add count of selected stories in Explore patterns
 DONE Improve look of statistical results
 DONE Improve axis labeling on graphs with rotated names under graphs so they don't run together
+DONE Labels in graphs run into each other if they are long or there are many labels
+DONE Sometimes labels at bottom of graph overlap if many items in a scatter plot
 DONE Improve graph colors
+DONE would like to make "focus rectangle" or "rubber band" over graphs when selecting - see http://bl.ocks.org/mbostock/1667367
+DONE For multiple histograms, the "N/A (checkboxes)" should have a blank line above it
 DONE Display total count of all answers when displaying question name in Story Browser (did not do this, but put total count above filters)
 DONE Display how many stories and/or survey results have been collected (in story browser)
 DONE Need "does not apply" for sliders
@@ -272,4 +275,8 @@ DONE Move "Reason to ignore story" thing to end of "Review stories" list so it d
 DONE Show story text more prominently on story card display
 DONE Move annotations to bottom of story card display
 
+--- Release 0.9.8
+
+DONE Contingency graphs come out with black background in Print Catalysis Report
+DONE Add headings to break up long lists of pages (especially for Planning and Collection)
 
