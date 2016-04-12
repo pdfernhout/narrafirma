@@ -69,6 +69,8 @@ interface PanelField {
 interface Panel {
     id: string;
     displayName?: string;
+    tooltipText?: string;
+    headerAbove?: string;
     panelFields: PanelField[];
     modelClass?: string;
 }
