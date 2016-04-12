@@ -4,6 +4,7 @@ import kludgeForUseStrict = require("../../kludgeForUseStrict");
 var panel: Panel = {
     id: "page_reviewIncomingStories",
     displayName: "Review incoming stories",
+    tooltipText: "Look at the stories you have collected, fix data entry mistakes, and answer any annotation questions you created.",
     panelFields: [
         {
             id: "collectedStoriesDuringCollectionLabel",

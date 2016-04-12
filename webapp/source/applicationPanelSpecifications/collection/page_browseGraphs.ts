@@ -4,6 +4,7 @@ import kludgeForUseStrict = require("../../kludgeForUseStrict");
 var panel: Panel = {
     id: "page_browseGraphs",
     displayName: "Spot-check graphs",
+    tooltipText: "Look at patterns in the data you collected.",
     panelFields: [
         {
             id: "graphBrowserLabel",

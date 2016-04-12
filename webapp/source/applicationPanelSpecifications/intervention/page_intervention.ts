@@ -10,8 +10,9 @@ var panel: Panel = {
             valueType: "none",
             displayType: "label",
             displayPrompt: 
-`In the intervention phase of your PNI project, you will describe your project <strong>outcomes</strong> 
-so you can get recommendations for useful narrative interventions (like story sharing spaces or narrative therapy). 
+`A <strong>narrative intervention</strong> is something that changes the flow of stories in your community or organization.
+In the intervention phase of your PNI project, you will describe your project <strong>outcomes</strong> 
+so you can get recommendations for useful interventions (like story sharing spaces or narrative therapy). 
 Then you might <strong>plan</strong> interventions 
 and <strong>record</strong> what happened when you carried them out.`
         }

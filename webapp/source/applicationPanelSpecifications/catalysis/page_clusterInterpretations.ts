@@ -4,6 +4,7 @@ import Globals = require("../../Globals");
 var panel: Panel = {
     id: "page_clusterInterpretations",
     displayName: "Cluster interpretations",
+    tooltipText: "Draw your interpretations together into clusters that make them more accessible during sensemaking.",
     panelFields: [
         {
             id: "project_interpretationsClusteringLabel",

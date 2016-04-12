@@ -240,6 +240,31 @@ button {
 	padding: 4px;
 	}
 
+.narrafirma-dashboard-header {
+	display: block;
+	font-weight: 700;
+	margin-bottom: 0.7em;
+}
+
+.narrafirma-dashboard-page-link {
+	display: block;
+	margin-left: 1em;
+}
+
+.narrafirma-questionAnswer { /* this is now used to display the reminder on the phase dashboard page */
+    background-color: #e0e6cc;
+    border: 1px solid #b2c07f;
+    margin: 0.5em 0 0 1em;
+    padding: 0.5em;
+}
+
+.narrafirma-questionAnswer:empty { /* if no reminder entered, do not show */
+	padding: 0px;
+	margin: 0px;
+	border: none;
+	background-color: #fff;
+}
+
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Pages with entry fields ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 .questionExternal.narrafirma-question-type-header {
@@ -264,8 +289,8 @@ button {
 	background-color: #d5dae6;
 	margin-bottom: 4px;
     border-radius: 12px;
-    padding: 8px;
-    margin: 8px;
+    padding: 4px 8px 4px 8px;
+    margin: 4px;
 }
 
 .questionExternal-annotation {
@@ -314,20 +339,6 @@ button {
 
 .questionExternal.narrafirma-question-type-questionAnswer {
     background-color: white;
-}
-
-.narrafirma-questionAnswer { /* this is now used to display the reminder on the phase dashboard page */
-    margin: 0.3em 0em 0.3em 0em;
-    padding: 0.5em;
-    background-color: #e0e6cc;
-    border: 1px solid #b2c07f;
-}
-
-.narrafirma-questionAnswer:empty { /* if no reminder entered, do not show */
-	padding: 0px;
-	margin: 0px;
-	border: none;
-	background-color: #fff;
 }
 
 form {

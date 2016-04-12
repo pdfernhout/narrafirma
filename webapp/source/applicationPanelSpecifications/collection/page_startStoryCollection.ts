@@ -4,6 +4,8 @@ import kludgeForUseStrict = require("../../kludgeForUseStrict");
 var panel: Panel = {
     id: "page_startStoryCollection",
     displayName: "Start story collection",
+    tooltipText: "Create a story repository, and if you want to, activate an online survey.",
+    headerAbove: "Collect Stories",
     panelFields: [
         {
             id: "storyCollection_createCollectionLabel",

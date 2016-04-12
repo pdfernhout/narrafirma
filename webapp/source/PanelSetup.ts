@@ -79,8 +79,18 @@ function addExtraFieldSpecificationsForPageSpecification(pageID, pageSpecificati
                 if (!childPageSpecification) console.log("Error: problem finding page definition for", childPageID);
                 if (childPageSpecification && childPageSpecification.displayType === "page") {
                     var prompt = translate(childPageID + "::title", childPageSpecification.displayName);
+                    var tooltip = childPageSpecification.tooltipText || null;
                     // Wrap the prompt as a link to the page
-                    prompt = m("a", {href: "javascript:narrafirma_openPage('" + childPageID + "')"}, prompt);
+                    var properties: any = {
+                        href: "javascript:narrafirma_openPage('" + childPageID + "')"
+                    }
+                    if (childPageSpecification.tooltipText) {
+                        properties.title = childPageSpecification.tooltipText;
+                    }
+                    prompt = m("div.narrafirma-dashboard-page-link", m("a", properties, prompt));
+                    if (childPageSpecification.headerAbove) { 
+                        prompt = [m("div.narrafirma-dashboard-header", childPageSpecification.headerAbove), prompt]; 
+                    }
                     // + " " + translate("#dashboard_status_label", "reminders:")
                     // prompt = prompt  + " ";
                     // console.log("about to call panelBuilder to add one questionAnswer for child page's status", childPageID);

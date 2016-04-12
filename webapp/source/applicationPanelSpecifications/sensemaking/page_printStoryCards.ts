@@ -4,12 +4,17 @@ import kludgeForUseStrict = require("../../kludgeForUseStrict");
 var panel: Panel = {
     id: "page_printStoryCards",
     displayName: "Print story cards",
+    tooltipText: "Print out the stories you collected so people can use them during sensemaking sessions.",
+    headerAbove: "Get Ready for Sensemaking",
     panelFields: [
         {
             id: "printStoryCards_introduction",
             valueType: "none",
             displayType: "label",
-            displayPrompt: "On this page you can print <strong>story cards</strong> to use in sensemaking sessions. Story cards are card-like presentations of stories that people can arrange and compare as they encounter stories and work on sensemaking exercises."
+            displayPrompt: `On this page you can print or export <strong>story cards</strong>, printed versions 
+                of stories that people can arrange and compare as they 
+                encounter stories and work on sensemaking exercises.
+                `
         },
         {
             id: "storyCollectionChoice_printing",

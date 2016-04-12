@@ -4,6 +4,7 @@ import kludgeForUseStrict = require("../../kludgeForUseStrict");
 var panel: Panel = {
     id: "page_enterStories",
     displayName: "Enter stories",
+    tooltipText: "Add stories you collected off-line.",
     panelFields: [
         {
             id: "enterStories_Label",

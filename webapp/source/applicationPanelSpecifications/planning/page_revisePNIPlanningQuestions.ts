@@ -4,6 +4,8 @@ import kludgeForUseStrict = require("../../kludgeForUseStrict");
 var panel: Panel = {
     id: "page_revisePNIPlanningQuestions",
     displayName: "Revise PNI planning questions",
+    tooltipText: "Go back to your goals, focus, etc., and see how you can improve what you wrote before.",
+    headerAbove: "Wrap Up Planning",
     panelFields: [
         {
             id: "project_improvePlanningDrafts",

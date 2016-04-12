@@ -4,6 +4,7 @@ import kludgeForUseStrict = require("../../kludgeForUseStrict");
 var panel: Panel = {
     id: "page_reflectOnProject",
     displayName: "Reflect on the project",
+    tooltipText: "Answer some questions about the project, to think about it now and to help you remember it later.",
     panelFields: [
         {
             id: "project_reflectLabel",

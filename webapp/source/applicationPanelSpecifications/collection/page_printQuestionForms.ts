@@ -4,12 +4,18 @@ import kludgeForUseStrict = require("../../kludgeForUseStrict");
 var panel: Panel = {
     id: "page_printQuestionForms",
     displayName: "Print story forms",
+    tooltipText: "Export your story form for use in face-to-face sessions or interviews.",
     panelFields: [
         {
             id: "printQuestionsForm_introduction",
             valueType: "none",
             displayType: "label",
-            displayPrompt: "On this page you can print story forms for off-line distribution to participants. You can later enter the results from each form into the system."
+            displayPrompt: `
+                On this page you can print story forms for off-line use. 
+                Later, you can enter the completed forms into your story collection (see "Enter stories").
+                The printed form is intentionally simple, so you can format it
+                however you like in your word processor.
+                `
         },
         {
             id: "storyCollectionChoice_printing",

@@ -3,7 +3,9 @@ import kludgeForUseStrict = require("../../kludgeForUseStrict");
 
 var panel: Panel = {
     id: "page_describeYourResources",
+    tooltipText: "Think about the resources you can draw on.",
     displayName: "Describe your resources",
+    
     panelFields: [
          {
             id: "project_aboutYou",

@@ -4,6 +4,8 @@ import kludgeForUseStrict = require("../../kludgeForUseStrict");
 var panel: Panel = {
     id: "page_projectOutcomesForIntervention",
     displayName: "Answer questions about project outcomes",
+    tooltipText: "Describe the project's outcomes (so far) so you can think about what interventions might be useful.",
+    headerAbove: "Plan Interventions",
     panelFields: [
         {
             id: "project_outcomes_intro",

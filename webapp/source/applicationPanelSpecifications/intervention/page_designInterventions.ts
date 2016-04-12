@@ -4,6 +4,7 @@ import kludgeForUseStrict = require("../../kludgeForUseStrict");
 var panel: Panel = {
     id: "page_designInterventions",
     displayName: "Design intervention plans",
+    tooltipText: "Write out plans for interventions you want to carry out.",
     panelFields: [
         {
             id: "project_interventionLabel",

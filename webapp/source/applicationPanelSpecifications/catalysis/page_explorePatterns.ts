@@ -4,6 +4,8 @@ import kludgeForUseStrict = require("../../kludgeForUseStrict");
 var panel: Panel = {
     id: "page_explorePatterns",
     displayName: "Explore patterns",
+    tooltipText: "Look at graphs of your data, discover useful patterns, and write observations and interpretations about them.",
+    headerAbove: "Work Through Your Data",
     panelFields: [
         {
             id: "explorePatternsLabel",

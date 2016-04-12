@@ -4,6 +4,8 @@ import kludgeForUseStrict = require("../../kludgeForUseStrict");
 var panel: Panel = {
     id: "page_chooseCollectionMethods",
     displayName: "Choose collection methods",
+    tooltipText: "Decide how you will collect stories.",
+    headerAbove: "Plan Your Story Collection",
     panelFields: [
         {
             id: "project_methodsIntro",

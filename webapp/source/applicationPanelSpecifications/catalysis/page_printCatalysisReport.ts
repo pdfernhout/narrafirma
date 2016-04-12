@@ -4,12 +4,18 @@ import kludgeForUseStrict = require("../../kludgeForUseStrict");
 var panel: Panel = {
     id: "page_printCatalysisReport",
     displayName: "Print catalysis report",
+    tooltipText: "Export the graphs you've selected, and the observations and interpretations you've written, to use in a sensemaking session.",
+    headerAbove: "Wrap Up Catalysis",
     panelFields: [
         {
             id: "catalysisReportPrint_label",
             valueType: "none",
             displayType: "label",
-            displayPrompt: "On this page you can print a catalysis report."
+            displayPrompt: `
+                On this page you can <strong>export</strong> your catalysis report. You will probably want to format it in your word processor.
+                If you're having trouble reading the generated HTML file in your word processor, click the Help button
+                for some options.
+                `
         },
         {
             id: "catalysisReportPrint_selected",

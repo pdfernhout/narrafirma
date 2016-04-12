@@ -4,6 +4,8 @@ import kludgeForUseStrict = require("../../kludgeForUseStrict");
 var panel: Panel = {
     id: "page_startCatalysisReport",
     displayName: "Start catalysis report",
+    tooltipText: "Create a place to store your catalysis report.",
+    headerAbove: "Get Started",
     panelFields: [
         {
             id: "catalysis_createCatalysisReportLabel",

@@ -4,6 +4,8 @@ import kludgeForUseStrict = require("../../kludgeForUseStrict");
 var panel: Panel = {
     id: "page_projectFacts",
     displayName: "Enter project facts",
+    tooltipText: "Record basic information about your project such as what it's about and who is doing it.",
+    headerAbove: "Get Started",
     panelFields: [
         {
             id: "project_projectFacts",

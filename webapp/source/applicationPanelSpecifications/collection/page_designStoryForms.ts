@@ -4,6 +4,7 @@ import kludgeForUseStrict = require("../../kludgeForUseStrict");
 var panel: Panel = {
     id: "page_designStoryForms",
     displayName: "Design story forms",
+    tooltipText: "Bring your questions together into a structured conversation.",
     panelFields: [
         {
             id: "storyForms_Label",

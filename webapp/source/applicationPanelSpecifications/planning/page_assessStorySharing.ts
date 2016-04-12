@@ -4,6 +4,7 @@ import kludgeForUseStrict = require("../../kludgeForUseStrict");
 var panel: Panel = {
     id: "page_assessStorySharing",
     displayName: "Assess story sharing",
+    tooltipText: "Consider how stories flow in your community or organization.",
     panelFields: [
         {
             id: "assessment_intro",

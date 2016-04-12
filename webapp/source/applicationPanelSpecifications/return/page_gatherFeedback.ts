@@ -4,6 +4,8 @@ import kludgeForUseStrict = require("../../kludgeForUseStrict");
 var panel: Panel = {
     id: "page_gatherFeedback",
     displayName: "Gather feedback",
+    tooltipText: "Enter things people told you about the project so you can remember them and learn from them.",
+    headerAbove: "Think About What Happened",
     panelFields: [
         {
             id: "project_feedbackLabel",

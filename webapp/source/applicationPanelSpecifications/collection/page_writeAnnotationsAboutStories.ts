@@ -4,6 +4,8 @@ import kludgeForUseStrict = require("../../kludgeForUseStrict");
 var panel: Panel = {
     id: "page_writeAnnotationsAboutStories",
     displayName: "Write annotations about stories",
+    tooltipText: "Add some questions that you will answer by reading the stories you collected.",
+    headerAbove: "Review, Repair, and Annotate",
     panelFields: [
         {
             id: "project_storyQuestionsLabel",
