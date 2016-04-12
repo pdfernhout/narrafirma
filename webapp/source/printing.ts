@@ -99,6 +99,12 @@ var graphResultsPaneCSS = `
       shape-rendering: crispEdges;
       stroke: gray;
     }
+
+    .contingencyChart {
+        fill: none;
+        stroke: black;
+        stroke-width: 1px;
+    }
 `;
 
 function printHTML(htmlToPrint: string) {
