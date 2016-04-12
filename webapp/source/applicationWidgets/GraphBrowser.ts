@@ -78,6 +78,7 @@ class GraphBrowser {
                 m("select.graphBrowserSelect", {onchange: (event) => { this.yAxisSelectValue = event.target.value; this.updateGraph(); }}, this.calculateOptionsForChoices(this.yAxisSelectValue)),
                 m("br"),
                 m("div", {config: this.insertGraphResultsPaneConfig.bind(this)}),
+                m("div.narrafirma-graphbrowser-heading", "Selected stories (" + this.selectedStories.length + ")"),
                 this.selectedStories.map((story) => {
                     // console.log("story", story);
                     return m("div", [

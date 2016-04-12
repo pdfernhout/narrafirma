@@ -838,6 +838,10 @@ textarea.textEditorInDialog {
     max-width: 40%
 }
 
+.narrafirma-graphbrowser-heading {
+	margin: 8px 0 8px 0;
+}
+
 .singleChartStyle {
     width: 700px;
 }
