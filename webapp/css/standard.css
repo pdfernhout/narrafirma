@@ -522,6 +522,77 @@ form {
 	font-size: 0.9em;
 }
 
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Catalysis report ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
+.narrafirma-catalysis-report-title {
+	font-size: 2.5em;
+	font-weight: 700;
+	margin: 0.5em 0 0.1em 0;
+}
+
+.narrafirma-catalysis-report-project-name {
+}
+
+.narrafirma-catalysis-report-date {
+}
+
+.narrafirma-catalysis-report-intro-note {
+	margin: 1em 0 1em 0;
+}
+
+.narrafirma-catalysis-report-perspective-link-header {
+	font-size: 1.25em;
+	margin: 1em 0 0.5em 0;
+}
+
+.narrafirma-catalysis-report-perspective-link {
+	margin: 0 0 0 1em;
+}
+
+.narrafirma-catalysis-report-perspective {
+	font-size: 2em;
+	font-weight: 700;
+	margin-bottom: 0.5em;
+	border-bottom: 2px solid #658200;
+	border-top: 2px solid #658200;
+	padding: 0.5em 0 0.5em 0;
+}
+
+.narrafirma-catalysis-report-interp-link-header {
+	margin-bottom: 0.5em;
+	font-style: italic;
+}
+
+.narrafirma-catalysis-report-interp-link {
+	margin: 0 0 0 1em;
+	font-style: italic;
+}
+
+.narrafirma-catalysis-report-perspective-notes {
+	margin: 1em 0 1em 0;
+}
+
+.narrafirma-catalysis-report-interpretation {
+	font-size: 1.5em;
+	font-weight: 700;
+	font-style: italic;
+	border-bottom: 1px solid #2e4a85;
+}
+
+.narrafirma-catalysis-report-interpretation-notes {
+	margin: 1em 0 1em 0;
+	font-style: italic;
+}
+
+.narrafirma-catalysis-report-observation {
+	font-size: 1.em;
+	font-weight: 700;
+}
+
+.narrafirma-catalysis-report-observation-description {
+	margin: 1em 0 1em 0;
+}
+
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ d3 charting ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 /* 
@@ -561,18 +632,18 @@ Blue - d5dae6 - abb6ce - [extra: 7b8cb2] - 3b5fab - 2e4a85
 	shape-rendering: crispEdges;	
 }
 
-.x-axis text {
-	fill: #231f20;
-	stroke-width: 0.5px;
-	font-family: sans-serif;
-	font-size: 1em;
-}
-
 .y-axis {
 	fill: none;
 	stroke: #231f20;
 	stroke-width: 1px;
 	shape-rendering: crispEdges;	
+}
+
+.x-axis text {
+	fill: #231f20;
+	stroke-width: 0.5px;
+	font-family: sans-serif;
+	font-size: 1em;
 }
 
 .y-axis text {
