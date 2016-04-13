@@ -272,8 +272,10 @@ DONE Move annotations to bottom of story card display
 
 --- Release 0.9.8
 
-DONE Contingency graphs come out with black background in Print Catalysis Report
-DONE Add headings to break up long lists of pages (especially for Planning and Collection)
 DONE Need to improve look of printed/exported catalysis report
 DONE Need to improve look of printed/exported story form
 DONE Need to improve look of printed/exported story cards
+DONE Add selected stories count to "Spot check graphs" page
+DONE Add links to <= and => links at top of page
+DONE Contingency graphs come out with black background in Print Catalysis Report
+DONE Add headings to break up long lists of pages (especially for Planning and Collection)
