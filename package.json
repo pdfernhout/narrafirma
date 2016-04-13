@@ -35,6 +35,7 @@
       "build-wp:optimize:survey": "node node_modules/requirejs/bin/r.js -o distribution/build-survey.js",
       "build-wp:optimize:admin": "node node_modules/requirejs/bin/r.js -o distribution/build-admin.js",
       "build-wp:optimize:narrafirma": "node node_modules/requirejs/bin/r.js -o distribution/build-narrafirma.js",
-      "build-wp": "npm run clean-wp && mkdir distribution/narrafirma && tsc && npm run build-wp:webapp && npm run build-wp:optimize:survey && npm run build-wp:optimize:admin && npm run build-wp:optimize:narrafirma && cd distribution && rm -rf narrafirma/webapp/js && zip -qr narrafirma.zip narrafirma/* && cd .. && rm -rf distribution/narrafirma && echo Done building NarraFirma WordPress plugin"
+      "package-wp": "cd distribution && rm -rf narrafirma/webapp/js && zip -qr narrafirma.zip narrafirma/* && cd ..",
+      "build-wp": "npm run clean-wp && mkdir distribution/narrafirma && tsc && npm run build-wp:webapp && npm run build-wp:optimize:survey && npm run build-wp:optimize:admin && npm run build-wp:optimize:narrafirma && npm run package-wp && rm -rf distribution/narrafirma && echo Done building NarraFirma WordPress plugin"
    }
 }
