@@ -1,10 +1,5 @@
 ==== NarraFirma TODO list:
 
-NEW
-
-M Need to improve look of printed/exported story cards
-M Need to improve look of printed/exported catalysis report
-
 SURVEY GENERAL
 M If logged in, survey should not use "anonymous" user to connect (or should ask)
 L Ideally, all responses for selections (other than numerical sliders) should have unique IDs for each response and the stored response should have the ID as well as the chosen text at the time.
@@ -279,4 +274,6 @@ DONE Move annotations to bottom of story card display
 
 DONE Contingency graphs come out with black background in Print Catalysis Report
 DONE Add headings to break up long lists of pages (especially for Planning and Collection)
-
+DONE Need to improve look of printed/exported catalysis report
+DONE Need to improve look of printed/exported story form
+DONE Need to improve look of printed/exported story cards
