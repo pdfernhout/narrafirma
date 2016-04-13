@@ -214,21 +214,20 @@ function printReturnAndBlankLine() {
 }
 
 function printCheckbox(text) {
-    return [
+    return m("div.narrafirma-survey-print-checkbox", [
         "[ ] ",
         printText(text),
-        m("br"),
         "\n"
-    ];
+    ]);
 }
 
 function printOption(text) {
-    return [
+    return m("div.narrafirma-survey-print-radiobutton", 
+        [
         "( ) ",
         printText(text),
-        m("br"),
         "\n"
-    ];
+        ]);
 }
 
 function printQuestionText(question, instructions = "") {
@@ -236,14 +235,14 @@ function printQuestionText(question, instructions = "") {
     if (question.displayType === "header") {
        questionTextForPrinting = m("b", questionTextForPrinting); 
     }
-    if (instructions) instructions = " " + instructions;
-    return [
+    if (instructions) instructions = " (" + instructions + ")";
+    return m("div.narrafirma-survey-print-question-text", [
         questionTextForPrinting,
-        instructions,
-        printReturnAndBlankLine()
-    ];    
+        m("span.narrafirma-survey-print-instruction", instructions)
+    ]);    
 }
 
+// TODO: Translate
 function printQuestion(question) {
     // console.log("printQuestion", question.displayType, question);
     
@@ -252,9 +251,9 @@ function printQuestion(question) {
     switch (question.displayType) {
         case "boolean":
             result = [
-                printQuestionText(question, "[Choose only one]"),
-                printOption("no"),
-                printOption("yes")
+                printQuestionText(question, "Choose only one"),
+                printOption("yes"),
+                printOption("no")
             ];
             break;
             
@@ -273,13 +272,13 @@ function printQuestion(question) {
         case "checkbox":
             result = [
                 printQuestionText(question),
-                printCheckbox("")
+                printCheckbox("yes")
             ];
             break;
             
         case "checkboxes":
              result = [
-                printQuestionText(question, "[Choose any combination]"),
+                printQuestionText(question, "Choose any combination"),
                 question.valueOptions.map(function (option, index) {
                     return printCheckbox(option);
                 })
@@ -289,20 +288,20 @@ function printQuestion(question) {
         case "text":
             result = [
                 printQuestionText(question),
-                m("span", "_________________________________________________________________________")
+                m("div.narrafirma-survey-print-blank-text-line", "_________________________________________________________________________")
             ];
             break;
             
         case "textarea":
             result = [
                 printQuestionText(question),
-                repeatTags(8, printReturnAndBlankLine())
+                m("div.narrafirma-survey-print-textarea", printReturnAndBlankLine())
             ];
             break;
             
         case "select":
             result = [
-                printQuestionText(question, "[Choose only one]"),
+                printQuestionText(question, "Choose only one"),
                 question.valueOptions.map(function (option, index) {
                     return printOption(option);
                 })
@@ -311,7 +310,7 @@ function printQuestion(question) {
             
         case "radiobuttons":
             result = [
-                printQuestionText(question, "[Choose only one]"),
+                printQuestionText(question, "Choose only one"),
                 question.valueOptions.map(function (option, index) {
                     return printOption(option);
                 })
@@ -320,16 +319,16 @@ function printQuestion(question) {
             
         case "slider":
             result = [
-                printQuestionText(question, "[Mark on the line]"),
+                printQuestionText(question, "Mark on the line"),
+                m("div.narrafirma-survey-print-slider", [
                 question.displayConfiguration[0],
                 " -------------------------------------------------- ",
-                question.displayConfiguration[1],
-                printReturnAndBlankLine()
+                question.displayConfiguration[1]])
             ];
             break;
     }
     
-    return [result, printReturnAndBlankLine()];
+    return result;
 }
 
 function generateHTMLForQuestionnaire(questionnaire) {
@@ -338,34 +337,20 @@ function generateHTMLForQuestionnaire(questionnaire) {
     var vdom = m(".narrafirma-questionnaire-for-printing", [
         "\n",
         
-        m(".narrafirma-survey-print-title", printText(questionnaire.title)),
-        printReturnAndBlankLine(),
-        
-        m(".narrafirma-survey-print-intro", printText(questionnaire.startText)),
-        printReturnAndBlankLine(),
-                  
-        "Please select one of the following questions to answer:",
-        printReturnAndBlankLine(),
+        m("div.narrafirma-survey-print-title", printText(questionnaire.title)),
+        m("div.narrafirma-survey-print-intro", printText(questionnaire.startText)),
+        m("div.narrafirma-survey-print-please-select", "Please select one of the following questions to answer:"),
         questionnaire.elicitingQuestions.map(function (elicitingQuestion) {
             return printOption(elicitingQuestion.text);
         }),
-        
-        printReturnAndBlankLine(),
-        
-        "Please enter your response here:",
-        repeatTags(5, printReturnAndBlankLine()),
-        
+        m("div.narrafirma-survey-print-enter-response", "Please enter your response here:"),
         questionnaire.storyQuestions.map(function (storyQuestion) {
             return printQuestion(storyQuestion);
         }),
-        
         questionnaire.participantQuestions.map(function (participantQuestion) {
             return printQuestion(participantQuestion);
         }),
-    
-        printReturnAndBlankLine(),
-        
-        printText(questionnaire.endText || "")
+        m("div.narrafirma-survey-print-end-text", printText(questionnaire.endText || ""))
     ]);
 
     return generateHTMLForPage(questionnaire.title || "NarraFirma Story Form", "css/survey.css", vdom);
