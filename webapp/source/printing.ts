@@ -14,6 +14,10 @@ import canvg = require("canvgModule");
 
 // TODO: Translate
 
+
+// why are all of the bar graphs and histograms being drawn with a left axis color of #C26E00
+// when this never appears in the code? might be a canvg thing?
+
 // TODO: Rules should be read from loaded stylesheet
 var graphResultsPaneCSS = `
     .narrafirma-graph-results-pane {
@@ -30,58 +34,98 @@ var graphResultsPaneCSS = `
         fill: none;
     }
     
-    .brush .extent {
-      fill-opacity: 0.1;
-      stroke: #fff;
-      shape-rendering: crispEdges;
-    }
-    
     .chart {
         background-color: white;
-    }
-    
-    .scatterPlot .story {
-      stroke: #3e3739;
-      stroke-width: 0.2px;
-      fill: #3e3739;
-      fill-opacity: 0.7;
-    }
-    
-    .scatterPlot .story.selected {
-      stroke: #3b5fab;
-      fill: #3b5fab;
     }
     
     .bar {
       fill: none;
     }
     
+    .x-axis {
+        fill: none;
+        stroke: #231f20;
+        stroke-width: 1px;
+        shape-rendering: crispEdges;    
+    }
+    
+    .y-axis {
+        fill: none;
+        stroke: #231f20;
+        stroke-width: 1px;
+        shape-rendering: crispEdges;    
+    }
+    
+    .x-axis text {
+        fill: #231f20;
+        stroke-width: 0.5px;
+        font-family: sans-serif;
+        font-size: 1.2em;
+    }
+    
+    .y-axis text {
+        fill: #231f20;
+        stroke-width: 0.5px;
+        font-family: sans-serif;
+        font-size: 1.2em;
+    }
+    
+    .x-axis-label {
+        fill: #231f20;
+        stroke-width: 0.5px;
+        font-family: sans-serif;
+        font-size: 1.4em;
+    }
+    
+    .y-axis-label {
+        fill: #231f20;
+        stroke-width: 0.5px;
+        font-family: sans-serif;
+        font-size: 1.4em;
+    }
+    
     .story.even {
-      fill: #3e3739;
+      fill: #2e4a85;
     }
     
     .story.odd {
-      fill: #a7a5a5;
+      fill: #7b8cb2;
     }
     
-    .story.even.selected {
-      fill: #3b5fab;
+    .brush .extent {
+      fill-opacity: 0.3;
+      fill: #ff7d00;
+      stroke: #cc6400;
+      stroke-width: 1px;
+      shape-rendering: auto; /* was crispEdges; auto turns on anti-aliasing */
     }
     
-    .story.odd.selected {
-      fill: #abb6ce;
+    .histogram-mean {
+        stroke: red;
+        stroke-width: 2px;
+    }
+    
+    .histogram-standard-deviation-low {
+        stroke: #8db500;
+        stroke-width: 1.5px;
+    }
+    
+    .histogram-standard-deviation-high {
+        stroke: #8db500;    
+        stroke-width: 1.5px;
+    }
+    
+    .scatterPlot .story {
+      stroke: #2e4a85;
+      stroke-width: 0.2px;
+      fill: #2e4a85;
+      fill-opacity: 0.7;
     }
     
     .contingencyChart .storyCluster.observed {
       stroke-width: 3px;
       stroke: #2e4a85;
       fill: #d5dae6;
-    }
-    
-    .contingencyChart .storyCluster.observed.selected {
-      stroke-width: 2px;
-      stroke: #2e4a85;
-      fill: #3b5fab;
     }
     
     .contingencyChart .expected {
@@ -98,12 +142,6 @@ var graphResultsPaneCSS = `
     .contingencyChart .axis line {
       shape-rendering: crispEdges;
       stroke: gray;
-    }
-
-    .contingencyChart {
-        fill: none;
-        stroke: black;
-        stroke-width: 1px;
     }
 `;
 
@@ -176,21 +214,20 @@ function printReturnAndBlankLine() {
 }
 
 function printCheckbox(text) {
-    return [
+    return m("div.narrafirma-survey-print-checkbox", [
         "[ ] ",
         printText(text),
-        m("br"),
         "\n"
-    ];
+    ]);
 }
 
 function printOption(text) {
-    return [
+    return m("div.narrafirma-survey-print-radiobutton", 
+        [
         "( ) ",
         printText(text),
-        m("br"),
         "\n"
-    ];
+        ]);
 }
 
 function printQuestionText(question, instructions = "") {
@@ -198,14 +235,14 @@ function printQuestionText(question, instructions = "") {
     if (question.displayType === "header") {
        questionTextForPrinting = m("b", questionTextForPrinting); 
     }
-    if (instructions) instructions = " " + instructions;
-    return [
+    if (instructions) instructions = " (" + instructions + ")";
+    return m("div.narrafirma-survey-print-question-text", [
         questionTextForPrinting,
-        instructions,
-        printReturnAndBlankLine()
-    ];    
+        m("span.narrafirma-survey-print-instruction", instructions)
+    ]);    
 }
 
+// TODO: Translate
 function printQuestion(question) {
     // console.log("printQuestion", question.displayType, question);
     
@@ -214,9 +251,9 @@ function printQuestion(question) {
     switch (question.displayType) {
         case "boolean":
             result = [
-                printQuestionText(question, "[Choose only one]"),
-                printOption("no"),
-                printOption("yes")
+                printQuestionText(question, "Choose only one"),
+                printOption("yes"),
+                printOption("no")
             ];
             break;
             
@@ -235,13 +272,13 @@ function printQuestion(question) {
         case "checkbox":
             result = [
                 printQuestionText(question),
-                printCheckbox("")
+                printCheckbox("yes")
             ];
             break;
             
         case "checkboxes":
              result = [
-                printQuestionText(question, "[Choose any combination]"),
+                printQuestionText(question, "Choose any combination"),
                 question.valueOptions.map(function (option, index) {
                     return printCheckbox(option);
                 })
@@ -251,20 +288,20 @@ function printQuestion(question) {
         case "text":
             result = [
                 printQuestionText(question),
-                m("span", "_________________________________________________________________________")
+                m("div.narrafirma-survey-print-blank-text-line", "_________________________________________________________________________")
             ];
             break;
             
         case "textarea":
             result = [
                 printQuestionText(question),
-                repeatTags(8, printReturnAndBlankLine())
+                m("div.narrafirma-survey-print-textarea", printReturnAndBlankLine())
             ];
             break;
             
         case "select":
             result = [
-                printQuestionText(question, "[Choose only one]"),
+                printQuestionText(question, "Choose only one"),
                 question.valueOptions.map(function (option, index) {
                     return printOption(option);
                 })
@@ -273,7 +310,7 @@ function printQuestion(question) {
             
         case "radiobuttons":
             result = [
-                printQuestionText(question, "[Choose only one]"),
+                printQuestionText(question, "Choose only one"),
                 question.valueOptions.map(function (option, index) {
                     return printOption(option);
                 })
@@ -282,16 +319,16 @@ function printQuestion(question) {
             
         case "slider":
             result = [
-                printQuestionText(question, "[Mark on the line]"),
+                printQuestionText(question, "Mark on the line"),
+                m("div.narrafirma-survey-print-slider", [
                 question.displayConfiguration[0],
                 " -------------------------------------------------- ",
-                question.displayConfiguration[1],
-                printReturnAndBlankLine()
+                question.displayConfiguration[1]])
             ];
             break;
     }
     
-    return [result, printReturnAndBlankLine()];
+    return result;
 }
 
 function generateHTMLForQuestionnaire(questionnaire) {
@@ -300,34 +337,20 @@ function generateHTMLForQuestionnaire(questionnaire) {
     var vdom = m(".narrafirma-questionnaire-for-printing", [
         "\n",
         
-        m(".narrafirma-survey-print-title", printText(questionnaire.title)),
-        printReturnAndBlankLine(),
-        
-        m(".narrafirma-survey-print-intro", printText(questionnaire.startText)),
-        printReturnAndBlankLine(),
-                  
-        "Please select one of the following questions to answer:",
-        printReturnAndBlankLine(),
+        m("div.narrafirma-survey-print-title", printText(questionnaire.title)),
+        m("div.narrafirma-survey-print-intro", printText(questionnaire.startText)),
+        m("div.narrafirma-survey-print-please-select", "Please select one of the following questions to answer:"),
         questionnaire.elicitingQuestions.map(function (elicitingQuestion) {
             return printOption(elicitingQuestion.text);
         }),
-        
-        printReturnAndBlankLine(),
-        
-        "Please enter your response here:",
-        repeatTags(5, printReturnAndBlankLine()),
-        
+        m("div.narrafirma-survey-print-enter-response", "Please enter your response here:"),
         questionnaire.storyQuestions.map(function (storyQuestion) {
             return printQuestion(storyQuestion);
         }),
-        
         questionnaire.participantQuestions.map(function (participantQuestion) {
             return printQuestion(participantQuestion);
         }),
-    
-        printReturnAndBlankLine(),
-        
-        printText(questionnaire.endText || "")
+        m("div.narrafirma-survey-print-end-text", printText(questionnaire.endText || ""))
     ]);
 
     return generateHTMLForPage(questionnaire.title || "NarraFirma Story Form", "css/survey.css", vdom);
@@ -579,29 +602,27 @@ function printObservationList(observationList, allStories, minimumStoryCountRequ
         // console.log("graph", graph);
            
         return [
-            m("div", "Observation title: " + item.observationTitle),
-            printReturn(),
-            m("div", "Observation description: " + ": " + item.observationDescription),
-            printReturnAndBlankLine(),
+            m("div.narrafirma-catalysis-report-observation", item.observationTitle),
+            m("div.narrafirma-catalysis-report-observation-description", item.observationDescription),
             displayForGraphHolder(graphHolder),
             printReturnAndBlankLine()
         ];
     });
 }
 
-function makeObservationListForInterpretation(project: Project, allObservations, intepretationName) {
-    // console.log("makeObservationListForInterpretation", intepretationName);
+function makeObservationListForInterpretation(project: Project, allObservations, interpretationName) {
+    // console.log("makeObservationListForInterpretation", interpretationName);
     var result = [];
     allObservations.forEach((observation) => {
         // console.log("observation", observation);
-        var intepretationsListIdentifier = project.tripleStore.queryLatestC(observation, "observationInterpretations");
-        // console.log("intepretationsListIdentifier", intepretationsListIdentifier);
-        var intepretationsList = project.tripleStore.getListForSetIdentifier(intepretationsListIdentifier);
-        // console.log("intepretationsList", intepretationsList);
-        intepretationsList.forEach((interpretationIdentifier) => {
+        var interpretationsListIdentifier = project.tripleStore.queryLatestC(observation, "observationInterpretations");
+        // console.log("interpretationsListIdentifier", interpretationsListIdentifier);
+        var interpretationsList = project.tripleStore.getListForSetIdentifier(interpretationsListIdentifier);
+        // console.log("interpretationsList", interpretationsList);
+        interpretationsList.forEach((interpretationIdentifier) => {
             var interpretation = project.tripleStore.makeObject(interpretationIdentifier, true);
             var name = interpretation.interpretation_name;
-            if (name === intepretationName) {
+            if (name === interpretationName) {
                 // console.log("found observation that has matching interpretation", interpretation, observation);
                 result.push(observation);
             }
@@ -644,42 +665,37 @@ export function printCatalysisReport() {
         return;
     }
     
-    var progressModel = dialogSupport.openProgressDialog("Starting up...", "Progress generating catalysis report", "Cancel", dialogCancelled);
+    var progressModel = dialogSupport.openProgressDialog("Starting up...", "Generating catalysis report", "Cancel", dialogCancelled);
  
     var allObservations = project.tripleStore.getListForSetIdentifier(catalysisReportObservationSetIdentifier);
     
     // console.log("allObservations", allObservations);
     
-    var reportTitle = "Catalysis report for " + project.projectIdentifier + " on " + new Date().toISOString();
-    
+    var reportNotes = project.tripleStore.queryLatestC(catalysisReportIdentifier, "catalysisReport_notes");
+
     var printItems = [
-        m("div.narrafirma-catalysisreport-title", reportTitle),
-        printReturnAndBlankLine()
+        m("div.narrafirma-catalysis-report-title", catalysisReportName),
+        m("div.narrafirma-catalysis-report-project-name", "Project: " + project.projectIdentifier),
+        m("div.narrafirma-catalysis-report-date", "Generated: " + new Date().toString()),
+        m("div.narrafirma-catalysis-report-intro-note", reportNotes)
     ];
-    
-    /*
-    printItems.push([
-        printItem(sensemakingSessionAgenda, {sensemakingSessionPlan_activitiesList: true}),
-        printReturnAndBlankLine()
-    ]);
-    */
-    
-    /*
-    Create catalysis report - including results (graphs, statistical results)
-    Perspective
-       Interpretation
-           Observation
-               Pattern (graph)
-    */  
     
     ClusteringDiagram.calculateClusteringForDiagram(clusteringDiagram);
     // console.log("clusteringDiagram with clusters", clusteringDiagram);
     
     var perspectives = clusteringDiagram.clusters;
+    // list of links to perspectives
+    printItems.push(m("div.narrafirma-catalysis-report-perspective-link-header", "Perspectives in this report (" + perspectives.length + "):"));
+    for (var i = 0; i < perspectives.length ; i++) {
+        var perspective = perspectives[i];
+        printItems.push(m("div.narrafirma-catalysis-report-perspective-link", m("a", {href: "#" + perspective.name}, perspective.name)));
+    }
+    printItems.push(m("br"));
+    
     var minimumStoryCountRequiredForTest = project.minimumStoryCountRequiredForTest(catalysisReportIdentifier);
     
-    function progressText(perspectiveIndex: number, intepretationIndex: number) {
-        return "Generated " + (perspectiveIndex + 1) + " of " + perspectives.length + " perspectives; intepretation: " + (intepretationIndex + 1) + " of " + perspectives[perspectiveIndex].items.length;
+    function progressText(perspectiveIndex: number, interpretationIndex: number) {
+        return "Perspective " + (perspectiveIndex + 1) + " of " + perspectives.length + ", interpretation " + (interpretationIndex + 1) + " of " + perspectives[perspectiveIndex].items.length;
     }
     
     function dialogCancelled(dialogConfiguration, hideDialogMethod) {
@@ -688,19 +704,19 @@ export function printCatalysisReport() {
     }
     
     var perspectiveIndex = 0;
-    var intepretationIndex = 0;
+    var interpretationIndex = 0;
     
     function printNextPerspective() {
-        // console.log("printNextPerspective", perspectiveIndex, intepretationIndex);
+        // console.log("printNextPerspective", perspectiveIndex, interpretationIndex);
         // console.log("sendNextMessage", messageIndexToSend);
         if (progressModel.cancelled) {
             alert("Cancelled after working on " + (perspectiveIndex + 1) + " perspective(s)");
         } else if (perspectiveIndex >= perspectives.length) {
             progressModel.hideDialogMethod();
             // Trying to avoid popup warning if open window from timeout by using finish dialog button press to display results
-            var finishModel = dialogSupport.openFinishedDialog("Done generating report; display it?", "Finished", "Display", "Cancel", function(dialogConfiguration, hideDialogMethod) {
+            var finishModel = dialogSupport.openFinishedDialog("Done creating report; display it?", "Finished generating catalysis report", "Display", "Cancel", function(dialogConfiguration, hideDialogMethod) {
                 // "css/standard.css"
-                var htmlForPage = generateHTMLForPage(reportTitle, null, printItems);
+                var htmlForPage = generateHTMLForPage(catalysisReportName, "css/standard.css", printItems);
                 printHTML(htmlForPage);
                 hideDialogMethod();
                 progressModel.redraw();
@@ -708,29 +724,35 @@ export function printCatalysisReport() {
             finishModel.redraw();
         } else {
             var perspective = perspectives[perspectiveIndex];
-            if (intepretationIndex === 0) {
-                printItems.push(m("hr"));
-                printItems.push(m("div", "Perspective: " + perspective.name));
-                if (perspective.notes) printItems.push(m("div", "Perspective notes: " + perspective.notes));
+            if (interpretationIndex === 0) {
+                printItems.push(m("a", {name: perspective.name}));
+                printItems.push(m("div.narrafirma-catalysis-report-perspective", perspective.name));
+                if (perspective.notes) printItems.push(m("div.narrafirma-catalysis-report-perspective-notes", perspective.notes));
+                // list of links to interpretations in this perspective
+                printItems.push(m("div.narrafirma-catalysis-report-interp-link-header", "Interpretations in this perspective (" + perspective.items.length + "):"));
+                for (var i = 0; i < perspective.items.length ; i++) {
+                    var interpretation = perspective.items[i];
+                    printItems.push(m("div.narrafirma-catalysis-report-interp-link", m("a", {href: "#" + interpretation.name}, interpretation.name)));
+                }
                 printItems.push(m("br"));
             }
             var interpretations = perspective.items;
-            if (intepretationIndex >= interpretations.length) {
+            if (interpretationIndex >= interpretations.length) {
                 perspectiveIndex++;
-                intepretationIndex = 0;
+                interpretationIndex = 0;
             } else {
-                var intepretation = interpretations[intepretationIndex];
-                printItems.push(m("div", "Interpretation: " + intepretation.name));
-                if (intepretation.notes) printItems.push(m("div", "Interpretation notes: " + intepretation.notes));
-                printItems.push(m("br"));
+                var interpretation = interpretations[interpretationIndex];
+                printItems.push(m("a", {name: interpretation.name}));
+                printItems.push(m("div.narrafirma-catalysis-report-interpretation", interpretation.name));
+                if (interpretation.notes) printItems.push(m("div.narrafirma-catalysis-report-interpretation-notes", interpretation.notes));
                 
-                var observationList = makeObservationListForInterpretation(project, allObservations, intepretation.name);
+                var observationList = makeObservationListForInterpretation(project, allObservations, interpretation.name);
                 printItems.push(printObservationList(observationList, allStories, minimumStoryCountRequiredForTest));
                 
                 // TODO: Translate
-                progressModel.progressText = progressText(perspectiveIndex, intepretationIndex);
+                progressModel.progressText = progressText(perspectiveIndex, interpretationIndex);
                 progressModel.redraw();
-                intepretationIndex++;
+                interpretationIndex++;
             }
    
             setTimeout(function() { printNextPerspective(); }, 0);

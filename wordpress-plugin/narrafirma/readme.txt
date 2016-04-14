@@ -7,9 +7,9 @@ Author URI: http://www.cfkurtz.com
 Author: Cynthia Kurtz and Paul Fernhout
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=DGVVDT2D49QA8
 Requires at least: 4.3.1
-Tested up to: 4.4.2
+Tested up to: 4.5
 Stable tag: trunk
-Version: 0.9.7
+Version: 0.9.8
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -143,6 +143,12 @@ and to keep good records for the future.
 
 == Changelog ==
 
+= 0.9.8 =
+
+* Added clarifying headers and popup hints for all links on dashboard (project phase) pages.
+* Improved styling and clarity of catalysis report, printed story form, and story cards.
+* Added story count to Spot-check graphs screen.
+
 = 0.9.7 =
 
 * Fixed bug in checkbox questions where data was not being stored correctly.
@@ -189,6 +195,10 @@ loading application, getting user information, or retrieving project data.
 change logs, see the [GitHub repository](https://github.com/pdfernhout/narrafirma).
 
 == Upgrade Notice ==
+
+= 0.9.8 =
+This upgrade improves the clarity and style of the application and some of its reports. 
+This is not a critical release, but it's recommended because it makes the application easier to use.
 
 = 0.9.7 =
 WordPress users should upgrade to this version. 
