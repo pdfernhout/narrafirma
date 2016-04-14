@@ -103,13 +103,14 @@ function displayHTMLForField(storyModel: surveyCollection.Story, fieldSpecificat
         result.push(displayHTMLForSelect(fieldSpecification, fieldName, value));
     } else if (fieldSpecification.displayType === "radiobuttons") {
         result.push(displayHTMLForRadioButtons(fieldSpecification, fieldName, value));
+    } else if (fieldSpecification.displayType === "label" || fieldSpecification.displayType === "header") {
+        return [];
     } else {
         // TODO: May need more handling here for other cases
         result.push(wrap("span", "narrafirma-story-card-field-name", fieldName + ": "));
         result.push(value);
     }
     if (!nobreak) {
-        result.push(m("br"));
         result.push(m("br"));
     }
     
@@ -159,7 +160,7 @@ export function generateStoryCardContent(storyModel, options: Options = {}) {
         if (question.displayType !== "slider") continue;
         otherFields.push(displayHTMLForField(storyModel, question, "nobreak"));
     }
-    if (otherFields.length) otherFields = [m("table", otherFields), m("br")];
+    if (otherFields.length) otherFields = [m("table", otherFields)];
     
     for (i = 0; i < questions.length; i++) {
         question = questions[i];
@@ -205,7 +206,7 @@ export function generateStoryCardContent(storyModel, options: Options = {}) {
         if (question.displayType !== "slider") continue;
         annotationFields.push(displayHTMLForField(storyModel, question, "nobreak"));
     }
-    if (annotationFields.length) annotationFields = [m("table", annotationFields), m("br")];
+    if (annotationFields.length) annotationFields = [m("table", annotationFields)];
     
     for (i = 0; i < adjustedAnnotationQuestions.length; i++) {
         question = adjustedAnnotationQuestions[i];
@@ -217,12 +218,9 @@ export function generateStoryCardContent(storyModel, options: Options = {}) {
     var storyCardContent = m("div[class=storyCard]", [
         wrap("div", "narrafirma-story-card-story-title", storyName),
         storyTextAtTop,
-        m("br"),
         otherFields,
         storyTextAtBottom,
-        m("br"),
         textForElicitingQuestion,
-        m("br"),
         annotationFields,
         m("hr")
     ]);

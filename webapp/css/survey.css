@@ -260,5 +260,70 @@ input[type='range']::-webkit-slider-thumb{
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ for printing survey ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 .narrafirma-survey-print-title {
-	background: #e4e4e4;
+	font-size: 1.5em;
+	margin: 0.5em 0 0.5em 12px
 }
+
+.narrafirma-survey-print-intro {
+	margin: 0 0 1em 12px;
+	font-style: italic;
+}
+
+.narrafirma-survey-print-please-select {
+	margin: 1.5em 0 0.5em 12px;
+	font-style: italic;
+}
+
+.narrafirma-survey-print-enter-response {
+	margin: 1.5em 12px 1.5em 12px;
+	padding: 0.5em 0.5em 8em 0.5em;
+	border: 1px solid black;
+	font-style: italic;
+}
+
+.narrafirma-survey-print-question-text {
+	margin: 1.5em 0 0.5em 12px;
+}
+
+.narrafirma-survey-print-instruction {
+	font-size: 0.75em;
+}
+
+.narrafirma-survey-print-radiobutton {
+	margin: 0 0 0.5em 24px;
+}
+
+.narrafirma-survey-print-checkbox {
+	margin: 0 0 0.5em 24px;
+}
+
+.narrafirma-survey-print-slider {
+	margin: 0 0 0.5em 24px;
+}
+
+.narrafirma-survey-print-blank-text-line {
+	margin: 1.5em 0 0.5em 24px;
+}
+
+.narrafirma-survey-print-textarea {
+	margin: 0.5em 24px 0.5em 24px;
+	padding: 4em;
+	border: 1px solid black;
+}
+
+.narrafirma-survey-print-end-text {
+	margin: 2em 0 2em 12px;
+	font-style: italic;
+}
+
+
+
+
+
+
+
+
+
+
+
+
