@@ -1,4 +1,4 @@
-# NarrFirma
+# NarraFirma
 
 A browser-based single-page application to support "grounding actions in stories"
 
