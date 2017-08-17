@@ -90,6 +90,8 @@ class PatternExplorer {
     observationPanelSpecification = null;
     
     minimumStoryCountRequiredForTest = Project.defaultMinimumStoryCountRequiredForTest;
+    correlationLineChoice = Project.defaultCorrelationLineChoice;
+    graphTypesToCreate = Project.defaultGraphTypesToCreate;
     
     constructor(args) {
         this.project = Globals.project();
@@ -102,7 +104,9 @@ class PatternExplorer {
             allStories: [],
             currentGraph: null,
             currentSelectionExtentPercentages: null,
-            minimumStoryCountRequiredForTest: Project.defaultMinimumStoryCountRequiredForTest
+            minimumStoryCountRequiredForTest: Project.defaultMinimumStoryCountRequiredForTest,
+            correlationLineChoice: Project.defaultCorrelationLineChoice,
+            graphTypesToCreate: Project.defaultGraphTypesToCreate
         };
         
         // Story grid initialization
@@ -358,6 +362,9 @@ class PatternExplorer {
         
         this.minimumStoryCountRequiredForTest = this.project.minimumStoryCountRequiredForTest(catalysisReportIdentifier);
         // console.log("minimumStoryCountRequiredForTest", this.minimumStoryCountRequiredForTest);
+        this.correlationLineChoice = this.project.correlationLineChoice(catalysisReportIdentifier);
+        this.graphHolder.correlationLineChoice = this.correlationLineChoice; // because need to pass it in to charting methods
+        this.graphTypesToCreate = this.project.graphTypesToCreate(catalysisReportIdentifier);
         
         this.catalysisReportObservationSetIdentifier = this.getObservationSetIdentifier(catalysisReportIdentifier);
         
@@ -411,6 +418,8 @@ class PatternExplorer {
             pattern = {id: id, observation: null, graphType: graphType, patternName: nameForQuestion(questions[0]), questions: questions};
         } else if (questions.length === 2) {
             pattern = {id: id, observation: null, graphType: graphType, patternName: nameForQuestion(questions[0]) + " vs. " + nameForQuestion(questions[1]), questions: questions};
+        } else if (questions.length === 3) {
+            pattern = {id: id, observation: null, graphType: graphType, patternName: nameForQuestion(questions[0]) + " vs. " + nameForQuestion(questions[1]) + " + " + nameForQuestion(questions[2]), questions: questions};
         } else {
             console.log("Unexpected number of questions", questions);
             throw new Error("Unexpected number of questions: " + questions.length);
@@ -452,50 +461,63 @@ class PatternExplorer {
             return ("00000" + questionCount++).slice(-5);
         }
      
-        nominalQuestions.forEach((question1) => {
-            result.push(this.makePattern(nextID(), "bar", [question1]));
-        });
+        if (this.graphTypesToCreate["bar graphs"]) {
+            nominalQuestions.forEach((question1) => {
+                result.push(this.makePattern(nextID(), "bar", [question1]));
+            });
+        };
         
         // Prevent mirror duplicates and self-matching questions
         var usedQuestions;
         
-        usedQuestions = [];
-        nominalQuestions.forEach((question1) => {
-            usedQuestions.push(question1);
-            nominalQuestions.forEach((question2) => {
-                if (usedQuestions.indexOf(question2) !== -1) return;
-                result.push(this.makePattern(nextID(), "table", [question1, question2]));
-            });
-        });
-        
-        ratioQuestions.forEach((question1) => {
-            result.push(this.makePattern(nextID(), "histogram", [question1]));
-        });
-        
-        ratioQuestions.forEach((question1) => {
-            nominalQuestions.forEach((question2) => {
-                result.push(this.makePattern(nextID(), "multiple histogram", [question1, question2]));
-            });
-        });
-        
-        usedQuestions = [];
-        ratioQuestions.forEach((question1) => {
-            usedQuestions.push(question1);
-            ratioQuestions.forEach((question2) => {
-                if (usedQuestions.indexOf(question2) !== -1) return;
-                result.push(this.makePattern(nextID(), "scatter", [question1, question2]));
-            });
-        });
-        
-        /* TODO: For later
-        ratioQuestions.forEach((question1) => {
-            ratioQuestions.forEach((question2) => {
-                nominalQuestions.forEach((question3) => {
-                    result.push(this.makePattern(nextID(), "multiple scatter", [question1, question2, question3]});
+        if (this.graphTypesToCreate["tables"]) {
+            usedQuestions = [];
+            nominalQuestions.forEach((question1) => {
+                usedQuestions.push(question1);
+                nominalQuestions.forEach((question2) => {
+                    if (usedQuestions.indexOf(question2) !== -1) return;
+                    result.push(this.makePattern(nextID(), "table", [question1, question2]));
                 });
             });
-        });
-        */
+        };
+        
+        if (this.graphTypesToCreate["histograms"]) {
+            ratioQuestions.forEach((question1) => {
+                result.push(this.makePattern(nextID(), "histogram", [question1]));
+            });
+        };
+        
+        if (this.graphTypesToCreate["multiple histograms"]) {
+            ratioQuestions.forEach((question1) => {
+                nominalQuestions.forEach((question2) => {
+                    result.push(this.makePattern(nextID(), "multiple histogram", [question1, question2]));
+                });
+            });
+        };
+        
+        if (this.graphTypesToCreate["scatterplots"]) {
+            usedQuestions = [];
+            ratioQuestions.forEach((question1) => {
+                usedQuestions.push(question1);
+                ratioQuestions.forEach((question2) => {
+                    if (usedQuestions.indexOf(question2) !== -1) return;
+                    result.push(this.makePattern(nextID(), "scatter", [question1, question2]));
+                });
+            });
+        };
+        
+        if (this.graphTypesToCreate["multiple scatterplots"]) {
+            usedQuestions = [];
+            ratioQuestions.forEach((question1) => {
+                usedQuestions.push(question1);
+                ratioQuestions.forEach((question2) => {
+                    if (usedQuestions.indexOf(question2) !== -1) return;
+                    nominalQuestions.forEach((question3) => {
+                    result.push(this.makePattern(nextID(), "multiple scatter", [question1, question2, question3]));
+                    });
+                });
+            });
+        };
     
         result.forEach((pattern) => {
             this.calculateStatisticsForPattern(pattern);        
@@ -519,10 +541,9 @@ class PatternExplorer {
         } else if (graphType === "multiple histogram") {
             statistics = calculateStatistics.calculateStatisticsForMultipleHistogram(pattern.questions[0], pattern.questions[1], stories, this.minimumStoryCountRequiredForTest);
         } else if (graphType === "scatter") {
-            statistics = calculateStatistics.calculateStatisticsForScatterPlot(pattern.questions[0], pattern.questions[1], stories, this.minimumStoryCountRequiredForTest);
+            statistics = calculateStatistics.calculateStatisticsForScatterPlot(pattern.questions[0], pattern.questions[1], null, null, stories, this.minimumStoryCountRequiredForTest);
         } else if (graphType ===  "multiple scatter") {
-            console.log("ERROR: Not suported graphType: " + graphType);
-            throw new Error("ERROR: Not suported graphType: " + graphType);
+            statistics = calculateStatistics.calculateStatisticsForMultipleScatterPlot(pattern.questions[0], pattern.questions[1], pattern.questions[2], stories, this.minimumStoryCountRequiredForTest);
         } else {
             console.log("ERROR: Unexpected graphType: " + graphType);
             throw new Error("ERROR: Not suported graphType: " + graphType);
@@ -567,6 +588,7 @@ class PatternExplorer {
         // console.log("patternName", name, graphType);
         var q1 = pattern.questions[0];
         var q2 = pattern.questions[1];
+        var q3 = pattern.questions[2]
         var newGraph = null;
         switch (graphType) {
             case "bar":
@@ -583,8 +605,11 @@ class PatternExplorer {
                 newGraph = charting.multipleHistograms(graphHolder, q2, q1, selectionCallback);
                 break;
             case "scatter":
-                newGraph = charting.d3ScatterPlot(graphHolder, q1, q2, selectionCallback);
+                newGraph = charting.d3ScatterPlot(graphHolder, q1, q2, null, null, selectionCallback);
                 break;        
+            case "multiple scatter":
+                newGraph = charting.multipleScatterPlot(graphHolder, q1, q2, q3, selectionCallback);
+                break;
            default:
                 console.log("ERROR: Unexpected graph type");
                 alert("ERROR: Unexpected graph type");

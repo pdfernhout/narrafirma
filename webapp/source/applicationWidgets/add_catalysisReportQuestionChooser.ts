@@ -137,12 +137,8 @@ function add_catalysisReportQuestionChooser(panelBuilder: PanelBuilder, model, f
     }
     
     // TODO: Translate
-    return m("div", [
+    return m("div.questionExternal", [
         prompt,
-        m("button", { onclick: selectAll }, "Select all"),
-        m("button", { onclick: clearAll }, "Clear all"),
-        m("br"),
-        m("div", ["Total number of stories: " + allStories.length]),
         m("div", [
             m("br"),
             "Story questions:",
@@ -165,7 +161,14 @@ function add_catalysisReportQuestionChooser(panelBuilder: PanelBuilder, model, f
                 return buildQuestionCheckbox(question.annotationQuestion_shortName, question.annotationQuestion_type, "A_");
             }),
             allAnnotationQuestions.length ? [] : m("div", "[No questions]")
-        ])
+        ]),
+    m("br"),
+    m("button", { onclick: selectAll }, "Select all"),
+    m("button", { onclick: clearAll }, "Clear all"),
+    m("br"),
+    m("br"),
+    m("div", ["Number of stories: " + allStories.length]),
+    m("br")
     ]);
 }
 

@@ -23,7 +23,7 @@ var panel: Panel = {
             valueOptionsSubfield: "catalysisReport_shortName",
             displayType: "select",
             displayName: "Catalysis report",
-            displayPrompt: "Choose a catalysis report to work on."
+            displayPrompt: "Choose a catalysis <strong>report</strong> to work on."
         },
         {
             id: "configureCatalysisReport_promptToSelectCatalysisReportForInterpretations",
@@ -53,17 +53,46 @@ var panel: Panel = {
             ],
             displayType: "select",
             displayName: "Minimum subset size",
-            displayPrompt: "How large should subsets of stories be to be considered for statistical tests?",
+            displayPrompt: "How large should <strong>subsets</strong> of stories be to be considered for statistical tests?",
             displayVisible: function(panelBuilder, model) {
                 return !!Globals.clientState().catalysisReportName();
             }
         },
+
+        {
+            id: "configureCatalysisReport_correlationLineChoice",
+            valuePath: "/clientState/catalysisReportIdentifier/correlationLineChoice",
+            valueType: "string",
+            valueOptions: [
+                "none",
+                "0.01",
+                "0.05"
+            ],
+            displayType: "select",
+            displayName: "Mark correlation lines",
+            displayPrompt: "At what significance level should <strong>correlations</strong> be marked on scatterplots?",
+            displayVisible: function(panelBuilder, model) {
+                return !!Globals.clientState().catalysisReportName();
+            }
+        },
+
+        {
+            id: "configureCatalysisReport_chooseGraphTypes",
+            valueType: "object",
+            valuePath: "/clientState/catalysisReportIdentifier/graphTypesToCreate",
+            displayType: "catalysisReportGraphTypesChooser",
+            displayPrompt: "Which <strong>graph types</strong> should be included in the catalysis report?",
+            displayVisible: function(panelBuilder, model) {
+                return !!Globals.clientState().catalysisReportName();
+            }
+        },
+
         {
             id: "configureCatalysisReport_chooseQuestions",
             valueType: "object",
             valuePath: "/clientState/catalysisReportIdentifier/questionsToInclude",
             displayType: "catalysisReportQuestionChooser",
-            displayPrompt: "Choose questions to include in the catalysis report",
+            displayPrompt: "Which <strong>questions</strong> should be included in the catalysis report?",
             displayVisible: function(panelBuilder, model) {
                 return !!Globals.clientState().catalysisReportName();
             }

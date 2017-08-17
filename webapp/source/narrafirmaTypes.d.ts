@@ -17,6 +17,8 @@ interface GraphHolder {
     currentSelectionExtentPercentages: GraphSelection;
     excludeStoryTooltips?: boolean;
     minimumStoryCountRequiredForTest: number;
+    correlationLineChoice: string;
+    graphTypesToCreate: {};
 }
 
 // Possible Grid configuration options

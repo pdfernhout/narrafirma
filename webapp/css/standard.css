@@ -931,8 +931,13 @@ textarea.textEditorInDialog {
     width: 700px;
 }
 
-.multipleChartStyle {
+.smallChartStyle {
     width: 200px;
+    float: left;
+}
+
+.mediumChartStyle {
+    width: 400px;
     float: left;
 }
 

@@ -22,7 +22,14 @@ function isValidNumber(value) {
     return value !== "" && !isNaN(value);
 }
 
-function collectXYDataForFields(stories: surveyCollection.Story[], xFieldName, yFieldName) {
+function correctForUnanswered(question, value) {
+    if (question.displayType === "checkbox" && !value) return "no";
+    if (value === undefined || value === null || value === "") return unansweredKey;
+    return value;
+}
+var unansweredKey = "{N/A}";
+
+function collectXYDataForFields(stories: surveyCollection.Story[], xFieldName, yFieldName, choiceQuestion, option) {
     var xResult = [];
     var yResult = [];
     for (var i = 0; i < stories.length; i++) {
@@ -30,6 +37,17 @@ function collectXYDataForFields(stories: surveyCollection.Story[], xFieldName, y
         if (!isValidNumber(xValue)) continue;
         var yValue = stories[i].fieldValue(yFieldName);
         if (!isValidNumber(yValue)) continue;
+        if (choiceQuestion) {
+            // Only count results where the choice matches
+            var choiceValue = correctForUnanswered(choiceQuestion, stories[i].fieldValue(choiceQuestion.id));
+            var skip = false;
+            if (choiceQuestion.displayType === "checkboxes") {
+                if (!choiceValue[option]) skip = true;
+            } else {
+                if (choiceValue !== option) skip = true;
+            }
+            if (skip) continue;            
+        }
         xResult.push(xValue);
         yResult.push(yValue);
     }
@@ -218,9 +236,9 @@ export function calculateStatisticsForMultipleHistogram(ratioQuestion, nominalQu
     return {significance: significance, calculated: ["p", "U", "n"], p: pLowest, U: uLowest, n: n, allResults: allResults};
 }
 
-export function calculateStatisticsForScatterPlot(rationQuestion1, rationQuestion2, stories: surveyCollection.Story[], minimumStoryCountRequiredForTest: number): any {
+export function calculateStatisticsForScatterPlot(ratioQuestion1, ratioQuestion2, choiceQuestion, option, stories: surveyCollection.Story[], minimumStoryCountRequiredForTest: number): any {
     // TODO: both continuous -- look for correlation with Pearson's R (if normal distribution) or Spearman's R / Kendall's Tau (if not normal distribution)"
-    var data = collectXYDataForFields(stories, rationQuestion1.id, rationQuestion2.id);
+    var data = collectXYDataForFields(stories, ratioQuestion1.id, ratioQuestion2.id, choiceQuestion, option);
     
     if (data.x.length < minimumStoryCountRequiredForTest) {
         return {significance: "None (count below threshold)", calculated: []};
@@ -245,6 +263,33 @@ export function calculateStatisticsForScatterPlot(rationQuestion1, rationQuestio
     //  + " tt=" + statResult.test.toFixed(3) + " tz=" + statResult.z.toFixed(3) + " tp=" + statResult.prob.toFixed(3) ;
     // console.log("calculateStatisticsForScatterPlot", rationQuestion1, rationQuestion2, n, t, p);
     return {significance: significance, calculated: ["p", "rho", "n"], p: p, rho: r, n: n};
+}
+
+export function calculateStatisticsForMultipleScatterPlot(ratioQuestion1, ratioQuestion2, choiceQuestion, stories: surveyCollection.Story[], minimumStoryCountRequiredForTest: number): any {
+    var options = [];
+    var index;
+    if (choiceQuestion.displayType !== "checkbox" && choiceQuestion.displayType !== "checkboxes") {
+        options.push(unansweredKey);
+    }
+    if (choiceQuestion.displayType === "boolean" || choiceQuestion.displayType === "checkbox") {
+        options.push("false");
+        options.push("true");
+    } else if (choiceQuestion.valueOptions) {
+        for (index in choiceQuestion.valueOptions) {
+            options.push(choiceQuestion.valueOptions[index]);
+        }
+    }
+    var minSignificanceOptionStats = {};
+    var minSignificance = 1000;
+    for (index in options) {
+        var option = options[index];
+        var optionStats = calculateStatisticsForScatterPlot(ratioQuestion1, ratioQuestion2, choiceQuestion, option, stories, minimumStoryCountRequiredForTest);
+        if (optionStats.p < minSignificance) {
+            minSignificance = optionStats.p;
+            minSignificanceOptionStats = optionStats;
+        }
+    }
+    return minSignificanceOptionStats;
 }
 
 export function calculateStatisticsForTable(nominalQuestion1, nominalQuestion2, stories: surveyCollection.Story[], minimumStoryCountRequiredForTest: number): any {

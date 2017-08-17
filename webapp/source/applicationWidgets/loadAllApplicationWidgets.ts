@@ -1,4 +1,5 @@
 import add_catalysisReportQuestionChooser = require("./add_catalysisReportQuestionChooser");
+import add_catalysisReportGraphTypesChooser = require("./add_catalysisReportGraphTypesChooser");
 import add_clusteringDiagram = require("./add_clusteringDiagram");
 import add_dashboardSectionStatusDisplay = require("./add_dashboardSectionStatusDisplay");
 import add_dashboardStoryCollectionStatusDisplay = require("./add_dashboardStoryCollectionStatusDisplay");
@@ -18,6 +19,7 @@ import add_patternExplorer = require("./add_patternExplorer");
 function loadAllApplicationWidgets(PanelBuilder) {
     // plugins
     PanelBuilder.addPlugin("catalysisReportQuestionChooser", add_catalysisReportQuestionChooser);
+    PanelBuilder.addPlugin("catalysisReportGraphTypesChooser", add_catalysisReportGraphTypesChooser);
     PanelBuilder.addPlugin("clusteringDiagram", add_clusteringDiagram);
     PanelBuilder.addPlugin("dashboardSectionStatusDisplay", add_dashboardSectionStatusDisplay);
     PanelBuilder.addPlugin("dashboardStoryCollectionStatusDisplay", add_dashboardStoryCollectionStatusDisplay);

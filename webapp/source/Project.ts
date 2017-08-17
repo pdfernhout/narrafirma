@@ -18,7 +18,16 @@ class Project {
     tripleStore: TripleStore;
     redrawCallback: Function;
     static defaultMinimumStoryCountRequiredForTest = 20;
-    
+    static defaultCorrelationLineChoice = "0.05";
+    static defaultGraphTypesToCreate = {
+        "bar graphs": true,
+        "histograms": true,
+        "tables": true,
+        "multiple histograms": true,
+        "scatterplots": true,
+        "multiple scatterplots": true
+    }
+
     // The activeQuestionnaires field tracks what should be available to survey users and to construct related messages
     activeQuestionnaires = {};
     
@@ -256,6 +265,30 @@ class Project {
             return parseInt(minimumStoryCountRequiredForTest, 10);
         } else {
             return Project.defaultMinimumStoryCountRequiredForTest;
+        }
+    }
+ 
+    correlationLineChoice(catalysisReportIdentifier) {
+        if (!catalysisReportIdentifier) {
+            throw new Error("catalysisReportIdentifier was not supplied");
+        }
+        var correlationLineChoice = this.tripleStore.queryLatestC(catalysisReportIdentifier, "correlationLineChoice");
+        if (correlationLineChoice) {
+            return correlationLineChoice;
+        } else {
+            return Project.defaultCorrelationLineChoice;
+        }
+    }
+
+    graphTypesToCreate(catalysisReportIdentifier) {
+        if (!catalysisReportIdentifier) {
+            throw new Error("catalysisReportIdentifier was not supplied");
+        }
+        var graphTypesToCreate = this.tripleStore.queryLatestC(catalysisReportIdentifier, "graphTypesToCreate");
+        if (graphTypesToCreate) {
+            return graphTypesToCreate;
+        } else {
+            return Project.defaultGraphTypesToCreate;
         }
     }
 }
