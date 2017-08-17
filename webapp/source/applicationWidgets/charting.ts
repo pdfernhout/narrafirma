@@ -1029,21 +1029,19 @@ export function d3ScatterPlot(graphBrowserInstance: GraphHolder, xAxisQuestion, 
     
     // Add line if correlation is significant (if option is set)
     if (graphBrowserInstance.correlationLineChoice != "none") {
-        var strokeWidth = 0;
+        let lineClass = "";
         if (statistics.p <= 0.01) {
-            strokeWidth = 3;
+            lineClass = "correlationLine_01_Significance";
         } else if ((statistics.p <= 0.05) && (graphBrowserInstance.correlationLineChoice == "0.05")) {
-            strokeWidth = 1;
+            lineClass = "correlationLine_05_Significance";
         }
-        if (strokeWidth > 0) {
+        if (lineClass) {
             var x1 = chart.width/4;
             var x2 = 3 * chart.width/4;
             var y1 = chart.height / 2 + chart.height/4 * statistics.rho;
             var y2 = chart.height / 2 - chart.height/4 * statistics.rho;
             var line = chartBody.append("line")
-                .attr("class", "line")
-                .attr("stroke", "red")
-                .attr("stroke-width", strokeWidth)
+                .attr("class", lineClass)
                 .attr("x1", x1)
                 .attr("y1", y1)
                 .attr("x2", x2)

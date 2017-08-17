@@ -732,6 +732,16 @@ Blue - d5dae6 - abb6ce - [extra: 7b8cb2] - 3b5fab - 2e4a85
   fill: #cc6400;
 }
 
+.scatterPlot .correlationLine_01_Significance {
+    stroke: red;
+    stroke-width: 3px;
+}
+
+.scatterPlot .correlationLine_05_Significance {
+    stroke: red;
+    stroke-width: 1px;
+}
+
 .contingencyChart .storyCluster.observed {
   stroke-width: 3px;
   stroke: #2e4a85;
