@@ -18,6 +18,7 @@ function add_catalysisReportGraphTypesChooser(panelBuilder: PanelBuilder, model,
     var storageFunction = valuePathResolver.newValuePathForFieldSpecification(model, fieldSpecification);
 
     var allGraphTypes = {
+        "data integrity graphs": true,
         "bar graphs": true,
         "histograms": true,
         "tables": true,

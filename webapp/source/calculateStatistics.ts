@@ -175,14 +175,16 @@ export function calculateStatisticsForHistogram(ratioQuestion, stories: surveyCo
     
     var values = collectDataForField(stories, ratioQuestion.id, parseFloat);
     // console.log("calculateStatisticsForHistogram values", values);
-    
+    return calculateStatisticsForHistogramValues(values);
+}
+
+export function calculateStatisticsForHistogramValues(values) {
     var n = values.length;
     var mean = jStat.mean(values);
     var median = jStat.median(values);
     var sd = jStat.stdev(values, true);
     var skewness = jStat.skewness(values);
     var kurtosis = jStat.kurtosis(values);
-    
     return {significance: "None", calculated: ["mean", "median", "sd", "skewness", "kurtosis", "n"], mean: mean, median: median, sd: sd, skewness: skewness, kurtosis: kurtosis, n: n};
 }
 

@@ -654,39 +654,71 @@ export function d3HistogramChart(graphBrowserInstance: GraphHolder, scaleQuestio
             matchingStories.push(story);
         }
     }
-    
     // console.log("d3HistogramChart values", values.map(function(item) { return item.value; }), choiceQuestion);
-    
-    var resultIndex = 1;
-    
-    // Build chart
-
     var chartTitle = "" + nameForQuestion(scaleQuestion);
-    // TODO: Maybe should translate choice?
     if (choiceQuestion) chartTitle = "" + choice;
-    
-    var isSmallFormat = !!choiceQuestion;
     
     var style = "singleChartStyle";
     var chartSize = "large";
-    if (isSmallFormat) {
+    if (choiceQuestion) {
         style = "smallChartStyle";
         chartSize = "small";
     }
 
-    var chartPane = newChartPane(graphBrowserInstance, style);
+    var xAxisLabel = "";
+    var xAxisStart = "";
+    var xAxisEnd = "";
+    if (choiceQuestion) {
+        xAxisLabel = choice;
+    } else {
+        xAxisLabel = nameForQuestion(scaleQuestion);
+        if (scaleQuestion.displayType === "slider") {
+            xAxisStart = scaleQuestion.displayConfiguration[0];
+            xAxisEnd = scaleQuestion.displayConfiguration[1];
+        }
+    }
+    return d3HistogramChartForValues(graphBrowserInstance, values, matchingStories, style, chartSize, chartTitle, xAxisLabel, xAxisStart, xAxisEnd, storiesSelectedCallback);
+}
+
+export function d3HistogramChartOfAllValues(graphBrowserInstance: GraphHolder, scaleQuestions, storiesSelectedCallback) {
+    var unanswered = [];
+    var values = [];
+    var matchingStories = [];
+    
+    var stories = graphBrowserInstance.allStories;
+    for (var storyIndex in stories) {
+        var story = stories[storyIndex];
+        for (var questionIndex in scaleQuestions) {
+            var aScaleQuestion = scaleQuestions[questionIndex];
+            var xValue = correctForUnanswered(aScaleQuestion, story.fieldValue(aScaleQuestion.id));
+            var newPlotItem = {story: story, value: xValue, questionName: nameForQuestion(aScaleQuestion)};
+            if (xValue === unansweredKey) {
+                unanswered.push(newPlotItem);
+            } else {
+                values.push(newPlotItem);
+                matchingStories.push(story);
+            }
+        }
+    }
+    return d3HistogramChartForValues(graphBrowserInstance, values, matchingStories, "singleChartStyle", "large", "All scale values", "All scale values", "", "", storiesSelectedCallback);
+}
+
+export function d3HistogramChartForValues(graphBrowserInstance: GraphHolder, plotItems, matchingStories, style, chartSize, chartTitle, xAxisLabel, xAxisStart, xAxisEnd, storiesSelectedCallback) {
     
     var margin = {top: 20, right: 15, bottom: 60, left: 60};
+    var isSmallFormat = style == "smallChartStyle";
+
     if (isSmallFormat) {
         margin.left = 35;
-    } else if (scaleQuestion.displayType === "slider") {
+    } else {
         margin.bottom += 30;
     }
-    
+    var chartPane = newChartPane(graphBrowserInstance, style);   
     var chart = makeChartFramework(chartPane, "histogram", chartSize, margin);
     var chartBody = chart.chartBody;
     
-    var statistics = calculateStatistics.calculateStatisticsForHistogram(scaleQuestion, matchingStories, graphBrowserInstance.minimumStoryCountRequiredForTest);
+    var values = plotItems.map(function(item) { return parseFloat(item.value); });
+    var statistics = calculateStatistics.calculateStatisticsForHistogramValues(values);
     addStatisticsPanelForChart(chartPane, statistics);
     
     var mean = statistics.mean;
@@ -699,25 +731,21 @@ export function d3HistogramChart(graphBrowserInstance: GraphHolder, scaleQuestio
         .range([0, chart.width]);
 
     chart.xScale = xScale;
-    chart.xQuestion = scaleQuestion;
+    chart.xQuestion = xAxisLabel;
     
     var xAxis = addXAxis(chart, xScale, {isSmallFormat: isSmallFormat});
     
-    if (choiceQuestion) {
-        addXAxisLabel(chart, choice, 18);
-    } else {
-        addXAxisLabel(chart, nameForQuestion(scaleQuestion));
-        if (scaleQuestion.displayType === "slider") {
-            addXAxisLabel(chart, scaleQuestion.displayConfiguration[0], maxRangeLabelLength, "start");
-            addXAxisLabel(chart, scaleQuestion.displayConfiguration[1], maxRangeLabelLength, "end");
-        }
+    addXAxisLabel(chart, xAxisLabel, 18);
+    if (xAxisStart) {
+        addXAxisLabel(chart, xAxisStart, maxRangeLabelLength, "start");
+        addXAxisLabel(chart, xAxisEnd, maxRangeLabelLength, "end");
     }
     
     // draw the y axis
     
     // Generate a histogram using twenty uniformly-spaced bins.
     // TODO: Casting to any to get around D3 typing limitation where it expects number not an object
-    var data = (<any>d3.layout.histogram().bins(xScale.ticks(20))).value(function (d) { return d.value; })(values);
+    var data = (<any>d3.layout.histogram().bins(xScale.ticks(20))).value(function (d) { return d.value; })(plotItems);
 
     // Set the bin for each plotItem
     data.forEach(function (bin) {
@@ -734,8 +762,8 @@ export function d3HistogramChart(graphBrowserInstance: GraphHolder, scaleQuestio
         .range([chart.height, 0]);
     
     chart.yScale = yScale;
-    chart.subgraphQuestion = choiceQuestion;
-    chart.subgraphChoice = choice;
+    // chart.subgraphQuestion = choiceQuestion;
+    // chart.subgraphChoice = choice;
     
     // Extra version of scale for calculating heights without subtracting as in height - yScale(value)
     var yHeightScale = d3.scale.linear()
@@ -776,9 +804,13 @@ export function d3HistogramChart(graphBrowserInstance: GraphHolder, scaleQuestio
         storyDisplayItems.append("svg:title")
             .text(function(plotItem: PlotItem) {
                 var story = plotItem.story;
+                var questionName = xAxisLabel;
+                if (plotItem["questionName"]) {
+                    questionName = plotItem["questionName"];
+                }
                 var tooltipText =
                     "Title: " + story.storyName() +
-                    "\n" + nameForQuestion(scaleQuestion) + ": " + plotItem.value +
+                    "\n" + questionName + ": " + plotItem.value +
                     "\nText: " + limitStoryTextLength(story.storyText());
                 return tooltipText;
             });

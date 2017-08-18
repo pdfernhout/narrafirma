@@ -411,10 +411,12 @@ class PatternExplorer {
         return {setItem: result};
     }
     
-    makePattern(id, graphType, questions) {
+    makePattern(id, graphType, questions, patternNameIfDataIntegrity) {
         var pattern; 
 
-        if (questions.length === 1) {
+        if (graphType == "data integrity") {
+            pattern = {id: id, observation: null, graphType: graphType, patternName: patternNameIfDataIntegrity, questions: questions};           
+        } else if (questions.length === 1) {
             pattern = {id: id, observation: null, graphType: graphType, patternName: nameForQuestion(questions[0]), questions: questions};
         } else if (questions.length === 2) {
             pattern = {id: id, observation: null, graphType: graphType, patternName: nameForQuestion(questions[0]) + " vs. " + nameForQuestion(questions[1]), questions: questions};
@@ -460,10 +462,14 @@ class PatternExplorer {
         function nextID() {
             return ("00000" + questionCount++).slice(-5);
         }
+
+        if (this.graphTypesToCreate["data integrity graphs"]) {
+            result.push(this.makePattern(nextID(), "data integrity", ratioQuestions, "All scale values"));
+        }
      
         if (this.graphTypesToCreate["bar graphs"]) {
             nominalQuestions.forEach((question1) => {
-                result.push(this.makePattern(nextID(), "bar", [question1]));
+                result.push(this.makePattern(nextID(), "bar", [question1], null));
             });
         };
         
@@ -476,21 +482,21 @@ class PatternExplorer {
                 usedQuestions.push(question1);
                 nominalQuestions.forEach((question2) => {
                     if (usedQuestions.indexOf(question2) !== -1) return;
-                    result.push(this.makePattern(nextID(), "table", [question1, question2]));
+                    result.push(this.makePattern(nextID(), "table", [question1, question2], null));
                 });
             });
         };
         
         if (this.graphTypesToCreate["histograms"]) {
             ratioQuestions.forEach((question1) => {
-                result.push(this.makePattern(nextID(), "histogram", [question1]));
+                result.push(this.makePattern(nextID(), "histogram", [question1], null));
             });
         };
         
         if (this.graphTypesToCreate["multiple histograms"]) {
             ratioQuestions.forEach((question1) => {
                 nominalQuestions.forEach((question2) => {
-                    result.push(this.makePattern(nextID(), "multiple histogram", [question1, question2]));
+                    result.push(this.makePattern(nextID(), "multiple histogram", [question1, question2], null));
                 });
             });
         };
@@ -501,7 +507,7 @@ class PatternExplorer {
                 usedQuestions.push(question1);
                 ratioQuestions.forEach((question2) => {
                     if (usedQuestions.indexOf(question2) !== -1) return;
-                    result.push(this.makePattern(nextID(), "scatter", [question1, question2]));
+                    result.push(this.makePattern(nextID(), "scatter", [question1, question2], null));
                 });
             });
         };
@@ -513,7 +519,7 @@ class PatternExplorer {
                 ratioQuestions.forEach((question2) => {
                     if (usedQuestions.indexOf(question2) !== -1) return;
                     nominalQuestions.forEach((question3) => {
-                    result.push(this.makePattern(nextID(), "multiple scatter", [question1, question2, question3]));
+                    result.push(this.makePattern(nextID(), "multiple scatter", [question1, question2, question3], null));
                     });
                 });
             });
@@ -544,6 +550,8 @@ class PatternExplorer {
             statistics = calculateStatistics.calculateStatisticsForScatterPlot(pattern.questions[0], pattern.questions[1], null, null, stories, this.minimumStoryCountRequiredForTest);
         } else if (graphType ===  "multiple scatter") {
             statistics = calculateStatistics.calculateStatisticsForMultipleScatterPlot(pattern.questions[0], pattern.questions[1], pattern.questions[2], stories, this.minimumStoryCountRequiredForTest);
+        } else if (graphType == "data integrity") {
+            statistics = {significance: "None", calculated: []};
         } else {
             console.log("ERROR: Unexpected graphType: " + graphType);
             throw new Error("ERROR: Not suported graphType: " + graphType);
@@ -610,6 +618,9 @@ class PatternExplorer {
             case "multiple scatter":
                 newGraph = charting.multipleScatterPlot(graphHolder, q1, q2, q3, selectionCallback);
                 break;
+            case "data integrity":
+                newGraph = charting.d3HistogramChartOfAllValues(graphHolder, pattern.questions, selectionCallback);
+                break;            
            default:
                 console.log("ERROR: Unexpected graph type");
                 alert("ERROR: Unexpected graph type");

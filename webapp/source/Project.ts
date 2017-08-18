@@ -20,6 +20,7 @@ class Project {
     static defaultMinimumStoryCountRequiredForTest = 20;
     static defaultCorrelationLineChoice = "0.05";
     static defaultGraphTypesToCreate = {
+        "data integrity graphs": true,
         "bar graphs": true,
         "histograms": true,
         "tables": true,
