@@ -680,27 +680,61 @@ export function d3HistogramChart(graphBrowserInstance: GraphHolder, scaleQuestio
     return d3HistogramChartForValues(graphBrowserInstance, values, matchingStories, style, chartSize, chartTitle, xAxisLabel, xAxisStart, xAxisEnd, storiesSelectedCallback);
 }
 
-export function d3HistogramChartOfAllValues(graphBrowserInstance: GraphHolder, scaleQuestions, storiesSelectedCallback) {
+export function d3HistogramDataIntegrityChart(graphBrowserInstance: GraphHolder, scaleQuestions, storiesSelectedCallback, dataIntegrityType) {
     var unanswered = [];
     var values = [];
     var matchingStories = [];
     
     var stories = graphBrowserInstance.allStories;
-    for (var storyIndex in stories) {
-        var story = stories[storyIndex];
-        for (var questionIndex in scaleQuestions) {
-            var aScaleQuestion = scaleQuestions[questionIndex];
-            var xValue = correctForUnanswered(aScaleQuestion, story.fieldValue(aScaleQuestion.id));
-            var newPlotItem = {story: story, value: xValue, questionName: nameForQuestion(aScaleQuestion)};
-            if (xValue === unansweredKey) {
-                unanswered.push(newPlotItem);
-            } else {
-                values.push(newPlotItem);
-                matchingStories.push(story);
+
+    if (dataIntegrityType == "All scale values") {
+        for (var storyIndex in stories) {
+            var story = stories[storyIndex];
+            for (var questionIndex in scaleQuestions) {
+                var aScaleQuestion = scaleQuestions[questionIndex];
+                var xValue = correctForUnanswered(aScaleQuestion, story.fieldValue(aScaleQuestion.id));
+                var newPlotItem = {story: story, value: xValue, questionName: nameForQuestion(aScaleQuestion)};
+                if (xValue === unansweredKey) {
+                    unanswered.push(newPlotItem);
+                } else {
+                    values.push(newPlotItem);
+                    matchingStories.push(story);
+                }
             }
         }
+    } else {
+        var storiesByParticipant = {};
+        for (var storyIndex in stories) {
+            var story = stories[storyIndex];
+            if (storiesByParticipant[story.model.participantID]) {
+                storiesByParticipant[story.model.participantID].push(story);
+            } else {
+                storiesByParticipant[story.model.participantID] = [story];
+            }
+        }
+        for (var participantID in storiesByParticipant) {
+            var valuesForParticipant = [];
+            for (var storyIndex in storiesByParticipant[participantID]) {
+                var story = storiesByParticipant[participantID][storyIndex];
+                for (var questionIndex in scaleQuestions) {
+                    var aScaleQuestion = scaleQuestions[questionIndex];
+                    var xValue = correctForUnanswered(aScaleQuestion, story.fieldValue(aScaleQuestion.id));
+                    if (!(xValue === unansweredKey)) {
+                        valuesForParticipant.push(parseFloat(xValue));        
+                    }
+                }
+            }
+            if (dataIntegrityType == "Participant means") {
+                var mean = jStat.mean(valuesForParticipant);
+                var aPlotItem = {story: null, value: mean};
+            } else if (dataIntegrityType == "Participant standard deviations") {
+                var sd = jStat.stdev(valuesForParticipant, true);
+                var aPlotItem = {story: null, value: sd};                
+            }
+            values.push(aPlotItem);
+        }
     }
-    return d3HistogramChartForValues(graphBrowserInstance, values, matchingStories, "singleChartStyle", "large", "All scale values", "All scale values", "", "", storiesSelectedCallback);
+    return d3HistogramChartForValues(graphBrowserInstance, values, matchingStories, "singleChartStyle", "large", dataIntegrityType, dataIntegrityType, "", "", storiesSelectedCallback);
 }
 
 export function d3HistogramChartForValues(graphBrowserInstance: GraphHolder, plotItems, matchingStories, style, chartSize, chartTitle, xAxisLabel, xAxisStart, xAxisEnd, storiesSelectedCallback) {
@@ -735,7 +769,11 @@ export function d3HistogramChartForValues(graphBrowserInstance: GraphHolder, plo
     
     var xAxis = addXAxis(chart, xScale, {isSmallFormat: isSmallFormat});
     
-    addXAxisLabel(chart, xAxisLabel, 18);
+    var cutoff = 64;
+    if (isSmallFormat) {
+        cutoff = 18;
+    } 
+    addXAxisLabel(chart, xAxisLabel, cutoff); 
     if (xAxisStart) {
         addXAxisLabel(chart, xAxisStart, maxRangeLabelLength, "start");
         addXAxisLabel(chart, xAxisEnd, maxRangeLabelLength, "end");

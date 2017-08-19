@@ -465,6 +465,8 @@ class PatternExplorer {
 
         if (this.graphTypesToCreate["data integrity graphs"]) {
             result.push(this.makePattern(nextID(), "data integrity", ratioQuestions, "All scale values"));
+            result.push(this.makePattern(nextID(), "data integrity", ratioQuestions, "Participant means"));
+            result.push(this.makePattern(nextID(), "data integrity", ratioQuestions, "Participant standard deviations"));
         }
      
         if (this.graphTypesToCreate["bar graphs"]) {
@@ -619,7 +621,10 @@ class PatternExplorer {
                 newGraph = charting.multipleScatterPlot(graphHolder, q1, q2, q3, selectionCallback);
                 break;
             case "data integrity":
-                newGraph = charting.d3HistogramChartOfAllValues(graphHolder, pattern.questions, selectionCallback);
+                if (pattern.patternName == "Participant means" || pattern.patternName == "Participant standard deviations") {
+                    graphHolder.excludeStoryTooltips = true; // no stories to link tooltips to in these cases
+                }
+                newGraph = charting.d3HistogramDataIntegrityChart(graphHolder, pattern.questions, selectionCallback, pattern.patternName);
                 break;            
            default:
                 console.log("ERROR: Unexpected graph type");
