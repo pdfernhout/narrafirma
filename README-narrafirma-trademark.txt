@@ -4,7 +4,7 @@ NarraFirma is a trademark of Cynthia F. Kurtz and is used by permission for the 
 
 Cynthia F. Kurtz owns and oversees the trademarks for the NarraFirma name and logo. We have developed this trademark usage policy with the following goals in mind:
 
-    We'd like to make it easy for anyone to use theNarraFirma name or logo for community-oriented efforts that help spread and improve NarraFirma.
+    We'd like to make it easy for anyone to use the NarraFirma name or logo for community-oriented efforts that help spread and improve NarraFirma.
     We'd like to make it clear how NarraFirma-related businesses and projects can (and cannot) use the NarraFirma name and logo.
     We'd like to make it hard for anyone to use the NarraFirma name and logo to unfairly profit from, trick or confuse people who are looking for official NarraFirma resources.
 
