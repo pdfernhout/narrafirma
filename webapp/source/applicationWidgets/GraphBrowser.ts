@@ -35,7 +35,9 @@ class GraphBrowser {
             allStories: [],
             currentGraph: null,
             currentSelectionExtentPercentages: null,
-            minimumStoryCountRequiredForTest: Project.defaultMinimumStoryCountRequiredForTest
+            minimumStoryCountRequiredForTest: Project.defaultMinimumStoryCountRequiredForTest,
+            correlationLineChoice: null,
+            graphTypesToCreate: {}
         }; 
     }
     

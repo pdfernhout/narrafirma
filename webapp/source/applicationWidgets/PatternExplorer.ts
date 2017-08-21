@@ -278,7 +278,11 @@ class PatternExplorer {
     
     observationAccessor(pattern, field: string, newValue = undefined) {
         if (!this.catalysisReportObservationSetIdentifier) throw new Error("observationAccessor: this.catalysisReportObservationSetIdentifier is undefined");
-        var patternReference = this.patternReferenceForQuestions(pattern.questions);
+        if (pattern.graphType == "data integrity") {
+            var patternReference = this.patternReferenceForQuestions([pattern.patternName]);
+        } else {
+            var patternReference = this.patternReferenceForQuestions(pattern.questions);
+        }
          
         var observationIdentifier: string = this.project.tripleStore.queryLatestC(this.catalysisReportObservationSetIdentifier, patternReference);
         
@@ -406,7 +410,12 @@ class PatternExplorer {
         // TODO: Maybe should be object instead of array?
         var result = [];
         questions.forEach(function (question) {
-            result.push(question.id);
+            var typeOfObject = Object.prototype.toString.call(question);
+            if (typeOfObject == "[object String]") {
+                result.push(question);
+            } else {
+                result.push(question.id);
+            }
         });
         return {setItem: result};
     }
