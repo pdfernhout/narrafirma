@@ -411,7 +411,7 @@ class PatternExplorer {
         var result = [];
         questions.forEach(function (question) {
             var typeOfObject = Object.prototype.toString.call(question);
-            if (typeOfObject == "[object String]") {
+            if (typeOfObject == "[object String]") { // no question list for data integrity graphs
                 result.push(question);
             } else {
                 result.push(question.id);
@@ -617,7 +617,7 @@ class PatternExplorer {
                 newGraph = charting.d3ContingencyTable(graphHolder, q1, q2, selectionCallback);
                 break;
             case "histogram":
-                newGraph = charting.d3HistogramChart(graphHolder, q1, null, null, selectionCallback);
+                newGraph = charting.d3HistogramChartForQuestion(graphHolder, q1, null, null, selectionCallback);
                 break;
             case "multiple histogram":
                 // Choice question needs to come before scale question in args
@@ -633,7 +633,7 @@ class PatternExplorer {
                 if (pattern.patternName == "Participant means" || pattern.patternName == "Participant standard deviations") {
                     graphHolder.excludeStoryTooltips = true; // no stories to link tooltips to in these cases
                 }
-                newGraph = charting.d3HistogramDataIntegrityChart(graphHolder, pattern.questions, selectionCallback, pattern.patternName);
+                newGraph = charting.d3HistogramChartForDataIntegrity(graphHolder, pattern.questions, selectionCallback, pattern.patternName);
                 break;            
            default:
                 console.log("ERROR: Unexpected graph type");

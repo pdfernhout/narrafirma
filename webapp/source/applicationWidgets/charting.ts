@@ -618,7 +618,7 @@ export function d3BarChart(graphBrowserInstance: GraphHolder, question, storiesS
 // Histogram reference for d3: http://bl.ocks.org/mbostock/3048450
 
 // choiceQuestion and choice may be undefined if this is just a simple histogram for all values
-export function d3HistogramChart(graphBrowserInstance: GraphHolder, scaleQuestion, choiceQuestion, choice, storiesSelectedCallback) {
+export function d3HistogramChartForQuestion(graphBrowserInstance: GraphHolder, scaleQuestion, choiceQuestion, choice, storiesSelectedCallback) {
     // console.log("graphBrowserInstance, scaleQuestion", graphBrowserInstance, scaleQuestion);
     
     // TODO: Statistics
@@ -654,7 +654,7 @@ export function d3HistogramChart(graphBrowserInstance: GraphHolder, scaleQuestio
             matchingStories.push(story);
         }
     }
-    // console.log("d3HistogramChart values", values.map(function(item) { return item.value; }), choiceQuestion);
+    // console.log("d3HistogramChartForQuestion values", values.map(function(item) { return item.value; }), choiceQuestion);
     var chartTitle = "" + nameForQuestion(scaleQuestion);
     if (choiceQuestion) chartTitle = "" + choice;
     
@@ -680,7 +680,7 @@ export function d3HistogramChart(graphBrowserInstance: GraphHolder, scaleQuestio
     return d3HistogramChartForValues(graphBrowserInstance, values, matchingStories, style, chartSize, chartTitle, xAxisLabel, xAxisStart, xAxisEnd, storiesSelectedCallback);
 }
 
-export function d3HistogramDataIntegrityChart(graphBrowserInstance: GraphHolder, scaleQuestions, storiesSelectedCallback, dataIntegrityType) {
+export function d3HistogramChartForDataIntegrity(graphBrowserInstance: GraphHolder, scaleQuestions, storiesSelectedCallback, dataIntegrityType) {
     var unanswered = [];
     var values = [];
     var matchingStories = [];
@@ -772,7 +772,9 @@ export function d3HistogramChartForValues(graphBrowserInstance: GraphHolder, plo
     var cutoff = 64;
     if (isSmallFormat) {
         cutoff = 18;
-    } 
+    } else {
+        cutoff = 64;
+    }
     addXAxisLabel(chart, xAxisLabel, cutoff); 
     if (xAxisStart) {
         addXAxisLabel(chart, xAxisStart, maxRangeLabelLength, "start");
@@ -958,7 +960,7 @@ export function multipleHistograms(graphBrowserInstance: GraphHolder, choiceQues
     for (index in options) {
         var option = options[index];
         // TODO: Maybe need to pass which chart to the storiesSelectedCallback
-        var subchart = d3HistogramChart(graphBrowserInstance, scaleQuestion, choiceQuestion, option, storiesSelectedCallback);
+        var subchart = d3HistogramChartForQuestion(graphBrowserInstance, scaleQuestion, choiceQuestion, option, storiesSelectedCallback);
         charts.push(subchart);
     }
     
