@@ -6,3 +6,4 @@
 .DS_Store
 /webapp/js
 /distribution
+npm-debug.log
