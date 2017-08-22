@@ -185,7 +185,7 @@ export function generateStoryCardContent(storyModel, options: Options = {}) {
     } else {
         storyTextClass = "narrafirma-story-card-story-text-in-printed-story-cards";
     }
-    var storyTextAtBottom = wrap("div", storyTextClass, storyText);
+    var storyTextAtBottom: any = wrap("div", storyTextClass, storyText);
     
     if (options.storyTextAtTop) {
         storyTextAtTop = storyTextAtBottom;
