@@ -17,7 +17,7 @@ PNI is described in the textbook ["Working With Stories in your Community or Org
 
 ![Cover of "Working With Stories" textbook](webapp/images/WWS_BookCover_front_small.png)
 
-As Malcom Gladwell has [said](http://venturebeat.com/2015/07/24/gladwell-on-data-marketing-the-snapchat-problem-the-facebook-problem-the-airbnb-problem/) about the limits of big data:
+As Malcolm Gladwell has [said](http://venturebeat.com/2015/07/24/gladwell-on-data-marketing-the-snapchat-problem-the-facebook-problem-the-airbnb-problem/) about the limits of big data:
 "More data increases our confidence, not our accuracy." When "accuracy" is defined not as measurement but as effective, appropriate, meaningful change, PNI helps to increase accuracy in decision making by grounding actions in the experiences of the community or organization. PNI can also work as a complement to other methods of market research, business intelligence, and community engagement.
 
 ### Comprehensive
@@ -32,7 +32,7 @@ As Malcom Gladwell has [said](http://venturebeat.com/2015/07/24/gladwell-on-data
 
 - Most of the the NarraFirma code implements a web-browser-based single-page application.
 - The client-side code is written in TypeScript which is transpiled to JavaScript.
-- The application supports supports mult-user editing of content using a message-based triple store approach called "Pointrel".
+- The application supports supports multi-user editing of content using a message-based triple store approach called "Pointrel".
 - Each change to the application state generates a JSON AJAX message.
 - Interface building is done using [Mithril](https://lhorie.github.io/mithril/index.html) (an earlier version used Dojo).
 - Interactive graphs are drawn using D3.
@@ -45,8 +45,8 @@ As Malcom Gladwell has [said](http://venturebeat.com/2015/07/24/gladwell-on-data
 
 ## Configuring and running the NarraFirma server
 
-- You need to have a TypeScript compiler installed to compile the source (typically via "npm install -g typescript").
-- For Node.js, you need to run "tsc" to compile those TypeScript source files to JavaScript before running the Node.js server (or have your IDE do it for you). Otherwise you will get error messages about missing JavaScript files when you open the webapp in your browser.
+- You need to have Node.js and npm installed first.
+- For Node.js, you need to run "npm run build" to compile those TypeScript source files to JavaScript before running the Node.js server (or have your IDE do it for you). Otherwise you will get error messages about missing JavaScript files when you open the webapp in your browser.
 - For WordPress, the TypeScript compiler is called during the creation of the WordPress zip file.
 - For more details on installation or setup of NarraFirma from source see [INSTALL.md](INSTALL.md).
 - For more details on installation or setup of NarraFirma from a pre-built distribution, including tips on setting up WordPress or Node.js, see [this webpage](https://narrafirma.com/home/setting-up-narrafirma-on-your-local-computer/).

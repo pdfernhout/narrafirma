@@ -49,13 +49,13 @@ These manual steps are explained in more detail below.
 #### Step 1: Ensure the TypeScript files are compiled to JavaScript
 
 First, because the NarraFirma application client is written in TypeScript, 
-be sure that the webapp/js directory contains JavaScript files (\*.js) built from the TypeScript source files (\*.ts). This would be the case when using Eclipse with the Palantir TypeScript IDE plugin and the Eclipse project in the repository.
-If you are not using an IDE, you can run "tsc" in the webapp directory (or a parent directory).
+be sure that the webapp/js directory contains JavaScript files (\*.js) built from the TypeScript source files (\*.ts).
+This would be the case when using Eclipse with the Palantir TypeScript IDE plugin and the Eclipse project in the repository.
+If you are not using an IDE, you can run "npm run build" from the command line in the webapp directory (or a parent directory).
 That will use the tsconfig.json to compile the "*.ts" files.
-That assumes you have the TypeScript compiler installed.
-The TypeScript compiled "tsc" be installed using: "npm install -g typescript".
-That command in turn assumes you have Node.js and npm installed first, like explained [here](https://docs.npmjs.com/getting-started/installing-node).
-You will need to rerun "tsc" after any changes to the TypeScript files (including after a git pull).
+That command assumes you have Node.js and npm installed first, like explained [here](https://docs.npmjs.com/getting-started/installing-node).
+ If you get an error like "npm not found" you probably need to install Node.js or npm.
+You will need to rerun "npm run build" after any changes to the TypeScript files (including after a git pull).
 
 #### Step 2: Make a copy of webapp under the narrafirma directory
 
@@ -71,12 +71,12 @@ This file (or copied directory) will be ignored based on a .gitignore file in th
 
 #### Step 3: Copy the files to your WordPress installation
 
-After you have doen the previus two steps, setting the files into WordPress can be done either by copying them,
-symbolicly linking from the WordPress plugin direcotry to the source code,
+After you have done the previous two steps, setting the files into WordPress can be done either by copying them,
+symbolically linking from the WordPress plugin directory to the source code,
 or by making them into a zip file and extracting them.
 
-If you copied the webapp directory under nararfirma, then it should be straighforward to copy all that
-to the WordPress' wordpress-plugin directory using a stanadard copy command.
+If you copied the webapp directory under narrafirma, then it should be straightforward to copy all that
+to the WordPress' wordpress-plugin directory using a standard copy command.
 You would need to be sure the copied files have permissions or a owner such that they can be read by your web server.
 
 The following rsync command may be useful when testing the WordPress plugin if you have set up a symbolic link in the narrafirma directory to the webapp directory.

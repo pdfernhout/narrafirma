@@ -7,12 +7,10 @@ https://github.com/pdfernhout/narrafirma/releases
 
 2. Unzip the narrafirma.zip file.
 
-3. Compile the TypeScript files. To do this, run tsc from the command line in the top level project directory. 
-That will use the tsconfig.json to compile the "*.ts" files. You will need to rerun "tsc" after any changes to the 
-TypeScript files (including after a git pull). 
+3. Compile the TypeScript files. To do this, run "npm run build" from the command line in the top level project directory. 
+That will use the tsconfig.json to compile the "*.ts" files. You will need to rerun "npm run build" after any changes to the 
+TypeScript files (including after a git pull). If you get an error like "npm not found" you probably need to install Node.js or npm.
 
-The "tsc" TypeScript compiler can be installed using: "npm install -g typescript".
-    
 4. Go to the server directory in the unzipped files, and read the directions in the file readme_server.txt 
 about how to start the server.
 
