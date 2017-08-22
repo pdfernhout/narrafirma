@@ -43,6 +43,19 @@ var debugMessaging = false;
 // The userCredentials have the form {userIdentifier: "some name", userPassword: "some password"}
 // If a string is passed in, it is assumed just the userIdentifier is being supplied
 
+type Timestamp = string;
+
+interface Message {
+    _topicIdentifier: any,
+    _topicTimestamp: Timestamp,
+    // TODO: TripleStoreaddTriple does not set creator or creationTimestamp so these were made optional, but maybe addTriple should?
+    creator?: string,
+    creationTimestamp?: Timestamp,
+    messageType?: string, 
+    change: any;
+    [field: string]: any;
+};
+
 class PointrelClient {
     apiURL: string = null;
     journalIdentifier = null;
@@ -64,12 +77,12 @@ class PointrelClient {
     serverResponseWarningIssued = false;
     
     lastReceivedTimestampConsidered = null;
-    incomingMessageRecords = [];
+    incomingMessageRecords: Message[] = [];
     messagesSortedByReceivedTimeArray = [];
     sha256AndLengthToMessageMap = {};
 
     areOutgoingMessagesSuspended = false;
-    outgoingMessageQueue = [];
+    outgoingMessageQueue: Message[] = [];
     
     messageReceivedCallback: Function = null;
     serverStatusCallback: Function = null;
@@ -195,10 +208,10 @@ class PointrelClient {
         httpRequest.send(data);
     }
     
-    createChangeMessage(topicIdentifier, messageType, change, other) {
+    createChangeMessage(topicIdentifier, messageType, change, other): Message {
         var timestamp = this.getCurrentUniqueTimestamp();
         
-        var message = {
+        var message: Message = {
             // TODO: Simplify redundancy in timestamps
             _topicIdentifier: topicIdentifier,
             _topicTimestamp: timestamp,
@@ -227,7 +240,7 @@ class PointrelClient {
     }
     
     // Suggested to use createAndSendChangeMessage instead, unless you are doing a special import
-    sendMessage(message, callback) {
+    sendMessage(message: Message, callback) {
         if (debugMessaging) console.log("sendMessage", this.areOutgoingMessagesSuspended, message);
         
         // Calculate the sha256AndLength without the pointrel fields
@@ -477,7 +490,7 @@ class PointrelClient {
         return null;
     }
     
-    filterMessages(filterFunction) {
+    filterMessages(filterFunction): Message[] {
         return this.messagesSortedByReceivedTimeArray.filter(filterFunction);
     }
     
@@ -698,7 +711,7 @@ class PointrelClient {
         }
     }
     
-    private messageReceived(message) {
+    private messageReceived(message: Message) {
         // if (debugMessaging) console.log("messageReceived", JSON.stringify(message, null, 2));
         
         if (!message) {
