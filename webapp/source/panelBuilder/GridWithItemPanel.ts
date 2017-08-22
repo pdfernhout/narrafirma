@@ -345,7 +345,7 @@ class GridWithItemPanel {
         
         var table = m("table.scrolling", this.tableConfigurationWithSortingOnHeaderClick(), [
             m("tr", {"class": "grid-header-row"}, columnHeaders),
-            this.dataStore.map((item, index) => {
+            <any>this.dataStore.map((item, index) => {
                 return this.rowForItem(item, index);
             })
         ]);

@@ -47,7 +47,7 @@ function add_dashboardStoryCollectionStatusDisplay(panelBuilder: PanelBuilder, m
                 var surveyActive = storyCollection.activeOnWeb ? m("a", {href: storyCollection.surveyURL, target: "_blank"}, "active") : "";
                 return m("tr", [
                     m("td", storyCollection.shortName),
-                    m("td", {style: "text-align: right;"}, storyCollection.storyCount),
+                    m("td", {style: "text-align: right;"}, <any>storyCollection.storyCount),
                     m("td", surveyActive),
                 ]);
             })

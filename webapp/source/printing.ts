@@ -747,7 +747,7 @@ export function printCatalysisReport() {
                 if (interpretation.notes) printItems.push(m("div.narrafirma-catalysis-report-interpretation-notes", interpretation.notes));
                 
                 var observationList = makeObservationListForInterpretation(project, allObservations, interpretation.name);
-                printItems.push(printObservationList(observationList, allStories, minimumStoryCountRequiredForTest));
+                printItems.push(<any>printObservationList(observationList, allStories, minimumStoryCountRequiredForTest));
                 
                 // TODO: Translate
                 progressModel.progressText = progressText(perspectiveIndex, interpretationIndex);

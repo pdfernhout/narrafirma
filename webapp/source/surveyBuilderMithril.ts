@@ -501,7 +501,7 @@ export function buildSurveyForm(surveyDiv, questionnaire, doneCallback, surveyOp
         
         var evenOrOdd = (index % 2 === 1) ? "narrafirma-survey-story-odd" : "narrafirma-survey-story-even";
         // A locally unique key needs to be defined so Mithril can track deletions and inserts without rebuilding DOM nodes
-        return m("div", {key: story.storyID, "class": "narrafirma-survey-story " + evenOrOdd}, result); 
+        return m("div", {key: story.storyID, "class": "narrafirma-survey-story " + evenOrOdd}, <any>result); 
     }
     
     function validate() {
