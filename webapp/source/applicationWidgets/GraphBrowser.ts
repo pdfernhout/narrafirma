@@ -207,7 +207,7 @@ class GraphBrowser {
         if (xType === "choice" && yType === null) {
             // console.log("plot choice: Bar graph");
             // console.log("barGraph", xAxisQuestion);
-            charting.d3BarChart(this.graphHolder, xAxisQuestion, this.storiesSelected.bind(this));
+            charting.d3BarChartForQuestion(this.graphHolder, xAxisQuestion, this.storiesSelected.bind(this));
         } else if (xType === "choice" && yType === "choice") {
             // console.log("plot choice: Contingency table");
             charting.d3ContingencyTable(this.graphHolder, xAxisQuestion, yAxisQuestion, this.storiesSelected.bind(this));
@@ -216,13 +216,13 @@ class GraphBrowser {
             charting.multipleHistograms(this.graphHolder, xAxisQuestion, yAxisQuestion, this.storiesSelected.bind(this));
         } else if (xType === "scale" && yType === null) {
             // console.log("plot choice: Histogram");
-            charting.d3HistogramChart(this.graphHolder, xAxisQuestion, null, null, this.storiesSelected.bind(this));
+            charting.d3HistogramChartForQuestion(this.graphHolder, xAxisQuestion, null, null, this.storiesSelected.bind(this));
         } else if (xType === "scale" && yType === "choice") {
             // console.log("plot choice: Multiple histograms");
             charting.multipleHistograms(this.graphHolder, yAxisQuestion, xAxisQuestion, this.storiesSelected.bind(this));
         } else if (xType === "scale" && yType === "scale") {
             // console.log("plot choice: Scatter plot");
-            charting.d3ScatterPlot(this.graphHolder, xAxisQuestion, yAxisQuestion, this.storiesSelected.bind(this));
+            charting.d3ScatterPlot(this.graphHolder, xAxisQuestion, yAxisQuestion, null, null, this.storiesSelected.bind(this));
         } else {
             console.log("ERROR: Unexpected graph type");
             alert("ERROR: Unexpected graph type");

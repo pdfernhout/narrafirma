@@ -595,7 +595,9 @@ function printObservationList(observationList, allStories, minimumStoryCountRequ
             currentGraph: null,
             currentSelectionExtentPercentages: null,
             excludeStoryTooltips: true,
-            minimumStoryCountRequiredForTest: minimumStoryCountRequiredForTest
+            minimumStoryCountRequiredForTest: minimumStoryCountRequiredForTest,
+            correlationLineChoice: null,
+            graphTypesToCreate: {}
         };
         
         var graph = PatternExplorer.makeGraph(pattern, graphHolder, selectionCallback);
