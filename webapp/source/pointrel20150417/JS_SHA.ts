@@ -35,10 +35,14 @@ var SUPPORTED_ALGS = 4 | 2 | 1;
  * @param {number} msint_32 The most significant 32-bits of a 64-bit number
  * @param {number} lsint_32 The least significant 32-bits of a 64-bit number
  */
-function Int_64(msint_32, lsint_32)
-{
-    this.highOrder = msint_32;
-    this.lowOrder = lsint_32;
+class Int_64 {
+    highOrder: number;
+    lowOrder: number;
+    constructor (msint_32, lsint_32)
+    {
+        this.highOrder = msint_32;
+        this.lowOrder = lsint_32;
+    }
 }
 
 /**
