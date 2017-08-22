@@ -476,6 +476,8 @@ class PatternExplorer {
             result.push(this.makePattern(nextID(), "data integrity", ratioQuestions, "All scale values"));
             result.push(this.makePattern(nextID(), "data integrity", ratioQuestions, "Participant means"));
             result.push(this.makePattern(nextID(), "data integrity", ratioQuestions, "Participant standard deviations"));
+            result.push(this.makePattern(nextID(), "data integrity", nominalQuestions, "Unanswered choice questions"));
+            result.push(this.makePattern(nextID(), "data integrity", ratioQuestions, "Unanswered scale questions"));
         }
      
         if (this.graphTypesToCreate["bar graphs"]) {
@@ -584,6 +586,8 @@ class PatternExplorer {
             this.graphHolder.graphResultsPane.removeChild(chartPane);
             // TODO: Do these need to be destroyed or freed somehow?
         }
+
+        this.graphHolder.excludeStoryTooltips = false; // seems to stay set on
         
         // Need to remove the float end node, if any        
         while (this.graphHolder.graphResultsPane.firstChild) {
@@ -611,7 +615,7 @@ class PatternExplorer {
         var newGraph = null;
         switch (graphType) {
             case "bar":
-                newGraph = charting.d3BarChart(graphHolder, q1, selectionCallback);
+                newGraph = charting.d3BarChartForQuestion(graphHolder, q1, selectionCallback);
                 break;
             case "table":
                 newGraph = charting.d3ContingencyTable(graphHolder, q1, q2, selectionCallback);
@@ -630,7 +634,10 @@ class PatternExplorer {
                 newGraph = charting.multipleScatterPlot(graphHolder, q1, q2, q3, selectionCallback);
                 break;
             case "data integrity":
-                if (pattern.patternName == "Participant means" || pattern.patternName == "Participant standard deviations") {
+                if (pattern.patternName == "Unanswered choice questions" || pattern.patternName == "Unanswered scale questions") {
+                    newGraph = charting.d3BarChartForDataIntegrity(graphHolder, pattern.questions, selectionCallback, pattern.patternName);
+                    break;
+                } else if (pattern.patternName == "Participant means" || pattern.patternName == "Participant standard deviations") {
                     graphHolder.excludeStoryTooltips = true; // no stories to link tooltips to in these cases
                 }
                 newGraph = charting.d3HistogramChartForDataIntegrity(graphHolder, pattern.questions, selectionCallback, pattern.patternName);

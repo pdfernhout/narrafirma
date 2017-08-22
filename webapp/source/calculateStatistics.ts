@@ -160,9 +160,11 @@ function collectValues(valueHolder) {
 export function calculateStatisticsForBarGraph(nominalQuestion, stories: surveyCollection.Story[], minimumStoryCountRequiredForTest: number) {
     // not calculating statistics for bar graph
     var values = collectDataForField(stories, nominalQuestion.id);
-    
+    return calculateStatisticsForBarGraphValues(values);
+}
+
+export function calculateStatisticsForBarGraphValues(values) {
     var n = values.length;
-    
     return {significance: "None", calculated: ["n"], n: n};
 }
 

@@ -11,6 +11,12 @@ interface PlotItem {
     value: number;
 }
 
+interface StoryPlotItem {
+    name: string;
+    stories: any[];
+    value: number;
+}
+
 var unansweredKey = "{N/A}";
 var maxRangeLabelLength = 26;
 
@@ -18,6 +24,20 @@ function correctForUnanswered(question, value) {
     if (question.displayType === "checkbox" && !value) return "no";
     if (value === undefined || value === null || value === "") return unansweredKey;
     return value;
+}
+
+function questionWasNotAnswered(question, value) {
+    if (question.displayType === "checkbox" && !value) return false; // if they answered no on a checkbox they answered the question
+    if (value === undefined || value === null || value === "") return true;
+    if (typeof value === "object") {
+        for (var arrayIndex in value) {
+            if (value[arrayIndex] == true) { // we can assume that if it's an object it's an array (dictionary)
+                return false;
+            }
+        return true;
+        }
+    }
+    return false; 
 }
 
 function nameForQuestion(question) {
@@ -459,14 +479,10 @@ function addStatisticsPanelForChart(chartPane: HTMLElement, statistics) {
 
 // ---- Charts
 
-export function d3BarChart(graphBrowserInstance: GraphHolder, question, storiesSelectedCallback) {
-    // Collect data
-    
+export function d3BarChartForQuestion(graphBrowserInstance: GraphHolder, question, storiesSelectedCallback) {
     var allPlotItems = [];
-    var xLabels = [];
-    
+    var xLabels = [];  
     var key;
-
     var results = {};
     
     preloadResultsForQuestionOptions(results, question);
@@ -489,16 +505,43 @@ export function d3BarChart(graphBrowserInstance: GraphHolder, question, storiesS
                 if (xValue[xIndex]) pushToMapSlot(results, xIndex, {story: story, value: xIndex});
             }
         }
-    }
-    
+    } 
     for (key in results) {
         xLabels.push(key);
         allPlotItems.push({name: key, stories: results[key], value: results[key].length});
     }
+    var chartTitle = "" + nameForQuestion(question);
+    var xAxisLabel = nameForQuestion(question);
+    return d3BarChartForValues(graphBrowserInstance, allPlotItems, xLabels, chartTitle, xAxisLabel, question, storiesSelectedCallback);
+}
+
+export function d3BarChartForDataIntegrity(graphBrowserInstance: GraphHolder, questions, storiesSelectedCallback, dataIntegrityType) {
+    var allPlotItems = [];
+    var xLabels = [];  
+    var stories = graphBrowserInstance.allStories;
+    var results = {};
+
+    for (var questionIndex in questions) {
+        var question = questions[questionIndex];
+        var storiesWithoutAnswersForThisQuestion = [];
+        for (var storyIndex in stories) {
+            var story = stories[storyIndex];
+            var wasUnanswered = questionWasNotAnswered(question, story.fieldValue(question.id));
+            if (wasUnanswered) {
+                storiesWithoutAnswersForThisQuestion.push({story: story});
+            }
+        }
+        xLabels.push(question.displayName);
+        allPlotItems.push({name: question.displayName, stories: storiesWithoutAnswersForThisQuestion, value: storiesWithoutAnswersForThisQuestion.length});
+    }
+    return d3BarChartForValues(graphBrowserInstance, allPlotItems, xLabels, dataIntegrityType, dataIntegrityType, null, storiesSelectedCallback);
+}
+
+export function d3BarChartForValues(graphBrowserInstance: GraphHolder, plotItems, xLabels, chartTitle, xAxisLabel, question, storiesSelectedCallback) {
     
     var labelLengthLimit = 20;
     var longestLabelText = "";
-    for (var label in results) {
+    for (var label in xLabels) {
         if (label.length > longestLabelText.length) {
             longestLabelText = label;
         }
@@ -519,13 +562,11 @@ export function d3BarChart(graphBrowserInstance: GraphHolder, question, storiesS
 
     var chartPane = newChartPane(graphBrowserInstance, "singleChartStyle");
     
-    var chartTitle = "" + nameForQuestion(question);
-
     var margin = {top: 20, right: 15, bottom: 90 + longestLabelTextLength * 5, left: 60};
     var chart = makeChartFramework(chartPane, "barChart", "large", margin);
     var chartBody = chart.chartBody;
     
-    var statistics = calculateStatistics.calculateStatisticsForBarGraph(question, stories, graphBrowserInstance.minimumStoryCountRequiredForTest);
+    var statistics = calculateStatistics.calculateStatisticsForBarGraphValues(function(plotItem) { return plotItem.value; });
     addStatisticsPanelForChart(chartPane, statistics); 
     
     // draw the x axis
@@ -535,15 +576,15 @@ export function d3BarChart(graphBrowserInstance: GraphHolder, question, storiesS
         .rangeRoundBands([0, chart.width], 0.1);
     
     chart.xScale = xScale;
-    chart.xQuestion = question;
+    //chart.xQuestion = question;
 
     var xAxis = addXAxis(chart, xScale, {labelLengthLimit: labelLengthLimit, rotateAxisLabels: true});
     
-    addXAxisLabel(chart, nameForQuestion(question));
+    addXAxisLabel(chart, xAxisLabel);
     
     // draw the y axis
     
-    var maxItemsPerBar = d3.max(allPlotItems, function(plotItem) { return plotItem.value; });
+    var maxItemsPerBar = d3.max(plotItems, function(plotItem: PlotItem) { return plotItem.value; });
 
     var yScale = d3.scale.linear()
         .domain([0, maxItemsPerBar])
@@ -564,16 +605,16 @@ export function d3BarChart(graphBrowserInstance: GraphHolder, question, storiesS
     chart.brush = createBrush(chartBody, xScale, null, brushend);
     
     var bars = chartBody.selectAll(".bar")
-            .data(allPlotItems)
+            .data(plotItems)
         .enter().append("g")
             .attr("class", "bar")
-            .attr('transform', function(plotItem) { return 'translate(' + xScale(plotItem.name) + ',' + yScale(0) + ')'; });
+            .attr('transform', function(plotItem: StoryPlotItem) { return 'translate(' + xScale(plotItem.name) + ',' + yScale(0) + ')'; });
         
     var barBackground = bars.append("rect")
         // .attr("style", "stroke: rgb(0,0,0); fill: white;")
-        .attr("x", function(plotItem) { return 0; })
-        .attr("y", function(plotItem) { return yHeightScale(-plotItem.value); })
-        .attr("height", function(plotItem) { return yHeightScale(plotItem.value); })
+        .attr("x", function(plotItem: PlotItem) { return 0; })
+        .attr("y", function(plotItem: PlotItem) { return yHeightScale(-plotItem.value); })
+        .attr("height", function(plotItem: PlotItem) { return yHeightScale(plotItem.value); })
         .attr("width", xScale.rangeBand());
     
     // Overlay stories on each bar...
@@ -581,9 +622,9 @@ export function d3BarChart(graphBrowserInstance: GraphHolder, question, storiesS
             .data(function(plotItem) { return plotItem.stories; })
         .enter().append("rect")
             .attr('class', function (d, i) { return "story " + ((i % 2 === 0) ? "even" : "odd"); })
-            .attr("x", function(plotItem) { return 0; })
-            .attr("y", function(plotItem, i) { return yHeightScale(-i - 1); })
-            .attr("height", function(plotItem) { return yHeightScale(1); })
+            .attr("x", function(plotItem: PlotItem) { return 0; })
+            .attr("y", function(plotItem: PlotItem, i) { return yHeightScale(-i - 1); })
+            .attr("height", function(plotItem: PlotItem) { return yHeightScale(1); })
             .attr("width", xScale.rangeBand());
     
     // Add tooltips
@@ -591,10 +632,14 @@ export function d3BarChart(graphBrowserInstance: GraphHolder, question, storiesS
         storyDisplayItems.append("svg:title")
             .text(function(storyItem: PlotItem) {
                 var story = storyItem.story;
+                var questionText = "";
+                if (question) {
+                    questionText = "\n" + xAxisLabel + ": " + displayTextForAnswer(story.fieldValue(question.id));
+                }
                 var tooltipText =
                     "Title: " + story.storyName() +
                     // "\nID: " + story.storyID() + 
-                    "\n" + nameForQuestion(question) + ": " + displayTextForAnswer(story.fieldValue(question.id)) +
+                    questionText +
                     "\nText: " + limitStoryTextLength(story.storyText());
                 return tooltipText;
             });
@@ -1557,6 +1602,8 @@ function updateSelectedStories(chart, storyDisplayItemsOrClusters, graphBrowserI
     }
 }
 
+
+// CFK this will not react correctly for the data integrity chart type
 export function restoreSelection(chart, selection) {
     var extent;
     if (chart.chartType === "histogram") {
