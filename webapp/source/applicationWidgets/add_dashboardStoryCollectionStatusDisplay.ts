@@ -51,7 +51,9 @@ function add_dashboardStoryCollectionStatusDisplay(panelBuilder: PanelBuilder, m
                     m("td", surveyActive),
                 ]);
             })
-        )
+        ),
+        m("br"),
+        m("a", {href: "\\", title: "Choose another project"}, "Choose another project")
     ]);
 
 }
