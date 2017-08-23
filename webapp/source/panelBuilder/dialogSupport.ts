@@ -240,12 +240,13 @@ function build_listChooserDialogContent(dialogConfiguration, hideDialogMethod) {
     return m("div.overlay", m("div.modal-content", [
         m("b", dialogConfiguration.dialogTitle),
         m("br"),
+        m("br"),
         dialogConfiguration.dialogOKButtonLabel,
+        m("br"),
         m("br"),
         dialogConfiguration.choices.sort((a, b) => {return a.name.localeCompare(b.name); }).map((choice) => {
             return [
-                m("button", {onclick: selectionMade.bind(null, dialogConfiguration, choice)}, choice.name),
-                m("br")
+                m("button", {onclick: selectionMade.bind(null, dialogConfiguration, choice)}, choice.name)
             ];
         }),
         m("br"),
