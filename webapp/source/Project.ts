@@ -256,7 +256,73 @@ class Project {
         
         return result;
     }
-     
+
+    storyQuestionsForCatalysisReport(catalysisReportIdentifier) {
+        var result = [];  
+        var storyCollectionsIdentifier = this.tripleStore.queryLatestC(catalysisReportIdentifier, "catalysisReport_storyCollections");
+        var storyCollectionItems = this.tripleStore.getListForSetIdentifier(storyCollectionsIdentifier);
+        if (storyCollectionItems.length === 0) return []; 
+
+        storyCollectionItems.forEach((storyCollectionPointer) => {
+            if (storyCollectionPointer) {
+                var storyCollectionIdentifier = this.tripleStore.queryLatestC(storyCollectionPointer, "storyCollection");
+                var questionnaire = surveyCollection.getQuestionnaireForStoryCollection(storyCollectionIdentifier);
+
+                if (questionnaire) {
+
+                    for (var questionIndex in questionnaire.storyQuestions) {
+                        var question = questionnaire.storyQuestions[questionIndex];
+                        var alreadyThere = false;
+                        for (var resultQuestionIndex in result) {
+                            var resultQuestion = result[resultQuestionIndex];
+                            if (question.displayName === resultQuestion.displayName) {
+                                alreadyThere = true;
+                                break;
+                            }
+                        }
+                        if (!alreadyThere) {
+                            result.push(question);
+                        }
+                    }
+                }
+            }
+        });
+        return result;
+    }
+
+    participantQuestionsForCatalysisReport(catalysisReportIdentifier) {
+        var result = [];  
+        var storyCollectionsIdentifier = this.tripleStore.queryLatestC(catalysisReportIdentifier, "catalysisReport_storyCollections");
+        var storyCollectionItems = this.tripleStore.getListForSetIdentifier(storyCollectionsIdentifier);
+        if (storyCollectionItems.length === 0) return []; 
+
+        storyCollectionItems.forEach((storyCollectionPointer) => {
+            if (storyCollectionPointer) {
+                var storyCollectionIdentifier = this.tripleStore.queryLatestC(storyCollectionPointer, "storyCollection");
+                var questionnaire = surveyCollection.getQuestionnaireForStoryCollection(storyCollectionIdentifier);
+
+                if (questionnaire) {
+
+                    for (var questionIndex in questionnaire.participantQuestions) {
+                        var question = questionnaire.participantQuestions[questionIndex];
+                        var alreadyThere = false;
+                        for (var resultQuestionIndex in result) {
+                            var resultQuestion = result[resultQuestionIndex];
+                            if (question.displayName === resultQuestion.displayName) {
+                                alreadyThere = true;
+                                break;
+                            }
+                        }
+                        if (!alreadyThere) {
+                            result.push(question);
+                        }
+                    }
+                }
+            }
+        });
+        return result;
+    }
+
     minimumStoryCountRequiredForTest(catalysisReportIdentifier) {
         if (!catalysisReportIdentifier) {
             throw new Error("catalysisReportIdentifier was not supplied");

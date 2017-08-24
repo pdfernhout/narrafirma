@@ -375,8 +375,14 @@ class PatternExplorer {
         this.graphHolder.allStories = this.project.storiesForCatalysisReport(catalysisReportIdentifier);
         // console.log("allStories", this.graphHolder.allStories);
         
-        // TODO: Filter these questions by ones of interest for specific catalysis report
-        this.questions = questionnaireGeneration.collectAllQuestions();
+        //this.questions = questionnaireGeneration.collectAllQuestions();
+        var storyQuestions = this.project.storyQuestionsForCatalysisReport(catalysisReportIdentifier);
+        var participantQuestions = this.project.participantQuestionsForCatalysisReport(catalysisReportIdentifier);
+        var annotationQuestions = questionnaireGeneration.convertEditorQuestions(this.project.collectAllAnnotationQuestions(), "A_");
+        this.questions = [];
+        this.questions = this.questions.concat(storyQuestions);
+        this.questions = this.questions.concat(participantQuestions);
+        this.questions = this.questions.concat(annotationQuestions);
         // console.log("questions", this.questions);
         
         this.questionsToInclude = this.project.tripleStore.queryLatestC(this.catalysisReportIdentifier, "questionsToInclude"); 

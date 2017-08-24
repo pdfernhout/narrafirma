@@ -2,6 +2,7 @@ import PanelBuilder = require("../panelBuilder/PanelBuilder");
 import m = require("mithril");
 import valuePathResolver = require("../panelBuilder/valuePathResolver");
 import Globals = require("../Globals");
+import questionnaireGeneration = require("../questionnaireGeneration");
 
 "use strict";
 
@@ -19,9 +20,16 @@ function add_catalysisReportQuestionChooser(panelBuilder: PanelBuilder, model, f
 
     var allStories = project.storiesForCatalysisReport(catalysisReportIdentifier);
     
-    var allStoryQuestions = project.collectAllStoryQuestions();
-    var allParticipantQuestions = project.collectAllParticipantQuestions();
-    var allAnnotationQuestions = project.collectAllAnnotationQuestions();
+    //var allStoryQuestions = project.collectAllStoryQuestions();
+    var allStoryQuestions = project.storyQuestionsForCatalysisReport(catalysisReportIdentifier);
+
+    //var allParticipantQuestions = project.collectAllParticipantQuestions();
+    var allParticipantQuestions = project.participantQuestionsForCatalysisReport(catalysisReportIdentifier);
+
+    // annotation questions are not per questionnaire but global to the project (which is maybe not good?)
+    // because annotation questions are global, they are not in the form the other questions are in (which are in the questionnaire)
+    // so they must be converted
+    var allAnnotationQuestions = questionnaireGeneration.convertEditorQuestions(project.collectAllAnnotationQuestions(), "A_");
     
     function isChecked(shortName, value = undefined) {
         var map = storageFunction() || {};
@@ -121,13 +129,13 @@ function add_catalysisReportQuestionChooser(panelBuilder: PanelBuilder, model, f
     function selectAll() {
         var map = {};
         allStoryQuestions.forEach((question) => {
-            map["S_" + question.storyQuestion_shortName] = true;
+            map["S_" + question.displayName] = true;
         });
         allParticipantQuestions.forEach((question) => {
-            map["P_" + question.participantQuestion_shortName] = true;
+            map["P_" + question.displayName] = true;
         });
         allAnnotationQuestions.forEach((question) => {
-            map["A_" + question.annotationQuestion_shortName] = true;
+            map["A_" + question.displayName] = true;
         });
         storageFunction(map);
     }
@@ -141,26 +149,29 @@ function add_catalysisReportQuestionChooser(panelBuilder: PanelBuilder, model, f
         prompt,
         m("div", [
             m("br"),
-            "Story questions:",
+            m("b", "Story questions"),
             m("br"),  
-            allStoryQuestions.map((question) => {
-                return buildQuestionCheckbox(question.storyQuestion_shortName, question.storyQuestion_type, "S_");
-            }),
-            allStoryQuestions.length ? [] : "[No questions]",
             m("br"),
-            "Participant questions:",
+            allStoryQuestions.map((question) => {
+                return buildQuestionCheckbox(question.displayName, question.displayType, "S_");
+            }),
+            allStoryQuestions.length ? [] : m("div", "  (none)"),
+            m("br"),
+            m("b", "Participant questions"),
+            m("br"),
             m("br"),
             allParticipantQuestions.map((question) => {
-                return buildQuestionCheckbox(question.participantQuestion_shortName, question.participantQuestion_type, "P_");
+                return buildQuestionCheckbox(question.displayName, question.displayType, "P_");
             }),
-            allParticipantQuestions.length ? [] : "[No questions]",
+            allParticipantQuestions.length ? [] : m("div", "  (none)"),
             m("br"),
-            "Annotation questions:",
+            m("b", "Annotation questions"),
+            m("br"),
             m("br"),
             allAnnotationQuestions.map((question) => {
-                return buildQuestionCheckbox(question.annotationQuestion_shortName, question.annotationQuestion_type, "A_");
+                return buildQuestionCheckbox(question.displayName, question.displayType, "A_");
             }),
-            allAnnotationQuestions.length ? [] : m("div", "[No questions]")
+            allAnnotationQuestions.length ? [] : m("div", "  (none)")
         ]),
     m("br"),
     m("button", { onclick: selectAll }, "Select all"),
