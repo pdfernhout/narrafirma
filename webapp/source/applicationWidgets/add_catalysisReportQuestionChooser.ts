@@ -23,6 +23,8 @@ function add_catalysisReportQuestionChooser(panelBuilder: PanelBuilder, model, f
     //var allStoryQuestions = project.collectAllStoryQuestions();
     var allStoryQuestions = project.storyQuestionsForCatalysisReport(catalysisReportIdentifier);
 
+    var elicitingQuestions = project.elicitingQuestionsForCatalysisReport(catalysisReportIdentifier);
+
     //var allParticipantQuestions = project.collectAllParticipantQuestions();
     var allParticipantQuestions = project.participantQuestionsForCatalysisReport(catalysisReportIdentifier);
 
@@ -126,8 +128,23 @@ function add_catalysisReportQuestionChooser(panelBuilder: PanelBuilder, model, f
         ]);
     }
     
+    function buildQuestionCheckboxSpecialForElicitingQuestion(): any {
+        var id = "elicitingQuestion";
+        var counts = countAnswers(id, "select");
+        var answersHover = id + " has " + counts.answeredQuestionsCount + " answers:\n" + JSON.stringify(counts.answerCounts, null, 2);
+        
+        return m("div", {title: answersHover}, [
+            m("input[type=checkbox]", {id: id, checked: isChecked(id), onchange: function(event) { isChecked(id, event.target.checked); }}),
+            m("label", {"for": id}, "Eliciting question"),
+            m("br")
+        ]);
+    }
+    
     function selectAll() {
         var map = {};
+        elicitingQuestions.forEach((question) => {
+            map["elicitingQuestion"] = true;
+        });
         allStoryQuestions.forEach((question) => {
             map["S_" + question.displayName] = true;
         });
@@ -148,6 +165,10 @@ function add_catalysisReportQuestionChooser(panelBuilder: PanelBuilder, model, f
     return m("div.questionExternal", [
         prompt,
         m("div", [
+            m("br"),
+            elicitingQuestions.map((question) => {
+                return buildQuestionCheckboxSpecialForElicitingQuestion();
+            }),
             m("br"),
             m("b", "Story questions"),
             m("br"),  

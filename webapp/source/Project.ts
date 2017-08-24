@@ -257,6 +257,38 @@ class Project {
         return result;
     }
 
+    elicitingQuestionsForCatalysisReport(catalysisReportIdentifier) {
+        var result = [];
+        var elicitingQuestionValues = [];
+        var storyCollectionsIdentifier = this.tripleStore.queryLatestC(catalysisReportIdentifier, "catalysisReport_storyCollections");
+        var storyCollectionItems = this.tripleStore.getListForSetIdentifier(storyCollectionsIdentifier);
+        if (storyCollectionItems.length === 0) return null; 
+
+        storyCollectionItems.forEach((storyCollectionPointer) => {
+            if (storyCollectionPointer) {
+                var storyCollectionIdentifier = this.tripleStore.queryLatestC(storyCollectionPointer, "storyCollection");
+                var questionnaire = surveyCollection.getQuestionnaireForStoryCollection(storyCollectionIdentifier);
+                if (questionnaire) {
+                    for (var elicitingQuestionIndex in questionnaire.elicitingQuestions) {
+                        var elicitingQuestionSpecification = questionnaire.elicitingQuestions[elicitingQuestionIndex];
+                        elicitingQuestionValues.push(elicitingQuestionSpecification.id || elicitingQuestionSpecification.shortName || elicitingQuestionSpecification.text);
+                    }
+                }
+            }
+        });
+            
+        // create ONE eliciting question to cover all story collections, with all possible answers to question
+        var convertedElicitingQuestion = {
+            id: "elicitingQuestion",
+            displayName: "Eliciting Question",
+            displayPrompt: "Please choose a question you would like to respond to",
+            displayType: "select",
+            valueOptions: elicitingQuestionValues
+        }
+        result.push(convertedElicitingQuestion);
+        return result;
+    }
+
     storyQuestionsForCatalysisReport(catalysisReportIdentifier) {
         var result = [];  
         var storyCollectionsIdentifier = this.tripleStore.queryLatestC(catalysisReportIdentifier, "catalysisReport_storyCollections");

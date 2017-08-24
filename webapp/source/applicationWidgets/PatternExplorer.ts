@@ -376,10 +376,13 @@ class PatternExplorer {
         // console.log("allStories", this.graphHolder.allStories);
         
         //this.questions = questionnaireGeneration.collectAllQuestions();
-        var storyQuestions = this.project.storyQuestionsForCatalysisReport(catalysisReportIdentifier);
+        var elicitingQuestions = this.project.elicitingQuestionsForCatalysisReport(catalysisReportIdentifier);
+        var storyQuestions = this.project.storyQuestionsForCatalysisReport(catalysisReportIdentifier); 
         var participantQuestions = this.project.participantQuestionsForCatalysisReport(catalysisReportIdentifier);
         var annotationQuestions = questionnaireGeneration.convertEditorQuestions(this.project.collectAllAnnotationQuestions(), "A_");
+        
         this.questions = [];
+        this.questions = this.questions.concat(elicitingQuestions);
         this.questions = this.questions.concat(storyQuestions);
         this.questions = this.questions.concat(participantQuestions);
         this.questions = this.questions.concat(annotationQuestions);
