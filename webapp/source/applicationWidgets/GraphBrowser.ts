@@ -4,6 +4,7 @@ import surveyCollection = require("../surveyCollection");
 import valuePathResolver = require("../panelBuilder/valuePathResolver");
 // import PanelBuilder = require("../panelBuilder/PanelBuilder");
 import Project = require("../Project");
+import Globals = require("../Globals");
 import m = require("mithril");
 
 "use strict";
@@ -19,6 +20,7 @@ function questionForID(questions, id) {
 }
 
 class GraphBrowser {
+    project: Project = null;
     xAxisSelectValue = null;
     yAxisSelectValue = null;
     questions = [];
@@ -29,6 +31,7 @@ class GraphBrowser {
     graphHolder: GraphHolder;
     
     constructor(args) {
+        this.project = Globals.project();
         this.graphHolder = {
             graphResultsPane: charting.createGraphResultsPane("narrafirma-graph-results-pane"),
             chartPanes: [],
@@ -134,9 +137,13 @@ class GraphBrowser {
     currentStoryCollectionChanged(storyCollectionIdentifier) {
         this.storyCollectionIdentifier = storyCollectionIdentifier;
         
-        // Update selects for new question choices
-        this.questions = questionnaireGeneration.collectAllQuestions();
-        // console.log("----------- questions", this.questions);
+        var elicitingQuestions = [this.project.elicitingQuestionForStoryCollection(this.storyCollectionIdentifier)];
+        var storyQuestions = this.project.storyQuestionsForStoryCollection(this.storyCollectionIdentifier);
+        var participantQuestions = this.project.participantQuestionsForStoryCollection(this.storyCollectionIdentifier);
+        // annotations are not per collection/questionnaire
+        var annotationQuestions = questionnaireGeneration.convertEditorQuestions(this.project.collectAllAnnotationQuestions(), "A_");
+        
+        this.questions = this.questions.concat(elicitingQuestions, storyQuestions, participantQuestions, annotationQuestions);
         
         this.choices = surveyCollection.optionsForAllQuestions(this.questions, "excludeTextQuestions");
 

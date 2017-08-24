@@ -257,6 +257,26 @@ class Project {
         return result;
     }
 
+    elicitingQuestionForStoryCollection(storyCollectionIdentifier) {
+        var convertedElicitingQuestion = null;
+        var questionnaire = surveyCollection.getQuestionnaireForStoryCollection(storyCollectionIdentifier);
+        if (questionnaire) {
+            var elicitingQuestionValues = [];
+            for (var elicitingQuestionIndex in questionnaire.elicitingQuestions) {
+                var elicitingQuestionSpecification = questionnaire.elicitingQuestions[elicitingQuestionIndex];
+                elicitingQuestionValues.push(elicitingQuestionSpecification.id || elicitingQuestionSpecification.shortName || elicitingQuestionSpecification.text);
+            }
+            convertedElicitingQuestion = {
+                id: "elicitingQuestion",
+                displayName: "Eliciting Question",
+                displayPrompt: "Please choose a question you would like to respond to",
+                displayType: "select",
+                valueOptions: elicitingQuestionValues
+            }
+        }
+        return convertedElicitingQuestion;
+    }
+
     elicitingQuestionsForCatalysisReport(catalysisReportIdentifier) {
         var result = [];
         var elicitingQuestionValues = [];
@@ -289,6 +309,15 @@ class Project {
         return result;
     }
 
+    storyQuestionsForStoryCollection(storyCollectionIdentifier) {
+        var questionnaire = surveyCollection.getQuestionnaireForStoryCollection(storyCollectionIdentifier);
+        if (questionnaire) {
+            return questionnaire.storyQuestions;
+        } else {
+            return [];
+        }
+    }
+
     storyQuestionsForCatalysisReport(catalysisReportIdentifier) {
         var result = [];  
         var storyCollectionsIdentifier = this.tripleStore.queryLatestC(catalysisReportIdentifier, "catalysisReport_storyCollections");
@@ -304,6 +333,8 @@ class Project {
 
                     for (var questionIndex in questionnaire.storyQuestions) {
                         var question = questionnaire.storyQuestions[questionIndex];
+
+                        // check for existing question (possibly from another story collection) in results
                         var alreadyThere = false;
                         for (var resultQuestionIndex in result) {
                             var resultQuestion = result[resultQuestionIndex];
@@ -320,6 +351,15 @@ class Project {
             }
         });
         return result;
+    }
+
+    participantQuestionsForStoryCollection(storyCollectionIdentifier) {
+        var questionnaire = surveyCollection.getQuestionnaireForStoryCollection(storyCollectionIdentifier);
+        if (questionnaire) {
+            return questionnaire.participantQuestions;
+        } else {
+            return [];
+        }
     }
 
     participantQuestionsForCatalysisReport(catalysisReportIdentifier) {
