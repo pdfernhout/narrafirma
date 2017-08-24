@@ -526,7 +526,8 @@ export function d3BarChartForDataIntegrity(graphBrowserInstance: GraphHolder, qu
         var storiesWithoutAnswersForThisQuestion = [];
         for (var storyIndex in stories) {
             var story = stories[storyIndex];
-            var wasUnanswered = questionWasNotAnswered(question, story.fieldValue(question.id));
+            var value = story.fieldValue(question.id);
+            var wasUnanswered = questionWasNotAnswered(question, value);
             if (wasUnanswered) {
                 storiesWithoutAnswersForThisQuestion.push({story: story});
             }
