@@ -380,7 +380,7 @@ class PatternExplorer {
         var storyQuestions = this.project.storyQuestionsForCatalysisReport(catalysisReportIdentifier); 
         var participantQuestions = this.project.participantQuestionsForCatalysisReport(catalysisReportIdentifier);
         var annotationQuestions = questionnaireGeneration.convertEditorQuestions(this.project.collectAllAnnotationQuestions(), "A_");
-        
+
         this.questions = [];
         this.questions = this.questions.concat(elicitingQuestions);
         this.questions = this.questions.concat(storyQuestions);
@@ -461,7 +461,7 @@ class PatternExplorer {
         var ratioQuestions = [];
         
         if (!this.questionsToInclude) return result;
-        
+
         // TODO: create all supported graphable permutations of questions
         this.questions.forEach((question) => {
             // Skip questions that are not included in configuration
@@ -482,11 +482,23 @@ class PatternExplorer {
         }
 
         if (this.graphTypesToCreate["data integrity graphs"]) {
-            result.push(this.makePattern(nextID(), "data integrity", ratioQuestions, "All scale values"));
-            result.push(this.makePattern(nextID(), "data integrity", ratioQuestions, "Participant means"));
-            result.push(this.makePattern(nextID(), "data integrity", ratioQuestions, "Participant standard deviations"));
-            result.push(this.makePattern(nextID(), "data integrity", nominalQuestions, "Unanswered choice questions"));
-            result.push(this.makePattern(nextID(), "data integrity", ratioQuestions, "Unanswered scale questions"));
+            // for data integrity, include ALL questions whether the user chose to see them or not
+            var allNominalQuestions = [];
+            var allRatioQuestions = [];
+            this.questions.forEach((question) => {
+                if (question.displayType === "slider") {
+                    allRatioQuestions.push(question);
+                } else if (nominalQuestionTypes.indexOf(question.displayType) !== -1)  {
+                    // Ony use text questions that are annotations
+                    if (question.displayType === "text" && (question.id || "").substring(2) !== "A_") return;
+                    allNominalQuestions.push(question);
+                }
+            });       
+            result.push(this.makePattern(nextID(), "data integrity", allRatioQuestions, "All scale values"));
+            result.push(this.makePattern(nextID(), "data integrity", allRatioQuestions, "Participant means"));
+            result.push(this.makePattern(nextID(), "data integrity", allRatioQuestions, "Participant standard deviations"));
+            result.push(this.makePattern(nextID(), "data integrity", allNominalQuestions, "Unanswered choice questions"));
+            result.push(this.makePattern(nextID(), "data integrity", allRatioQuestions, "Unanswered scale questions"));
         }
      
         if (this.graphTypesToCreate["bar graphs"]) {
