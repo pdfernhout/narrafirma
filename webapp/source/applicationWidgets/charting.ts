@@ -768,11 +768,15 @@ export function d3HistogramChartForDataIntegrity(graphBrowserInstance: GraphHold
                 }
             }
             if (dataIntegrityType == "Participant means") {
-                var mean = jStat.mean(valuesForParticipant);
-                var aPlotItem = {story: null, value: mean};
+                if (valuesForParticipant.length > 0) {
+                    var mean = jStat.mean(valuesForParticipant);
+                    var aPlotItem = {story: null, value: mean};
+                } 
             } else if (dataIntegrityType == "Participant standard deviations") {
-                var sd = jStat.stdev(valuesForParticipant, true);
-                var aPlotItem = {story: null, value: sd};                
+                if (valuesForParticipant.length > 1) {
+                    var sd = jStat.stdev(valuesForParticipant, true);
+                    var aPlotItem = {story: null, value: sd};     
+                }           
             }
             values.push(aPlotItem);
         }
