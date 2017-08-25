@@ -214,7 +214,7 @@ class GraphBrowser {
         if (xType === "choice" && yType === null) {
             // console.log("plot choice: Bar graph");
             // console.log("barGraph", xAxisQuestion);
-            charting.d3BarChartForQuestion(this.graphHolder, xAxisQuestion, this.storiesSelected.bind(this));
+            charting.d3BarChartForQuestion(this.graphHolder, xAxisQuestion, this.storiesSelected.bind(this), true);
         } else if (xType === "choice" && yType === "choice") {
             // console.log("plot choice: Contingency table");
             charting.d3ContingencyTable(this.graphHolder, xAxisQuestion, yAxisQuestion, this.storiesSelected.bind(this));

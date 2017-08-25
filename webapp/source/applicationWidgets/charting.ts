@@ -481,7 +481,7 @@ function addStatisticsPanelForChart(chartPane: HTMLElement, statistics) {
 
 // ---- Charts
 
-export function d3BarChartForQuestion(graphBrowserInstance: GraphHolder, question, storiesSelectedCallback) {
+export function d3BarChartForQuestion(graphBrowserInstance: GraphHolder, question, storiesSelectedCallback, inGraphBrowser = false) {
     var allPlotItems = [];
     var xLabels = [];  
     var key;
@@ -514,7 +514,7 @@ export function d3BarChartForQuestion(graphBrowserInstance: GraphHolder, questio
     }
     var chartTitle = "" + nameForQuestion(question);
     var xAxisLabel = nameForQuestion(question);
-    return d3BarChartForValues(graphBrowserInstance, allPlotItems, xLabels, chartTitle, xAxisLabel, question, storiesSelectedCallback);
+    return d3BarChartForValues(graphBrowserInstance, allPlotItems, xLabels, chartTitle, xAxisLabel, question, storiesSelectedCallback, inGraphBrowser);
 }
 
 export function d3BarChartForDataIntegrity(graphBrowserInstance: GraphHolder, questions, storiesSelectedCallback, dataIntegrityType) {
@@ -540,7 +540,7 @@ export function d3BarChartForDataIntegrity(graphBrowserInstance: GraphHolder, qu
     return d3BarChartForValues(graphBrowserInstance, allPlotItems, xLabels, dataIntegrityType, dataIntegrityType, null, storiesSelectedCallback);
 }
 
-export function d3BarChartForValues(graphBrowserInstance: GraphHolder, plotItems, xLabels, chartTitle, xAxisLabel, question, storiesSelectedCallback) {
+export function d3BarChartForValues(graphBrowserInstance: GraphHolder, plotItems, xLabels, chartTitle, xAxisLabel, question, storiesSelectedCallback, inGraphBrowser = false) {
     
     var labelLengthLimit = 30;
     var longestLabelText = "";
@@ -562,7 +562,10 @@ export function d3BarChartForValues(graphBrowserInstance: GraphHolder, plotItems
     var chartBody = chart.chartBody;
     
     var statistics = calculateStatistics.calculateStatisticsForBarGraphValues(function(plotItem) { return plotItem.value; });
-    addStatisticsPanelForChart(chartPane, statistics); 
+    // don't want to show "Statistics: none" thing when in graph browser
+    if (!inGraphBrowser) {
+        addStatisticsPanelForChart(chartPane, statistics); 
+    }
     
     // draw the x axis
 
