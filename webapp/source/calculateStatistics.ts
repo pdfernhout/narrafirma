@@ -165,7 +165,7 @@ export function calculateStatisticsForBarGraph(nominalQuestion, stories: surveyC
 
 export function calculateStatisticsForBarGraphValues(values) {
     var n = values.length;
-    return {significance: "None", calculated: ["n"], n: n};
+    return {significance: "None", calculated: []};
 }
 
 export function calculateStatisticsForHistogram(ratioQuestion, stories: surveyCollection.Story[], minimumStoryCountRequiredForTest: number) {
