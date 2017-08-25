@@ -264,6 +264,7 @@ function addXAxis(chart, xScale, configure = null) {
     
     var xAxis = d3.svg.axis()
         .scale(xScale)
+        .tickPadding(6)
         .orient('bottom');
     
     if (configure.isSmallFormat) xAxis.tickValues(xScale.domain());
@@ -315,6 +316,7 @@ function addYAxis(chart, yScale, configure = null) {
     
     var yAxis = d3.svg.axis()
         .scale(yScale)
+        .tickPadding(6)
         .orient('left');
     
     if (configure.labelLengthLimit) {
@@ -540,24 +542,16 @@ export function d3BarChartForDataIntegrity(graphBrowserInstance: GraphHolder, qu
 
 export function d3BarChartForValues(graphBrowserInstance: GraphHolder, plotItems, xLabels, chartTitle, xAxisLabel, question, storiesSelectedCallback) {
     
-    var labelLengthLimit = 20;
+    var labelLengthLimit = 30;
     var longestLabelText = "";
     for (var label in xLabels) {
-        if (label.length > longestLabelText.length) {
-            longestLabelText = label;
+        if (xLabels[label].length > longestLabelText.length) {
+            longestLabelText = xLabels[label];
         }
     }
     var longestLabelTextLength = longestLabelText.length;
     if (longestLabelTextLength > labelLengthLimit) { longestLabelTextLength = labelLengthLimit + 3; }
     
-    /*
-    xLabels.sort(function(a, b) {
-        if (a.toLowerCase() < b.toLowerCase()) return -1;
-        if (a.toLowerCase() > b.toLowerCase()) return 1;
-        return 0;
-    });
-    */
-
     // Build chart
     // TODO: Improve the way labels are drawn or ellipsed based on chart size and font size and number of bars
 
@@ -1303,7 +1297,7 @@ export function d3ContingencyTable(graphBrowserInstance: GraphHolder, xAxisQuest
         }
     }
     
-    var labelLengthLimit = 20;
+    var labelLengthLimit = 30;
     var longestColumnText = "";
     for (var columnName in columnLabels) {
         if (columnName.length > longestColumnText.length) {
