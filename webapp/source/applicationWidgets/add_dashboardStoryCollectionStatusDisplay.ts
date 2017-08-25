@@ -40,6 +40,9 @@ function add_dashboardStoryCollectionStatusDisplay(panelBuilder: PanelBuilder, m
     });
     
     return m("div.narrafirma-dashboard-story-collection-status", [
+        m("br"),
+        m("a", {href: "\\", title: "Choose another project"}, "Choose another project"), 
+        m("br"),       
         m("p", "Story collections:"),
         m("table", 
             m("tr", [m("th", "Name"), m("th", "#"), m("th", "Active?")]),
@@ -51,9 +54,7 @@ function add_dashboardStoryCollectionStatusDisplay(panelBuilder: PanelBuilder, m
                     m("td", surveyActive),
                 ]);
             })
-        ),
-        m("br"),
-        m("a", {href: "\\", title: "Choose another project"}, "Choose another project")
+        )
     ]);
 
 }
