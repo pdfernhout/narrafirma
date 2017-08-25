@@ -212,11 +212,13 @@ export function calculateStatisticsForMultipleHistogram(ratioQuestion, nominalQu
     var pLowest = Number.MAX_VALUE;
     var uLowest = NaN;
     var n = 0;
+    var allNs = [];
     
     var allResults = {};
     
     for (var i = 0; i < options.length; i++) {
         var x = values[options[i]];
+        allNs.push(x.length);
         if (x.length < minimumStoryCountRequiredForTest) continue;
         n += x.length;
         for (var j = i + 1; j < options.length; j++) {
@@ -233,7 +235,7 @@ export function calculateStatisticsForMultipleHistogram(ratioQuestion, nominalQu
     }
     
     if (pLowest === Number.MAX_VALUE) {
-        return {significance: "None (count below threshold)", calculated: []};
+        return {significance: "None (at least one count in " + allNs.join(", ") + " below threshold)", calculated: ["n"], n: n};
     }
 
     var significance = " p=" + pLowest.toFixed(3) + " U=" + uLowest + " n=" + n;
@@ -245,7 +247,7 @@ export function calculateStatisticsForScatterPlot(ratioQuestion1, ratioQuestion2
     var data = collectXYDataForFields(stories, ratioQuestion1.id, ratioQuestion2.id, choiceQuestion, option);
     
     if (data.x.length < minimumStoryCountRequiredForTest) {
-        return {significance: "None (count below threshold)", calculated: []};
+        return {significance: "None (count of " + data.x.length + " below threshold)", calculated: ["n"], n: data.x.length};
     }
     
     // TODO: Add a flag somewhere to use Kendall's Tau instead of Pearson/Spearman's R
@@ -370,7 +372,7 @@ export function calculateStatisticsForTable(nominalQuestion1, nominalQuestion2, 
     var n2 = Object.keys(field2OptionsUsed).length;
     
     if (n1 <= 1 || n2 <= 1) {
-        return {significance: "None (counts below threshold)", calculated: []};
+        return {significance: "None (count below threshold)", calculated: []};
     }
     
     var degreesOfFreedom = (n1 - 1) * (n2 - 1);        
