@@ -92,7 +92,7 @@ var panel: Panel = {
             valueType: "object",
             valuePath: "/clientState/catalysisReportIdentifier/questionsToInclude",
             displayType: "catalysisReportQuestionChooser",
-            displayPrompt: "Which <strong>questions</strong> should be included in the catalysis report?",
+            displayPrompt: "Which <strong>questions</strong> should be included in the catalysis report? (Note: Only questions checked here will be included in data integrity graphs.)",
             displayVisible: function(panelBuilder, model) {
                 return !!Globals.clientState().catalysisReportName();
             }
