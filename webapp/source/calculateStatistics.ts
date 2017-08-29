@@ -3,6 +3,7 @@ import kendallsTau = require("./statistics/kendallsTau");
 import chiSquare = require("./statistics/chiSquare");
 import mannWhitneyU = require("./statistics/mannWhitneyU");
 import surveyCollection = require("./surveyCollection");
+import toaster = require("./panelBuilder/toaster");
 
 "use strict";
 
@@ -224,7 +225,12 @@ export function calculateStatisticsForMultipleHistogram(ratioQuestion, nominalQu
         for (var j = i + 1; j < options.length; j++) {
             var y = values[options[j]];
             if (y.length < minimumStoryCountRequiredForTest) continue;
-            var statResult = mannWhitneyU(x, y);
+            try {
+                var statResult = mannWhitneyU(x, y);
+            } catch(err) {
+                toaster.toast(err);
+                return {};
+            }
             allResults[options[i] + " X " + options[j]] = {p: statResult.p, u: statResult.u, n1: statResult.n1, n2: statResult.n2};
             // console.log("calculateStatisticsForMultipleHistogram statResult", statResult);
             if (statResult.p <= pLowest) {
