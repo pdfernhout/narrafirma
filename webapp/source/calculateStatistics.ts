@@ -228,8 +228,8 @@ export function calculateStatisticsForMultipleHistogram(ratioQuestion, nominalQu
             try {
                 var statResult = mannWhitneyU(x, y);
             } catch(err) {
-                toaster.toast(err);
-                return {};
+                toaster.toast('Error in Mann-Whitney U test for questions [' + ratioQuestion.displayName + ", " + nominalQuestion.displayName + "]: " + err);
+                return {significance: "None (error)", calculated: []};
             }
             allResults[options[i] + " X " + options[j]] = {p: statResult.p, u: statResult.u, n1: statResult.n1, n2: statResult.n2};
             // console.log("calculateStatisticsForMultipleHistogram statResult", statResult);
@@ -407,16 +407,30 @@ export function calculateStatisticsForTable(nominalQuestion1, nominalQuestion2, 
     // console.log("expected", expected);
     // console.log("degreesOfFreedom", degreesOfFreedom);
     
-    var statResult = chiSquare.chiSquare(observed, expected, degreesOfFreedom);
+    try {
+        var statResult = chiSquare.chiSquare(observed, expected, degreesOfFreedom);
+    } catch(err) {
+        var errorMessage = 'Error in chi-squared test for questions [' + nominalQuestion1.displayName + ", " + nominalQuestion2.displayName + "]: " + err + ". See console for details."
+        console.log(errorMessage, n1, n2, statResult, observed, expected);
+        toaster.toast(errorMessage);
+        return {significance: "None (error)", calculated: []};        
+    }
     // console.log("statResult.n", statResult.n);
     
     if (statResult.n !== n1 * n2) {
-        console.log("unexpected n1 * n2: ", n1, n2, statResult, observed, expected);
-        throw new Error("unexpected n1 * n2");
+        var errorMessage = 'Error in chi-squared test for questions [' + nominalQuestion1.displayName + ", " + nominalQuestion2.displayName + "]: Unexpected n1 * n2. See console for details."
+        console.log(errorMessage, n1, n2, statResult, observed, expected);
+        toaster.toast(errorMessage);
+        return {significance: "None (error)", calculated: []};
+        //throw new Error("unexpected n1 * n2");
     }
     
     if (statResult.n === degreesOfFreedom) {
-        throw new Error("unexpected statResult.n");
+        var errorMessage = 'Error in chi-squared test for questions [' + nominalQuestion1.displayName + ", " + nominalQuestion2.displayName + "]: Unexpected n. See console for details."
+        console.log(errorMessage, n1, n2, statResult, observed, expected);
+        toaster.toast(errorMessage);
+        return {significance: "None (error)", calculated: []};
+        //throw new Error("unexpected statResult.n");
     }
     
     var significance = " p=" + statResult.p.toFixed(3) + " x2=" + statResult.x2.toFixed(3) + " k=" + statResult.k + " n=" + statResult.n;

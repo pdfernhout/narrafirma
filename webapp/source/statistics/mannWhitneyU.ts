@@ -41,7 +41,7 @@ function mannWhitneyU(x: number[], y: number[]) {
     // correction factor for tied scores
     var T = Math.sqrt(tiecorrect(ranked));
     if (T === 0) {
-        throw new Error("In Mann-Whitney U statistical test, all numbers are identical.");
+        throw new Error("All numbers are identical.");
     }
     // console.log("mannWhitneyU T tiecorrect", T);
     
