@@ -772,7 +772,8 @@ Blue - d5dae6 - abb6ce - [extra: 7b8cb2] - 3b5fab - 2e4a85
 }
 
 .narrafirma-pattern-browser-selected-stories-header {
-	margin-left: 10px;
+    margin-left: 10px;
+    margin-top: 10px;
 }
 
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Mithril grid ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
