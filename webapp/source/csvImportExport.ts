@@ -370,6 +370,71 @@ function processCSVContentsForQuestionnaire(contents) {
     }
 }
 
+export function autoFillStoryForm() {
+        var questionnaireName = prompt("Please enter a short name for the new story form.");
+        if (!questionnaireName) return;
+        if (questionnaireGeneration.buildQuestionnaire(questionnaireName)) {
+            alert('A story form already exists with that name: "' + questionnaireName + '"');
+            return;
+        }
+       
+        var storyFormListIdentifier = project.getFieldValue("project_storyForms");
+        if (!storyFormListIdentifier) {
+            storyFormListIdentifier = project.tripleStore.newIdForSet("StoryFormSet");
+            project.setFieldValue("project_storyForms", storyFormListIdentifier);
+        }
+        var template = {
+            id: generateRandomUuid("StoryForm"),
+            questionForm_shortName: questionnaireName,
+            questionForm_elicitingQuestions: project.tripleStore.newIdForSet("ElicitingQuestionChoiceSet"),
+            questionForm_storyQuestions: project.tripleStore.newIdForSet("StoryQuestionChoiceSet"),
+            questionForm_participantQuestions: project.tripleStore.newIdForSet("ParticipantQuestionChoiceSet")
+        };
+        project.tripleStore.makeNewSetItem(storyFormListIdentifier, "StoryForm", template);
+
+        var questionTypeCounts = {};        
+        var question;
+        var questionIndex;
+    
+        var elicitingQuestions = project.collectAllElicitingQuestions();
+        for (questionIndex in elicitingQuestions) {
+            question = elicitingQuestions[questionIndex];
+            addReferenceToList(template.questionForm_elicitingQuestions, question.elicitingQuestion_shortName, "elicitingQuestion", "ElicitingQuestionChoice");
+        }
+
+        var storyQuestions = project.collectAllStoryQuestions();
+        for (questionIndex in storyQuestions) {
+            question = storyQuestions[questionIndex];
+            addReferenceToList(template.questionForm_storyQuestions, question.storyQuestion_shortName, "storyQuestion", "StoryQuestionChoice");
+        }
+
+        var participantQuestions = project.collectAllParticipantQuestions();
+        for (questionIndex in participantQuestions) {
+            question = participantQuestions[questionIndex];
+            addReferenceToList(template.questionForm_participantQuestions, question.participantQuestion_shortName, "participantQuestion", "ParticipantQuestionChoice");
+        }
+
+        m.redraw();
+        
+        toaster.toast("Finished creating story form: " + questionnaireName);
+        
+        function addReferenceToList(listIdentifier: string, reference: string, fieldName: string, className: string) {
+            var order = questionTypeCounts[fieldName];
+            if (!order) {
+                order = 0;
+            }
+            order = order + 1;
+            questionTypeCounts[fieldName] = order;
+            
+            var choice = {
+                order: order
+            };
+            choice[fieldName] = reference;
+            
+            project.tripleStore.makeNewSetItem(listIdentifier, className, choice);
+        }
+}
+
 function ensureQuestionExists(question, questionCategory: string) {
     var idAccessor = questionCategory + "_shortName";
     var existingQuestionsInCategory = project.questionsForCategory(questionCategory);

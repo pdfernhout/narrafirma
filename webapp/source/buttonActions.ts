@@ -421,6 +421,7 @@ export var importCSVQuestionnaire = csvImportExport.importCSVQuestionnaire;
 export var importCSVStories = csvImportExport.importCSVStories;
 export var exportQuestionnaire = csvImportExport.exportQuestionnaire;
 export var exportStoryCollection = csvImportExport.exportStoryCollection;
+export var autoFillStoryForm = csvImportExport.autoFillStoryForm;
 
 export var exportEntireProject = projectImportExport.exportEntireProject;
 export var importEntireProject = projectImportExport.importEntireProject;

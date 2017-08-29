@@ -27,6 +27,13 @@ var panel: Panel = {
             displayPrompt: '<input type="file" id="csvFileLoader" name="files" title="Import Story Form from CSV File" style="display:none"/>'
         },
         {
+            id: "project_createStoryFormFromCreatedQuestions",
+            valueType: "none",
+            displayType: "button",
+            displayConfiguration: "autoFillStoryForm",
+            displayPrompt: "Create new story form from all existing questions ..."
+        },
+        {
             id: "project_importStoryFormAndDataFromCSV",
             valueType: "none",
             displayType: "button",
