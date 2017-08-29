@@ -12,5 +12,5 @@ export function createToasterWidget(container) {
 
 export function toast(message, messageType = "message", duration_ms = 2000) {
     // TODO: Translate message if needed
-    humane.log(message);
+    humane.log(message, {clickToClose: true});
 }
