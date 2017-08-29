@@ -16,16 +16,16 @@ body {
 .humane,
 .humane-original {
   font-family: Ubuntu, Verdana, sans-serif;
-  line-height: 40px;
-  font-size: 25px;
+  line-height: 32px;
+  font-size: 16px;
   top: 25%;
-  left: 25%;
+  left: 15%;
   opacity: 0;
-  width: 50%;
+  width: 70%;
   min-height: 40px;
   padding: 10px;
   text-align: center;
-  background-color: #000;
+  background-color: #231f20;
   color: #fff;
   -webkit-border-radius: 15px;
   border-radius: 15px;
