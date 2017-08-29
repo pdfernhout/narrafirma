@@ -517,7 +517,7 @@ export function d3BarChartForQuestion(graphBrowserInstance: GraphHolder, questio
     return d3BarChartForValues(graphBrowserInstance, allPlotItems, xLabels, chartTitle, xAxisLabel, question, storiesSelectedCallback, inGraphBrowser);
 }
 
-export function d3BarChartForDataIntegrity(graphBrowserInstance: GraphHolder, questions, storiesSelectedCallback, dataIntegrityType) {
+export function d3BarChartForDataIntegrity(graphBrowserInstance: GraphHolder, questions, dataIntegrityType) {
     var allPlotItems = [];
     var xLabels = [];  
     var stories = graphBrowserInstance.allStories;
@@ -537,7 +537,7 @@ export function d3BarChartForDataIntegrity(graphBrowserInstance: GraphHolder, qu
         xLabels.push(question.displayName);
         allPlotItems.push({name: question.displayName, stories: storiesWithoutAnswersForThisQuestion, value: storiesWithoutAnswersForThisQuestion.length});
     }
-    return d3BarChartForValues(graphBrowserInstance, allPlotItems, xLabels, dataIntegrityType, dataIntegrityType, null, storiesSelectedCallback);
+    return d3BarChartForValues(graphBrowserInstance, allPlotItems, xLabels, dataIntegrityType, dataIntegrityType, null, null);
 }
 
 export function d3BarChartForValues(graphBrowserInstance: GraphHolder, plotItems, xLabels, chartTitle, xAxisLabel, question, storiesSelectedCallback, inGraphBrowser = false) {
@@ -574,7 +574,7 @@ export function d3BarChartForValues(graphBrowserInstance: GraphHolder, plotItems
         .rangeRoundBands([0, chart.width], 0.1);
     
     chart.xScale = xScale;
-    //chart.xQuestion = question;
+    chart.xQuestion = question;
 
     var xAxis = addXAxis(chart, xScale, {labelLengthLimit: labelLengthLimit, rotateAxisLabels: true});
     
@@ -600,7 +600,7 @@ export function d3BarChartForValues(graphBrowserInstance: GraphHolder, plotItems
     addYAxisLabel(chart, "Count");
     
     // Append brush before data to ensure titles are drown
-    chart.brush = createBrush(chartBody, xScale, null, brushend);
+    if (storiesSelectedCallback) chart.brush = createBrush(chartBody, xScale, null, brushend);
     
     var bars = chartBody.selectAll(".bar")
             .data(plotItems)
@@ -643,7 +643,7 @@ export function d3BarChartForValues(graphBrowserInstance: GraphHolder, plotItems
             });
     }
     
-    supportStartingDragOverStoryDisplayItemOrCluster(chartBody, storyDisplayItems);
+    if (storiesSelectedCallback) supportStartingDragOverStoryDisplayItemOrCluster(chartBody, storyDisplayItems);
     
     function isPlotItemSelected(extent, plotItem) {
         var midPoint = xScale(plotItem.value) + xScale.rangeBand() / 2;
@@ -653,7 +653,9 @@ export function d3BarChartForValues(graphBrowserInstance: GraphHolder, plotItems
     function brushend() {
         updateSelectedStories(chart, storyDisplayItems, graphBrowserInstance, storiesSelectedCallback, isPlotItemSelected);
     }
-    chart.brushend = brushend;
+    if (storiesSelectedCallback) {
+        chart.brushend = brushend;
+    }
     
     return chart;
 }
@@ -723,10 +725,9 @@ export function d3HistogramChartForQuestion(graphBrowserInstance: GraphHolder, s
     return d3HistogramChartForValues(graphBrowserInstance, values, matchingStories, style, chartSize, chartTitle, xAxisLabel, xAxisStart, xAxisEnd, storiesSelectedCallback);
 }
 
-export function d3HistogramChartForDataIntegrity(graphBrowserInstance: GraphHolder, scaleQuestions, storiesSelectedCallback, dataIntegrityType) {
+export function d3HistogramChartForDataIntegrity(graphBrowserInstance: GraphHolder, scaleQuestions, dataIntegrityType) {
     var unanswered = [];
     var values = [];
-    var matchingStories = [];
     
     var stories = graphBrowserInstance.allStories;
 
@@ -741,7 +742,6 @@ export function d3HistogramChartForDataIntegrity(graphBrowserInstance: GraphHold
                     unanswered.push(newPlotItem);
                 } else {
                     values.push(newPlotItem);
-                    matchingStories.push(story);
                 }
             }
         }
@@ -781,7 +781,7 @@ export function d3HistogramChartForDataIntegrity(graphBrowserInstance: GraphHold
             values.push(aPlotItem);
         }
     }
-    return d3HistogramChartForValues(graphBrowserInstance, values, matchingStories, "singleChartStyle", "large", dataIntegrityType, dataIntegrityType, "", "", storiesSelectedCallback);
+    return d3HistogramChartForValues(graphBrowserInstance, values, [], "singleChartStyle", "large", dataIntegrityType, dataIntegrityType, "", "", null);
 }
 
 export function d3HistogramChartForValues(graphBrowserInstance: GraphHolder, plotItems, matchingStories, style, chartSize, chartTitle, xAxisLabel, xAxisStart, xAxisEnd, storiesSelectedCallback) {
@@ -868,7 +868,7 @@ export function d3HistogramChartForValues(graphBrowserInstance: GraphHolder, plo
     }
     
     // Append brush before data to ensure titles are drown
-    chart.brush = createBrush(chartBody, xScale, null, brushend);
+    if (storiesSelectedCallback) chart.brush = createBrush(chartBody, xScale, null, brushend);
     
     var bars = chartBody.selectAll(".bar")
           .data(data)
@@ -903,7 +903,7 @@ export function d3HistogramChartForValues(graphBrowserInstance: GraphHolder, plo
             });
     }
     
-    supportStartingDragOverStoryDisplayItemOrCluster(chartBody, storyDisplayItems);
+    if (storiesSelectedCallback) supportStartingDragOverStoryDisplayItemOrCluster(chartBody, storyDisplayItems);
     
     if (!isNaN(mean)) {
         // Draw mean
@@ -957,7 +957,10 @@ export function d3HistogramChartForValues(graphBrowserInstance: GraphHolder, plo
         if (doNotUpdateStoryList) callback = null;
         updateSelectedStories(chart, storyDisplayItems, graphBrowserInstance, callback, isPlotItemSelected);
     }
-    chart.brushend = brushend;
+    
+    if (storiesSelectedCallback) {
+        chart.brushend = brushend;
+    }
     
     // TODO: Put up title
     

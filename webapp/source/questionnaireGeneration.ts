@@ -157,17 +157,7 @@ export function collectAllQuestions(putAnnotationQuestionsUpFront = null): any[]
     return allQuestions;
 }
 
-export function getLeadingStoryQuestions(elicitingQuestions) {
-    
-    // TODO: What about idea of having IDs that go with eliciting questions so store reference to ID not text prompt?
-    var elicitingQuestionValues = [];
-    for (var elicitingQuestionIndex = 0; elicitingQuestionIndex < elicitingQuestions.length; elicitingQuestionIndex++) {
-        var elicitingQuestionSpecification = elicitingQuestions[elicitingQuestionIndex];
-        // elicitingQuestionValues.push({value: elicitingQuestionSpecification.id, text: elicitingQuestionSpecification.label});
-        elicitingQuestionValues.push(elicitingQuestionSpecification.id || elicitingQuestionSpecification.shortName || elicitingQuestionSpecification.text);
-    }
-    
-    // TODO: Remove redundancy
+export function getStoryNameAndTextQuestions() {
     var leadingStoryQuestions = [];
     leadingStoryQuestions.unshift({
         id: "storyName",
@@ -183,6 +173,20 @@ export function getLeadingStoryQuestions(elicitingQuestions) {
         displayType: "textarea",
         valueOptions: []
     });
+    return leadingStoryQuestions;
+}
+
+export function getLeadingStoryQuestions(elicitingQuestions) {  
+    var leadingStoryQuestions = getStoryNameAndTextQuestions();
+
+    // TODO: What about idea of having IDs that go with eliciting questions so store reference to ID not text prompt?
+    var elicitingQuestionValues = [];
+    for (var elicitingQuestionIndex = 0; elicitingQuestionIndex < elicitingQuestions.length; elicitingQuestionIndex++) {
+        var elicitingQuestionSpecification = elicitingQuestions[elicitingQuestionIndex];
+        // elicitingQuestionValues.push({value: elicitingQuestionSpecification.id, text: elicitingQuestionSpecification.label});
+        elicitingQuestionValues.push(elicitingQuestionSpecification.id || elicitingQuestionSpecification.shortName || elicitingQuestionSpecification.text);
+    }
+
     leadingStoryQuestions.unshift({
         id: "elicitingQuestion",
         displayName: "Eliciting Question",

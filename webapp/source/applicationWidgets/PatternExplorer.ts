@@ -88,6 +88,7 @@ class PatternExplorer {
     currentPattern = null;
     
     observationPanelSpecification = null;
+    saveGraphSelectionSpecification = null;
     
     minimumStoryCountRequiredForTest = Project.defaultMinimumStoryCountRequiredForTest;
     correlationLineChoice = Project.defaultCorrelationLineChoice;
@@ -136,7 +137,7 @@ class PatternExplorer {
 
         // Observation panel initialization
         
-        this.observationPanelSpecification = {
+        this.saveGraphSelectionSpecification = {
             "id": "observationPanel",
             panelFields: [        
                 {
@@ -151,7 +152,11 @@ class PatternExplorer {
                     displayPrompt: "Display chosen graph selection",
                     displayType: "button",
                     displayConfiguration: this.resetGraphSelection.bind(this)
-                },
+                }]};
+
+        this.observationPanelSpecification = {
+            "id": "observationPanel",
+            panelFields: [        
                 {
                     id: "observationPanel_description",
                     valuePath: "currentObservationDescription",
@@ -251,18 +256,27 @@ class PatternExplorer {
         } else if (isMissingQuestionsToInclude(this.questionsToInclude)) {
             parts = [m("div.narrafirma-choose-questions-to-include", "Please select some questions to include in the report (on the previous page).")];
         } else {
-            parts = [
-                this.patternsGrid.calculateView(),
-                this.currentPattern ?
-                    [
-                        m("div", {config: this.insertGraphResultsPaneConfig.bind(this)}),
-                        m("div.narrafirma-pattern-browser-selected-stories-header", "Selected stories (" + this.modelForStoryGrid.storiesSelectedInGraph.length + ")"),
-                        this.storyGrid.calculateView(),
-                        panelBuilder.buildPanel(this.observationPanelSpecification, this)
-                    ] :
-                    // TODO: Translate
-                    m("div.narrafirma-choose-pattern", "Please select a pattern to view as a graph.")
-            ];
+            if (this.currentPattern && this.currentPattern.graphType === "data integrity") {
+                parts = [
+                    this.patternsGrid.calculateView(),
+                    m("div", {config: this.insertGraphResultsPaneConfig.bind(this)}),
+                    panelBuilder.buildPanel(this.observationPanelSpecification, this)
+                ];
+            } else {    
+                parts = [
+                    this.patternsGrid.calculateView(),
+                    this.currentPattern ?
+                        [
+                            m("div", {config: this.insertGraphResultsPaneConfig.bind(this)}),
+                            m("div.narrafirma-pattern-browser-selected-stories-header", "Selected stories (" + this.modelForStoryGrid.storiesSelectedInGraph.length + ")"),
+                            this.storyGrid.calculateView(),
+                            panelBuilder.buildPanel(this.saveGraphSelectionSpecification, this),
+                            panelBuilder.buildPanel(this.observationPanelSpecification, this)
+                        ] :
+                        // TODO: Translate
+                        m("div.narrafirma-choose-pattern", "Please select a pattern to view as a graph.")
+                ];
+            }
         }
         
         // TODO: Need to set class
@@ -376,16 +390,14 @@ class PatternExplorer {
         // console.log("allStories", this.graphHolder.allStories);
         
         //this.questions = questionnaireGeneration.collectAllQuestions();
+        var leadingStoryQuestions = questionnaireGeneration.getStoryNameAndTextQuestions();
         var elicitingQuestions = this.project.elicitingQuestionsForCatalysisReport(catalysisReportIdentifier);
         var storyQuestions = this.project.storyQuestionsForCatalysisReport(catalysisReportIdentifier); 
         var participantQuestions = this.project.participantQuestionsForCatalysisReport(catalysisReportIdentifier);
         var annotationQuestions = questionnaireGeneration.convertEditorQuestions(this.project.collectAllAnnotationQuestions(), "A_");
 
         this.questions = [];
-        this.questions = this.questions.concat(elicitingQuestions);
-        this.questions = this.questions.concat(storyQuestions);
-        this.questions = this.questions.concat(participantQuestions);
-        this.questions = this.questions.concat(annotationQuestions);
+        this.questions = this.questions.concat(leadingStoryQuestions, elicitingQuestions, storyQuestions, participantQuestions, annotationQuestions);
         // console.log("questions", this.questions);
         
         this.questionsToInclude = this.project.tripleStore.queryLatestC(this.catalysisReportIdentifier, "questionsToInclude"); 
@@ -644,12 +656,12 @@ class PatternExplorer {
                 break;
             case "data integrity":
                 if (pattern.patternName == "Unanswered choice questions" || pattern.patternName == "Unanswered scale questions") {
-                    newGraph = charting.d3BarChartForDataIntegrity(graphHolder, pattern.questions, selectionCallback, pattern.patternName);
+                    newGraph = charting.d3BarChartForDataIntegrity(graphHolder, pattern.questions, pattern.patternName);
                     break;
                 } else if (pattern.patternName == "Participant means" || pattern.patternName == "Participant standard deviations") {
                     graphHolder.excludeStoryTooltips = true; // no stories to link tooltips to in these cases
                 }
-                newGraph = charting.d3HistogramChartForDataIntegrity(graphHolder, pattern.questions, selectionCallback, pattern.patternName);
+                newGraph = charting.d3HistogramChartForDataIntegrity(graphHolder, pattern.questions, pattern.patternName);
                 break;            
            default:
                 console.log("ERROR: Unexpected graph type");
