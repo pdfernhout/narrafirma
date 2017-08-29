@@ -16,8 +16,8 @@ body {
 .humane,
 .humane-original {
   font-family: Ubuntu, Verdana, sans-serif;
-  line-height: 32px;
-  font-size: 16px;
+  line-height: 36px;
+  font-size: 18px;
   top: 25%;
   left: 15%;
   opacity: 0;
