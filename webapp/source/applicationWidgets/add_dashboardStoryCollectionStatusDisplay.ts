@@ -12,7 +12,13 @@ function add_dashboardStoryCollectionStatusDisplay(panelBuilder: PanelBuilder, m
     var storyCollectionsIdentifiers = Globals.project().getListForField("project_storyCollections");
     if (!storyCollectionsIdentifiers || !storyCollectionsIdentifiers.length) {
         // TODO: Translate
-        return m("div", ["No story collections defined"]);
+        return m("div.narrafirma-dashboard-story-collection-status", [
+            m("br"),
+            m("a", {href: "\\", title: "Choose another project"}, "Choose another project"), 
+            m("br"),    
+            m("br"),    
+            m("div", ["No story collections defined"])
+        ]);
     }
     
     var storyCollections = storyCollectionsIdentifiers.map(function(storyCollectionIdentifier) {
