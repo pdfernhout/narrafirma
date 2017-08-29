@@ -334,7 +334,8 @@ button {
 }
 
 .narrafirma-textbox {
-	width: 100%;
+    width: 100%;
+    border: 1px solid black;
 }
 
 .questionExternal.narrafirma-question-type-questionAnswer {
