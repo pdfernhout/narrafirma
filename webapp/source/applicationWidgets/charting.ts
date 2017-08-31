@@ -778,7 +778,7 @@ export function d3HistogramChartForDataIntegrity(graphBrowserInstance: GraphHold
                     var aPlotItem = {story: null, value: sd};     
                 }           
             }
-            values.push(aPlotItem);
+            if (aPlotItem) values.push(aPlotItem);
         }
     }
     return d3HistogramChartForValues(graphBrowserInstance, values, [], "singleChartStyle", "large", dataIntegrityType, dataIntegrityType, "", "", null);
