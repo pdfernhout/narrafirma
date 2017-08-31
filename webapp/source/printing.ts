@@ -599,16 +599,24 @@ function printObservationList(observationList, allStories, minimumStoryCountRequ
             correlationLineChoice: null,
             graphTypesToCreate: {}
         };
-        
-        var graph = PatternExplorer.makeGraph(pattern, graphHolder, selectionCallback);
-        // console.log("graph", graph);
-           
-        return [
-            m("div.narrafirma-catalysis-report-observation", item.observationTitle),
-            m("div.narrafirma-catalysis-report-observation-description", item.observationDescription),
-            displayForGraphHolder(graphHolder),
-            printReturnAndBlankLine()
-        ];
+
+        if (item.pattern.graphType === "texts") {
+            return [
+                m("div.narrafirma-catalysis-report-observation", item.observationTitle),
+                m("div.narrafirma-catalysis-report-observation-description", item.observationDescription),
+                printReturnAndBlankLine()
+            ];
+        } else {
+            var graph = PatternExplorer.makeGraph(pattern, graphHolder, selectionCallback);
+            // console.log("graph", graph);
+            
+            return [
+                m("div.narrafirma-catalysis-report-observation", item.observationTitle),
+                m("div.narrafirma-catalysis-report-observation-description", item.observationDescription),
+                displayForGraphHolder(graphHolder),
+                printReturnAndBlankLine()
+            ];
+        }
     });
 }
 

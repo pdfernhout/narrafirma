@@ -109,9 +109,12 @@ function add_catalysisReportQuestionChooser(panelBuilder: PanelBuilder, model, f
     
     function buildQuestionCheckbox(shortName, questionType, questionCategory): any {
         var id = questionCategory + shortName;
-        if (questionType === "textarea" || (questionCategory !== "A_" && questionType === "text")) return [];
+        // now including text questions
+        if (questionType === "label" || (questionType === "header")) return [];
+        
+        // if (questionType === "textarea" || (questionCategory !== "A_" && questionType === "text")) return [];
         var counts = countAnswers(id, questionType);
-        var answersHover = id + " has " + counts.answeredQuestionsCount + " answers:\n" + JSON.stringify(counts.answerCounts, null, 2);
+        var answersHover = id + " (" + questionType + ") has " + counts.answeredQuestionsCount + " answers:\n" + JSON.stringify(counts.answerCounts, null, 2);
         
         return m("div", {title: answersHover}, [
             m("input[type=checkbox]", {id: id, checked: isChecked(id), onchange: function(event) { isChecked(id, event.target.checked); }}),

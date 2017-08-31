@@ -89,6 +89,7 @@ class PatternExplorer {
     
     observationPanelSpecification = null;
     saveGraphSelectionSpecification = null;
+    textAnswersPanelSpecification = null;
     
     minimumStoryCountRequiredForTest = Project.defaultMinimumStoryCountRequiredForTest;
     correlationLineChoice = Project.defaultCorrelationLineChoice;
@@ -138,21 +139,34 @@ class PatternExplorer {
         // Observation panel initialization
         
         this.saveGraphSelectionSpecification = {
-            "id": "observationPanel",
+            "id": "saveGraphSelectionPanel",
             panelFields: [        
                 {
-                    id: "observationPanel_insertGraphSelection",
+                    id: "saveGraphSelectionPanel_insertGraphSelection",
                     displayPrompt: "Save graph selection",
                     displayType: "button",
                     displayPreventBreak: true,
                     displayConfiguration: this.insertGraphSelection.bind(this)
                 },
                 {
-                    id: "observationPanel_resetGraphSelection",
+                    id: "saveGraphSelectionPanel_resetGraphSelection",
                     displayPrompt: "Display chosen graph selection",
                     displayType: "button",
                     displayConfiguration: this.resetGraphSelection.bind(this)
                 }]};
+
+        this.textAnswersPanelSpecification = {
+            "id": "textAnswersPanel",
+            panelFields: [
+                {
+                    id: "textAnswersPanel_texts",
+                    valuePath: "currentTextAnswers",
+                    displayName: "Text answers",
+                    displayPrompt: "These are the <strong>answers</strong> your participants gave to this text question. They are sorted alphabetically. Answers with a number in parentheses were entered more than once. To include any of these answers in your catalysis report, copy and paste them into your observation.",
+                    displayType: "textarea",
+                    }
+            ]
+        }
 
         this.observationPanelSpecification = {
             "id": "observationPanel",
@@ -262,6 +276,12 @@ class PatternExplorer {
                     m("div", {config: this.insertGraphResultsPaneConfig.bind(this)}),
                     panelBuilder.buildPanel(this.observationPanelSpecification, this)
                 ];
+            } else if (this.currentPattern && this.currentPattern.graphType === "texts") {
+                parts = [
+                    this.patternsGrid.calculateView(),
+                    panelBuilder.buildPanel(this.textAnswersPanelSpecification, this),
+                    panelBuilder.buildPanel(this.observationPanelSpecification, this)
+                ];
             } else {    
                 parts = [
                     this.patternsGrid.calculateView(),
@@ -328,6 +348,39 @@ class PatternExplorer {
             this.project.tripleStore.addTriple(observationIdentifier, field, newValue);
             return newValue;
         }
+    }
+
+    currentTextAnswers() {
+        if (!this.catalysisReportObservationSetIdentifier) throw new Error("currentTextAnswers: this.catalysisReportObservationSetIdentifier is undefined");
+        if (!this.currentPattern) return "";
+        if (!this.currentPattern.questions[0]) return "";
+        if (!this.graphHolder.allStories) return "";
+
+        var questionID = this.currentPattern.questions[0].id; 
+        var stories = this.graphHolder.allStories; 
+        var answers = {};
+        var answerKeys = [];
+
+        stories.forEach(function (story) {
+            var text = story.fieldValue(questionID);
+            if (text) {
+                if (!answers[text]) {
+                    answers[text] = 0;
+                    answerKeys.push(text);
+                }
+                answers[text] += 1;
+            }
+        });
+        answerKeys.sort();
+        
+        var sortedAndFormattedAnswers = "";
+        for (var i = 0; i < answerKeys.length; i++) {
+            var answer = answerKeys[i];
+            sortedAndFormattedAnswers += answer;
+            if (answers[answer] > 1) sortedAndFormattedAnswers += " (" + answers[answer] + ") ";
+            if (i < answerKeys.length - 1) sortedAndFormattedAnswers +=  "\n--------\n";
+        }
+        return sortedAndFormattedAnswers;
     }
     
     currentObservationDescription(newValue = undefined) {
@@ -471,6 +524,7 @@ class PatternExplorer {
         var result = [];
         var nominalQuestions = [];
         var ratioQuestions = [];
+        var textQuestions = [];
         
         if (!this.questionsToInclude) return result;
 
@@ -480,9 +534,11 @@ class PatternExplorer {
             if (this.questionsToInclude[question.id]) {
                 if (question.displayType === "slider") {
                     ratioQuestions.push(question);
+                } else if (question.displayType === "text" || question.displayType === "textarea") {
+                    textQuestions.push(question);
                 } else if (nominalQuestionTypes.indexOf(question.displayType) !== -1)  {
                     // Ony use text questions that are annotations
-                    if (question.displayType === "text" && (question.id || "").substring(2) !== "A_") return;
+                    //if (question.displayType === "text" && (question.id || "").substring(2) !== "A_") return;
                     nominalQuestions.push(question);
                 }
             }
@@ -499,6 +555,12 @@ class PatternExplorer {
             result.push(this.makePattern(nextID(), "data integrity", ratioQuestions, "Participant standard deviations"));
             result.push(this.makePattern(nextID(), "data integrity", nominalQuestions, "Unanswered choice questions"));
             result.push(this.makePattern(nextID(), "data integrity", ratioQuestions, "Unanswered scale questions"));
+        }
+
+        if (this.graphTypesToCreate["texts"]) {
+            textQuestions.forEach((question) => {
+                result.push(this.makePattern(nextID(), "texts", [question], "Text answers"));
+            });
         }
      
         if (this.graphTypesToCreate["bar graphs"]) {
@@ -586,6 +648,8 @@ class PatternExplorer {
             statistics = calculateStatistics.calculateStatisticsForMultipleScatterPlot(pattern.questions[0], pattern.questions[1], pattern.questions[2], stories, this.minimumStoryCountRequiredForTest);
         } else if (graphType == "data integrity") {
             statistics = {significance: "None", calculated: []};
+        } else if (graphType == "texts") {
+            statistics = {significance: "None", calculated: []};            
         } else {
             console.log("ERROR: Unexpected graphType: " + graphType);
             throw new Error("ERROR: Not suported graphType: " + graphType);
@@ -662,7 +726,10 @@ class PatternExplorer {
                     graphHolder.excludeStoryTooltips = true; // no stories to link tooltips to in these cases
                 }
                 newGraph = charting.d3HistogramChartForDataIntegrity(graphHolder, pattern.questions, pattern.patternName);
-                break;            
+                break;
+            case "texts":
+                newGraph = null;
+                break;
            default:
                 console.log("ERROR: Unexpected graph type");
                 alert("ERROR: Unexpected graph type");

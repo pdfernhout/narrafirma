@@ -19,6 +19,7 @@ function add_catalysisReportGraphTypesChooser(panelBuilder: PanelBuilder, model,
 
     var allGraphTypes = {
         "data integrity graphs": true,
+        "texts": true,
         "bar graphs": true,
         "histograms": true,
         "tables": true,

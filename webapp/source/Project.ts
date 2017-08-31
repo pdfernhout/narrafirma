@@ -21,6 +21,7 @@ class Project {
     static defaultCorrelationLineChoice = "0.05";
     static defaultGraphTypesToCreate = {
         "data integrity graphs": true,
+        "texts": true,
         "bar graphs": true,
         "histograms": true,
         "tables": true,
@@ -110,7 +111,7 @@ class Project {
             this.redrawCallback();
         }
     }
-    
+
     // Project-specific data lookup
     
     findCatalysisReport(shortName) {
