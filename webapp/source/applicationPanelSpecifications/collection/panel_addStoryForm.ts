@@ -10,7 +10,7 @@ var panel: Panel = {
             valueType: "string",
             displayType: "text",
             displayName: "Title",
-            displayPrompt: "Please enter a short <strong>name</strong> for the story form, so we can refer to it elsewhere in the project. (It must be unique within the project.)"
+            displayPrompt: "Please enter a short <strong>name</strong> for the story form, so we can refer to it elsewhere in the project. <strong>It must be unique within the project.</strong>"
         },
         {
             id: "questionForm_title",

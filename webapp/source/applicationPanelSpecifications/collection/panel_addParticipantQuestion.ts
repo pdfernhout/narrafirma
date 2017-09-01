@@ -36,7 +36,7 @@ var panel: Panel = {
             valueType: "string",
             displayType: "text",
             displayName: "Short name",
-            displayPrompt: "Please enter a short <strong>name</strong> we can use to refer to the question. (It must be unique within the project.)"
+            displayPrompt: "Please enter a short <strong>name</strong> we can use to refer to the question. <strong>It must be unique within the project.</strong>"
         },
         {
             id: "participantQuestion_options",

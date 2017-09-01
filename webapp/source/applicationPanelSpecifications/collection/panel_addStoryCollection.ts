@@ -26,7 +26,7 @@ var panel: Panel = {
             displayPrompt: `
                 Please give this story collection a short <strong>name</strong>, so we can refer to it.<br><br>
                 <span.narrafirma-special-warning>This name should not be changed after you start using the story collection.
-                Also, the name should be unique within the project.</span>
+                <strong>This name should be unique within the project.</strong></span>
             `
         },
         {
