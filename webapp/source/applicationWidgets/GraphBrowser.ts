@@ -135,18 +135,20 @@ class GraphBrowser {
     }
     
     currentStoryCollectionChanged(storyCollectionIdentifier) {
+        this.questions = [];
         this.storyCollectionIdentifier = storyCollectionIdentifier;
         
-        var elicitingQuestions = [this.project.elicitingQuestionForStoryCollection(this.storyCollectionIdentifier)];
+        var elicitingQuestion = this.project.elicitingQuestionForStoryCollection(this.storyCollectionIdentifier);
+        if (elicitingQuestion) this.questions.push(elicitingQuestion);
+
         var storyQuestions = this.project.storyQuestionsForStoryCollection(this.storyCollectionIdentifier);
         var participantQuestions = this.project.participantQuestionsForStoryCollection(this.storyCollectionIdentifier);
         // annotations are not per collection/questionnaire
         var annotationQuestions = questionnaireGeneration.convertEditorQuestions(this.project.collectAllAnnotationQuestions(), "A_");
         
-        this.questions = this.questions.concat(elicitingQuestions, storyQuestions, participantQuestions, annotationQuestions);
-        
-        this.choices = surveyCollection.optionsForAllQuestions(this.questions, "excludeTextQuestions");
+        this.questions = this.questions.concat(storyQuestions, participantQuestions, annotationQuestions);
 
+        this.choices = surveyCollection.optionsForAllQuestions(this.questions, "excludeTextQuestions");
         // update all stories for the specific collection and update graph
         this.loadLatestStories();
     }
