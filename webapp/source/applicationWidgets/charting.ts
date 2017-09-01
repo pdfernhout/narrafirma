@@ -718,8 +718,10 @@ export function d3HistogramChartForQuestion(graphBrowserInstance: GraphHolder, s
     } else {
         xAxisLabel = nameForQuestion(scaleQuestion);
         if (scaleQuestion.displayType === "slider") {
-            xAxisStart = scaleQuestion.displayConfiguration[0];
-            xAxisEnd = scaleQuestion.displayConfiguration[1];
+            if (scaleQuestion.displayConfiguration) {
+                xAxisStart = scaleQuestion.displayConfiguration[0];
+                xAxisEnd = scaleQuestion.displayConfiguration[1];
+            }
         }
     }
     return d3HistogramChartForValues(graphBrowserInstance, values, matchingStories, style, chartSize, chartTitle, xAxisLabel, xAxisStart, xAxisEnd, storiesSelectedCallback);
@@ -1099,9 +1101,11 @@ export function d3ScatterPlot(graphBrowserInstance: GraphHolder, xAxisQuestion, 
     chart.xQuestion = xAxisQuestion;
     
     var xAxis = addXAxis(chart, xScale);
-        
-    addXAxisLabel(chart, xAxisQuestion.displayConfiguration[0], maxRangeLabelLength, "start");
-    addXAxisLabel(chart, xAxisQuestion.displayConfiguration[1], maxRangeLabelLength, "end");
+
+    if (xAxisQuestion.displayConfiguration) {
+        addXAxisLabel(chart, xAxisQuestion.displayConfiguration[0], maxRangeLabelLength, "start");
+        addXAxisLabel(chart, xAxisQuestion.displayConfiguration[1], maxRangeLabelLength, "end");
+    }
     if (choiceQuestion) {
         addXAxisLabel(chart, nameForQuestion(xAxisQuestion) + " (" + option + ")");
     } else {
@@ -1120,8 +1124,10 @@ export function d3ScatterPlot(graphBrowserInstance: GraphHolder, xAxisQuestion, 
     var yAxis = addYAxis(chart, yScale);
     
     addYAxisLabel(chart, nameForQuestion(yAxisQuestion));
-    addYAxisLabel(chart, yAxisQuestion.displayConfiguration[0], maxRangeLabelLength, "start");
-    addYAxisLabel(chart, yAxisQuestion.displayConfiguration[1], maxRangeLabelLength, "end");
+    if (yAxisQuestion.displayConfiguration) {
+        addYAxisLabel(chart, yAxisQuestion.displayConfiguration[0], maxRangeLabelLength, "start");
+        addYAxisLabel(chart, yAxisQuestion.displayConfiguration[1], maxRangeLabelLength, "end");
+    }
     
     // Append brush before data to ensure titles are drown
     chart.brush = createBrush(chartBody, xScale, yScale, brushend);

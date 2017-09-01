@@ -10,7 +10,7 @@ function wrap(elementType, cssClass, text) {
 }
 
 function displayHTMLForSlider(fieldSpecification, fieldName, value) {
-    if (fieldSpecification.displayConfiguration.length < 2) {
+    if (!fieldSpecification.displayConfiguration || fieldSpecification.displayConfiguration.length < 2) {
         console.log("missing displayConfiguration for slider", fieldSpecification);
         return m("div", "ERROR: Problem displaying slider " + fieldSpecification.id);
     }
