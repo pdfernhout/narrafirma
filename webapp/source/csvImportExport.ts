@@ -42,7 +42,7 @@ function processCSVContents(contents, callbackForItem) {
                         // Should be an error if header fields are missing but more show up later
                         if (headerEnded) {
                             console.log("ERROR: header has empty field before end");
-                            alert("ERROR: header has empty field before end");
+                            alert("ERROR: Column headers empty before end of columns. There should be no empty column headers. ");
                         }
                         header.push(label);
                     } else {
@@ -443,14 +443,14 @@ function ensureQuestionExists(question, questionCategory: string) {
         if (existingQuestion[idAccessor] === question[idAccessor]) matchingQuestion = existingQuestion;
     });
     if (!matchingQuestion) {
-        // console.log("adding question that does not exist yet", question, questionCategory); 
+        // console.log("Adding question that does not exist yet", question, questionCategory); 
         project.addQuestionForCategory(question, questionCategory);
     } else {
         // TODO: What if questions with the same shortName but different options already exist?
         // TODO: Should check type as well
         if (matchingQuestion[questionCategory + "_options"] !== question[questionCategory + "_options"]) {
             console.log("IMPORT ISSUE: options don't match for questions", question, matchingQuestion);
-            alert("Options do not match for existing question: " + question[idAccessor]);
+            alert("The question " + question[idAccessor] + "already exists, but with different answers. To reuse the same question name with different answers, remove the existing question first.");
         }
     } 
 
@@ -467,16 +467,30 @@ function questionForItem(item, questionCategory) {
     if (itemType === "Single choice") {
         questionType = "select";
         valueOptions = answers;
+        if (answers.length < 2) {
+            alert('Import error: For the Single choice question "' + item["Short name"] + '", there must be at least two entries in the Answers columns.');
+        }
     } else if (itemType === "Scale") {
         valueType = "number";
         questionType = "slider";
-        valueOptions = [answers[0], answers[1]];
+        if (answers.length < 2) {
+            alert('Import error: For the Slider question "' + item["Short name"] + '", there must be two labels (for the left and right of the slider) in the Answers columns.');
+            valueOptions = ["",""]; // put in empty slider labels so that the graphs will at least draw 
+        } else {
+            valueOptions = [answers[0], answers[1]];
+        }
     } else if (itemType === "Multiple choice") {
         questionType = "checkboxes";
-        valueOptions = item["Answers"];
+        valueOptions = answers;
+        if (answers.length < 2) {
+            alert('Import error: For the Multiple choice question "' + item["Short name"] + '", there must be at least two entries in the Answers columns.');
+        }
     } else if (itemType === "Radiobuttons") {
         questionType = "radiobuttons";
-        valueOptions = item["Answers"];
+        valueOptions = answers;
+        if (answers.length < 2) {
+            alert('Import error: For the Radiobuttons question "' + item["Short name"] + '", there must be at least two entries in the Answers columns.');
+        }
     } else if (itemType === "Boolean") {
         questionType = "boolean";
     } else if (itemType === "Checkbox") {
