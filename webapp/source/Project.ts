@@ -269,7 +269,7 @@ class Project {
             }
             convertedElicitingQuestion = {
                 id: "elicitingQuestion",
-                displayName: "Eliciting Question",
+                displayName: "Eliciting question",
                 displayPrompt: "Please choose a question you would like to respond to",
                 displayType: "select",
                 valueOptions: elicitingQuestionValues
@@ -301,7 +301,7 @@ class Project {
         // create ONE eliciting question to cover all story collections, with all possible answers to question
         var convertedElicitingQuestion = {
             id: "elicitingQuestion",
-            displayName: "Eliciting Question",
+            displayName: "Eliciting question",
             displayPrompt: "Please choose a question you would like to respond to",
             displayType: "select",
             valueOptions: elicitingQuestionValues
