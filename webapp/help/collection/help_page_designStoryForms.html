@@ -145,6 +145,11 @@ How do you import a story form? What is the correct format?
 		<li>The order in which you list the questions in your story form file will be the order in which questions are shown 
 			on the story form and in lists. (Actually, this is true only <i>within</i> the subsets of questions about stories
 			and questions about participants. Questions about participants are <i>always</i> shown after questions about stories.)</li>
+		<li>You can specify texts to be shown at the start and end of your story form. To do this, create four rows, each with the "About" cell reading "form"
+			and "Type" cells reading "Title," "Start text," "Image," and "End text." In the first "Answers" column, place the
+			text to be shown in each of these areas. For "Image" the text will be a URL (web address) for the image to be displayed.
+			For the text fields, these HTML tags are allowed: b, big, em, i, s, small, sup, sub, strong, strike, u.			
+		</li>
 		<li>You can include comment lines in your story form file. Place a semicolon (;) as the very first character on the line. Everything else on that line 
 		will be ignored. Empty lines will also be ignored. </li>
 		<li>You can also include extra or comment columns. Any columns with names other than <b>Long name</b>,

@@ -9,6 +9,7 @@ import Globals = require("./Globals");
 import m = require("mithril");
 import toaster = require("./panelBuilder/toaster");
 import saveAs = require("FileSaver");
+import sanitizeHTML = require("./sanitizeHTML");
 
 "use strict";
 
@@ -303,8 +304,12 @@ function processCSVContentsForQuestionnaire(contents) {
         questionForm_shortName: shortName,
         questionForm_elicitingQuestions: project.tripleStore.newIdForSet("ElicitingQuestionChoiceSet"),
         questionForm_storyQuestions: project.tripleStore.newIdForSet("StoryQuestionChoiceSet"),
-        questionForm_participantQuestions: project.tripleStore.newIdForSet("ParticipantQuestionChoiceSet")
-    };
+        questionForm_participantQuestions: project.tripleStore.newIdForSet("ParticipantQuestionChoiceSet"),
+        questionForm_title: "",
+        questionForm_startText: "",
+        questionForm_image: "",
+        questionForm_endText: ""
+        };
     
     project.tripleStore.makeNewSetItem(storyFormListIdentifier, "StoryForm", template);
     
@@ -350,6 +355,27 @@ function processCSVContentsForQuestionnaire(contents) {
                 reference = ensureQuestionExists(elicitingQuestion, "elicitingQuestion");
                 addReferenceToList(template.questionForm_elicitingQuestions, reference, "elicitingQuestion", "ElicitingQuestionChoice");
             });
+        } else if (about === "form") {
+            var type = item.Type;
+            var text = item.Answers[0];
+            switch (type) {
+                case "Title":
+                    var sanitizedText = sanitizeHTML.generateSmallerSetOfSanitizedHTMLForMithril(text);
+                    template.questionForm_title = sanitizedText; // this is mostly for debugging
+                    project.tripleStore.addTriple(template.id, "questionForm_title", sanitizedText);
+                case "Start text":
+                    var sanitizedText = sanitizeHTML.generateSmallerSetOfSanitizedHTMLForMithril(text);
+                    template.questionForm_startText = sanitizedText;
+                    project.tripleStore.addTriple(template.id, "questionForm_startText", sanitizedText);
+                case "Image":
+                    // no sanitizing needed for URL
+                    template.questionForm_image = text;
+                    project.tripleStore.addTriple(template.id, "questionForm_image", text);
+                case "End text":
+                    // no sanitizing needed for end text, which is treated as a question (and sanitized there)
+                    template.questionForm_endText = text;
+                    project.tripleStore.addTriple(template.id, "questionForm_endText", text);
+            }
         } else if (about === "ignore") {
             // Ignore value so do nothing
         } else {
@@ -585,6 +611,7 @@ var exportQuestionTypeMap = {
     "textarea": "Textarea"
 };
 
+// CFK add form fields (like title) to export
 export function exportQuestionnaire() {
     var storyCollectionName = Globals.clientState().storyCollectionName();
     if (!storyCollectionName) {
