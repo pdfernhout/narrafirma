@@ -183,3 +183,20 @@ export function generateSpecificTypeOfSanitizedHTMLForMithril(html, specifiedHTM
     // Don't return the fake div tag, just the contents
     return output.pop(); 
 }
+
+export function removeHTMLTags(text) {
+    var cleanedText = "";
+    var inTag = false;
+    for (var i = 0; i< text.length; i++) {
+        if (text[i] === "<") {
+            inTag = true;
+        } else if (text[i] === ">") {
+            inTag = false;
+        } else {
+            if (!inTag) {
+                cleanedText += text[i];
+            }
+        }
+    }
+    return cleanedText;
+}

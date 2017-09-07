@@ -77,6 +77,13 @@ textarea, input, select {
     background: white;
 }
 
+.narrafirma-survey-image {
+    display: block;
+    float: center;
+    margin: auto;
+    padding: 10px;
+}
+
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ input areas ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 .narrafirma-survey-question-type-textarea textarea {

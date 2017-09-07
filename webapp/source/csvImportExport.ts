@@ -360,19 +360,15 @@ function processCSVContentsForQuestionnaire(contents) {
             var text = item.Answers[0];
             switch (type) {
                 case "Title":
-                    var sanitizedText = sanitizeHTML.generateSmallerSetOfSanitizedHTMLForMithril(text);
-                    template.questionForm_title = sanitizedText; // this is mostly for debugging
-                    project.tripleStore.addTriple(template.id, "questionForm_title", sanitizedText);
+                    template.questionForm_title = text; 
+                    project.tripleStore.addTriple(template.id, "questionForm_title", text);
                 case "Start text":
-                    var sanitizedText = sanitizeHTML.generateSmallerSetOfSanitizedHTMLForMithril(text);
-                    template.questionForm_startText = sanitizedText;
-                    project.tripleStore.addTriple(template.id, "questionForm_startText", sanitizedText);
+                    template.questionForm_startText = text;
+                    project.tripleStore.addTriple(template.id, "questionForm_startText", text);
                 case "Image":
-                    // no sanitizing needed for URL
                     template.questionForm_image = text;
                     project.tripleStore.addTriple(template.id, "questionForm_image", text);
                 case "End text":
-                    // no sanitizing needed for end text, which is treated as a question (and sanitized there)
                     template.questionForm_endText = text;
                     project.tripleStore.addTriple(template.id, "questionForm_endText", text);
             }

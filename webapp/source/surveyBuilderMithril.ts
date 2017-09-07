@@ -341,7 +341,7 @@ export function buildSurveyForm(surveyDiv, questionnaire, doneCallback, surveyOp
     
     if (questionnaire.title) {
         startQuestions.push({id: "title_header", displayName: "title", displayPrompt: questionnaire.title, displayType: "header", valueOptions: []});
-        if (!surveyOptions.ignoreTitleChange) document.title = questionnaire.title;
+        if (!surveyOptions.ignoreTitleChange) document.title = sanitizeHTML.removeHTMLTags(questionnaire.title);
     }
     
     startQuestions.push({id: "startText_label", displayName: "startText", displayPrompt: startText, displayType: "label", valueOptions: []});
@@ -407,7 +407,7 @@ export function buildSurveyForm(surveyDiv, questionnaire, doneCallback, surveyOp
 
     // m.render(surveyDiv, m("div", ["Hello survey ============== b", "More!!"]));
     
-    console.log("startQuestions", startQuestions);
+    // console.log("startQuestions", startQuestions);
     
     var stories = surveyResult.stories;
     
@@ -461,17 +461,17 @@ export function buildSurveyForm(surveyDiv, questionnaire, doneCallback, surveyOp
         var storyText = storyQuestionsModel.storyText;
 
         if (!elicitingQuestion) {
-            alert("Before proceeding, please select the question to which you are responding for " + storyIndex);
+            alert("Before proceeding, please select the question to which you are responding for " + storyIndex + ".");
             return false;
         }
 
         if (!storyText) {
-            alert("Please enter a story before proceeding for " + storyIndex);
+            alert("Please enter a story before proceeding for " + storyIndex + ".");
             return false;
         }
 
         if (!storyName) {
-            alert("Please give your story a name before proceeding for " + storyIndex);
+            alert("Please give your story a name before proceeding for " + storyIndex + ".");
             return false;
         }
 
@@ -551,16 +551,17 @@ export function buildSurveyForm(surveyDiv, questionnaire, doneCallback, surveyOp
             return m("button", {"class": "narrafirma-survey-submit-survey-button", onclick: submitButtonPressed}, "Submit Survey" + (surveyOptions.previewMode ? " [preview mode only]" : ""));
         } else if (submitted === "failed") {
             return m("div", [
-                "Sending to server failed. Please try again...",
+                "The server could not save your survey. Please try again.",
                 m("br"),
                 m("button", {"class": "narrafirma-survey-submit-survey-button", onclick: submitButtonPressed}, "Resubmit Survey" + (surveyOptions.previewMode ? " [preview mode only]" : ""))
             ]);
         } else if (submitted === "pending") {
-            return m("div", ["Sending survey result to server... Please wait..."]);
+            return m("div", m("br"), ["Now sending survey result to server. Please wait . . ."]);
         } else {
             return endQuestions.map(function(question, index) {
                 return m("div", [
-                    "Server accepted survey OK",
+                    m("br"),
+                    "Your survey has been accepted and stored.",
                     m("br"),
                     displayQuestion(null, null, question),
                     m("br"),
@@ -621,10 +622,16 @@ export function buildSurveyForm(surveyDiv, questionnaire, doneCallback, surveyOp
     }
 
     var view = function() {
+        var imageHTML;
+        if (questionnaire.image) {
+            imageHTML = "img[src='" + questionnaire.image + "'][class='narrafirma-survey-image']";
+        }
         var result = m("div", [
+            m(imageHTML) || null,
             startQuestions.map(function(question, index) {
                 return m("div", [displayQuestion(null, null, question)]);
             }),
+            
             stories.map(function(story, index) {
                 return displayStoryQuestions(story, index);
             }),
