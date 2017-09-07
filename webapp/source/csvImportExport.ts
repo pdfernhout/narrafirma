@@ -58,12 +58,7 @@ function processCSVContents(contents, callbackForItem) {
     }
     // console.log("header", header);
     // console.log("items", items);
-    if (header.includes("Long name") && header.includes("Short name") && header.includes("Type") && header.includes("About") && header.includes("Answers")) {
-        return {header: header, items: items};
-    } else {
-        alert("ERROR: Header is missing at least one required cell. It must have entries for Long name, Short name, Type, About, and Answers. It also must be the first readable row in the CSV file.")
-        return {header: undefined, items: []};
-    }
+    return {header: header, items: items};
 }
 
 function padLeadingZeros(num: number, size: number) {
@@ -84,7 +79,6 @@ function processCSVContentsForStories(contents) {
     var progressModel = dialogSupport.openProgressDialog("Processing CSV file...", "Progress writing imported stories", "Cancel", dialogCancelled);
   
     var headerAndItems = processCSVContents(contents, function (header, row) {
-        if (!header) return;
         var newItem = {};
         for (var fieldIndex = 0; fieldIndex < header.length; fieldIndex++) {
             var fieldName = header[fieldIndex];
@@ -109,6 +103,17 @@ function processCSVContentsForStories(contents) {
         return newItem;
     });
     // console.log("processCSVContentsForStories headerAndItems", headerAndItems);
+
+    var header = headerAndItems.header;
+    if (!header) {
+        alert("ERROR: No header line found in CSV file.")
+        return;
+    }
+    if (!(header.includes("Story title") && header.includes("Story text"))) {
+        alert("ERROR: Header is missing at least one required cell. It must have entries for Story title and Story text. It also must be the first readable row in the CSV file.")
+        return;
+    }
+
     var items = headerAndItems.items;
     var surveyResults = [];
     var untitledCount = 0;
@@ -248,7 +253,6 @@ function processCSVContentsForStories(contents) {
 
 function processCSVContentsForQuestionnaire(contents) {
     var headerAndItems = processCSVContents(contents, function (header, row) {
-        if (!header) return;
         // console.log("callback", header, row);
         var newItem = {};
         var lastFieldIndex;
@@ -279,7 +283,15 @@ function processCSVContentsForQuestionnaire(contents) {
     });
     // console.log("processCSVContentsForQuestionnaire headerAndItems", headerAndItems);
     
-    if (!headerAndItems.header) return;
+    var header = headerAndItems.header;
+    if (!header) {
+        alert("ERROR: No header line found in CSV file.")
+        return;
+    }
+    if (!(header.includes("Long name") && header.includes("Short name") && header.includes("Type") && header.includes("About") && header.includes("Answers"))) {
+        alert("ERROR: Header is missing at least one required cell. It must have entries for Long name, Short name, Type, About, and Answers. It also must be the first readable row in the CSV file.")
+        return;
+    }
 
     var shortName = prompt("Please enter a short name for the new story form. (It should be unique within the project.)");
     if (!shortName) return;
