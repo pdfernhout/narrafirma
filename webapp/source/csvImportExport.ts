@@ -493,7 +493,7 @@ function ensureQuestionExists(question, questionCategory: string) {
         // TODO: Should check type as well
         if (matchingQuestion[questionCategory + "_options"] !== question[questionCategory + "_options"]) {
             console.log("IMPORT ISSUE: options don't match for questions", question, matchingQuestion);
-            alert("The question " + question[idAccessor] + "already exists, but with different answers. To reuse the same question name with different answers, remove the existing question first.");
+            alert("The question " + question[idAccessor] + " already exists, but with different answers. To reuse the same question name with different answers, remove the existing question first.");
         }
     } 
 
