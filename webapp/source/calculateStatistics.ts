@@ -241,7 +241,7 @@ export function calculateStatisticsForMultipleHistogram(ratioQuestion, nominalQu
     }
     
     if (pLowest === Number.MAX_VALUE) {
-        return {significance: "None (at least one count in " + allNs.join(", ") + " below threshold)", calculated: ["n"], n: n};
+        return {significance: "None (at least one count in [" + allNs.join(", ") + "] below threshold)", calculated: ["n"], n: n};
     }
 
     var significance = " p=" + pLowest.toFixed(3) + " U=" + uLowest + " n=" + n;
@@ -291,12 +291,12 @@ export function calculateStatisticsForMultipleScatterPlot(ratioQuestion1, ratioQ
             options.push(choiceQuestion.valueOptions[index]);
         }
     }
-    var minSignificanceOptionStats = {};
+    var minSignificanceOptionStats = {significance: "None", calculated: []};
     var minSignificance = 1000;
     for (index in options) {
         var option = options[index];
         var optionStats = calculateStatisticsForScatterPlot(ratioQuestion1, ratioQuestion2, choiceQuestion, option, stories, minimumStoryCountRequiredForTest);
-        if (optionStats.p < minSignificance) {
+        if (optionStats.p && optionStats.p < minSignificance) {
             minSignificance = optionStats.p;
             minSignificanceOptionStats = optionStats;
         }
