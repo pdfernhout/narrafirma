@@ -1404,7 +1404,7 @@ export function d3ContingencyTable(graphBrowserInstance: GraphHolder, xAxisQuest
 
     // deal with questions that have LOTS of answers (not so much of a problem in the columns)
     var graphSize = "large";
-    if (rowCount > 12) { 
+    if (rowCount > 10) { 
         graphSize = "tall";
     }
     var chart = makeChartFramework(chartPane, "contingencyChart", graphSize, margin);
