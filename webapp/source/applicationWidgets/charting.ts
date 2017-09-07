@@ -201,6 +201,9 @@ function makeChartFramework(chartPane: HTMLElement, chartType, size, margin) {
     if (size == "large") {
         fullWidth = 700;
         fullHeight = 500;
+    } else if (size === "tall") {
+        fullWidth = 700;
+        fullHeight = 700;       
     } else if (size == "small") {
         fullWidth = 200;
         fullHeight = 200;
@@ -557,7 +560,8 @@ export function d3BarChartForValues(graphBrowserInstance: GraphHolder, plotItems
 
     var chartPane = newChartPane(graphBrowserInstance, "singleChartStyle");
     
-    var margin = {top: 20, right: 15, bottom: 90 + longestLabelTextLength * 5, left: 60};
+    var letterSize = 7;
+    var margin = {top: 20, right: 15, bottom: 90 + longestLabelTextLength * letterSize, left: 60};
     var chart = makeChartFramework(chartPane, "barChart", "large", margin);
     var chartBody = chart.chartBody;
     
@@ -1395,8 +1399,15 @@ export function d3ContingencyTable(graphBrowserInstance: GraphHolder, xAxisQuest
     
     var chartTitle = "" + nameForQuestion(xAxisQuestion) + " vs. " + nameForQuestion(yAxisQuestion);
 
-    var margin = {top: 20, right: 15, bottom: 90 + longestColumnTextLength * 3, left: 90 + longestRowTextLength * 5};
-    var chart = makeChartFramework(chartPane, "contingencyChart", "large", margin);
+    var letterSize = 6;
+    var margin = {top: 20, right: 15, bottom: 90 + longestColumnTextLength * letterSize, left: 90 + longestRowTextLength * letterSize};
+
+    // deal with questions that have LOTS of answers (not so much of a problem in the columns)
+    var graphSize = "large";
+    if (rowCount > 12) { 
+        graphSize = "tall";
+    }
+    var chart = makeChartFramework(chartPane, "contingencyChart", graphSize, margin);
     var chartBody = chart.chartBody;
     
     var statistics = calculateStatistics.calculateStatisticsForTable(xAxisQuestion, yAxisQuestion, stories, graphBrowserInstance.minimumStoryCountRequiredForTest);
