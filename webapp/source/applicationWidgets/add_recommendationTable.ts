@@ -126,12 +126,12 @@ function build_recommendationTable(panelBuilder: PanelBuilder, dialogConfigurati
         participantGroups = Globals.project().getListForField("project_outcomesList");
         participantGroupNameFieldIdentifier = "outcomes_group";
         // TODO: Translate
-        if (!participantGroups || !participantGroups.length) return m("div", "Please enter a project outcome first to get recommendations.");
+        if (!participantGroups || !participantGroups.length) return m("div", "Please enter at least one project outcome so we can choose which recommendations to show you.");
     } else {
         participantGroups = Globals.project().getListForField("project_participantGroupsList");
         participantGroupNameFieldIdentifier = "participantGroup_name";
         // TODO: Translate
-        if (!participantGroups || !participantGroups.length) return m("div", "Please enter a participant group first to get recommendations.");
+        if (!participantGroups || !participantGroups.length) return m("div", "Please enter at least one participant group so we can choose which recommendations to show you.");
     }
     
     // TODO: Set class on div
