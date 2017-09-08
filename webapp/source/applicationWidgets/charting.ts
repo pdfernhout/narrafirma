@@ -200,7 +200,7 @@ function makeChartFramework(chartPane: HTMLElement, chartType, size, margin) {
     var fullHeight = 0;
     if (size == "large") {
         fullWidth = 700;
-        fullHeight = 500;
+        fullHeight = 600;
     } else if (size === "tall") {
         fullWidth = 700;
         fullHeight = 700;       
@@ -562,6 +562,7 @@ export function d3BarChartForValues(graphBrowserInstance: GraphHolder, plotItems
     
     var letterSize = 7;
     var margin = {top: 20, right: 15, bottom: 90 + longestLabelTextLength * letterSize, left: 60};
+    
     var chart = makeChartFramework(chartPane, "barChart", "large", margin);
     var chartBody = chart.chartBody;
     
@@ -611,14 +612,26 @@ export function d3BarChartForValues(graphBrowserInstance: GraphHolder, plotItems
         .enter().append("g")
             .attr("class", "bar")
             .attr('transform', function(plotItem: StoryPlotItem) { return 'translate(' + xScale(plotItem.name) + ',' + yScale(0) + ')'; });
-        
+
     var barBackground = bars.append("rect")
         // .attr("style", "stroke: rgb(0,0,0); fill: white;")
-        .attr("x", function(plotItem: PlotItem) { return 0; })
-        .attr("y", function(plotItem: PlotItem) { return yHeightScale(-plotItem.value); })
-        .attr("height", function(plotItem: PlotItem) { return yHeightScale(plotItem.value); })
+        .attr("x", function(plotItem: StoryPlotItem) { return 0; })
+        .attr("y", function(plotItem: StoryPlotItem) { return yHeightScale(-plotItem.value); })
+        .attr("height", function(plotItem: StoryPlotItem) { return yHeightScale(plotItem.value); })
         .attr("width", xScale.rangeBand());
-    
+
+    var barLabels = chartBody.selectAll(".barLabel")
+        .data(plotItems)
+        .enter().append("text")
+            .text(function(plotItem: StoryPlotItem) { if (plotItem.value > 0) { return "" + plotItem.value; } else { return ""}; })
+            .attr("class", "barLabel")
+            .attr("x", function(plotItem: StoryPlotItem) { return xScale(plotItem.name) + xScale.rangeBand() / 2; } )
+            .attr("y", function(plotItem: StoryPlotItem) { return chart.height - yHeightScale(plotItem.value) - 12; } )
+            .attr("dx", -3) // padding-right
+            .attr("dy", ".35em") // vertical-align: middle
+            .attr("text-anchor", "middle") // text-align: middle
+            .attr("style", "fill: black")
+            
     // Overlay stories on each bar...
     var storyDisplayItems = bars.selectAll(".story")
             .data(function(plotItem) { return plotItem.stories; })
@@ -881,8 +894,23 @@ export function d3HistogramChartForValues(graphBrowserInstance: GraphHolder, plo
       .enter().append("g")
           .attr("class", "bar")
           .attr("transform", function(d: any) { return "translate(" + xScale(d.x) + "," + yScale(0) + ")"; });
-    
-    // Overlay stories on each bar...
+
+    var barLabelClass = "histogramBarLabel";
+    if (isSmallFormat) {
+        barLabelClass = "histogramBarLabelSmall";
+    }
+    var barLabels = chartBody.selectAll("." + barLabelClass)
+            .data(data)
+        .enter().append("text")
+            .text(function(d: any) { if (d.y > 0) { return "" + d.y; } else { return ""}; })
+            .attr("class", barLabelClass)
+            .attr("x", function(d: any) { return xScale(d.x) + xScale(d.dx) / 2; } )
+            .attr("y", function(d: any) { return chart.height - yHeightScale(d.y) - 12; } )
+            .attr("dx", -3) // padding-right
+            .attr("dy", ".35em") // vertical-align: middle
+            .attr("text-anchor", "middle") // text-align: middle
+              
+      // Overlay stories on each bar...
     var storyDisplayItems = bars.selectAll(".story")
             .data(function(plotItem) { return plotItem; })
         .enter().append("rect")

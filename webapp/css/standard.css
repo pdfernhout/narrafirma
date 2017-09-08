@@ -640,6 +640,21 @@ Blue - d5dae6 - abb6ce - [extra: 7b8cb2] - 3b5fab - 2e4a85
   fill: none;
 }
 
+.barLabel {
+    fill: black;
+    font-size: 0.9em;
+}
+
+.histogramBarLabel {
+    fill: black;
+    font-size: 0.9em;
+}
+
+.histogramBarLabelSmall {
+    fill: black;
+    font-size: 0.7em;    
+}
+
 .x-axis {
 	fill: none;
 	stroke: #231f20;
