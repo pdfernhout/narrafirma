@@ -619,7 +619,6 @@ var exportQuestionTypeMap = {
     "textarea": "Textarea"
 };
 
-// CFK add form fields (like title) to export
 export function exportQuestionnaire() {
     var storyCollectionName = Globals.clientState().storyCollectionName();
     if (!storyCollectionName) {
@@ -694,7 +693,12 @@ export function exportQuestionnaire() {
     var annotationQuestions = project.collectAllAnnotationQuestions();
     var adjustedAnnotationQuestions = questionnaireGeneration.convertEditorQuestions(annotationQuestions, "A_");
     outputQuestions(adjustedAnnotationQuestions, "annotation");
-        
+
+    addOutputLine(["" + (++lineIndex), "", "", "Title", "form", currentQuestionnaire.title || ""]);
+    addOutputLine(["" + (++lineIndex), "", "", "Start text", "form", currentQuestionnaire.startText || ""]);
+    addOutputLine(["" + (++lineIndex), "", "", "Image", "form", currentQuestionnaire.image || ""]);
+    addOutputLine(["" + (++lineIndex), "", "", "End text", "form", currentQuestionnaire.endText || ""]);
+    
      // Export questionnaire
     var questionnaireBlob = new Blob([output], {type: "text/csv;charset=utf-8"});
     // TODO: This seems to clear the console in FireFox 40; why?
