@@ -143,6 +143,18 @@ function add_catalysisReportQuestionChooser(panelBuilder: PanelBuilder, model, f
         ]);
     }
     
+    function buildQuestionCheckboxSpecialForNumStoriesTold(): any {
+        var id = "numStoriesTold";
+        var counts = countAnswers(id, "select");
+        var answersHover = id + " has " + counts.answeredQuestionsCount + " answers:\n" + JSON.stringify(counts.answerCounts, null, 2);
+        
+        return m("div", {title: answersHover}, [
+            m("input[type=checkbox]", {id: id, checked: isChecked(id), onchange: function(event) { isChecked(id, event.target.checked); }}),
+            m("label", {"for": id}, "Number of stories told"),
+            m("br")
+        ]);
+    }
+    
     function selectAll() {
         var map = {};
         elicitingQuestions.forEach((question) => {
@@ -172,6 +184,7 @@ function add_catalysisReportQuestionChooser(panelBuilder: PanelBuilder, model, f
             elicitingQuestions.map((question) => {
                 return buildQuestionCheckboxSpecialForElicitingQuestion();
             }),
+            buildQuestionCheckboxSpecialForNumStoriesTold(),
             m("br"),
             m("b", "Story questions"),
             m("br"),  

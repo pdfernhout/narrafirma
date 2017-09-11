@@ -517,8 +517,16 @@ export function buildSurveyForm(surveyDiv, questionnaire, doneCallback, surveyOp
         return true;
     }
     
+    function calculateDerivedFields() {
+        stories.forEach((story) => {
+            story.numStoriesTold = "" + stories.length;
+        });
+    }
+    
     function submitButtonPressed() {
         if (!validate()) return;
+
+        calculateDerivedFields();
         
         console.log("Submit survey validated");
         
@@ -627,7 +635,7 @@ export function buildSurveyForm(surveyDiv, questionnaire, doneCallback, surveyOp
             imageHTML = "img[src='" + questionnaire.image + "'][class='narrafirma-survey-image']";
         }
         var result = m("div", [
-            m(imageHTML) || null,
+            m(imageHTML || ""),
             startQuestions.map(function(question, index) {
                 return m("div", [displayQuestion(null, null, question)]);
             }),

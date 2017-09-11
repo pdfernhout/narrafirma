@@ -3,6 +3,8 @@ import questionnaireGeneration = require("../questionnaireGeneration");
 import surveyCollection = require("../surveyCollection");
 import valuePathResolver = require("../panelBuilder/valuePathResolver");
 import PanelBuilder = require("../panelBuilder/PanelBuilder");
+import Project = require("../Project");
+import Globals = require("../Globals");
 import m = require("mithril");
 import GridWithItemPanel = require("../panelBuilder/GridWithItemPanel");
 
@@ -277,6 +279,7 @@ function getQuestionDataForSelection(questions, event) {
 }
 
 class StoryBrowser {
+    project: Project = null;
     storyCollectionIdentifier: string = null;
     questions = [];
     choices = [];
@@ -292,6 +295,7 @@ class StoryBrowser {
     grid: GridWithItemPanel = null;
     
     constructor(args) {   
+        this.project = Globals.project();
         this.gridFieldSpecification = {
             id: "stories",
             displayConfiguration: {
@@ -373,13 +377,23 @@ class StoryBrowser {
     
     currentStoryCollectionChanged(storyCollectionIdentifier) {
         // console.log("currentStoryCollectionChanged", this, storyCollectionIdentifier);
+
+        this.questions = [];
+        this.storyCollectionIdentifier = storyCollectionIdentifier;
+
+        var storyNameAndTextQuestions = questionnaireGeneration.getStoryNameAndTextQuestions()
         
-        // Update filters
-        this.questions = questionnaireGeneration.collectAllQuestions("putAnnotationQuestionsUpFront");
-                
+        var elicitingQuestion = this.project.elicitingQuestionForStoryCollection(this.storyCollectionIdentifier);
+        var numStoriesToldQuestions = this.project.numStoriesToldQuestionForStoryCollection(this.storyCollectionIdentifier);
+
+        var storyQuestions = this.project.storyQuestionsForStoryCollection(this.storyCollectionIdentifier);
+        var participantQuestions = this.project.participantQuestionsForStoryCollection(this.storyCollectionIdentifier);
+        // annotations are not per collection/questionnaire
+        var annotationQuestions = questionnaireGeneration.convertEditorQuestions(this.project.collectAllAnnotationQuestions(), "A_");
+        
+        this.questions = this.questions.concat(storyNameAndTextQuestions, [elicitingQuestion], annotationQuestions, storyQuestions, participantQuestions, numStoriesToldQuestions);
+
         this.choices = surveyCollection.optionsForAllQuestions(this.questions);
-        
-        // update all stories for the specific collection
         this.allStories = surveyCollection.getStoriesForStoryCollection(storyCollectionIdentifier, true);
         
         this.itemPanelSpecification = this.makeItemPanelSpecificationForQuestions(this.questions);

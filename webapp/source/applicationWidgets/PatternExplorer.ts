@@ -445,12 +445,13 @@ class PatternExplorer {
         //this.questions = questionnaireGeneration.collectAllQuestions();
         var leadingStoryQuestions = questionnaireGeneration.getStoryNameAndTextQuestions();
         var elicitingQuestions = this.project.elicitingQuestionsForCatalysisReport(catalysisReportIdentifier);
+        var numStoriesToldQuestions = this.project.numStoriesToldQuestionsForCatalysisReport(catalysisReportIdentifier);
         var storyQuestions = this.project.storyQuestionsForCatalysisReport(catalysisReportIdentifier); 
         var participantQuestions = this.project.participantQuestionsForCatalysisReport(catalysisReportIdentifier);
         var annotationQuestions = questionnaireGeneration.convertEditorQuestions(this.project.collectAllAnnotationQuestions(), "A_");
 
         this.questions = [];
-        this.questions = this.questions.concat(leadingStoryQuestions, elicitingQuestions, storyQuestions, participantQuestions, annotationQuestions);
+        this.questions = this.questions.concat(leadingStoryQuestions, elicitingQuestions, numStoriesToldQuestions, storyQuestions, participantQuestions, annotationQuestions);
         // console.log("questions", this.questions);
         
         this.questionsToInclude = this.project.tripleStore.queryLatestC(this.catalysisReportIdentifier, "questionsToInclude"); 

@@ -119,8 +119,20 @@ function processCSVContentsForStories(contents) {
     var untitledCount = 0;
     // TODO: this is a kludgy way to get a string and seems brittle
     var importedByUserIdentifier = project.userIdentifier.userIdentifier;
+
+    // group items by participant ID field, if entered
+    var itemsByParticipantID = {};
     for (var itemIndex = 0; itemIndex < items.length; itemIndex++) {
         var item = items[itemIndex];
+        var participantID = item["Participant ID"] || generateRandomUuid("Participant");
+        if (!itemsByParticipantID[participantID]) {
+            itemsByParticipantID[participantID] = [];
+        }
+        itemsByParticipantID[participantID].push(item);
+    }
+
+    var totalStoryCount = 0;
+    for (var participantIDIndex in itemsByParticipantID) {
         // console.log("item", item);
         // TODO: Copied code from surveyBuilder module! Need a common function with surveyBuilder to make this!!!
         var newSurveyResult = {
@@ -131,7 +143,7 @@ function processCSVContentsForStories(contents) {
             stories: [],
             participantData: {
                 __type: "org.workingwithstories.ParticipantData",
-                participantID: generateRandomUuid("Participant")
+                participantID: participantIDIndex
             },
             // TODO: Should have timestamp in CSV file!!!
             timestampStart: "" + new Date().toISOString(),
@@ -140,38 +152,44 @@ function processCSVContentsForStories(contents) {
             // TODO: this is a kludgy way to get a string and seems brittle
             importedBy: importedByUserIdentifier
         };
+
+        for (var storyIndex in itemsByParticipantID[participantIDIndex]) {
+            var storyItem = itemsByParticipantID[participantIDIndex][storyIndex];
         
-        var elicitingQuestion = item["Eliciting question"] || questionnaire.elicitingQuestions[0].id;
-        var story = {
-            __type: "org.workingwithstories.Story",
-            // TODO: Can this "id" field be safely removed? id: generateRandomUuid("TODO:???"),
-            storyID: generateRandomUuid("Story"),
-            participantID: newSurveyResult.participantData.participantID,
-            elicitingQuestion: elicitingQuestion,
-            storyText: item["Story text"],
-            storyName: item["Story title"] || ("Untitled #" + padLeadingZeros(++untitledCount, 4))
-        };
-    
-        var i;
-        var question;
-        for (i = 0; i < questionnaire.storyQuestions.length; i++) {
-            question = questionnaire.storyQuestions[i];
-            story[question.id] = item[question.id.substring("S_".length)];
-        }
-        newSurveyResult.stories.push(story);
-        for (i = 0; i < questionnaire.participantQuestions.length; i++) {
-            question = questionnaire.participantQuestions[i];
-            newSurveyResult.participantData[question.id] = item[question.id.substring("P_".length)];
-        }
+            var elicitingQuestion = storyItem["Eliciting question"] || questionnaire.elicitingQuestions[0].id;
+            var story = {
+                __type: "org.workingwithstories.Story",
+                // TODO: Can this "id" field be safely removed? id: generateRandomUuid("TODO:???"),
+                storyID: generateRandomUuid("Story"),
+                participantID: participantIDIndex,
+                elicitingQuestion: elicitingQuestion,
+                storyText: storyItem["Story text"],
+                storyName: storyItem["Story title"] || ("Untitled #" + padLeadingZeros(++untitledCount, 4)),
+                numStoriesTold: "" + itemsByParticipantID[participantIDIndex].length
+            };
         
-        // Add any annotations
-        project.collectAllAnnotationQuestions().forEach((annotationQuestion) => {
-            var id = annotationQuestion.annotationQuestion_shortName;
-            var value = item[id];
-            if (value !== null && value !== undefined) {
-                newSurveyResult.participantData["A_" + id] = value;
+            var i;
+            var question;
+            for (i = 0; i < questionnaire.storyQuestions.length; i++) {
+                question = questionnaire.storyQuestions[i];
+                story[question.id] = storyItem[question.id.substring("S_".length)];
             }
-        });
+            newSurveyResult.stories.push(story);
+            totalStoryCount += 1;
+            for (i = 0; i < questionnaire.participantQuestions.length; i++) {
+                question = questionnaire.participantQuestions[i];
+                newSurveyResult.participantData[question.id] = storyItem[question.id.substring("P_".length)];
+            }
+            
+            // Add any annotations
+            project.collectAllAnnotationQuestions().forEach((annotationQuestion) => {
+                var id = annotationQuestion.annotationQuestion_shortName;
+                var value = storyItem[id];
+                if (value !== null && value !== undefined) {
+                    newSurveyResult.participantData["A_" + id] = value;
+                }
+            });
+        }
         
         // console.log("newSurveyResult", newSurveyResult);
         surveyResults.push(newSurveyResult);
@@ -205,7 +223,7 @@ function processCSVContentsForStories(contents) {
     */
 
     
-    var totalStoryCount = surveyResults.length;
+    var totalSurveyCount = surveyResults.length;
 
     function dialogCancelled(dialogConfiguration, hideDialogMethod) {
         progressModel.cancelled = true;
@@ -229,19 +247,19 @@ function processCSVContentsForStories(contents) {
         }
     };
     
-    var storyIndexToSend = 0;
+    var surveyIndexToSend = 0;
     
     function sendNextSurveyResult() {
         if (progressModel.cancelled) {
-            alert("Cancelled after sending " + storyIndexToSend + " stories");
-        } else if (storyIndexToSend >= surveyResults.length) {
-            alert("Finished sending stories to server.");
+            alert("Cancelled after sending " + totalStoryCount + " stories from " + surveyIndexToSend + " participants");
+        } else if (surveyIndexToSend >= surveyResults.length) {
+            alert("Finished sending " + totalStoryCount + " stories from " + totalSurveyCount + " participants to server.");
             progressModel.hideDialogMethod();
             progressModel.redraw();
         } else {
-            var surveyResult = surveyResults[storyIndexToSend++];
+            var surveyResult = surveyResults[surveyIndexToSend++];
             // TODO: Translate
-            progressModel.progressText = "Sending " + storyIndexToSend + " of " + totalStoryCount + " stories";
+            progressModel.progressText = "Sending " + totalStoryCount + " stories from " + surveyIndexToSend + " of " + totalSurveyCount + " participants";
             progressModel.redraw();
             surveyStorage.storeSurveyResult(project.pointrelClient, project.projectIdentifier, storyCollectionName, surveyResult, wizardPane);
         }
@@ -649,7 +667,7 @@ export function exportQuestionnaire() {
         elicitingLine.push(elicitingQuestionSpecification.id + "|" + elicitingQuestionSpecification.text);
     });
     addOutputLine(elicitingLine);
-    
+
     function outputQuestions(questions, about) {
         for (var i = 0; i < questions.length; i++) {
             var outputLine = [];

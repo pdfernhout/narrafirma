@@ -53,6 +53,10 @@ export class Story {
     elicitingQuestion(newValue = undefined) {
         return this.fieldValue("elicitingQuestion", newValue);
     }
+
+    numStoriesTold(newValue = undefined) {
+        return this.fieldValue("numStoriesTold", newValue);
+    }
     
     fieldValue(fieldName, newValue = undefined) {
         if (newValue === undefined) {
@@ -81,6 +85,8 @@ export function getStoriesForStoryCollection(storyCollectionIdentifier, includeI
             var surveyResult = message.change.surveyResult;
             var stories = surveyResult.stories;
             for (var storyIndex in stories) {
+                // calculate derived count of number of stories told in each survey session (to be shown in graphs)
+                stories[storyIndex].numStoriesTold = "" + stories.length;
                 // Make a copy of the story so as not to modify original in message
                 var story = JSON.parse(JSON.stringify(stories[storyIndex]));
                 // console.log("=== story", story);
@@ -92,7 +98,7 @@ export function getStoriesForStoryCollection(storyCollectionIdentifier, includeI
                         story[key] = participantData[key];
                     }
                 }
-                
+
                 // Add questionnaire for display
                 story.questionnaire = surveyResult.questionnaire;
                 var wrappedStory = new Story(story);
@@ -104,7 +110,7 @@ export function getStoriesForStoryCollection(storyCollectionIdentifier, includeI
             console.log("Problem processing survey result", message, e);
         }
     });
-    
+
     return result;
 }
 

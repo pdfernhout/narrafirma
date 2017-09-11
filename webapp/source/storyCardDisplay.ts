@@ -119,6 +119,7 @@ function displayHTMLForField(storyModel: surveyCollection.Story, fieldSpecificat
 
 interface Options {
     excludeElicitingQuestion?: boolean;
+    excludeNumStoriesQuestion?: boolean;
     excludeAnnotations?: boolean;
     storyTextAtTop?: boolean;
     questionnaire?: any;
@@ -128,6 +129,7 @@ interface Options {
 export function generateStoryCardContent(storyModel, options: Options = {}) {
     // Encode all user-supplied text to ensure it does not create HTML issues
     var elicitingQuestion = storyModel.elicitingQuestion();
+    var numStoriesTold = storyModel.numStoriesTold();
     // console.log("elicitingQuestion", elicitingQuestion);
     var storyName = storyModel.storyName();
     var storyText = storyModel.storyText();
@@ -178,6 +180,14 @@ export function generateStoryCardContent(storyModel, options: Options = {}) {
             elicitingQuestion, m("br")]);
     }
     
+    var textForNumStoriesTold: any = [];
+    if (!options.excludeNumStoriesQuestion) {
+        textForNumStoriesTold = m(
+            ".narrafirma-story-card-num-stories-question", 
+            [wrap("span", "narrafirma-story-card-num-stories-question-name", "Number of stories told by this participant: "), 
+            numStoriesTold, m("br")]);
+    }
+    
     var storyTextAtTop: any = [];
     var storyTextClass = "";
     if (options["location"] && options["location"] === "storyBrowser") {
@@ -221,6 +231,7 @@ export function generateStoryCardContent(storyModel, options: Options = {}) {
         otherFields,
         storyTextAtBottom,
         textForElicitingQuestion,
+        textForNumStoriesTold,
         annotationFields,
         m("hr")
     ]);

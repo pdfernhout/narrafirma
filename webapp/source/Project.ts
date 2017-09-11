@@ -396,6 +396,57 @@ class Project {
         return result;
     }
 
+    numStoriesToldQuestion(maxNumQuestions) {
+        var choices = [];
+        for (var i = 1; i <= maxNumQuestions; i++) {
+            choices.push("" + i);
+        }
+        var numStoriesToldQuestion = {
+            id: "numStoriesTold",
+            displayName: "Number of stories told",
+            displayPrompt: "This is the number of stories told by each participant.",
+            displayType: "select",
+            valueOptions: choices 
+        }
+        return numStoriesToldQuestion;
+    }
+
+    numStoriesToldQuestionForStoryCollection(storyCollectionIdentifier) {
+        var stories = surveyCollection.getStoriesForStoryCollection(storyCollectionIdentifier);
+        var maxNumStoriesTold = 0;
+        for (var storyIndex in stories) {
+            var numStoriesToldForThisStory = stories[storyIndex].numStoriesTold();
+            if (typeof numStoriesToldForThisStory === "string") {
+                var numStoriesToldForThisStoryAsInt = parseInt(numStoriesToldForThisStory);
+                if (numStoriesToldForThisStoryAsInt > maxNumStoriesTold) maxNumStoriesTold = numStoriesToldForThisStoryAsInt;
+            } 
+        }
+        return this.numStoriesToldQuestion(maxNumStoriesTold);
+    }
+
+    numStoriesToldQuestionsForCatalysisReport(catalysisReportIdentifier) {
+        var maxNumStoriesTold = 0;
+        var storyCollectionsIdentifier = this.tripleStore.queryLatestC(catalysisReportIdentifier, "catalysisReport_storyCollections");
+        var storyCollectionItems = this.tripleStore.getListForSetIdentifier(storyCollectionsIdentifier);
+    
+        if (storyCollectionItems.length === 0) return [];
+        
+        storyCollectionItems.forEach((storyCollectionPointer) => {
+            if (storyCollectionPointer) {
+                var storyCollectionIdentifier = this.tripleStore.queryLatestC(storyCollectionPointer, "storyCollection");
+                var stories = surveyCollection.getStoriesForStoryCollection(storyCollectionIdentifier);
+                for (var storyIndex in stories) {
+                    var numStoriesToldForThisStory = stories[storyIndex].numStoriesTold();
+                    if (typeof numStoriesToldForThisStory === "string") {
+                        var numStoriesToldForThisStoryAsInt = parseInt(numStoriesToldForThisStory);
+                        if (numStoriesToldForThisStoryAsInt > maxNumStoriesTold) maxNumStoriesTold = numStoriesToldForThisStoryAsInt;
+                    }
+                }
+            }
+        });
+        return this.numStoriesToldQuestion(maxNumStoriesTold);
+    }
+
     minimumStoryCountRequiredForTest(catalysisReportIdentifier) {
         if (!catalysisReportIdentifier) {
             throw new Error("catalysisReportIdentifier was not supplied");

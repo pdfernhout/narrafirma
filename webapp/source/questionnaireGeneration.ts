@@ -130,33 +130,6 @@ function buildItemListFromIdList(idToItemMap, idItemList, idField) {
 }
 
 // Are names just hints as to purpose of code? Can never convey all aspects of interrelationships?
-
-export function collectAllQuestions(putAnnotationQuestionsUpFront = null): any[]  {
-    var project = Globals.project();
-    
-    var elicitingQuestions = project.collectAllElicitingQuestions();
-    elicitingQuestions = convertElicitingQuestions(elicitingQuestions);
-    
-    var storyQuestions = project.collectAllStoryQuestions();
-    storyQuestions = convertEditorQuestions(storyQuestions, "S_");
-    
-    var participantQuestions = project.collectAllParticipantQuestions();
-    participantQuestions = convertEditorQuestions(participantQuestions, "P_");
-    
-    var annotationQuestions = project.collectAllAnnotationQuestions();
-    annotationQuestions = convertEditorQuestions(annotationQuestions, "A_");
-        
-    var allQuestions = getLeadingStoryQuestions(elicitingQuestions);
-    if (putAnnotationQuestionsUpFront) {
-        allQuestions = allQuestions.concat(annotationQuestions, storyQuestions, participantQuestions);
-    } else {
-        allQuestions = allQuestions.concat(storyQuestions, participantQuestions, annotationQuestions);
-    }
-    
-    // console.log("collectAllQuestions", allQuestions);
-    return allQuestions;
-}
-
 export function getStoryNameAndTextQuestions() {
     var leadingStoryQuestions = [];
     leadingStoryQuestions.unshift({
