@@ -154,18 +154,25 @@ What is the correct format for importing data?
 					<b>Other notes on data files</b>
 				</p>
 				<ul>
-					<li>If you have already created a story form (either in NarraFirma or by importing it from CSV), you can get a 
-						blank data file to fill in (or just to see how the headers should look). Navigate to the Enter stories
-						screen, choose the new story collection you created (with your story form attached to it), and click
-						"Export story collection." You will get a blank CSV file with the correct headers to read back in as your data file.</li>
-					<li>Remember that a CSV file is not the same thing as a spreadsheet file. You can work in a spreadsheet format (like XLSX) but be aware that any
+					<li><b>If you have multiple stories per participant</b>. If participants in your story collection were able to choose how many stories they told, 
+						you might want to look at patterns
+						of difference between people who told more or fewer stories. 
+						To group your imported stories by participant,
+						include a header in your data file called EXACTLY "Participant ID." Give each participant a UNIQUE ID 
+						and enter it in that column on EACH line that describes a story they told. NarraFirma will sort your
+						stories based on participant ID and count how many stories each person told.
+					</li>
+					<li><b>Watch your formatting</b>. Remember that a CSV file is not the same thing as a spreadsheet file. You can work in a spreadsheet format (like XLSX) but be aware that any
 						special formatting will be lost when you convert the file to CSV. It's usually better to edit the file directly in the CSV format
 						so you don't put anything into it that will be lost when you convert to CSV.
 					</li>
-					<li>NarraFirma expects to read CSV data with <b>UTF-8 character encoding</b>. 
+					<li><b>UTF-8</b>. NarraFirma expects to read CSV data with UTF-8 character encoding. 
 							Make sure to save your CSV files in that format so any special characters will be read correctly.</li>
-					<li>An example data CSV file can be found in the <b>samples</b> folder in your NarraFirma installation.
-						You can look at that file to see how data should be formatted.</li>
+					<li><b>Samples and templates</b>. An example data CSV file can be found in the <b>samples</b> folder in your NarraFirma installation.
+						You can look at that file to see how data should be formatted. Also, if you have already created a story form (either in NarraFirma or by importing it from CSV), you can get a 
+						blank data file to fill in (or just to see how the headers should look). Navigate to the Enter stories
+						screen, choose the new story collection you created (with your story form attached to it), and click
+						"Export story collection." You will get a blank CSV file with the correct headers to read back in as your data file.</li>
 				</ul>
 	
 				<b>Weird things that could happen while importing data</b>
