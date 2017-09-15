@@ -231,7 +231,8 @@ export function calculateStatisticsForMultipleHistogram(ratioQuestion, nominalQu
                 toaster.toast('Error in Mann-Whitney U test for questions [' + ratioQuestion.displayName + ", " + nominalQuestion.displayName + "]: " + err);
                 return {significance: "None (error)", calculated: []};
             }
-            allResults[options[i] + " X " + options[j]] = {p: statResult.p, u: statResult.u, n1: statResult.n1, n2: statResult.n2};
+            allResults[options[i] + " x " + options[j]] = {p: statResult.p, u: statResult.u, n1: statResult.n1, n2: statResult.n2};
+            
             // console.log("calculateStatisticsForMultipleHistogram statResult", statResult);
             if (statResult.p <= pLowest) {
                 pLowest = statResult.p;
