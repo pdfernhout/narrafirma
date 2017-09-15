@@ -169,6 +169,7 @@ function add_catalysisReportQuestionChooser(panelBuilder: PanelBuilder, model, f
         allAnnotationQuestions.forEach((question) => {
             map["A_" + question.displayName] = true;
         });
+        map["numStoriesTold"] = true;
         storageFunction(map);
     }
     
