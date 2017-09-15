@@ -114,6 +114,8 @@ function processCSVContentsForStories(contents) {
         return;
     }
 
+    var errorsToReport = [];
+
     var items = headerAndItems.items;
     var surveyResults = [];
     var untitledCount = 0;
@@ -172,13 +174,18 @@ function processCSVContentsForStories(contents) {
             var question;
             for (i = 0; i < questionnaire.storyQuestions.length; i++) {
                 question = questionnaire.storyQuestions[i];
-                story[question.id] = storyItem[question.id.substring("S_".length)];
+                var value = storyItem[question.id.substring("S_".length)];
+                story[question.id] = value;
+                warnIfCellMatchesNoAnswerInList(value, question.displayName, question.displayType, question.valueOptions, errorsToReport);
             }
+
             newSurveyResult.stories.push(story);
             totalStoryCount += 1;
             for (i = 0; i < questionnaire.participantQuestions.length; i++) {
                 question = questionnaire.participantQuestions[i];
-                newSurveyResult.participantData[question.id] = storyItem[question.id.substring("P_".length)];
+                var value = storyItem[question.id.substring("S_".length)];
+                newSurveyResult.participantData[question.id] = value;
+                warnIfCellMatchesNoAnswerInList(value, question.displayName, question.displayType, question.valueOptions, errorsToReport);
             }
             
             // Add any annotations
@@ -187,6 +194,8 @@ function processCSVContentsForStories(contents) {
                 var value = storyItem[id];
                 if (value !== null && value !== undefined) {
                     newSurveyResult.participantData["A_" + id] = value;
+                    warnIfCellMatchesNoAnswerInList(value, annotationQuestion.annotationQuestion_shortName, annotationQuestion.annotationQuestion_type, annotationQuestion.annotationQuestion_options, errorsToReport);
+                    
                 }
             });
         }
@@ -222,7 +231,6 @@ function processCSVContentsForStories(contents) {
      
     */
 
-    
     var totalSurveyCount = surveyResults.length;
 
     function dialogCancelled(dialogConfiguration, hideDialogMethod) {
@@ -267,6 +275,27 @@ function processCSVContentsForStories(contents) {
     
     // Start sending survey results
     sendNextSurveyResult();
+
+    if (errorsToReport.length > 0) {
+        alert("Errors reading stories:\n\n" + errorsToReport.join("\n\n"));
+        console.log("Errors reading stories:\n\n" + errorsToReport.join("\n\n"));
+    }
+}
+
+function warnIfCellMatchesNoAnswerInList(value, questionName, questionType, options, errorsToReport) {
+    if (questionType === "select" || questionType === "boolean" || questionType == "radiobuttons" || questionType == "checkbox") {
+        if (options.indexOf(value) === -1) {
+            var error = "The cell '" + value + "' does not match any of the options [" + options + "] for the question '" + questionName + "'";
+            if (errorsToReport.indexOf(error) === -1) errorsToReport.push(error);
+        }
+    } else if (questionType === "checkboxes") {
+        for (var option in value) {
+            if (options.indexOf(option) === -1) {
+                var error = "The cell '" + option + "' does not match any of the options [" + options + "] for the question '" + questionName + "'";
+                if (errorsToReport.indexOf(error) === -1) errorsToReport.push(error);
+            }
+        }
+    }
 }
 
 function processCSVContentsForQuestionnaire(contents) {
