@@ -460,7 +460,11 @@ function addStatisticsPanelForChart(chartPane: HTMLElement, statistics) {
     if (statistics.allResults) {
         html += "<br>\n";
         html += '<table class="narrafirma-mw-all-results">\n';
-        for (var resultKey in statistics.allResults) {
+
+        var sortedResultKeys = Object.keys(statistics.allResults).sort(function(a,b){return statistics.allResults[a].p - statistics.allResults[b].p})
+
+        for (var resultKeyIndex in sortedResultKeys) {
+            var resultKey = sortedResultKeys[resultKeyIndex];
             var result = statistics.allResults[resultKey];
             html += '<tr><td class="narrafirma-mw-nested-title">' + escapeHtml(resultKey) + '</td><td class="narrafirma-mw-nested-stats">';
             var first = true;
