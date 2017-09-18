@@ -4,8 +4,52 @@ import chiSquare = require("./statistics/chiSquare");
 import mannWhitneyU = require("./statistics/mannWhitneyU");
 import surveyCollection = require("./surveyCollection");
 import toaster = require("./panelBuilder/toaster");
+import m = require("mithril");
+
 
 "use strict";
+
+export function calculateStatisticsForPattern(pattern, patternNumber, numPatterns, stories, minimumStoryCountRequiredForTest, progressModel) {
+    var graphType = pattern.graphType;
+    var statistics = null;
+
+    if (graphType === "bar") {
+        statistics = calculateStatisticsForBarGraph(pattern.questions[0], stories, minimumStoryCountRequiredForTest);
+    } else if (graphType === "table") {
+        statistics = calculateStatisticsForTable(pattern.questions[0], pattern.questions[1], stories, minimumStoryCountRequiredForTest);
+    } else if (graphType === "histogram") {
+        statistics = calculateStatisticsForHistogram(pattern.questions[0], stories, minimumStoryCountRequiredForTest);
+    } else if (graphType === "multiple histogram") {
+        statistics = calculateStatisticsForMultipleHistogram(pattern.questions[0], pattern.questions[1], stories, minimumStoryCountRequiredForTest);
+    } else if (graphType === "scatter") {
+        statistics = calculateStatisticsForScatterPlot(pattern.questions[0], pattern.questions[1], null, null, stories, minimumStoryCountRequiredForTest);
+    } else if (graphType ===  "multiple scatter") {
+        //statistics = {significance: "None", calculated: []};   
+        statistics = calculateStatisticsForMultipleScatterPlot(pattern.questions[0], pattern.questions[1], pattern.questions[2], stories, minimumStoryCountRequiredForTest);
+    } else if (graphType == "data integrity") {
+        statistics = {significance: "None", calculated: []};
+    } else if (graphType == "texts") {
+        statistics = {significance: "None", calculated: []};            
+    } else {
+        console.log("ERROR: Unexpected graphType: " + graphType);
+        throw new Error("ERROR: Not suported graphType: " + graphType);
+    }
+    
+    if (statistics) {
+        pattern.significance = statistics.significance;
+    } else {
+        pattern.significance = "ERROR";
+    }
+
+    if (progressModel) {
+        var increment = Math.floor(numPatterns / 20);
+        if (increment < 1) increment = 1;
+        if (patternNumber % increment == 0) {
+            progressModel.progressText = "Calculating statistics for pattern " + patternNumber + " of " + numPatterns;
+            progressModel.redraw();
+        }
+    }
+}
 
 function collectDataForField(stories: surveyCollection.Story[], fieldName, conversionFunction = null) {
     var result = [];

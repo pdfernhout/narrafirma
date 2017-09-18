@@ -5,6 +5,7 @@ import questionnaireGeneration = require("../questionnaireGeneration");
 import topic = require("../pointrel20150417/topic");
 import valuePathResolver = require("../panelBuilder/valuePathResolver");
 import PanelBuilder = require("../panelBuilder/PanelBuilder");
+import dialogSupport = require("../panelBuilder/dialogSupport");
 import m = require("mithril");
 import Project = require("../Project");
 import GridWithItemPanel = require("../panelBuilder/GridWithItemPanel");
@@ -77,7 +78,7 @@ class PatternExplorer {
     patternsGrid: GridWithItemPanel;
     
     graphHolder: GraphHolder;
-    
+
     questions = [];
     
     modelForStoryGrid = {storiesSelectedInGraph: []};
@@ -97,7 +98,7 @@ class PatternExplorer {
     
     constructor(args) {
         this.project = Globals.project();
-         
+        
        // Graph display initialization
         
        this.graphHolder = {
@@ -207,7 +208,7 @@ class PatternExplorer {
         // Pattern grid initialization
         
         this.questionsToInclude = this.project.tripleStore.queryLatestC(this.catalysisReportIdentifier, "questionsToInclude"); 
-        this.modelForPatternsGrid.patterns = this.buildPatternList();
+        //this.modelForPatternsGrid.patterns = this.buildPatternList();
         
         var patternsGridConfiguration = {
             idProperty: "id",
@@ -225,7 +226,7 @@ class PatternExplorer {
         };
  
         this.patternsGrid = new GridWithItemPanel({panelBuilder: args.panelBuilder, model: this.modelForPatternsGrid, fieldSpecification: patternsGridFieldSpecification});
-        
+
         // TODO: selections in observation should be stored in original domain units, not scaled display units
  
         // Put up a "please pick pattern" message
@@ -238,7 +239,7 @@ class PatternExplorer {
     }
     
     static view(controller, args) {
-        // console.log("PatternBrowser view called");
+        //console.log("PatternBrowser view called");
         
         return controller.calculateView(args);
     }
@@ -526,10 +527,11 @@ class PatternExplorer {
         var nominalQuestions = [];
         var ratioQuestions = [];
         var textQuestions = [];
+
+        //console.log("buildPatternList questionsToInclude", this.questionsToInclude);
         
         if (!this.questionsToInclude) return result;
 
-        // TODO: create all supported graphable permutations of questions
         this.questions.forEach((question) => {
             // Skip questions that are not included in configuration
             if (this.questionsToInclude[question.id]) {
@@ -544,7 +546,7 @@ class PatternExplorer {
                 }
             }
         });
-        
+
         var questionCount = 0;
         function nextID() {
             return ("00000" + questionCount++).slice(-5);
@@ -569,7 +571,7 @@ class PatternExplorer {
                 result.push(this.makePattern(nextID(), "bar", [question1], null));
             });
         };
-        
+
         // Prevent mirror duplicates and self-matching questions
         var usedQuestions;
         
@@ -583,13 +585,13 @@ class PatternExplorer {
                 });
             });
         };
-        
+
         if (this.graphTypesToCreate["histograms"]) {
             ratioQuestions.forEach((question1) => {
                 result.push(this.makePattern(nextID(), "histogram", [question1], null));
             });
         };
-        
+
         if (this.graphTypesToCreate["multiple histograms"]) {
             ratioQuestions.forEach((question1) => {
                 nominalQuestions.forEach((question2) => {
@@ -597,7 +599,7 @@ class PatternExplorer {
                 });
             });
         };
-        
+
         if (this.graphTypesToCreate["scatterplots"]) {
             usedQuestions = [];
             ratioQuestions.forEach((question1) => {
@@ -608,7 +610,7 @@ class PatternExplorer {
                 });
             });
         };
-        
+
         if (this.graphTypesToCreate["multiple scatterplots"]) {
             usedQuestions = [];
             ratioQuestions.forEach((question1) => {
@@ -621,48 +623,48 @@ class PatternExplorer {
                 });
             });
         };
+
+        // if a lot of patterns, use progress dialog, otherwise just calculate (and avoid having a dialog blip onto the screen and off again)
+        if (result.length > 200) { // this is an arbitrary number, just a guess as to how long it will take to calculate 
+            // first set all stats to "none" in case they cancel partway through
+            result.forEach((pattern) => { pattern.significance = "None (calculation cancelled)"; });
+            var progressModel = dialogSupport.openProgressDialog("Processing statistics for question combinations", "Generating statistical results...", "Cancel", dialogCancelled);
+            var patternIndex = 0;
+            var stories = this.graphHolder.allStories;
+            var minimumStoryCountRequiredForTest = this.minimumStoryCountRequiredForTest;
+            setTimeout(function() { calculateStatsForNextPattern(); }, 0);
+        } else { // just calculate without any progress dialog
+            var patternIndex = 0;
+            result.forEach((pattern) => {
+                calculateStatistics.calculateStatisticsForPattern(result[patternIndex], patternIndex, result.length, 
+                    this.graphHolder.allStories, this.minimumStoryCountRequiredForTest, null); // no progress model
+                patternIndex += 1;
+            });
+        }
+        
+        function calculateStatsForNextPattern() {
+            if (progressModel.cancelled) {
+                alert("Cancelled after calculating statistics for " + (patternIndex + 1) + " patterns");
+            } else if (patternIndex >= result.length) {
+                progressModel.hideDialogMethod();
+                progressModel.redraw();
+            } else {
+                calculateStatistics.calculateStatisticsForPattern(result[patternIndex], patternIndex, result.length, 
+                    stories, minimumStoryCountRequiredForTest, progressModel);  
+                patternIndex += 1;
+                setTimeout(function() { calculateStatsForNextPattern(); }, 0);
+            }
+        }
     
-        result.forEach((pattern) => {
-            this.calculateStatisticsForPattern(pattern);        
-        });
+        function dialogCancelled(dialogConfiguration, hideDialogMethod) {
+            progressModel.cancelled = true;
+            hideDialogMethod();
+        }
         
         // console.log("buildPatternsList", result);
         return result;
-    }
+        }
     
-    calculateStatisticsForPattern(pattern) {
-        var graphType = pattern.graphType;
-        var stories = this.graphHolder.allStories;
-        var statistics = null;
-
-        if (graphType === "bar") {
-            statistics = calculateStatistics.calculateStatisticsForBarGraph(pattern.questions[0], stories, this.minimumStoryCountRequiredForTest);
-        } else if (graphType === "table") {
-            statistics = calculateStatistics.calculateStatisticsForTable(pattern.questions[0], pattern.questions[1], stories, this.minimumStoryCountRequiredForTest);
-        } else if (graphType === "histogram") {
-            statistics = calculateStatistics.calculateStatisticsForHistogram(pattern.questions[0], stories, this.minimumStoryCountRequiredForTest);
-        } else if (graphType === "multiple histogram") {
-            statistics = calculateStatistics.calculateStatisticsForMultipleHistogram(pattern.questions[0], pattern.questions[1], stories, this.minimumStoryCountRequiredForTest);
-        } else if (graphType === "scatter") {
-            statistics = calculateStatistics.calculateStatisticsForScatterPlot(pattern.questions[0], pattern.questions[1], null, null, stories, this.minimumStoryCountRequiredForTest);
-        } else if (graphType ===  "multiple scatter") {
-            statistics = calculateStatistics.calculateStatisticsForMultipleScatterPlot(pattern.questions[0], pattern.questions[1], pattern.questions[2], stories, this.minimumStoryCountRequiredForTest);
-        } else if (graphType == "data integrity") {
-            statistics = {significance: "None", calculated: []};
-        } else if (graphType == "texts") {
-            statistics = {significance: "None", calculated: []};            
-        } else {
-            console.log("ERROR: Unexpected graphType: " + graphType);
-            throw new Error("ERROR: Not suported graphType: " + graphType);
-        }
-        
-        if (statistics) {
-            pattern.significance = statistics.significance;
-        } else {
-            pattern.significance = "ERROR";
-        }
-    }
-        
     chooseGraph(pattern) {
         // console.log("chooseGraph", pattern);
         
