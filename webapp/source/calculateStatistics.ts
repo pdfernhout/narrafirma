@@ -42,13 +42,9 @@ export function calculateStatisticsForPattern(pattern, patternNumber, numPattern
     }
 
     if (progressModel) {
-        var increment = Math.floor(numPatterns / 20);
-        if (increment < 1) increment = 1;
-        if (patternNumber % increment == 0) {
-            progressModel.progressText = "Calculating statistics for pattern " + patternNumber + " of " + numPatterns;
-            progressModel.redraw();
+        progressModel.progressText = "Calculating statistics for pattern " + patternNumber + " of " + numPatterns;
+        progressModel.redraw();
         }
-    }
 }
 
 function collectDataForField(stories: surveyCollection.Story[], fieldName, conversionFunction = null) {
