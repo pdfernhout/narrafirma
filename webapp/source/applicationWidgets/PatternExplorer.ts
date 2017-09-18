@@ -208,7 +208,7 @@ class PatternExplorer {
         // Pattern grid initialization
         
         this.questionsToInclude = this.project.tripleStore.queryLatestC(this.catalysisReportIdentifier, "questionsToInclude"); 
-        //this.modelForPatternsGrid.patterns = this.buildPatternList();
+        this.modelForPatternsGrid.patterns = this.buildPatternList();
         
         var patternsGridConfiguration = {
             idProperty: "id",
