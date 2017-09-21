@@ -112,7 +112,7 @@ var panel: Panel = {
             id: "configureCatalysisReport_scatterDotSize",
             valuePath: "/clientState/catalysisReportIdentifier/scatterDotSize",
             valueType: "string",
-            valueOptions: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"],
+            valueOptions: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20"],
             displayType: "select",
             displayName: "Scatter dot size",
             displayPrompt: "For <strong>scatter plots</strong>, what <strong>dot size</strong> (in pixels) would you like? (Set this number low if you have a large number of data points.)",
