@@ -437,7 +437,7 @@ function htmlForLabelAndValue(key, object) {
     if (value === undefined) {
         console.log("value is undefined");
     }
-    if (key !== "n" && key !== "n1" && key !== "n2" && key !== "k" && key !== "U") {
+    if (key !== "n" && key !== "n1" && key !== "n2" && key !== "k" && key !== "U" && key !== "unanswered") {
         value = value.toFixed(3);
     }
     return '<span class="statistics-name">' + key + '</span>: <span class="statistics-value">' + value + "</span>";
@@ -692,7 +692,6 @@ export function d3HistogramChartForQuestion(graphBrowserInstance: GraphHolder, s
     // Collect data
     
     // Do not include unanswered in  histogram
-    // TODO: Put a total for unanswered somewhere
     var unanswered = [];
     var values = [];
     var matchingStories = [];
@@ -745,7 +744,7 @@ export function d3HistogramChartForQuestion(graphBrowserInstance: GraphHolder, s
             }
         }
     }
-    return d3HistogramChartForValues(graphBrowserInstance, values, matchingStories, style, chartSize, chartTitle, xAxisLabel, xAxisStart, xAxisEnd, storiesSelectedCallback);
+    return d3HistogramChartForValues(graphBrowserInstance, values, unanswered.length, matchingStories, style, chartSize, chartTitle, xAxisLabel, xAxisStart, xAxisEnd, storiesSelectedCallback);
 }
 
 export function d3HistogramChartForDataIntegrity(graphBrowserInstance: GraphHolder, scaleQuestions, dataIntegrityType) {
@@ -804,10 +803,10 @@ export function d3HistogramChartForDataIntegrity(graphBrowserInstance: GraphHold
             if (aPlotItem) values.push(aPlotItem);
         }
     }
-    return d3HistogramChartForValues(graphBrowserInstance, values, [], "singleChartStyle", "large", dataIntegrityType, dataIntegrityType, "", "", null);
+    return d3HistogramChartForValues(graphBrowserInstance, values, [], -1, "singleChartStyle", "large", dataIntegrityType, dataIntegrityType, "", "", null);
 }
 
-export function d3HistogramChartForValues(graphBrowserInstance: GraphHolder, plotItems, matchingStories, style, chartSize, chartTitle, xAxisLabel, xAxisStart, xAxisEnd, storiesSelectedCallback) {
+export function d3HistogramChartForValues(graphBrowserInstance: GraphHolder, plotItems, unansweredCount, matchingStories, style, chartSize, chartTitle, xAxisLabel, xAxisStart, xAxisEnd, storiesSelectedCallback) {
     
     var margin = {top: 20, right: 15, bottom: 60, left: 60};
     var isSmallFormat = style == "smallChartStyle";
@@ -822,7 +821,7 @@ export function d3HistogramChartForValues(graphBrowserInstance: GraphHolder, plo
     var chartBody = chart.chartBody;
     
     var values = plotItems.map(function(item) { return parseFloat(item.value); });
-    var statistics = calculateStatistics.calculateStatisticsForHistogramValues(values);
+    var statistics = calculateStatistics.calculateStatisticsForHistogramValues(values, unansweredCount);
     addStatisticsPanelForChart(chartPane, statistics);
     
     var mean = statistics.mean;
