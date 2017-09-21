@@ -43,7 +43,7 @@ function processCSVContents(contents, callbackForItem) {
                         // Should be an error if header fields are missing but more show up later
                         if (headerEnded) {
                             console.log("ERROR: header has empty field before end");
-                            alert("ERROR: Column headers empty before end of columns. There should be no empty column headers. ");
+                            alert("ERROR: At least one column in the data file has no header. There should be no empty column headers. ");
                         }
                         header.push(label);
                     } else {
@@ -68,6 +68,7 @@ function padLeadingZeros(num: number, size: number) {
 }
 
 function processCSVContentsForStories(contents) {
+
     var storyCollectionName = Globals.clientState().storyCollectionName();
     if (!storyCollectionName) {
         alert("No story collection has been selected");
@@ -82,8 +83,12 @@ function processCSVContentsForStories(contents) {
         var newItem = {};
         for (var fieldIndex = 0; fieldIndex < header.length; fieldIndex++) {
             var fieldName = header[fieldIndex];
+            
+            // in situation where the row is shorter the the headers, because there is no value in the last cell(s), don't assign any value
+            var value = undefined;
+            if (row[fieldIndex] != undefined) value = row[fieldIndex].trim();
             // Note the value is trimmed
-            var value = row[fieldIndex].trim();
+
             if (newItem[fieldName] === undefined) {
                 newItem[fieldName] = value;
             } else {
@@ -176,7 +181,8 @@ function processCSVContentsForStories(contents) {
                 question = questionnaire.storyQuestions[i];
                 var value = storyItem[question.id.substring("S_".length)];
                 story[question.id] = value;
-                warnIfCellMatchesNoAnswerInList(value, question.displayName, question.displayType, question.valueOptions, errorsToReport);
+                changeValueIfScaleAndCustomScaleValues(question, story, questionnaire);
+                warnIfProblemWithCellValueForQuestion(value, question.displayName, question.displayType, question.valueOptions, errorsToReport);
             }
 
             newSurveyResult.stories.push(story);
@@ -185,7 +191,8 @@ function processCSVContentsForStories(contents) {
                 question = questionnaire.participantQuestions[i];
                 var value = storyItem[question.id.substring("S_".length)];
                 newSurveyResult.participantData[question.id] = value;
-                warnIfCellMatchesNoAnswerInList(value, question.displayName, question.displayType, question.valueOptions, errorsToReport);
+                changeValueIfScaleAndCustomScaleValues(question, newSurveyResult.participantData, questionnaire);
+                warnIfProblemWithCellValueForQuestion(value, question.displayName, question.displayType, question.valueOptions, errorsToReport);
             }
             
             // Add any annotations
@@ -194,7 +201,8 @@ function processCSVContentsForStories(contents) {
                 var value = storyItem[id];
                 if (value !== null && value !== undefined) {
                     newSurveyResult.participantData["A_" + id] = value;
-                    warnIfCellMatchesNoAnswerInList(value, annotationQuestion.annotationQuestion_shortName, annotationQuestion.annotationQuestion_type, annotationQuestion.annotationQuestion_options, errorsToReport);
+                    changeValueIfScaleAndCustomScaleValues(question, newSurveyResult.participantData, questionnaire);
+                    warnIfProblemWithCellValueForQuestion(value, annotationQuestion.annotationQuestion_shortName, annotationQuestion.annotationQuestion_type, annotationQuestion.annotationQuestion_options, errorsToReport);
                     
                 }
             });
@@ -277,23 +285,52 @@ function processCSVContentsForStories(contents) {
     sendNextSurveyResult();
 
     if (errorsToReport.length > 0) {
-        alert("Errors reading stories:\n\n" + errorsToReport.join("\n\n"));
-        console.log("Errors reading stories:\n\n" + errorsToReport.join("\n\n"));
+        var text = "Errors reading stories:\n\n";
+        for (var index = 0; index < errorsToReport.length; index++) {
+            text += index+1 + ". " + errorsToReport[index] + "\n";
+        }
+        alert(text);
+        console.log(text);
     }
 }
 
-function warnIfCellMatchesNoAnswerInList(value, questionName, questionType, options, errorsToReport) {
+function warnIfProblemWithCellValueForQuestion(value, questionName, questionType, options, errorsToReport) {
     if (questionType === "select" || questionType === "boolean" || questionType == "radiobuttons" || questionType == "checkbox") {
-        if (options.indexOf(value) === -1) {
-            var error = "The cell '" + value + "' does not match any of the options [" + options + "] for the question '" + questionName + "'";
+        if (value && options.indexOf(value) === -1) {
+            var error = "The cell '" + value + "' does not match any of the options [" + options.join(";") + "] for the question '" + questionName + "'";
             if (errorsToReport.indexOf(error) === -1) errorsToReport.push(error);
         }
     } else if (questionType === "checkboxes") {
         for (var option in value) {
-            if (options.indexOf(option) === -1) {
-                var error = "The cell '" + option + "' does not match any of the options [" + options + "] for the question '" + questionName + "'";
+            if (option && options.indexOf(option) === -1) {
+                var error = "The cell '" + option + "' does not match any of the options [" + options.join(";") + "] for the question '" + questionName + "'";
                 if (errorsToReport.indexOf(error) === -1) errorsToReport.push(error);
             }
+        } 
+    } else if (questionType === "slider") {
+        if (isNaN(value)) {
+            var error = "The cell value '" + value + "' for the question '" + questionName + "' should be a number but is not.";
+            if (errorsToReport.indexOf(error) === -1) errorsToReport.push(error);
+        }
+    }
+}
+
+function changeValueIfScaleAndCustomScaleValues(question, thingWithValue, questionnaire) {
+    if (question.displayType !== "slider") return;
+    var min = questionnaire.import_minScaleValue;
+    var max = questionnaire.import_maxScaleValue;
+    if (min === undefined || min === NaN || max === undefined || max === NaN || min === max) return;
+    if (thingWithValue[question.id] === undefined || thingWithValue[question.id] === "") return;
+
+    var value = parseInt(thingWithValue[question.id]);
+    if (value === min) {
+        thingWithValue[question.id] = "0";
+    } else if (value === max) {
+        thingWithValue[question.id] = "100";
+    } else {
+        var multiplier = 100 / (max - min);
+        if (multiplier && multiplier > 0) {
+            thingWithValue[question.id] = "" + Math.round((value - min) * multiplier);
         }
     }
 }
@@ -367,7 +404,9 @@ function processCSVContentsForQuestionnaire(contents) {
         questionForm_title: "",
         questionForm_startText: "",
         questionForm_image: "",
-        questionForm_endText: ""
+        questionForm_endText: "",
+        import_minScaleValue: 0,
+        import_maxScaleValue: 0
         };
     
     project.tripleStore.makeNewSetItem(storyFormListIdentifier, "StoryForm", template);
@@ -421,20 +460,50 @@ function processCSVContentsForQuestionnaire(contents) {
                 case "Title":
                     template.questionForm_title = text; 
                     project.tripleStore.addTriple(template.id, "questionForm_title", text);
+                    break;
                 case "Start text":
                     template.questionForm_startText = text;
                     project.tripleStore.addTriple(template.id, "questionForm_startText", text);
+                    break;
                 case "Image":
                     template.questionForm_image = text;
                     project.tripleStore.addTriple(template.id, "questionForm_image", text);
+                    break;
                 case "End text":
                     template.questionForm_endText = text;
                     project.tripleStore.addTriple(template.id, "questionForm_endText", text);
+                    break;
+            }
+        } else if (about === "import") {
+            var type = item.Type;
+            var text = item.Answers[0];
+            switch (type) {
+                case "Scale range":
+                    var answers = item["Answers"];
+                    var answerCount = 0;
+                    answers.forEach(function (textValue) {
+                        var value = parseInt(textValue);
+                        if (isNaN(value)) {
+                            var word = "minimum";
+                            if (answerCount === 1) word = "maximum";
+                            alert('The text you entered for the ' + word + ' scale value ("' + textValue + '") could not be converted to a number.');
+                        }
+                        if (answerCount === 0) {
+                            template.import_minScaleValue = value;
+                            project.tripleStore.addTriple(template.id, "import_minScaleValue", value);
+                        } else {
+                            template.import_maxScaleValue = value;
+                            project.tripleStore.addTriple(template.id, "import_maxScaleValue", value);
+                        }
+                        answerCount += 1;
+                    });
+                break;
+            // might add other import options here later
             }
         } else if (about === "ignore") {
             // Ignore value so do nothing
         } else {
-            console.log("Error: unexpected About type of", about);
+            console.log("Error: unexpected About type of ", about);
         }
     }
     

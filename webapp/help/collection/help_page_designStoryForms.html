@@ -139,6 +139,21 @@ How do you import a story form? What is the correct format?
 			</ul>
 			</li>
 		</ul>
+	<p><b>More things you can specify</b></p>
+	<ul>
+			<li>You can specify <b>messages to participants</b>, to be shown at the start and end of your story form. 
+					To do this, create four rows, each with the "About" cell reading "form"
+					and "Type" cells reading "Title," "Start text," "Image," and "End text." In the first "Answers" column, place the
+					text to be shown in each of these areas. For "Image" the text will be a URL (web address) for the image to be displayed.
+					(Note that it must be a FULL web address, starting with "http://www.")
+					For the text fields, these HTML tags are allowed: b, big, em, i, s, small, sup, sub, strong, strike, u.			
+				</li>
+				<li>NarraFirma expects to read scale data with values ranging from zero to 100. If you collected data with some other scale, say
+					from 1 to 10, you can <b>specify your scalar range</b> in your story form file. To do this, create a line with the "About" cell reading "import"
+					and the "Type" cell reading "Scale range." In the "Answers" cells put first the lowest value of the range and second the highest value
+					(e.g., 1, then 10). NarraFirma will convert your scale data to a 0-100 scale as it is being read in.
+				</li>
+	</ul>
 	<p>
 		<b>Other notes on the story form file</b>
 	</p>
@@ -146,12 +161,6 @@ How do you import a story form? What is the correct format?
 		<li>The order in which you list the questions in your story form file will be the order in which questions are shown 
 			on the story form and in lists. (Actually, this is true only <i>within</i> the subsets of questions about stories
 			and questions about participants. Questions about participants are <i>always</i> shown after questions about stories.)</li>
-		<li>You can specify texts to be shown at the start and end of your story form. To do this, create four rows, each with the "About" cell reading "form"
-			and "Type" cells reading "Title," "Start text," "Image," and "End text." In the first "Answers" column, place the
-			text to be shown in each of these areas. For "Image" the text will be a URL (web address) for the image to be displayed.
-			(Note that it must be a FULL web address, starting with "http://www.")
-			For the text fields, these HTML tags are allowed: b, big, em, i, s, small, sup, sub, strong, strike, u.			
-		</li>
 		<li>You can include comment lines in your story form file. Place a semicolon (;) as the very first character on the line. Everything else on that line 
 		will be ignored. Empty lines will also be ignored. </li>
 		<li>You can also include extra or comment columns. Any columns with names other than <b>Long name</b>,

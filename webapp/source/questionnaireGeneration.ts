@@ -214,6 +214,8 @@ export function buildQuestionnaireFromTemplate(questionnaireTemplate: string) {
         image: "",
         startText: "",
         endText: "",
+        import_minScaleValue: "",
+        import_maxScaleValue: "",
         elicitingQuestions: [],
         storyQuestions: [],
         participantQuestions: []
@@ -223,6 +225,8 @@ export function buildQuestionnaireFromTemplate(questionnaireTemplate: string) {
     questionnaire.image = project.tripleStore.queryLatestC(questionnaireTemplate, "questionForm_image");
     questionnaire.startText = project.tripleStore.queryLatestC(questionnaireTemplate, "questionForm_startText");
     questionnaire.endText = project.tripleStore.queryLatestC(questionnaireTemplate, "questionForm_endText"); 
+    questionnaire.import_minScaleValue = project.tripleStore.queryLatestC(questionnaireTemplate, "import_minScaleValue"); 
+    questionnaire.import_maxScaleValue = project.tripleStore.queryLatestC(questionnaireTemplate, "import_maxScaleValue"); 
     
     // TODO: Should maybe ensure unique IDs for eliciting questions?
     var allElicitingQuestions = buildIdToItemMap("project_elicitingQuestionsList", "elicitingQuestion_shortName");
