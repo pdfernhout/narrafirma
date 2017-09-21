@@ -956,19 +956,23 @@ export function d3HistogramChartForValues(graphBrowserInstance: GraphHolder, plo
             // Draw standard deviation
             // console.log("standard deviation", standardDeviation, valuesAsNumbers);
             var sdLow = mean - standardDeviation;
+            if (sdLow >= 0) {
+                chartBody.append("line")
+                    .attr('class', "histogram-standard-deviation-low")
+                    .attr("x1", xScale(sdLow))
+                    .attr("y1", yHeightScale(0))
+                    .attr("x2", xScale(sdLow))
+                    .attr("y2", yHeightScale(maxValue));
+            }
             var sdHigh = mean + standardDeviation;
-            chartBody.append("line")
-                .attr('class', "histogram-standard-deviation-low")
-                .attr("x1", xScale(sdLow))
-                .attr("y1", yHeightScale(0))
-                .attr("x2", xScale(sdLow))
-                .attr("y2", yHeightScale(maxValue));
-            chartBody.append("line")
-                .attr('class', "histogram-standard-deviation-high")
-                .attr("x1", xScale(sdHigh))
-                .attr("y1", yHeightScale(0))
-                .attr("x2", xScale(sdHigh))
-                .attr("y2", yHeightScale(maxValue));
+            if (sdHigh <= 100) {
+                chartBody.append("line")
+                    .attr('class', "histogram-standard-deviation-high")
+                    .attr("x1", xScale(sdHigh))
+                    .attr("y1", yHeightScale(0))
+                    .attr("x2", xScale(sdHigh))
+                    .attr("y2", yHeightScale(maxValue));
+            }
         }
     }
     
