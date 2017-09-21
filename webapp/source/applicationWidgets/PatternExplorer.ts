@@ -94,6 +94,8 @@ class PatternExplorer {
     
     minimumStoryCountRequiredForTest = Project.defaultMinimumStoryCountRequiredForTest;
     numHistogramBins = Project.defaultNumHistogramBins;
+    numScatterDotOpacityLevels = Project.defaultNumScatterDotOpacityLevels;
+    scatterDotSize = Project.defaultScatterDotSize;
     correlationLineChoice = Project.defaultCorrelationLineChoice;
     graphTypesToCreate = Project.defaultGraphTypesToCreate;
     
@@ -110,6 +112,8 @@ class PatternExplorer {
             currentSelectionExtentPercentages: null,
             minimumStoryCountRequiredForTest: Project.defaultMinimumStoryCountRequiredForTest,
             numHistogramBins: Project.defaultNumHistogramBins,
+            numScatterDotOpacityLevels: Project.defaultNumScatterDotOpacityLevels,
+            scatterDotSize: Project.defaultScatterDotSize,
             correlationLineChoice: Project.defaultCorrelationLineChoice,
             graphTypesToCreate: Project.defaultGraphTypesToCreate
         };
@@ -439,6 +443,10 @@ class PatternExplorer {
         // console.log("minimumStoryCountRequiredForTest", this.minimumStoryCountRequiredForTest);
         this.numHistogramBins = this.project.numberOfHistogramBins(catalysisReportIdentifier);
         this.graphHolder.numHistogramBins = this.numHistogramBins; 
+        this.numScatterDotOpacityLevels = this.project.numScatterDotOpacityLevels(catalysisReportIdentifier);
+        this.graphHolder.numScatterDotOpacityLevels = this.numScatterDotOpacityLevels;
+        this.scatterDotSize = this.project.scatterDotSize(catalysisReportIdentifier);
+        this.graphHolder.scatterDotSize = this.scatterDotSize;
         this.correlationLineChoice = this.project.correlationLineChoice(catalysisReportIdentifier);
         this.graphHolder.correlationLineChoice = this.correlationLineChoice; // because need to pass it in to charting methods
         this.graphTypesToCreate = this.project.graphTypesToCreate(catalysisReportIdentifier);

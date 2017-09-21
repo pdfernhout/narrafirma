@@ -65,6 +65,17 @@ var panel: Panel = {
         },
 
         {
+            id: "configureCatalysisReport_chooseGraphTypes",
+            valueType: "object",
+            valuePath: "/clientState/catalysisReportIdentifier/graphTypesToCreate",
+            displayType: "catalysisReportGraphTypesChooser",
+            displayPrompt: "Which <strong>graph types</strong> should be included in the catalysis report?",
+            displayVisible: function(panelBuilder, model) {
+                return !!Globals.clientState().catalysisReportName();
+            }
+        },
+
+        {
             id: "configureCatalysisReport_numHistogramBins",
             valuePath: "/clientState/catalysisReportIdentifier/numHistogramBins",
             valueType: "string",
@@ -78,7 +89,33 @@ var panel: Panel = {
             ],
             displayType: "select",
             displayName: "Number of histogram bins",
-            displayPrompt: "How many <strong>bars</strong> should be drawn on histograms?",
+            displayPrompt: "For <strong>histograms</strong>, how many <strong>bins</strong> (bars) should the data be sorted into?",
+            displayVisible: function(panelBuilder, model) {
+                return !!Globals.clientState().catalysisReportName();
+            }
+        },
+
+        {
+            id: "configureCatalysisReport_numScatterDotOpacityLevels",
+            valuePath: "/clientState/catalysisReportIdentifier/numScatterDotOpacityLevels",
+            valueType: "string",
+            valueOptions: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20"],
+            displayType: "select",
+            displayName: "Number of scatter plot dot opacity levels",
+            displayPrompt: "For <strong>scatter plots</strong>, how many stories should it take to draw a completely <strong>opaque dot</strong>? (Set this number high if you have a lot of identical scale values.)",
+            displayVisible: function(panelBuilder, model) {
+                return !!Globals.clientState().catalysisReportName();
+            }
+        },
+
+        {
+            id: "configureCatalysisReport_scatterDotSize",
+            valuePath: "/clientState/catalysisReportIdentifier/scatterDotSize",
+            valueType: "string",
+            valueOptions: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"],
+            displayType: "select",
+            displayName: "Scatter dot size",
+            displayPrompt: "For <strong>scatter plots</strong>, what <strong>dot size</strong> (in pixels) would you like? (Set this number low if you have a large number of data points.)",
             displayVisible: function(panelBuilder, model) {
                 return !!Globals.clientState().catalysisReportName();
             }
@@ -95,18 +132,7 @@ var panel: Panel = {
             ],
             displayType: "select",
             displayName: "Mark correlation lines",
-            displayPrompt: "At what significance level should <strong>correlations</strong> be marked on scatterplots?",
-            displayVisible: function(panelBuilder, model) {
-                return !!Globals.clientState().catalysisReportName();
-            }
-        },
-
-        {
-            id: "configureCatalysisReport_chooseGraphTypes",
-            valueType: "object",
-            valuePath: "/clientState/catalysisReportIdentifier/graphTypesToCreate",
-            displayType: "catalysisReportGraphTypesChooser",
-            displayPrompt: "Which <strong>graph types</strong> should be included in the catalysis report?",
+            displayPrompt: "For <strong>scatter plots</strong>, at what significance level should <strong>correlations</strong> be marked?",
             displayVisible: function(panelBuilder, model) {
                 return !!Globals.clientState().catalysisReportName();
             }

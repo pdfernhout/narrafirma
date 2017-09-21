@@ -578,7 +578,7 @@ function displayForGraph(graphNode: HTMLElement) {
     ];
 }
 
-function printObservationList(observationList, allStories, minimumStoryCountRequiredForTest: number) {
+function printObservationList(observationList, allStories, minimumStoryCountRequiredForTest: number, numHistogramBins: number, numScatterDotOpacityLevels: number, scatterDotSize: number) {
     // For now, just print all observations
     return printList(observationList, {}, function (item) {
         var project = Globals.project();
@@ -596,7 +596,9 @@ function printObservationList(observationList, allStories, minimumStoryCountRequ
             currentSelectionExtentPercentages: null,
             excludeStoryTooltips: true,
             minimumStoryCountRequiredForTest: minimumStoryCountRequiredForTest,
-            numHistogramBins: Project.defaultNumHistogramBins,
+            numHistogramBins: numHistogramBins,
+            numScatterDotOpacityLevels: numScatterDotOpacityLevels,
+            scatterDotSize: scatterDotSize,
             correlationLineChoice: null,
             graphTypesToCreate: {}
         };
@@ -704,6 +706,9 @@ export function printCatalysisReport() {
     printItems.push(m("br"));
     
     var minimumStoryCountRequiredForTest = project.minimumStoryCountRequiredForTest(catalysisReportIdentifier);
+    var numHistogramBins = project.numberOfHistogramBins(catalysisReportIdentifier);
+    var numScatterDotOpacityLevels = project.numScatterDotOpacityLevels(catalysisReportIdentifier);
+    var scatterDotSize = project.scatterDotSize(catalysisReportIdentifier);
     
     function progressText(perspectiveIndex: number, interpretationIndex: number) {
         return "Perspective " + (perspectiveIndex + 1) + " of " + perspectives.length + ", interpretation " + (interpretationIndex + 1) + " of " + perspectives[perspectiveIndex].items.length;
@@ -758,7 +763,7 @@ export function printCatalysisReport() {
                 if (interpretation.notes) printItems.push(m("div.narrafirma-catalysis-report-interpretation-notes", interpretation.notes));
                 
                 var observationList = makeObservationListForInterpretation(project, allObservations, interpretation.name);
-                printItems.push(<any>printObservationList(observationList, allStories, minimumStoryCountRequiredForTest));
+                printItems.push(<any>printObservationList(observationList, allStories, minimumStoryCountRequiredForTest, numHistogramBins, numScatterDotOpacityLevels, scatterDotSize));
                 
                 // TODO: Translate
                 progressModel.progressText = progressText(perspectiveIndex, interpretationIndex);

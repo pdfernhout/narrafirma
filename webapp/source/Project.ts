@@ -19,6 +19,8 @@ class Project {
     redrawCallback: Function;
     static defaultMinimumStoryCountRequiredForTest = 20;
     static defaultNumHistogramBins = 20;
+    static defaultNumScatterDotOpacityLevels = 3;
+    static defaultScatterDotSize = 8;
     static defaultCorrelationLineChoice = "0.05";
     static defaultGraphTypesToCreate = {
         "data integrity graphs": true,
@@ -471,7 +473,31 @@ class Project {
             return Project.defaultNumHistogramBins;
         }
     }
- 
+
+    numScatterDotOpacityLevels(catalysisReportIdentifier) {
+        if (!catalysisReportIdentifier) {
+            throw new Error("catalysisReportIdentifier was not supplied");
+        }
+        var numScatterDotOpacityLevels = this.tripleStore.queryLatestC(catalysisReportIdentifier, "numScatterDotOpacityLevels");
+        if (numScatterDotOpacityLevels) {
+            return parseInt(numScatterDotOpacityLevels, 10);
+        } else {
+            return Project.defaultNumScatterDotOpacityLevels;
+        }
+    }
+    
+    scatterDotSize(catalysisReportIdentifier) {
+        if (!catalysisReportIdentifier) {
+            throw new Error("catalysisReportIdentifier was not supplied");
+        }
+        var scatterDotSize = this.tripleStore.queryLatestC(catalysisReportIdentifier, "scatterDotSize");
+        if (scatterDotSize) {
+            return parseInt(scatterDotSize, 10);
+        } else {
+            return Project.defaultScatterDotSize;
+        }
+    }
+
     correlationLineChoice(catalysisReportIdentifier) {
         if (!catalysisReportIdentifier) {
             throw new Error("catalysisReportIdentifier was not supplied");

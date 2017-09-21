@@ -18,6 +18,8 @@ interface GraphHolder {
     excludeStoryTooltips?: boolean;
     minimumStoryCountRequiredForTest: number;
     numHistogramBins: number;
+    numScatterDotOpacityLevels: number;
+    scatterDotSize: number;
     correlationLineChoice: string;
     graphTypesToCreate: {};
 }

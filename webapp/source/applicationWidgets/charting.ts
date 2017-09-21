@@ -1168,11 +1168,15 @@ export function d3ScatterPlot(graphBrowserInstance: GraphHolder, xAxisQuestion, 
     // Append brush before data to ensure titles are drown
     chart.brush = createBrush(chartBody, xScale, yScale, brushend);
     
+    var opacity = 1.0 / graphBrowserInstance.numScatterDotOpacityLevels;
+    var dotSize = graphBrowserInstance.scatterDotSize;
+
     var storyDisplayItems = chartBody.selectAll(".story")
             .data(allPlotItems)
         .enter().append("circle")
             .attr("class", "story")
-            .attr("r", 8)
+            .attr("r", dotSize)
+            .style("opacity", opacity)
             .attr("cx", function (plotItem) { return xScale(plotItem.x); } )
             .attr("cy", function (plotItem) { return yScale(plotItem.y); } );
     
