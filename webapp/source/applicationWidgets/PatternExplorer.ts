@@ -93,6 +93,7 @@ class PatternExplorer {
     textAnswersPanelSpecification = null;
     
     minimumStoryCountRequiredForTest = Project.defaultMinimumStoryCountRequiredForTest;
+    numHistogramBins = Project.defaultNumHistogramBins;
     correlationLineChoice = Project.defaultCorrelationLineChoice;
     graphTypesToCreate = Project.defaultGraphTypesToCreate;
     
@@ -108,6 +109,7 @@ class PatternExplorer {
             currentGraph: null,
             currentSelectionExtentPercentages: null,
             minimumStoryCountRequiredForTest: Project.defaultMinimumStoryCountRequiredForTest,
+            numHistogramBins: Project.defaultNumHistogramBins,
             correlationLineChoice: Project.defaultCorrelationLineChoice,
             graphTypesToCreate: Project.defaultGraphTypesToCreate
         };
@@ -433,7 +435,10 @@ class PatternExplorer {
         }
         
         this.minimumStoryCountRequiredForTest = this.project.minimumStoryCountRequiredForTest(catalysisReportIdentifier);
+        this.graphHolder.minimumStoryCountRequiredForTest = this.minimumStoryCountRequiredForTest; 
         // console.log("minimumStoryCountRequiredForTest", this.minimumStoryCountRequiredForTest);
+        this.numHistogramBins = this.project.numberOfHistogramBins(catalysisReportIdentifier);
+        this.graphHolder.numHistogramBins = this.numHistogramBins; 
         this.correlationLineChoice = this.project.correlationLineChoice(catalysisReportIdentifier);
         this.graphHolder.correlationLineChoice = this.correlationLineChoice; // because need to pass it in to charting methods
         this.graphTypesToCreate = this.project.graphTypesToCreate(catalysisReportIdentifier);

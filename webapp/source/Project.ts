@@ -18,6 +18,7 @@ class Project {
     tripleStore: TripleStore;
     redrawCallback: Function;
     static defaultMinimumStoryCountRequiredForTest = 20;
+    static defaultNumHistogramBins = 20;
     static defaultCorrelationLineChoice = "0.05";
     static defaultGraphTypesToCreate = {
         "data integrity graphs": true,
@@ -456,6 +457,18 @@ class Project {
             return parseInt(minimumStoryCountRequiredForTest, 10);
         } else {
             return Project.defaultMinimumStoryCountRequiredForTest;
+        }
+    }
+
+    numberOfHistogramBins(catalysisReportIdentifier) {
+        if (!catalysisReportIdentifier) {
+            throw new Error("catalysisReportIdentifier was not supplied");
+        }
+        var numHistogramBins = this.tripleStore.queryLatestC(catalysisReportIdentifier, "numHistogramBins");
+        if (numHistogramBins) {
+            return parseInt(numHistogramBins, 10);
+        } else {
+            return Project.defaultNumHistogramBins;
         }
     }
  

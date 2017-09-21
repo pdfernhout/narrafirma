@@ -855,7 +855,7 @@ export function d3HistogramChartForValues(graphBrowserInstance: GraphHolder, plo
     
     // Generate a histogram using twenty uniformly-spaced bins.
     // TODO: Casting to any to get around D3 typing limitation where it expects number not an object
-    var data = (<any>d3.layout.histogram().bins(xScale.ticks(20))).value(function (d) { return d.value; })(plotItems);
+    var data = (<any>d3.layout.histogram().bins(xScale.ticks(graphBrowserInstance.numHistogramBins))).value(function (d) { return d.value; })(plotItems);
 
     // Set the bin for each plotItem
     data.forEach(function (bin) {

@@ -596,6 +596,7 @@ function printObservationList(observationList, allStories, minimumStoryCountRequ
             currentSelectionExtentPercentages: null,
             excludeStoryTooltips: true,
             minimumStoryCountRequiredForTest: minimumStoryCountRequiredForTest,
+            numHistogramBins: Project.defaultNumHistogramBins,
             correlationLineChoice: null,
             graphTypesToCreate: {}
         };

@@ -39,6 +39,7 @@ class GraphBrowser {
             currentGraph: null,
             currentSelectionExtentPercentages: null,
             minimumStoryCountRequiredForTest: Project.defaultMinimumStoryCountRequiredForTest,
+            numHistogramBins: Project.defaultNumHistogramBins,
             correlationLineChoice: null,
             graphTypesToCreate: {}
         }; 

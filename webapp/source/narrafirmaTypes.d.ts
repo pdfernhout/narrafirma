@@ -17,6 +17,7 @@ interface GraphHolder {
     currentSelectionExtentPercentages: GraphSelection;
     excludeStoryTooltips?: boolean;
     minimumStoryCountRequiredForTest: number;
+    numHistogramBins: number;
     correlationLineChoice: string;
     graphTypesToCreate: {};
 }

@@ -49,11 +49,36 @@ var panel: Panel = {
                 "35",
                 "40",
                 "45",
-                "50"
+                "50",
+                "60",
+                "70",
+                "80",
+                "90",
+                "100"
             ],
             displayType: "select",
             displayName: "Minimum subset size",
             displayPrompt: "How large should <strong>subsets</strong> of stories be to be considered for statistical tests?",
+            displayVisible: function(panelBuilder, model) {
+                return !!Globals.clientState().catalysisReportName();
+            }
+        },
+
+        {
+            id: "configureCatalysisReport_numHistogramBins",
+            valuePath: "/clientState/catalysisReportIdentifier/numHistogramBins",
+            valueType: "string",
+            valueOptions: [
+                "5",
+                "10",
+                "15",
+                "20",
+                "25",
+                "30"
+            ],
+            displayType: "select",
+            displayName: "Number of histogram bins",
+            displayPrompt: "How many <strong>bars</strong> should be drawn on histograms?",
             displayVisible: function(panelBuilder, model) {
                 return !!Globals.clientState().catalysisReportName();
             }
