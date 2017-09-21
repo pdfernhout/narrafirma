@@ -61,6 +61,7 @@ function add_questionAnswer(panelBuilder: PanelBuilder, model, fieldSpecificatio
         var value = valueProperty();
         if (value === undefined || value === null) value = "";
         if (fieldSpecification.displayTransformValue) value = fieldSpecification.displayTransformValue(value, model, fieldSpecification, panelBuilder);
+        if (fieldSpecification.displayURLValue) value = fieldSpecification.displayURLValue(value, model);
         return value;
     };
     
@@ -81,10 +82,17 @@ function add_questionAnswer(panelBuilder: PanelBuilder, model, fieldSpecificatio
     // contentPane.own(watcher);
     
     // TODO: Fix styling
-    return m("div", {"class": "questionExternal narrafirma-question-type-questionAnswer"}, [
-        sanitizeHTML.generateSanitizedHTMLForMithril(fieldSpecification.displayPrompt),
-        m("div[class=narrafirma-questionAnswer]", calculate())
-    ]);
+    if (fieldSpecification.displayURLValue) {
+        return m("div", {"class": "questionExternal narrafirma-question-type-questionAnswer"}, [
+            sanitizeHTML.generateSanitizedHTMLForMithril(fieldSpecification.displayPrompt),
+            m("div", {"class": "narrafirma-survey-link"}, calculate())
+        ]);
+    } else {
+        return m("div", {"class": "questionExternal narrafirma-question-type-questionAnswer"}, [
+            sanitizeHTML.generateSanitizedHTMLForMithril(fieldSpecification.displayPrompt),
+            m("div[class=narrafirma-questionAnswer]", calculate())
+        ]);
+    }
 }
 
 export = add_questionAnswer;

@@ -12,9 +12,14 @@ var panel: Panel = {
             valueType: "none",
             displayType: "label",
             displayPrompt: `
-                The story collection is only created when you click the <strong>Close</strong> button.
-                If you forget to click the Close button when you create the story collection, 
-                you can come back to this panel, set the story form, and click the "Update Story Form" button.
+                Please describe your story collection here.<br><br>
+                <span.narrafirma-special-warning><strong>NOTE</strong>: 
+                When you create a new story collection and click the <strong>Close</strong> button, the story form
+                you chose becomes associated with the new story collection. If you forget to click the <strong>Close</strong> button
+                (and, say, click on a link to go to another NarraFirma page), you will have created a story collection
+                that has no associated story form. This may lead you to see error messages when you try to do things
+                that use the story form. But don't worry! If that happens, come back to this panel, 
+                set the story form, and click the "Update Story Form" button.</span>
             `
         },
         {
@@ -42,9 +47,11 @@ var panel: Panel = {
                 <span.narrafirma-special-warning>The first time you choose a story form here and click the Close button,
                 a <strong>copy</strong> of the story form, <em>as it is at that moment</em>, will be placed into the new story collection.
                 Any changes you make to the story form afterwards will <em>not</em> be automatically reflected in the copy stored in the story collection.
-                To start using new changes to a story form (like during testing), press the "Update Story Form button" below.
-                However, it is not recommended to update a story form after data collection has begun (except perhaps for minor typographical errors).
-                Also, you should not change which form is used in an existing story collection.
+                <br><br>
+                To start using new changes to a story form (such as during testing), press the "Update Story Form button" below.
+                We do not recommend that you update a story form after data collection has begun, except for minor typographical errors.
+                <br><br>
+                Also, you should not change which form is being used by an existing story collection.
                 To use a different or significantly revised story form after story collection has begun, create a new story collection.</span>
             `
         },
@@ -61,7 +68,8 @@ var panel: Panel = {
             displayType: "checkbox",
             displayReadOnly: true,
             displayName: "Active on web?",
-            displayPrompt: "If this survey is currently <strong>active</strong> on the web server, this check box will be checked."
+            displayConfiguration: "Yes, this survey is currently active on the web server.",
+            displayPrompt: "If this survey is currently <strong>active</strong> on the web server, this check box will be checked. (You can't <i>change</i> whether the survey is active here. To do that, click the \"Activate or Deactivate Web Form\" button above.)"
         },
         {
             id: "storyCollection_webFormAddress",
@@ -70,7 +78,7 @@ var panel: Panel = {
             displayName: "Web form address",
             displayPrompt: "The <strong>web address</strong> (URL) of this story collection is:",
             displayConfiguration: "storyCollection_activeOnWeb",
-            displayTransformValue: function (value, model) {
+            displayURLValue: function (value, model) {
                 if (!value) return "";
                 return surveyCollection.urlForSurvey(model);
             }

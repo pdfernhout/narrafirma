@@ -342,6 +342,11 @@ button {
     background-color: white;
 }
 
+.narrafirma-survey-link {
+    display: block;
+    padding: 1em 0 0 1em;
+}
+
 form {
    padding-left: 0.7em;
 }
@@ -396,7 +401,7 @@ form {
 	background-color: #eac199;
 	border: 2px solid #cc6400;
 	padding: 10px;
-	margin-left: 5em;
+	margin-left: 2em;
 }
 
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Story card display ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */

@@ -149,7 +149,9 @@ export function urlForSurvey(storyCollectionIdentifier) {
     // TODO: Duplicated project prefix; should refactor to have it in one place
     var projectName = project.journalIdentifier.substring("NarraFirmaProject-".length);
     var shortName = project.tripleStore.queryLatestC(storyCollectionIdentifier, "storyCollection_shortName");
-    return baseURL + "/survey.html#project=" + projectName + "&survey=" + shortName;
+    var url = baseURL + "/survey.html#project=" + projectName + "&survey=" + shortName;
+    var result = m("a[id=narrafirma-survey-url]", {href: url, title: url, target: "_blank"}, url)
+    return result;
 }
 
 export function toggleWebActivationOfSurvey(model: string, fieldSpecification, value) {

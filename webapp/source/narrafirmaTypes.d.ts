@@ -65,6 +65,7 @@ interface PanelField {
     displayVisible?: any;
     displayReadOnly?: any;
     displayTransformValue?: any;
+    displayURLValue?: any;
     displayPreventBreak?: any;
     displayDataOptionField?: any;
 }
