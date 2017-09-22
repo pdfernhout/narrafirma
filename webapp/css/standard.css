@@ -923,10 +923,10 @@ table.filterTable td {
   width: 90%;
   max-width: 700px;
   position: relative;
-  min-height: 400px;
-  max-height: 650px;
+  min-height: 100px;
+  max-height: 600px;
   margin: 5% auto 0;
-  background-color: #fff;
+  background-color: #d5dae6; /* cfk */
   overflow: auto;
   z-index: 10001;
 }
@@ -940,7 +940,13 @@ table.filterTable td {
     max-height: 550px;
     margin: 10px;
     padding: 10px;
-    border: 1px dashed;
+    border: 1px dashed #2e4a85;
+}
+
+.narrafirma-dialog-cancel-button {
+    display: block;
+    margin: auto;
+    padding: 6px;
 }
 
 textarea.textEditorInDialog {
