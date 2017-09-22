@@ -1040,7 +1040,11 @@ export function multipleHistograms(graphBrowserInstance: GraphHolder, choiceQues
     // TODO: This styling may be wrong
     var chartPane = newChartPane(graphBrowserInstance, "noStyle");
       
-    var title = "" + nameForQuestion(scaleQuestion) + " vs. " + nameForQuestion(choiceQuestion) + " ...";
+    var optionsText = "";
+    if (scaleQuestion.displayConfiguration && scaleQuestion.displayConfiguration.length > 1) {
+        optionsText = " (" + scaleQuestion.displayConfiguration[0] + " to " + scaleQuestion.displayConfiguration[1] + ")";
+    }
+    var title = "" + nameForQuestion(scaleQuestion) + optionsText + " vs. " + nameForQuestion(choiceQuestion) + " ...";
     
     var content = m("span", {style: "text-align: center;"}, [m("b", title), m("br")]);
     
