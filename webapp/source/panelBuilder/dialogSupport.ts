@@ -84,7 +84,7 @@ class MithrilDialog {
                 } else {
                     hideDialogMethod();
                 }
-            }}, translate(args.dialogOKButtonLabel || "OK")));
+            }, "class": "narrafirma-dialog-cancel-button"}, translate(args.dialogOKButtonLabel || "OK")));
         }
         
         if (dialogConfiguration.dialogCancelButtonLabel) {
@@ -246,7 +246,7 @@ function build_listChooserDialogContent(dialogConfiguration, hideDialogMethod) {
         m("br"),
         dialogConfiguration.choices.sort((a, b) => {return a.name.localeCompare(b.name); }).map((choice) => {
             return [
-                m("button", {onclick: selectionMade.bind(null, dialogConfiguration, choice)}, choice.name)
+                m("button", {onclick: selectionMade.bind(null, dialogConfiguration, choice)}, choice.name), m("br")
             ];
         }),
         m("br"),
