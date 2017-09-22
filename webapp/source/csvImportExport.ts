@@ -296,7 +296,11 @@ function processCSVContentsForStories(contents) {
 
 function warnIfProblemWithCellValueForQuestion(value, questionName, questionType, options, errorsToReport) {
     if (questionType === "select" || questionType === "boolean" || questionType == "radiobuttons" || questionType == "checkbox") {
-        if (value && options.indexOf(value) === -1) {
+        // check for multiple choice data (Object) trying to fit a single-choice question
+        if (typeof value === 'object') {
+            var error = "The question '" + questionName + "' should be single-choice, but the data is in multiple-choice format.";
+            if (errorsToReport.indexOf(error) === -1) errorsToReport.push(error);
+        } else if (value && options.indexOf(value) === -1) {
             var error = "The cell '" + value + "' does not match any of the options [" + options.join(";") + "] for the question '" + questionName + "'";
             if (errorsToReport.indexOf(error) === -1) errorsToReport.push(error);
         }
