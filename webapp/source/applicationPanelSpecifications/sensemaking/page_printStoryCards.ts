@@ -1,4 +1,5 @@
 import kludgeForUseStrict = require("../../kludgeForUseStrict");
+import Globals = require("../../Globals");
 "use strict";
 
 var panel: Panel = {
@@ -31,6 +32,16 @@ var panel: Panel = {
             valueType: "none",
             displayType: "label",
             displayPrompt: ""
+        },
+        {
+            id: "printStoryCards_chooseQuestions",
+            valueType: "object",
+            valuePath: "/clientState/storyCollectionName/printStoryCards_questionsToInclude",
+            displayType: "printStoryCardsQuestionChooser",
+            displayPrompt: "Which <strong>questions</strong> should be included in the story cards?",
+            displayVisible: function(panelBuilder, model) {
+                return !!Globals.clientState().storyCollectionName();
+            }
         },
         {
             id: "printStoryCards_printFormButton",

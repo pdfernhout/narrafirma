@@ -16,7 +16,7 @@ import _ = require("lodash");
 "use strict";
 
 // Question types that have data associated with them for filters and graphs
-var nominalQuestionTypes = ["select", "boolean", "checkbox", "checkboxes", "radiobuttons", "text"];
+var nominalQuestionTypes = ["select", "boolean", "checkbox", "checkboxes", "radiobuttons"];
 
 var patternsPanelSpecification = {
     id: "patternsPanel",
@@ -41,7 +41,7 @@ function nameForQuestion(question) {
 // TODO: Next two functions from add_storyBrowser and so are duplicate code
 
 function buildStoryDisplayPanel(panelBuilder: PanelBuilder, model) {
-    var storyCardDiv = storyCardDisplay.generateStoryCardContent(model);
+    var storyCardDiv = storyCardDisplay.generateStoryCardContent(model, undefined);
     
      return storyCardDiv;
 }

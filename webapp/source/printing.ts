@@ -390,10 +390,13 @@ export function printStoryCards() {
     // console.log("allStoriesInStoryCollection", allStoriesInStoryCollection);
     
     var storyDivs = [];
+
+    var project = Globals.project();
+    var questionsToInclude = project.tripleStore.queryLatestC(storyCollectionName, "printStoryCards_questionsToInclude"); 
     
     for (var storyIndex = 0; storyIndex < allStoriesInStoryCollection.length; storyIndex++) {
         var storyModel = allStoriesInStoryCollection[storyIndex];
-        var storyContent = storyCardDisplay.generateStoryCardContent(storyModel, {storyTextAtTop: true});
+        var storyContent = storyCardDisplay.generateStoryCardContent(storyModel, questionsToInclude, {storyTextAtTop: true});
         
         var storyDiv = m(".storyCardForPrinting", storyContent);
         storyDivs.push(storyDiv);
