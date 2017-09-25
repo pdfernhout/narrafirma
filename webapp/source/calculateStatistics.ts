@@ -290,7 +290,11 @@ export function calculateStatisticsForMultipleHistogram(ratioQuestion, nominalQu
         return {significance: "None (at least one count in [" + allNs.join(", ") + "] below threshold)", calculated: ["n"], n: n};
     }
 
-    var significance = " p=" + pLowest.toFixed(3) + " U=" + uLowest + " n=" + n;
+    if (pLowest < 0.001) {
+        var significance = " p<0.001" + " U=" + uLowest + " n=" + n;
+    } else {
+        var significance = " p=" + pLowest.toFixed(3) + " U=" + uLowest + " n=" + n;
+    }
     return {significance: significance, calculated: ["p", "U", "n"], p: pLowest, U: uLowest, n: n, allResults: allResults};
 }
 
@@ -317,7 +321,11 @@ export function calculateStatisticsForScatterPlot(ratioQuestion1, ratioQuestion2
         var t = r * Math.sqrt((n - 2.0) / (1.0 - r * r));
         p = jStat.ttest(t, n, 2);
     }
-    var significance = " p=" + p.toFixed(3) + " rho=" + r.toFixed(3) + " n=" + n;
+    if (p < 0.001) {
+        var significance = " p<0.001" + " rho=" + r.toFixed(3) + " n=" + n;
+    } else {
+        var significance = " p=" + p.toFixed(3) + " rho=" + r.toFixed(3) + " n=" + n;
+    }
     //  + " tt=" + statResult.test.toFixed(3) + " tz=" + statResult.z.toFixed(3) + " tp=" + statResult.prob.toFixed(3) ;
     // console.log("calculateStatisticsForScatterPlot", rationQuestion1, rationQuestion2, n, t, p);
     return {significance: significance, calculated: ["p", "rho", "n"], p: p, rho: r, n: n};
@@ -479,6 +487,10 @@ export function calculateStatisticsForTable(nominalQuestion1, nominalQuestion2, 
         //throw new Error("unexpected statResult.n");
     }
     
-    var significance = " p=" + statResult.p.toFixed(3) + " x2=" + statResult.x2.toFixed(3) + " k=" + statResult.k + " n=" + statResult.n;
+    if (statResult.p < 0.001) {
+        var significance = " p<0.001" + " x2=" + statResult.x2.toFixed(3) + " k=" + statResult.k + " n=" + statResult.n;
+    } else {
+        var significance = " p=" + statResult.p.toFixed(3) + " x2=" + statResult.x2.toFixed(3) + " k=" + statResult.k + " n=" + statResult.n;
+    }
     return {significance: significance, calculated: ["p", "x2", "k", "n"], p: statResult.p, x2: statResult.x2, k: statResult.k, n: statResult.n};
 }

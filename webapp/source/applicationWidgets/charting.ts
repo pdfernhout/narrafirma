@@ -438,7 +438,11 @@ function htmlForLabelAndValue(key, object) {
         console.log("value is undefined");
     }
     if (key !== "n" && key !== "n1" && key !== "n2" && key !== "k" && key !== "U" && key !== "unanswered") {
-        value = value.toFixed(3);
+        if (key === "p" && value < 0.001) {
+            value = "<0.001";
+        } else {
+            value = value.toFixed(3);
+        }
     }
     return '<span class="statistics-name">' + key + '</span>: <span class="statistics-value">' + value + "</span>";
 }
