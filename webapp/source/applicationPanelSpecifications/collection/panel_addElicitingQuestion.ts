@@ -29,6 +29,7 @@ var panel: Panel = {
                 "point in time",
                 "event",
                 "extreme",
+                "memorable",
                 "surprise or change",
                 "people, places, things, decisions",
                 "fictional scenario",
