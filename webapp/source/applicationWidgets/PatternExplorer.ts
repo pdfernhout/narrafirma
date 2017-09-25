@@ -735,14 +735,14 @@ class PatternExplorer {
                 newGraph = charting.multipleScatterPlot(graphHolder, q1, q2, q3, selectionCallback);
                 break;
             case "data integrity":
-                if (pattern.patternName == "Unanswered choice questions" || pattern.patternName == "Unanswered scale questions") {
+                if (pattern.patternName === "Unanswered choice questions" || pattern.patternName === "Unanswered scale questions") {
                     newGraph = charting.d3BarChartForDataIntegrity(graphHolder, pattern.questions, pattern.patternName);
                     break;
-                } else if (pattern.patternName == "Participant means" || pattern.patternName == "Participant standard deviations") {
+                } else if (pattern.patternName === "Participant means" || pattern.patternName === "Participant standard deviations") {
                     graphHolder.excludeStoryTooltips = true; // no stories to link tooltips to in these cases
+                    newGraph = charting.d3HistogramChartForDataIntegrity(graphHolder, pattern.questions, pattern.patternName);
+                    break;
                 }
-                newGraph = charting.d3HistogramChartForDataIntegrity(graphHolder, pattern.questions, pattern.patternName);
-                break;
             case "texts":
                 newGraph = null;
                 break;
