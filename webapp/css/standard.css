@@ -8,7 +8,7 @@
 
 /* the NarraFirma color palette is (going darker from left to right)
 
-Gray - [extra: e4e4e4] - d3d2d2 - a7a5a5 - 3e3739 - 231f20
+Gray - [extra: eeeeee e4e4e4] - d3d2d2 - a7a5a5 - 3e3739 - 231f20
 Brown - e7ddd0 - cfbba2 - b5731e - 895717
 Green - e0e6cc - b2c07f - 8db500 - 658200
 Orange - f4e0cc - eac199 - ff7d00 - [extra: e0a266] - cc6400
@@ -282,7 +282,7 @@ button {
 }
  
 .narrafirma-griditempanel-viewing .narrafirma-question-type-header.questionExternal {
-	background-color: #a7a5a5;
+	background-color: #eeeeee; 
 }
  
 .questionExternal {
@@ -379,7 +379,7 @@ form {
 }
 
 .narrafirma-griditempanel-viewing {
-	background-color: #e4e4e4; /* this gray is an extra super light gray */
+	background-color: #eeeeee; /* this gray is an extra super light gray */
 	margin: 1em;
 	border: 1px solid #231f20;
 	border-radius: 12px;
@@ -387,7 +387,7 @@ form {
 }
 
 .narrafirma-griditempanel-viewing .questionExternal {
-	background-color: #e4e4e4;
+	background-color: #eeeeee;
 	margin: 0px;
 }
 
