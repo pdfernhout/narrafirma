@@ -512,7 +512,6 @@ export function d3BarChartForQuestion(graphBrowserInstance: GraphHolder, questio
         } else if (Object.keys(xValue).length === 0) {
             pushToMapSlot(results, unansweredKey, {story: story, value: unansweredKey});
         } else {
-            console.log(xValue);
             for (var xIndex in xValue) {
                 if (xValue[xIndex]) pushToMapSlot(results, xIndex, {story: story, value: xIndex});
             }
