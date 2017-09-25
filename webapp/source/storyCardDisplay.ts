@@ -41,6 +41,7 @@ function displayHTMLForSlider(fieldSpecification, fieldName, value) {
 
 function displayHTMLForCheckboxes(fieldSpecification, fieldName, value) {
     var options = [];
+    var atLeastOneOptionWasChecked = false;
     options.push(wrap("span", "narrafirma-story-card-field-name", fieldName + ": "));
     // TODO: What if value is not current available option?
     for (var i = 0; i < fieldSpecification.valueOptions.length; i++) {
@@ -49,15 +50,17 @@ function displayHTMLForCheckboxes(fieldSpecification, fieldName, value) {
         if (options.length-1) options.push(", ");
         if (value && value[option]) {
             options.push(wrap("span", "narrafirma-story-card-checkboxes-selected", option));
+            atLeastOneOptionWasChecked = true;
         } else {
             options.push(wrap("span", "narrafirma-story-card-checkboxes-unselected", option));
         }
     }
-    return options;
+    return [options, atLeastOneOptionWasChecked];
 }
 
 function displayHTMLForRadioButtons(fieldSpecification, fieldName, value) {
     var options = [];
+    var atLeastOneOptionWasChecked = false;
     options.push(wrap("span", "narrafirma-story-card-field-name", fieldName + ": "));
     // TODO: What if value is not current available option?
     for (var i = 0; i < fieldSpecification.valueOptions.length; i++) {
@@ -66,15 +69,17 @@ function displayHTMLForRadioButtons(fieldSpecification, fieldName, value) {
         if (options.length-1) options.push(", ");
         if (value && value === option) {
             options.push(wrap("span", "narrafirma-story-card-radiobuttons-selected", option));
+            atLeastOneOptionWasChecked = true;
         } else {
             options.push(wrap("span", "narrafirma-story-card-radiobuttons-unselected", option));
         }
     }
-    return options;
+    return [options, atLeastOneOptionWasChecked];
 }
 
 function displayHTMLForSelect(fieldSpecification, fieldName, value) {
     var options = [];
+    var atLeastOneOptionWasChecked = false;
     options.push(wrap("span", "narrafirma-story-card-field-name", fieldName + ": "));
     // TODO: What if value is not current available option?
     for (var i = 0; i < fieldSpecification.valueOptions.length; i++) {
@@ -82,11 +87,12 @@ function displayHTMLForSelect(fieldSpecification, fieldName, value) {
         if (options.length-1) options.push(", ");
         if (value && value === option) {
             options.push(wrap("span", "narrafirma-story-card-select-selected", option));
+            atLeastOneOptionWasChecked = true;
         } else {
             options.push(wrap("span", "narrafirma-story-card-select-unselected", option));
         }
     }
-    return options;
+    return [options, atLeastOneOptionWasChecked];
 }
 
 function displayHTMLForField(storyModel: surveyCollection.Story, fieldSpecification, nobreak = null) {
@@ -98,35 +104,50 @@ function displayHTMLForField(storyModel: surveyCollection.Story, fieldSpecificat
     if (fieldSpecification.displayType === "slider") {
         result.push(displayHTMLForSlider(fieldSpecification, fieldName, value));
     } else if (fieldSpecification.displayType === "checkboxes") {
-        result.push(displayHTMLForCheckboxes(fieldSpecification, fieldName, value));
+        var optionsAndChecked = displayHTMLForCheckboxes(fieldSpecification, fieldName, value);
+        if (optionsAndChecked[1]) {
+            result.push(wrap("div", "narrafirma-story-card-question-line-with-selected-item", optionsAndChecked[0]));
+        } else {
+            result.push(wrap("div", "narrafirma-story-card-question-line-without-selected-item", optionsAndChecked[0]));
+        }
     } else if (fieldSpecification.displayType === "select") {
-        result.push(displayHTMLForSelect(fieldSpecification, fieldName, value));
+        var optionsAndChecked = displayHTMLForSelect(fieldSpecification, fieldName, value);
+        if (optionsAndChecked[1]) {
+            result.push(wrap("div", "narrafirma-story-card-question-line-with-selected-item", optionsAndChecked[0]));
+        } else {
+            result.push(wrap("div", "narrafirma-story-card-question-line-without-selected-item", optionsAndChecked[0]));
+        }
     } else if (fieldSpecification.displayType === "radiobuttons") {
-        result.push(displayHTMLForRadioButtons(fieldSpecification, fieldName, value));
+        var optionsAndChecked = displayHTMLForRadioButtons(fieldSpecification, fieldName, value);
+        if (optionsAndChecked[1]) {
+            result.push(wrap("div", "narrafirma-story-card-question-line-with-selected-item", optionsAndChecked[0]));
+        } else {
+            result.push(wrap("div", "narrafirma-story-card-question-line-without-selected-item", optionsAndChecked[0]));
+        }
     } else if (fieldSpecification.displayType === "label" || fieldSpecification.displayType === "header") {
         return [];
     } else {
         // TODO: May need more handling here for other cases
-        result.push(wrap("span", "narrafirma-story-card-field-name", fieldName + ": "));
-        result.push(value);
+        var thisBit = [];
+        thisBit.push(wrap("span", "narrafirma-story-card-field-name", fieldName + ": "));
+        thisBit.push(value);
+        result.push(wrap("div", "narrafirma-story-card-question-line-without-selected-item", thisBit));
     }
-    if (!nobreak) {
-        result.push(m("br"));
-    }
+    //if (!nobreak) {
+    //    result.push(m("br"));
+    //}
     
     return result;  
 }
 
 interface Options {
-    excludeElicitingQuestion?: boolean;
-    excludeNumStoriesQuestion?: boolean;
     excludeAnnotations?: boolean;
     storyTextAtTop?: boolean;
     questionnaire?: any;
     location?: string;
 }
 
-export function generateStoryCardContent(storyModel, options: Options = {}) {
+export function generateStoryCardContent(storyModel, questionsToInclude, options: Options = {}) {
     // Encode all user-supplied text to ensure it does not create HTML issues
     var elicitingQuestion = storyModel.elicitingQuestion();
     var numStoriesTold = storyModel.numStoriesTold();
@@ -134,14 +155,29 @@ export function generateStoryCardContent(storyModel, options: Options = {}) {
     var storyName = storyModel.storyName();
     var storyText = storyModel.storyText();
     var otherFields = [];
-    
-    var questions = [];
+
     var questionnaire = storyModel.questionnaire();
     if (options.questionnaire) questionnaire = options.questionnaire;
-    
-    if (questionnaire) questions = questions.concat(questionnaire.storyQuestions);
-    if (questionnaire) questions = questions.concat(questionnaire.participantQuestions);
-    
+        
+    var allQuestions = [];
+    if (questionnaire) {
+        allQuestions = allQuestions.concat(questionnaire.storyQuestions);
+        allQuestions = allQuestions.concat(questionnaire.participantQuestions);
+        var allAnnotationQuestions = questionnaireGeneration.convertEditorQuestions(Globals.project().collectAllAnnotationQuestions(), "A_");
+        if (allAnnotationQuestions) allQuestions = allQuestions.concat(allAnnotationQuestions);
+    }
+
+    var questions = [];
+    if (questionsToInclude) {
+        allQuestions.forEach((question) => {
+            if (questionsToInclude[question.id]) {
+                questions.push(question);
+            }
+        });
+    } else {
+        questions = allQuestions;
+    }
+
     questions.sort(function(a, b) {
        var aName = a.displayName || a.displayPrompt || "";
        aName = aName.toLowerCase();
@@ -173,7 +209,8 @@ export function generateStoryCardContent(storyModel, options: Options = {}) {
     // console.log("otherFields", otherFields);
     
     var textForElicitingQuestion: any = [];
-    if (!options.excludeElicitingQuestion) {
+    // if questionsToInclude is unspecified, it is not being called in the "print story cards" page, so include this
+    if (!questionsToInclude || Object.keys(questionsToInclude).indexOf("elicitingQuestion") >= 0) {
         textForElicitingQuestion = m(
             ".narrafirma-story-card-eliciting-question", 
             [wrap("span", "narrafirma-story-card-eliciting-question-name", "Eliciting question: "), 
@@ -181,7 +218,8 @@ export function generateStoryCardContent(storyModel, options: Options = {}) {
     }
     
     var textForNumStoriesTold: any = [];
-    if (!options.excludeNumStoriesQuestion) {
+    // if questionsToInclude is unspecified, it is not being called in the "print story cards" page, so include this
+    if (!questionsToInclude || Object.keys(questionsToInclude).indexOf("numStoriesTold") >= 0) {
         textForNumStoriesTold = m(
             ".narrafirma-story-card-num-stories-question", 
             [wrap("span", "narrafirma-story-card-num-stories-question-name", "Number of stories told by this participant: "), 
