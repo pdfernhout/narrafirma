@@ -147,12 +147,14 @@ var graphResultsPaneCSS = `
 
 function printHTML(htmlToPrint: string) {
     // Display HTML in a new window
-    // onsole.log("printHTML", htmlToPrint);
+    // console.log("printHTML", htmlToPrint);
     var w = window.open();
-    w.document.write(htmlToPrint);
-    w.document.close();
-    // w.print();
-    // w.close();
+    if (w) {
+        w.document.write(htmlToPrint);
+        w.document.close();
+        // w.print();
+        // w.close();
+    }
 }
 
 function generateHTMLForPage(title: string, stylesheetReference: string, vdom) {
