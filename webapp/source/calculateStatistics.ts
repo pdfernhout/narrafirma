@@ -229,10 +229,8 @@ export function calculateStatisticsForHistogramValues(values, unansweredCount) {
     var skewness = jStat.skewness(values);
     var kurtosis = jStat.kurtosis(values);
     var result = {significance: "None", calculated: ["mean", "median", "sd", "skewness", "kurtosis", "n"], mean: mean, median: median, sd: sd, skewness: skewness, kurtosis: kurtosis, n: n};
-    if (unansweredCount > 0) {
-        result["calculated"].push("unanswered");
-        result["unanswered"] = unansweredCount;
-    }
+    result["calculated"].push("unanswered");
+    result["unanswered"] = unansweredCount;
     return result;
 }
 
