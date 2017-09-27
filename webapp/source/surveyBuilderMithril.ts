@@ -347,10 +347,10 @@ export function buildSurveyForm(surveyDiv, questionnaire, doneCallback, surveyOp
     startQuestions.push({id: "startText_label", displayName: "startText", displayPrompt: startText, displayType: "label", valueOptions: []});
 
     var endText = questionnaire.endText;
-    var thankYouText = questionnaire.thankYouText;
+    var thankYouPopupText = questionnaire.thankYouPopupText;
      // TODO: Translate
     if (!endText) endText = "Thank you for taking the survey.";
-    if (!thankYouText) thankYouText = "Your contribution has been added to the story collection. Thank you.";
+    if (!thankYouPopupText) thankYouPopupText = "Your contribution has been added to the story collection. Thank you.";
         
     var endQuestions = [];
     endQuestions.push({id: "endText_label", displayName: "endText", displayPrompt: endText, displayType: "label", valueOptions: []});
@@ -538,7 +538,8 @@ export function buildSurveyForm(surveyDiv, questionnaire, doneCallback, surveyOp
                 console.log("survey sending success" + (surveyOptions.previewMode ? " [preview mode only]" : ""));
                 submitted = "success";
                 // TODO: Translate
-                alert(thankYouText);
+                alert(thankYouPopupText);
+                
                 redraw("network");
             },
             failed: function () {

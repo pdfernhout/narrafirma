@@ -65,7 +65,7 @@ var panel: Panel = {
             displayPrompt: "Please enter any <strong>closing text</strong> to be shown on the form after the survey has been accepted. It might be a thank you or an invitation to participate further."
         },
         {
-            id: "questionForm_thankYouText",
+            id: "questionForm_thankYouPopupText",
             valueType: "string",
             displayType: "textarea",
             displayName: "Thank you text",
