@@ -121,14 +121,6 @@ M When import story form, hundreds of triples can be generated which take minute
 UNSURE
 X Way to retrieve data about project participant groups [Is this still relevant? Probably yes, if we did "checkboxes with pull" for picking what groups an activity applies to instead of text entry]
 
-======= CYNTHIA
-
-
-CHECK NOW CFK
-W After enter story in story thing, form contents don't change (in noticeable way). Rest of form looks the same and no indication. Maybe could improve somehow (like clear). Different needs for data entry -- want to clear and enter new one.
-L After you enter a story, it shows an alert that the story has been saved, but it doesn't get rid of the window. the popup window should go away
-
-
 ==== Wish list:
 
 Think about issue of including project name in stories and triple a field in realation to backup/restore
@@ -235,6 +227,8 @@ DONE Select questions for printing story cards
 DONE Test all statistical tests for validity more -- run same tests in spreadsheet on same data (actually compared to old NarraCat results)
 DONE Forgot to put "memorable" in eliciting question types ("What type of question is this?")
 DONE If entering a story and decide not to, can't remove window without adding story. (But seems to work during local test using "CLose" button) - changed "Close" to "Cancel"
+DONE After enter story in story thing, form contents don't change (in noticeable way). Rest of form looks the same and no indication. Maybe could improve somehow (like clear). Different needs for data entry -- want to clear and enter new one.
+DONE After you enter a story, it shows an alert that the story has been saved, but it doesn't get rid of the window. the popup window should go away - it doesn't but that's okay
 
 Things Cynthia did in release 0.9.1 (probably) but did not notice were still in the to-do list until release 1.0.0
 
