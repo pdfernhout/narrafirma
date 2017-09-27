@@ -958,6 +958,12 @@ table.filterTable td {
     border: 1px dashed #2e4a85;
 }
 
+.narrafirma-dialog-ok-button {
+    display: block;
+    margin: auto;
+    padding: 6px;
+}
+
 .narrafirma-dialog-cancel-button {
     display: block;
     margin: auto;

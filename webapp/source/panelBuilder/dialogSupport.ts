@@ -84,13 +84,13 @@ class MithrilDialog {
                 } else {
                     hideDialogMethod();
                 }
-            }, "class": "narrafirma-dialog-cancel-button"}, translate(args.dialogOKButtonLabel || "OK")));
+            }, "class": "narrafirma-dialog-ok-button"}, translate(args.dialogOKButtonLabel || "OK")));
         }
         
         if (dialogConfiguration.dialogCancelButtonLabel) {
            parts.push(m("button", {onclick: function() {
                 hideDialogMethod();
-            }}, translate(args.dialogCancelButtonLabel)));
+            }, "class": "narrafirma-dialog-cancel-button"}, translate(args.dialogCancelButtonLabel)));
         }
         return m("div.overlay", m("div.modal-content", {"class": dialogConfiguration.dialogStyle}, parts));
     }
