@@ -62,14 +62,14 @@ var panel: Panel = {
             valueType: "string",
             displayType: "textarea",
             displayName: "End of form text",
-            displayPrompt: "Please enter any <strong>closing text</strong> to be shown at the end of the form."
+            displayPrompt: "Please enter any <strong>closing text</strong> to be shown on the form after the survey has been accepted. It might be a thank you or an invitation to participate further."
         },
         {
             id: "questionForm_thankYouText",
             valueType: "string",
             displayType: "textarea",
             displayName: "Thank you text",
-            displayPrompt: "Please enter a <strong>thank you</strong> message to be shown after a participant submits their story."
+            displayPrompt: "Please enter a message to be shown in the <strong>pop-up alert</strong> after the participant submits their story."
         },
         {
             id: "questionForm_participantGroups",
