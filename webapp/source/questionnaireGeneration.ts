@@ -214,6 +214,7 @@ export function buildQuestionnaireFromTemplate(questionnaireTemplate: string) {
         image: "",
         startText: "",
         endText: "",
+        thankYouText: "",
         import_minScaleValue: "",
         import_maxScaleValue: "",
         elicitingQuestions: [],
@@ -225,6 +226,7 @@ export function buildQuestionnaireFromTemplate(questionnaireTemplate: string) {
     questionnaire.image = project.tripleStore.queryLatestC(questionnaireTemplate, "questionForm_image");
     questionnaire.startText = project.tripleStore.queryLatestC(questionnaireTemplate, "questionForm_startText");
     questionnaire.endText = project.tripleStore.queryLatestC(questionnaireTemplate, "questionForm_endText"); 
+    questionnaire.thankYouText = project.tripleStore.queryLatestC(questionnaireTemplate, "questionForm_thankYouText");
     questionnaire.import_minScaleValue = project.tripleStore.queryLatestC(questionnaireTemplate, "import_minScaleValue"); 
     questionnaire.import_maxScaleValue = project.tripleStore.queryLatestC(questionnaireTemplate, "import_maxScaleValue"); 
     

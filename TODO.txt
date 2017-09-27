@@ -1,5 +1,11 @@
 ==== NarraFirma TODO list:
 
+H - high priority
+M - medium priority
+L - low priority
+W - wish list
+X - not doing right now (might do later)
+
 SURVEY GENERAL
 M If logged in, survey should not use "anonymous" user to connect (or should ask)
 L Ideally, all responses for selections (other than numerical sliders) should have unique IDs for each response and the stored response should have the ID as well as the chosen text at the time.
@@ -12,12 +18,15 @@ W User can enter text for (print and web): Please choose a question to which you
 W After "update story form", is correct in "review incoming stories" under Edit but not under View (does not update for new form)
 
 SURVEY QUESTIONS
-L Remove "What type of question is this?" question from story-eliciting questions page
+X Remove "What type of question is this?" question from story-eliciting questions page - NO - it's okay
 X Survey - add checkbox for "is question answer required" (maybe later)
-X Survey - start page required (what do do if nothing entered)
+X Survey - start page required (what to do if nothing entered)
 X Survey - improve styling on radio buttons for question or alternative approach (maybe later)
 X Survey - maximum number stories (maybe later)
 X Survey - back button in browser -- deal with so don't lose data
+W Ideally way to do conditional question or answer (piping), especially to pick participant group
+W Need "other" field for radiobuttons and checkboxes (maybe dropdown, probably not)
+W Sliders - Sliders too tiny (hard to see color) 
 
 IDs
 X Improve how options are specified for questions in question designer rather than use text box
@@ -40,32 +49,25 @@ X Page to enter themes for stories
 X Page to cluster themes into final themes
 
 STORY CARDS
-M Select questions for printing story cards
 M Select story positioning and visibility for printing story cards
 M Select title positioning and visibility for printing story cards
 
 GRAPH BROWSER
-M Add Eliciting question to catalysis - seems like it is not there (!)
-M Test all statistical tests for validity more -- run same tests in spreadsheet on same data
-M Support multiple scatter plots across individual question answers
 M Should mutiple histograms perhap have stats calculated between them even if checkboxes?
 L In general, size graphs better based on window size
 L Support graphBrowser common maximum for multiple histograms
 
 PATTERN EXPLORER
 L Show number of interpretations in table in PatternExplorer
+X Need a flip axis for slider for catalysis when graphing?
 
 CLUSTERING (CATALYSIS)
 
 CATALYSIS REPORT
-M Support multiple scatter plots per nominal question
-M For P=0.000 maybe show < somehow as in p<0.001
-M Improve look of catalysis report
-M Test that catalysis report can be reliably imported in Word using the inline images or from intermediate PDF doc printed on Mac
-M Show percentages for question answers in title hover over questions in catalysis report configuration
+X Show percentages for question answers in title hover over questions in catalysis report configuration
 
 CATALYSIS
-M Support an excerpt list somehow
+X Support an excerpt list somehow --> copy and paste from story list - good enough
 X Need to be able to select text in existing story to AddToExcerpts
 X Support storiesList -- for choosing a resonant story
 
@@ -100,7 +102,7 @@ X Validation of text fields for length
 X Validation for checkBoxes limited by maximum number of choices as validation error
 
 PRINTING
-X Print section reports as HTML
+X Print section reports as HTML 
 
 NAVIGATION
 L Way to select a different project to switch to (other than editing the URL or logging out)
@@ -121,21 +123,11 @@ X Way to retrieve data about project participant groups [Is this still relevant?
 
 ======= CYNTHIA
 
-L Fix CSS styling so reminder section of page is different
-L Improve general CSS styling on all pages (forms)
-X Forgot to put "memorable" in eliciting question types ("What type of question is this?")
 
-THINGS CYNTHIA NOTICED DURING PROJECT
-W When make story form, need way to copy all questions of a type into form
-W Ideally way to do conditional question or answer (piping), especially to pick participant group
-W If entering a story and decide not to, can't remove window without adding story. (But seems to work during local test using "CLose" button)
+CHECK NOW CFK
 W After enter story in story thing, form contents don't change (in noticeable way). Rest of form looks the same and no indication. Maybe could improve somehow (like clear). Different needs for data entry -- want to clear and enter new one.
-W Need "other" field for radiobuttons and checkboxes (maybe dropdown, probably not)
-W Sliders - Sliders too tiny (hard to see color) 
-W Need a flip axis for slider for catalysis when graphing
-
-THINGS CYNTHIA NOTICED WHILE DOING HELP (probably redundant but just in case)
 L After you enter a story, it shows an alert that the story has been saved, but it doesn't get rid of the window. the popup window should go away
+
 
 ==== Wish list:
 
@@ -160,8 +152,6 @@ Support mult-user chat
 Notify user of multi-user edit conflicts
 
 Copy selected stories to clipboard and/or a popup window
-
-Display list of selected stories in spot-checking graph browser in Collection section
 
 Support multiple item selection in clustering diagram
 
@@ -195,7 +185,7 @@ Generate PDF reports
 
 Hash password when sending from client to server (not strictly needed if use ssh, and without ssh everything is potentially insecure from MITM attacks)
 
-==== Might not do
+==== Might not do 
 
 Story list using dgrid with accordion for story
 Support checkBoxesWithPull -- a set of check boxes where the display texts are drawn from a list entered previously (like for participant list)
@@ -210,6 +200,49 @@ Support imageUploader
 Support storyBrowserCount
 
 ==== DONE
+
+---- Release 1.0.0
+
+DONE Support multiple scatter plots across individual question answers
+DONE Add data integrity graph: all scale values
+DONE Add data integrity graph: per-participant means
+DONE Add data integrity graph: per-participant std deviations
+DONE Add data integrity graph: number of N/As per question, scale questions
+DONE Add data integrity graph: number of N/As per question, choice questions
+DONE Add way to select which type of graph to show on "configure catalysis report" page (to look at graphs in batches by type)
+DONE Add correlation line to scatterplots
+DONE Add way to choose another project without logging out
+DONE Changed catalysis and spot-check graphs pages so they only show questions used in current story collection
+DONE Add Eliciting question to catalysis - seems like it is not there (!)
+DONE When make story form, need way to copy all questions of a type into form
+DONE Better reporting on statistical errors
+DONE Show text questions in catalysis 
+DONE Better error handling during import
+DONE Better explanation of import from CSV
+DONE Ability to set title, text, image, etc in CSV story form import
+DONE Show specified image in survey!
+DONE Better scaling for graphs
+DONE Counts above bars on bar graphs and histograms
+DONE Add count of num stories told per person - as question (so can be compared to other questions)
+DONE Add way to distinguish participants in imported data (to count num stories told)
+DONE Progress dialog when large number of catalysis statistics to calculate
+DONE Add scale conversion during data import (for legacy data)
+DONE Add options for graph drawing in catalysis - num histogram bins, scatterplot dot size and opacity
+DONE Add unanswered count to histograms
+DONE Improve story card display so not so jumpy
+DONE For P=0.000 maybe show < somehow as in p<0.001
+DONE Select questions for printing story cards
+DONE Test all statistical tests for validity more -- run same tests in spreadsheet on same data (actually compared to old NarraCat results)
+DONE Forgot to put "memorable" in eliciting question types ("What type of question is this?")
+DONE If entering a story and decide not to, can't remove window without adding story. (But seems to work during local test using "CLose" button) - changed "Close" to "Cancel"
+
+Things Cynthia did in release 0.9.1 (probably) but did not notice were still in the to-do list until release 1.0.0
+
+DONE Improve look of catalysis report (actually this was done back in 0.9.1)
+DONE Fix CSS styling so reminder section of page is different
+DONE Improve general CSS styling on all pages (forms)
+DONE Display list of selected stories in spot-checking graph browser in Collection section
+DONE Test that catalysis report can be reliably imported in Word using the inline images or from intermediate PDF doc printed on Mac
 
 ---- Release 0.9.1
 

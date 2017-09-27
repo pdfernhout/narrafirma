@@ -21,6 +21,9 @@ export function storeSurveyResult(pointrelClient: PointrelClient, projectIdentif
     var message = makeSurveyResultMessage(pointrelClient, projectIdentifier, storyCollectionName, completedSurvey);
     console.log("storeSurveyResult", message);
 
+    var thankYouText = "Your contribution has been added to the story collection. Thank you.";
+    if (completedSurvey && completedSurvey.questionnaire && completedSurvey.questionnaire.thankYouText) thankYouText = completedSurvey.questionnaire.thankYouText;
+
     pointrelClient.sendMessage(message, function(error, result) {
         if (error) {
             console.log("Problem saving survey result", error);
@@ -37,7 +40,7 @@ export function storeSurveyResult(pointrelClient: PointrelClient, projectIdentif
             wizardPane.forward();
         } else {
             // TODO: Translate
-            alert("Your contribution has been added to the story collection. Thank you.");
+            alert(thankYouText);
         }
     });
 }

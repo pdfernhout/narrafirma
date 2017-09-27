@@ -409,6 +409,7 @@ function processCSVContentsForQuestionnaire(contents) {
         questionForm_startText: "",
         questionForm_image: "",
         questionForm_endText: "",
+        questionForm_thankYouText: "",
         import_minScaleValue: 0,
         import_maxScaleValue: 0
         };
@@ -477,6 +478,9 @@ function processCSVContentsForQuestionnaire(contents) {
                     template.questionForm_endText = text;
                     project.tripleStore.addTriple(template.id, "questionForm_endText", text);
                     break;
+                case "Thank you text":
+                    template.questionForm_thankYouText = text;
+                    project.tripleStore.addTriple(template.id, "questionForm_thankYouText", text);
             }
         } else if (about === "import") {
             var type = item.Type;
@@ -818,6 +822,7 @@ export function exportQuestionnaire() {
     addOutputLine(["" + (++lineIndex), "", "", "Start text", "form", currentQuestionnaire.startText || ""]);
     addOutputLine(["" + (++lineIndex), "", "", "Image", "form", currentQuestionnaire.image || ""]);
     addOutputLine(["" + (++lineIndex), "", "", "End text", "form", currentQuestionnaire.endText || ""]);
+    addOutputLine(["" + (++lineIndex), "", "", "Thank you text", "form", currentQuestionnaire.thankYouText || ""]);
     
      // Export questionnaire
     var questionnaireBlob = new Blob([output], {type: "text/csv;charset=utf-8"});
