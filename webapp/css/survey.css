@@ -67,6 +67,14 @@ textarea, input, select {
 	margin: 0 20px;
 }
 
+textarea:-moz-read-only, input:-moz-read-only { /* For Firefox */
+	background-color: inherit;
+}
+
+textarea:read-only, input:read-only {
+	background-color: inherit;
+}
+
 .narrafirma-survey-question-type-header {
     font-weight: bold;
     background: white;
