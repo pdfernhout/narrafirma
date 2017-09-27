@@ -38,6 +38,14 @@ textarea, input, select {
 	font-size: 1em;
 }
 
+textarea:-moz-read-only, input:-moz-read-only { /* For Firefox */
+	background-color: inherit;
+}
+
+textarea:read-only, input:read-only {
+	background-color: inherit;
+}
+
 #surveyDiv {
    padding: 10px;
 }
@@ -84,14 +92,6 @@ textarea, input, select {
 
 .narrafirma-survey-question-internal {
 	margin: 0 20px;
-}
-
-textarea:-moz-read-only, input:-moz-read-only { /* For Firefox */
-	background-color: inherit;
-}
-
-textarea:read-only, input:read-only {
-	background-color: inherit;
 }
 
 .narrafirma-survey-question-type-header {

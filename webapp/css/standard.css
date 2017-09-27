@@ -338,6 +338,10 @@ button {
     border: 1px solid black;
 }
 
+textarea.narrafirma-textbox {
+    min-height: 5em;
+}
+
 .questionExternal.narrafirma-question-type-questionAnswer {
     background-color: white;
 }
