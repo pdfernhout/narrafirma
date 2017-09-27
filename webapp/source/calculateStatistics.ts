@@ -223,14 +223,20 @@ export function calculateStatisticsForHistogram(ratioQuestion, stories: surveyCo
 
 export function calculateStatisticsForHistogramValues(values, unansweredCount) {
     var n = values.length;
-    var mean = jStat.mean(values);
-    var median = jStat.median(values);
-    var sd = jStat.stdev(values, true);
-    var skewness = jStat.skewness(values);
-    var kurtosis = jStat.kurtosis(values);
-    var result = {significance: "None", calculated: ["mean", "median", "sd", "skewness", "kurtosis", "n"], mean: mean, median: median, sd: sd, skewness: skewness, kurtosis: kurtosis, n: n};
-    result["calculated"].push("unanswered");
-    result["unanswered"] = unansweredCount;
+    var result;
+    if (n <= 0) {
+        result = {significance: "None", calculated: [ "n"], n: n};
+    } else {
+        var mean = jStat.mean(values);
+        var median = jStat.median(values);
+        var mode = jStat.mode(values);
+        var sd = jStat.stdev(values, true);
+        var skewness = jStat.skewness(values);
+        var kurtosis = jStat.kurtosis(values);
+        result = {significance: "None", calculated: ["mean", "median", "mode", "sd", "skewness", "kurtosis", "n"], mean: mean, median: median, mode: mode, sd: sd, skewness: skewness, kurtosis: kurtosis, n: n};
+        result["calculated"].push("unanswered");
+        result["unanswered"] = unansweredCount;
+    }
     return result;
 }
 
@@ -249,7 +255,7 @@ export function calculateStatisticsForMultipleHistogram(ratioQuestion, nominalQu
     // var counts = countsForFieldChoice(stories, nominalQuestion.id);
     var values = valuesForFieldChoices(stories, ratioQuestion.id, nominalQuestion.id);
     var options = Object.keys(values);
-    
+
     // console.log("calculateStatisticsForMultipleHistogram options", options, values);
     
     // For every pair, compute test, and take best p score
@@ -265,6 +271,7 @@ export function calculateStatisticsForMultipleHistogram(ratioQuestion, nominalQu
         allNs.push(x.length);
         if (x.length < minimumStoryCountRequiredForTest) continue;
         n += x.length;
+
         for (var j = i + 1; j < options.length; j++) {
             var y = values[options[j]];
             if (y.length < minimumStoryCountRequiredForTest) continue;
