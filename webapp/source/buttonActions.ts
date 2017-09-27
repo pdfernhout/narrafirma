@@ -55,7 +55,7 @@ function openMithrilSurveyDialog(questionnaire, callback, previewModeTitleText =
         dialogTitle: "Take Survey" + (previewModeTitleText || ""),
         dialogStyle: undefined,
         dialogConstructionFunction: surveyViewFunction,
-        dialogOKButtonLabel: "Close",
+        dialogOKButtonLabel: "Cancel",
         dialogOKCallback: function(dialogConfiguration, hideDialogMethod) { hideDialogMethod(); }
     };
     
