@@ -437,11 +437,15 @@ function htmlForLabelAndValue(key, object) {
     if (value === undefined) {
         console.log("value is undefined");
     }
-    if (key !== "n" && key !== "n1" && key !== "n2" && key !== "k" && key !== "U" && key !== "unanswered") {
+    if (key !== "n" && key !== "n1" && key !== "n2" && key !== "k" && key !== "U" && key !== "unanswered" && key !== "mode") {
         if (key === "p" && value < 0.001) {
             value = "<0.001";
         } else {
-            value = value.toFixed(3);
+            if (isNaN(value)) {
+                value = "not a number"
+            } else {
+                value = value.toFixed(3);
+            }
         }
     }
     return '<span class="statistics-name">' + key + '</span>: <span class="statistics-value">' + value + "</span>";

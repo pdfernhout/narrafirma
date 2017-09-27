@@ -272,6 +272,10 @@ export function calculateStatisticsForMultipleHistogram(ratioQuestion, nominalQu
         if (x.length < minimumStoryCountRequiredForTest) continue;
         n += x.length;
 
+        if (options.length === 1) {
+            return {significance: "None (too few options to compare)", calculated: ["n"], n: n};
+        }
+
         for (var j = i + 1; j < options.length; j++) {
             var y = values[options[j]];
             if (y.length < minimumStoryCountRequiredForTest) continue;
