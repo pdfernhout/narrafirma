@@ -56,10 +56,29 @@ textarea, input, select {
     margin: 4px 10px 4px 10px;
 }
 
+.narrafirma-could-not-save-survey {
+    background: #eac199;
+    border-radius: 12px;
+    padding: 1em;
+}
+
+.narrafirma-sending-survey {
+    background: #f4e0cc;
+    border-radius: 12px;
+    padding: 1em;
+}
+
+.narrafirma-survey-accepted {
+    background: #8db500;
+    border-radius: 12px;
+    padding: 1em;
+}
+
 .narrafirma-survey-question-external {
     border-radius: 12px;
     background: #d5dae6;
     margin-bottom: 6px;
+    margin-top: 6px;
     padding: 8px;
 }
 

@@ -561,22 +561,23 @@ export function buildSurveyForm(surveyDiv, questionnaire, doneCallback, surveyOp
         if (submitted === "never") {
             return m("button", {"class": "narrafirma-survey-submit-survey-button", onclick: submitButtonPressed}, "Submit Survey" + (surveyOptions.previewMode ? " [preview mode only]" : ""));
         } else if (submitted === "failed") {
-            return m("div", [
+            return m("div.narrafirma-could-not-save-survey", [
                 "The server could not save your survey. Please try again.",
                 m("br"),
                 m("button", {"class": "narrafirma-survey-submit-survey-button", onclick: submitButtonPressed}, "Resubmit Survey" + (surveyOptions.previewMode ? " [preview mode only]" : ""))
             ]);
         } else if (submitted === "pending") {
-            return m("div", m("br"), ["Now sending survey result to server. Please wait . . ."]);
+            return m("div.narrafirma-sending-survey", m("br"), ["Now sending survey result to server. Please wait . . ."]);
         } else {
             return endQuestions.map(function(question, index) {
                 return m("div", [
                     m("br"),
-                    "Your survey has been accepted and stored.",
-                    m("br"),
-                    displayQuestion(null, null, question),
-                    m("br"),
-                    m("br")
+                    m("div.narrafirma-survey-accepted", ["Your survey has been accepted and stored.",
+                        m("br"),
+                        displayQuestion(null, null, question),
+                        m("br"),
+                        m("br")
+                ])
                 ]);
             });
         }
