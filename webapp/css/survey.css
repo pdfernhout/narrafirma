@@ -64,24 +64,6 @@ textarea:read-only, input:read-only {
     margin: 4px 10px 4px 10px;
 }
 
-.narrafirma-could-not-save-survey {
-    background: #eac199;
-    border-radius: 12px;
-    padding: 1em;
-}
-
-.narrafirma-sending-survey {
-    background: #f4e0cc;
-    border-radius: 12px;
-    padding: 1em;
-}
-
-.narrafirma-survey-accepted {
-    background: #8db500;
-    border-radius: 12px;
-    padding: 1em;
-}
-
 .narrafirma-survey-question-external {
     border-radius: 12px;
     background: #d5dae6;
@@ -150,6 +132,24 @@ textarea:read-only, input:read-only {
     text-align: left;
     font-size: 0.8em;
     white-space: nowrap;
+}
+
+/* 
+   Next two rules are for the input range (slider) to be visible in Android.
+   Derived from: http://tiffanybbrown.com/2012/02/07/input-typerange-and-androids-stock-browser/
+*/
+
+input[type='range']{
+    /* background: #0c0; */
+    height:15px;
+}
+
+input[type='range']::-webkit-slider-thumb{
+    /* background:#f60; */
+    background: #9CF;
+    height:30px;
+    width:30px;
+    border-radius: 30px;
 }
 
 .narrafirma-survey-value {
@@ -273,22 +273,22 @@ textarea:read-only, input:read-only {
 }
 
 
-/* 
-   Next two rules are for the input range (slider) to be visible in Android.
-   Derived from: http://tiffanybbrown.com/2012/02/07/input-typerange-and-androids-stock-browser/
-*/
-
-input[type='range']{
-    /* background: #0c0; */
-    height:15px;
+.narrafirma-could-not-save-survey {
+    background: #eac199;
+    border-radius: 12px;
+    padding: 1em;
 }
 
-input[type='range']::-webkit-slider-thumb{
-    /* background:#f60; */
-    background: #9CF;
-    height:30px;
-    width:30px;
-    border-radius: 30px;
+.narrafirma-sending-survey {
+    background: #f4e0cc;
+    border-radius: 12px;
+    padding: 1em;
+}
+
+.narrafirma-survey-accepted {
+    background: #8db500;
+    border-radius: 12px;
+    padding: 1em;
 }
 
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ for printing survey ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */

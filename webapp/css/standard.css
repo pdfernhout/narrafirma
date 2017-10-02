@@ -2,7 +2,7 @@
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ All pages ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 /* NOTE: the mnemonic for margin or padding order is TROUBLE: Top Right Bottom Left */
 
-/* A CSS stylesheet is like a GUI control system for twidling with widget options */
+/* A CSS stylesheet is like a GUI control system for twiddling with widget options */
 
 /* html, body, pleaseWaitOverlay - are in survey.css */
 
@@ -202,7 +202,7 @@ button {
     margin-bottom: 0.5em;
 }
 
-/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Dashboard ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Dashboard (home page) ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 .narrafirma-pni-phases-image {
     float: left;
@@ -360,6 +360,8 @@ form {
 	border-radius: 12px;
 }
 
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Grid item panel (spreadsheet like table) ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
 .narrafirma-griditem-form {
 	width: 800px;
 	height: 800px;
@@ -406,6 +408,76 @@ form {
 	border: 2px solid #cc6400;
 	padding: 10px;
 	margin-left: 2em;
+}
+
+.narrafirma-grid {
+    margin: 10px;
+}
+
+table.scrolling {
+  margin: 10px;
+  display: block;
+  max-height: 400px;
+  overflow-y: scroll;
+  border-collapse: collapse;
+}
+
+table.scrolling th {
+	background-color: #7b8cb2;
+	padding: 10px;
+	border: 1px solid #3e3739;
+}
+
+table.scrolling td {
+    padding: 6px;
+    border: 1px solid #3e3739;
+    height: 1em;
+}
+
+table button.fader {
+    opacity: 1;
+    overflow: auto;
+}
+
+table.scrolling tr {
+	border: 1px solid #3e3739;
+}
+
+table tr:hover button.fader {
+    opacity: 1;
+}
+
+table.scrolling tr:hover {
+    outline: 4px solid;
+}
+
+.narrafirma-grid-row-unselected-odd {
+	background-color: #d5dae6;
+}
+
+.narrafirma-grid-row-unselected-even {
+	background-color: #abb6ce;
+}
+
+.narrafirma-grid-row-selected-odd {
+	background-color: #f4e0cc;
+}
+
+.narrafirma-grid-row-selected-even {
+	background-color: #eac199;
+}
+
+.narrafirma-button-panel {
+    padding: 10px;
+}
+
+.narrafirma-button-panel button {
+    font-size: 1em;
+    height: 2em;
+    border-radius: 12px; 
+    border: none;
+    box-shadow: 2px 2px 2px #3e3739;
+    margin-bottom: 0.5em;
 }
 
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Story card display ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
@@ -634,14 +706,6 @@ form {
 
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ d3 charting ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-/* 
-Gray - [extra: e4e4e4] - d3d2d2 - a7a5a5 - 3e3739 - 231f20
-Brown - e7ddd0 - cfbba2 - b5731e - 895717
-Green - e0e6cc - b2c07f - 8db500 - 658200
-Orange - f4e0cc - eac199 - ff7d00 - [extra: e0a266] - cc6400
-Blue - d5dae6 - abb6ce - [extra: 7b8cb2] - 3b5fab - 2e4a85
-*/
-
 .narrafirma-graph-results-pane {
 	width: 850px;
 	margin: 2em auto 0px auto;
@@ -813,78 +877,6 @@ Blue - d5dae6 - abb6ce - [extra: 7b8cb2] - 3b5fab - 2e4a85
 .narrafirma-pattern-browser-selected-stories-header {
     margin-left: 10px;
     margin-top: 10px;
-}
-
-/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Mithril grid ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
-
-.narrafirma-grid {
-    margin: 10px;
-}
-
-table.scrolling {
-  margin: 10px;
-  display: block;
-  max-height: 400px;
-  overflow-y: scroll;
-  border-collapse: collapse;
-}
-
-table.scrolling th {
-	background-color: #7b8cb2;
-	padding: 10px;
-	border: 1px solid #3e3739;
-}
-
-table.scrolling td {
-    padding: 6px;
-    border: 1px solid #3e3739;
-    height: 1em;
-}
-
-table button.fader {
-    opacity: 1;
-    overflow: auto;
-}
-
-table.scrolling tr {
-	border: 1px solid #3e3739;
-}
-
-table tr:hover button.fader {
-    opacity: 1;
-}
-
-table.scrolling tr:hover {
-    outline: 4px solid;
-}
-
-.narrafirma-grid-row-unselected-odd {
-	background-color: #d5dae6;
-}
-
-.narrafirma-grid-row-unselected-even {
-	background-color: #abb6ce;
-}
-
-.narrafirma-grid-row-selected-odd {
-	background-color: #f4e0cc;
-}
-
-.narrafirma-grid-row-selected-even {
-	background-color: #eac199;
-}
-
-.narrafirma-button-panel {
-    padding: 10px;
-}
-
-.narrafirma-button-panel button {
-    font-size: 1em;
-    height: 2em;
-    border-radius: 12px; 
-    border: none;
-    box-shadow: 2px 2px 2px #3e3739;
-    margin-bottom: 0.5em;
 }
 
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Story browser ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
