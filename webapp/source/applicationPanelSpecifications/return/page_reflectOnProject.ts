@@ -202,6 +202,20 @@ var panel: Panel = {
             displayPrompt: "List some <strong>future projects</strong> that you would like to do after this project, if you can. What would you like to do next?"
         },
         {
+            id: "project_reflect_reminders_header",
+            valueType: "none",
+            displayType: "header",
+            displayPrompt: "Reminders"
+        },               
+        {
+            id: "project_reflect_reminders",
+            valueType: "string",
+            displayType: "textarea",
+            displayName: "Next project reminders",
+            displayPrompt: "Enter any <strong>reminders</strong> (ideas, resolutions, warnings) you want to keep in mind as you plan your next project. (Then, when you start your next project, copy these reminders and paste them into the \"Answer PNI planning questions\" page of the new project.)"
+        },
+        
+        {
             id: "project_reflect_notes_header",
             valueType: "none",
             displayType: "header",

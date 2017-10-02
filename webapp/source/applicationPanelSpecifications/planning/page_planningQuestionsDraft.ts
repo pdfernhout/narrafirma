@@ -53,6 +53,13 @@ var panel: Panel = {
             displayType: "textarea",
             displayName: "Project emphasis",
             displayPrompt: "What is the project's <strong>emphasis</strong>? Which phases of PNI (planning, collection, catalysis, sensemaking, intervention, return) will be important to the project?"
+        },
+        {
+            id: "project_pniQuestions_reminders_from_previous_project",
+            valueType: "string",
+            displayType: "textarea",
+            displayName: "Reminders from previous project",
+            displayPrompt: "If you copied any <strong>reminders</strong> from your reflections on a previous project (on the \"Reflect on the project\" page), you can paste them here."
         }
     ]
 };
