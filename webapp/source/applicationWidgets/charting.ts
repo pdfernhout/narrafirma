@@ -17,7 +17,7 @@ interface StoryPlotItem {
     value: number;
 }
 
-var unansweredKey = "{N/A}";
+var unansweredKey = "No answer";
 var maxRangeLabelLength = 26;
 
 function correctForUnanswered(question, value) {
@@ -200,7 +200,7 @@ function makeChartFramework(chartPane: HTMLElement, chartType, size, margin) {
     var fullHeight = 0;
     if (size == "large") {
         fullWidth = 700;
-        fullHeight = 600;
+        fullHeight = 500;
     } else if (size === "tall") {
         fullWidth = 700;
         fullHeight = 700;       
@@ -437,7 +437,7 @@ function htmlForLabelAndValue(key, object) {
     if (value === undefined) {
         console.log("value is undefined");
     }
-    if (key !== "n" && key !== "n1" && key !== "n2" && key !== "k" && key !== "U" && key !== "unanswered" && key !== "mode") {
+    if (key !== "n" && key !== "n1" && key !== "n2" && key !== "k" && key !== "U" && key !== unansweredKey && key !== "mode") {
         if (key === "p" && value < 0.001) {
             value = "<0.001";
         } else {
@@ -1023,7 +1023,7 @@ export function d3HistogramChartForValues(graphBrowserInstance: GraphHolder, plo
 export function multipleHistograms(graphBrowserInstance: GraphHolder, choiceQuestion, scaleQuestion, storiesSelectedCallback) {
     var options = [];
     var index;
-    if (choiceQuestion.displayType !== "checkbox" && choiceQuestion.displayType !== "checkboxes") {
+    if (choiceQuestion.displayType !== "checkbox") {
         options.push(unansweredKey);
     }
     if (choiceQuestion.displayType === "boolean" || choiceQuestion.displayType === "checkbox") {
@@ -1088,6 +1088,7 @@ export function d3ScatterPlot(graphBrowserInstance: GraphHolder, xAxisQuestion, 
     // Collect data
     
     var allPlotItems = [];
+    var unansweredCount = 0;
     var stories = graphBrowserInstance.allStories;
     for (var index in stories) {
         var story = stories[index];
@@ -1369,7 +1370,7 @@ export function d3ContingencyTable(graphBrowserInstance: GraphHolder, xAxisQuest
             }
         }
     }
-    
+
     var labelLengthLimit = 30;
     var longestColumnText = "";
     for (var columnName in columnLabels) {

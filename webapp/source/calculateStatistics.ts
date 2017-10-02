@@ -68,20 +68,40 @@ function correctForUnanswered(question, value) {
     if (value === undefined || value === null || value === "") return unansweredKey;
     return value;
 }
-var unansweredKey = "{N/A}";
+var unansweredKey = "No answer";
 
 function collectXYDataForFields(stories: surveyCollection.Story[], xFieldName, yFieldName, choiceQuestion, option) {
     var xResult = [];
     var yResult = [];
+    var unansweredCount = 0;
+    var skip;
     for (var i = 0; i < stories.length; i++) {
+
         var xValue = stories[i].fieldValue(xFieldName);
-        if (!isValidNumber(xValue)) continue;
         var yValue = stories[i].fieldValue(yFieldName);
-        if (!isValidNumber(yValue)) continue;
+
+        if (!isValidNumber(xValue) || !isValidNumber(yValue)) {
+            if (choiceQuestion) {
+                var choiceValue = correctForUnanswered(choiceQuestion, stories[i].fieldValue(choiceQuestion.id));
+                skip = false;
+                if (choiceQuestion.displayType === "checkboxes") {
+                    if (!choiceValue[option]) skip = true;
+                } else {
+                    if (choiceValue !== option) skip = true;
+                }
+                if (!skip) unansweredCount += 1;
+            } else {
+                unansweredCount += 1;
+            }
+            continue;
+        }
+
+        // has values for X and Y, can go on with values
+
         if (choiceQuestion) {
             // Only count results where the choice matches
             var choiceValue = correctForUnanswered(choiceQuestion, stories[i].fieldValue(choiceQuestion.id));
-            var skip = false;
+            skip = false;
             if (choiceQuestion.displayType === "checkboxes") {
                 if (!choiceValue[option]) skip = true;
             } else {
@@ -92,7 +112,7 @@ function collectXYDataForFields(stories: surveyCollection.Story[], xFieldName, y
         xResult.push(xValue);
         yResult.push(yValue);
     }
-    return {x: xResult, y: yResult};
+    return {x: xResult, y: yResult, unansweredCount: unansweredCount};
 }
 
 function addValue(arrayHolder, fieldName, value) {
@@ -234,8 +254,8 @@ export function calculateStatisticsForHistogramValues(values, unansweredCount) {
         var skewness = jStat.skewness(values);
         var kurtosis = jStat.kurtosis(values);
         result = {significance: "None", calculated: ["mean", "median", "mode", "sd", "skewness", "kurtosis", "n"], mean: mean, median: median, mode: mode, sd: sd, skewness: skewness, kurtosis: kurtosis, n: n};
-        result["calculated"].push("unanswered");
-        result["unanswered"] = unansweredCount;
+        result["calculated"].push(unansweredKey);
+        result[unansweredKey] = unansweredCount;
     }
     return result;
 }
@@ -312,7 +332,7 @@ export function calculateStatisticsForScatterPlot(ratioQuestion1, ratioQuestion2
     var data = collectXYDataForFields(stories, ratioQuestion1.id, ratioQuestion2.id, choiceQuestion, option);
     
     if (data.x.length < minimumStoryCountRequiredForTest) {
-        return {significance: "None (count of " + data.x.length + " below threshold)", calculated: ["n"], n: data.x.length};
+        return {significance: "None (count of " + data.x.length + " below threshold)", calculated: ["n", unansweredKey], n: data.x.length, "No answer": data.unansweredCount};
     }
     
     // TODO: Add a flag somewhere to use Kendall's Tau instead of Pearson/Spearman's R
@@ -337,7 +357,7 @@ export function calculateStatisticsForScatterPlot(ratioQuestion1, ratioQuestion2
     }
     //  + " tt=" + statResult.test.toFixed(3) + " tz=" + statResult.z.toFixed(3) + " tp=" + statResult.prob.toFixed(3) ;
     // console.log("calculateStatisticsForScatterPlot", rationQuestion1, rationQuestion2, n, t, p);
-    return {significance: significance, calculated: ["p", "rho", "n"], p: p, rho: r, n: n};
+    return {significance: significance, calculated: ["p", "rho", "n", unansweredKey], p: p, rho: r, n: n, "No answer": data.unansweredCount};
 }
 
 export function calculateStatisticsForMultipleScatterPlot(ratioQuestion1, ratioQuestion2, choiceQuestion, stories: surveyCollection.Story[], minimumStoryCountRequiredForTest: number): any {
