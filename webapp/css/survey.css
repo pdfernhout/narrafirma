@@ -298,13 +298,24 @@ input[type='range']::-webkit-slider-thumb{
 }
 
 .narrafirma-survey-print-intro {
-	margin: 0 0 1em 12px;
-	font-style: italic;
+	margin: 1.5em 0 0.5em 12px;
+	font-weight: bold;
 }
 
+.narrafirma-survey-print-about-you-text {
+    margin: 1.5em 0 0.5em 12px;
+    font-weight: bold;
+}
+
+.narrafirma-survey-print-end-text {
+	margin: 2em 0 2em 12px;
+    font-style: italic;
+    font-weight: bold;
+}
 .narrafirma-survey-print-please-select {
 	margin: 1.5em 0 0.5em 12px;
-	font-style: italic;
+    font-weight: bold;
+    font-style: italic;
 }
 
 .narrafirma-survey-print-enter-response {
@@ -344,10 +355,6 @@ input[type='range']::-webkit-slider-thumb{
 	border: 1px solid black;
 }
 
-.narrafirma-survey-print-end-text {
-	margin: 2em 0 2em 12px;
-	font-style: italic;
-}
 
 
 

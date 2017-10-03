@@ -390,7 +390,9 @@ export function buildSurveyForm(surveyDiv, questionnaire, doneCallback, surveyOp
     
     var allStoryQuestions = initialStoryQuestions.concat(questionnaire.storyQuestions);
             
-    var participantQuestions = [{id: "participantHeader", displayName: "participantHeader", displayPrompt: "About you", displayType: "header", valueOptions: [], displayClass: "narrafirma-participant-header"}];
+    var aboutYouText = questionnaire.aboutYouText;
+    if (!aboutYouText) aboutYouText = "About you";
+    var participantQuestions = [{id: "participantHeader", displayName: "participantHeader", displayPrompt: aboutYouText, displayType: "header", valueOptions: [], displayClass: "narrafirma-participant-header"}];
     participantQuestions = participantQuestions.concat(questionnaire.participantQuestions);
 
     // TODO: For testing

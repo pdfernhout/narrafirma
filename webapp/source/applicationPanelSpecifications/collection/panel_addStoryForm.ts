@@ -50,6 +50,13 @@ var panel: Panel = {
             displayPrompt: "Add one or more <strong>questions about stories</strong>, choosing from those you already wrote."
         },
         {
+            id: "questionForm_aboutYouText",
+            valueType: "string",
+            displayType: "text",
+            displayName: "About you text",
+            displayPrompt: "How would you like to title the <strong>participant questions</strong>? (For example, \"About you\" or \"Please answer these questions about you\")"
+        },
+        {
             id: "questionForm_participantQuestions",
             valueType: "array",
             displayType: "grid",
