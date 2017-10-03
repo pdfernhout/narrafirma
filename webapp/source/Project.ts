@@ -68,6 +68,10 @@ class Project {
             }
         });
     }
+
+    projectName() {
+        return this.journalIdentifier.substring("NarraFirmaProject-".length);
+    }
     
     // TODO: Redundant code with what is in GridWithItemPanel
     getListForField(fieldName) {
