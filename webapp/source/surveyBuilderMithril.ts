@@ -43,6 +43,16 @@ function getIdForText(text) {
     return "panelField_" + idsMade["$" + text];
 }
 
+export function loadCSS(document, url) {
+    var head = document.getElementsByTagName('head')[0],
+    link = document.createElement('link');
+    link.type = 'text/css';
+    link.rel = 'stylesheet';
+    link.href = url;
+    head.appendChild(link);
+    return link;
+  }
+  
 // Redrawing
 
 var globalRedrawCallback;
@@ -278,9 +288,11 @@ function displayQuestion(builder, model, fieldSpecification) {
         // Could suggest 0-100 to support <IE10 that don't have range input -- or could do polyfill
         // if (fieldSpecification.displayPrompt) questionLabel[0].children = fieldSpecification.displayPrompt + " (0-100)";
         parts = [
-            m("span", {"class": "narrafirma-survey-low"}, "◀ " + leftSideText),
+            m("span", {"class": "narrafirma-survey-low-arrow"}, "◀ "),
+            m("span", {"class": "narrafirma-survey-low"}, leftSideText),
             m('span', {"class": "narrafirma-survey-slider"}, m('input[type="range"]', sliderValueOptions)),
-            m('span', {"class": "narrafirma-survey-high"}, rightSideText + " ▶"),
+            m('span', {"class": "narrafirma-survey-high"}, rightSideText),
+            m('span', {"class": "narrafirma-survey-high-arrow"}, " ▶"),
             m("br"),
             m('input[type="checkbox"]', {
                 "class": "narrafirma-survey-does-not-apply",
@@ -340,11 +352,11 @@ export function buildSurveyForm(surveyDiv, questionnaire, doneCallback, surveyOp
     }
     
     if (questionnaire.title) {
-        startQuestions.push({id: "title_header", displayName: "title", displayPrompt: questionnaire.title, displayType: "header", valueOptions: []});
+        startQuestions.push({id: "title_header", displayName: "title", displayPrompt: questionnaire.title, displayType: "header", valueOptions: [], displayClass: "narrafirma-survey-title"});
         if (!surveyOptions.ignoreTitleChange) document.title = sanitizeHTML.removeHTMLTags(questionnaire.title);
     }
     
-    startQuestions.push({id: "startText_label", displayName: "startText", displayPrompt: startText, displayType: "label", valueOptions: []});
+    startQuestions.push({id: "startText_label", displayName: "startText", displayPrompt: startText, displayType: "label", valueOptions: [], displayClass: "narrafirma-survey-start-text"});
 
     var endText = questionnaire.endText;
     var thankYouPopupText = questionnaire.thankYouPopupText;
@@ -353,7 +365,7 @@ export function buildSurveyForm(surveyDiv, questionnaire, doneCallback, surveyOp
     if (!thankYouPopupText) thankYouPopupText = "Your contribution has been added to the story collection. Thank you.";
         
     var endQuestions = [];
-    endQuestions.push({id: "endText_label", displayName: "endText", displayPrompt: endText, displayType: "label", valueOptions: []});
+    endQuestions.push({id: "endText_label", displayName: "endText", displayPrompt: endText, displayType: "label", valueOptions: [], displayClass: "narrafirma-survey-end-text"});
 
     // TODO: What about idea of having IDs that go with eliciting questions so store reference to ID not text prompt?
     var elicitingQuestionOptions = [];
@@ -367,19 +379,18 @@ export function buildSurveyForm(surveyDiv, questionnaire, doneCallback, surveyOp
     // TODO: What if these IDs for storyText and storyName are not unique?
     var initialStoryQuestions = [];
     var singlePrompt = null;
-    // initialStoryQuestions.push({id: "questionHeader", displayName: "questionHeader", displayPrompt: "Story", displayType: "header", valueOptions: []});
     if (elicitingQuestionOptions.length !== 1) {
-        initialStoryQuestions.push({id: "elicitingQuestion", displayName: "elicitingQuestion", displayPrompt: "Please choose a question to which you would like to respond:", displayType: "radiobuttons", valueOptions: elicitingQuestionOptions});
-        initialStoryQuestions.push({id: "storyText", displayName: "storyText", displayPrompt: "Please enter your response in the box below:", displayType: "textarea", valueOptions: []});
+        initialStoryQuestions.push({id: "elicitingQuestion", displayName: "elicitingQuestion", displayPrompt: "Please choose a question to which you would like to respond:", displayType: "radiobuttons", valueOptions: elicitingQuestionOptions, displayClass: "narrafirma-eliciting-questions"});
+        initialStoryQuestions.push({id: "storyText", displayName: "storyText", displayPrompt: "Please enter your response in the box below:", displayType: "textarea", valueOptions: [], displayClass: "narrafirma-story-text"});
     } else {
         singlePrompt = elicitingQuestionOptions[0];
-        initialStoryQuestions.push({id: "storyText", displayName: "storyText", displayPrompt: singlePrompt.text, displayType: "textarea", valueOptions: []});
+        initialStoryQuestions.push({id: "storyText", displayName: "storyText", displayPrompt: singlePrompt.text, displayType: "textarea", valueOptions: [], displayClass: "narrafirma-story-text"});
     }
-    initialStoryQuestions.push({id: "storyName", displayName: "storyName", displayPrompt: "Please give your story a name.", displayType: "text", valueOptions: []});
+    initialStoryQuestions.push({id: "storyName", displayName: "storyName", displayPrompt: "Please give your story a name.", displayType: "text", valueOptions: [], displayClass: "narrafirma-story-name"});
     
     var allStoryQuestions = initialStoryQuestions.concat(questionnaire.storyQuestions);
             
-    var participantQuestions = [{id: "participantHeader", displayName: "participantHeader", displayPrompt: "About you", displayType: "header", valueOptions: []}];
+    var participantQuestions = [{id: "participantHeader", displayName: "participantHeader", displayPrompt: "About you", displayType: "header", valueOptions: [], displayClass: "narrafirma-participant-header"}];
     participantQuestions = participantQuestions.concat(questionnaire.participantQuestions);
 
     // TODO: For testing
@@ -641,7 +652,7 @@ export function buildSurveyForm(surveyDiv, questionnaire, doneCallback, surveyOp
         var result = m("div", [
             m(imageHTML || ""),
             startQuestions.map(function(question, index) {
-                return m("div", [displayQuestion(null, null, question)]);
+                return displayQuestion(null, null, question);
             }),
             
             stories.map(function(story, index) {
@@ -649,7 +660,7 @@ export function buildSurveyForm(surveyDiv, questionnaire, doneCallback, surveyOp
             }),
             anotherStoryButton(),
             participantQuestions.map(function(question, index) {
-                return m("div", [displayQuestion(null, surveyResult.participantData, question)]);
+                return displayQuestion(null, surveyResult.participantData, question);
             }),
             submitButtonOrWaitOrFinal()
             /* 

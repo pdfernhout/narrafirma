@@ -70,6 +70,7 @@ interface PanelField {
     displayURLValue?: any;
     displayPreventBreak?: any;
     displayDataOptionField?: any;
+    displayClass?: string;
 }
 
 interface Panel {

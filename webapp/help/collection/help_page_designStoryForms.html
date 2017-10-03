@@ -85,6 +85,48 @@ the data already collected.
 </p>
 </div>
 
+
+<div class="question">
+		How do I use the "Custom CSS" feature?
+		</div>
+		<div class="question-answer">
+		<ol>
+		<li>In the "Design story forms" page, when you are editing a story form, enter a valid CSS file name and location (URL). Enter the file's full URL, with
+		the "http://www." part in front. 
+		</li><li>Create an empty CSS file with that name (with the file extension .css). 
+		</li><li>Open a survey page in your browser (either in preview mode or in the working survey)
+		and <strong>inspect</strong> elements of the page. (In most browsers you can inspect page elements by right-clicking on a word or area and choosing "Inspect" from the popup menu.)
+		In the inspector window you should see a CSS class for that page element. 
+		</li><li>In your CSS file, write a class selector (label) and declaration (set of formatting lines)
+		for that class. For example, if you wanted to change the introductory text of your story form to appear in blue, you would write a CSS statement
+		like this:
+		<code><br/><br/>
+			.narrafirma-survey-start-text { <br/>
+			&nbsp; &nbsp; color: blue;<br/>
+		}<br/><br/>
+		</code>
+		
+		Then reload your survey page to see your changes.
+		</li>
+		</ol>
+		<p>
+		<b>Notes on custom CSS files</b></p>
+		<ul>
+			<li>If you don't know how to use CSS, don't worry! There are many excellent tutorials on the web.</li>
+			<li>In addition to classes for survey elements, some elements have numbered IDs. Be careful using these,
+				because the numbers will change if you move the questions around; but you can set styles on particular items 
+				after you are sure your question order will not change.
+			</li>
+		<li>Your CSS file affects the survey's appearance when you preview it and when a participant sees it (using the URL you give them). 
+		It is not used when you enter a story on the "Enter stories" page -- because that form is a popup dialog, not a separate web page.
+		If you need to change how the "Enter stories" dialog appears, you will need to change the CSS files distributed with NarraFirma.
+		</li>
+		<li>If you are running NarraFirma on your local machine, Javascript will not let you load a local CSS file using its file location. 
+			However, you can specify "http://localhost/" and then your CSS file name, and put the file where "narrafirma.html" is located in your 
+			installation of NarraFirma.</li>
+		</ul>
+		</div>
+
 <div class="question">
 How do you import a story form? What is the correct format?
 	</div>

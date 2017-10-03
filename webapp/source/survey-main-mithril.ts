@@ -66,7 +66,7 @@ function storeQuestionnaireResult(completedSurvey, wizardPane) {
 }
 
 function createLayout() {
-    console.log("createLayout");
+    // console.log("createLayout");
        
     loadQuestionnaire(function(error, questionnaire, envelope) {
         if (error) {
@@ -83,6 +83,8 @@ function createLayout() {
         // m.render(surveyDiv, m("div", ["Hello survey ============== b"]));
         
         surveyBuilder.buildSurveyForm(surveyDiv, questionnaire, finishedSurvey);
+
+        if (questionnaire && questionnaire.customCSSURL) surveyBuilder.loadCSS(document, questionnaire.customCSSURL);
 
         // turn off initial "please wait" display
         hidePleaseWait();
@@ -148,8 +150,11 @@ function initialize() {
             alert("Problem with preview");
             return;
         }
+
         
         var questionnaire = window.opener["narraFirma_previewQuestionnaire"];     
+        if (questionnaire.customCSSURL) surveyBuilder.loadCSS(document, questionnaire.customCSSURL);
+
         surveyBuilder.buildSurveyForm(surveyDiv, questionnaire, finishedPreview, {previewMode: true});
 
         return;

@@ -72,6 +72,13 @@ var panel: Panel = {
             displayPrompt: "Please enter a message to be shown in the <strong>pop-up alert</strong> after the participant submits their story."
         },
         {
+            id: "questionForm_cssURL",
+            valueType: "string",
+            displayType: "text",
+            displayName: "Custom CSS URL",
+            displayPrompt: "You can enter the web address (URL) of a <strong>custom CSS</strong> file that modifies the survey elements here. (For more information on this feature, see the help system.)"
+        },
+        {
             id: "questionForm_participantGroups",
             valueType: "string",
             displayType: "text",

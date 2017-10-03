@@ -88,7 +88,6 @@ textarea:read-only, input:read-only {
 
 .narrafirma-survey-image {
     display: block;
-    float: center;
     margin: auto;
     padding: 10px;
 }
