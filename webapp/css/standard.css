@@ -159,7 +159,7 @@ button {
 #narrafirma-help-link, #narrafirma-next-page, #narrafirma-previous-page, #narrafirma-version {
     padding-right: 1em;
     float: right;
-    font-size: 0.9em;
+    font-size: 0.85em;
 }
 
 #narrafirma-read-only {
@@ -176,17 +176,22 @@ button {
 #narrafirma-logout-link, #narrafirma-login-link {
     float: right;
     margin-right: 0.75em;
-    font-size: 0.9em;
+    font-size: 0.85em;
 }
 
-#narafirma-breadcrumbs {
-    font-size: 0.8em;
+#narrafirma-breadcrumbs {
+    font-size: 0.85em;
+}
+
+#narafirma-breadcrumbs a:link, a:visited {
+    font-size: 0.85em;
 }
 
 #narrafirma-project-name {
     font-weight: bold;
     font-size: 1.1em;
-    margin-right: 0.75em;
+    margin-right: 1.5em;
+    margin-left: 0.5em;
 }
 
 #narrafirma-breadcrumb-current {
