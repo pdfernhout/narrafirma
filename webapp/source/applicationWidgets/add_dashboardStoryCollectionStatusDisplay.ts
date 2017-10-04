@@ -10,11 +10,19 @@ import Globals = require("../Globals");
 function add_dashboardStoryCollectionStatusDisplay(panelBuilder: PanelBuilder, model, fieldSpecification): any {
     var tripleStore = Globals.project().tripleStore;
     var storyCollectionsIdentifiers = Globals.project().getListForField("project_storyCollections");
+    var chooseProjectLink;
+    var isWordPressAJAX = !!window["ajaxurl"];
+    if (!isWordPressAJAX) {
+        chooseProjectLink = "\\";
+    } else {
+        chooseProjectLink = "../webapp/narrafirma.html";
+    }
+    
     if (!storyCollectionsIdentifiers || !storyCollectionsIdentifiers.length) {
         // TODO: Translate
         return m("div.narrafirma-dashboard-story-collection-status", [
             m("br"),
-            m("a", {href: "\\", title: "Choose another project"}, "Choose another project"), 
+            m("a", {href: chooseProjectLink, title: "Choose another project"}, "Choose another project"), 
             m("br"),    
             m("br"),    
             m("div", ["No story collections defined"])
@@ -47,7 +55,7 @@ function add_dashboardStoryCollectionStatusDisplay(panelBuilder: PanelBuilder, m
     
     return m("div.narrafirma-dashboard-story-collection-status", [
         m("br"),
-        m("a", {href: "\\", title: "Choose another project"}, "Choose another project"), 
+        m("a", {href: chooseProjectLink, title: "Choose another project"}, "Choose another project"), 
         m("br"),       
         m("p", "Story collections:"),
         m("table", 
