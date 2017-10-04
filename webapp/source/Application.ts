@@ -256,7 +256,7 @@ class Application {
                     loginText = ' <a href="/login">login</a>';
                 }
                 
-                document.body.innerHTML += '<br><b>No projects. The NarraFirma application can not run.</b> ' + recoveryText + loginText;
+                document.body.innerHTML += '<br><b>No projects. The NarraFirma application cannot run.</b> ' + recoveryText + loginText;
                 alert("There are no projects accessible by the current user (" + this.userIdentifier + "). " + recoveryText);
                 return;
             }
