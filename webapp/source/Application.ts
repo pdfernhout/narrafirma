@@ -252,8 +252,14 @@ class Application {
                 var loginText = "";
                 if (this.userIdentifier === "anonymous") {
                     recoveryText = "Please try logging in.";
-                    // TODO: Needs to be different for Wordpress
-                    loginText = ' <a href="/login">login</a>';
+                    var isWordPressAJAX = !!window["ajaxurl"];
+                    var loginURL;
+                    if (isWordPressAJAX) {
+                        loginURL = "wp-login.php";
+                    } else {
+                        loginURL = "login";
+                    }
+                    loginText = ' <a href="/" + loginURL + ">login</a>';
                 }
                 
                 document.body.innerHTML += '<br><b>No projects. The NarraFirma application cannot run.</b> ' + recoveryText + loginText;
