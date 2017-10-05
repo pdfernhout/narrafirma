@@ -37,7 +37,7 @@
                 m("button", {onclick: newProject.bind(null, controller)}, "Create New Project"),
                 m("p", "New projects are not saved until you click the \"Save changes\" button below. Deleting a project will make it unavailable, but the data will still be stored and can be re-accessed by creating a project with the same name."),
                 m("p", "To specify project permissions, enter one or more space-separated user IDs (e.g. samsmith) or " + 
-                "roles (e.g. administrator, editor, author, contributor, subscriber). (Then tab or click out of the input field to save the change.) " + 
+                "roles (e.g. administrator, editor, author, contributor, subscriber). " + 
                 "Write access also grants read access and survey access. Only give write access to people you trust. "),
                 Object.keys(controller.journalDefinitions).map(function(journalIdentifier) {
                     return displayJournal(controller, journalIdentifier);
