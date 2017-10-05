@@ -199,6 +199,19 @@ class Filter {
         
         return controller.calculateView();
     }
+
+    hasQuestionAndAnswers() {
+        return this.selectedQuestion && Object.keys(this.selectedAnswers).length;
+    }
+
+    displayInformation() {
+        var result = "";
+        if (this.hasQuestionAndAnswers()) {
+            result += this.selectedQuestion.displayName + ": ";
+            result += Object.keys(this.selectedAnswers).join(", ");
+        }
+    return result;
+    }
         
     calculateView() {
         // console.log("calculateView this", this);
@@ -220,6 +233,7 @@ class Filter {
         });
         
         var isClearButtonDisabled = (this.selectedQuestion === null) || undefined;
+        var displayOrNotText = (multiselectOptions.length > 0) ? "" : "[style='display:none']";
          
         return m("div.filter", [
             this.name,
@@ -227,7 +241,7 @@ class Filter {
             m("select", {onchange: this.filterPaneQuestionChoiceChanged.bind(this)}, selectOptions),
             m("button", {disabled: isClearButtonDisabled, onclick: this.clearFilterPane.bind(this)}, "Clear"),
             m("br"),
-            m("select", {onchange: this.filterPaneAnswerChoiceChanged.bind(this), multiple: "multiple"}, multiselectOptions)
+            m("select" + displayOrNotText, {onchange: this.filterPaneAnswerChoiceChanged.bind(this), multiple: "multiple"}, multiselectOptions)
         ]);
     }
     
@@ -360,9 +374,18 @@ class StoryBrowser {
                 m("td", this.filter1.calculateView()),
                 m("td", this.filter2.calculateView())
             ]));
-            
+
+            var filterInfoString = "Stories ";
+            var filter1HasSelections = this.filter1.hasQuestionAndAnswers();
+            var filter2HasSelections = this.filter2.hasQuestionAndAnswers();
+
+            if (filter1HasSelections || filter2HasSelections) filterInfoString += " filtered by ";
+            if (filter1HasSelections) filterInfoString += this.filter1.displayInformation();
+            if (filter1HasSelections && filter2HasSelections) filterInfoString += " and ";
+            if (filter2HasSelections) filterInfoString += this.filter2.displayInformation();
+
             // TODO: Translation
-            var filteredCountText = m("div.narrafirma-story-browser-filtered-stories-count", "Filtered stories (" + this.filteredStories.length + ")");
+            var filteredCountText = m("div.narrafirma-story-browser-filtered-stories-count", filterInfoString + " (" + this.filteredStories.length + ")");
 
             parts = [prompt, filter, filteredCountText, this.grid.calculateView()];
         }

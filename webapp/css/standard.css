@@ -41,6 +41,17 @@ textarea, input, select { /* override because expanded in survey */
 	margin-top: 0;
 }
 
+select[multiple] {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;  
+}
+
+select[multiple] { /* only used in story browser */
+    width: 280px;
+    height: 140px;
+}
+
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Navigation bar ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 #navigationDiv {
