@@ -43,14 +43,16 @@ function getIdForText(text) {
     return "panelField_" + idsMade["$" + text];
 }
 
-export function loadCSS(document, url) {
-    var head = document.getElementsByTagName('head')[0],
-    link = document.createElement('link');
-    link.type = 'text/css';
-    link.rel = 'stylesheet';
-    link.href = url;
-    head.appendChild(link);
-    return link;
+export function loadCSS(document, cssText) {
+    var styleElement = document.createElement("style");
+    styleElement.type = "text/css";
+    document.getElementsByTagName("head")[0].appendChild(styleElement);
+
+    if (styleElement.styleSheet) { // IE
+        styleElement.styleSheet.cssText = cssText;
+    } else { // other browsers
+        styleElement.innerHTML = cssText;
+    }
   }
   
 // Redrawing

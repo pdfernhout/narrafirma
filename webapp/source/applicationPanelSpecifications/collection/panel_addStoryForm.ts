@@ -31,7 +31,7 @@ var panel: Panel = {
             valueType: "string",
             displayType: "text",
             displayName: "Image",
-            displayPrompt: "You can link to a <strong>logo</strong> or other image to show at the top of the form."
+            displayPrompt: "Enter the web link (URL) for an <strong>image</strong> to be shown at the top of the form.",
         },
         {
             id: "questionForm_elicitingQuestions",
@@ -79,11 +79,11 @@ var panel: Panel = {
             displayPrompt: "Please enter a message to be shown in the <strong>pop-up alert</strong> after the participant submits their story."
         },
         {
-            id: "questionForm_cssURL",
+            id: "questionForm_customCSS",
             valueType: "string",
-            displayType: "text",
-            displayName: "Custom CSS URL",
-            displayPrompt: "You can enter the web address (URL) of a <strong>custom CSS</strong> file that modifies the survey elements here. (For more information on this feature, see the help system.)"
+            displayType: "textarea",
+            displayName: "Custom CSS",
+            displayPrompt: "You can enter <strong>custom CSS</strong> that modifies the survey elements here. (For more information on how this works, see the help system.)"
         },
         {
             id: "questionForm_participantGroups",
@@ -105,7 +105,7 @@ var panel: Panel = {
             displayType: "button",
             displayConfiguration: "previewQuestionForm",
             displayName: "Question form preview",
-            displayPrompt: "Preview question form"
+            displayPrompt: "Preview Story Form"
         }        
     ]
 };

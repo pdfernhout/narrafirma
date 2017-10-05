@@ -84,7 +84,7 @@ function createLayout() {
         
         surveyBuilder.buildSurveyForm(surveyDiv, questionnaire, finishedSurvey);
 
-        if (questionnaire && questionnaire.customCSSURL) surveyBuilder.loadCSS(document, questionnaire.customCSSURL);
+        if (questionnaire && questionnaire.customCSS) surveyBuilder.loadCSS(document, questionnaire.customCSS);
 
         // turn off initial "please wait" display
         hidePleaseWait();
@@ -153,7 +153,7 @@ function initialize() {
 
         
         var questionnaire = window.opener["narraFirma_previewQuestionnaire"];     
-        if (questionnaire.customCSSURL) surveyBuilder.loadCSS(document, questionnaire.customCSSURL);
+        if (questionnaire.customCSS) surveyBuilder.loadCSS(document, questionnaire.customCSS);
 
         surveyBuilder.buildSurveyForm(surveyDiv, questionnaire, finishedPreview, {previewMode: true});
 

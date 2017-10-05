@@ -410,7 +410,7 @@ function processCSVContentsForQuestionnaire(contents) {
         questionForm_image: "",
         questionForm_endText: "",
         questionForm_thankYouPopupText: "",
-        questionForm_cssURL: "",
+        questionForm_customCSS: "",
         import_minScaleValue: 0,
         import_maxScaleValue: 0
         };
@@ -483,8 +483,8 @@ function processCSVContentsForQuestionnaire(contents) {
                     template.questionForm_thankYouPopupText = text;
                     project.tripleStore.addTriple(template.id, "questionForm_thankYouPopupText", text);
                 case "Custom CSS":
-                    template.questionForm_cssURL = text;
-                    project.tripleStore.addTriple(template.id, "questionForm_cssURL", text);
+                    template.questionForm_customCSS = text;
+                    project.tripleStore.addTriple(template.id, "questionForm_customCSS", text);
             }
         } else if (about === "import") {
             var type = item.Type;
@@ -828,7 +828,7 @@ export function exportQuestionnaire() {
     addOutputLine(["" + (++lineIndex), "", "", "End text", "form", currentQuestionnaire.endText || ""]);
     addOutputLine(["" + (++lineIndex), "", "", "About you text", "form", currentQuestionnaire.aboutYouText || ""]);
     addOutputLine(["" + (++lineIndex), "", "", "Thank you text", "form", currentQuestionnaire.thankYouPopupText || ""]);
-    addOutputLine(["" + (++lineIndex), "", "", "Custom CSS", "form", currentQuestionnaire.customCSSURL || ""]);
+    addOutputLine(["" + (++lineIndex), "", "", "Custom CSS", "form", currentQuestionnaire.customCSS || ""]);
     
     
      // Export questionnaire
