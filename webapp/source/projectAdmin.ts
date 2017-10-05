@@ -62,7 +62,10 @@ var AdminPageDisplayer: any = {
     view: function(controller, args) {
         var contentsDiv;
         
-        console.log("&&&&&&&&&& view called in AdminPageDisplayer");
+        // console.log("&&&&&&&&&& view called in AdminPageDisplayer");
+
+        var buttonStyleText = "margin-left: 1em;"
+        var labelStyleText = "margin-right:0.25em";
         
         return m("div.pageContents", {key: "pageContents"}, [
             m("div", [
@@ -75,71 +78,69 @@ var AdminPageDisplayer: any = {
                 m("a", {href: "/logout"}, "Log Out")
             ]),
             m("br"),
-            !!userToDisplay ? m("div", {style: "height: 300px; overflow: auto; float: right; min-width: 75%"}, [
-                "Roles for user: ", 
-                m("b", userToDisplay),
-                m("br"),
+            !!userToDisplay ? m("div", {style: "height: 300px; overflow: auto; float: right; min-width: 75%; margin-right: 1em; background: #d5dae6; border: solid 1px #7b8cb2;"}, [
+                m("h3[style='margin-left:0.25em;']", "Roles for user: " + userToDisplay), 
                 m("pre", JSON.stringify(allProjectsModel.users[userToDisplay].rolesForJournals, null, 4))
             ]) : m("div", {style: "height: 300px; overflow: auto; float: right; min-width: 75%"}),
             m("b", "Choose user:"),
             m("br"),
             Object.keys(allProjectsModel.users).sort().map(function(userIdentifier) {
                 var user = allProjectsModel.users[userIdentifier];
-                return m("div", [m("a", {href: "javascript:projectAdmin_selectUser('" +  user.userIdentifier + "')"}, user.userIdentifier)]);
-//                return m("div", [user.userIdentifier, m("pre", JSON.stringify(user.rolesForJournals, null, 4)), m("br")]);
+                return m("div[style='white-space:pre']", ["   ", m("a", {href: "javascript:projectAdmin_selectUser('" +  user.userIdentifier + "')"}, user.userIdentifier)]);
             }),
             m("br"),
-            m("b", "Projects:"),
+            m("b", "Choose project:"),
             m("br"),
             allProjectsModel.projects.sort(compareProjects).map(function(project) {
-               return m("div", [m("a", {href: "javascript:projectAdmin_selectJournal('" +  project.name + "')"}, project.name)]);
+               return m("div[style='white-space:pre']", ["   ", m("a", {href: "javascript:projectAdmin_selectJournal('" +  project.name + "')"}, project.name)]);
             }),
             m("br"),
-            m("hr", {style: "display: block; clear: both;"}),
+            m("hr", {style: "display: block; clear: both; height: 2px;"}),
             m("div", [
-                "A journal name can have alphanumeric characters, underscores, dashes, and dots (one dot at a time). " +
-                "It cannot include spaces, forward slashes, two or more dots in a row, or non-alphanumeric characters.",
-                m("br"),
-                m("br"),
-                m("label", {"for": "jn1"}, "Journal name: " + narrafirmaProjectPrefix),
-                m("input", {id: "jn1", value: journalName(), onchange: m.withAttr("value", journalName)}),
-                m("br"),
-                m("button", {onclick: addJournalClicked}, "Add journal"),
-                m("button", {onclick: grantAnonymousAccessToJournalForSurveysClicked}, "Grant anonymous survey access"),
-                m("br")
-            ]),
-            m("br"),
-            m("br"),
-            m("div", [
-                m("label", {"for": "un2"}, "User name: "),
-                m("input", {id: "un2", value: userName(), onchange: m.withAttr("value", userName)}),
-                m("br"),
-                m("label", {"for": "p2"}, "Password: "),
-                m("input", {id: "p2", value: userPassword(), onchange: m.withAttr("value", userPassword), disabled: userName().trim() === "anonymous"}),
-                m("br"),
-                m("button", {onclick: addUserClicked}, "Add user"),
-                m("br")
-            ]),
-            m("br"),
-            m("br"),
-            m("div", [
-                m("label", {"for": "un3"}, "User name: "),
-                m("input", {id: "un3", value: userName(), onchange: m.withAttr("value", userName)}),
-                m("br"),
-                m("label", {"for": "r3"}, "Role: "),
-                m("input", {id: "r3", value: roleName(), onchange: m.withAttr("value", roleName)}),
-                m("span", {style: 'float: left; display: inline-block;'}, "Role should be one of: ", r("reader"), ", ", r("writer"), ", ", r("readerWriter"), ", or ", r("administrator")),
-                m("br"),
-                m("label", {"for": "jn3"}, "Journal: " + narrafirmaProjectPrefix),
+                m("h2", "Edit Project Permissions"),
+                m("p", "Only give write privileges to people you trust."),
+                m("label[style='" + labelStyleText + "']", {"for": "jn3"}, "Project: " + narrafirmaProjectPrefix),
                 m("input", {id: "jn3", value: journalName(), onchange: m.withAttr("value", journalName)}),
                 m("br"),
-                m("label", {"for": "t3"}, "Topic: "),
-                m("input", {id: "t3", value: topicName(), onchange: m.withAttr("value", topicName)}),
+                m("label[style='" + labelStyleText + "']", {"for": "un3"}, "User name"),
+                m("input", {id: "un3", value: userName(), onchange: m.withAttr("value", userName)}),
                 m("br"),
-                m("button", {onclick: accessClicked.bind(null, "grant")}, "Grant"),
-                m("button", {onclick: accessClicked.bind(null, "revoke")}, "Revoke"),
+                m("label[style='" + labelStyleText + "']", {"for": "r3"}, "Role"),
+                m("input", {id: "r3", value: roleName(), onchange: m.withAttr("value", roleName)}),
+                m("span", {style: 'float: left; display: inline-block; margin-left:0.5em;'}, "Role should be one of: ", r("reader"), ", ", r("writer"), ", ", r("readerWriter"), ", or ", r("administrator")),
+                //m("label[style='" + labelStyleText + "']", {"for": "t3"}, "Topic"),
+                //m("input", {id: "t3", value: topicName(), onchange: m.withAttr("value", topicName)}),
+                //m("br"),
+                m("button[style='" + buttonStyleText + "']", {onclick: accessClicked.bind(null, "grant")}, "Grant"),
+                m("button[style='" + buttonStyleText + "']", {onclick: accessClicked.bind(null, "revoke")}, "Revoke"),
                 m("br")
-            ])
+            ]),
+            m("br"),
+            m("hr", {style: "display: block; clear: both; height: 2px;"}),
+            m("div", [
+                m("h2", "Create New Project"),
+                m("p", "A project name can have alphanumeric characters, underscores, dashes, and dots (one dot at a time). " +
+                "It cannot include spaces, forward slashes, two or more dots in a row, or non-alphanumeric characters."),
+                m("br"),
+                m("label[style='" + labelStyleText + "']", {"for": "jn1"}, "Project name: " + narrafirmaProjectPrefix),
+                m("input", {id: "jn1", value: journalName(), onchange: m.withAttr("value", journalName)}),
+                m("button[style='" + buttonStyleText + "']", {onclick: addJournalClicked}, "Create Project"),
+                m("button[style='" + buttonStyleText + "']", {onclick: grantAnonymousAccessToJournalForSurveysClicked}, "Grant Anonymous Survey Access"),
+                m("br")
+            ]),
+            m("br"),
+            m("hr", {style: "display: block; clear: both; height: 2px;"}),
+            m("div", [
+                m("h2", "Add New User"),
+                m("label[style='" + labelStyleText + "']", {"for": "un2"}, "User name"),
+                m("input", {id: "un2", value: userName(), onchange: m.withAttr("value", userName)}),
+                m("br"),
+                m("label[style='" + labelStyleText + "']", {"for": "p2"}, "Password"),
+                m("input", {id: "p2", value: userPassword(), onchange: m.withAttr("value", userPassword), disabled: userName().trim() === "anonymous"}),
+                m("button[style='" + buttonStyleText + "']", {onclick: addUserClicked}, "Add User"),
+                m("br"),
+                m("br")
+            ]),
         ]);
     }
 };
