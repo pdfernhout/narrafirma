@@ -288,7 +288,7 @@ class Application {
             var columns = {name: "Project name", id: "Project journal", write: "Editable"};
             // TODO: Only allow new project button for admins
             var isNewAllowed = false;
-            dialogSupport.openListChoiceDialog(null, projects, columns, "NarraFirma Projects", "Select a project to work on.", isNewAllowed, (projectChoice) => {
+            dialogSupport.openListChoiceDialog(null, projects, columns, "NarraFirma Projects", "Select a NarraFirma project to work on.", isNewAllowed, (projectChoice) => {
                 if (!projectChoice) return;
                 
                 this.projectIdentifier = projectChoice.id;
