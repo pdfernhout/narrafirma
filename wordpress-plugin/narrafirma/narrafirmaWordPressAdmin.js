@@ -34,21 +34,23 @@
                 
             return m("div", [
                 m("h3", "NarraFirma projects and permissions"), 
-                "To specify permissions, enter one or more space-separated user IDs (e.g. cfkurtz) or roles (e.g. administrator, editor, author, contributor, subscriber). Write access also grants read access and survey access.",
+                m("button", {onclick: newProject.bind(null, controller)}, "Create New Project"),
+                m("p", "New projects are not saved until you click the \"Save changes\" button below. Deleting a project will make it unavailable, but the data will still be stored and can be re-accessed by creating a project with the same name."),
+                m("p", "To specify project permissions, enter one or more space-separated user IDs (e.g. samsmith) or " + 
+                "roles (e.g. administrator, editor, author, contributor, subscriber). (Then tab or click out of the input field to save the change.) " + 
+                "Write access also grants read access and survey access. Only give write access to people you trust. "),
                 Object.keys(controller.journalDefinitions).map(function(journalIdentifier) {
                     return displayJournal(controller, journalIdentifier);
                 }),
-                m("button", {onclick: newProject.bind(null, controller)}, "New project"),
-                m("br"),
                 m("br"),
                 m("button", {onclick: cancelChanges.bind(null, controller), disabled: isJSONUnchanged}, "Cancel changes"),
                 " ",
                 m("button", {onclick: saveChanges.bind(null, controller), disabled: isJSONUnchanged}, "Save changes"),
                 m("br"),
-                "New projects are not saved until you click the \"Save changes\" button. Deleting a project will make it unavailable, but the data will still be stored and can be re-accessed by creating a project with the same name.",
-                m("hr"),
-                m("span", {"for": "narrafirma-displayJSON"}, "Edit project permissions directly as JSON"),
-                m("input[type=checkbox]", {id: "narrafirma-displayJSON", onclick: m.withAttr("checked", showJSONChecked.bind(null, controller)), checked: controller.showJSON})
+                m("div[style='margin-top: 1em;']", [
+                    m("span", {"for": "narrafirma-displayJSON"}, "Edit project permissions directly as JSON"),
+                    m("input[type=checkbox][style='margin-left:0.5em']", {id: "narrafirma-displayJSON", onclick: m.withAttr("checked", showJSONChecked.bind(null, controller)), checked: controller.showJSON})
+                ])
             ]);
         }
     };
@@ -93,9 +95,9 @@
     
     function displayJournal(controller, journalIdentifier) {
         var journalDefinition = controller.journalDefinitions[journalIdentifier];
-        return m(".narrafirma-project", [
+        return m("div.narrafirma-project[style='background-color:#d5dae6;']", [
             m("br"),
-            m("span", {style: "font-size: 1.3em; font-weight: 600"}, [
+            m("span", {style: "font-size: 1.3em; font-weight: 600; margin-left: 0.5em;"}, [
                  'Project: ',
                  journalIdentifier.substring(narrafirmaProjectPrefix.length)
             ]),

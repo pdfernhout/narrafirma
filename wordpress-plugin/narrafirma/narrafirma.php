@@ -169,7 +169,7 @@ class NarraFirmaSettingsPage
 
         add_settings_field(
             'journals', 
-            'Journals', 
+            'Projects', 
             array( $this, 'display_journals' ), 
             'narrafirma-settings-admin', 
             'narrafirma_setting_section_id'
