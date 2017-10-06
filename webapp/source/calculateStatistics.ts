@@ -254,8 +254,10 @@ export function calculateStatisticsForHistogramValues(values, unansweredCount) {
         var skewness = jStat.skewness(values);
         var kurtosis = jStat.kurtosis(values);
         result = {significance: "None", calculated: ["mean", "median", "mode", "sd", "skewness", "kurtosis", "n"], mean: mean, median: median, mode: mode, sd: sd, skewness: skewness, kurtosis: kurtosis, n: n};
-        result["calculated"].push(unansweredKey);
-        result[unansweredKey] = unansweredCount;
+        if (unansweredCount >= 0) {
+            result["calculated"].push(unansweredKey);
+            result[unansweredKey] = unansweredCount;
+        }
     }
     return result;
 }
@@ -442,7 +444,7 @@ export function calculateStatisticsForTable(nominalQuestion1, nominalQuestion2, 
             observedValue = counts.counts[valueTag(field1Option, field2Option)] ||  0;
             field2Total += observedValue;
         }
-        field2OptionsUsed[field1Option] = field2Total;
+        field2OptionsUsed[field2Option] = field2Total; 
     }    
     
 
@@ -483,7 +485,7 @@ export function calculateStatisticsForTable(nominalQuestion1, nominalQuestion2, 
     }
     
     if (tooLowCount / observed.length > 0.2) {
-        return {significance: "None (less than 80% expected cells >= 5)", calculated: []};
+        return {significance: "None (less than 80% of expected cells >= 5)", calculated: []};
     }
 
     // console.log("observed", observed);
