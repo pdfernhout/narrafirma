@@ -39,7 +39,7 @@ var panel: Panel = {
             valuePath: "/clientState/catalysisReportIdentifier/minimumSubsetSize",
             valueType: "string",
             valueOptions: [
-                "0",
+                "1",
                 "5",
                 "10",
                 "15",
