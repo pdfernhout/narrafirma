@@ -1466,11 +1466,7 @@ export function d3ContingencyTable(graphBrowserInstance: GraphHolder, xAxisQuest
             var r = rowLabelsArray[ri];
             var xySelector = JSON.stringify({x: c, y: r});
             
-            var observedValue = results[xySelector] || 0;
-            var storiesForNewPlotItem = plotItemStories[xySelector] || [];
-            var observedPlotItem = {x: c, y: r, value: observedValue, stories: storiesForNewPlotItem};
-            observedPlotItems.push(observedPlotItem);
-            
+            var expectedValue = null;
             if (!xHasCheckboxes && !yHasCheckboxes) {
                 // Can only calculate expected and do chi-square if choices are exclusive
                 var columnSelector = JSON.stringify({x: c});
@@ -1479,10 +1475,16 @@ export function d3ContingencyTable(graphBrowserInstance: GraphHolder, xAxisQuest
                 var rowSelector = JSON.stringify({y: r});
                 var rowTotal = results[rowSelector] || 0; 
             
-                var expectedValue = (columnTotal * rowTotal) / stories.length;
+                expectedValue = (columnTotal * rowTotal) / stories.length;
                 var expectedPlotItem = {x: c, y: r, value: expectedValue};
                 expectedPlotItems.push(expectedPlotItem);
             }
+
+            var observedValue = results[xySelector] || 0;
+            var storiesForNewPlotItem = plotItemStories[xySelector] || [];
+            var observedPlotItem = {x: c, y: r, value: observedValue, stories: storiesForNewPlotItem, expectedValue: expectedValue};
+            observedPlotItems.push(observedPlotItem);
+            
         }
     }
     
@@ -1576,6 +1578,10 @@ export function d3ContingencyTable(graphBrowserInstance: GraphHolder, xAxisQuest
                 var tooltipText = 
                 "X (" + nameForQuestion(xAxisQuestion) + "): " + plotItem.x +
                 "\nY (" + nameForQuestion(yAxisQuestion) + "): " + plotItem.y;
+                if (plotItem.expectedValue) {
+                    console.log("plotItem.expectedValue ", plotItem.expectedValue);
+                    tooltipText += "\nExpected: " + plotItem.expectedValue.toFixed(0) + "\nObserved: " + plotItem.value.toFixed(0);
+                }
                 if (!plotItem.stories || plotItem.stories.length === 0) {
                     tooltipText += "\n------ No stories ------";
                 } else {
@@ -1583,6 +1589,10 @@ export function d3ContingencyTable(graphBrowserInstance: GraphHolder, xAxisQuest
                     for (var i = 0; i < plotItem.stories.length; i++) {
                         var story = plotItem.stories[i];
                         tooltipText += "\n" + story.storyName();
+                        if (i >= 9) {
+                            tooltipText += "\n(and " + (plotItem.stories.length - 10) + " more)";
+                            break;
+                        }
                     }
                 }
                 return tooltipText;
