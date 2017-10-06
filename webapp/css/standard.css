@@ -170,7 +170,7 @@ button {
 #narrafirma-help-link, #narrafirma-next-page, #narrafirma-previous-page, #narrafirma-version {
     padding-right: 1em;
     float: right;
-    font-size: 0.85em;
+    font-size: 0.9em;
 }
 
 #narrafirma-read-only {
@@ -191,11 +191,11 @@ button {
 }
 
 #narrafirma-breadcrumbs {
-    font-size: 0.85em;
+    font-size: 0.9em;
 }
 
 #narafirma-breadcrumbs a:link, a:visited {
-    font-size: 0.85em;
+    font-size: 0.9em;
 }
 
 #narrafirma-project-name {
