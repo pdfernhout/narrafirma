@@ -67,7 +67,7 @@ var panel: Panel = {
             valueType: "object",
             valuePath: "/clientState/catalysisReportIdentifier/graphTypesToCreate",
             displayType: "catalysisReportGraphTypesChooser",
-            displayPrompt: "Which <strong>graph types</strong> should be included in the catalysis report?",
+            displayPrompt: "Which <strong>graph types</strong> should appear on the \"Explore Patterns\" page?",
             displayVisible: function(panelBuilder, model) {
                 return !!Globals.clientState().catalysisReportName();
             }
@@ -141,7 +141,7 @@ var panel: Panel = {
             valueType: "object",
             valuePath: "/clientState/catalysisReportIdentifier/questionsToInclude",
             displayType: "catalysisReportQuestionChooser",
-            displayPrompt: "Which <strong>questions</strong> should be included in the catalysis report? (Note: Only questions checked here will be included in data integrity graphs.)",
+            displayPrompt: "Which <strong>questions</strong> should appear on the \"Explore Patterns\" page? (Note: Only questions checked here will be considered in data integrity graphs.)",
             displayVisible: function(panelBuilder, model) {
                 return !!Globals.clientState().catalysisReportName();
             }
