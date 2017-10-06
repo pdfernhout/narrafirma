@@ -488,45 +488,46 @@ function htmlForLabelAndValue(key, object) {
 }
 
 function addStatisticsPanelForChart(chartPane: HTMLElement, statistics) {
-    if (statistics.significance === "None" && statistics.calculated.length === 0) return; // if nothing to report, show nothing (but if a REASON is given, show that)
-    var html = "";
-    //html += '<div class="narrafirma-statistics-panel-header">Statistics</div>';
-    if (statistics.calculated.length === 0) {
-        html += "Statistics: " + statistics.significance;
-    } else {
-        // html += "statistics: ";
-    }
-    if (statistics.allResults) {
-        html += '<span class="narrafirma-mann-whitney-title">Mann-Whitney U test results for multiple histograms</span><br>\n';
-    }
-    for (var i = 0; i < statistics.calculated.length; i++) {
-        html += htmlForLabelAndValue(statistics.calculated[i], statistics) + "<br>\n";
-    }
-    if (statistics.allResults) {
-        html += "<br>\n";
-        html += '<table class="narrafirma-mw-all-results">\n';
-
-        var sortedResultKeys = Object.keys(statistics.allResults).sort(function(a,b){return statistics.allResults[a].p - statistics.allResults[b].p})
-
-        for (var resultKeyIndex in sortedResultKeys) {
-            var resultKey = sortedResultKeys[resultKeyIndex];
-            var result = statistics.allResults[resultKey];
-            html += '<tr><td class="narrafirma-mw-nested-title">' + escapeHtml(resultKey) + '</td><td class="narrafirma-mw-nested-stats">';
-            var first = true;
-            for (var key in result) {
-                if (!first) {
-                    html += "; ";
-                } else {
-                    first = false;
-                }
-                html += htmlForLabelAndValue(key, result);
-           }
-           html += "</td></tr>\n";
-        }
-        html += "</table>\n";
-    }
     var statsPane = document.createElement("div");
-    statsPane.className = "narrafirma-statistics-panel";
+    var html = "";
+    if (statistics.significance !== "None" || statistics.calculated.length !== 0) {
+        //html += '<div class="narrafirma-statistics-panel-header">Statistics</div>';
+        if (statistics.calculated.length === 0) {
+            html += "Statistics: " + statistics.significance;
+        } else {
+            // html += "statistics: ";
+        }
+        if (statistics.allResults) {
+            html += '<span class="narrafirma-mann-whitney-title">Mann-Whitney U test results for multiple histograms</span><br>\n';
+        }
+        for (var i = 0; i < statistics.calculated.length; i++) {
+            html += htmlForLabelAndValue(statistics.calculated[i], statistics) + "<br>\n";
+        }
+        if (statistics.allResults) {
+            html += "<br>\n";
+            html += '<table class="narrafirma-mw-all-results">\n';
+
+            var sortedResultKeys = Object.keys(statistics.allResults).sort(function(a,b){return statistics.allResults[a].p - statistics.allResults[b].p})
+
+            for (var resultKeyIndex in sortedResultKeys) {
+                var resultKey = sortedResultKeys[resultKeyIndex];
+                var result = statistics.allResults[resultKey];
+                html += '<tr><td class="narrafirma-mw-nested-title">' + escapeHtml(resultKey) + '</td><td class="narrafirma-mw-nested-stats">';
+                var first = true;
+                for (var key in result) {
+                    if (!first) {
+                        html += "; ";
+                    } else {
+                        first = false;
+                    }
+                    html += htmlForLabelAndValue(key, result);
+            }
+            html += "</td></tr>\n";
+            }
+            html += "</table>\n";
+        }
+        statsPane.className = "narrafirma-statistics-panel";
+    } 
     statsPane.innerHTML = html;
     chartPane.appendChild(statsPane);
 }
