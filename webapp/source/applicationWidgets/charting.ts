@@ -437,21 +437,58 @@ function htmlForLabelAndValue(key, object) {
     if (value === undefined) {
         console.log("value is undefined");
     }
-    if (key !== "n" && key !== "n1" && key !== "n2" && key !== "k" && key !== "U" && key !== unansweredKey && key !== "mode") {
+
+    if (key === "mode") { // mode can be more than one number
+        if (typeof value === "object") {
+            var truncatedValues = []
+            for (var i = 0; i < value.length; i++) {
+                truncatedValues.push(value[i].toFixed(0)); // these have to be slider values, which are integers
+            }
+            value = truncatedValues.join(", ");
+        } else {
+            value = value.toFixed(0);
+        }
+    } else if (["n", "n1", "n2", "k", unansweredKey].indexOf(key) >= 0) { // these are all integers
+        value = value.toFixed(0); 
+    } else {
         if (key === "p" && value < 0.001) {
             value = "<0.001";
         } else {
             if (isNaN(value)) {
-                value = "not a number"
+                value = "NaN"
             } else {
                 value = value.toFixed(3);
             }
         }
     }
-    return '<span class="statistics-name">' + key + '</span>: <span class="statistics-value">' + value + "</span>";
+    var keyToReport = key;
+    switch (key) {
+        case "x2": {
+            keyToReport = "chi squared (x2)";
+            break;
+        }
+        case "k": {
+            keyToReport = "degrees of freedom (k)"; 
+            break;
+        }
+        case "sd": {
+            keyToReport = "standard deviation";
+            break;
+        }
+        case "U": {
+            keyToReport = "Mann-Whitney U";
+            break;
+        }
+        case "rho": {
+            keyToReport = "Spearman's rho";
+            break;
+        }
+    }
+    return '<span class="statistics-name">' + keyToReport + '</span>: <span class="statistics-value">' + value + "</span>";
 }
 
 function addStatisticsPanelForChart(chartPane: HTMLElement, statistics) {
+    if (statistics.significance === "None" && statistics.calculated.length === 0) return; // if nothing to report, show nothing (but if a REASON is given, show that)
     var html = "";
     //html += '<div class="narrafirma-statistics-panel-header">Statistics</div>';
     if (statistics.calculated.length === 0) {
@@ -762,6 +799,7 @@ export function d3HistogramChartForDataIntegrity(graphBrowserInstance: GraphHold
     var values = [];
     
     var stories = graphBrowserInstance.allStories;
+    var unansweredCount = -1;
 
     if (dataIntegrityType == "All scale values") {
         for (var storyIndex in stories) {
@@ -777,7 +815,8 @@ export function d3HistogramChartForDataIntegrity(graphBrowserInstance: GraphHold
                 }
             }
         }
-    } else {
+        unansweredCount = unanswered.length;
+    } else { // participant means or participant standard deviations
         var storiesByParticipant = {};
         for (var storyIndex in stories) {
             var story = stories[storyIndex];
@@ -812,8 +851,9 @@ export function d3HistogramChartForDataIntegrity(graphBrowserInstance: GraphHold
             }
             if (aPlotItem) values.push(aPlotItem);
         }
+        unansweredCount = -1; // don't show; meaningless
     }
-    return d3HistogramChartForValues(graphBrowserInstance, values, [], -1, "singleChartStyle", "large", dataIntegrityType, dataIntegrityType, "", "", null);
+    return d3HistogramChartForValues(graphBrowserInstance, values, unansweredCount, [], "singleChartStyle", "large", dataIntegrityType, dataIntegrityType, "", "", null);
 }
 
 export function d3HistogramChartForValues(graphBrowserInstance: GraphHolder, plotItems, unansweredCount, matchingStories, style, chartSize, chartTitle, xAxisLabel, xAxisStart, xAxisEnd, storiesSelectedCallback) {
