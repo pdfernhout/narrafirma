@@ -39,8 +39,6 @@ var panel: Panel = {
             valuePath: "/clientState/catalysisReportIdentifier/minimumSubsetSize",
             valueType: "string",
             valueOptions: [
-                "1",
-                "5",
                 "10",
                 "15",
                 "20",
@@ -58,7 +56,7 @@ var panel: Panel = {
             ],
             displayType: "select",
             displayName: "Minimum subset size",
-            displayPrompt: "How large should <strong>subsets</strong> of stories be to be considered for statistical tests?",
+            displayPrompt: "How large should <strong>subsets</strong> of stories be to be considered for statistical tests? (Test results based on low sample sizes - usually less than 30 - should be regarded as suggestive rather than conclusive.)",
             displayVisible: function(panelBuilder, model) {
                 return !!Globals.clientState().catalysisReportName();
             }
