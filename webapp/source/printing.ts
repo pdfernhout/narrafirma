@@ -157,7 +157,7 @@ function printHTML(htmlToPrint: string) {
     }
 }
 
-function generateHTMLForPage(title: string, stylesheetReference: string, vdom) {
+function generateHTMLForPage(title: string, stylesheetReference: string, vdom, message:string) {
     var output = "";
     output += "<!DOCTYPE html>\n";
     output += "<head>\n";
@@ -168,7 +168,11 @@ function generateHTMLForPage(title: string, stylesheetReference: string, vdom) {
     }
     output += "</head>\n\n";
     output += "<body>\n";
-    output += htmlForMithril(vdom);
+    if (vdom) {
+        output += htmlForMithril(vdom);
+    } else if (message) {
+        output += message;
+    }
     output += "\n</body>\n</html>";
     
     return output;
@@ -356,7 +360,7 @@ function generateHTMLForQuestionnaire(questionnaire) {
         m("div.narrafirma-survey-print-end-text", printText(questionnaire.endText || ""))
     ]);
 
-    return generateHTMLForPage(questionnaire.title || "NarraFirma Story Form", "css/survey.css", vdom);
+    return generateHTMLForPage(questionnaire.title || "NarraFirma Story Form", "css/survey.css", vdom, null);
 }
 
 export function printStoryForm(model, fieldSpecification, value) {
@@ -388,6 +392,11 @@ export function printStoryCards() {
     
     var storyCollectionName = Globals.clientState().storyCollectionName();
     var allStoriesInStoryCollection = surveyCollection.getStoriesForStoryCollection(storyCollectionName);
+    if (!allStoriesInStoryCollection.length) {
+        alert("There are no stories in the collection. Please add some stories before you print story cards.");
+        return;
+    }
+
     // console.log("allStoriesInStoryCollection", allStoriesInStoryCollection);
     
     var storyDivs = [];
@@ -403,7 +412,7 @@ export function printStoryCards() {
         storyDivs.push(storyDiv);
     }
     
-   var htmlForPage = generateHTMLForPage("Story cards for: " + storyCollectionName, "css/standard.css", storyDivs);
+   var htmlForPage = generateHTMLForPage("Story cards for: " + storyCollectionName, "css/standard.css", storyDivs, null);
    printHTML(htmlForPage);
 }
 
@@ -451,7 +460,7 @@ export function exportPresentationOutline() {
     
     printItems.push(printList(presentationElementsList));
     
-    var htmlForPage = generateHTMLForPage("Presentation Outline", "css/standard.css", printItems);
+    var htmlForPage = generateHTMLForPage("Presentation Outline", "css/standard.css", printItems, null);
     printHTML(htmlForPage);
 }
 
@@ -474,7 +483,7 @@ export function exportCollectionSessionAgenda(itemID) {
     
     printItems.push(printList(activitiesList));
     
-    var htmlForPage = generateHTMLForPage("Story collection session agenda", "css/standard.css", printItems);
+    var htmlForPage = generateHTMLForPage("Story collection session agenda", "css/standard.css", printItems, null);
     printHTML(htmlForPage);
 }
 
@@ -497,7 +506,7 @@ export function printSensemakingSessionAgenda(itemID) {
     
     printItems.push(printList(activitiesList));
     
-    var htmlForPage = generateHTMLForPage("Sensemaking session agenda", "css/standard.css", printItems);
+    var htmlForPage = generateHTMLForPage("Sensemaking session agenda", "css/standard.css", printItems, null);
     printHTML(htmlForPage);
 }
 
@@ -738,7 +747,7 @@ export function printCatalysisReport() {
             // Trying to avoid popup warning if open window from timeout by using finish dialog button press to display results
             var finishModel = dialogSupport.openFinishedDialog("Done creating report; display it?", "Finished generating catalysis report", "Display", "Cancel", function(dialogConfiguration, hideDialogMethod) {
                 // "css/standard.css"
-                var htmlForPage = generateHTMLForPage(catalysisReportName, "css/standard.css", printItems);
+                var htmlForPage = generateHTMLForPage(catalysisReportName, "css/standard.css", printItems, null);
                 printHTML(htmlForPage);
                 hideDialogMethod();
                 progressModel.redraw();
