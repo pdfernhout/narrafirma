@@ -145,6 +145,8 @@ var graphResultsPaneCSS = `
     }
 `;
 
+var referenceMarker = "@";
+
 function printHTML(htmlToPrint: string) {
     // Display HTML in a new window
     // console.log("printHTML", htmlToPrint);
@@ -582,7 +584,7 @@ function displayForGraph(graphNode: HTMLElement) {
         //src: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO9TXL0Y4OHwAAAABJRU5ErkJggg==",
         //src: `data:image/svg+xml;utf8,<svg width="400" height="110"><rect width="300" height="100" style="fill:rgb(0,0,255);stroke-width:3;stroke:rgb(0,0,0)"></rect>Sorry, your browser does not support inline SVG.</svg>`,
         src: imgData,
-        alt: "Graph!!!"
+        alt: "observation graph"
     });
     
     return [
@@ -593,7 +595,7 @@ function displayForGraph(graphNode: HTMLElement) {
     ];
 }
 
-function printObservationList(observationList, allStories, minimumStoryCountRequiredForTest: number, numHistogramBins: number, numScatterDotOpacityLevels: number, scatterDotSize: number) {
+function printObservationList(observationList, interpretationNotes, allStories, minimumStoryCountRequiredForTest: number, numHistogramBins: number, numScatterDotOpacityLevels: number, scatterDotSize: number) {
     // For now, just print all observations
     return printList(observationList, {}, function (item) {
         var project = Globals.project();
@@ -618,10 +620,30 @@ function printObservationList(observationList, allStories, minimumStoryCountRequ
             graphTypesToCreate: {}
         };
 
+        // if marked, interpretation can refer to PART of observation description; print only that part
+        var observationDescriptionToPrint = item.observationDescription;
+        var reference = findMarkedReferenceInText(interpretationNotes);
+        if (reference) {
+            var referenceTag = referenceMarker + reference + referenceMarker;
+            var refIndexInObservation = item.observationDescription.indexOf(referenceTag);
+            if (refIndexInObservation >= 0) {
+                observationDescriptionToPrint = "";
+                var charIndex = refIndexInObservation + referenceTag.length + 1;
+                while (charIndex < item.observationDescription.length) {
+                    if (item.observationDescription[charIndex] === referenceMarker) {
+                        break;
+                    } else {
+                        observationDescriptionToPrint += item.observationDescription[charIndex];
+                    }
+                    charIndex++;
+                }
+            }
+        }
+
         if (item.pattern.graphType === "texts") {
             return [
                 m("div.narrafirma-catalysis-report-observation", item.observationTitle),
-                m("div.narrafirma-catalysis-report-observation-description", item.observationDescription),
+                m("div.narrafirma-catalysis-report-observation-description", observationDescriptionToPrint),
                 printReturnAndBlankLine()
             ];
         } else {
@@ -630,12 +652,22 @@ function printObservationList(observationList, allStories, minimumStoryCountRequ
             
             return [
                 m("div.narrafirma-catalysis-report-observation", item.observationTitle),
-                m("div.narrafirma-catalysis-report-observation-description", item.observationDescription),
+                m("div.narrafirma-catalysis-report-observation-description", observationDescriptionToPrint),
                 displayForGraphHolder(graphHolder),
                 printReturnAndBlankLine()
             ];
         }
+
     });
+}
+
+function findMarkedReferenceInText(text) {
+    var startIndex = text.indexOf(referenceMarker);
+    if (startIndex >= 0) { 
+        var stopIndex = text.indexOf(referenceMarker, startIndex+1);
+        if (stopIndex >= 0 && stopIndex < text.length) 
+            return text.substring(startIndex+1, stopIndex);
+    } else return null;
 }
 
 function makeObservationListForInterpretation(project: Project, allObservations, interpretationName) {
@@ -775,10 +807,22 @@ export function printCatalysisReport() {
                 var interpretation = interpretations[interpretationIndex];
                 printItems.push(m("a", {name: interpretation.name}));
                 printItems.push(m("div.narrafirma-catalysis-report-interpretation", interpretation.name));
-                if (interpretation.notes) printItems.push(m("div.narrafirma-catalysis-report-interpretation-notes", interpretation.notes));
-                
+
+                if (interpretation.notes) {
+                    var notesToPrint = interpretation.notes;
+                    // if interpretation has tag to mark part of observation to print, don't print tag
+                    var reference = findMarkedReferenceInText(interpretation.notes);
+                    if (reference) {
+                        var referenceTag = referenceMarker + reference + referenceMarker;
+                        var refIndexInNotes = interpretation.notes.indexOf(referenceTag);
+                        if (refIndexInNotes >= 0) 
+                            notesToPrint = interpretation.notes.substring(refIndexInNotes + referenceTag.length + 1);
+                    }
+                    printItems.push(m("div.narrafirma-catalysis-report-interpretation-notes", notesToPrint));
+                }
+
                 var observationList = makeObservationListForInterpretation(project, allObservations, interpretation.name);
-                printItems.push(<any>printObservationList(observationList, allStories, minimumStoryCountRequiredForTest, numHistogramBins, numScatterDotOpacityLevels, scatterDotSize));
+                printItems.push(<any>printObservationList(observationList, interpretation.notes, allStories, minimumStoryCountRequiredForTest, numHistogramBins, numScatterDotOpacityLevels, scatterDotSize));
                 
                 // TODO: Translate
                 progressModel.progressText = progressText(perspectiveIndex, interpretationIndex);
