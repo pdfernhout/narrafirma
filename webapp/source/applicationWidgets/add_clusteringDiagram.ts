@@ -12,7 +12,7 @@ function add_clusteringDiagram(panelBuilder: PanelBuilder, model, fieldSpecifica
     var prompt = panelBuilder.buildQuestionLabel(fieldSpecification);
         
     var storageFunction = valuePathResolver.newValuePathForFieldSpecification(model, fieldSpecification);
-    var clusteringDiagram = m.component(<any>ClusteringDiagram, {key: fieldSpecification.id, storageFunction: storageFunction, autosave: true});
+    var clusteringDiagram = m.component(<any>ClusteringDiagram, {key: fieldSpecification.id, configuration: fieldSpecification.displayConfiguration, storageFunction: storageFunction, autosave: true});
 
     // TODO: Who should be responsible for updating this data? Is redraw called or is that bypassed as an html component?
     

@@ -93,6 +93,7 @@ class ClusteringDiagram {
     
     mainButtons = [];
     
+    configuration: string;
     storageFunction: Function;
     autosave: boolean = false;
     lastSelectedItem: ClusteringDiagramItem  = null;
@@ -169,9 +170,10 @@ class ClusteringDiagram {
         return item;
     }
     
-    constructor(storageFunction: Function, autosave) {
+    constructor(configuration: string, storageFunction: Function, autosave) {
         // console.log("Creating ClusteringDiagram");
     
+        this.configuration = configuration;
         this.storageFunction = storageFunction; 
         this.autosave = autosave;
         this.model = storageFunction();
@@ -189,7 +191,7 @@ class ClusteringDiagram {
     
     static controller(args) {
         // console.log("Making ClusteringDiagram: ", args);
-        return new ClusteringDiagram(args.storageFunction, args.autosave);
+        return new ClusteringDiagram(args.configuration, args.storageFunction, args.autosave);
     }
     
     static view(controller, args) {
@@ -333,10 +335,13 @@ class ClusteringDiagram {
         var mainButtons = [];
         
         // TODO: Translate
-        this.newButton("newItemButton", "New item", () => {
-            var aNewItem = this.newItem("item");
-            this.openEntryDialog(aNewItem, false);
-        });
+
+        if (this.configuration !== "interpretations") {
+            this.newButton("newItemButton", "New item", () => {
+                var aNewItem = this.newItem("item");
+                this.openEntryDialog(aNewItem, false);
+            });
+        }
         
         this.newButton("newClusterButton", "New cluster", () => {
             var aNewItem = this.newItem("cluster");
@@ -344,20 +349,32 @@ class ClusteringDiagram {
         });
         
         // TODO: Translate
-        this.newButton("editItemButton", "Edit", () => {
-            if (this.lastSelectedItem) {
-                this.openEntryDialog(this.lastSelectedItem, true);
-            } else {
-             // TODO: Translate
-                alert("Please select an item to update first");
-            }
-        });
+
+        if (this.configuration !== "interpretations") {
+            this.newButton("editItemButton", "Edit", () => {
+                if (this.lastSelectedItem) {
+                    this.openEntryDialog(this.lastSelectedItem, true);
+                } else {
+                // TODO: Translate
+                    alert("Please select an item to edit.");
+                }
+            });
+        } else { // in clustering interpretations, can only edit clusters, not items
+            this.newButton("editItemButton", "Edit cluster", () => {
+                if (this.lastSelectedItem && this.lastSelectedItem.type === "cluster") {
+                    this.openEntryDialog(this.lastSelectedItem, true);
+                } else {
+                // TODO: Translate
+                    alert("Please select a cluster to edit.");
+                }
+            });
+        }
     
-        // TODO: Translate
+    // TODO: Translate
         this.newButton("deleteButton", "Delete", () => {
             if (!this.lastSelectedItem) {
                 // TODO: Translate
-                alert("Please select an item to delete first.");
+                alert("Please select an item to delete.");
                 return;
             }
             dialogSupport.confirm("Are you sure you want to delete the item or cluster called '" + this.lastSelectedItem.name + "'?", () => {
@@ -382,9 +399,11 @@ class ClusteringDiagram {
         }
         
         // TODO: Translate
-        this.newButton("sourceButton", "Diagram Source", () => {
-            this.openSourceDialog(JSON.stringify(this.model, null, 2));
-        });
+        if (this.configuration !== "interpretations") {
+            this.newButton("sourceButton", "Diagram Source", () => {
+                this.openSourceDialog(JSON.stringify(this.model, null, 2));
+            });
+        }
     }
     
     // typeOfChange should be either "delete" or "update"
