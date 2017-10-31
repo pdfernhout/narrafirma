@@ -38,7 +38,9 @@ a:active {
 }
 
 textarea, input, select { /* override because expanded in survey */
-	margin-top: 0;
+    margin-top: 0;
+    border: 1px solid #231f20;
+    margin-left: 0.5em;
 }
 
 select[multiple] {
