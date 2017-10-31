@@ -150,14 +150,14 @@ class PatternExplorer {
             panelFields: [        
                 {
                     id: "saveGraphSelectionPanel_insertGraphSelection",
-                    displayPrompt: "Save graph selection",
+                    displayPrompt: "Save graph selection to observation",
                     displayType: "button",
                     displayPreventBreak: true,
                     displayConfiguration: this.insertGraphSelection.bind(this)
                 },
                 {
                     id: "saveGraphSelectionPanel_resetGraphSelection",
-                    displayPrompt: "Display chosen graph selection",
+                    displayPrompt: "Display graph selection selected in observation",
                     displayType: "button",
                     displayConfiguration: this.resetGraphSelection.bind(this)
                 }]};
