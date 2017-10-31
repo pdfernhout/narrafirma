@@ -1580,7 +1580,7 @@ export function d3ContingencyTable(graphBrowserInstance: GraphHolder, xAxisQuest
                 "X (" + nameForQuestion(xAxisQuestion) + "): " + plotItem.x +
                 "\nY (" + nameForQuestion(yAxisQuestion) + "): " + plotItem.y;
                 if (plotItem.expectedValue) {
-                    console.log("plotItem.expectedValue ", plotItem.expectedValue);
+                    //console.log("plotItem.expectedValue ", plotItem.expectedValue);
                     tooltipText += "\nExpected: " + plotItem.expectedValue.toFixed(0) + "\nObserved: " + plotItem.value.toFixed(0);
                 }
                 if (!plotItem.stories || plotItem.stories.length === 0) {
