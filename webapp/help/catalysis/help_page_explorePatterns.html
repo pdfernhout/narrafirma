@@ -72,17 +72,18 @@ What do the buttons about the "graph selection" do?
 <p>
 If you've made a selection of stories in one part of a graph (say in the upper right corner of a
 scatter plot), you might want to remember those stories when you look back at your observation
-again. Click "Save graph selection," and a representation of what you selected will appear in the observation
+again. Click "Save graph selection to observation," and a representation of what you selected 
+will appear in the observation
 text box. 
 </p>
 <p>
 When you return to the observation again and want to see the same stories, 
-click inside that text representation, then click "Display chosen graph selection." 
+click inside that text representation, then click "Display graph selection selected in observation." 
 The same stories should appear in the list. 
 </p>
 <p>
 You can record and use more than one selection in your observation, and you can
-(carefully) edit the representations by hand, if you want to.
+(carefully) edit the selections by hand, if you want to.
 </p>
 </div>
 
@@ -144,6 +145,41 @@ marks one standard deviation away (lower and higher) from the mean.
 </p>
 </div>
 
+<div class="question">
+What if I want to write more than one observation per graph? How do I do that?
+</div>
+<div class="question-answer">
+<p>
+You can divide any observation into sections and refer to them in your interpretations.
+When you write the observation, begin each section with a <strong>header</strong> that starts
+and ends with the @ character (for example, @A@ and @B@, @One@ and @Two@, @first@ and @second@). 
+Then refer to the headers in your interpretations. 
+When you print your catalysis report, NarraFirma will print only the section of
+the observation referred to by each interpretation.
+</p>
+<p>
+For example, say you write an observation with two parts, like this:
+</p>
+<pre>
+@A@ There are more stories about cats than about dogs. @B@ The stories people told about cats seem more friendly.
+</pre>
+<p>
+Now say that one of your interpretations has the text
+</p>
+<pre>@B@ People who have cats are friendlier people.
+</pre>
+When NarraFirma print your catalysis report, it will print
+<pre>People who have cats are friendlier people.
+	
+	The stories people told about cats seem more friendly.
+</pre>
+<p>
+These headers, which do not apear in the report, must be identical in both places.
+They must be located <i>at the start</i> of the interpretation text or observation section. They 
+must have @ signs before and after them. 
+</p>
+</div>
+	
 <div class="question">
 Why should I write two competing interpretations for each observation?
 </div>
