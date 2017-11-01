@@ -23,14 +23,14 @@ class Project {
     static defaultScatterDotSize = 8;
     static defaultCorrelationLineChoice = "0.05";
     static defaultGraphTypesToCreate = {
-        "data integrity graphs": true,
-        "texts": true,
-        "bar graphs": true,
-        "histograms": true,
-        "tables": true,
-        "multiple histograms": true,
-        "scatterplots": true,
-        "multiple scatterplots": true
+        "data integrity graphs": false,
+        "texts": false,
+        "bar graphs": false,
+        "histograms": false,
+        "tables": false,
+        "multiple histograms": false,
+        "scatterplots": false,
+        "multiple scatterplots": false
     }
 
     // The activeQuestionnaires field tracks what should be available to survey users and to construct related messages
