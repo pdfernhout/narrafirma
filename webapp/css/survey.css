@@ -146,6 +146,7 @@ textarea:read-only, input:read-only {
 input[type='range']{
     /* background: #0c0; */
     height:15px;
+    border: none;
 }
 
 input[type='range']::-webkit-slider-thumb{
