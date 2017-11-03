@@ -594,8 +594,23 @@ table.scrolling tr:hover {
     padding: 1em;
 }
 
-.narrafirma-story-card-annotations {
-	font-size: 1em;
+.narrafirma-story-card-slider-button {
+
+}
+
+.narrafirma-story-card-slider-bars-before {
+
+}
+
+.narrafirma-story-card-slider-bars-after {
+
+}
+
+.narrafirma-story-card-slider-bars-no-answer {
+
+}
+
+.narrafirma-story-card-annotation {
 }
 
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Adjustments for particular pages ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */

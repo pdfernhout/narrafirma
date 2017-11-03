@@ -9,27 +9,43 @@ function wrap(elementType, cssClass, text) {
     return m(elementType, {"class": cssClass}, text);
 }
 
-function displayHTMLForSlider(fieldSpecification, fieldName, value) {
+function displayHTMLForSlider(fieldSpecification, fieldName, value, options) {
     if (!fieldSpecification.displayConfiguration || fieldSpecification.displayConfiguration.length < 2) {
         console.log("missing displayConfiguration for slider", fieldSpecification);
         return m("div", "ERROR: Problem displaying slider " + fieldSpecification.id);
     }
+
     // Assumes values go from 0 to 100; places 100.0 in last bucket
     var lowLabel = fieldSpecification.displayConfiguration[0];
     var highLabel = fieldSpecification.displayConfiguration[1];
     var sliderText = [];
-    var bucketCount = 40;
+    var sliderTextBefore = "";
+    var sliderTextAfter = "";
+    var bucketCount = 50;
     var bucketSize = 100.0 / bucketCount;
     var placed = false;
-    for (var i = 0; i < bucketCount; i++) {
-        var bucketLow = i * bucketSize;
-        var bucketHigh = i * bucketSize + bucketSize;
-        if (!placed && value && ((value < bucketHigh) || (value && i === bucketCount - 1))) {
-            sliderText.push(m("b", "|"));
-            placed = true;
-        } else {
-            sliderText.push("-");
+    if (value) {
+        for (var i = 0; i < bucketCount; i++) {
+            var bucketLow = i * bucketSize;
+            var bucketHigh = i * bucketSize + bucketSize;
+            if (!placed) {
+                if (value && ((value < bucketHigh) || (value && i === bucketCount - 1))) {
+                    sliderText.push(m("span", {"class": "narrafirma-story-card-slider-bars-before"}, sliderTextBefore));
+                    sliderText.push(m("span", {"class": "narrafirma-story-card-slider-button"}, options.sliderButtonCharacter || "|"));
+                    placed = true;
+                } else {
+                    sliderTextBefore += options.beforeSliderCharacter || "-";
+                }
+            } else {
+                sliderTextAfter += options.afterSliderCharacter || "-";
+                //sliderText.push("-");
+            }
         }
+        sliderText.push(m("span", {"class": "narrafirma-story-card-slider-bars-after"}, sliderTextAfter));
+    } else {
+        // no answer
+        sliderTextAfter = new Array(bucketCount + 1).join(options.noAnswerSliderCharacter || "-");
+        sliderText.push(m("span", {"class": "narrafirma-story-card-slider-bars-no-answer"}, sliderTextAfter));
     }
     return m("tr", [
         wrap("td", "narrafirma-story-card-slider-name", fieldName),
@@ -95,14 +111,15 @@ function displayHTMLForSelect(fieldSpecification, fieldName, value) {
     return [options, atLeastOneOptionWasChecked];
 }
 
-function displayHTMLForField(storyModel: surveyCollection.Story, fieldSpecification, nobreak = null) {
+function displayHTMLForField(storyModel: surveyCollection.Story, fieldSpecification, options, nobreak = null) {
     // if (!model[fieldSpecification.id]) return "";
     var value = storyModel.fieldValue(fieldSpecification.id);
+    var isAnnotationQuestion = fieldSpecification.id.indexOf("A_") >= 0;
     // TODO: extra checking here for problems with test data -- could probably be changed back to just displayName eventually
     var fieldName = fieldSpecification.displayName || fieldSpecification.displayPrompt;
     var result = [];
     if (fieldSpecification.displayType === "slider") {
-        result.push(displayHTMLForSlider(fieldSpecification, fieldName, value));
+        result.push(displayHTMLForSlider(fieldSpecification, fieldName, value, options));
     } else if (fieldSpecification.displayType === "checkboxes") {
         var optionsAndChecked = displayHTMLForCheckboxes(fieldSpecification, fieldName, value);
         if (optionsAndChecked[1]) {
@@ -136,15 +153,22 @@ function displayHTMLForField(storyModel: surveyCollection.Story, fieldSpecificat
     //if (!nobreak) {
     //    result.push(m("br"));
     //}
-    
-    return result;  
+
+    if (isAnnotationQuestion) {
+        return wrap("div", "narrafirma-story-card-annotation", result);
+    } else {
+        return result;  
+    }
 }
 
 interface Options {
-    excludeAnnotations?: boolean;
     storyTextAtTop?: boolean;
     questionnaire?: any;
     location?: string;
+    beforeSliderCharacter?: string;
+    sliderButtonCharacter?: string;
+    afterSliderCharacter?: string;
+    noAnswerSliderCharacter?: string;
 }
 
 export function generateStoryCardContent(storyModel, questionsToInclude, options: Options = {}) {
@@ -154,11 +178,11 @@ export function generateStoryCardContent(storyModel, questionsToInclude, options
     // console.log("elicitingQuestion", elicitingQuestion);
     var storyName = storyModel.storyName();
     var storyText = storyModel.storyText();
-    var otherFields = [];
+    var formattedFields = [];
 
     var questionnaire = storyModel.questionnaire();
     if (options.questionnaire) questionnaire = options.questionnaire;
-        
+
     var allQuestions = [];
     if (questionnaire) {
         allQuestions = allQuestions.concat(questionnaire.storyQuestions);
@@ -179,13 +203,22 @@ export function generateStoryCardContent(storyModel, questionsToInclude, options
     }
 
     questions.sort(function(a, b) {
-       var aName = a.displayName || a.displayPrompt || "";
-       aName = aName.toLowerCase();
-       var bName = b.displayName || b.displayPrompt || "";
-       bName = bName.toLowerCase();
+        var aName = a.displayName || a.displayPrompt || "";
+        aName = aName.toLowerCase();
+        var bName = b.displayName || b.displayPrompt || "";
+        bName = bName.toLowerCase();
             
-        if (aName < bName) return -1;
-        if (aName > bName) return 1;
+        var aIsAnnotationQuestion = a.id.indexOf("A_") >= 0;
+        var bIsAnnotationQuestion = b.id.indexOf("A_") >= 0;
+
+        if ((aIsAnnotationQuestion && bIsAnnotationQuestion) || (!aIsAnnotationQuestion && !bIsAnnotationQuestion)) {
+            if (aName < bName) return -1;
+            if (aName > bName) return 1;
+        } else if (aIsAnnotationQuestion && !bIsAnnotationQuestion) {
+            return 1;
+        } else if (!aIsAnnotationQuestion && bIsAnnotationQuestion) {
+            return -1;
+        }
         return 0;
     });
     
@@ -196,16 +229,16 @@ export function generateStoryCardContent(storyModel, questionsToInclude, options
     for (i = 0; i < questions.length; i++) {
         question = questions[i];
         if (question.displayType !== "slider") continue;
-        otherFields.push(displayHTMLForField(storyModel, question, "nobreak"));
+        formattedFields.push(displayHTMLForField(storyModel, question, options, "nobreak"));
     }
-    if (otherFields.length) otherFields = [m("table", otherFields)];
+    if (formattedFields.length) formattedFields = [m("table", formattedFields)];
     
     for (i = 0; i < questions.length; i++) {
         question = questions[i];
         if (question.displayType === "slider") continue;
-        otherFields.push(displayHTMLForField(storyModel, question));
+        formattedFields.push(displayHTMLForField(storyModel, question, options));
     }
-    
+
     // console.log("otherFields", otherFields);
     
     var textForElicitingQuestion: any = [];
@@ -240,37 +273,13 @@ export function generateStoryCardContent(storyModel, questionsToInclude, options
         storyTextAtBottom = [];
     }
     
-    // place annotations at bottom (so they don't appear the same as the other questions)
-    
-    if (!options.excludeAnnotations) {
-        var annotationQuestions = Globals.project().collectAllAnnotationQuestions();
-        var adjustedAnnotationQuestions = questionnaireGeneration.convertEditorQuestions(annotationQuestions, "A_");
-        //questions = questions.concat(adjustedAnnotationQuestions);
-    }
-    
-    var annotationFields: any = [];
-    for (i = 0; i < adjustedAnnotationQuestions.length; i++) {
-        question = adjustedAnnotationQuestions[i];
-        if (question.displayType !== "slider") continue;
-        annotationFields.push(displayHTMLForField(storyModel, question, "nobreak"));
-    }
-    if (annotationFields.length) annotationFields = [m("table", annotationFields)];
-    
-    for (i = 0; i < adjustedAnnotationQuestions.length; i++) {
-        question = adjustedAnnotationQuestions[i];
-        if (question.displayType === "slider") continue;
-        annotationFields.push(displayHTMLForField(storyModel, question));
-    }
-    if (annotationFields.length) annotationFields = [wrap("span", "narrafirma-story-card-annotations", annotationFields)];
-    
     var storyCardContent = m("div[class=storyCard]", [
         wrap("div", "narrafirma-story-card-story-title", storyName),
         storyTextAtTop,
-        otherFields,
+        formattedFields,
         storyTextAtBottom,
         textForElicitingQuestion,
         textForNumStoriesTold,
-        annotationFields,
         m("hr")
     ]);
     

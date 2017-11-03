@@ -35,11 +35,67 @@ Choose a story collection, then click the Print Story Cards button. The cards wi
 <div class="heading">Frequently-asked questions</div>
 
 <div class="question">
-Can I format my story cards before I print them?
+What's this about characters?
 </div>
 <div class="question-answer">
 <p>
-Yes, but you need to do that outside of NarraFirma. Instead of printing the cards, save the display as an HTML page. Then open that page in a word processor and format it as you like. 
+Sliders (ranges) are represented in story cards as rows of characters (letters). 
+By default a slider looks like this:
+</p>
+<p>-----|--------------------------------------------</p>
+<p>
+If you like, you can change your sliders to use other characters and create displays like these:
+</p>
+<p>_____<>________________________________</p>
+<p>.....⥣.............................................</p>
+<p>~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~|||~~~~~~~~~~~~~~~~~~</p>
+<p>===========================[]===========================</p>
+<p>
+A few tips on changing slider characters:
+</p>
+<ul>
+	<li>Some characters are wider than others. If your before-the-button character 
+		is wider than your after-the-button character, your slider values may appear
+		different than they really are.
+	</li>
+	<li>White space is collapsed in HTML. This means you can use an empty space
+		for your after-the-button character, but you can't use it before the button.
+	</li>
+	<li>You can use emojis and other special characters, 
+		but whether your browser and printer will print
+		them correctly is anybody's guess. See what works for you.
+	</li>
+</ul>
+</p>
+</div>		
+
+<div class="question">
+How do I use the "Custom CSS" feature?
+</div>
+<div class="question-answer">
+<p>
+Click "Print Story Cards," 
+then use your browser to <strong>inspect</strong> any element of your story cards you want to change. 
+(The usual way to do this is to right-click on a word or area and choose "Inspect" or "Inspect Element" from the popup menu that appears.
+If you don't see a popup menu or an "Inspect" menu item, look up how to inspect a web page element in the browser you are using.
+Sometimes you need to turn on "developer" mode to inspect page elements.)
+</p>
+<p>When you have successfully inspected the page element you want to change, you should see its CSS class. 
+	Most of the classes start with "narrafirma-story-card".
+</p>
+<p>Next go to the "custom CSS" field on the the "Print story cards" page and
+write a class selector (label) and declaration (set of formatting lines)
+for that class. 
+For example, if you wanted all choice-question selections (drop-down list, checkboxes, radio buttons) to appear in blue, you would write a CSS statement
+like this:
+<code><br/><br/>
+.narrafirma-story-card-select-selected, .narrafirma-story-card-checkboxes-selected, .narrafirma-story-card-radiobuttons-selected { <br/>
+&nbsp; &nbsp; color: blue;<br/>
+}<br/><br/>
+</code>
+<p>
+Then reload your browser and print your story cards again to see your change. 
+(You can't just reload the story cards page; you have to reload the NarraFirma application, then click the "Print Story Cards" button again.)
 </p>
 </div>
 

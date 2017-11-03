@@ -195,6 +195,10 @@ Support storyBrowserCount
 
 ---- Release 1.0.0
 
+DONE Add custom CSS to story card display
+DONE Improve look of catalysis report
+DONE Add more user supplied fields to catalysis report
+DONE Add custom CSS to catalysis report
 DONE Support multiple scatter plots across individual question answers
 DONE Add data integrity graph: all scale values
 DONE Add data integrity graph: per-participant means

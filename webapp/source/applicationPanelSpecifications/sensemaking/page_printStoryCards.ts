@@ -44,6 +44,50 @@ var panel: Panel = {
             }
         },
         {
+            id: "printStoryCards_beforeSliderCharacter",
+            valueType: "string",
+            valuePath: "/clientState/storyCollectionName/printStoryCards_beforeSliderCharacter",
+            displayType: "text",
+            displayName: "Character to print before slider button",
+            displayPrompt: `
+            Enter a character to print before (to the left of) the slider "button". If empty, the character "-" will be used.`
+        },
+        {
+            id: "printStoryCards_sliderButtonCharacter",
+            valueType: "string",
+            valuePath: "/clientState/storyCollectionName/printStoryCards_sliderButtonCharacter",
+            displayType: "text",
+            displayName: "Slider button character",
+            displayPrompt: `
+            Enter a character to print as the slider "button". If empty, the character "|" will be used.`
+        },
+        {
+            id: "printStoryCards_afterSliderCharacter",
+            valueType: "string",
+            valuePath: "/clientState/storyCollectionName/printStoryCards_afterSliderCharacter",
+            displayType: "text",
+            displayName: "Character to print after slider button",
+            displayPrompt: `
+            Enter a character to print after (to the right of) the slider "button". If empty, the character "-" will be used.`
+        },
+        {
+            id: "printStoryCards_noAnswerSliderCharacter",
+            valueType: "string",
+            valuePath: "/clientState/storyCollectionName/printStoryCards_noAnswerSliderCharacter",
+            displayType: "text",
+            displayName: "Character to print on slider with no answer",
+            displayPrompt: `
+            Enter a character to print on the slider space if there was no answer to the question. If empty, the character "-" will be used.`
+        },
+        {
+            id: "printStoryCards_customCSS",
+            valueType: "string",
+            valuePath: "/clientState/storyCollectionName/printStoryCards_customCSS",
+            displayType: "textarea",
+            displayName: "Custom CSS",
+            displayPrompt: "You can enter <strong>custom CSS</strong> that modifies elements of your story cards here. (For more information on how this works, see the help system.)"
+        },
+        {
             id: "printStoryCards_printFormButton",
             valueType: "none",
             displayType: "button",

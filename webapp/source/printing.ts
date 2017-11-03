@@ -392,7 +392,7 @@ export function printStoryCards() {
     // console.log("printStoryCards");
     
     if (!Globals.clientState().storyCollectionName()) {
-        alert("Please select a story collection for which to print story cards");
+        alert("Please select a story collection for which to print story cards.");
         return;
     }
     
@@ -409,16 +409,28 @@ export function printStoryCards() {
 
     var project = Globals.project();
     var questionsToInclude = project.tripleStore.queryLatestC(storyCollectionName, "printStoryCards_questionsToInclude"); 
-    
+    var customCSS = project.tripleStore.queryLatestC(storyCollectionName, "printStoryCards_customCSS"); 
+    var beforeSliderCharacter = project.tripleStore.queryLatestC(storyCollectionName, "printStoryCards_beforeSliderCharacter"); 
+    var sliderButtonCharacter = project.tripleStore.queryLatestC(storyCollectionName, "printStoryCards_sliderButtonCharacter"); 
+    var afterSliderCharacter = project.tripleStore.queryLatestC(storyCollectionName, "printStoryCards_afterSliderCharacter"); 
+    var noAnswerSliderCharacter = project.tripleStore.queryLatestC(storyCollectionName, "printStoryCards_noAnswerSliderCharacter"); 
+
     for (var storyIndex = 0; storyIndex < allStoriesInStoryCollection.length; storyIndex++) {
         var storyModel = allStoriesInStoryCollection[storyIndex];
-        var storyContent = storyCardDisplay.generateStoryCardContent(storyModel, questionsToInclude, {storyTextAtTop: true});
+        var options = {
+            storyTextAtTop: true,
+            beforeSliderCharacter: beforeSliderCharacter,
+            sliderButtonCharacter: sliderButtonCharacter,
+            afterSliderCharacter: afterSliderCharacter,
+            noAnswerSliderCharacter: noAnswerSliderCharacter
+        }
+        var storyContent = storyCardDisplay.generateStoryCardContent(storyModel, questionsToInclude, options);
         
         var storyDiv = m(".storyCardForPrinting", storyContent);
         storyDivs.push(storyDiv);
     }
     
-   var htmlForPage = generateHTMLForPage("Story cards for: " + storyCollectionName, "css/standard.css", null, storyDivs, null);
+   var htmlForPage = generateHTMLForPage("Story cards for: " + storyCollectionName, "css/standard.css", customCSS, storyDivs, null);
    printHTML(htmlForPage);
 }
 
