@@ -50,7 +50,7 @@ var panel: Panel = {
             displayType: "text",
             displayName: "Character to print before slider button",
             displayPrompt: `
-            Enter a character to print before (to the left of) the slider "button". If empty, the character "-" will be used.`
+            Enter a character to print <strong>before</strong> (to the left of) the slider "button". If empty, the character "-" will be used.`
         },
         {
             id: "printStoryCards_sliderButtonCharacter",
@@ -59,7 +59,7 @@ var panel: Panel = {
             displayType: "text",
             displayName: "Slider button character",
             displayPrompt: `
-            Enter a character to print as the slider "button". If empty, the character "|" will be used.`
+            Enter a character to print as the slider <strong>button</strong>. If empty, the character "|" will be used.`
         },
         {
             id: "printStoryCards_afterSliderCharacter",
@@ -68,7 +68,7 @@ var panel: Panel = {
             displayType: "text",
             displayName: "Character to print after slider button",
             displayPrompt: `
-            Enter a character to print after (to the right of) the slider "button". If empty, the character "-" will be used.`
+            Enter a character to print <strong>after</strong> (to the right of) the slider "button". If empty, the character "-" will be used.`
         },
         {
             id: "printStoryCards_noAnswerSliderCharacter",
@@ -77,7 +77,7 @@ var panel: Panel = {
             displayType: "text",
             displayName: "Character to print on slider with no answer",
             displayPrompt: `
-            Enter a character to print on the slider space if there was no answer to the question. If empty, the character "-" will be used.`
+            Enter a character to print on the slider space if there was <strong>no answer</strong> to the question. If empty, the character "-" will be used.`
         },
         {
             id: "printStoryCards_customCSS",
