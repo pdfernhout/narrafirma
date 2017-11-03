@@ -1069,3 +1069,9 @@ textarea.textEditorInDialog {
 .storyCardForPrinting {
      page-break-after: always;
 }
+
+@media print { 
+    .storyCardForPrinting hr {
+        display: none;
+    }
+}
