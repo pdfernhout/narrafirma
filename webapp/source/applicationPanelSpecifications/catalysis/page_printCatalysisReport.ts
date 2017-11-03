@@ -1,3 +1,4 @@
+import Globals = require("../../Globals");
 import kludgeForUseStrict = require("../../kludgeForUseStrict");
 "use strict";
 
@@ -12,9 +13,9 @@ var panel: Panel = {
             valueType: "none",
             displayType: "label",
             displayPrompt: `
-                On this page you can <strong>export</strong> your catalysis report. You will probably want to format it in your word processor.
-                If you're having trouble reading the generated HTML file in your word processor, click the Help button
-                for some options.
+                On this page you can print a <strong>catalysis report</strong>, which will include
+                your observations, interpretations, and perspectives, as well as
+                the introduction (and other sections) you wrote on the "Start catalysis report" page.
                 `
         },
         {
@@ -33,7 +34,10 @@ var panel: Panel = {
             valueType: "none",
             displayType: "button",
             displayPrompt: "Print selected catalysis report",
-            displayConfiguration: "printCatalysisReport"
+            displayConfiguration: "printCatalysisReport",
+            displayVisible: function(panelBuilder, model) {
+                return !!Globals.clientState().catalysisReportName();
+            }
         }
     ]
 };

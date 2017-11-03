@@ -24,7 +24,7 @@ var panel: Panel = {
                     editButton: true,
                     addButton: true,
                     removeButton: true,
-                    columnsToDisplay: ["catalysisReport_shortName", "catalysisReport_notes"]
+                    columnsToDisplay: ["catalysisReport_shortName", "catalysisReport_notes", "catalysisReport_about", "catalysisReport_conclusion"]
                 }
             },
             displayName: "Catalysis reports",

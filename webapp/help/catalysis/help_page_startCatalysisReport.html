@@ -29,8 +29,8 @@ To start your catalysis process, you first need to create a report where the obs
 
 <div class="text">
 <p>
-Click the "Add" button to create a new catalysis report. Name the report, and add one or more story
-collections to it. The data in those story collections will be shown on the 
+Click the "Add" button to create a new catalysis report. Name the report, add one or more story
+collections to it, and write any texts you want to include. The data in the story collections will be shown on the 
 <a href="help_page_explorePatterns.html">Explore patterns</a> page, where you'll add
 observations to the report.
 </p>
@@ -47,6 +47,66 @@ Yes. If you choose two or more story collections, NarraFirma will attempt to mer
 data. The stories will be in one grand list, and any questions with the same short names will be merged
 as well. Be careful with this! If you have two questions with the same
 short name and very different answers, the patterns you see may not be very meaningful.
+</p>
+</div>
+
+<div class="question">
+How can I format my report sections?
+</div>
+<div class="question-answer">
+<p>
+There are two ways you can control how the introduction and other sections of your
+catalysis report are formatted. First, you can include simple HTML tags in the 
+text you write. You might want, for example, to start your introduction with a header, like this:
+</p>
+<div class="book-quote">
+<pre>&lt;h1&gt;Introduction&lt;/h1&gt;This is a catalysis report for our &lt;i&gt;Listening to the People&lt;/i&gt; project.</pre>
+</div>
+<p>
+Adding these HTML markup codes will create an introduction that looks like this:
+<div class="book-quote">
+<h1>Introduction</h1>This is a catalysis report for our <i>Listening to the People</i> project.
+</p>
+</div>
+<p>
+You can use these HTML tags for report sections: address, article, b, 
+big, blockquote, br, caption, cite, code, del, dd, d1, dt, em, h1, h2, h3, h4, h5, h6, 
+hr, i, kbd, li, ol, p, pre, s, small, sup, sub, strong, strike, table, td, th, tr, u, ul.
+For the shorter label specifications, you can use these tags: b, big, em, i, s, small, sup, sub, strong, strike, u.
+</p>
+<p>
+Secondly, you can use the custom CSS feature to format the sections you write. Each has a CSS class, which you can discover by inspecting
+it in your browser. 
+</div>
+	
+<div class="question">
+How do I use the "Custom CSS" feature?
+</div>
+<div class="question-answer">
+<p>
+Go to the "Print catalysis report" page,
+click "Print selected catalysis report," 
+and use your browser to <strong>inspect</strong> any element of the report you want to change. 
+(The usual way to do this is to right-click on a word or area and choose "Inspect" or "Inspect Element" from the popup menu that appears.
+If you don't see a popup menu or an "Inspect" menu item, look up how to inspect a web page element in the browser you are using.
+Sometimes you need to turn on "developer" mode to inspect page elements.)
+</p>
+<p>When you have successfully inspected the page element you want to change, you should see its CSS class. 
+	Most of the classes start with "narrafirma-catalysis-report".
+</p>
+<p>Next go to the "custom CSS" field for your catalysis report (on the the "Start catalysis report" page) and
+write a class selector (label) and declaration (set of formatting lines)
+for that class. 
+For example, if you wanted to change your report so that your perspective names appear in blue, you would write a CSS statement
+like this:
+<code><br/><br/>
+.narrafirma-catalysis-report-perspective { <br/>
+&nbsp; &nbsp; color: blue;<br/>
+}<br/><br/>
+</code>
+<p>
+Then reload your browser and print the report again to see your change. 
+(You can't just reload the report page; you have to reload the NarraFirma application, then click the "Print selected catalysis report" button again.)
 </p>
 </div>
 

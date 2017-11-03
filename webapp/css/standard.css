@@ -652,34 +652,49 @@ table.scrolling tr:hover {
 }
 
 .narrafirma-statistics-panel {
-	background-color: #e0e6cc;
-	border: 1px solid #8db500;
-	padding: 6px;
-	margin: 6px 4px 8px 4px;
+	background-color: #d5dae6;
+	border: 1px solid #abb6ce;
+	padding: 0.5em;
+	margin: 0.5em;
 	font-size: 0.9em;
-}
+} 
 
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Catalysis report ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 .narrafirma-catalysis-report-title {
 	font-size: 2.5em;
 	font-weight: 700;
-	margin: 0.5em 0 0.1em 0;
+    padding: 0.5em;
+    background: #b2c07f;
 }
 
-.narrafirma-catalysis-report-project-name {
-}
-
-.narrafirma-catalysis-report-date {
+.narrafirma-catalysis-report-project-name-and-date {
+    padding: 0.5em;
+    font-size: 0.8em;
+    background: #e0e6cc;
 }
 
 .narrafirma-catalysis-report-intro-note {
 	margin: 1em 0 1em 0;
 }
 
+.narrafirma-catalysis-report-about {
+    padding: 0.5em;
+    margin: 0.5em 0 0.5em 0;
+    background: #eeeeee;
+    border: 1px solid #d3d2d2;
+}
+
+.narrafirma-catalysis-report-about:empty { /* don't show box if nothing there */
+    display: none;
+}
+
+.narrafirma-catalysis-report-conclusion {
+    
+}
+
 .narrafirma-catalysis-report-perspective-link-header {
-	font-size: 1.25em;
-	margin: 1em 0 0.5em 0;
+	margin: 0.5em;
 }
 
 .narrafirma-catalysis-report-perspective-link {
@@ -689,45 +704,59 @@ table.scrolling tr:hover {
 .narrafirma-catalysis-report-perspective {
 	font-size: 2em;
 	font-weight: 700;
-	margin-bottom: 0.5em;
-	border-bottom: 2px solid #658200;
-	border-top: 2px solid #658200;
-	padding: 0.5em 0 0.5em 0;
+    padding: 0.5em;
+    background: #b2c07f;
+}
+
+.narrafirma-catalysis-report-perspective-label {
+}
+
+.narrafirma-catalysis-report-perspective-notes {
+    padding: 0.5em;
+    background: #e0e6cc;
+    margin-bottom: 0.5em;
 }
 
 .narrafirma-catalysis-report-interp-link-header {
 	margin-bottom: 0.5em;
-	font-style: italic;
 }
 
 .narrafirma-catalysis-report-interp-link {
 	margin: 0 0 0 1em;
-	font-style: italic;
-}
-
-.narrafirma-catalysis-report-perspective-notes {
-	margin: 1em 0 1em 0;
 }
 
 .narrafirma-catalysis-report-interpretation {
+    padding: 0.5em;
 	font-size: 1.5em;
 	font-weight: 700;
-	font-style: italic;
-	border-bottom: 1px solid #2e4a85;
+    background: #eac199;
+}
+
+.narrafirma-catalysis-report-interpretation-label {
+
 }
 
 .narrafirma-catalysis-report-interpretation-notes {
-	margin: 1em 0 1em 0;
-	font-style: italic;
+	padding: 0.5em;
+    margin-bottom: 0.5em;
+    background: #f4e0cc;
 }
 
 .narrafirma-catalysis-report-observation {
 	font-size: 1.em;
-	font-weight: 700;
+    font-weight: 700;
+    padding: 0.5em;
+    background: #abb6ce;
+}
+
+.narrafirma-catalysis-report-observation-label {
+
 }
 
 .narrafirma-catalysis-report-observation-description {
-	margin: 1em 0 1em 0;
+    padding: 0.5em;
+    margin-bottom: 0.5em;
+    background: #d5dae6;
 }
 
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ d3 charting ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
@@ -860,16 +889,6 @@ table.scrolling tr:hover {
 .scatterPlot .story.selected {
   stroke: #cc6400;
   fill: #cc6400;
-}
-
-.scatterPlot .correlationLine_01_Significance {
-    stroke: red;
-    stroke-width: 3px;
-}
-
-.scatterPlot .correlationLine_05_Significance {
-    stroke: red;
-    stroke-width: 1px;
 }
 
 .contingencyChart .storyCluster.observed {

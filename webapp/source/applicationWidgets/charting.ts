@@ -1256,19 +1256,20 @@ export function d3ScatterPlot(graphBrowserInstance: GraphHolder, xAxisQuestion, 
     
     // Add line if correlation is significant (if option is set)
     if (graphBrowserInstance.correlationLineChoice != "none") {
-        let lineClass = "";
+        let lineWidth = 0;
         if (statistics.p <= 0.01) {
-            lineClass = "correlationLine_01_Significance";
+            lineWidth = 3;
         } else if ((statistics.p <= 0.05) && (graphBrowserInstance.correlationLineChoice == "0.05")) {
-            lineClass = "correlationLine_05_Significance";
+            lineWidth = 1;
         }
-        if (lineClass) {
+        if (lineWidth > 0) {
             var x1 = chart.width/4;
             var x2 = 3 * chart.width/4;
             var y1 = chart.height / 2 + chart.height/4 * statistics.rho;
             var y2 = chart.height / 2 - chart.height/4 * statistics.rho;
             var line = chartBody.append("line")
-                .attr("class", lineClass)
+                .style("stroke", "red")
+                .style("stroke-width", lineWidth)
                 .attr("x1", x1)
                 .attr("y1", y1)
                 .attr("x2", x2)
@@ -1729,8 +1730,6 @@ function updateSelectedStories(chart, storyDisplayItemsOrClusters, graphBrowserI
     }
 }
 
-
-// CFK this will not react correctly for the data integrity chart type
 export function restoreSelection(chart, selection) {
     var extent;
     if (chart.chartType === "histogram") {
