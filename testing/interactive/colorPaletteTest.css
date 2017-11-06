@@ -1,0 +1,262 @@
+/* these are just for the palette files */
+
+.spacing {
+    margin-top: 1em;
+    margin-bottom: 1em;
+}
+
+.dividingspace {
+    margin: 5em;
+}
+
+/* these are all named as in the app css */
+
+/* things that apply to elements, not classes */
+
+a:link {
+	color: #658200;
+}
+
+a:visited {
+	color: #3b5fab;
+}
+
+a:hover {
+	color: #2e4a85;
+}
+
+a:active {
+	color: #3b5fab;
+}
+
+button {
+    background-color: #BCD8F4;
+    background-image: linear-gradient(#FFF 0px, rgba(255, 255, 255, 0) 3px, rgba(255, 255, 255, 0.75) 100%);
+    margin: 2px 4px 2px 4px;
+    padding: 2px 4px 2px 4px;
+    white-space: nowrap;
+    cursor: pointer;
+    font-size: 1.1em;
+}
+
+textarea:-moz-read-only, input:-moz-read-only { /* For Firefox */
+	background-color: inherit;
+}
+
+textarea:read-only, input:read-only {
+	background-color: inherit;
+}
+
+/* main classes */
+
+.navigationDiv {
+    padding: 1em;
+    background-color: #b2c07f;
+}
+
+.questionExternal {
+	background-color: #d5dae6;
+	margin-bottom: 4px;
+    border-radius: 12px;
+    padding: 1em;
+    margin: 4px;
+}
+
+.questionExternal.readonly {
+	background-color: #eeeeee;
+	margin-bottom: 4px;
+    border-radius: 12px;
+    padding: 4px 8px 4px 8px;
+    margin: 4px;
+}
+
+.questionExternal.narrafirma-question-type-header {
+	display: block;
+	font-size: 1.2em;
+	font-weight: bold;
+	background-color: #abb6ce;  
+    border-radius: 12px; 
+	margin-bottom: 12px;
+	margin-top: 10px;
+}
+
+.narrafirma-textbox {
+    width: 100%;
+    border: 1px solid black;
+}
+
+.narrafirma-reminder {
+	background-color: #b2c07f;
+	margin-bottom: 4px;
+    border-radius: 12px;
+    padding: 4px 8px 4px 8px;
+    margin: 4px;
+}
+
+/* table of items */
+
+.grid-header-cell {
+    background-color: #7b8cb2;
+    padding: 1em;
+    border: 1px solid #3e3739;
+}
+
+.narrafirma-grid-cell {
+    padding: 1em;
+    background-color: #d5dae6;
+}
+
+.narrafirma-grid-cell-selected {
+    padding: 1em;
+    background-color: #f4e0cc;
+}
+
+/* panel viewing or editing selected item in table */
+
+.narrafirma-griditempanel-editing {
+	background-color: #FFF;
+	margin: 1em;
+	border: 1px solid #2e4a85;
+	border-radius: 12px;
+	padding: 8px;
+}
+
+.narrafirma-griditempanel-editing .questionExternal {
+	background-color: #abb6ce;
+}
+
+.narrafirma-griditempanel-editing .questionExternal.narrafirma-question-type-header { 
+	background-color: #7b8cb2;
+}
+
+.narrafirma-griditempanel-viewing {
+	background-color: #eeeeee; /* this gray is an extra super light gray */
+	margin: 1em;
+	border: 1px solid #231f20;
+	border-radius: 12px;
+	padding: 8px;
+}
+
+.narrafirma-griditempanel-viewing .questionExternal {
+	background-color: #eeeeee;
+	margin: 0px;
+}
+
+.narrafirma-griditempanel-viewing .questionExternal.narrafirma-question-type-header {
+	background-color: #eeeeee; 
+}
+
+/* catalysis report */
+
+.narrafirma-catalysis-report-title {
+	font-size: 2.5em;
+	font-weight: 700;
+    padding: 0.5em;
+    background: #b2c07f;
+}
+
+.narrafirma-catalysis-report-project-name-and-date {
+    padding: 0.5em;
+    font-size: 0.8em;
+    background: #e0e6cc;
+}
+
+.narrafirma-catalysis-report-perspective {
+	font-size: 2em;
+	font-weight: 700;
+    padding: 0.5em;
+    background: #b2c07f;
+}
+
+.narrafirma-catalysis-report-perspective-notes {
+    padding: 0.5em;
+    background: #e0e6cc;
+    margin-bottom: 0.5em;
+}
+
+.narrafirma-catalysis-report-interpretation {
+    padding: 0.5em;
+	font-size: 1.5em;
+	font-weight: 700;
+    background: #eac199;
+}
+
+.narrafirma-catalysis-report-interpretation-notes {
+	padding: 0.5em;
+    margin-bottom: 0.5em;
+    background: #f4e0cc;
+}
+
+.narrafirma-catalysis-report-observation {
+	font-size: 1.em;
+    font-weight: 700;
+    padding: 0.5em;
+    background: #abb6ce;
+}
+
+.narrafirma-catalysis-report-observation-description {
+    padding: 0.5em;
+    margin-bottom: 0.5em;
+    background: #d5dae6;
+}
+
+/* help system */
+
+a.help:link {
+	color: #895717;
+}
+
+a.help:visited {
+	color: #3e3739;
+}
+
+a.help:hover {
+	color: #b5731e;
+}
+
+a.help:active {
+	color: #b5731e;
+}
+
+
+.help-header {
+	background: #f4e0cc;
+	margin: 0px;
+	padding: 20px; 
+	border-bottom: 4px solid #cc6400;
+}
+
+.help-heading {
+	font-size: 1.2em;
+	font-weight: 700;
+	padding: 8px 10px 6px 10px;
+}
+.help-text {
+	background: #f4e0cc;
+	padding: 4px 10px 4px 10px;
+	margin: 0px 10px 0px 10px;
+    }
+    
+.help-question {
+	background: #eac199;
+	font-style: italic;
+	padding: 9px 10px 8px 10px;
+	margin: 0px 10px 0px 10px;
+    
+    }
+    
+.help-answer {
+	background: #f4e0cc;
+	padding: 4px 10px 4px 10px;
+	margin: 0px 10px 0px 10px;
+    
+    }
+    
+.help-book-quote {
+	margin: 20px;
+	padding: 20px;
+	background: #e4e4e4;
+	border: 1px solid #3e3739;
+   
+    }
+    
