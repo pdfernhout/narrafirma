@@ -475,7 +475,7 @@ class GridWithItemPanel {
             m("td", {colSpan: this.columns.length}, [
                 m.component(<any>ItemPanel, {key: this.fieldSpecification.id + "_" + "inlineEditor" + "_" + mode, panelBuilder: panelBuilder, item: item, grid: this, mode: mode})
             ]),
-            m("td", {"vertical-align": "top"}, [m("button", {onclick: this.doneClicked.bind(this, item)}, "close")])
+            m("td", {"vertical-align": "top"}, [m("button", {onclick: this.doneClicked.bind(this, item)}, "Close")])
         ]);
     }
     
@@ -484,7 +484,7 @@ class GridWithItemPanel {
             m("td", {colSpan: this.columns.length}, [
                 m.component(<any>ItemPanel, {key: this.fieldSpecification.id + "_" + "bottomEditor" + "_" + mode, panelBuilder: panelBuilder, item: item, grid: this, mode: mode})
             ]),
-            m("td", {"vertical-align": "top"}, [m("button", {onclick: this.doneClicked.bind(this, item)}, "close")])
+            m("td", {"vertical-align": "top"}, [m("button", {onclick: this.doneClicked.bind(this, item)}, "Close")])
         ]);
     }
 
@@ -694,7 +694,11 @@ class GridWithItemPanel {
         }
         
         var fields = this.columns.map((column) => {
-            return m("td", {"text-overflow": "ellipsis", "data-item-index": this.dataStore.idForItem(item), id: this.makeHtmlIdForItem(item)}, this.dataStore.valueForField(item, column.field));
+            var value = this.dataStore.valueForField(item, column.field);
+            var find = "\n";
+            var re = new RegExp(find, 'g');
+            value = value.replace(re, " / ");
+            return m("td", {"text-overflow": "ellipsis", "data-item-index": this.dataStore.idForItem(item), id: this.makeHtmlIdForItem(item)}, value);
         });
         
         if (this.gridConfiguration.inlineButtons) {
