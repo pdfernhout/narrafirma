@@ -695,9 +695,11 @@ class GridWithItemPanel {
         
         var fields = this.columns.map((column) => {
             var value = this.dataStore.valueForField(item, column.field);
-            var find = "\n";
-            var re = new RegExp(find, 'g');
-            value = value.replace(re, " / ");
+            if (value && typeof value == "string") {
+                var find = "\n";
+                var re = new RegExp(find, 'g');
+                value = value.replace(re, " / ");
+            }
             return m("td", {"text-overflow": "ellipsis", "data-item-index": this.dataStore.idForItem(item), id: this.makeHtmlIdForItem(item)}, value);
         });
         
