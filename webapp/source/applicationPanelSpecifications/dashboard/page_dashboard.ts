@@ -9,91 +9,37 @@ var panel: Panel = {
             id: "project_mainDashboardPNIPhasesDiagram",
             valueType: "none",
             displayType: "html",
-            displayPrompt: "<img class=\"narrafirma-pni-phases-image\" src=\"images/PNIPhasesDiagram-trimmed.png\" alt=\"PNI Phase Diagram\" usemap=\"#pniphasesmap\"></img>"
+            displayPrompt: `
+            <img class=\"narrafirma-pni-phases-image\" src=\"images/PNIPhasesDiagram-trimmed.png\" alt=\"NarraFirma sections (click to navigate)\" usemap=\"#pniphasesmap\"></img>
+            <map name=\"pniphasesmap\">
+            <area shape=\"rect\" coords=\"2,116,132,236\" href=\"javascript:narrafirma_openPage('page_planning')\" alt=\"Planning\" 
+            title=\"Click here to make decisions about how your project will proceed.\">
+            
+            <area shape=\"rect\" coords=\"285,20,415,138\" href=\"javascript:narrafirma_openPage('page_collection')\" alt=\"Collection\" 
+            title=\"Click here to choose story collection methods, write questions, design sessions and forms, and collect stories.\">
+            
+            <area shape=\"rect\" coords=\"563,115,694,235\" href=\"javascript:narrafirma_openPage('page_catalysis')\" alt=\"Catalysis\" 
+            title=\"Click here to look for patterns in stories and answers to questions.\">
+            
+            <area shape=\"rect\" coords=\"413,170,542,287\" href=\"javascript:narrafirma_openPage('page_sensemaking')\" alt=\"Sensemaking\" 
+            title=\"Click here to help people use stories and patterns to think together.\">
+            
+            <area shape=\"rect\" coords=\"284,324,414,443\" href=\"javascript:narrafirma_openPage('page_intervention')\" alt=\"Intervention\" 
+            title=\"Click here to plan and record interventions in the narrative life of the community or organization.\">
+            
+            <area shape=\"rect\" coords=\"152,171,282,289\" href=\"javascript:narrafirma_openPage('page_return')\" alt=\"Return\" 
+            title=\"Click here to reflect on the project and support the return of stories to the community or organization.\">
+            </map>`
         },
+
         {
-            id: "project_mainDashboardPNIPhasesImageMap",
+            id: "project_adminPageLink",
             valueType: "none",
             displayType: "html",
-            displayPrompt: "<map name=\"pniphasesmap\"><area shape=\"rect\" coords=\"4,44,111,162\" href=\"javascript:narrafirma_openPage('page_planning')\" alt=\"Planning\" title=\"Click here to go to the Planning section\"><area shape=\"rect\" coords=\"224,66,336,182\" href=\"javascript:narrafirma_openPage('page_collection')\" alt=\"Collection\" title=\"Click here to go to the Collection section\"><area shape=\"rect\" coords=\"447,46,553,162\" href=\"javascript:narrafirma_openPage('page_catalysis')\" alt=\"Catalysis\" title=\"Click here to go to the Catalysis section\"><area shape=\"rect\" coords=\"104,199,213,321\" href=\"javascript:narrafirma_openPage('page_return')\" alt=\"Return\" title=\"Click here to go to the Return section\"><area shape=\"rect\" coords=\"344,199,454,320\" href=\"javascript:narrafirma_openPage('page_sensemaking')\" alt=\"Sensemaking\" title=\"Click here to go to the Sensemaking section\"><area shape=\"rect\" coords=\"212,354,437,451\" href=\"javascript:narrafirma_openPage('page_intervention')\" alt=\"Intervention\" title=\"Click here to go to the Intervention section\"></map>"
+            displayPrompt: `<a href="javascript:narrafirma_openPage('page_administration')">Project administration</a>`
         },
-        {
-            id: "project_launchSection_planning",
-            valueType: "none",
-            displayType: "dashboardSectionStatusDisplay",
-            displayPreventBreak: false,
-            displayConfiguration: {
-                action: "guiOpenSection",
-                section: "page_planning"
-            },
-            displayPrompt: "Planning"
-        },
-        {
-            id: "project_launchSection_collection",
-            valueType: "none",
-            displayType: "dashboardSectionStatusDisplay",
-            displayPreventBreak: false,
-            displayConfiguration: {
-                action: "guiOpenSection",
-                section: "page_collection"
-            },
-            displayPrompt: "Collection"
-        },
-        {
-            id: "project_launchSection_catalysis",
-            valueType: "none",
-            displayType: "dashboardSectionStatusDisplay",
-            displayPreventBreak: false,
-            displayConfiguration: {
-                action: "guiOpenSection",
-                section: "page_catalysis"
-            },
-            displayPrompt: "Catalysis"
-        },
-        {
-            id: "project_launchSection_sensemaking",
-            valueType: "none",
-            displayType: "dashboardSectionStatusDisplay",
-            displayPreventBreak: false,
-            displayConfiguration: {
-                action: "guiOpenSection",
-                section: "page_sensemaking"
-            },
-            displayPrompt: "Sensemaking"
-        },
-        {
-            id: "project_launchSection_intervention",
-            valueType: "none",
-            displayType: "dashboardSectionStatusDisplay",
-            displayPreventBreak: false,
-            displayConfiguration: {
-                action: "guiOpenSection",
-                section: "page_intervention"
-            },
-            displayPrompt: "Intervention"
-        },
-        {
-            id: "project_launchSection_return",
-            valueType: "none",
-            displayType: "dashboardSectionStatusDisplay",
-            displayPreventBreak: false,
-            displayConfiguration: {
-                action: "guiOpenSection",
-                section: "page_return"
-            },
-            displayPrompt: "Return"
-        },
-        {
-            id: "project_launchSection_administration",
-            valueType: "none",
-            displayType: "dashboardSectionStatusDisplay",
-            displayPreventBreak: false,
-            displayConfiguration: {
-                action: "guiOpenSection",
-                section: "page_administration"
-            },
-            displayPrompt: "Administration"
-        },
+        
+        
         {
             id: "project_mainDashboardStoryCollectionStatus",
             valueType: "none",
