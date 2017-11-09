@@ -6,15 +6,17 @@
 
 /* html, body, pleaseWaitOverlay - are in survey.css */
 
-/* the NarraFirma color palette is (going darker from left to right)
+/* the NarraFirma color palette 
 
-Gray - [extra: eeeeee e4e4e4] - d3d2d2 - a7a5a5 - 3e3739 - 231f20
-Brown - e7ddd0 - cfbba2 - b5731e - 895717
-Green - e0e6cc - b2c07f - 8db500 - 658200
-Orange - f4e0cc - eac199 - ff7d00 - [extra: e0a266] - cc6400
-Blue - d5dae6 - abb6ce - [extra: 7b8cb2] - 3b5fab - 2e4a85
+Headers b0d4d4
+Working areas c5d2eb (parenthetical d7dce4)
+Selected areas ffe1aa
+Disabled/readonly area text color 979696
+Action areas (buttons) ffbb84
+Special warning areas f88a57
 
 */
+
 
 #pageDiv {
    padding-left: 10px;
@@ -22,24 +24,24 @@ Blue - d5dae6 - abb6ce - [extra: 7b8cb2] - 3b5fab - 2e4a85
 }
 
 a:link {
-	color: #658200;
+	color: #017a7a;
 }
 
 a:visited {
-	color: #3b5fab;
+	color: #017a7a; /* there is not much reason to indicate visited status within the app */
 }
 
 a:hover {
-	color: #2e4a85;
+	color: #023d3d;
 }
 
 a:active {
-	color: #3b5fab;
+	color: #023d3d;
 }
 
 textarea, input, select { /* override because expanded in survey */
     margin-top: 0;
-    border: 1px solid #231f20;
+    border: 1px solid black;
     margin-left: 0.5em;
 }
 
@@ -57,10 +59,10 @@ select[multiple] { /* only used in story browser */
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Navigation bar ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 #navigationDiv {
-	background-color: #b2c07f;
+	background-color: #b0d4d4;
+    border-bottom: 4px solid #ffbb84; 
 	padding: 0.75em 0.2em 0.2em 0em;
-    border-bottom: 4px ridge #658200; 
-    position: fixed;
+    position: absolute;
     top: 0;
     left: 0;
     z-index: 999;
@@ -75,31 +77,31 @@ select[multiple] { /* only used in story browser */
 }
 
 .narrafirma-serverstatus-ok {
-	color: #231f20;
+	color: black;
 	font-weight: 700;
-	text-shadow: 2px 2px #d3d2d2;
-	border: 2px solid #b2c07f; /* so the name doesn't shift when the red border appears */
+	text-shadow: 2px 2px #b0d4d4;
+	border: 2px solid #b0d4d4; /* so the name doesn't shift when the border appears */
 }
 
 .narrafirma-serverstatus-waiting {
-	color: #231f20;
+	color: black;
 	font-weight: 700;
 	text-shadow: 2px 2px yellow;
-	border: 2px solid #b2c07f; /* so the name doesn't shift when the red border appears */
+	border: 2px solid #b0d4d4; /* so the name doesn't shift when the border appears */
 }
 
 .narrafirma-serverstatus-waiting-last-error {
-	color: #231f20;
-	border: 2px solid red;
+	color: black;
 	font-weight: 700;
 	text-shadow: 2px 2px yellow;
+	border: 2px solid red;
 }
 
 .narrafirma-serverstatus-failure {
-	color: #231f20;
-	border: 2px solid red;
+	color: black;
 	font-weight: 700;
 	text-shadow: 2px 2px red;
+	border: 2px solid red;
 }
 
 .narrafirma-serverstatus-unknown {
@@ -107,20 +109,26 @@ select[multiple] { /* only used in story browser */
 }
 
 button {
-    background-color: #BCD8F4;
-    background-image: linear-gradient(#FFF 0px, rgba(255, 255, 255, 0) 3px, rgba(255, 255, 255, 0.75) 100%);
-    margin: 2px 4px 2px 4px;
-    padding: 2px 4px 2px 4px;
+    background-color: #ffbb84;
+    margin: 0.4em;
+    padding: 0.4em;
     white-space: nowrap;
     cursor: pointer;
-    font-size: 1.1em;
+    font-size: 1em;
+}
+
+button:hover {
+    background-color: #ffa25f;
+}
+
+button:disabled {
+    background-color: lightgray;
 }
 
 .button-text {
     display: inline-block;
     text-align: center;
     vertical-align: middle;
-    padding: 2px 4px 2px 4px;
 }
 
 .wwsButtonImage {
@@ -212,8 +220,8 @@ button {
 }
 
 .narrafirma-page-name {
-    font-weight: normal;
-    font-size: 1.2em;
+    font-weight: 700;
+    font-size: 1.3em;
     margin: 1em 0 0 0.35em;
 }
  
@@ -221,11 +229,10 @@ button {
 .narrafirma-page-change-button {
     font-size: 1em;
     min-width: 10em;
-    height: 2em;
-    border-radius: 12px; 
     border: none;
-    box-shadow: 2px 2px 2px #3e3739;
+    box-shadow: 2px 2px 2px black;
     margin-bottom: 0.5em;
+    padding: 0.4em;
 }
 
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Dashboard (home page) ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
@@ -234,7 +241,6 @@ button {
     float: left;
 	margin: 4px 30px 10px 0px;
 	padding-right: 30px;
-    border-right: 2px solid #8db500;
 }
 
 .narrafirma-dashboardStatusButton {
@@ -243,8 +249,9 @@ button {
     height: 2em;
     border-radius: 12px; 
     border: none;
-    box-shadow: 2px 2px 2px #3e3739;
+    box-shadow: 2px 2px 2px black;
     margin-bottom: 0.5em;
+    padding: 0.4em;
 }
 
 .narrafirma-dashboardSectionStatusDisplayCompletion {
@@ -256,16 +263,19 @@ button {
 	}
 
 .narrafirma-dashboard-story-collection-status th {
-	font-weight: normal;
-	border: 1px solid #3e3739;
+    font-weight: normal;
+    background-color: #b0d4d4;
+	border: 1px solid black;
 	padding: 4px;
 	}
 
 .narrafirma-dashboard-story-collection-status td {
-	border: 1px solid #3e3739;
-	padding: 4px;
-	}
-
+    border: 1px solid black;
+    background-color: #eaf0f8;
+    padding: 4px;
+    max-width: 12em;
+    }
+    
 .narrafirma-dashboard-header {
 	display: block;
 	font-weight: 700;
@@ -278,8 +288,8 @@ button {
 }
 
 .narrafirma-questionAnswer { /* this is now used to display the reminder on the phase dashboard page */
-    background-color: #e0e6cc;
-    border: 1px solid #b2c07f;
+    background-color: #ffe1aa;
+    border: 2px solid #ffbb84;
     margin: 0.5em 0 0 1em;
     padding: 0.5em;
 }
@@ -297,38 +307,43 @@ button {
 	display: block;
 	font-size: 1.2em;
 	font-weight: bold;
-	background-color: #abb6ce;  
-    border-radius: 12px; 
+	background-color: #b0d4d4;  
+    border-radius: 3px; 
 	margin-bottom: 12px;
 	margin-top: 10px;
 }
 
+.questionExternal.narrafirma-question-type-grid {
+    background-color: white;
+}
+
 .narrafirma-griditempanel-editing .narrafirma-question-type-header.questionExternal { 
-	background-color: #7b8cb2;
+	background-color: #b0d4d4;
 }
  
 .narrafirma-griditempanel-viewing .narrafirma-question-type-header.questionExternal {
-	background-color: #eeeeee; 
+    background-color: white; 
+    color: #979696;
 }
  
 .questionExternal {
-	background-color: #d5dae6;
-	margin-bottom: 4px;
-    border-radius: 12px;
-    padding: 4px 8px 4px 8px;
-    margin: 4px;
+	background-color: #c5d2eb;
+	margin-bottom: 0.2em;
+    border-radius: 3px;
+    padding: 0.2em;
+    margin: 0.2em;
 }
 
 .questionExternal-annotation {
-	background-color: #b2c07f;
-	margin-bottom: 4px;
-    border-radius: 12px;
-    padding: 8px;
-    margin: 8px;
+	background-color: #d7dce4;
+	margin-bottom: 0.2em;
+    border-radius: 3px;
+    padding: 0.2em;
+    margin: 0.2em;
 }
 
 .questionExternal.narrafirma-question-type-text.narrafirma-ignore-story {
-	background-color: #a7a5a5;
+	background-color: #d7dce4;
 }
 
 .questionInternal.narrafirma-question-type-slider {
@@ -349,18 +364,17 @@ button {
 }
 
 .questionPrompt {
-    padding-top: 8px;
-    padding-bottom: 8px;
+    padding: 0.4em;
     display: block;
 }
 
 .questionInternal {
-    padding: 8px;
-    margin-left: 12px;
+    padding: 0.4em;
+    margin-left: 0.6em;
 }
 
 .narrafirma-textbox {
-    width: 100%;
+    width: 98%;
     border: 1px solid black;
 }
 
@@ -382,8 +396,12 @@ form {
 }
 
 .narrafirma-reminder {
-	background-color: #b2c07f;
-	border-radius: 12px;
+    background-color: #ffe1aa;
+	border-radius: 3px;
+}
+
+.functionResult { /* apparently used on on "stop story collection" page */
+    margin: 0.4em 0 1em 0.6em;
 }
 
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Grid item panel (spreadsheet like table) ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
@@ -399,27 +417,29 @@ form {
 }
 
 .narrafirma-griditempanel-editing {
-	background-color: #FFF;
+    background-color: #ffe9c4;
+    border: 1px solid black;
 	margin: 1em;
-	border: 1px solid #2e4a85;
-	border-radius: 12px;
-	padding: 8px;
+	border-radius: 8px;
+    padding: 8px;
 }
 
 .narrafirma-griditempanel-editing .questionExternal {
-	background-color: #abb6ce;
+	background-color: #c5d2eb;
 }
 
 .narrafirma-griditempanel-viewing {
-	background-color: #eeeeee; /* this gray is an extra super light gray */
+    background-color: white;
+    color: #6d6c6c;
 	margin: 1em;
-	border: 1px solid #231f20;
-	border-radius: 12px;
+	border: 1px solid black;
+	border-radius: 8px;
 	padding: 8px;
 }
 
 .narrafirma-griditempanel-viewing .questionExternal {
-	background-color: #eeeeee;
+    background-color: white;
+    color: #6d6c6c;
 	margin: 0px;
 }
 
@@ -430,18 +450,25 @@ form {
 
 .narrafirma-special-warning {
 	display: block;
-	background-color: #eac199;
-	border: 2px solid #cc6400;
-	padding: 10px;
-	margin-left: 2em;
+    background-color: #669ef3;
+    color: black;
+	padding: 1em;
+    margin-left: 2em;
+}
+
+.narrafirma-griditempanel-viewing .narrafirma-special-warning {
+    background-color: white;
+    color: #6d6c6c;
+	padding: 1em;
+    margin-left: 2em;
 }
 
 .narrafirma-grid {
-    margin: 10px;
+    margin: 0.4em;
 }
 
 table.scrolling {
-  margin: 10px;
+  margin: 0.6em 1em 0em 1em;
   display: block;
   max-height: 400px;
   overflow-y: scroll;
@@ -449,14 +476,14 @@ table.scrolling {
 }
 
 table.scrolling th {
-	background-color: #7b8cb2;
-	padding: 10px;
-	border: 1px solid #3e3739;
+	background-color: #b0d4d4;
+	padding: 0.4em;
+	border: 1px solid black;
 }
 
 table.scrolling td {
     padding: 6px;
-    border: 1px solid #3e3739;
+    border: 1px solid black;
     height: 1em;
 }
 
@@ -466,7 +493,7 @@ table button.fader {
 }
 
 table.scrolling tr {
-	border: 1px solid #3e3739;
+	border: 1px solid black;
 }
 
 table tr:hover button.fader {
@@ -478,31 +505,31 @@ table.scrolling tr:hover {
 }
 
 .narrafirma-grid-row-unselected-odd {
-	background-color: #d5dae6;
+	background-color: #eff4ff;
 }
 
 .narrafirma-grid-row-unselected-even {
-	background-color: #abb6ce;
+	background-color: white;
 }
 
 .narrafirma-grid-row-selected-odd {
-	background-color: #f4e0cc;
+	background-color: #ffe9c4;
 }
 
 .narrafirma-grid-row-selected-even {
-	background-color: #eac199;
+	background-color: #ffe9c4;
 }
 
 .narrafirma-button-panel {
-    padding: 10px;
+    padding: 0.6em;
 }
 
 .narrafirma-button-panel button {
     font-size: 1em;
+    padding: 0.4em;
     height: 2em;
-    border-radius: 12px; 
     border: none;
-    box-shadow: 2px 2px 2px #3e3739;
+    box-shadow: 2px 2px 2px black;
     margin-bottom: 0.5em;
 }
 
@@ -621,6 +648,15 @@ table.scrolling tr:hover {
 
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Recommendations table ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
+.recommendationsTable {
+    border-collapse: collapse;
+    max-height: 600px;
+}
+
+.narrafirma-recommendations-table .questionPrompt{
+    padding-left: 0;
+}
+ 
 .recommendationsTable th, .recommendationsTable td {
 	border: 1px solid black;
 	text-align: left;
@@ -628,7 +664,8 @@ table.scrolling tr:hover {
 }
 
 .narrafirma-dialog-launching-button {
-	margin-bottom: 10px;
+    margin-bottom: 0.4em;
+    padding: 0.3em;
 }
 
 .wwsRecommendationsTable-valueCell {
@@ -640,19 +677,19 @@ table.scrolling tr:hover {
 }
 
 .recommendationHigh {
-    background-color: #8db500;
+    background-color: white;
 }
 
 .recommendationMedium {
-    background-color: #b2c07f;
+    background-color: lightgray;
 }
 
 .recommendationLow {
-    background-color: #d3d2d2;
+    background-color: gray;
 }
 
 .recommendationNo {
-    background-color: #3e3739;
+    background-color: black;
     color: white;
 }
 
@@ -661,32 +698,31 @@ table.scrolling tr:hover {
 }
 
 
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Catalysis report ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
 .narrafirma-statistics-panel-header {
 	margin: 0.5em 0 0.5em 0;
 	font-weight: 700;
 }
 
 .narrafirma-statistics-panel {
-	background-color: #d5dae6;
-	border: 1px solid #abb6ce;
+    background-color: #c5d2eb;
 	padding: 0.5em;
 	margin: 0.5em;
 	font-size: 0.9em;
 } 
 
-/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Catalysis report ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
-
 .narrafirma-catalysis-report-title {
 	font-size: 2.5em;
 	font-weight: 700;
     padding: 0.5em;
-    background: #b2c07f;
+    background: #b0d4d4;
 }
 
 .narrafirma-catalysis-report-project-name-and-date {
     padding: 0.5em;
     font-size: 0.8em;
-    background: #e0e6cc;
+    background: #d6ebeb;
 }
 
 .narrafirma-catalysis-report-intro-note {
@@ -720,7 +756,7 @@ table.scrolling tr:hover {
 	font-size: 2em;
 	font-weight: 700;
     padding: 0.5em;
-    background: #b2c07f;
+    background: #b0d4d4;
 }
 
 .narrafirma-catalysis-report-perspective-label {
@@ -728,7 +764,7 @@ table.scrolling tr:hover {
 
 .narrafirma-catalysis-report-perspective-notes {
     padding: 0.5em;
-    background: #e0e6cc;
+    background: #d6ebeb;
     margin-bottom: 0.5em;
 }
 
@@ -744,7 +780,7 @@ table.scrolling tr:hover {
     padding: 0.5em;
 	font-size: 1.5em;
 	font-weight: 700;
-    background: #eac199;
+    background: #ffe1aa;
 }
 
 .narrafirma-catalysis-report-interpretation-label {
@@ -754,14 +790,14 @@ table.scrolling tr:hover {
 .narrafirma-catalysis-report-interpretation-notes {
 	padding: 0.5em;
     margin-bottom: 0.5em;
-    background: #f4e0cc;
+    background: #ffeed0;
 }
 
 .narrafirma-catalysis-report-observation {
 	font-size: 1.em;
     font-weight: 700;
     padding: 0.5em;
-    background: #abb6ce;
+    background: #c5d2eb;
 }
 
 .narrafirma-catalysis-report-observation-label {
@@ -771,7 +807,7 @@ table.scrolling tr:hover {
 .narrafirma-catalysis-report-observation-description {
     padding: 0.5em;
     margin-bottom: 0.5em;
-    background: #d5dae6;
+    background: rgb(238, 242, 250);
 }
 
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ d3 charting ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
@@ -815,41 +851,41 @@ table.scrolling tr:hover {
 
 .x-axis {
 	fill: none;
-	stroke: #231f20;
+	stroke: black;
 	stroke-width: 1px;
 	shape-rendering: crispEdges;	
 }
 
 .y-axis {
 	fill: none;
-	stroke: #231f20;
+	stroke:black;
 	stroke-width: 1px;
 	shape-rendering: crispEdges;	
 }
 
 .x-axis text {
-	fill: #231f20;
+	fill: black;
 	stroke-width: 0.5px;
 	font-family: sans-serif;
 	font-size: 1em;
 }
 
 .y-axis text {
-	fill: #231f20;
+	fill: black;
 	stroke-width: 0.5px;
 	font-family: sans-serif;
 	font-size: 1em;
 }
 
 .x-axis-label {
-	fill: #231f20;
+	fill: black;
 	stroke-width: 0.5px;
 	font-family: sans-serif;
 	font-size: 1.1em;
 }
 
 .y-axis-label {
-	fill: #231f20;
+	fill: black;
 	stroke-width: 0.5px;
 	font-family: sans-serif;
 	font-size: 1.1em;
@@ -873,8 +909,8 @@ table.scrolling tr:hover {
 
 .brush .extent {
   fill-opacity: 0.3;
-  fill: #ff7d00;
-  stroke: #cc6400;
+  fill: lightgray;
+  stroke: darkslategray;
   stroke-width: 1px;
   shape-rendering: auto; /* was crispEdges; auto turns on anti-aliasing */
 }
@@ -935,14 +971,15 @@ table.scrolling tr:hover {
 }
 
 .narrafirma-pattern-browser-selected-stories-header {
-    margin-left: 10px;
-    margin-top: 10px;
+    margin-left: 0.4em;
+    margin-top: 0.4em;
 }
 
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Story browser ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 table.filterTable {
     width: 100%;
+    margin-left: 1.4em;
 }
 
 table.filterTable td {
@@ -950,7 +987,7 @@ table.filterTable td {
 }
 
 .narrafirma-story-browser-filtered-stories-count {
-	margin: 6px 0 0 12px;
+	margin: 0.5em 0 0 1.4em;
 }
 
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Stories list ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
@@ -964,14 +1001,14 @@ table.filterTable td {
 }
 
 .narrafirma-stories-list th {
-	background-color: #7b8cb2;
+	background-color: #b0d4d4;
 	padding: 10px;
-	border: 1px solid #3e3739;
+	border: 1px solid black;
 }
 
 .narrafirma-stories-list td {
     padding: 6px;
-    border: 1px solid #3e3739;
+    border: 1px solid black;
     height: 1em;
 }
 
@@ -985,21 +1022,23 @@ table.filterTable td {
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0,0,0,0.6);
+  background-color: rgba(0,0,0,0.3);
   z-index: 10000;
 }
 
 .modal-content {
-  padding: 20px 30px;
-  width: 90%;
-  max-width: 700px;
-  position: relative;
-  min-height: 100px;
-  max-height: 600px;
-  margin: 5% auto 0;
-  background-color: #d5dae6; /* cfk */
-  overflow: auto;
-  z-index: 10001;
+    position: relative;
+    overflow: auto;
+    z-index: 10001;
+    margin: 5% auto 0;
+    padding: 1em 2em;
+    width: 90%;
+    max-width: 700px;
+    min-height: 100px;
+    max-height: 600px;
+    background-color: #b0d4d4; 
+    border: 1px groove black;
+    border-radius: 16px;
 }
 
 .modal-content.wide {
@@ -1007,23 +1046,24 @@ table.filterTable td {
 }
 
 .modal-internal {
-    overflow: auto;
-    max-height: 550px;
     margin: 10px;
     padding: 10px;
-    border: 1px dashed #2e4a85;
+    overflow: auto;
+    max-height: 400px;
+    background-color: white; 
+    border: 1px solid black;
 }
 
 .narrafirma-dialog-ok-button {
     display: block;
     margin: auto;
-    padding: 6px;
+    padding: 0.4em;
 }
 
 .narrafirma-dialog-cancel-button {
     display: block;
     margin: auto;
-    padding: 6px;
+    padding: 0.4em;
 }
 
 textarea.textEditorInDialog {
@@ -1039,7 +1079,7 @@ textarea.textEditorInDialog {
 }
 
 .narrafirma-graphbrowser-heading {
-	margin: 8px 0 8px 0;
+	margin: 0.4em 0 0.4em 0;
 }
 
 .singleChartStyle {

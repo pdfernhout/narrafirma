@@ -33,21 +33,27 @@ legend {
 }
 
 textarea, input, select {
-	margin-top: 0.5em;
+    margin-top: 0.5em;
 	font-family: Arial, Helvetica, sans-serif;
 	font-size: 1em;
 }
 
 textarea:-moz-read-only, input:-moz-read-only { /* For Firefox */
-	background-color: inherit;
+    border: 1px solid #6d6c6c;
+    color: #6d6c6c;
 }
 
 textarea:read-only, input:read-only {
-	background-color: inherit;
+    border: 1px solid #6d6c6c;
+    color: #6d6c6c;
 }
 
 #surveyDiv {
    padding: 10px;
+}
+
+.narrafirma-survey-question-external.narrafirma-survey-question-type-header.narrafirma-preview {
+	background-color: #669ef3;
 }
 
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ story areas ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
@@ -57,7 +63,7 @@ textarea:read-only, input:read-only {
 }
 
 .narrafirma-survey-story-odd .narrafirma-survey-question-external {
-	background: #abb6ce;
+	background: #d1ddf7;
 }
 
 .narrafirma-survey-prompt {
@@ -65,8 +71,8 @@ textarea:read-only, input:read-only {
 }
 
 .narrafirma-survey-question-external {
-    border-radius: 12px;
-    background: #d5dae6;
+    border-radius: 3px;
+    background: #c5d2eb;
     margin-bottom: 6px;
     margin-top: 6px;
     padding: 8px;
@@ -167,98 +173,86 @@ input[type='range']::-webkit-slider-thumb{
 	margin-top: 12px;
 }
 
-/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ tell another story, delete story ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ tell another story ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 .narrafirma-survey-tell-another-story-button-panel {
-    border-radius: 12px;
-	background: #b2c07f;
-	padding: 10px;
+    border-radius: 3px;
+	background: #ffe1aa;
+	padding: 1em;
 	margin-bottom: 20px;
 }
 
 .narrafirma-survey-tell-another-story-button {
-    box-shadow: none;
     border: none;
-	font-size: 0.8em;
-    border-radius: 12px;
-    background: #e0e6cc;
+	font-size: 1em;
+    border-radius: 3px;
+    background: #ffbb84;
+    box-shadow: 2px 2px 2px black;
     margin-left: 20px;
     padding: 6px;
 }
 
 .narrafirma-survey-tell-another-story-button:hover {
-	background: #8db500;
+    background: #fd9647;
 }
 	
 .narrafirma-survey-tell-another-story-button:active {
-	background: #658200;
+    background: #fd9647;
 }
 
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ delete story ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
 .narrafirma-survey-delete-story-button {
-    box-shadow: none;
     border: none;
 	font-size: 0.8em;
-    border-radius: 12px;
     display: block;
-    background: #abb6ce;
+    background: #d7dce4;
+    box-shadow: 2px 2px 2px black;
     margin: 10px 10px 0px auto;
     float: right;
-    padding: 4px 10px;
+    padding: 0.4em;
 }
 
 .narrafirma-survey-delete-story-button:hover {
-	background: #3b5fab;
-	color: white;
+	background: #f88a57;
 }
 	
 .narrafirma-survey-delete-story-button:active {
-	background: #2e4a85;
-	color: white;
+	background: #f88a57;
 }
 
 .narrafirma-survey-story-odd .narrafirma-survey-delete-story-button {
-    background: #d5dae6;
+    background: #d7dce4;
 }
 
 .narrafirma-survey-story-odd .narrafirma-survey-delete-story-button:hover {
-	background: #3b5fab;
-	color: white;
+	background: #ffbb84;
 }
 	
 .narrafirma-survey-story-odd .narrafirma-survey-delete-story-button:active {
-	background: #2e4a85;
-	color: white;
-}
-
-.narrafirma-preview {
-	background: #eac199;
-	border: 2px solid #cc6400;
+	background: #ffbb84;
 }
 
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ submit survey ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 .narrafirma-survey-submit-survey-button {
     display: block;
-    box-shadow: none;
     border: none;
-    text-shadow: -1px 1px #417cb8;
     width: 300px;
     font-size: 1.5em;
-    background: #3b5fab;
+    background: #1e489c;
+    box-shadow: 2px 2px 2px black;
     color: white;
-    border-radius: 12px;
     margin: 10px auto 0px auto;
 	padding: 10px 20px;
 }
 
 .narrafirma-survey-submit-survey-button:hover {
-	background: #2e4a85;
-	text-shadow: -1px 1px #27496d;
+	background: #1751c5;
 }
 
 .narrafirma-survey-submit-survey-button:active {
-	background: #243B6A; /* darker blue than in color scheme */
-	text-shadow: -1px 1px #193047;
+	background: #1751c5; 
 }
 
 .pleaseWaitOverlay {
@@ -269,7 +263,7 @@ input[type='range']::-webkit-slider-thumb{
 	height: 70px;
 	margin: 30px auto 0px auto;
 	padding: 30px;
-    border: 4px solid #8db500;
+    border: 4px solid #b0d4d4;
     border-radius: 12px;
     background-image: url('../images/dojo-Standby-loading.gif');
     background-repeat: no-repeat;
@@ -279,19 +273,19 @@ input[type='range']::-webkit-slider-thumb{
 
 
 .narrafirma-could-not-save-survey {
-    background: #eac199;
+    background: #ffbb84;
     border-radius: 12px;
     padding: 1em;
 }
 
 .narrafirma-sending-survey {
-    background: #f4e0cc;
+    background: #ffe1aa;
     border-radius: 12px;
     padding: 1em;
 }
 
 .narrafirma-survey-accepted {
-    background: #8db500;
+    background: #b0d4d4;
     border-radius: 12px;
     padding: 1em;
 }
@@ -300,7 +294,7 @@ input[type='range']::-webkit-slider-thumb{
 
 .narrafirma-survey-print-title {
 	font-size: 1.5em;
-	margin: 0.5em 0 0.5em 12px
+	margin: 0.5em 0 0.5em 12px;
 }
 
 .narrafirma-survey-print-intro {

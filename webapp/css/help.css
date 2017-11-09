@@ -9,33 +9,33 @@ body {
 }
 
 a:link {
-	color: #895717;
+	color: #3e62aa;
 }
 
 a:visited {
-	color: #3e3739;
+	color: #18243d;
 }
 
 a:hover {
-	color: #b5731e;
+	color: #b35d1b;
 }
 
 a:active {
-	color: #b5731e;
+	color: #b35d1b;
 }
 
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Navigation ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 .header { 
-	background: #f4e0cc;
+	background: #b0d4d4;
 	margin: 0px;
 	padding: 20px; 
-	border-bottom: 4px solid #cc6400;
+	border-bottom: 4px solid #ffbb84;
 }
 	
 .narrafirma-name {
 	font-size: 1em;
-	color: #231f20;
+	color: black;
 	font-weight: 700;
 	padding: 0 2em 0 0;
 }
@@ -63,22 +63,22 @@ a:active {
 }
 
 .text {
-	background: #f4e0cc;
+	background: #c5d2eb;
 	padding: 4px 10px 4px 10px;
 	margin: 0px 10px 0px 10px;
 }
 
 .question {
-	background: #eac199;
+	background: #b0d4d4;
 	font-style: italic;
 	padding: 9px 10px 8px 10px;
 	margin: 0px 10px 0px 10px;
 }
 
 .question-answer {
-	background: #f4e0cc;
+	background: #c5d2eb;
 	padding: 4px 10px 4px 10px;
-	margin: 0px 10px 0px 10px;
+	margin: 0px 10px 10px 10px;
 }
 
 .narrafirma-pni-phases-image {
@@ -88,7 +88,7 @@ a:active {
 .book-quote {
 	margin: 20px;
 	padding: 20px;
-	background: #e4e4e4;
+	background: white;
 	border: 1px solid #3e3739;
 }
 
