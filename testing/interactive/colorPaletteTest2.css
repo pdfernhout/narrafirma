@@ -1,5 +1,3 @@
-/* COLOR PALETTE TEST - original colors */
-
 /* these are just for the palette files */
 
 .spacing {
@@ -14,28 +12,28 @@
 /* palette */
 
 th.header {
-	background-color: #b2c07f; 
+	background-color: #a3d8d8; 
 	height: 5em;
 	width: 200px;
 }
 
 th.working {
-	background-color: #d5dae6;
+	background-color: #bcc7dd;
 	width: 200px;
 }
 
 th.viewing {
-	background-color: #eeeeee;
+	background-color: #fff;
 	width: 200px;
 }
 
 th.selection {
-	background-color: #f4e0cc;
+	background-color: #ffe1aa;
 	width: 200px;
 }
 
 th.action {
-	background-color: #BCD8F4;
+	background-color: #ffbb84;
 	width: 200px;
 }
 
@@ -50,24 +48,23 @@ html, body {
 }
 
 a:link {
-	color: #658200;
+	color: #017a7a;
 }
 
 a:visited {
-	color: #3b5fab;
+	color: #017a7a;
 }
 
 a:hover {
-	color: #2e4a85;
+	color: #017a7a;
 }
 
 a:active {
-	color: #3b5fab;
+	color: #017a7a;
 }
 
 button {
-    background-color: #BCD8F4;
-    background-image: linear-gradient(#FFF 0px, rgba(255, 255, 255, 0) 3px, rgba(255, 255, 255, 0.75) 100%);
+    background-color: #ffbb84;
     margin: 2px 4px 2px 4px;
     padding: 2px 4px 2px 4px;
     white-space: nowrap;
@@ -76,44 +73,45 @@ button {
 }
 
 textarea:-moz-read-only, input:-moz-read-only { /* For Firefox */
-	background-color: inherit;
+	border: 1px solid #a6a6a6;
 }
 
 textarea:read-only, input:read-only {
-	background-color: inherit;
+	border: 1px solid #a6a6a6;
 }
 
 /* main classes */
 
 .navigationDiv {
     padding: 1em;
-    background-color: #b2c07f;
+	background-color: #a3d8d8;
+	border-bottom: 4px solid #ffbb84;
 }
 
 .questionExternal {
-	background-color: #d5dae6;
+	background-color: #bcc7dd;
 	margin-bottom: 4px;
-    border-radius: 12px;
     padding: 1em;
-    margin: 4px;
+	margin: 4px;
+	border-radius: 8px;
 }
 
 .questionExternal.readonly {
-	background-color: #eeeeee;
+	color: #a6a6a6;
+	background-color: white;
 	margin-bottom: 4px;
-    border-radius: 12px;
-    padding: 4px 8px 4px 8px;
-    margin: 4px;
+    padding: 1em;
+	margin: 4px;
 }
 
 .questionExternal.narrafirma-question-type-header {
 	display: block;
 	font-size: 1.2em;
 	font-weight: bold;
-	background-color: #abb6ce;  
-    border-radius: 12px; 
+	background-color: #a3d8d8;  
 	margin-bottom: 12px;
 	margin-top: 10px;
+	border-radius: 8px;
 }
 
 .narrafirma-textbox {
@@ -122,64 +120,67 @@ textarea:read-only, input:read-only {
 }
 
 .narrafirma-reminder {
-	background-color: #b2c07f;
+	background-color: #ffe1aa;
 	margin-bottom: 4px;
-    border-radius: 12px;
-    padding: 4px 8px 4px 8px;
-    margin: 4px;
+    padding: 1em;
+	margin: 4px;
+	border-radius: 8px;
 }
 
 /* table of items */
 
 .grid-header-cell {
-    background-color: #7b8cb2;
+    background-color: #a3d8d8;
     padding: 1em;
-    border: 1px solid #3e3739;
+    border: 1px solid black;
 }
 
 .narrafirma-grid-cell {
     padding: 1em;
-    background-color: #d5dae6;
+	background-color: #bcc7dd;
+	border: 1px solid black;
 }
 
 .narrafirma-grid-cell-selected {
     padding: 1em;
-    background-color: #f4e0cc;
+	background-color: #ffe1aa;
+	border: 1px solid black;
 }
 
 /* panel viewing or editing selected item in table */
 
 .narrafirma-griditempanel-editing {
-	background-color: #FFF;
+	background-color: white;
+	border: 4px solid #ffe1aa;
 	margin: 1em;
-	border: 1px solid #2e4a85;
-	border-radius: 12px;
+	border-radius: 8px;
 	padding: 8px;
 }
 
 .narrafirma-griditempanel-editing .questionExternal {
-	background-color: #abb6ce;
+	background-color: #bcc7dd;
 }
 
 .narrafirma-griditempanel-editing .questionExternal.narrafirma-question-type-header { 
-	background-color: #7b8cb2;
+	background-color: #a3d8d8;
 }
 
 .narrafirma-griditempanel-viewing {
-	background-color: #eeeeee; /* this gray is an extra super light gray */
+	background-color: white; 
+	color: #a6a6a6;
+	border-radius: 8px;
 	margin: 1em;
-	border: 1px solid #231f20;
-	border-radius: 12px;
+	border: 1px solid #a6a6a6;
 	padding: 8px;
 }
 
 .narrafirma-griditempanel-viewing .questionExternal {
 	background-color: #eeeeee;
-	margin: 0px;
+	color: #a6a6a6;
 }
 
 .narrafirma-griditempanel-viewing .questionExternal.narrafirma-question-type-header {
-	background-color: #eeeeee; 
+	color: #a6a6a6;
 }
 
 /* catalysis report */
@@ -188,25 +189,25 @@ textarea:read-only, input:read-only {
 	font-size: 2.5em;
 	font-weight: 700;
     padding: 0.5em;
-    background: #b2c07f;
+    background: #a3d8d8;
 }
 
 .narrafirma-catalysis-report-project-name-and-date {
     padding: 0.5em;
     font-size: 0.8em;
-    background: #e0e6cc;
+    background: #a1ecec;
 }
 
 .narrafirma-catalysis-report-perspective {
 	font-size: 2em;
 	font-weight: 700;
     padding: 0.5em;
-    background: #b2c07f;
+    background: #a3d8d8;
 }
 
 .narrafirma-catalysis-report-perspective-notes {
     padding: 0.5em;
-    background: #e0e6cc;
+    background: #a1ecec;
     margin-bottom: 0.5em;
 }
 
@@ -214,52 +215,52 @@ textarea:read-only, input:read-only {
     padding: 0.5em;
 	font-size: 1.5em;
 	font-weight: 700;
-    background: #eac199;
+    background: #ffe1aa;
 }
 
 .narrafirma-catalysis-report-interpretation-notes {
 	padding: 0.5em;
     margin-bottom: 0.5em;
-    background: #f4e0cc;
+    background: #ffeccb;
 }
 
 .narrafirma-catalysis-report-observation {
 	font-size: 1.em;
     font-weight: 700;
     padding: 0.5em;
-    background: #abb6ce;
+    background: #bcc7dd;
 }
 
 .narrafirma-catalysis-report-observation-description {
     padding: 0.5em;
     margin-bottom: 0.5em;
-    background: #d5dae6;
+    background: #d9e1f1;
 }
 
 /* help system */
 
 a.help:link {
-	color: #895717;
+	color: #017a7a;
 }
 
 a.help:visited {
-	color: #3e3739;
+	color: #017a7a;
 }
 
 a.help:hover {
-	color: #b5731e;
+	color: #017a7a;
 }
 
 a.help:active {
-	color: #b5731e;
+	color: #017a7a;
 }
 
 
 .help-header {
-	background: #f4e0cc;
+	background: #5cd3d3;
 	margin: 0px;
 	padding: 20px; 
-	border-bottom: 4px solid #cc6400;
+	border-bottom: 4px solid #ffbb84;
 }
 
 .help-heading {
@@ -268,13 +269,13 @@ a.help:active {
 	padding: 8px 10px 6px 10px;
 }
 .help-text {
-	background: #f4e0cc;
+	background: #94acdf;
 	padding: 4px 10px 4px 10px;
 	margin: 0px 10px 0px 10px;
     }
     
 .help-question {
-	background: #eac199;
+	background: #5cd3d3;
 	font-style: italic;
 	padding: 9px 10px 8px 10px;
 	margin: 0px 10px 0px 10px;
@@ -282,7 +283,7 @@ a.help:active {
     }
     
 .help-answer {
-	background: #f4e0cc;
+	background: #94acdf;
 	padding: 4px 10px 4px 10px;
 	margin: 0px 10px 0px 10px;
     
@@ -291,8 +292,8 @@ a.help:active {
 .help-book-quote {
 	margin: 20px;
 	padding: 20px;
-	background: #e4e4e4;
-	border: 1px solid #3e3739;
+	background: #ffe1aa;
+	border: 1px solid #ffbb84;
    
     }
     

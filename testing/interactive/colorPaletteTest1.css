@@ -1,4 +1,4 @@
-/* COLOR PALETTE TEST - original colors */
+/* COLOR PALETTE TEST - first try at changes */
 
 /* these are just for the palette files */
 
@@ -14,28 +14,28 @@
 /* palette */
 
 th.header {
-	background-color: #b2c07f; 
+	background-color: #86bce9; 
 	height: 5em;
 	width: 200px;
 }
 
 th.working {
-	background-color: #d5dae6;
+	background-color: #d4e6f5;
 	width: 200px;
 }
 
 th.viewing {
-	background-color: #eeeeee;
+	background-color: #fff;
 	width: 200px;
 }
 
 th.selection {
-	background-color: #f4e0cc;
+	background-color: #faf2d7;
 	width: 200px;
 }
 
 th.action {
-	background-color: #BCD8F4;
+	background-color: #f0c310;
 	width: 200px;
 }
 
@@ -50,58 +50,67 @@ html, body {
 }
 
 a:link {
-	color: #658200;
+	color: #0b4b79;
 }
 
 a:visited {
-	color: #3b5fab;
+	color: #275677; 
 }
 
 a:hover {
-	color: #2e4a85;
+	color: #1178c2;
 }
 
 a:active {
-	color: #3b5fab;
+	color: #0091f8;
 }
 
 button {
-    background-color: #BCD8F4;
-    background-image: linear-gradient(#FFF 0px, rgba(255, 255, 255, 0) 3px, rgba(255, 255, 255, 0.75) 100%);
-    margin: 2px 4px 2px 4px;
-    padding: 2px 4px 2px 4px;
+    background-color: #f0c310;
+    /* background-image: linear-gradient(#FFF 0px, rgba(255, 255, 255, 0) 3px, rgba(255, 255, 255, 0.75) 100%); */
+    margin: 4px;
+    padding: 0.3em;
     white-space: nowrap;
     cursor: pointer;
-    font-size: 1.1em;
+	font-size: 1.2em;
+	border-radius: 12px;
+	border: 2px solid #86bce9;
+}
+
+button:hover {
+    background-color: #86bce9; 
+	border: 2px solid #f0c310;
 }
 
 textarea:-moz-read-only, input:-moz-read-only { /* For Firefox */
-	background-color: inherit;
+	border: 1px solid #a6a6a6;
 }
 
 textarea:read-only, input:read-only {
-	background-color: inherit;
+	border: 1px solid #a6a6a6;
 }
 
 /* main classes */
 
 .navigationDiv {
     padding: 1em;
-    background-color: #b2c07f;
+	background-color: #86bce9;
+	border-bottom: 3px solid #f0c310;
 }
 
 .questionExternal {
-	background-color: #d5dae6;
+	background-color: #d4e6f5;
+	border-radius: 6px;
 	margin-bottom: 4px;
-    border-radius: 12px;
     padding: 1em;
     margin: 4px;
 }
 
 .questionExternal.readonly {
-	background-color: #eeeeee;
+	background-color: white;
+	color: #a6a6a6;
 	margin-bottom: 4px;
-    border-radius: 12px;
+    border-radius: 6px;
     padding: 4px 8px 4px 8px;
     margin: 4px;
 }
@@ -110,8 +119,7 @@ textarea:read-only, input:read-only {
 	display: block;
 	font-size: 1.2em;
 	font-weight: bold;
-	background-color: #abb6ce;  
-    border-radius: 12px; 
+	background-color: #86bce9;  
 	margin-bottom: 12px;
 	margin-top: 10px;
 }
@@ -122,64 +130,68 @@ textarea:read-only, input:read-only {
 }
 
 .narrafirma-reminder {
-	background-color: #b2c07f;
+	background-color: #faf2d7;
+	border-radius: 6px;
 	margin-bottom: 4px;
-    border-radius: 12px;
-    padding: 4px 8px 4px 8px;
+    padding: 1em;
     margin: 4px;
 }
 
 /* table of items */
 
 .grid-header-cell {
-    background-color: #7b8cb2;
+    background-color: #86bce9;
     padding: 1em;
-    border: 1px solid #3e3739;
+    border: 1px solid black;
 }
 
 .narrafirma-grid-cell {
     padding: 1em;
-    background-color: #d5dae6;
+	background-color: white;
+	border: 1px solid black;
 }
 
 .narrafirma-grid-cell-selected {
     padding: 1em;
-    background-color: #f4e0cc;
+	background-color: #ffeba2;
+	border: 1px solid black;
 }
 
 /* panel viewing or editing selected item in table */
 
 .narrafirma-griditempanel-editing {
-	background-color: #FFF;
+	background-color: #eef3f7;
 	margin: 1em;
-	border: 1px solid #2e4a85;
-	border-radius: 12px;
+	border: 2px solid #47637a;
+	border-radius: 6px;
 	padding: 8px;
 }
 
 .narrafirma-griditempanel-editing .questionExternal {
-	background-color: #abb6ce;
+	background-color: #d4e6f5;
 }
 
 .narrafirma-griditempanel-editing .questionExternal.narrafirma-question-type-header { 
-	background-color: #7b8cb2;
+	background-color: #86bce9;
 }
 
 .narrafirma-griditempanel-viewing {
-	background-color: #eeeeee; /* this gray is an extra super light gray */
+	color: #a6a6a6; 
 	margin: 1em;
-	border: 1px solid #231f20;
-	border-radius: 12px;
+	border: 1px solid #a6a6a6;
+	border-radius: 6px;
 	padding: 8px;
 }
 
 .narrafirma-griditempanel-viewing .questionExternal {
-	background-color: #eeeeee;
+	background-color: white;
+	color: #a6a6a6;
 	margin: 0px;
 }
 
 .narrafirma-griditempanel-viewing .questionExternal.narrafirma-question-type-header {
-	background-color: #eeeeee; 
+	color: #a6a6a6; 
+	background-color: white;
 }
 
 /* catalysis report */
@@ -188,25 +200,25 @@ textarea:read-only, input:read-only {
 	font-size: 2.5em;
 	font-weight: 700;
     padding: 0.5em;
-    background: #b2c07f;
+    background: #86bce9;
 }
 
 .narrafirma-catalysis-report-project-name-and-date {
     padding: 0.5em;
     font-size: 0.8em;
-    background: #e0e6cc;
+    background-color: #d4e6f5;
 }
 
 .narrafirma-catalysis-report-perspective {
 	font-size: 2em;
 	font-weight: 700;
     padding: 0.5em;
-    background: #b2c07f;
+    background: #86bce9;
 }
 
 .narrafirma-catalysis-report-perspective-notes {
     padding: 0.5em;
-    background: #e0e6cc;
+    background: #d4e6f5;
     margin-bottom: 0.5em;
 }
 
