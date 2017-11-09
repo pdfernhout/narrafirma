@@ -60,7 +60,10 @@ var panel: Panel = {
             valueType: "none",
             displayType: "button",
             displayConfiguration: "updateQuestionnaireForStoryCollection",
-            displayPrompt: "Update Story Form (see caution above)"
+            displayPrompt: "Update Story Form (see caution above)",
+            displayVisible: function(panelBuilder, model) {
+                return panelBuilder.readOnly === false;
+            }
         },
         {
             id: "storyCollection_activeOnWeb",

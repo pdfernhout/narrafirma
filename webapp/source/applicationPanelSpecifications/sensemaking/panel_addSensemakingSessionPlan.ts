@@ -95,7 +95,10 @@ var panel: Panel = {
             valueType: "none",
             displayType: "button",
             displayPrompt: "Export session agenda",
-            displayConfiguration: "printSensemakingSessionAgenda"
+            displayConfiguration: "printSensemakingSessionAgenda",
+            displayVisible: function(panelBuilder, model) {
+                return panelBuilder.readOnly === false;
+            }
         }
     ]
 };

@@ -57,7 +57,10 @@ var panel: Panel = {
             valueType: "none",
             displayType: "templateList",
             displayConfiguration: "participantQuestions",
-            displayPrompt: "Copy a question from a template"
+            displayPrompt: "Copy a question from a template",
+            displayVisible: function(panelBuilder, model) {
+                return panelBuilder.readOnly === false;
+            }
         }
     ]
 };

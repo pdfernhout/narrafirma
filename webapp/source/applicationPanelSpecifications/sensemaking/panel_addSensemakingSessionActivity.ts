@@ -105,7 +105,10 @@ var panel: Panel = {
             valueType: "none",
             displayType: "templateList",
             displayConfiguration: "sensemakingActivities",
-            displayPrompt: "Copy activity from template"
+            displayPrompt: "Copy activity from template",
+            displayVisible: function(panelBuilder, model) {
+                return panelBuilder.readOnly === false;
+            }
         }
     ]
 };

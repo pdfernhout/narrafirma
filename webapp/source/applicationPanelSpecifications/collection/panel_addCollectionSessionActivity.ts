@@ -101,7 +101,11 @@ var panel: Panel = {
             valueType: "none",
             displayType: "templateList",
             displayConfiguration: "storyCollectionActivities",
-            displayPrompt: "Copy an activity from a template"
+            displayPrompt: "Copy an activity from a template",
+            displayVisible: function(panelBuilder, model) {
+                return panelBuilder.readOnly === false;
+            }
+
         }
     ]
 };

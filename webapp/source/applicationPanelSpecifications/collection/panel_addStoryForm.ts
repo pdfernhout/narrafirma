@@ -105,7 +105,10 @@ var panel: Panel = {
             displayType: "button",
             displayConfiguration: "previewQuestionForm",
             displayName: "Question form preview",
-            displayPrompt: "Preview Story Form"
+            displayPrompt: "Preview Story Form",
+            displayVisible: function(panelBuilder, model) {
+                return panelBuilder.readOnly === false;
+            }
         }        
     ]
 };
