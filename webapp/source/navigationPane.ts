@@ -44,8 +44,8 @@ var Navigation: any = {
                 m("a[id=narrafirma-logout-link]", {href: logoutCommand, title: "Logout the current user"}, 'Logout (' + userIdentifier + ')'),
             m("span[id=narrafirma-version]", "v" + versions.narrafirmaApplication),
             m("a[id=narrafirma-help-link]", {href: launchHelpCommand, title: "Open online help for this page"}, "Help"),
-            m("a[id=narrafirma-next-page]", {href: nextPageLink(), title: nextPageTitle(), "class": nextPageClass()}, "=>"),
-            m("a[id=narrafirma-previous-page]", {href: previousPageLink(), title:  previousPageTitle(), "class": previousPageClass()}, "<=")
+            m("a[id=narrafirma-next-page]", {href: nextPageLink(), title: nextPageTitle(), "class": nextPageClass()}, ">"),
+            m("a[id=narrafirma-previous-page]", {href: previousPageLink(), title:  previousPageTitle(), "class": previousPageClass()}, "<")
         ]);
     }
 };
