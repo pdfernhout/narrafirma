@@ -17,18 +17,17 @@ function add_dashboardStoryCollectionStatusDisplay(panelBuilder: PanelBuilder, m
     } else {
         chooseProjectLink = "../webapp/narrafirma.html";
     }
-    
+
     if (!storyCollectionsIdentifiers || !storyCollectionsIdentifiers.length) {
         // TODO: Translate
         return m("div.narrafirma-dashboard-story-collection-status", [
-            m("br"),
             m("a", {href: chooseProjectLink, title: "Choose another project"}, "Choose another project"), 
             m("br"),    
             m("br"),    
             m("div", ["No story collections defined"])
         ]);
     }
-    
+
     var storyCollections = storyCollectionsIdentifiers.map(function(storyCollectionIdentifier) {
         var shortName = tripleStore.queryLatestC(storyCollectionIdentifier, "storyCollection_shortName");
         var allStoriesInStoryCollection = surveyCollection.getStoriesForStoryCollection(shortName);
@@ -37,7 +36,7 @@ function add_dashboardStoryCollectionStatusDisplay(panelBuilder: PanelBuilder, m
         if (activeOnWeb) {
             console.log("active on web: ", shortName, storyCollectionIdentifier);
         }
-        var surveyURL = activeOnWeb ? surveyCollection.urlForSurvey(storyCollectionIdentifier) : "";
+        var surveyURL = activeOnWeb ? surveyCollection.urlForSurveyAsString(storyCollectionIdentifier) : "";
         return {
             id: storyCollectionIdentifier,
             shortName: shortName,
@@ -54,18 +53,21 @@ function add_dashboardStoryCollectionStatusDisplay(panelBuilder: PanelBuilder, m
     });
     
     return m("div.narrafirma-dashboard-story-collection-status", [
-        m("br"),
         m("a", {href: chooseProjectLink, title: "Choose another project"}, "Choose another project"), 
         m("br"),       
-        m("p", "Story collections:"),
+        m("p", "Story collections"),
         m("table", 
-            m("tr", [m("th", "Name"), m("th", "#"), m("th", "Active?")]),
+            m("tr", [
+                m("th", "Collection"),
+                m("th", "Active?"),
+                m("th", "# Stories") ]),
             storyCollections.map(function(storyCollection) {
-                var surveyActive = storyCollection.activeOnWeb ? m("a", {href: storyCollection.surveyURL, target: "_blank"}, "active") : "";
+                var surveyActive = storyCollection.activeOnWeb ? m("a[id=narrafirma-survey-url]", {href: storyCollection.surveyURL, target: "_blank"}, "yes") : "no";
                 return m("tr", [
                     m("td", storyCollection.shortName),
-                    m("td", {style: "text-align: right;"}, <any>storyCollection.storyCount),
+                    
                     m("td", surveyActive),
+                    m("td", {style: "text-align: right;"}, <any>storyCollection.storyCount),
                 ]);
             })
         )

@@ -154,6 +154,16 @@ export function urlForSurvey(storyCollectionIdentifier) {
     return result;
 }
 
+export function urlForSurveyAsString(storyCollectionIdentifier) {
+    var href = window.location.href;
+    var baseURL = href.substring(0, href.lastIndexOf("/"));
+    // TODO: Duplicated project prefix; should refactor to have it in one place
+    var projectName = project.journalIdentifier.substring("NarraFirmaProject-".length);
+    var shortName = project.tripleStore.queryLatestC(storyCollectionIdentifier, "storyCollection_shortName");
+    var url = baseURL + "/survey.html#project=" + projectName + "&survey=" + shortName;
+    return url;
+}
+
 export function toggleWebActivationOfSurvey(model: string, fieldSpecification, value) {
     // TODO: Fix this for mover to using triples for projectModel
     var grid = fieldSpecification.grid;
