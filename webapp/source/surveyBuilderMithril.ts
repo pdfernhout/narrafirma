@@ -559,7 +559,7 @@ export function buildSurveyForm(surveyDiv, questionnaire, doneCallback, surveyOp
         // TODO: Fix no-longer-correct name from Dojo version
         var wizardPane = {
             forward: function () {
-                console.log("survey sending success" + (surveyOptions.previewMode ? " [preview mode only]" : ""));
+                console.log("survey sending success" + (surveyOptions.previewMode ? " (preview)" : ""));
                 submitted = "success";
                 // TODO: Translate
                 alert(thankYouPopupText);
@@ -583,12 +583,12 @@ export function buildSurveyForm(surveyDiv, questionnaire, doneCallback, surveyOp
     
     function submitButtonOrWaitOrFinal(): any {
         if (submitted === "never") {
-            return m("button", {"class": "narrafirma-survey-submit-survey-button", onclick: submitButtonPressed}, "Submit Survey" + (surveyOptions.previewMode ? " [preview mode only]" : ""));
+            return m("button", {"class": "narrafirma-survey-submit-survey-button", onclick: submitButtonPressed}, "Submit Survey" + (surveyOptions.previewMode ? " (preview)" : ""));
         } else if (submitted === "failed") {
             return m("div.narrafirma-could-not-save-survey", [
                 "The server could not save your survey. Please try again.",
                 m("br"),
-                m("button", {"class": "narrafirma-survey-submit-survey-button", onclick: submitButtonPressed}, "Resubmit Survey" + (surveyOptions.previewMode ? " [preview mode only]" : ""))
+                m("button", {"class": "narrafirma-survey-submit-survey-button", onclick: submitButtonPressed}, "Resubmit Survey" + (surveyOptions.previewMode ? " (preview)" : ""))
             ]);
         } else if (submitted === "pending") {
             return m("div.narrafirma-sending-survey", m("br"), ["Now sending survey result to server. Please wait . . ."]);
