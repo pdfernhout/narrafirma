@@ -237,10 +237,7 @@ function build_listChooserDialogContent(dialogConfiguration, hideDialogMethod) {
     }
     
     // style: "min-height: 400px; min-width: 600px; max-height: 800px; max-width: 800px; overflow: auto"
-    return m("div.overlay", m("div.modal-content", [
-        m("b", dialogConfiguration.dialogTitle),
-        m("br"),
-        m("br"),
+    return [
         dialogConfiguration.dialogOKButtonLabel,
         m("br"),
         m("br"),
@@ -254,7 +251,7 @@ function build_listChooserDialogContent(dialogConfiguration, hideDialogMethod) {
             m("button", {onclick: makeNewListItem.bind(null, dialogConfiguration)}, "[Make new project]") 
         : 
             m("div")
-    ]));
+    ];
 }
 
 
