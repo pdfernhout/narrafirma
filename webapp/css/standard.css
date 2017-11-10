@@ -1,22 +1,16 @@
 
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ All pages ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 /* NOTE: the mnemonic for margin or padding order is TROUBLE: Top Right Bottom Left */
-
-/* A CSS stylesheet is like a GUI control system for twiddling with widget options */
-
-/* html, body, pleaseWaitOverlay - are in survey.css */
+/* html, body, and pleaseWaitOverlay are in survey.css */
 
 /* the NarraFirma color palette 
-
 Headers b0d4d4
 Working areas c5d2eb (parenthetical d7dce4)
 Selected areas ffe1aa
 Disabled/readonly area text color 979696
 Action areas (buttons) ffbb84
 Special warning areas f88a57
-
 */
-
 
 #pageDiv {
    padding-left: 10px;
@@ -172,8 +166,7 @@ button:disabled {
     width: 20px;
     height: 20px;
     text-align: center;
-    /* Next line may not work correctly in IE6 & IE7? Also does not work right in safari 5.1 with button a bit high. https://bugs.dojotoolkit.org/ticket/5170 */
-    display: inline-block;
+    display: inline-block; /* May not work correctly in IE6 & IE7? Also does not work right in safari 5.1 with button a bit high. https://bugs.dojotoolkit.org/ticket/5170 */
     vertical-align: middle;
 }
 
@@ -287,7 +280,7 @@ button:disabled {
 	margin-left: 1em;
 }
 
-.narrafirma-questionAnswer { /* this is now used to display the reminder on the phase dashboard page */
+.narrafirma-questionAnswer { /* this is now used to display the reminder on the section page */
     background-color: #ffe1aa;
     border: 2px solid #ffbb84;
     margin: 0.5em 0 0 1em;
@@ -303,29 +296,6 @@ button:disabled {
 
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Pages with entry fields ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-.questionExternal.narrafirma-question-type-header {
-	display: block;
-	font-size: 1.2em;
-	font-weight: bold;
-	background-color: #b0d4d4;  
-    border-radius: 3px; 
-	margin-bottom: 12px;
-	margin-top: 10px;
-}
-
-.questionExternal.narrafirma-question-type-grid {
-    background-color: white;
-}
-
-.narrafirma-griditempanel-editing .narrafirma-question-type-header.questionExternal { 
-	background-color: #b0d4d4;
-}
- 
-.narrafirma-griditempanel-viewing .narrafirma-question-type-header.questionExternal {
-    background-color: white; 
-    color: #979696;
-}
- 
 .questionExternal {
 	background-color: #c5d2eb;
 	margin-bottom: 0.2em;
@@ -342,12 +312,36 @@ button:disabled {
     margin: 0.2em;
 }
 
+.questionExternal.narrafirma-question-type-header {
+	display: block;
+	font-size: 1.2em;
+	font-weight: bold;
+	background-color: #b0d4d4;  
+    border-radius: 3px; 
+	margin-bottom: 12px;
+	margin-top: 10px;
+}
+
+.narrafirma-griditempanel-editing .narrafirma-question-type-header.questionExternal { 
+	background-color: #b0d4d4;
+}
+ 
+.narrafirma-griditempanel-viewing .narrafirma-question-type-header.questionExternal {
+    background-color: white; 
+    color: #979696;
+}
+ 
+.questionExternal.narrafirma-question-type-grid { /* no background for grid */
+    background-color: white;
+}
+
 .questionExternal.narrafirma-question-type-text.narrafirma-ignore-story {
 	background-color: #d7dce4;
 }
 
 .questionInternal.narrafirma-question-type-slider {
     text-align: center;
+    min-width: 400px;
 }
 
 .questionExternal.narrafirma-question-type-label {

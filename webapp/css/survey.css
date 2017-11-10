@@ -121,6 +121,7 @@ textarea:read-only, input:read-only {
 
 .narrafirma-survey-question-type-slider .narrafirma-survey-question-internal {
     text-align: center;
+    margin-top: 1em;
 }
 
 .narrafirma-survey-question-type-slider .narrafirma-survey-low {
@@ -150,17 +151,16 @@ textarea:read-only, input:read-only {
 */
 
 input[type='range']{
-    /* background: #0c0; */
-    height:15px;
+    min-width: 50%;
+    height: 0.2em;
     border: none;
 }
 
 input[type='range']::-webkit-slider-thumb{
-    /* background:#f60; */
     background: #9CF;
-    height:30px;
-    width:30px;
-    border-radius: 30px;
+    height: 0.5em;
+    width: 0.5em;
+    border-radius: 0.5em;
 }
 
 .narrafirma-survey-value {
