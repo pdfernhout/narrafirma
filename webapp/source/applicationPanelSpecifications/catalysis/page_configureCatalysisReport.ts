@@ -155,7 +155,10 @@ var panel: Panel = {
             You can enter an <strong>introduction</strong> to your catalysis report here (explaining, for example,
                 what the project is about and where the stories came from). 
                 It will appear at the start of your printed report. You can add HTML to this text (for example, to
-                start the section with an "Introduction" header). See the help system for details.`
+                start the section with an "Introduction" header). See the help system for details.`,
+            displayVisible: function(panelBuilder, model) {
+                return !!Globals.clientState().catalysisReportName();
+            }
         },
         {
             id: "catalysisReport_about",
@@ -166,7 +169,10 @@ var panel: Panel = {
             displayPrompt: `
             You can enter an <strong>About this report</strong> section that describes 
             the structure of your report here (explaining, for example, how it was created). 
-            It will appear after your introduction at the start of your printed report.`
+            It will appear after your introduction at the start of your printed report.`,
+            displayVisible: function(panelBuilder, model) {
+                return !!Globals.clientState().catalysisReportName();
+            }
         },
         {
             id: "catalysisReport_tocHeaderFirstLevel",
@@ -178,7 +184,10 @@ var panel: Panel = {
             This header precedes the <strong>top-level table of contents</strong> (list of perspectives) at the start
             of your report. If you leave this field blank, the header will read "Perspectives in this report (#)."
             To change the header, enter some text here. A number sign (#) will be replaced
-            with the number of perspectives in the report.`
+            with the number of perspectives in the report.`,
+            displayVisible: function(panelBuilder, model) {
+                return !!Globals.clientState().catalysisReportName();
+            }
         },
         {
             id: "catalysisReport_tocHeaderSecondLevel",
@@ -191,7 +200,10 @@ var panel: Panel = {
             within each perspective section. If you leave this field blank, the header will read 
             "Interpretations in this perspective (#)."
             To change the header, enter some text here. A number sign (#) will be replaced
-            with the number of interpretations in the perspective.`
+            with the number of interpretations in the perspective.`,
+            displayVisible: function(panelBuilder, model) {
+                return !!Globals.clientState().catalysisReportName();
+            }
         },
         {
             id: "catalysisReport_perspectiveLabel",
@@ -200,7 +212,10 @@ var panel: Panel = {
             displayType: "text",
             displayName: "Perspective label",
             displayPrompt: `
-            This optional label (e.g., "Perspective: ") will appear <strong>before each perspective name</strong> in the report.`
+            This optional label (e.g., "Perspective: ") will appear <strong>before each perspective name</strong> in the report.`,
+            displayVisible: function(panelBuilder, model) {
+                return !!Globals.clientState().catalysisReportName();
+            }
         },
         {
             id: "catalysisReport_interpretationLabel",
@@ -209,7 +224,10 @@ var panel: Panel = {
             displayType: "text",
             displayName: "Interpretation label",
             displayPrompt: `
-            This optional label (e.g., "Interpretation: ")  will appear <strong>before each interpretation name</strong> in the report.`
+            This optional label (e.g., "Interpretation: ")  will appear <strong>before each interpretation name</strong> in the report.`,
+            displayVisible: function(panelBuilder, model) {
+                return !!Globals.clientState().catalysisReportName();
+            }
         },
         {
             id: "catalysisReport_observationLabel",
@@ -218,7 +236,10 @@ var panel: Panel = {
             displayType: "text",
             displayName: "Observation label",
             displayPrompt: `
-            This optional label (e.g., "Observation: ")  will appear <strong>before each observation name</strong> in the report.`
+            This optional label (e.g., "Observation: ")  will appear <strong>before each observation name</strong> in the report.`,
+            displayVisible: function(panelBuilder, model) {
+                return !!Globals.clientState().catalysisReportName();
+            }
         },
         {
             id: "catalysisReport_conclusion",
@@ -229,7 +250,10 @@ var panel: Panel = {
             displayPrompt: `
             You can enter a report <strong>conclusion</strong> here (for example, making suggestions
                 for use of the report or summarizing major points). 
-            It will appear at the end of the report, after all of the perspectives (and their interpretations and observations) have been listed.`
+            It will appear at the end of the report, after all of the perspectives (and their interpretations and observations) have been listed.`,
+            displayVisible: function(panelBuilder, model) {
+                return !!Globals.clientState().catalysisReportName();
+            }
         },
         {
             id: "catalysisReport_customCSS",
@@ -237,7 +261,10 @@ var panel: Panel = {
             valueType: "string",
             displayType: "textarea",
             displayName: "Custom CSS",
-            displayPrompt: "You can enter <strong>custom CSS</strong> that modifies elements of the catalysis report here. (For more information on how this works, see the help system.)"
+            displayPrompt: "You can enter <strong>custom CSS</strong> that modifies elements of the catalysis report here. (For more information on how this works, see the help system.)",
+            displayVisible: function(panelBuilder, model) {
+                return !!Globals.clientState().catalysisReportName();
+            }
         },
     ]
 };
