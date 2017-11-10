@@ -22,9 +22,6 @@ function add_dashboardStoryCollectionStatusDisplay(panelBuilder: PanelBuilder, m
         // TODO: Translate
         return m("div.narrafirma-dashboard-story-collection-status", [
             m("a", {href: chooseProjectLink, title: "Choose another project"}, "Choose another project"), 
-            m("br"),    
-            m("br"),    
-            m("div", ["No story collections defined"])
         ]);
     }
 
@@ -54,20 +51,20 @@ function add_dashboardStoryCollectionStatusDisplay(panelBuilder: PanelBuilder, m
     
     return m("div.narrafirma-dashboard-story-collection-status", [
         m("a", {href: chooseProjectLink, title: "Choose another project"}, "Choose another project"), 
-        m("br"),       
-        m("p", "Story collections"),
+        m("br"),  
+        m("br"),
         m("table", 
             m("tr", [
-                m("th", "Collection"),
-                m("th", "Active?"),
-                m("th", "# Stories") ]),
+                m("th", "Story collection"),
+                m("th", "# stories"), 
+                m("th", "active?") 
+            ]),
             storyCollections.map(function(storyCollection) {
                 var surveyActive = storyCollection.activeOnWeb ? m("a[id=narrafirma-survey-url]", {href: storyCollection.surveyURL, target: "_blank"}, "yes") : "no";
                 return m("tr", [
                     m("td", storyCollection.shortName),
-                    
-                    m("td", surveyActive),
-                    m("td", {style: "text-align: right;"}, <any>storyCollection.storyCount),
+                    m("td", {style: "text-align: center;"}, <any>storyCollection.storyCount),
+                    m("td", {style: "text-align: center;"}, surveyActive),
                 ]);
             })
         )
