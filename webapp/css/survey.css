@@ -39,13 +39,14 @@ textarea, input, select {
 }
 
 textarea:-moz-read-only, input:-moz-read-only { /* For Firefox */
-    border: 1px solid #6d6c6c;
-    color: #6d6c6c;
+    border: 1px solid #979696;
+    background-color: white;
+    color: #979696;
 }
 
 textarea:read-only, input:read-only {
-    border: 1px solid #6d6c6c;
-    color: #6d6c6c;
+    border: 1px solid #979696;
+    color: #979696;
 }
 
 #surveyDiv {
