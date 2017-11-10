@@ -13,7 +13,7 @@ Special warning areas f88a57
 */
 
 #pageDiv {
-   padding-left: 10px;
+   padding-left: 0.5em;
    padding-top: 3em;
 }
 
@@ -53,7 +53,7 @@ select[multiple] { /* only used in story browser */
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Navigation bar ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 #navigationDiv {
-	background-color: #b0d4d4;
+    background-color: #b0d4d4;
     border-bottom: 4px solid #ffbb84; 
 	padding: 0.75em 0.2em 0.2em 0em;
     position: absolute;
@@ -73,28 +73,28 @@ select[multiple] { /* only used in story browser */
 .narrafirma-serverstatus-ok {
 	color: black;
 	font-weight: 700;
-	text-shadow: 2px 2px #b0d4d4;
+	text-shadow: 1px 1px #b0d4d4;
 	border: 2px solid #b0d4d4; /* so the name doesn't shift when the border appears */
 }
 
 .narrafirma-serverstatus-waiting {
 	color: black;
 	font-weight: 700;
-	text-shadow: 2px 2px yellow;
+	text-shadow: 1px 1px yellow;
 	border: 2px solid #b0d4d4; /* so the name doesn't shift when the border appears */
 }
 
 .narrafirma-serverstatus-waiting-last-error {
 	color: black;
 	font-weight: 700;
-	text-shadow: 2px 2px yellow;
+	text-shadow: 1px 1px yellow;
 	border: 2px solid red;
 }
 
 .narrafirma-serverstatus-failure {
 	color: black;
 	font-weight: 700;
-	text-shadow: 2px 2px red;
+	text-shadow: 1px 1px red;
 	border: 2px solid red;
 }
 
@@ -184,7 +184,7 @@ button:disabled {
 }
 
 #narrafirma-next-page.narrafirma-link-disabled,  #narrafirma-previous-page.narrafirma-link-disabled {
-    color: black;
+    display: none;
 }
 
 #narrafirma-logout-link, #narrafirma-login-link {
@@ -232,8 +232,7 @@ button:disabled {
 
 .narrafirma-pni-phases-image {
     float: left;
-	margin: 4px 30px 10px 0px;
-	padding-right: 30px;
+	margin: 0.2em 1.2em 0.5em 0;
 }
 
 .narrafirma-dashboardStatusButton {
@@ -259,14 +258,14 @@ button:disabled {
     font-weight: normal;
     background-color: #b0d4d4;
 	border: 1px solid black;
-	padding: 4px;
+	padding: 0.2em;
 	}
 
 .narrafirma-dashboard-story-collection-status td {
     border: 1px solid black;
     background-color: #eaf0f8;
-    padding: 4px;
-    max-width: 12em;
+    padding: 0.2em;
+    max-width: 16em;
     }
     
 .narrafirma-dashboard-header {
