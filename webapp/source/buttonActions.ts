@@ -252,33 +252,73 @@ export function copyInterpretationsToClusteringDiagram() {
     if (!confirm("Copy intepretations for this catalysys report into clustering diagram?")) return;
     
     var clusteringDiagram: ClusteringDiagramModel = project.tripleStore.queryLatestC(catalysisReportIdentifier, "interpretationsClusteringDiagram");
-    
+
     // console.log("clusteringDiagram before", clusteringDiagram);
     
     if (!clusteringDiagram) {
         clusteringDiagram = ClusteringDiagram.newDiagramModel();
     }
-    
-    var existingItemNames = {};
-    
+ 
+    const existingReferenceUUIDs = {};
+
+    function findUUIDForInterpretationName(name: string) {
+        for (let index = 0; index < allInterpretations.length; index++) {
+            const interpretation = allInterpretations[index];
+            if (interpretation.name === name) {
+                return interpretation.id;
+            }
+        }
+        return null;
+    }
+
     clusteringDiagram.items.forEach((item) => {
-        existingItemNames[item.name] = true;
+        if (item.type === "item" && !item.referenceUUID) {
+            // Ensure every item has a referenceUUID linking it to an interpretation
+            // Find referenceUUID to match interpretation based on name
+            const uuid = findUUIDForInterpretationName(item.name);
+            // Only allow one item to link to an interpretation
+            // if there are two items with the same name, only the first one
+            // will be mapped to the correct interpretation
+            // the second one will be left unconnected to anything
+            if (!uuid) {
+                console.log("No UUID found for intepretation name", item.name);
+            } else {
+                if (existingReferenceUUIDs[uuid]) {
+                    console.log("Two interpretations with same name", item.name, uuid);
+                } else {
+                    item.referenceUUID = uuid
+                }
+            }
+        }
+        existingReferenceUUIDs[item.referenceUUID] = true;
+    });
+
+    // Update name and notes
+    clusteringDiagram.items.forEach((item) => {
+        if (item.type === "item") {
+            if (item.referenceUUID) {
+                item.name = project.tripleStore.queryLatestC(item.referenceUUID, "interpretation_name") || "Deleted interpretation";
+                item.notes = project.tripleStore.queryLatestC(item.referenceUUID, "interpretation_text") || "";
+            } else {
+                if (item.name && item.name.indexOf("Deleted interpretation") !== 0) {
+                    item.name =  "Deleted interpretation: " + (item.name || "Missing name");
+                }
+            }
+        }
     });
     
     var addedItemCount = 0;
     var shiftPerItem = 3;
     
     allInterpretations.forEach((interpretation) => {
-        if (!existingItemNames[interpretation.name]) {
+        if (!existingReferenceUUIDs[interpretation.id]) {
             addedItemCount++;
-            ClusteringDiagram.addNewItemToDiagram(clusteringDiagram, "item", interpretation.name, interpretation.text);
+            const item = ClusteringDiagram.addNewItemToDiagram(clusteringDiagram, "item", interpretation.name, interpretation.text);
+            item.referenceUUID = interpretation.id;
         }
     });
 
-    // console.log("clusteringDiagram after", clusteringDiagram);
-    
     project.tripleStore.addTriple(catalysisReportIdentifier, "interpretationsClusteringDiagram", clusteringDiagram);
-
     toaster.toast("Added " + addedItemCount + " interpretations");
 }
 

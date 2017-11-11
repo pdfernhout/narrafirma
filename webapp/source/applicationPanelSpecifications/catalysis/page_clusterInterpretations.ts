@@ -16,8 +16,8 @@ var panel: Panel = {
                 <br><br>
                 Note: These interpretations are <i>copies</i> of the interpretations on the previous
                 page. They do not automatically change when you change those interpretations.
-                To update an interpretation here for a change on the previous page, delete it from
-                this diagram, then press the "Copy interpretations" button again to get an updated copy.
+                To update any interpretations here for changes on the previous page, 
+                press the "Update clustering diagram" button.
                 `
         },
         {
@@ -44,7 +44,7 @@ var panel: Panel = {
             valueType: "none",
             displayType: "button",
             displayConfiguration: "copyInterpretationsToClusteringDiagram",
-            displayPrompt: "Copy interpretations to clustering diagram",
+            displayPrompt: "Update clustering diagram",
             displayVisible: function(panelBuilder, model) {
                 return !!Globals.clientState().catalysisReportName();
             }

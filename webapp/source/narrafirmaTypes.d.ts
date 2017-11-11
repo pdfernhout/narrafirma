@@ -84,6 +84,7 @@ interface Panel {
 
 interface ClusteringDiagramItem {
     uuid: string;
+    referenceUUID?: string;
     "type": string;
     name: string;
     notes: string;
