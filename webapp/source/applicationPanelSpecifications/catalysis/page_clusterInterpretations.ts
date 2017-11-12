@@ -14,9 +14,8 @@ var panel: Panel = {
                 On this page you will draw together the interpretations you have collected (on the previous page) 
                 into <strong>perspectives</strong> that will become the headings of your catalysis report.
                 <br><br>
-                Note: These interpretations are <i>copies</i> of the interpretations on the previous
-                page. They do not automatically change when you change those interpretations.
-                To update any interpretations here for changes on the previous page, 
+                Note: The texts shown here do not automatically change when you change the interpretations
+                on the previous page. To update this diagram for changes on the previous page, 
                 press the "Update clustering diagram" button.
                 `
         },
