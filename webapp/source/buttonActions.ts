@@ -197,7 +197,7 @@ export function copyInterpretationsToClusteringDiagram() {
     
     var catalysisReportIdentifier = project.findCatalysisReport(shortName);
     if (!catalysisReportIdentifier) {
-        alert("Problem finding catalysisReportIdentifier");
+        alert("Problem finding catalysisReportIdentifier.");
         return;
     }
     
@@ -208,7 +208,7 @@ export function copyInterpretationsToClusteringDiagram() {
     // console.log("observationSetIdentifier", observationSetIdentifier);
     
     if (!observationSetIdentifier) {
-        alert("No observations have been made yet in the Pattern Browser");
+        alert("No observations have been made yet on the Explore Patterns page.");
         return;
     }
     
