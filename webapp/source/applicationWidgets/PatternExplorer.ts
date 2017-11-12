@@ -27,7 +27,8 @@ var patternsPanelSpecification = {
         {id: "graphType", displayName: "Graph type", valueOptions: []},
         {id: "significance", displayName: "Significance value", valueOptions: []},
         // {id: "reviewed", displayName: "Reviewed", valueOptions: []},
-        {id: "observation", displayName: "Observation", valueOptions: []}
+        {id: "observation", displayName: "Observation", valueOptions: []},
+        {id: "interpretations", displayName: "Interpretations", valueOptions: []}
     ]
 };
 
@@ -531,6 +532,14 @@ class PatternExplorer {
         
         // Next assignment creates a circular reference
         pattern.observation = observation;
+        const interpretationSetID = this.observationAccessor(pattern, "observationInterpretations");
+        const interpretationIDs = this.project.tripleStore.getListForSetIdentifier(interpretationSetID); 
+        const interpretationNames = [];
+        interpretationIDs.forEach(id => {
+            const itemName = this.project.tripleStore.queryLatestC(id, "interpretation_name");
+            interpretationNames.push(itemName);
+        });
+        pattern.interpretations = interpretationNames.join("\n");
         
         return pattern;
     }
@@ -654,6 +663,8 @@ class PatternExplorer {
                 patternIndex += 1;
             });
         }
+
+        //result.forEach((pattern) => { pattern.interpretations = "TEST"; });
         
         function calculateStatsForNextPattern() {
             if (progressModel.cancelled) {
