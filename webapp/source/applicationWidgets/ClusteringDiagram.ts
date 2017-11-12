@@ -201,8 +201,9 @@ class ClusteringDiagram {
     }
     
     calculateView(args) {
-        // Make sure the mdoel is up-to-date
-        // this seems wasteful but there is no toehr way to be sure jave the letstest ada
+
+        // Make sure the model is up to date
+        // this seems wasteful but there is no other way to be sure you have the latest data
         this.updateDiagram(this.storageFunction());
         
         var entryDialog = [];
@@ -371,19 +372,37 @@ class ClusteringDiagram {
         }
     
     // TODO: Translate
-        this.newButton("deleteButton", "Delete", () => {
-            if (!this.lastSelectedItem) {
-                // TODO: Translate
-                alert("Please select an item to delete.");
-                return;
-            }
-            dialogSupport.confirm("Are you sure you want to delete the item or cluster called '" + this.lastSelectedItem.name + "'?", () => {
-                this.updateDisplayForChangedItem(this.lastSelectedItem, "delete");
-                removeItemFromArray(this.lastSelectedItem, this.model.items);
-                this.clearSelection();
-                this.incrementChangesCount();
+
+        if (this.configuration !== "interpretations") {
+            this.newButton("deleteButton", "Delete", () => {
+                if (!this.lastSelectedItem) {
+                    // TODO: Translate
+                    alert("Please select an item to delete.");
+                    return;
+                }
+                dialogSupport.confirm("Are you sure you want to delete the item or cluster called '" + this.lastSelectedItem.name + "'?", () => {
+                    this.updateDisplayForChangedItem(this.lastSelectedItem, "delete");
+                    removeItemFromArray(this.lastSelectedItem, this.model.items);
+                    this.clearSelection();
+                    this.incrementChangesCount();
+                });
             });
-        });
+        } else { // in clustering interpretations, can only edit clusters, not items
+            this.newButton("deleteButton", "Delete cluster", () => {
+                if (!this.lastSelectedItem || this.lastSelectedItem.type === "item") {
+                    // TODO: Translate
+                    alert("Please select a cluster to delete.");
+                    return;
+                }
+                dialogSupport.confirm("Are you sure you want to delete the cluster called '" + this.lastSelectedItem.name + "'?", () => {
+                    this.updateDisplayForChangedItem(this.lastSelectedItem, "delete");
+                    removeItemFromArray(this.lastSelectedItem, this.model.items);
+                    this.clearSelection();
+                    this.incrementChangesCount();
+                });
+            });
+        }
+
         
         // TODO: Translate
         this.newButton("canvasSizeButton", "Diagram size", () => {
@@ -707,6 +726,7 @@ class ClusteringDiagram {
         
         var hoverText = item.name;
         if (item.notes) hoverText += "\n----------\n" + item.notes;
+
         group.append("title")
             .text(hoverText);
         
