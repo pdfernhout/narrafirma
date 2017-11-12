@@ -119,7 +119,7 @@ function addJournalSync(journalIdentifier) {
    log("----- addJournalSync", journalIdentifier, "--------------------------------------------------");
    var sanitizedFileName = utility.sanitizeFileName(journalIdentifier);
    if (journalIdentifier !== sanitizedFileName) {
-       throw new Error("addJournalSync: journalIdentifier contains unacceptable characters like leading periods or slashes");
+       throw new Error("addJournalSync: journalIdentifier contains unacceptable characters like spaces, double periods, or slashes");
    }
    
    if (journalIdentifier.length > 63) {

@@ -314,7 +314,8 @@ function addJournal(journalIdentifier) {
             console.log("Error creating journal", journalIdentifier, error, response);
             var message = "error";
             if (response) message = response.description;
-            if (error) message = error.description;
+            if (error) message = error.description
+            if (error && typeof error.error === "string") message += "\n" + error.error.split("\n")[0];
             toaster.toast("Error: creating journal: " + journalIdentifier + " :: " + message);
         } else {
             console.log("Created journal OK", journalIdentifier, response);
