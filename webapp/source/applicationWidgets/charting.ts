@@ -488,9 +488,11 @@ function htmlForLabelAndValue(key, object) {
 }
 
 function addStatisticsPanelForChart(chartPane: HTMLElement, statistics) {
+    console.log("chartPane.classList", chartPane.classList);
+
     var statsPane = document.createElement("div");
     var html = "";
-    if (statistics.significance !== "None" || statistics.calculated.length !== 0) {
+    if (statistics.significance.substring("None") === 0 || statistics.calculated.length !== 0) {
         //html += '<div class="narrafirma-statistics-panel-header">Statistics</div>';
         if (statistics.calculated.length === 0) {
             html += "Statistics: " + statistics.significance;
@@ -500,8 +502,17 @@ function addStatisticsPanelForChart(chartPane: HTMLElement, statistics) {
         if (statistics.allResults) {
             html += '<span class="narrafirma-mann-whitney-title">Mann-Whitney U test results for multiple histograms</span><br>\n';
         }
+        let delimiter;
+        if (chartPane.classList.contains("smallChartStyle")) {
+            delimiter = "<br>\n";
+        } else {
+            delimiter = "; ";
+        }
         for (var i = 0; i < statistics.calculated.length; i++) {
-            html += htmlForLabelAndValue(statistics.calculated[i], statistics) + "<br>\n";
+            html += htmlForLabelAndValue(statistics.calculated[i], statistics);
+            if (i < statistics.calculated.length-1) {
+                html += delimiter;
+            }
         }
         if (statistics.allResults) {
             html += "<br>\n";
