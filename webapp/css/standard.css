@@ -104,6 +104,7 @@ select[multiple] { /* only used in story browser */
 
 button {
     background-color: #ffbb84;
+    box-shadow: 2px 2px 2px black;
     margin: 0.4em;
     padding: 0.4em;
     white-space: nowrap;
@@ -466,6 +467,7 @@ table.scrolling {
   max-height: 400px;
   overflow-y: scroll;
   border-collapse: collapse;
+  border: 1px solid #c5d2eb;
 }
 
 table.scrolling th {
