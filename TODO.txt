@@ -195,7 +195,14 @@ Support storyBrowserCount
 
 ---- Release 1.0.0
 
+DONE Shrink statistics panels (less scrolling)
+DONE Improve updating on clustering diagram for catalysis
+DONE Add observation strength to catalysis
+DONE Redo main dashboard buttons
+DONE Redo color scheme
 DONE Add custom CSS to story card display
+DONE Add way to reference parts of multi-part observation (to have more than one observation per graph, but without complicating interface)
+DONE Add number to slider
 DONE Improve look of catalysis report
 DONE Add more user supplied fields to catalysis report
 DONE Add custom CSS to catalysis report
@@ -208,7 +215,7 @@ DONE Add data integrity graph: number of N/As per question, choice questions
 DONE Add way to select which type of graph to show on "configure catalysis report" page (to look at graphs in batches by type)
 DONE Add correlation line to scatterplots
 DONE Add way to choose another project without logging out
-DONE Changed catalysis and spot-check graphs pages so they only show questions used in current story collection
+DONE Change catalysis and spot-check graphs pages so they only show questions used in current story collection
 DONE Add Eliciting question to catalysis - seems like it is not there (!)
 DONE When make story form, need way to copy all questions of a type into form
 DONE Better reporting on statistical errors
