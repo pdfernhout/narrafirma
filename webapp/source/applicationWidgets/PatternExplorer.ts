@@ -29,6 +29,7 @@ var patternsPanelSpecification = {
         {id: "significance", displayName: "Significance value", valueOptions: []},
         // {id: "reviewed", displayName: "Reviewed", valueOptions: []},
         {id: "observation", displayName: "Observation", valueOptions: []},
+        {id: "strength", displayName: "Strength", valueOptions: []},
     ]
 };
 
@@ -202,6 +203,14 @@ class PatternExplorer {
                     // displayVisible: function(panelBuilder, model) {
                     //     return model.currentObservationDescription();
                     // }
+                },
+                {
+                    id: "observationPanel_strenth",
+                    valuePath: "currentObservationStrength",
+                    displayName: "Observation",
+                    displayPrompt: "How <strong>strong</strong> is this pattern?",
+                    displayType: "select",
+                    valueOptions: ["1 (weak)", "2 (medium)", "3 (strong)"]
                 },
                 {
                     id: "observationPanel_interpretationsList",
@@ -409,7 +418,15 @@ class PatternExplorer {
         }
         return this.observationAccessor(this.currentPattern, "observationTitle", newValue);
     }
-    
+
+    currentObservationStrength(newValue = undefined) {
+        if (!this.currentPattern) {
+            return "";
+            // throw new Error("pattern is not defined");
+        }
+        return this.observationAccessor(this.currentPattern, "observationStrength", newValue);
+    }
+
     currentObservationInterpretations(newValue = undefined) {
         if (!this.currentPattern) {
             return "";
@@ -533,10 +550,14 @@ class PatternExplorer {
         
         var observation = () => {
             return this.observationAccessor(pattern, "observationTitle") || this.observationAccessor(pattern, "observationDescription");
+        }
+        var strength = () => {
+            return this.observationAccessor(pattern, "observationStrength") || "";
         };
         
         // Next assignment creates a circular reference
         pattern.observation = observation;
+        pattern.strength = strength;
 
         if (this.graphHolder.showInterpretationsInGrid) {
             const interpretationSetID = this.observationAccessor(pattern, "observationInterpretations");
