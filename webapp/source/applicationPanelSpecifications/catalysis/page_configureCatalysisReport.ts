@@ -74,6 +74,18 @@ var panel: Panel = {
         },
 
         {
+            id: "configureCatalysisReport_showInterpretationsInGrid",
+            valueType: "boolean",
+            valuePath: "/clientState/catalysisReportIdentifier/showInterpretationsInGrid",
+            displayType: "checkbox",
+            displayConfiguration: "Yes, show interpretations in the table",
+            displayPrompt: "Should interpretations be shown in the table of patterns?",
+            displayVisible: function(panelBuilder, model) {
+                return !!Globals.clientState().catalysisReportName();
+            }
+        },
+
+        {
             id: "configureCatalysisReport_numHistogramBins",
             valuePath: "/clientState/catalysisReportIdentifier/numHistogramBins",
             valueType: "string",

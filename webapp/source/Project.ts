@@ -19,6 +19,7 @@ class Project {
     redrawCallback: Function;
     static defaultMinimumStoryCountRequiredForTest = 20;
     static defaultNumHistogramBins = 20;
+    static defaultShowInterpretationsInGrid = false;
     static defaultNumScatterDotOpacityLevels = 3;
     static defaultScatterDotSize = 8;
     static defaultCorrelationLineChoice = "0.05";
@@ -475,6 +476,18 @@ class Project {
             return parseInt(numHistogramBins, 10);
         } else {
             return Project.defaultNumHistogramBins;
+        }
+    }
+
+    showInterpretationsInGrid(catalysisReportIdentifier) {
+        if (!catalysisReportIdentifier) {
+            throw new Error("catalysisReportIdentifier was not supplied");
+        }
+        var showInterpretationsInGrid = this.tripleStore.queryLatestC(catalysisReportIdentifier, "showInterpretationsInGrid");
+        if (showInterpretationsInGrid) {
+            return showInterpretationsInGrid;
+        } else {
+            return Project.defaultShowInterpretationsInGrid;
         }
     }
 

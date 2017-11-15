@@ -12,6 +12,7 @@ import GridWithItemPanel = require("../panelBuilder/GridWithItemPanel");
 import generateRandomUuid = require("../pointrel20150417/generateRandomUuid");
 import Globals = require("../Globals");
 import _ = require("lodash");
+import toaster = require("../panelBuilder/toaster");
 
 "use strict";
 
@@ -28,9 +29,10 @@ var patternsPanelSpecification = {
         {id: "significance", displayName: "Significance value", valueOptions: []},
         // {id: "reviewed", displayName: "Reviewed", valueOptions: []},
         {id: "observation", displayName: "Observation", valueOptions: []},
-        {id: "interpretations", displayName: "Interpretations", valueOptions: []}
     ]
 };
+
+const interpretationsColumnSpec = {id: "interpretations", displayName: "Interpretations", valueOptions: []};
 
 // TODO: Duplicate code for this function copied from charting
 function nameForQuestion(question) {
@@ -76,6 +78,7 @@ class PatternExplorer {
     
     questionsToInclude = null;
     modelForPatternsGrid = {patterns: []};
+    patternsGridFieldSpecification: any = null;
     patternsGrid: GridWithItemPanel;
     
     graphHolder: GraphHolder;
@@ -95,6 +98,7 @@ class PatternExplorer {
     
     minimumStoryCountRequiredForTest = Project.defaultMinimumStoryCountRequiredForTest;
     numHistogramBins = Project.defaultNumHistogramBins;
+    showInterpretationsInGrid = Project.defaultShowInterpretationsInGrid;
     numScatterDotOpacityLevels = Project.defaultNumScatterDotOpacityLevels;
     scatterDotSize = Project.defaultScatterDotSize;
     correlationLineChoice = Project.defaultCorrelationLineChoice;
@@ -113,6 +117,7 @@ class PatternExplorer {
             currentSelectionExtentPercentages: null,
             minimumStoryCountRequiredForTest: Project.defaultMinimumStoryCountRequiredForTest,
             numHistogramBins: Project.defaultNumHistogramBins,
+            showInterpretationsInGrid: Project.defaultShowInterpretationsInGrid,
             numScatterDotOpacityLevels: Project.defaultNumScatterDotOpacityLevels,
             scatterDotSize: Project.defaultScatterDotSize,
             correlationLineChoice: Project.defaultCorrelationLineChoice,
@@ -133,12 +138,13 @@ class PatternExplorer {
         this.storyGridFieldSpecification = {
             id: "storiesSelectedInGraph",
             itemPanelID: undefined,
+            // TODO: Why is itemPanelSpecification in here twice (also in displayConfiguration)?
             itemPanelSpecification: storyItemPanelSpecification,
             displayConfiguration: {
                 itemPanelSpecification: storyItemPanelSpecification,
                 gridConfiguration: storyGridConfiguration
             },
-            // TODO: Why is gridConfiguration in here twice?
+            // TODO: Why is gridConfiguration in here twice (also in displayConfiguration)?
             gridConfiguration: storyGridConfiguration
         };
 
@@ -223,14 +229,21 @@ class PatternExplorer {
             navigationButtons: true,
             selectCallback: this.patternSelected.bind(this)
         };
-        
+
         var patternsGridFieldSpecification = {
             id: "patterns",
+            itemPanelID: undefined,
+            // TODO: Why is itemPanelSpecification in here twice (also in displayConfiguration)?
+            itemPanelSpecification: patternsPanelSpecification,
             displayConfiguration: {
                 itemPanelSpecification: patternsPanelSpecification,
                 gridConfiguration: patternsGridConfiguration
-            }
+            },
+            // TODO: Why is gridConfiguration in here twice (also in displayConfiguration)?
+            gridConfiguration: patternsGridConfiguration
         };
+
+        this.patternsGridFieldSpecification = patternsGridFieldSpecification;
  
         this.patternsGrid = new GridWithItemPanel({panelBuilder: args.panelBuilder, model: this.modelForPatternsGrid, fieldSpecification: patternsGridFieldSpecification});
 
@@ -241,25 +254,20 @@ class PatternExplorer {
     }
     
     static controller(args) {
-        // console.log("Making PatternBrowser: ", args);
         return new PatternExplorer(args);
     }
     
     static view(controller, args) {
-        //console.log("PatternBrowser view called");
-        
         return controller.calculateView(args);
     }
     
     calculateView(args) {
-        // console.log("%%%%%%%%%%%%%%%%%%% PatternBrowser view called");
         var panelBuilder: PanelBuilder = args.panelBuilder;
         
         // Handling of caching of questions and stories
         var catalysisReportIdentifier = this.getCurrentCatalysisReportIdentifier(args);
         if (catalysisReportIdentifier !== this.catalysisReportIdentifier) {
             this.catalysisReportIdentifier = catalysisReportIdentifier;
-            // console.log("storyCollectionIdentifier changed", this.catalysisReportIdentifier);
             this.currentCatalysisReportChanged(this.catalysisReportIdentifier);
         }
         
@@ -281,7 +289,7 @@ class PatternExplorer {
             if (this.currentPattern && this.currentPattern.graphType === "data integrity") {
                 parts = [
                     this.patternsGrid.calculateView(),
-                    m("div", {config: this.insertGraphResultsPaneConfig.bind(this)}),
+                    m("div.narrafirma-graph-results-panel", {config: this.insertGraphResultsPaneConfig.bind(this)}),
                     panelBuilder.buildPanel(this.observationPanelSpecification, this)
                 ];
             } else if (this.currentPattern && this.currentPattern.graphType === "texts") {
@@ -295,7 +303,7 @@ class PatternExplorer {
                     this.patternsGrid.calculateView(),
                     this.currentPattern ?
                         [
-                            m("div", {config: this.insertGraphResultsPaneConfig.bind(this)}),
+                            m("div.narrafirma-graph-results-panel", {config: this.insertGraphResultsPaneConfig.bind(this)}),
                             m("div.narrafirma-pattern-browser-selected-stories-header", "Selected stories (" + this.modelForStoryGrid.storiesSelectedInGraph.length + ")"),
                             this.storyGrid.calculateView(),
                             panelBuilder.buildPanel(this.saveGraphSelectionSpecification, this),
@@ -306,14 +314,11 @@ class PatternExplorer {
                 ];
             }
         }
-        
-        // TODO: Need to set class
-        return m("div", parts);
+        return m("div.narrafirma-patterns-grid", parts);
     }
     
     insertGraphResultsPaneConfig(element: HTMLElement, isInitialized: boolean, context: any) {
         if (!isInitialized) {
-            // console.log("appending graph element");
             element.appendChild(this.graphHolder.graphResultsPane);
         }       
     }
@@ -344,13 +349,11 @@ class PatternExplorer {
             this.project.tripleStore.addTriple(observationIdentifier, "pattern", patternCopyWithoutAccessorFunction);
         }
 
-        // console.log("observationAccessor", pattern.questions, observationIdentifier, newValue);
         if (newValue === undefined) {
             var result = this.project.tripleStore.queryLatestC(observationIdentifier, field);
             if (result === undefined || result === null) {
                 result = "";
             }
-            // console.log("observationAccessor", this.catalysisReportIdentifier, this.catalysisReportObservationSetIdentifier, patternReference, observation);
             return result;
         } else {
             this.project.tripleStore.addTriple(observationIdentifier, field, newValue);
@@ -432,18 +435,15 @@ class PatternExplorer {
     }
     
     currentCatalysisReportChanged(catalysisReportIdentifier) {
-        // console.log("currentCatalysisReportChanged", catalysisReportIdentifier);
-        
         if (!catalysisReportIdentifier) {
-            // TODO: should clear everything
             return;
         }
-        
         this.minimumStoryCountRequiredForTest = this.project.minimumStoryCountRequiredForTest(catalysisReportIdentifier);
         this.graphHolder.minimumStoryCountRequiredForTest = this.minimumStoryCountRequiredForTest; 
-        // console.log("minimumStoryCountRequiredForTest", this.minimumStoryCountRequiredForTest);
         this.numHistogramBins = this.project.numberOfHistogramBins(catalysisReportIdentifier);
         this.graphHolder.numHistogramBins = this.numHistogramBins; 
+        this.showInterpretationsInGrid = this.project.showInterpretationsInGrid(catalysisReportIdentifier);
+        this.graphHolder.showInterpretationsInGrid = this.showInterpretationsInGrid; 
         this.numScatterDotOpacityLevels = this.project.numScatterDotOpacityLevels(catalysisReportIdentifier);
         this.graphHolder.numScatterDotOpacityLevels = this.numScatterDotOpacityLevels;
         this.scatterDotSize = this.project.scatterDotSize(catalysisReportIdentifier);
@@ -453,31 +453,38 @@ class PatternExplorer {
         this.graphTypesToCreate = this.project.graphTypesToCreate(catalysisReportIdentifier);
         
         this.catalysisReportObservationSetIdentifier = this.getObservationSetIdentifier(catalysisReportIdentifier);
-        
         this.graphHolder.allStories = this.project.storiesForCatalysisReport(catalysisReportIdentifier);
-        // console.log("allStories", this.graphHolder.allStories);
-        
-        //this.questions = questionnaireGeneration.collectAllQuestions();
+
         var leadingStoryQuestions = questionnaireGeneration.getStoryNameAndTextQuestions();
         var elicitingQuestions = this.project.elicitingQuestionsForCatalysisReport(catalysisReportIdentifier);
         var numStoriesToldQuestions = this.project.numStoriesToldQuestionsForCatalysisReport(catalysisReportIdentifier);
         var storyQuestions = this.project.storyQuestionsForCatalysisReport(catalysisReportIdentifier); 
         var participantQuestions = this.project.participantQuestionsForCatalysisReport(catalysisReportIdentifier);
         var annotationQuestions = questionnaireGeneration.convertEditorQuestions(this.project.collectAllAnnotationQuestions(), "A_");
-
         this.questions = [];
         this.questions = this.questions.concat(leadingStoryQuestions, elicitingQuestions, numStoriesToldQuestions, storyQuestions, participantQuestions, annotationQuestions);
-        // console.log("questions", this.questions);
-        
         this.questionsToInclude = this.project.tripleStore.queryLatestC(this.catalysisReportIdentifier, "questionsToInclude"); 
+
+        if (this.showInterpretationsInGrid) {
+            let hasColumnAlready = false;
+            for (var index = 0; index < patternsPanelSpecification.panelFields.length; index++) {
+                if (patternsPanelSpecification.panelFields[index].displayName === "Interpretations") {
+                    hasColumnAlready = true;
+                    break;
+                }
+            }
+            if (!hasColumnAlready) patternsPanelSpecification.panelFields.push(interpretationsColumnSpec);
+        }
+        else {
+            patternsPanelSpecification.panelFields =
+                patternsPanelSpecification.panelFields.filter(function (each) { return each.displayName !== "Interpretations"; });
+        }
+        this.patternsGrid.updateDisplayConfigurationAndData(this.patternsGridFieldSpecification);
         this.modelForPatternsGrid.patterns = this.buildPatternList();
-        // console.log("patterns", this.modelForPatternsGrid.patterns);
         this.patternsGrid.updateData();
 
-        // Update item panel in story list so it has the correct header
         this.storyGridFieldSpecification.itemPanelSpecification = makeItemPanelSpecificationForQuestions(this.questions);
         this.storyGrid.updateDisplayConfigurationAndData(this.storyGridFieldSpecification);
-    
         this.chooseGraph(null);     
     }
     
@@ -488,8 +495,6 @@ class PatternExplorer {
         
         // Get selected catalysis report
         var catalysisReportShortName = valuePathResolver.newValuePathForFieldSpecification(model, fieldSpecification)();
-        
-        // console.log("catalysisReportShortName", catalysisReportShortName);
         
         if (!catalysisReportShortName) return null;
         
@@ -532,14 +537,17 @@ class PatternExplorer {
         
         // Next assignment creates a circular reference
         pattern.observation = observation;
-        const interpretationSetID = this.observationAccessor(pattern, "observationInterpretations");
-        const interpretationIDs = this.project.tripleStore.getListForSetIdentifier(interpretationSetID); 
-        const interpretationNames = [];
-        interpretationIDs.forEach(id => {
-            const itemName = this.project.tripleStore.queryLatestC(id, "interpretation_name");
-            interpretationNames.push(itemName);
-        });
-        pattern.interpretations = interpretationNames.join("\n");
+
+        if (this.graphHolder.showInterpretationsInGrid) {
+            const interpretationSetID = this.observationAccessor(pattern, "observationInterpretations");
+            const interpretationIDs = this.project.tripleStore.getListForSetIdentifier(interpretationSetID); 
+            const interpretationNames = [];
+            interpretationIDs.forEach(id => {
+                const itemName = this.project.tripleStore.queryLatestC(id, "interpretation_name");
+                interpretationNames.push(itemName);
+            });
+            pattern.interpretations = interpretationNames.join("\n");
+        }
         
         return pattern;
     }
@@ -550,8 +558,6 @@ class PatternExplorer {
         var ratioQuestions = [];
         var textQuestions = [];
 
-        //console.log("buildPatternList questionsToInclude", this.questionsToInclude);
-        
         if (!this.questionsToInclude) return result;
 
         this.questions.forEach((question) => {
@@ -562,8 +568,6 @@ class PatternExplorer {
                 } else if (question.displayType === "text" || question.displayType === "textarea") {
                     textQuestions.push(question);
                 } else if (nominalQuestionTypes.indexOf(question.displayType) !== -1)  {
-                    // Ony use text questions that are annotations
-                    //if (question.displayType === "text" && (question.id || "").substring(2) !== "A_") return;
                     nominalQuestions.push(question);
                 }
             }
@@ -664,11 +668,9 @@ class PatternExplorer {
             });
         }
 
-        //result.forEach((pattern) => { pattern.interpretations = "TEST"; });
-        
         function calculateStatsForNextPattern() {
             if (progressModel.cancelled) {
-                alert("Cancelled after calculating statistics for " + (patternIndex + 1) + " patterns");
+                toaster.toast("Cancelled after calculating statistics for " + (patternIndex + 1) + " patterns");
             } else if (patternIndex >= result.length) {
                 progressModel.hideDialogMethod();
                 progressModel.redraw();
@@ -684,14 +686,10 @@ class PatternExplorer {
             progressModel.cancelled = true;
             hideDialogMethod();
         }
-        
-        // console.log("buildPatternsList", result);
         return result;
         }
     
     chooseGraph(pattern) {
-        // console.log("chooseGraph", pattern);
-        
         // Remove old graph(s)
         while (this.graphHolder.chartPanes.length) {
             var chartPane = this.graphHolder.chartPanes.pop();
@@ -719,8 +717,6 @@ class PatternExplorer {
     
     static makeGraph(pattern, graphHolder, selectionCallback) {
         var graphType = pattern.graphType;
-        // var name = pattern.patternName;
-        // console.log("patternName", name, graphType);
         var q1 = pattern.questions[0];
         var q2 = pattern.questions[1];
         var q3 = pattern.questions[2]
@@ -774,7 +770,6 @@ class PatternExplorer {
     }
     
     patternSelected(selectedPattern) {
-        // console.log("selectedPattern in pattern grid", selectedPattern);
         this.chooseGraph(selectedPattern);
         this.currentPattern = selectedPattern;
         
@@ -783,7 +778,6 @@ class PatternExplorer {
     }
     
     insertGraphSelection() {
-        // console.log("insertGraphSelection");
         if (!this.graphHolder.currentGraph) {
             // TODO: Translated
             alert("Please select a pattern first");
@@ -794,8 +788,6 @@ class PatternExplorer {
             alert("Please select something in a graph first");
             return;
         }
-        
-        // console.log("PatternsBrowser currentGraph", this.graphHolder.currentGraph);
         
         if (this.scanForSelectionJSON()) {
             // TODO: Translate
@@ -825,7 +817,6 @@ class PatternExplorer {
     }
     
     scanForSelectionJSON(doFocus = false) {
-        // console.log("scanForSelectionJSON");
         // TODO: Fix this for Mithril conversion
         var textarea = <HTMLTextAreaElement>document.getElementById("observationPanel_description");
         if (!this.currentPattern) return;
@@ -862,7 +853,6 @@ class PatternExplorer {
     }
     
     resetGraphSelection() {
-        // console.log("resetGraphSelection");
         if (!this.graphHolder.currentGraph) {
             // TODO: Translate
             alert("Please select a pattern first");
@@ -892,8 +882,6 @@ class PatternExplorer {
             alert('The selected text was not a complete valid stored selection.\nTry clicking inside the {...} items first.');
             return;
         }
-        
-        // console.log("selection from user", selection);
         
         var graph = this.graphHolder.currentGraph;
         if (_.isArray(graph)) {
