@@ -29,7 +29,6 @@ export function initialize(theProject: Project, theClientState: ClientState) {
 
 export function helpButtonClicked() {
     var pageSpecification = navigationPane.getCurrentPageSpecification();
-    // console.log("helpButtonClicked", pageSpecification);
     if (!pageSpecification) {
         console.log("no pageSpecification for current page");
         return;
@@ -37,16 +36,12 @@ export function helpButtonClicked() {
     
     var helpURL = 'help/' + pageSpecification.section + "/help_" + pageSpecification.id + '.html';
     
-    // console.log("opening help url", helpURL);
-    
     browser.launchApplication(helpURL, 'help');
 }
 
 // Caller should call wizard.forward() on successful save to see the last page, and provide a retry message otherwise
 // Caller may also want to call (the returned) surveyDialog.hide() to close the window, or let the user do it.
 function openMithrilSurveyDialog(questionnaire, callback, previewModeTitleText = null) {  
-    // console.log("openSurveyDialog questionnaire", questionnaire);
-   
     var surveyDiv = document.createElement("div");
     var surveyViewFunction = surveyBuilder.buildSurveyForm(null, questionnaire, callback, {previewMode: !!previewModeTitleText, ignoreTitleChange: true});
     
@@ -63,8 +58,6 @@ function openMithrilSurveyDialog(questionnaire, callback, previewModeTitleText =
 }
 
 function openSurveyDialog() {
-    // console.log("openSurveyDialog");
-    
     var storyCollectionName: string = clientState.storyCollectionName();
     
     if (!storyCollectionName) {
@@ -94,7 +87,6 @@ export function copyStoryFormURL() {
 
 export function guiOpenSection(model, fieldSpecification, value) {
     var section = fieldSpecification.displayConfiguration.section;
-    // console.log("guiOpenSection", section, fieldSpecification);
     
     // Don't queue an extra redraw as one is already queued since this code get called by a button press
     var isRedrawAlreadyQueued = true;
@@ -119,7 +111,6 @@ function copyDraftPNIQuestionVersionsIntoAnswers_Basic() {
     for (var index in finalQuestionIDs) {
         var finalQuestionID = finalQuestionIDs[index];
         var draftQuestionID = finalQuestionID.replace("_final", "_draft");
-        // console.log("finalQuestionID/draftQuestionID", finalQuestionID, draftQuestionID);
         var finalValue = project.tripleStore.queryLatestC(project.projectIdentifier, finalQuestionID);
         if (!finalValue) {
             var draftValue = project.tripleStore.queryLatestC(project.projectIdentifier, draftQuestionID);
@@ -179,7 +170,6 @@ function previewQuestionForm(model, fieldSpecification) {
 */
 
 export function previewQuestionForm(model, fieldSpecification) {
-    // console.log("previewQuestionForm", model);
     var questionnaire = questionnaireGeneration.buildQuestionnaireFromTemplate(model);
     window["narraFirma_previewQuestionnaire"] = questionnaire;
     
@@ -188,8 +178,6 @@ export function previewQuestionForm(model, fieldSpecification) {
 
 export function copyInterpretationsToClusteringDiagram() {
     var shortName = clientState.catalysisReportName();
-    // console.log("copyInterpretationsToClusteringDiagram", shortName);
-    
     if (!shortName) {
         alert("Please pick a catalysis report to work with.");
         return;
@@ -197,42 +185,27 @@ export function copyInterpretationsToClusteringDiagram() {
     
     var catalysisReportIdentifier = project.findCatalysisReport(shortName);
     if (!catalysisReportIdentifier) {
-        alert("Problem finding catalysisReportIdentifier.");
+        alert("Problem finding catalysis report identifier.");
         return;
     }
     
-    // Collect all interpretations
     var allInterpretations = [];
-        
     var observationSetIdentifier = project.tripleStore.queryLatestC(catalysisReportIdentifier, "catalysisReport_observations");
-    // console.log("observationSetIdentifier", observationSetIdentifier);
-    
     if (!observationSetIdentifier) {
-        alert("No observations have been made yet on the Explore Patterns page.");
+        alert("No observations have been made on the Explore Patterns page.");
         return;
     }
-    
     var observations = project.tripleStore.queryAllLatestBCForA(observationSetIdentifier);
-    
-    // console.log("observations", observations);
     
     for (var key in observations) {
         var observationIdentifier = observations[key];
-        // console.log("observationIdentifier", key, observationIdentifier);
-        
         var interpretationsSetIdentifier = project.tripleStore.queryLatestC(observationIdentifier, "observationInterpretations");
-        // console.log("interpretationsSetIdentifier", key, observationIdentifier, interpretationsSetIdentifier);
-        
         if (interpretationsSetIdentifier) {
             var interpretations = project.tripleStore.getListForSetIdentifier(interpretationsSetIdentifier);
-            // console.log("interpretations", interpretations);
-            
             for (var i = 0; i < interpretations.length; i++) {
                 var interpretationIdentifier = interpretations[i];
-                // "interpretation_name", "interpretation_text"
                 var interpretationName = project.tripleStore.queryLatestC(interpretationIdentifier, "interpretation_name");
                 var interpretationText = project.tripleStore.queryLatestC(interpretationIdentifier, "interpretation_text");
-                // console.log("interpretationIdentifier", interpretationIdentifier, interpretationName, interpretationText);
                 allInterpretations.push({
                     "type": "Interpretation",
                     id: interpretationIdentifier,
@@ -244,25 +217,16 @@ export function copyInterpretationsToClusteringDiagram() {
     }
     
     if (allInterpretations.length === 0) {
-        alert("No interpretations have been found for this catalysis report");
+        alert("No interpretations have been found for this catalysis report.");
     }
     
-    // console.log("allInterpretations", allInterpretations);
-    
-    if (!confirm("Copy intepretations for this catalysys report into clustering diagram?")) return;
-    
     var clusteringDiagram: ClusteringDiagramModel = project.tripleStore.queryLatestC(catalysisReportIdentifier, "interpretationsClusteringDiagram");
-
-    // console.log("clusteringDiagram before", clusteringDiagram);
-    
     if (!clusteringDiagram) {
         clusteringDiagram = ClusteringDiagram.newDiagramModel();
     }
  
-    const existingReferenceUUIDs = {};
-
     function findUUIDForInterpretationName(name: string) {
-        for (let index = 0; index < allInterpretations.length; index++) {
+        for (var index = 0; index < allInterpretations.length; index++) {
             const interpretation = allInterpretations[index];
             if (interpretation.name === name) {
                 return interpretation.id;
@@ -271,10 +235,11 @@ export function copyInterpretationsToClusteringDiagram() {
         return null;
     }
 
+    // Make sure every item has a referenceUUID linking it to an interpretation
+    const existingReferenceUUIDs = {};
     clusteringDiagram.items.forEach((item) => {
         if (item.type === "item" && !item.referenceUUID) {
-            // Ensure every item has a referenceUUID linking it to an interpretation
-            // Find referenceUUID to match interpretation based on name
+            // If no referenceUUID already set, find interpretation based on name
             const uuid = findUUIDForInterpretationName(item.name);
             // Only allow one item to link to an interpretation
             // if there are two items with the same name, only the first one
@@ -293,38 +258,79 @@ export function copyInterpretationsToClusteringDiagram() {
         existingReferenceUUIDs[item.referenceUUID] = true;
     });
 
-    // Update name and notes
+    var updatedItemCount = 0;
+    // Update name and notes on existing items
     clusteringDiagram.items.forEach((item) => {
         if (item.type === "item") {
             if (item.referenceUUID) {
-                item.name = project.tripleStore.queryLatestC(item.referenceUUID, "interpretation_name") || "Deleted interpretation";
+                const newName = project.tripleStore.queryLatestC(item.referenceUUID, "interpretation_name") || "Deleted interpretation";
+                if (newName !== item.name) {
+                    item.name = newName;
+                    updatedItemCount++;
+                }
                 item.notes = project.tripleStore.queryLatestC(item.referenceUUID, "interpretation_text") || "";
             } else {
                 if (item.name && item.name.indexOf("Deleted interpretation") !== 0) {
-                    item.name =  "Deleted interpretation: " + (item.name || "Missing name");
+                    const newName =  "Deleted interpretation: " + (item.name || "Missing name");
+                    if (newName !== item.name) {
+                        item.name = newName;
+                        updatedItemCount++;
+                    }
                 }
             }
         }
     });
+
+    function findObservationForInterpretation(observationIDs, interpretationName) {
+        for (var i = 0; i < observationIDs.length; i++) {
+            const observationID = observationIDs[i];
+            var interpretationsListIdentifier = project.tripleStore.queryLatestC(observationID, "observationInterpretations");
+            var interpretationsList = project.tripleStore.getListForSetIdentifier(interpretationsListIdentifier);
+            for (var j = 0; j < interpretationsList.length; j++) {
+                const interpretationID = interpretationsList[j];
+                var interpretation = project.tripleStore.makeObject(interpretationID, true);
+                var name = interpretation.interpretation_name;
+                if (name === interpretationName) {
+                    return observationID;
+                }
+            }
+        }
+        return null;
+    }
     
+    // add items for interpretations not represented in the space
     var addedItemCount = 0;
-    var shiftPerItem = 3;
-    
+    var observationIDs = project.tripleStore.getListForSetIdentifier(observationSetIdentifier);
     allInterpretations.forEach((interpretation) => {
         if (!existingReferenceUUIDs[interpretation.id]) {
-            addedItemCount++;
-            const item = ClusteringDiagram.addNewItemToDiagram(clusteringDiagram, "item", interpretation.name, interpretation.text);
-            item.referenceUUID = interpretation.id;
+            // check that this interpretation is attached to an observation; if not, it should not be added to the diagram
+            const observationID = findObservationForInterpretation(observationIDs, interpretation.name);
+            if (observationID) {
+                // if the user creates an observation and adds interpretations to it,
+                // and then deletes the name and text of the observation, 
+                // the observation will still exist in the system,
+                // and the interpretations will still exist, and they will still link to the observation,
+                // but they should be hidden from the clustering diagram and the report.
+                var observationName = project.tripleStore.queryLatestC(observationID, "observationTitle");
+                var observationDescription = project.tripleStore.queryLatestC(observationID, "observationDescription");
+                if (observationName || observationDescription) {
+                    addedItemCount++;
+                    const item = ClusteringDiagram.addNewItemToDiagram(clusteringDiagram, "item", interpretation.name, interpretation.text);
+                    item.referenceUUID = interpretation.id;
+                }
+            }
         }
     });
 
     project.tripleStore.addTriple(catalysisReportIdentifier, "interpretationsClusteringDiagram", clusteringDiagram);
-    toaster.toast("Added " + addedItemCount + " interpretations");
+    if (addedItemCount === 0 && updatedItemCount === 0) {
+        toaster.toast("The clustering diagram is up to date.");
+    } else {
+        toaster.toast("Added " + addedItemCount + " interpretations and updated " + updatedItemCount +  " interpretations in the clustering diagram.");
+    }
 }
 
 export function setQuestionnaireForStoryCollection(storyCollectionIdentifier): boolean {
-    // console.log("setQuestionnaireForStoryCollection", storyCollectionIdentifier);
-    
     if (!storyCollectionIdentifier) return false;
     var questionnaireName = project.tripleStore.queryLatestC(storyCollectionIdentifier, "storyCollection_questionnaireIdentifier");
     var questionnaire = questionnaireGeneration.buildQuestionnaire(questionnaireName);
@@ -334,7 +340,6 @@ export function setQuestionnaireForStoryCollection(storyCollectionIdentifier): b
 }
 
 export function updateQuestionnaireForStoryCollection(storyCollectionIdentifier) {
-    // console.log("updateQuestionnaireForStoryCollection", storyCollectionIdentifier);
     if (!storyCollectionIdentifier) {
         alert("Problem: No storyCollectionIdentifier");
         return;
@@ -375,15 +380,9 @@ function isNamedItemInDiagram(diagram: ClusteringDiagramModel, name: string, ite
 }
 
 function copyClusteringDiagramElements(fromDiagramField: string, fromType: string, toDiagramField: string, toType: string) {
-    // console.log("copyClusteringDagramElements", fromDiagramField, fromType, toDiagramField, toType);
-
     var fromDiagram: ClusteringDiagramModel = project.getFieldValue(fromDiagramField);
-    // console.log("fromDiagram", fromDiagram);
     if (!fromDiagram || !fromDiagram.items.length) return;
-    
     var toDiagram: ClusteringDiagramModel = project.getFieldValue(toDiagramField) || ClusteringDiagram.newDiagramModel();
-    // console.log("toDiagram", toDiagram);
-    
     var addedItemCount = 0;
     
     fromDiagram.items.forEach((item) => {
@@ -404,21 +403,13 @@ function copyClusteringDiagramElements(fromDiagramField: string, fromType: strin
 }
 
 export function copyPlanningStoriesToClusteringDiagram(model) {
-    // console.log("copyPlanningStoriesToClusteringDiagram", model);
-    
     var list = project.getListForField("project_projectStoriesList");
-    // console.log("copyPlanningStoriesToClusteringDiagram", list);
-    
     var toDiagramField = "project_storyElements_answersClusteringDiagram";
-    
     var toDiagram: ClusteringDiagramModel = project.getFieldValue(toDiagramField) || ClusteringDiagram.newDiagramModel();
-    // console.log("toDiagram", toDiagram);
-
     var addedItemCount = 0;
         
     list.forEach((projectStoryIdentifier) => {
         var projectStory = project.tripleStore.makeObject(projectStoryIdentifier);
-        // console.log("projectStory", projectStory);
         
         var storyName = projectStory.projectStory_name;
         var storyText = projectStory.projectStory_text;
@@ -439,17 +430,14 @@ export function copyPlanningStoriesToClusteringDiagram(model) {
 }
 
 export function copyAnswersToClusteringDiagram(model) {
-    // console.log("copyAnswersToClusteringDiagram", model);
     copyClusteringDiagramElements("project_storyElements_answersClusteringDiagram", "item", "project_storyElements_answerClustersClusteringDiagram", "item");
 }
 
 export function copyAnswerClustersToClusteringDiagram(model) {
-    // console.log("copyAnswerClustersToClusteringDiagram", model);
     copyClusteringDiagramElements("project_storyElements_answerClustersClusteringDiagram", "cluster", "project_storyElements_attributesClusteringDiagram", "cluster");
 }
 
 export function copyAttributesToClusteringDiagram(model) {
-    // console.log("copyAttributesToClusteringDiagram", model);
     copyClusteringDiagramElements("project_storyElements_attributesClusteringDiagram", "item", "project_storyElements_attributeClustersClusteringDiagram", "item");
 }
 

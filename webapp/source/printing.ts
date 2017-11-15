@@ -630,6 +630,7 @@ function printObservationList(observationList, observationLabel, interpretationN
             excludeStoryTooltips: true,
             minimumStoryCountRequiredForTest: minimumStoryCountRequiredForTest,
             numHistogramBins: numHistogramBins,
+            showInterpretationsInGrid: false, // not used in printing
             numScatterDotOpacityLevels: numScatterDotOpacityLevels,
             scatterDotSize: scatterDotSize,
             correlationLineChoice: correlationLineChoice,
@@ -690,20 +691,15 @@ function findMarkedReferenceInText(text) {
     } else return null;
 }
 
-function makeObservationListForInterpretation(project: Project, allObservations, interpretationName) {
-    // console.log("makeObservationListForInterpretation", interpretationName);
+export function makeObservationListForInterpretation(project: Project, allObservations, interpretationName) {
     var result = [];
     allObservations.forEach((observation) => {
-        // console.log("observation", observation);
         var interpretationsListIdentifier = project.tripleStore.queryLatestC(observation, "observationInterpretations");
-        // console.log("interpretationsListIdentifier", interpretationsListIdentifier);
         var interpretationsList = project.tripleStore.getListForSetIdentifier(interpretationsListIdentifier);
-        // console.log("interpretationsList", interpretationsList);
         interpretationsList.forEach((interpretationIdentifier) => {
             var interpretation = project.tripleStore.makeObject(interpretationIdentifier, true);
             var name = interpretation.interpretation_name;
             if (name === interpretationName) {
-                // console.log("found observation that has matching interpretation", interpretation, observation);
                 result.push(observation);
             }
         });
@@ -764,10 +760,8 @@ export function printCatalysisReport() {
     ];
     
     ClusteringDiagram.calculateClusteringForDiagram(clusteringDiagram);
-    // console.log("clusteringDiagram with clusters", clusteringDiagram);
     var perspectives = clusteringDiagram.clusters;
 
-    // list of links to perspectives (customizable text)
     var tocHeaderRaw = project.tripleStore.queryLatestC(catalysisReportIdentifier, "catalysisReport_tocHeaderFirstLevel");
     if (!tocHeaderRaw) tocHeaderRaw = "Perspectives in this report (#):";
     var numberSignIndex = tocHeaderRaw.indexOf("#");
@@ -806,7 +800,6 @@ export function printCatalysisReport() {
     
     function printNextPerspective() {
         // console.log("printNextPerspective", perspectiveIndex, interpretationIndex);
-        // console.log("sendNextMessage", messageIndexToSend);
         if (progressModel.cancelled) {
             alert("Cancelled after working on " + (perspectiveIndex + 1) + " perspective(s)");
         } else if (perspectiveIndex >= perspectives.length) {
@@ -831,7 +824,6 @@ export function printCatalysisReport() {
                     perspective.name]));
                 if (perspective.notes) printItems.push(m("div.narrafirma-catalysis-report-perspective-notes", perspective.notes));
 
-                // list of links to interpretations in this perspective (customizable text)
                 var tocHeaderLevelTwoRaw = project.tripleStore.queryLatestC(catalysisReportIdentifier, "catalysisReport_tocHeaderSecondLevel");
                 if (!tocHeaderLevelTwoRaw) tocHeaderLevelTwoRaw = "Interpretations in this perspective (#):";
                 var numberSignIndex = tocHeaderLevelTwoRaw.indexOf("#");
