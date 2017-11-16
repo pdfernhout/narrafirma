@@ -587,7 +587,7 @@ export function autoFillStoryForm() {
 
         m.redraw();
         
-        toaster.toast("Finished creating story form: " + questionnaireName);
+        toaster.toast("Finished generating story form \"" + questionnaireName + "\" from available questions.");
         
         function addReferenceToList(listIdentifier: string, reference: string, fieldName: string, className: string) {
             var order = questionTypeCounts[fieldName];
