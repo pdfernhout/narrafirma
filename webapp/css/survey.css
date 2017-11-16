@@ -265,6 +265,7 @@ input[type='range']::-webkit-slider-thumb{
 	margin: 30px auto 0px auto;
 	padding: 30px;
     border: 4px solid #b0d4d4;
+    background-color: #f3fdfd;
     border-radius: 12px;
     background-image: url('../images/dojo-Standby-loading.gif');
     background-repeat: no-repeat;
