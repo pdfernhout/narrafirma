@@ -34,18 +34,22 @@ var Navigation: any = {
             m("span[id=narrafirma-name]", {
                 "class": Globals.clientState().serverStatus(),
                 "title": Globals.clientState().serverStatusText()
-            }, "NarraFirma™"),
+            }, "NarraFirma™"), // 
+            //m("sup", {"class": "narrafirma-trademark"}, "TM"),
+            //m("span[id=narrafirma-version]", "v" + versions.narrafirmaApplication),
             m("span[id=narrafirma-project-name]", Globals.project().projectName()),
             m("span[id=narrafirma-breadcrumbs]", buildBreadcrumbs(controller)),
-            Globals.project().readOnly ? m("span[id=narrafirma-read-only]", {title: "Project is read-only for this user. Local changes can be made, but they will not be saved on the server and will be lost if the page is reloaded."}, "[READONLY!]") : [],
-            // These next four links float right and so are added in reverse order
+            Globals.project().readOnly ? m("span[id=narrafirma-read-only]", 
+                {title: "Project is read-only for this user. Local changes can be made, but they will not be saved on the server and will be lost if the page is reloaded."}, 
+                "Read only") : [],
+            // These next links float right and so are added in reverse order
             userIdentifier === "anonymous" ?
-                m("a[id=narrafirma-login-link]", {href: loginCommand, title: "Login instead of being anonymous"}, 'Login') : 
+                m("a[id=narrafirma-login-link]", {href: loginCommand, title: "Login (instead of being anonymous)"}, 'Login') : 
                 m("a[id=narrafirma-logout-link]", {href: logoutCommand, title: "Logout the current user"}, 'Logout (' + userIdentifier + ')'),
-            m("span[id=narrafirma-version]", "v" + versions.narrafirmaApplication),
+           
             m("a[id=narrafirma-help-link]", {href: launchHelpCommand, title: "Open online help for this page"}, "Help"),
-            m("a[id=narrafirma-next-page]", {href: nextPageLink(), title: nextPageTitle(), "class": nextPageClass()}, ">"),
-            m("a[id=narrafirma-previous-page]", {href: previousPageLink(), title:  previousPageTitle(), "class": previousPageClass()}, "<")
+            m("a[id=narrafirma-next-page]", {href: nextPageLink(), title: nextPageTitle(), "class": nextPageClass()}, "⇨"),
+            m("a[id=narrafirma-previous-page]", {href: previousPageLink(), title:  previousPageTitle(), "class": previousPageClass()}, "⇦")
         ]);
     }
 };

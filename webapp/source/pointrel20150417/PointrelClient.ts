@@ -957,12 +957,11 @@ class PointrelClient {
     
     // Status should be ok, waiting, or failure
     private serverStatus(status, message) {
-        // console.log("PointrelClient serverStatus", status, message);
         if (this.serverStatusCallback) this.serverStatusCallback(status, message);
     }
     
     private okStatus() {
-        this.serverStatus("ok", "OK (sent: " + this.messageSentCount + ", received:" + this.messageReceivedCount + ")");
+        this.serverStatus("ok", "OK (sent: " + this.messageSentCount + ", received: " + this.messageReceivedCount + ")");
     }
 }
 

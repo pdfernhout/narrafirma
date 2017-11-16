@@ -86,15 +86,13 @@ class Application {
         
         // TODO: Translate
         
-        var statusText = "Project: " + Globals.project().journalIdentifier.substring(narrafirmaProjectPrefix.length) + "; Server status: (" + status + ") " + text;
+        var statusText = "Version: " + versions.narrafirmaApplication;
+        statusText += " Project: " + Globals.project().journalIdentifier.substring(narrafirmaProjectPrefix.length) + "; Server status: (" + status + ") " + text;
     
         if (status === "ok") {
             nameDiv.className = "narrafirma-serverstatus-ok";
-            //nameDiv.style.color = "green";
-            //nameDiv.style.border = "initial";
             this.lastServerError = "";
         } else if (status === "waiting") {
-            //nameDiv.style.color = "yellow";
             if (this.lastServerError) {
                 // TODO: Translate
                 nameDiv.className = "narrafirma-serverstatus-waiting-last-error";
@@ -104,14 +102,11 @@ class Application {
             }
         } else if (status === "failure" || status === "failure-loss") {
             nameDiv.className = "narrafirma-serverstatus-failure";
-            //nameDiv.style.color = "red";
             this.lastServerError = text;
-            //nameDiv.style.border = "thick solid #FF0000";
             console.log("updateServerStatus failure", text);
             if (status === "failure-loss") {
                 // Very serious error with data loss -- alert the user
                 if (this.readOnly) {
-                    // toaster.toast("Project is read only; changes are not being saved.");
                     nameDiv.className = "narrafirma-serverstatus-ok";
                     this.lastServerError = "Read-only OK";
                 } else {
@@ -121,7 +116,6 @@ class Application {
         } else {
             console.log("Unexpected server status", status);
             nameDiv.className = "narrafirma-serverstatus-unexpected";
-            //nameDiv.style.color = "black";
             console.log("updateServerStatus unexpected", text);
         }
         

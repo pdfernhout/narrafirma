@@ -65,41 +65,149 @@ select[multiple] { /* only used in story browser */
 }
 
 #narrafirma-name {
-    margin-left: 0.5em; 
-    margin-right: 0.5em; 
+    font-size: 1.1em;
+    font-weight: bold;
+    margin: 0 0 0 0.5em; 
     padding: 0.25em;
+    color: black;
 }
 
 .narrafirma-serverstatus-ok {
-	color: black;
-	font-weight: 700;
-	text-shadow: 1px 1px #b0d4d4;
 	border: 2px solid #b0d4d4; /* so the name doesn't shift when the border appears */
 }
 
 .narrafirma-serverstatus-waiting {
-	color: black;
-	font-weight: 700;
-	text-shadow: 1px 1px yellow;
 	border: 2px solid #b0d4d4; /* so the name doesn't shift when the border appears */
 }
 
 .narrafirma-serverstatus-waiting-last-error {
-	color: black;
-	font-weight: 700;
-	text-shadow: 1px 1px yellow;
 	border: 2px solid red;
 }
 
 .narrafirma-serverstatus-failure {
-	color: black;
-	font-weight: 700;
-	text-shadow: 1px 1px red;
 	border: 2px solid red;
 }
 
-.narrafirma-serverstatus-unknown {
-	color: black;
+#narrafirma-project-name {
+    font-weight: bold;
+    font-size: 1.1em;
+    margin: 0 2em 0 0.5em;
+}
+
+#narrafirma-breadcrumbs {
+    font-size: 0.9em;
+}
+
+#narrafirma-next-page, #narrafirma-previous-page {
+    font-size: 0.9em;
+    padding: 0.1em 0.5em 0.1em 0.5em;
+    margin: -0.2em 1em 0 0;
+    float: right;
+    background-color: #ffbb84;
+    border: 1px solid #ffa25f;
+    box-shadow: 1px 1px 1px gray;
+    text-decoration: none;
+}
+
+#narrafirma-next-page.narrafirma-link-disabled,  #narrafirma-previous-page.narrafirma-link-disabled {
+    display: none;
+}
+
+#narrafirma-help-link {
+    font-size: 0.9em;
+    padding-right: 1em;
+    float: right;
+}
+
+#narrafirma-logout-link, #narrafirma-login-link {
+    font-size: 0.9em;
+    float: right;
+    margin-right: 0.75em;
+}
+
+#narrafirma-read-only {
+    font-size: 0.9em;
+    font-weight: bold;
+    padding: 0 0.75em 0 0.5em;
+    float: right;
+    color: red;
+}
+
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Dashboard (home page) ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
+.narrafirma-pni-phases-image {
+    float: left;
+	margin: 0.2em 1.2em 0.5em 0;
+}
+
+.narrafirma-dashboardStatusButton {
+    font-size: 1em;
+    min-width: 10em;
+    height: 2em;
+    border-radius: 12px; 
+    border: none;
+    box-shadow: 1px 1px 1px gray;
+    margin-bottom: 0.5em;
+    padding: 0.4em;
+}
+
+.narrafirma-dashboardSectionStatusDisplayCompletion {
+    margin-left: 1.0em;
+}
+
+.narrafirma-dashboard-story-collection-status table {
+    border-collapse: collapse;
+    margin-right: 1em;
+	}
+
+.narrafirma-dashboard-story-collection-status th {
+    font-weight: normal;
+    background-color: #b0d4d4;
+	border: 1px solid black;
+	padding: 0.2em;
+	}
+
+.narrafirma-dashboard-story-collection-status td {
+    border: 1px solid black;
+    background-color: #eaf0f8;
+    padding: 0.2em;
+    max-width: 16em;
+    }
+    
+.narrafirma-dashboard-header {
+	display: block;
+	font-weight: 700;
+	margin-bottom: 0.7em;
+}
+
+.narrafirma-dashboard-page-link {
+	display: block;
+	margin-left: 1em;
+}
+
+.narrafirma-questionAnswer { /* this is now used to display the reminder on the section page */
+    background-color: #ffe1aa;
+    border: 2px solid #ffbb84;
+    margin: 0.5em 0 0 1em;
+    padding: 0.5em;
+}
+
+.narrafirma-questionAnswer:empty { /* if no reminder entered, do not show */
+	padding: 0px;
+	margin: 0px;
+	border: none;
+	background-color: #fff;
+}
+
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Buttons bottom of page (and elsewhere) ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
+.narrafirma-page-change-button {
+    font-size: 1em;
+    min-width: 10em;
+    border: none;
+    box-shadow: 1px 1px 1px gray;
+    margin-bottom: 0.5em;
+    padding: 0.4em;
 }
 
 button {
@@ -171,47 +279,7 @@ button:disabled {
     vertical-align: middle;
 }
 
-#narrafirma-help-link, #narrafirma-next-page, #narrafirma-previous-page, #narrafirma-version {
-    padding-right: 1em;
-    float: right;
-    font-size: 0.9em;
-}
-
-#narrafirma-read-only {
-    padding-left: 1em;
-    float: right;
-    font-size: 0.9em;
-    color: red;
-}
-
-#narrafirma-next-page.narrafirma-link-disabled,  #narrafirma-previous-page.narrafirma-link-disabled {
-    display: none;
-}
-
-#narrafirma-logout-link, #narrafirma-login-link {
-    float: right;
-    margin-right: 0.75em;
-    font-size: 0.85em;
-}
-
-#narrafirma-breadcrumbs {
-    font-size: 0.9em;
-}
-
-#narafirma-breadcrumbs a:link, a:visited {
-    font-size: 0.9em;
-}
-
-#narrafirma-project-name {
-    font-weight: bold;
-    font-size: 1.1em;
-    margin-right: 1.5em;
-    margin-left: 0.5em;
-}
-
-#narrafirma-breadcrumb-current {
-    color: black; 
-}
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Pages with entry fields ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 .narrafirma-page-name {
     font-weight: 700;
@@ -219,83 +287,6 @@ button:disabled {
     margin: 1em 0 0 0.35em;
 }
  
- 
-.narrafirma-page-change-button {
-    font-size: 1em;
-    min-width: 10em;
-    border: none;
-    box-shadow: 1px 1px 1px gray;
-    margin-bottom: 0.5em;
-    padding: 0.4em;
-}
-
-/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Dashboard (home page) ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
-
-.narrafirma-pni-phases-image {
-    float: left;
-	margin: 0.2em 1.2em 0.5em 0;
-}
-
-.narrafirma-dashboardStatusButton {
-    font-size: 1em;
-    min-width: 10em;
-    height: 2em;
-    border-radius: 12px; 
-    border: none;
-    box-shadow: 1px 1px 1px gray;
-    margin-bottom: 0.5em;
-    padding: 0.4em;
-}
-
-.narrafirma-dashboardSectionStatusDisplayCompletion {
-    margin-left: 1.0em;
-}
-
-.narrafirma-dashboard-story-collection-status table {
-	border-collapse: collapse;
-	}
-
-.narrafirma-dashboard-story-collection-status th {
-    font-weight: normal;
-    background-color: #b0d4d4;
-	border: 1px solid black;
-	padding: 0.2em;
-	}
-
-.narrafirma-dashboard-story-collection-status td {
-    border: 1px solid black;
-    background-color: #eaf0f8;
-    padding: 0.2em;
-    max-width: 16em;
-    }
-    
-.narrafirma-dashboard-header {
-	display: block;
-	font-weight: 700;
-	margin-bottom: 0.7em;
-}
-
-.narrafirma-dashboard-page-link {
-	display: block;
-	margin-left: 1em;
-}
-
-.narrafirma-questionAnswer { /* this is now used to display the reminder on the section page */
-    background-color: #ffe1aa;
-    border: 2px solid #ffbb84;
-    margin: 0.5em 0 0 1em;
-    padding: 0.5em;
-}
-
-.narrafirma-questionAnswer:empty { /* if no reminder entered, do not show */
-	padding: 0px;
-	margin: 0px;
-	border: none;
-	background-color: #fff;
-}
-
-/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Pages with entry fields ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
-
 .questionExternal {
 	background-color: #c5d2eb;
 	margin-bottom: 0.2em;
@@ -396,6 +387,12 @@ form {
 
 .functionResult { /* apparently used on on "stop story collection" page */
     margin: 0.4em 0 1em 0.6em;
+}
+
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Adjustments for particular pages ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
+.narrafirma-page_reviewIncomingStories .questionInternal {
+	padding-top: 0;
 }
 
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Grid item panel (spreadsheet like table) ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
@@ -528,6 +525,76 @@ table.scrolling tr:hover {
     margin-bottom: 0.5em;
 }
 
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Stories list ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
+.narrafirma-stories-list table {
+    margin: 10px;
+    display: block;
+    max-height: 400px;
+    overflow-y: scroll;
+    border-collapse: collapse;
+  }
+  
+  .narrafirma-stories-list th {
+      background-color: #b0d4d4;
+      padding: 10px;
+      border: 1px solid black;
+  }
+  
+  .narrafirma-stories-list td {
+      padding: 6px;
+      border: 1px solid black;
+      height: 1em;
+  }
+  
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Story browser ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
+table.filterTable {
+    width: 100%;
+    margin-left: 1.4em;
+}
+
+table.filterTable td {
+    width: 50%;
+}
+
+.narrafirma-story-browser-filtered-stories-count {
+	margin: 0.5em 0 0 1.4em;
+}
+
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ graph browser ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
+.graphBrowserSelect {
+    width: 40%;
+    max-width: 40%
+}
+
+.narrafirma-graphbrowser-heading {
+	margin: 0.4em 0 0.4em 0;
+}
+
+.singleChartStyle {
+    width: 700px;
+}
+
+.smallChartStyle {
+    width: 200px;
+    float: left;
+}
+
+.mediumChartStyle {
+    width: 400px;
+    float: left;
+}
+
+.noStyle {
+}
+
+/* chartEnclosureStyle = "width: 850px; height: 650px; margin: 5px auto 0px auto;"; */
+.chartEnclosure {
+    min-height: 200px;
+}
+
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Story card display ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 .storyCard table {
@@ -635,10 +702,16 @@ table.scrolling tr:hover {
 .narrafirma-story-card-annotation {
 }
 
-/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Adjustments for particular pages ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ story card printing ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-.narrafirma-page_reviewIncomingStories .questionInternal {
-	padding-top: 0;
+.storyCardForPrinting {
+    page-break-after: always;
+}
+
+@media print { 
+   .storyCardForPrinting hr {
+       display: none;
+   }
 }
 
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Recommendations table ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
@@ -970,43 +1043,6 @@ table.scrolling tr:hover {
     margin-top: 0.4em;
 }
 
-/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Story browser ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
-
-table.filterTable {
-    width: 100%;
-    margin-left: 1.4em;
-}
-
-table.filterTable td {
-    width: 50%;
-}
-
-.narrafirma-story-browser-filtered-stories-count {
-	margin: 0.5em 0 0 1.4em;
-}
-
-/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Stories list ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
-
-.narrafirma-stories-list table {
-  margin: 10px;
-  display: block;
-  max-height: 400px;
-  overflow-y: scroll;
-  border-collapse: collapse;
-}
-
-.narrafirma-stories-list th {
-	background-color: #b0d4d4;
-	padding: 10px;
-	border: 1px solid black;
-}
-
-.narrafirma-stories-list td {
-    padding: 6px;
-    border: 1px solid black;
-    height: 1em;
-}
-
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Dialogs ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 /* derived from http://www.cssscript.com/minimal-modal-window-with-plain-javascript/ */
@@ -1066,49 +1102,4 @@ table.filterTable td {
 textarea.textEditorInDialog {
     width: 100%;
     min-height: 350px;
-}
-
-/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ graph browser ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
-
-.graphBrowserSelect {
-    width: 40%;
-    max-width: 40%
-}
-
-.narrafirma-graphbrowser-heading {
-	margin: 0.4em 0 0.4em 0;
-}
-
-.singleChartStyle {
-    width: 700px;
-}
-
-.smallChartStyle {
-    width: 200px;
-    float: left;
-}
-
-.mediumChartStyle {
-    width: 400px;
-    float: left;
-}
-
-.noStyle {
-}
-
-/* chartEnclosureStyle = "width: 850px; height: 650px; margin: 5px auto 0px auto;"; */
-.chartEnclosure {
-    min-height: 200px;
-}
-
-/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ story card printing ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
-
-.storyCardForPrinting {
-     page-break-after: always;
-}
-
-@media print { 
-    .storyCardForPrinting hr {
-        display: none;
-    }
 }

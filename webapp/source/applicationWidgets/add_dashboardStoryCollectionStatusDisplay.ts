@@ -34,12 +34,17 @@ function add_dashboardStoryCollectionStatusDisplay(panelBuilder: PanelBuilder, m
             console.log("active on web: ", shortName, storyCollectionIdentifier);
         }
         var surveyURL = activeOnWeb ? surveyCollection.urlForSurveyAsString(storyCollectionIdentifier) : "";
+        var reviewStoriesURL = surveyCollection.urlForStoryCollectionReview(storyCollectionIdentifier, "reviewIncomingStories");
+        var browseGraphsURL = surveyCollection.urlForStoryCollectionReview(storyCollectionIdentifier, "browseGraphs");
+        
         return {
             id: storyCollectionIdentifier,
             shortName: shortName,
             storyCount: storyCount,
             activeOnWeb: activeOnWeb,
-            surveyURL: surveyURL
+            surveyURL: surveyURL,
+            reviewStoriesURL: reviewStoriesURL,
+            browseGraphsURL: browseGraphsURL
         };
     });
     
@@ -56,14 +61,19 @@ function add_dashboardStoryCollectionStatusDisplay(panelBuilder: PanelBuilder, m
         m("table", 
             m("tr", [
                 m("th", "Story collection"),
-                m("th", "# stories"), 
+                m("th", "stories"), 
                 m("th", "active?") 
             ]),
             storyCollections.map(function(storyCollection) {
-                var surveyActive = storyCollection.activeOnWeb ? m("a[id=narrafirma-survey-url]", {href: storyCollection.surveyURL, target: "_blank"}, "yes") : "no";
+                var reviewStories = m("a[id=narrafirma-review-stories-url]", 
+                    {href: storyCollection.reviewStoriesURL, title: "Click here to view the stories in this collection."}, storyCollection.shortName);
+                var reviewGraphs = m("a[id=narrafirma-review-stories-url]", 
+                    {href: storyCollection.browseGraphsURL, title: "Click here to review graphs in this collection."}, <any>storyCollection.storyCount);
+                var surveyActive = storyCollection.activeOnWeb ? m("a[id=narrafirma-survey-url]", 
+                    {href: storyCollection.surveyURL, target: "_blank", title: "Click here to launch the survey for this collection."}, "yes") : "no";
                 return m("tr", [
-                    m("td", storyCollection.shortName),
-                    m("td", {style: "text-align: center;"}, <any>storyCollection.storyCount),
+                    m("td", reviewStories),
+                    m("td", {style: "text-align: center;"}, reviewGraphs),
                     m("td", {style: "text-align: center;"}, surveyActive),
                 ]);
             })
