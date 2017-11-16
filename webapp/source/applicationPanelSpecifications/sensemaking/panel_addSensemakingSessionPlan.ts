@@ -20,13 +20,6 @@ var panel: Panel = {
             displayPrompt: "Which participant <strong>group</strong> (or groups) will be involved?"
         },
         {
-            id: "sensemakingSessionPlan_participantGroupsMixing",
-            valueType: "string",
-            displayType: "textarea",
-            displayName: "Mixing",
-            displayPrompt: "What are your plans for keeping participant groups <strong>together or apart</strong>?"
-        },
-        {
             id: "sensemakingSessionPlan_repetitions",
             valueType: "string",
             displayType: "text",
@@ -60,6 +53,13 @@ var panel: Panel = {
             displayType: "textarea",
             displayName: "Number of people",
             displayPrompt: "<strong>How many people</strong> will be invited to each repetition of this session?"
+        },
+        {
+            id: "sensemakingSessionPlan_participantGroupsMixing",
+            valueType: "string",
+            displayType: "textarea",
+            displayName: "Mixing",
+            displayPrompt: "What are your plans for keeping participant groups <strong>together or apart</strong>?"
         },
         {
             id: "sensemakingSessionPlan_materials",
