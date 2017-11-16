@@ -213,6 +213,7 @@ function makeChartFramework(chartPane: HTMLElement, chartType, size, margin) {
     } else {
         throw new Error("Unexpected chart size: " + size); 
     }
+
     var width = fullWidth - margin.left - margin.right;
     var height = fullHeight - margin.top - margin.bottom;
    
@@ -870,7 +871,7 @@ export function d3HistogramChartForDataIntegrity(graphBrowserInstance: GraphHold
 
 export function d3HistogramChartForValues(graphBrowserInstance: GraphHolder, plotItems, unansweredCount, matchingStories, style, chartSize, chartTitle, xAxisLabel, xAxisStart, xAxisEnd, storiesSelectedCallback) {
     
-    var margin = {top: 20, right: 15, bottom: 60, left: 60};
+    var margin = {top: 20, right: 15, bottom: 60, left: 80};
     var isSmallFormat = style == "smallChartStyle";
 
     if (isSmallFormat) {
