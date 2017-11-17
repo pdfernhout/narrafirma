@@ -858,6 +858,13 @@ export function printCatalysisReport() {
                 if (item.referenceUUID) {
                     item.name = project.tripleStore.queryLatestC(item.referenceUUID, "interpretation_name") || item.name;
                     item.notes = project.tripleStore.queryLatestC(item.referenceUUID, "interpretation_text") || item.notes;
+                    // also pick up item idea at this point (ideas are not show in the clustering diagram but are printed in the report)
+                    // putting this here means that if a catalysis report was created before version 1.0.0, ideas will not get printed
+                    // (since it will have no referenceUUIDs).
+                    // they will have to click the update button to create reference UUIDs.
+                    // however this situation will probably be very rare. i would rather leave it like this
+                    // than have to change the entire clustering diagram to deal with it.
+                    item.idea = project.tripleStore.queryLatestC(item.referenceUUID, "interpretation_idea") || "";
                 }
                 printItems.push(m("a", {name: item.name}));
                 printItems.push(m("div.narrafirma-catalysis-report-interpretation", 
@@ -874,11 +881,15 @@ export function printCatalysisReport() {
                         if (refIndexInNotes >= 0) 
                             notesToPrint = item.notes.substring(refIndexInNotes + referenceTag.length + 1);
                     }
-                    printItems.push(m("div.narrafirma-catalysis-report-interpretation-notes", notesToPrint));
+                    printItems.push(m("div.narrafirma-catalysis-report-interpretation-notes", printText(notesToPrint)));
+                }
+
+                if (item.idea) {
+                    printItems.push(m("div.narrafirma-catalysis-report-interpretation-idea", printText(item.idea)));
                 }
 
                 var observationList = makeObservationListForInterpretation(project, allObservations, item.name);
-                printItems.push(<any>printObservationList(observationList, observationLabel, printText(item.notes), allStories, minimumStoryCountRequiredForTest, numHistogramBins, numScatterDotOpacityLevels, scatterDotSize, correlationLineChoice));
+                printItems.push(<any>printObservationList(observationList, observationLabel, item.notes, allStories, minimumStoryCountRequiredForTest, numHistogramBins, numScatterDotOpacityLevels, scatterDotSize, correlationLineChoice));
                 
                 // TODO: Translate
                 progressModel.progressText = progressText(perspectiveIndex, itemIndex);

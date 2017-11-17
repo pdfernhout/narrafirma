@@ -860,8 +860,12 @@ table.filterTable td {
 
 .narrafirma-catalysis-report-interpretation-notes {
 	padding: 0.5em;
-    margin-bottom: 0.5em;
     background: #ffeed0;
+}
+
+.narrafirma-catalysis-report-interpretation-idea {
+	padding: 0.5em;
+    background: #fff7ea;
 }
 
 .narrafirma-catalysis-report-observation {
@@ -869,6 +873,7 @@ table.filterTable td {
     font-weight: 700;
     padding: 0.5em;
     background: #c5d2eb;
+    margin-top: 0.5em;
 }
 
 .narrafirma-catalysis-report-observation-label {
