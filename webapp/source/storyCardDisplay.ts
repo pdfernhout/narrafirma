@@ -280,7 +280,7 @@ export function generateStoryCardContent(storyModel, questionsToInclude, options
         storyTextAtBottom,
         textForElicitingQuestion,
         textForNumStoriesTold,
-        m("hr")
+        m("hr.narrafirma-story-card-divider")
     ]);
     
     return storyCardContent;
