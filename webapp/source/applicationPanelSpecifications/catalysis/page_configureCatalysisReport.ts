@@ -79,7 +79,7 @@ var panel: Panel = {
             valuePath: "/clientState/catalysisReportIdentifier/showInterpretationsInGrid",
             displayType: "checkbox",
             displayConfiguration: "Yes, show interpretations in the table",
-            displayPrompt: "Should interpretations be shown in the table of patterns?",
+            displayPrompt: "Should <strong>interpretations</strong> be shown in the table of patterns? (Tip: Turn this on to find or review interpretations; turn it off to shrink the table height.)",
             displayVisible: function(panelBuilder, model) {
                 return !!Globals.clientState().catalysisReportName();
             }
