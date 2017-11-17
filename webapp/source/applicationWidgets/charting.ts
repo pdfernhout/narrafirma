@@ -1230,7 +1230,12 @@ export function d3ScatterPlot(graphBrowserInstance: GraphHolder, xAxisQuestion, 
     
     var yAxis = addYAxis(chart, yScale);
     
-    addYAxisLabel(chart, nameForQuestion(yAxisQuestion));
+    if (choiceQuestion) {
+        addYAxisLabel(chart, nameForQuestion(yAxisQuestion) + " (" + option + ")");
+    } else {
+        addYAxisLabel(chart, nameForQuestion(yAxisQuestion));
+    }
+
     if (yAxisQuestion.displayConfiguration) {
         addYAxisLabel(chart, yAxisQuestion.displayConfiguration[0], maxRangeLabelLength, "start");
         addYAxisLabel(chart, yAxisQuestion.displayConfiguration[1], maxRangeLabelLength, "end");
