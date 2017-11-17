@@ -68,7 +68,13 @@ function globalRedraw(source = undefined) {
 }
 
 function addAllowedHTMLToPrompt(text) {
-    return sanitizeHTML.generateSanitizedHTMLForMithril(text);  
+    try {
+        var result = sanitizeHTML.generateSanitizedHTMLForMithril(text);
+        return result;
+    } catch (error) {
+        alert(error);
+        return text
+    }
 }
 
 function buildQuestionLabel(fieldSpecification) {

@@ -362,7 +362,13 @@ class PanelBuilder {
     }
     
     addAllowedHTMLToPrompt(text) {
-        return sanitizeHTML.generateSanitizedHTMLForMithril(text);
+        try {
+            var result = sanitizeHTML.generateSanitizedHTMLForMithril(text);
+            return result;
+        } catch (error) {
+            alert(error);
+            return text
+        }
     }
     
     substituteCalculatedResultInBaseText(baseText: string, calculatedText: string): string {

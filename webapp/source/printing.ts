@@ -208,7 +208,13 @@ function repeatTags(count, tags) {
 }
 
 function printText(text) {
-    return sanitizeHTML.generateSanitizedHTMLForMithril(text);
+    try {
+        var result = sanitizeHTML.generateSanitizedHTMLForMithril(text);
+        return result;
+    } catch (error) {
+        alert(error);
+        return text;
+    }
 }
 
 function printReturn() {
@@ -661,7 +667,7 @@ function printObservationList(observationList, observationLabel, interpretationN
                 m("div.narrafirma-catalysis-report-observation", [
                     m("span", {"class": "narrafirma-catalysis-report-observation-label"}, observationLabel),
                     item.observationTitle]),
-                m("div.narrafirma-catalysis-report-observation-description", observationDescriptionToPrint),
+                m("div.narrafirma-catalysis-report-observation-description", printText(observationDescriptionToPrint)),
                 printReturnAndBlankLine()
             ];
         } else {
@@ -672,7 +678,7 @@ function printObservationList(observationList, observationLabel, interpretationN
                 m("div.narrafirma-catalysis-report-observation", [
                     m("span", {"class": "narrafirma-catalysis-report-observation-label"}, observationLabel),
                     item.observationTitle]),
-                m("div.narrafirma-catalysis-report-observation-description", observationDescriptionToPrint),
+                m("div.narrafirma-catalysis-report-observation-description", printText(observationDescriptionToPrint)),
                 displayForGraphHolder(graphHolder),
                 //printReturnAndBlankLine()
             ];
@@ -821,7 +827,7 @@ export function printCatalysisReport() {
                 printItems.push(m("div.narrafirma-catalysis-report-perspective", 
                     [m("span", {"class": "narrafirma-catalysis-report-perspective-label"}, perspectiveLabel),
                     perspective.name]));
-                if (perspective.notes) printItems.push(m("div.narrafirma-catalysis-report-perspective-notes", perspective.notes));
+                if (perspective.notes) printItems.push(m("div.narrafirma-catalysis-report-perspective-notes", printText(perspective.notes)));
 
                 var tocHeaderLevelTwoRaw = project.tripleStore.queryLatestC(catalysisReportIdentifier, "catalysisReport_tocHeaderSecondLevel");
                 if (!tocHeaderLevelTwoRaw) tocHeaderLevelTwoRaw = "Interpretations in this perspective (#):";
@@ -872,7 +878,7 @@ export function printCatalysisReport() {
                 }
 
                 var observationList = makeObservationListForInterpretation(project, allObservations, item.name);
-                printItems.push(<any>printObservationList(observationList, observationLabel, item.notes, allStories, minimumStoryCountRequiredForTest, numHistogramBins, numScatterDotOpacityLevels, scatterDotSize, correlationLineChoice));
+                printItems.push(<any>printObservationList(observationList, observationLabel, printText(item.notes), allStories, minimumStoryCountRequiredForTest, numHistogramBins, numScatterDotOpacityLevels, scatterDotSize, correlationLineChoice));
                 
                 // TODO: Translate
                 progressModel.progressText = progressText(perspectiveIndex, itemIndex);

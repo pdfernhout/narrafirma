@@ -115,7 +115,7 @@ export function generateSpecificTypeOfSanitizedHTMLForMithril(html, specifiedHTM
             
             var pos = html.indexOf(">", i + 1);
             if (pos < 0) {
-                throw new Error("no closing angle bracket found after position: " + i);
+                throw new Error("No closing angle bracket found after position: " + i);
             }
             var tagName = html.substring(i + 1, pos);
             i = pos;
@@ -132,23 +132,23 @@ export function generateSpecificTypeOfSanitizedHTMLForMithril(html, specifiedHTM
             }
             
             if (/[^A-Za-z0-9]/.test(tagName)) {
-                throw new Error("tag is not alphanumeric: " + tagName);
+                throw new Error("Tag is not alphanumeric: " + tagName);
             }
             
             if (cssClass && !allowedCSSClasses[cssClass]) {
-                throw new Error("css class is not allowed: " + cssClass);
+                throw new Error("CSS class is not allowed: " + cssClass);
             }
             
             if (closing) {
                 var startTag = tags.pop();
                 if (startTag.tagName !== tagName) {
-                    throw new Error("closing tag does not match opening tag for: " + tagName);
+                    throw new Error("Closing tag does not match opening tag for: " + tagName);
                 }
                 cssClass = startTag.cssClass;
             }
             
             if (!specifiedHTMLTags[tagName]) {
-                throw new Error("tag is not allowed: " + tagName);
+                throw new Error("Tag is not allowed: " + tagName);
             }
             
             if (specifiedHTMLTags[tagName] === 2) {
