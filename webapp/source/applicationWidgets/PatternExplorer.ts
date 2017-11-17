@@ -118,7 +118,6 @@ class PatternExplorer {
             currentSelectionExtentPercentages: null,
             minimumStoryCountRequiredForTest: Project.defaultMinimumStoryCountRequiredForTest,
             numHistogramBins: Project.defaultNumHistogramBins,
-            showInterpretationsInGrid: Project.defaultShowInterpretationsInGrid,
             numScatterDotOpacityLevels: Project.defaultNumScatterDotOpacityLevels,
             scatterDotSize: Project.defaultScatterDotSize,
             correlationLineChoice: Project.defaultCorrelationLineChoice,
@@ -460,7 +459,6 @@ class PatternExplorer {
         this.numHistogramBins = this.project.numberOfHistogramBins(catalysisReportIdentifier);
         this.graphHolder.numHistogramBins = this.numHistogramBins; 
         this.showInterpretationsInGrid = this.project.showInterpretationsInGrid(catalysisReportIdentifier);
-        this.graphHolder.showInterpretationsInGrid = this.showInterpretationsInGrid; 
         this.numScatterDotOpacityLevels = this.project.numScatterDotOpacityLevels(catalysisReportIdentifier);
         this.graphHolder.numScatterDotOpacityLevels = this.numScatterDotOpacityLevels;
         this.scatterDotSize = this.project.scatterDotSize(catalysisReportIdentifier);
@@ -559,7 +557,7 @@ class PatternExplorer {
         pattern.observation = observation;
         pattern.strength = strength;
 
-        if (this.graphHolder.showInterpretationsInGrid) {
+        if (this.showInterpretationsInGrid) {
             const interpretationSetID = this.observationAccessor(pattern, "observationInterpretations");
             const interpretationIDs = this.project.tripleStore.getListForSetIdentifier(interpretationSetID); 
             const interpretationNames = [];

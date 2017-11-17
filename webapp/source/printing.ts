@@ -630,7 +630,6 @@ function printObservationList(observationList, observationLabel, interpretationN
             excludeStoryTooltips: true,
             minimumStoryCountRequiredForTest: minimumStoryCountRequiredForTest,
             numHistogramBins: numHistogramBins,
-            showInterpretationsInGrid: false, // not used in printing
             numScatterDotOpacityLevels: numScatterDotOpacityLevels,
             scatterDotSize: scatterDotSize,
             correlationLineChoice: correlationLineChoice,
