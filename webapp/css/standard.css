@@ -110,7 +110,10 @@ select[multiple] { /* only used in story browser */
 }
 
 #narrafirma-next-page.narrafirma-link-disabled,  #narrafirma-previous-page.narrafirma-link-disabled {
-    display: none;
+    background-color: #ccc;
+    border: 1px solid #979696;
+    box-shadow: 1px 1px 1px gray;
+    text-decoration: none;
 }
 
 #narrafirma-help-link {
