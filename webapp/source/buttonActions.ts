@@ -133,7 +133,7 @@ export function copyDraftPNIQuestionVersionsIntoAnswers() {
 
 export function logoutButtonClicked() {
     // TODO: Warn if have any read-only changes that would be lost
-    if (confirm("Logout?")) {
+    if (confirm("Are you sure you want to log out the current NarraFirma user?")) {
         var isWordPressAJAX = !!window["ajaxurl"];
         if (isWordPressAJAX) {
             window.location.href = window.location.href.split("wp-content")[0] + "wp-login.php?action=logout";
