@@ -327,6 +327,10 @@ input[type='range']::-webkit-slider-thumb{
 	font-style: italic;
 }
 
+.narrafirma-survey-print-name-story {
+    margin: 1.5em 0 0.5em 12px;
+}
+
 .narrafirma-survey-print-question-text {
 	margin: 1.5em 0 0.5em 12px;
 }
