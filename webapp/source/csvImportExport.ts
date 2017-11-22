@@ -418,7 +418,8 @@ function processCSVContentsForQuestionnaire(contents) {
         questionForm_enterStoryText: "",
         questionForm_nameStoryText: "",
         questionForm_tellAnotherStoryText: "",
-        questionForm_tellAnotherStoryButtonText: ""
+        questionForm_tellAnotherStoryButtonText: "",
+        questionForm_maxNumStories: "no limit"
         };
     
     project.tripleStore.makeNewSetItem(storyFormListIdentifier, "StoryForm", template);
@@ -510,6 +511,10 @@ function processCSVContentsForQuestionnaire(contents) {
                 case "Tell another story button":
                     template.questionForm_tellAnotherStoryButtonText = text;
                     project.tripleStore.addTriple(template.id, "questionForm_tellAnotherStoryButtonText", text);
+                    break;
+                case "Max num stories":
+                    template.questionForm_maxNumStories = text;
+                    project.tripleStore.addTriple(template.id, "questionForm_maxNumStories", text);
                     break;
             }
         } else if (about === "import") {

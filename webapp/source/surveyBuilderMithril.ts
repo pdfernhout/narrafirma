@@ -457,7 +457,7 @@ export function buildSurveyForm(surveyDiv, questionnaire, doneCallback, surveyOp
         var storyLabel = story.storyName;
         if (storyLabel) storyLabel = storyLabel.trim();
         if (!storyLabel) {
-            storyLabel = 'untitled story #' + (index + 1);
+            storyLabel = 'Untitled story #' + (index + 1);
         } else {
             storyLabel = '"' + storyLabel + '"';
         }
@@ -509,21 +509,15 @@ export function buildSurveyForm(surveyDiv, questionnaire, doneCallback, surveyOp
     function displayStoryQuestions(story, index) {
         var storylabel = makeLabelForStory(story, index);
         var result = [
-            // m("span", {"class": "narrafirma-survey-story-label", style: {"font-weight": "bold"}}, "Story #" + (index + 1)),
-            // m("br"),
-
             m("button", {
                 "class": "narrafirma-survey-delete-story-button",
                 onclick: function () {
-                    // TODO: Only confirm if the story has a title or text
                     if (!confirm("Are you sure you want to delete this story (" + storylabel + ")?")) return;
                     stories.splice(index, 1);
                     redraw();
                 }
-            //}, "Delete this story (" + storylabel + ")"),
             }, "Delete this story"),
             m("hr"),
-            
             allStoryQuestions.map(displayQuestion.bind(null, null, story))
         ];
         
@@ -675,7 +669,7 @@ export function buildSurveyForm(surveyDiv, questionnaire, doneCallback, surveyOp
             stories.map(function(story, index) {
                 return displayStoryQuestions(story, index);
             }),
-            anotherStoryButton(questionnaire),
+            (!questionnaire.maxNumStories || questionnaire.maxNumStories === "no limit" || stories.length < questionnaire.maxNumStories) ? anotherStoryButton(questionnaire) : "",
             participantQuestions.map(function(question, index) {
                 return displayQuestion(null, surveyResult.participantData, question);
             }),

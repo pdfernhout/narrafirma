@@ -137,6 +137,14 @@ var panel: Panel = {
             displayPrompt: "You can enter <strong>custom CSS</strong> that modifies the survey elements here. (For more information on how this works, see the help system.)"
         },
         {
+            id: "questionForm_maxNumStories",
+            valueType: "string",
+            displayType: "select",
+            valueOptions: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "no limit"],
+            displayName: "Maximum stories",
+            displayPrompt: "<b>How many stories</b> should a participant be able to enter in one session?"
+        },
+        {
             id: "questionForm_participantGroups",
             valueType: "string",
             displayType: "text",

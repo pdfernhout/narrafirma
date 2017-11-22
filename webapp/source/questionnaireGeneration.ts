@@ -227,7 +227,8 @@ export function buildQuestionnaireFromTemplate(questionnaireTemplate: string) {
         enterStoryText: "",
         nameStoryText: "",
         tellAnotherStoryText: "",
-        tellAnotherStoryButtonText: ""
+        tellAnotherStoryButtonText: "",
+        maxNumStories: "no limit"
     };
 
     questionnaire.title = project.tripleStore.queryLatestC(questionnaireTemplate, "questionForm_title");
@@ -245,6 +246,7 @@ export function buildQuestionnaireFromTemplate(questionnaireTemplate: string) {
     questionnaire.nameStoryText = project.tripleStore.queryLatestC(questionnaireTemplate, "questionForm_nameStoryText");
     questionnaire.tellAnotherStoryText = project.tripleStore.queryLatestC(questionnaireTemplate, "questionForm_tellAnotherStoryText");
     questionnaire.tellAnotherStoryButtonText = project.tripleStore.queryLatestC(questionnaireTemplate, "questionForm_tellAnotherStoryButtonText");
+    questionnaire.maxNumStories = project.tripleStore.queryLatestC(questionnaireTemplate, "questionForm_maxNumStories");
     
     // TODO: Should maybe ensure unique IDs for eliciting questions?
     var allElicitingQuestions = buildIdToItemMap("project_elicitingQuestionsList", "elicitingQuestion_shortName");

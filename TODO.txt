@@ -14,7 +14,6 @@ X Only store reference to questionnaire file resource, not the resource itself [
 X Support translations or other categories for multiple question texts or choice texts for a survey
 X Some easy way for two or more survey sliders to be close together under the same label
 W Better mobile support for taking survey on cell phones
-W User can enter text for (print and web): Please choose a question to which you would like to respond; Please enter your response in the box below; Please give your story a name; Would you like to tell another story; Yes, I'd like to tell another story; About you
 W After "update story form", is correct in "review incoming stories" under Edit but not under View (does not update for new form)
 
 SURVEY QUESTIONS
@@ -22,7 +21,6 @@ X Remove "What type of question is this?" question from story-eliciting question
 X Survey - add checkbox for "is question answer required" (maybe later)
 X Survey - start page required (what to do if nothing entered)
 X Survey - improve styling on radio buttons for question or alternative approach (maybe later)
-X Survey - maximum number stories (maybe later)
 X Survey - back button in browser -- deal with so don't lose data
 W Ideally way to do conditional question or answer (piping), especially to pick participant group
 W Need "other" field for radiobuttons and checkboxes (maybe dropdown, probably not)
@@ -195,6 +193,9 @@ Support storyBrowserCount
 
 ---- Release 1.0.0
 
+DONE Survey - maximum number stories 
+DONE User can enter text for (print and web): Please choose a question to which you would like to respond; Please enter your response in the box below; Please give your story a name; Would you like to tell another story; Yes, I'd like to tell another story; About you
+DONE Add ideas to catalysis report
 DONE Shrink statistics panels (less scrolling)
 DONE Improve updating on clustering diagram for catalysis
 DONE Add observation strength to catalysis
