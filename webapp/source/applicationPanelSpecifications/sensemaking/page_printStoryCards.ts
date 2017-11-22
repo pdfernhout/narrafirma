@@ -40,7 +40,7 @@ var panel: Panel = {
             displayType: "printStoryCardsQuestionChooser",
             displayPrompt: "Which <strong>questions</strong> should be included in the story cards?",
             displayVisible: function(panelBuilder, model) {
-                return !!Globals.clientState().storyCollectionName();
+                return !!Globals.clientState().storyCollectionIdentifier();
             }
         },
         {
@@ -50,7 +50,9 @@ var panel: Panel = {
             displayType: "text",
             displayName: "Character to print before slider button",
             displayPrompt: `
-            Enter a character to print <strong>before</strong> (to the left of) the slider "button". If empty, the character "-" will be used.`
+            Enter a character to print <strong>before</strong> (to the left of) the slider "button". If empty, the character "-" will be used.`,
+            displayVisible: function(panelBuilder, model) {
+                return !!Globals.clientState().storyCollectionIdentifier();}
         },
         {
             id: "printStoryCards_sliderButtonCharacter",
@@ -59,7 +61,9 @@ var panel: Panel = {
             displayType: "text",
             displayName: "Slider button character",
             displayPrompt: `
-            Enter a character to print as the slider <strong>button</strong>. If empty, the character "|" will be used.`
+            Enter a character to print as the slider <strong>button</strong>. If empty, the character "|" will be used.`,
+            displayVisible: function(panelBuilder, model) {
+                return !!Globals.clientState().storyCollectionIdentifier();}
         },
         {
             id: "printStoryCards_afterSliderCharacter",
@@ -68,7 +72,9 @@ var panel: Panel = {
             displayType: "text",
             displayName: "Character to print after slider button",
             displayPrompt: `
-            Enter a character to print <strong>after</strong> (to the right of) the slider "button". If empty, the character "-" will be used.`
+            Enter a character to print <strong>after</strong> (to the right of) the slider "button". If empty, the character "-" will be used.`,
+            displayVisible: function(panelBuilder, model) {
+                return !!Globals.clientState().storyCollectionIdentifier();}
         },
         {
             id: "printStoryCards_noAnswerSliderCharacter",
@@ -77,7 +83,9 @@ var panel: Panel = {
             displayType: "text",
             displayName: "Character to print on slider with no answer",
             displayPrompt: `
-            Enter a character to print on the slider space if there was <strong>no answer</strong> to the question. If empty, the character "-" will be used.`
+            Enter a character to print on the slider space if there was <strong>no answer</strong> to the question. If empty, the character "-" will be used.`,
+            displayVisible: function(panelBuilder, model) {
+                return !!Globals.clientState().storyCollectionIdentifier();}
         },
         {
             id: "printStoryCards_customCSS",
@@ -85,14 +93,18 @@ var panel: Panel = {
             valuePath: "/clientState/storyCollectionName/printStoryCards_customCSS",
             displayType: "textarea",
             displayName: "Custom CSS",
-            displayPrompt: "You can enter <strong>custom CSS</strong> that modifies elements of your story cards here. (For more information on how this works, see the help system.)"
+            displayPrompt: "You can enter <strong>custom CSS</strong> that modifies elements of your story cards here. (For more information on how this works, see the help system.)",
+            displayVisible: function(panelBuilder, model) {
+                return !!Globals.clientState().storyCollectionIdentifier();}
         },
         {
             id: "printStoryCards_printFormButton",
             valueType: "none",
             displayType: "button",
             displayConfiguration: "printStoryCards",
-            displayPrompt: "Print Story Cards"
+            displayPrompt: "Print Story Cards",
+            displayVisible: function(panelBuilder, model) {
+                return !!Globals.clientState().storyCollectionIdentifier();}
         }
     ]
 };

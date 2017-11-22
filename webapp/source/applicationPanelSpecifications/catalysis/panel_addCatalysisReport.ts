@@ -10,7 +10,9 @@ var panel: Panel = {
             valueType: "string",
             displayType: "text",
             displayName: "Catalysis report name",
-            displayPrompt: "Please give this catalysis report a short <strong>name</strong>."
+            displayPrompt: `Please give this catalysis report a short <strong>name</strong>.<br><br>
+            <span.narrafirma-special-warning>A catalysis report must have a name. The name must not be changed after you start using the report.
+            The name must be unique within the project.</span>`
         },
         {
             id: "catalysisReport_storyCollections",
@@ -26,7 +28,7 @@ var panel: Panel = {
                 }
             },
             displayName: "Story collections",
-            displayPrompt: "Add one or more <strong>story collections</strong> to this catalysis report."
+            displayPrompt: `Add one or more <strong>story collections</strong> to this catalysis report.`
         },
 
 

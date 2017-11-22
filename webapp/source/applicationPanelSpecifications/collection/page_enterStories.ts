@@ -1,3 +1,4 @@
+import Globals = require("../../Globals");
 import kludgeForUseStrict = require("../../kludgeForUseStrict");
 "use strict";
 
@@ -27,34 +28,44 @@ var panel: Panel = {
             valueType: "none",
             displayType: "button",
             displayConfiguration: "enterSurveyResult",
-            displayPrompt: "Add Story..."
+            displayPrompt: "Add Story...",
+            displayVisible: function(panelBuilder, model) {
+                return !!Globals.clientState().storyCollectionIdentifier();}
         },
         {
             id: "project_csvFileUploaderForStories",
             valueType: "none",
             displayType: "html",
-            displayPrompt: '<input type="file" id="csvFileLoader" name="files" title="Import Stories from CSV File" style="display:none"/>'
+            displayPrompt: '<input type="file" id="csvFileLoader" name="files" title="Import Stories from CSV File" style="display:none"/>',
+            displayVisible: function(panelBuilder, model) {
+                return !!Globals.clientState().storyCollectionIdentifier();}
         },
         {
             id: "project_importCSVStories",
             valueType: "none",
             displayType: "button",
             displayConfiguration: "importCSVStories",
-            displayPrompt: "Import story data from CSV file into story collection ..."
+            displayPrompt: "Import story data from CSV file into story collection ...",
+            displayVisible: function(panelBuilder, model) {
+                return !!Globals.clientState().storyCollectionIdentifier();}
         },
         {
             id: "project_exportStoryForm",
             valueType: "none",
             displayType: "button",
             displayConfiguration: "exportQuestionnaire",
-            displayPrompt: "Export story form..."
+            displayPrompt: "Export story form...",
+            displayVisible: function(panelBuilder, model) {
+                return !!Globals.clientState().storyCollectionIdentifier();}
         },
         {
             id: "project_exportStories",
             valueType: "none",
             displayType: "button",
             displayConfiguration: "exportStoryCollection",
-            displayPrompt: "Export story collection..."
+            displayPrompt: "Export story collection...",
+            displayVisible: function(panelBuilder, model) {
+                return !!Globals.clientState().storyCollectionIdentifier();}
         }
     ]
 };

@@ -36,7 +36,7 @@ var panel: Panel = {
             displayPrompt: "Print selected catalysis report",
             displayConfiguration: "printCatalysisReport",
             displayVisible: function(panelBuilder, model) {
-                return !!Globals.clientState().catalysisReportName();
+                return !!Globals.clientState().catalysisReportIdentifier();
             }
         }
     ]

@@ -1,3 +1,4 @@
+import Globals = require("../../Globals");
 import kludgeForUseStrict = require("../../kludgeForUseStrict");
 "use strict";
 
@@ -27,7 +28,9 @@ var panel: Panel = {
             valuePath: "/clientState/storyCollectionName",
             valueType: "none",
             displayType: "graphBrowser",
-            displayPrompt: "Choose one or two <strong>questions</strong> to explore."
+            displayPrompt: "Choose one or two <strong>questions</strong> to explore.",
+            displayVisible: function(panelBuilder, model) {
+                return !!Globals.clientState().storyCollectionIdentifier();}
         }
     ]
 };

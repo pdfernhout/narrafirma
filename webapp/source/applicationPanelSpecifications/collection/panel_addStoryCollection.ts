@@ -7,22 +7,6 @@ var panel: Panel = {
     modelClass: "StoryCollection",
     panelFields: [
         {
-            
-            id: "storyCollection_note",
-            valueType: "none",
-            displayType: "label",
-            displayPrompt: `
-                Please describe your story collection here.<br><br>
-                <span.narrafirma-special-warning><strong>NOTE</strong>: 
-                When you create a new story collection and click the <strong>Close</strong> button, the story form
-                you chose becomes associated with the new story collection. If you forget to click the <strong>Close</strong> button
-                (and, say, click on a link to go to another NarraFirma page), you will have created a story collection
-                that has no associated story form. This may lead you to see error messages when you try to do things
-                that use the story form. But don't worry! If that happens, come back to this panel, 
-                set the story form, and click the "Update Story Form" button.</span>
-            `
-        },
-        {
             id: "storyCollection_shortName",
             valueType: "string",
             // valueImmutable: true,
@@ -30,8 +14,8 @@ var panel: Panel = {
             displayName: "Story collection name",
             displayPrompt: `
                 Please give this story collection a short <strong>name</strong>, so we can refer to it.<br><br>
-                <span.narrafirma-special-warning>This name should not be changed after you start using the story collection.
-                <strong>This name should be unique within the project.</strong></span>
+                <span.narrafirma-special-warning>A story collection must have a name. The name must not be changed after you start using the collection.
+                The name must be unique within the project.</span>
             `
         },
         {
@@ -64,6 +48,19 @@ var panel: Panel = {
             displayVisible: function(panelBuilder, model) {
                 return panelBuilder.readOnly === false;
             }
+        },
+        {
+            id: "storyCollection_note",
+            valueType: "none",
+            displayType: "label",
+            displayPrompt: `
+                Note: When you create a new story collection and click the <strong>Close</strong> button, the story form
+                you chose becomes associated with the new story collection. If you forget to click the <strong>Close</strong> button
+                (and, say, click on a link to go to another NarraFirma page), you will have created a story collection
+                that has no associated story form. This may lead you to see error messages when you try to do things
+                that use the story form. But don't worry! If that happens, come back to this panel, 
+                set the story form, and click the "Update Story Form" button.
+            `
         },
         {
             id: "storyCollection_activeOnWeb",

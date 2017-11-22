@@ -1,3 +1,4 @@
+import Globals = require("../../Globals");
 import kludgeForUseStrict = require("../../kludgeForUseStrict");
 "use strict";
 
@@ -27,17 +28,13 @@ var panel: Panel = {
             displayPrompt: "Choose the <strong>story collection</strong> whose story form you want to print."
         },
         {
-            id: "printQuestionsForm_output",
-            valueType: "none",
-            displayType: "label",
-            displayPrompt: ""
-        },
-        {
             id: "printQuestionsForm_printFormButton",
             valueType: "none",
             displayType: "button",
             displayConfiguration: "printStoryForm",
-            displayPrompt: "Print Story Form"
+            displayPrompt: "Print Story Form",
+            displayVisible: function(panelBuilder, model) {
+                return !!Globals.clientState().storyCollectionIdentifier();}
         }
     ]
 };

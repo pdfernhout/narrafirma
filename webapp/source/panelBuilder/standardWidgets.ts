@@ -56,7 +56,11 @@ function optionsForSelect(panelBuilder: PanelBuilder, model, fieldSpecification,
             // TODO: Maybe bug in dojo select that it does not handle values that are not strings
             // http://stackoverflow.com/questions/16205699/programatically-change-selected-option-of-a-dojo-form-select-that-is-populated-b
             if (fieldSpecification.valueOptionsSubfield) {
-                value = each[fieldSpecification.valueOptionsSubfield];
+                if (each[fieldSpecification.valueOptionsSubfield]) {
+                    value = each[fieldSpecification.valueOptionsSubfield];
+                } else {
+                    value = "Unnamed " + fieldSpecification.displayName + " (Warning: Cannot be accessed without a name.)";
+                }
             } else {
                 value = each.value;
             }

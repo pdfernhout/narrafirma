@@ -31,7 +31,7 @@ var panel: Panel = {
             displayType: "label",
             displayPrompt: "<strong>Please select a catalysis report above to get a list of questions here.</strong>",
             displayVisible: function(panelBuilder, model) {
-                return !Globals.clientState().catalysisReportName();
+                return !Globals.clientState().catalysisReportIdentifier();
             }
         },
         {
@@ -58,7 +58,7 @@ var panel: Panel = {
             displayName: "Minimum subset size",
             displayPrompt: "How large should <strong>subsets</strong> of stories be to be considered for statistical tests? (Test results based on low sample sizes - usually less than 30 - should be regarded as suggestive rather than conclusive.)",
             displayVisible: function(panelBuilder, model) {
-                return !!Globals.clientState().catalysisReportName();
+                return !!Globals.clientState().catalysisReportIdentifier();
             }
         },
 
@@ -69,7 +69,7 @@ var panel: Panel = {
             displayType: "catalysisReportGraphTypesChooser",
             displayPrompt: "Which <strong>graph types</strong> should appear on the \"Explore Patterns\" page?",
             displayVisible: function(panelBuilder, model) {
-                return !!Globals.clientState().catalysisReportName();
+                return !!Globals.clientState().catalysisReportIdentifier();
             }
         },
 
@@ -81,7 +81,7 @@ var panel: Panel = {
             displayConfiguration: "Yes, show interpretations in the table",
             displayPrompt: "Should <strong>interpretations</strong> be shown in the table of patterns? (Tip: Turn this on to find or review interpretations; turn it off to shrink the table height.)",
             displayVisible: function(panelBuilder, model) {
-                return !!Globals.clientState().catalysisReportName();
+                return !!Globals.clientState().catalysisReportIdentifier();
             }
         },
 
@@ -101,7 +101,7 @@ var panel: Panel = {
             displayName: "Number of histogram bins",
             displayPrompt: "For <strong>histograms</strong>, how many <strong>bins</strong> (bars) should the data be sorted into?",
             displayVisible: function(panelBuilder, model) {
-                return !!Globals.clientState().catalysisReportName();
+                return !!Globals.clientState().catalysisReportIdentifier();
             }
         },
 
@@ -114,7 +114,7 @@ var panel: Panel = {
             displayName: "Number of scatter plot dot opacity levels",
             displayPrompt: "For <strong>scatter plots</strong>, how many stories should it take to draw a completely <strong>opaque dot</strong>? (Set this number high if you have a lot of identical scale values.)",
             displayVisible: function(panelBuilder, model) {
-                return !!Globals.clientState().catalysisReportName();
+                return !!Globals.clientState().catalysisReportIdentifier();
             }
         },
 
@@ -127,7 +127,7 @@ var panel: Panel = {
             displayName: "Scatter dot size",
             displayPrompt: "For <strong>scatter plots</strong>, what <strong>dot size</strong> (in pixels) would you like? (Set this number low if you have a large number of data points.)",
             displayVisible: function(panelBuilder, model) {
-                return !!Globals.clientState().catalysisReportName();
+                return !!Globals.clientState().catalysisReportIdentifier();
             }
         },
 
@@ -144,7 +144,7 @@ var panel: Panel = {
             displayName: "Mark correlation lines",
             displayPrompt: "For <strong>scatter plots</strong>, at what significance level should <strong>correlations</strong> be marked?",
             displayVisible: function(panelBuilder, model) {
-                return !!Globals.clientState().catalysisReportName();
+                return !!Globals.clientState().catalysisReportIdentifier();
             }
         },
         {
@@ -154,7 +154,7 @@ var panel: Panel = {
             displayType: "catalysisReportQuestionChooser",
             displayPrompt: "Which <strong>questions</strong> should appear on the \"Explore Patterns\" page? (Note: Only questions checked here will be considered in data integrity graphs.)",
             displayVisible: function(panelBuilder, model) {
-                return !!Globals.clientState().catalysisReportName();
+                return !!Globals.clientState().catalysisReportIdentifier();
             }
         },
         {
@@ -169,7 +169,7 @@ var panel: Panel = {
                 It will appear at the start of your printed report. You can add HTML to this text (for example, to
                 start the section with an "Introduction" header). See the help system for details.`,
             displayVisible: function(panelBuilder, model) {
-                return !!Globals.clientState().catalysisReportName();
+                return !!Globals.clientState().catalysisReportIdentifier();
             }
         },
         {
@@ -183,7 +183,7 @@ var panel: Panel = {
             the structure of your report here (explaining, for example, how it was created). 
             It will appear after your introduction at the start of your printed report.`,
             displayVisible: function(panelBuilder, model) {
-                return !!Globals.clientState().catalysisReportName();
+                return !!Globals.clientState().catalysisReportIdentifier();
             }
         },
         {
@@ -198,7 +198,7 @@ var panel: Panel = {
             To change the header, enter some text here. A number sign (#) will be replaced
             with the number of perspectives in the report.`,
             displayVisible: function(panelBuilder, model) {
-                return !!Globals.clientState().catalysisReportName();
+                return !!Globals.clientState().catalysisReportIdentifier();
             }
         },
         {
@@ -214,7 +214,7 @@ var panel: Panel = {
             To change the header, enter some text here. A number sign (#) will be replaced
             with the number of interpretations in the perspective.`,
             displayVisible: function(panelBuilder, model) {
-                return !!Globals.clientState().catalysisReportName();
+                return !!Globals.clientState().catalysisReportIdentifier();
             }
         },
         {
@@ -226,7 +226,7 @@ var panel: Panel = {
             displayPrompt: `
             This optional label (e.g., "Perspective: ") will appear <strong>before each perspective name</strong> in the report.`,
             displayVisible: function(panelBuilder, model) {
-                return !!Globals.clientState().catalysisReportName();
+                return !!Globals.clientState().catalysisReportIdentifier();
             }
         },
         {
@@ -238,7 +238,7 @@ var panel: Panel = {
             displayPrompt: `
             This optional label (e.g., "Interpretation: ")  will appear <strong>before each interpretation name</strong> in the report.`,
             displayVisible: function(panelBuilder, model) {
-                return !!Globals.clientState().catalysisReportName();
+                return !!Globals.clientState().catalysisReportIdentifier();
             }
         },
         {
@@ -250,7 +250,7 @@ var panel: Panel = {
             displayPrompt: `
             This optional label (e.g., "Observation: ")  will appear <strong>before each observation name</strong> in the report.`,
             displayVisible: function(panelBuilder, model) {
-                return !!Globals.clientState().catalysisReportName();
+                return !!Globals.clientState().catalysisReportIdentifier();
             }
         },
         {
@@ -264,7 +264,7 @@ var panel: Panel = {
                 for use of the report or summarizing major points). 
             It will appear at the end of the report, after all of the perspectives (and their interpretations and observations) have been listed.`,
             displayVisible: function(panelBuilder, model) {
-                return !!Globals.clientState().catalysisReportName();
+                return !!Globals.clientState().catalysisReportIdentifier();
             }
         },
         {
@@ -275,7 +275,7 @@ var panel: Panel = {
             displayName: "Custom CSS",
             displayPrompt: "You can enter <strong>custom CSS</strong> that modifies elements of the catalysis report here. (For more information on how this works, see the help system.)",
             displayVisible: function(panelBuilder, model) {
-                return !!Globals.clientState().catalysisReportName();
+                return !!Globals.clientState().catalysisReportIdentifier();
             }
         },
     ]

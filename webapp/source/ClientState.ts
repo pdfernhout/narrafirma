@@ -64,6 +64,17 @@ class ClientState {
         return this._storyCollectionName;
     }
     
+    // Read-only convenience accessor
+    storyCollectionIdentifier(newValue = undefined) {
+        if (newValue) throw new Error("storyCollectionIdentifier: setting value is not supported");
+        var storyCollectionIdentifier = this._project.findStoryCollection(this._storyCollectionName);
+        if (!storyCollectionIdentifier) {
+            console.log("Problem finding storyCollectionIdentifier for: " + this._storyCollectionName);
+            return null;
+        }
+        return storyCollectionIdentifier;
+    }
+    
     catalysisReportName(newValue: string = undefined): string {
         if (newValue !== undefined) {
             this._catalysisReportName = newValue;

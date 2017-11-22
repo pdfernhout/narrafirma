@@ -35,7 +35,7 @@ var panel: Panel = {
             displayType: "label",
             displayPrompt: "<strong>Please select a catalysis report above to get a clustering diagram here.</strong>",
             displayVisible: function(panelBuilder, model) {
-                return !Globals.clientState().catalysisReportName();
+                return !Globals.clientState().catalysisReportIdentifier();
             }
         },
 
@@ -46,7 +46,7 @@ var panel: Panel = {
             displayConfiguration: "copyInterpretationsToClusteringDiagram",
             displayPrompt: "Start or update clustering diagram",
             displayVisible: function(panelBuilder, model) {
-                return !!Globals.clientState().catalysisReportName();
+                return !!Globals.clientState().catalysisReportIdentifier();
             }
         },
 
@@ -62,7 +62,7 @@ var panel: Panel = {
                 `,
             displayConfiguration: "interpretations",
             displayVisible: function(panelBuilder, model) {
-                return !!Globals.clientState().catalysisReportName();
+                return !!Globals.clientState().catalysisReportIdentifier();
             }
         },
     ]
