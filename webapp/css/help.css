@@ -88,8 +88,8 @@ a:active {
 .book-quote {
 	margin: 20px;
 	padding: 20px;
-	background: white;
-	border: 1px solid #3e3739;
+	background: #f1f1f1;
+	border: 1px solid black;
 }
 
 .book-quote-heading {
