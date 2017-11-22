@@ -411,6 +411,7 @@ function processCSVContentsForQuestionnaire(contents) {
         questionForm_endText: "",
         questionForm_thankYouPopupText: "",
         questionForm_customCSS: "",
+        questionForm_customCSSForPrint: "",
         import_minScaleValue: 0,
         import_maxScaleValue: 0,
 
@@ -489,9 +490,15 @@ function processCSVContentsForQuestionnaire(contents) {
                 case "Thank you text":
                     template.questionForm_thankYouPopupText = text;
                     project.tripleStore.addTriple(template.id, "questionForm_thankYouPopupText", text);
+                    break;
                 case "Custom CSS":
                     template.questionForm_customCSS = text;
                     project.tripleStore.addTriple(template.id, "questionForm_customCSS", text);
+                    break;
+                case "Custom CSS for Printing":
+                    template.questionForm_customCSSForPrint = text;
+                    project.tripleStore.addTriple(template.id, "questionForm_customCSSForPrint", text);
+                    break;
                 case "Choose question text":
                     template.questionForm_chooseQuestionText = text;
                     project.tripleStore.addTriple(template.id, "questionForm_chooseQuestionText", text);
@@ -860,14 +867,14 @@ export function exportQuestionnaire() {
     addOutputLine(["" + (++lineIndex), "", "", "About you text", "form", currentQuestionnaire.aboutYouText || ""]);
     addOutputLine(["" + (++lineIndex), "", "", "Thank you text", "form", currentQuestionnaire.thankYouPopupText || ""]);
     addOutputLine(["" + (++lineIndex), "", "", "Custom CSS", "form", currentQuestionnaire.customCSS || ""]);
+    addOutputLine(["" + (++lineIndex), "", "", "Custom CSS for Printing", "form", currentQuestionnaire.customCSSForPrint || ""]);
 
     addOutputLine(["" + (++lineIndex), "", "", "Choose question text", "form", currentQuestionnaire.chooseQuestionText || ""]);
     addOutputLine(["" + (++lineIndex), "", "", "Enter story text", "form", currentQuestionnaire.enterStoryText || ""]);
     addOutputLine(["" + (++lineIndex), "", "", "Name story text", "form", currentQuestionnaire.nameStoryText || ""]);
     addOutputLine(["" + (++lineIndex), "", "", "Tell another story text", "form", currentQuestionnaire.tellAnotherStoryText || ""]);
     addOutputLine(["" + (++lineIndex), "", "", "Tell another story button", "form", currentQuestionnaire.tellAnotherStoryButtonText || ""]);
-
-    
+    addOutputLine(["" + (++lineIndex), "", "", "Max num stories", "form", currentQuestionnaire.maxNumStories || ""]);
     
      // Export questionnaire
     var questionnaireBlob = new Blob([output], {type: "text/csv;charset=utf-8"});

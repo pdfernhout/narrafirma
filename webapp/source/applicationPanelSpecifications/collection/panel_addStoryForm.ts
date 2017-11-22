@@ -137,6 +137,13 @@ var panel: Panel = {
             displayPrompt: "You can enter <strong>custom CSS</strong> that modifies the survey elements here. (For more information on how this works, see the help system.)"
         },
         {
+            id: "questionForm_customCSSForPrint",
+            valueType: "string",
+            displayType: "textarea",
+            displayName: "Custom CSS for Printing",
+            displayPrompt: "You can enter additional custom CSS to use when the story form is <strong>printed</strong>."
+        },
+        {
             id: "questionForm_maxNumStories",
             valueType: "string",
             displayType: "select",

@@ -373,7 +373,7 @@ function generateHTMLForQuestionnaire(questionnaire) {
         m("div.narrafirma-survey-print-end-text", printText(questionnaire.endText || ""))
     ]);
 
-    return generateHTMLForPage(questionnaire.title || "NarraFirma Story Form", "css/survey.css", null, vdom, null);
+    return generateHTMLForPage(questionnaire.title || "NarraFirma Story Form", "css/survey.css", questionnaire.customCSSForPrint, vdom, null);
 }
 
 export function printStoryForm(model, fieldSpecification, value) {
