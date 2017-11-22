@@ -24,7 +24,6 @@ X Survey - improve styling on radio buttons for question or alternative approach
 X Survey - back button in browser -- deal with so don't lose data
 W Ideally way to do conditional question or answer (piping), especially to pick participant group
 W Need "other" field for radiobuttons and checkboxes (maybe dropdown, probably not)
-W Sliders - Sliders too tiny (hard to see color) 
 
 IDs
 X Improve how options are specified for questions in question designer rather than use text box
@@ -46,23 +45,16 @@ X Support storyThemer -- a widget where people look at each story, give it 1-3 t
 X Page to enter themes for stories
 X Page to cluster themes into final themes
 
-STORY CARDS
-M Select story positioning and visibility for printing story cards
-M Select title positioning and visibility for printing story cards
-
 GRAPH BROWSER
-M Should mutiple histograms perhap have stats calculated between them even if checkboxes?
+M Should multiple histograms have stats calculated between them even if checkboxes?
 L In general, size graphs better based on window size
 L Support graphBrowser common maximum for multiple histograms
 
 PATTERN EXPLORER
-L Show number of interpretations in table in PatternExplorer
 X Need a flip axis for slider for catalysis when graphing?
 
-CLUSTERING (CATALYSIS)
-
 CATALYSIS REPORT
-X Show percentages for question answers in title hover over questions in catalysis report configuration
+X Show percentages for question answers in title hover over questions in catalysis report configuration - not important
 
 CATALYSIS
 X Support an excerpt list somehow --> copy and paste from story list - good enough
@@ -74,9 +66,7 @@ SENSEMAKING
 RETURN
 
 GRID
-L Add close button to top of item panel
-L Better information about what is going on in item panel - whether view, edit, duplicate
-L When duplicate list item, add "copy" to name (different for each)
+L When duplicate list item, add "copy" to name (different for each) -- duplicating is not being used
 
 CONFIGURATION
 ? Add project configuration page?
@@ -102,30 +92,20 @@ X Validation for checkBoxes limited by maximum number of choices as validation e
 PRINTING
 X Print section reports as HTML 
 
-NAVIGATION
-L Way to select a different project to switch to (other than editing the URL or logging out)
-
 GENERAL
 M Report when a project can't be read by the current user even if the survey can be read (fix limitation of lumping permissions)
 M Create script or procedure to deal with SVN for WordPress' plugin archive
-M When a Grid item is added but no data is entered like for a catalysis report, the entry in a select looks wrong
 M Improve reporting on startup for loading project data with some kind of progress indicator or remaining count
 M Put a copy of install help from NarraFirma website into source tree as a README file 
-L Text search function (at least for stories)
 
 COMMUNICATIONS
 M When import story form, hundreds of triples can be generated which take minutes to send to the server (with no progress feedback, even though done in background) -- may be related to console logging
-
-UNSURE
-X Way to retrieve data about project participant groups [Is this still relevant? Probably yes, if we did "checkboxes with pull" for picking what groups an activity applies to instead of text entry]
 
 ==== Wish list:
 
 Think about issue of including project name in stories and triple a field in realation to backup/restore
 
 Add templates for annotation questions and re-add button removed in commit 2dde70086198417d2d005e3a6707045c18823d22 2015-09-20 19:09:57
-
-Recommendation button has different shape than others
 
 Ensure timestamp for latest triple store messages is being set on server and not client
 Simplify Pointrel system further, like to not have message trace adding so PHP WordPress plugin code can be simpler and quicker
@@ -165,8 +145,6 @@ Remember previous filtering options for any question in story browser
 
 Better font size, maybe user adjustable
 
-User definable CSS themes for surveys
-
 Unit tests
 
 Continuous integration server that runs tests
@@ -193,6 +171,16 @@ Support storyBrowserCount
 
 ---- Release 1.0.0
 
+DONE User definable CSS themes for surveys
+DONE Text search function (at least for stories) - can do this by searching in the "review incoming stories" table - added help to tell user this
+DONE When a Grid item is added but no data is entered like for a catalysis report, the entry in a select looks wrong - now warns user
+DONE Way to select a different project to switch to (other than editing the URL or logging out)
+DONE Add close button to top of item panel - moved close button inside box - easier to understand
+DONE Better information about what is going on in item panel - whether view, edit - colors show difference
+DONE Show number of interpretations in table in PatternExplorer (can show list of interpretations)
+DONE Select story positioning and visibility for printing story cards - can now do with CSS 
+DONE Select title positioning and visibility for printing story cards - can now do with CSS 
+DONE Sliders - Sliders too tiny (hard to see color) - made wider
 DONE Survey - maximum number stories 
 DONE User can enter text for (print and web): Please choose a question to which you would like to respond; Please enter your response in the box below; Please give your story a name; Would you like to tell another story; Yes, I'd like to tell another story; About you
 DONE Add ideas to catalysis report
