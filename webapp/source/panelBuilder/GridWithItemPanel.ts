@@ -485,7 +485,7 @@ class GridWithItemPanel {
         if (!item) item = this.selectedItem;
         
         // TODO: May not need this
-        if (this.isEditing) {
+        if (this.isEditing()) {
             alert("The edit must be finished before duplicating an item");
             return;
         }
@@ -496,7 +496,6 @@ class GridWithItemPanel {
         }
         
         var newItem = this.dataStore.makeCopyOfItemWithNewId(item);
-        
         this.setSelectedItem(newItem);
         this.displayMode = "adding";
     }
@@ -513,7 +512,7 @@ class GridWithItemPanel {
     
     private doneClicked(item) {
         // TODO: Should ensure the data is saved
-        if (this.isEditing) {
+        if (this.isEditing()) {
             var errors = this.validateItem(item);
             if (errors.length) {
                 // TODO: Translate
