@@ -34,12 +34,39 @@ var panel: Panel = {
             displayPrompt: "Enter the web link (URL) for an <strong>image</strong> to be shown at the top of the form.",
         },
         {
+            id: "questionForm_chooseQuestionText",
+            valueType: "string",
+            displayType: "text",
+            displayName: "Choose question text",
+            displayPrompt: `
+                How do you want to ask participants to <strong>choose a question</strong> they want to answer? 
+                (If this field is left blank, the story form will say, \"Please choose a question to which you would like to respond.\")`,
+        },
+        {
+            id: "questionForm_enterStoryText",
+            valueType: "string",
+            displayType: "text",
+            displayName: "Enter story text",
+            displayPrompt: `
+                How do you want to ask participants to <strong>enter</strong> their story? 
+                (If this field is left blank, the story form will say, \"Please enter your response in the box below.\")`,
+        },
+        {
             id: "questionForm_elicitingQuestions",
             valueType: "array",
             displayType: "grid",
             displayConfiguration: "panel_chooseElicitingQuestion",
             displayName: "Eliciting questions",
             displayPrompt: "Add one or more <strong>eliciting questions</strong>, choosing from those you already wrote."
+        },
+        {
+            id: "questionForm_nameStoryText",
+            valueType: "string",
+            displayType: "text",
+            displayName: "Name story text",
+            displayPrompt: `
+                How do you want to ask participants to <strong>name</strong> their story? 
+                (If this field is left blank, the story form will say, \"Please give your story a name.\")`,
         },
         {
             id: "questionForm_storyQuestions",
@@ -50,11 +77,32 @@ var panel: Panel = {
             displayPrompt: "Add one or more <strong>questions about stories</strong>, choosing from those you already wrote."
         },
         {
+            id: "questionForm_tellAnotherStoryText",
+            valueType: "string",
+            displayType: "text",
+            displayName: "Tell another story text",
+            displayPrompt: `
+                How do you want to ask participants if they want to <strong>tell another</strong> story? 
+                (If this field is left blank, the story form will say, \"Would you like to tell another story?\")`,
+        },
+        {
+            id: "questionForm_tellAnotherStoryButtonText",
+            valueType: "string",
+            displayType: "text",
+            displayName: "Tell another story button text",
+            displayPrompt: `
+                What do you want the <strong>tell another story button</strong> to say? 
+                (If this field is left blank, the button will say, \"Yes, I'd like to tell another story\")`,
+        },
+        {
             id: "questionForm_aboutYouText",
             valueType: "string",
             displayType: "text",
             displayName: "About you text",
-            displayPrompt: "How would you like to title the <strong>participant questions</strong>? (For example, \"About you\" or \"Please answer these questions about you\")"
+            displayPrompt: `
+                How would you like to title the <strong>participant questions</strong>? 
+                (If this field is left blank, the story form will say, \"About you\".)
+                `
         },
         {
             id: "questionForm_participantQuestions",
@@ -69,14 +117,17 @@ var panel: Panel = {
             valueType: "string",
             displayType: "textarea",
             displayName: "End of form text",
-            displayPrompt: "Please enter any <strong>closing text</strong> to be shown on the form after the survey has been accepted. It might be a thank you or an invitation to participate further."
+            displayPrompt: `Please enter any <strong>closing text</strong> to be shown on the form after the survey has been accepted. 
+                It might be a thank you or an invitation to participate further.
+                (If this field is left blank, the story form will say, \"Thank you for taking the survey.\")`
         },
         {
             id: "questionForm_thankYouPopupText",
             valueType: "string",
             displayType: "textarea",
             displayName: "Thank you text",
-            displayPrompt: "Please enter a message to be shown in the <strong>pop-up alert</strong> after the participant submits their story."
+            displayPrompt: `Please enter a message to be shown in the <strong>pop-up alert</strong> after the participant submits their story.
+            (If this field is left blank, the story form will say, \"Your contribution has been added to the story collection. Thank you.\")`
         },
         {
             id: "questionForm_customCSS",

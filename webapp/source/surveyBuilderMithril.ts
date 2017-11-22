@@ -358,10 +358,6 @@ interface SurveyOptions {
 export function buildSurveyForm(surveyDiv, questionnaire, doneCallback, surveyOptions: SurveyOptions = {}) {  
     console.log("buildSurveyForm questions", questionnaire);
     
-    var startText = questionnaire.startText;
-    // TODO: Translate
-    if (!startText) startText = 'Please help by taking a short survey. The data you enter will be sent to the server only at the end when you press the "submit survey" button.';
-    
     var startQuestions = [];
     
     if (surveyOptions.previewMode) {
@@ -373,14 +369,11 @@ export function buildSurveyForm(surveyDiv, questionnaire, doneCallback, surveyOp
         if (!surveyOptions.ignoreTitleChange) document.title = sanitizeHTML.removeHTMLTags(questionnaire.title);
     }
     
+    var startText = questionnaire.startText || 'Please help by taking a short survey. The data you enter will be sent to the server only at the end when you press the "submit survey" button.';
     startQuestions.push({id: "startText_label", displayName: "startText", displayPrompt: startText, displayType: "label", valueOptions: [], displayClass: "narrafirma-survey-start-text"});
 
-    var endText = questionnaire.endText;
-    var thankYouPopupText = questionnaire.thankYouPopupText;
-     // TODO: Translate
-    if (!endText) endText = "Thank you for taking the survey.";
-    if (!thankYouPopupText) thankYouPopupText = "Your contribution has been added to the story collection. Thank you.";
-        
+    var endText = questionnaire.endText || "Thank you for taking the survey.";
+    var thankYouPopupText = questionnaire.thankYouPopupText || "Your contribution has been added to the story collection. Thank you.";
     var endQuestions = [];
     endQuestions.push({id: "endText_label", displayName: "endText", displayPrompt: endText, displayType: "label", valueOptions: [], displayClass: "narrafirma-survey-end-text"});
 
@@ -396,19 +389,22 @@ export function buildSurveyForm(surveyDiv, questionnaire, doneCallback, surveyOp
     // TODO: What if these IDs for storyText and storyName are not unique?
     var initialStoryQuestions = [];
     var singlePrompt = null;
+
     if (elicitingQuestionOptions.length !== 1) {
-        initialStoryQuestions.push({id: "elicitingQuestion", displayName: "elicitingQuestion", displayPrompt: "Please choose a question to which you would like to respond:", displayType: "radiobuttons", valueOptions: elicitingQuestionOptions, displayClass: "narrafirma-eliciting-questions"});
-        initialStoryQuestions.push({id: "storyText", displayName: "storyText", displayPrompt: "Please enter your response in the box below:", displayType: "textarea", valueOptions: [], displayClass: "narrafirma-story-text"});
+        const chooseQuestionText = questionnaire.chooseQuestionText || "Please choose a question to which you would like to respond.";
+        initialStoryQuestions.push({id: "elicitingQuestion", displayName: "elicitingQuestion", displayPrompt: chooseQuestionText, displayType: "radiobuttons", valueOptions: elicitingQuestionOptions, displayClass: "narrafirma-eliciting-questions"});
+        const enterStoryText = questionnaire.enterStoryText || "Please enter your response in the box below.";
+        initialStoryQuestions.push({id: "storyText", displayName: "storyText", displayPrompt: enterStoryText, displayType: "textarea", valueOptions: [], displayClass: "narrafirma-story-text"});
     } else {
         singlePrompt = elicitingQuestionOptions[0];
-        initialStoryQuestions.push({id: "storyText", displayName: "storyText", displayPrompt: singlePrompt.text, displayType: "textarea", valueOptions: [], displayClass: "narrafirma-story-text"});
+        initialStoryQuestions.push({id: "storyText", displayName: "storyText", displayPrompt: singlePrompt.name, displayType: "textarea", valueOptions: [], displayClass: "narrafirma-story-text"});
     }
-    initialStoryQuestions.push({id: "storyName", displayName: "storyName", displayPrompt: "Please give your story a name.", displayType: "text", valueOptions: [], displayClass: "narrafirma-story-name"});
+    const nameStoryText = questionnaire.nameStoryText || "Please give your story a name.";
+    initialStoryQuestions.push({id: "storyName", displayName: "storyName", displayPrompt: nameStoryText, displayType: "text", valueOptions: [], displayClass: "narrafirma-story-name"});
     
     var allStoryQuestions = initialStoryQuestions.concat(questionnaire.storyQuestions);
             
-    var aboutYouText = questionnaire.aboutYouText;
-    if (!aboutYouText) aboutYouText = "About you";
+    const aboutYouText = questionnaire.aboutYouText || "About you";
     var participantQuestions = [{id: "participantHeader", displayName: "participantHeader", displayPrompt: aboutYouText, displayType: "header", valueOptions: [], displayClass: "narrafirma-participant-header"}];
     participantQuestions = participantQuestions.concat(questionnaire.participantQuestions);
 
@@ -656,10 +652,12 @@ export function buildSurveyForm(surveyDiv, questionnaire, doneCallback, surveyOp
         return root;
     }
     
-    function anotherStoryButton() {
+    function anotherStoryButton(questionnaire) {
+        const tellAnotherStoryText = questionnaire.tellAnotherStoryText || "Would you like to tell another story?";
+        const tellAnotherStoryButtonText = questionnaire.tellAnotherStoryButtonText || "Yes, I'd like to tell another story";
         return m("div", {"class": "narrafirma-survey-tell-another-story-button-panel"}, [
-            "Would you like to tell another story?",
-             m("button", {"class": "narrafirma-survey-tell-another-story-button", onclick: tellAnotherStory}, "Yes, I'd like to tell another story")
+            tellAnotherStoryText,
+             m("button", {"class": "narrafirma-survey-tell-another-story-button", onclick: tellAnotherStory}, tellAnotherStoryButtonText)
         ]);
     }
 
@@ -677,7 +675,7 @@ export function buildSurveyForm(surveyDiv, questionnaire, doneCallback, surveyOp
             stories.map(function(story, index) {
                 return displayStoryQuestions(story, index);
             }),
-            anotherStoryButton(),
+            anotherStoryButton(questionnaire),
             participantQuestions.map(function(question, index) {
                 return displayQuestion(null, surveyResult.participantData, question);
             }),

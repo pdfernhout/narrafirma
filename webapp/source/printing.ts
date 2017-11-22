@@ -357,11 +357,12 @@ function generateHTMLForQuestionnaire(questionnaire) {
         
         m("div.narrafirma-survey-print-title", printText(questionnaire.title)),
         m("div.narrafirma-survey-print-intro", printText(questionnaire.startText)),
-        m("div.narrafirma-survey-print-please-select", "Please select one of the following questions to answer:"),
+        m("div.narrafirma-survey-print-please-select", printText(questionnaire.chooseQuestionText) || "Please choose a question to which you would like to respond."),
         questionnaire.elicitingQuestions.map(function (elicitingQuestion) {
             return printOption(elicitingQuestion.text);
         }),
-        m("div.narrafirma-survey-print-enter-response", "Please enter your response here:"),
+        m("div.narrafirma-survey-print-enter-response", printText(questionnaire.enterStoryText) || "Please enter your response here."),
+        m("div.narrafirma-survey-print-name-story", printText(questionnaire.nameStoryText) || "Please give your story a name."),
         questionnaire.storyQuestions.map(function (storyQuestion) {
             return printQuestion(storyQuestion);
         }),

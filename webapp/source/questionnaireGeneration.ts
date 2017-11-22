@@ -221,9 +221,15 @@ export function buildQuestionnaireFromTemplate(questionnaireTemplate: string) {
         import_maxScaleValue: "",
         elicitingQuestions: [],
         storyQuestions: [],
-        participantQuestions: []
+        participantQuestions: [],
+
+        chooseQuestionText: "",
+        enterStoryText: "",
+        nameStoryText: "",
+        tellAnotherStoryText: "",
+        tellAnotherStoryButtonText: ""
     };
- 
+
     questionnaire.title = project.tripleStore.queryLatestC(questionnaireTemplate, "questionForm_title");
     questionnaire.image = project.tripleStore.queryLatestC(questionnaireTemplate, "questionForm_image");
     questionnaire.startText = project.tripleStore.queryLatestC(questionnaireTemplate, "questionForm_startText");
@@ -233,6 +239,12 @@ export function buildQuestionnaireFromTemplate(questionnaireTemplate: string) {
     questionnaire.customCSS = project.tripleStore.queryLatestC(questionnaireTemplate, "questionForm_customCSS");
     questionnaire.import_minScaleValue = project.tripleStore.queryLatestC(questionnaireTemplate, "import_minScaleValue"); 
     questionnaire.import_maxScaleValue = project.tripleStore.queryLatestC(questionnaireTemplate, "import_maxScaleValue"); 
+
+    questionnaire.chooseQuestionText = project.tripleStore.queryLatestC(questionnaireTemplate, "questionForm_chooseQuestionText");
+    questionnaire.enterStoryText = project.tripleStore.queryLatestC(questionnaireTemplate, "questionForm_enterStoryText");
+    questionnaire.nameStoryText = project.tripleStore.queryLatestC(questionnaireTemplate, "questionForm_nameStoryText");
+    questionnaire.tellAnotherStoryText = project.tripleStore.queryLatestC(questionnaireTemplate, "questionForm_tellAnotherStoryText");
+    questionnaire.tellAnotherStoryButtonText = project.tripleStore.queryLatestC(questionnaireTemplate, "questionForm_tellAnotherStoryButtonText");
     
     // TODO: Should maybe ensure unique IDs for eliciting questions?
     var allElicitingQuestions = buildIdToItemMap("project_elicitingQuestionsList", "elicitingQuestion_shortName");

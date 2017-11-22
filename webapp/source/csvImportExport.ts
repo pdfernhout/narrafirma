@@ -412,7 +412,13 @@ function processCSVContentsForQuestionnaire(contents) {
         questionForm_thankYouPopupText: "",
         questionForm_customCSS: "",
         import_minScaleValue: 0,
-        import_maxScaleValue: 0
+        import_maxScaleValue: 0,
+
+        questionForm_chooseQuestionText: "",
+        questionForm_enterStoryText: "",
+        questionForm_nameStoryText: "",
+        questionForm_tellAnotherStoryText: "",
+        questionForm_tellAnotherStoryButtonText: ""
         };
     
     project.tripleStore.makeNewSetItem(storyFormListIdentifier, "StoryForm", template);
@@ -485,6 +491,26 @@ function processCSVContentsForQuestionnaire(contents) {
                 case "Custom CSS":
                     template.questionForm_customCSS = text;
                     project.tripleStore.addTriple(template.id, "questionForm_customCSS", text);
+                case "Choose question text":
+                    template.questionForm_chooseQuestionText = text;
+                    project.tripleStore.addTriple(template.id, "questionForm_chooseQuestionText", text);
+                    break;
+                case "Enter story text":
+                    template.questionForm_enterStoryText = text;
+                    project.tripleStore.addTriple(template.id, "questionForm_enterStoryText", text);
+                    break;
+                case "Name story text":
+                    template.questionForm_nameStoryText = text;
+                    project.tripleStore.addTriple(template.id, "questionForm_nameStoryText", text);
+                    break;
+                case "Tell another story text":
+                    template.questionForm_tellAnotherStoryText = text;
+                    project.tripleStore.addTriple(template.id, "questionForm_tellAnotherStoryText", text);
+                    break;
+                case "Tell another story button":
+                    template.questionForm_tellAnotherStoryButtonText = text;
+                    project.tripleStore.addTriple(template.id, "questionForm_tellAnotherStoryButtonText", text);
+                    break;
             }
         } else if (about === "import") {
             var type = item.Type;
@@ -829,6 +855,13 @@ export function exportQuestionnaire() {
     addOutputLine(["" + (++lineIndex), "", "", "About you text", "form", currentQuestionnaire.aboutYouText || ""]);
     addOutputLine(["" + (++lineIndex), "", "", "Thank you text", "form", currentQuestionnaire.thankYouPopupText || ""]);
     addOutputLine(["" + (++lineIndex), "", "", "Custom CSS", "form", currentQuestionnaire.customCSS || ""]);
+
+    addOutputLine(["" + (++lineIndex), "", "", "Choose question text", "form", currentQuestionnaire.chooseQuestionText || ""]);
+    addOutputLine(["" + (++lineIndex), "", "", "Enter story text", "form", currentQuestionnaire.enterStoryText || ""]);
+    addOutputLine(["" + (++lineIndex), "", "", "Name story text", "form", currentQuestionnaire.nameStoryText || ""]);
+    addOutputLine(["" + (++lineIndex), "", "", "Tell another story text", "form", currentQuestionnaire.tellAnotherStoryText || ""]);
+    addOutputLine(["" + (++lineIndex), "", "", "Tell another story button", "form", currentQuestionnaire.tellAnotherStoryButtonText || ""]);
+
     
     
      // Export questionnaire
