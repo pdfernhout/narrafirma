@@ -10,7 +10,6 @@ import _ = require("lodash");
 "use strict";
 
 // This defines a gui component which has a grid, some buttons, and a detail panel do display the currently selected item or enter a new item
-
 // TODO: Probably need to prevent user surveys from having a question with a short name of "_id".
 
 var gridsMade = 0;
@@ -67,11 +66,8 @@ function computeColumnsForItemPanelSpecification(itemPanelSpecification, gridCon
         var newColumn =  {
             field: fieldSpecification.id,
             label: translate(fieldSpecification.id + "::shortName", fieldSpecification.displayName)
-            // formatter: self.formatObjectsIfNeeded.bind(this),
-            // sortable: !configuration.moveUpDownButtons
         };
         columns.push(newColumn);
-        // console.log("newColumn", newColumn);
     });
     
     return columns;
@@ -88,30 +84,17 @@ function isElementInViewport(parent, element) {
     );
 }
 
-// TODO: This code is not currently used and probably can be removed
-function formatObjectsIfNeeded(item) {
-    if (_.isString(item)) return item;
-    if (item === undefined) return "";
-    if (item === null) return "";
-    return JSON.stringify(item);
-}
-
 class ItemPanel {
     
     static controller(args) {
-        // console.log("Making ItemPanel: ", args);
         return new ItemPanel();
     }
     
     static view(controller, args) {
-        // console.log("ItemPanel view called");
-        
         return controller.calculateView(args);
     }
     
     calculateView(args) {
-        // console.log("%%%%%%%%%%%%%%%%%%% ItemPanel view called");
-        // return m("div", "work in progress");
         // TODO: Should provide copy of item?
         var panelBuilder: PanelBuilder = args.panelBuilder;
         // Possible recursion if the panels contain a table
@@ -158,16 +141,9 @@ var defaultGridConfiguration: GridConfiguration = {
     moveUpDownButtons: false
 };
 
-// Thin arrows
-// var sortCharacterUp = "\u2191";
-// var sortCharacterDown = "\u2193";
-// var sortCharacterBoth = "\u2195";
-
-// Thick arrows
 var sortCharacterUp = "\u25B2";
 var sortCharacterDown = "\u25BC";
-// Blank space equal to 1em
-var sortCharacterBoth = "\u2003";
+var sortCharacterBoth = "\u2003"; // Blank space equal to 1em
 
 // GridWithItemPanel needs to be a component so it can maintain a local sorted list
 class GridWithItemPanel {
@@ -200,23 +176,17 @@ class GridWithItemPanel {
     readOnly = false;
     
     onunload() {
-        // console.log("+++++++++++++++++++++++++++++++++++++ unloading GridWithItemPanel");
     }
     
     constructor(args) {
-        // console.log("************************************** GridWithItemPanel constructor called");
         this.panelBuilder = args.panelBuilder;
         this.fieldSpecification = args.fieldSpecification;
         this.model = args.model;
         this.readOnly = args.readOnly;
-        
-        // console.log("Grid readOnly =", this.readOnly, this.fieldSpecification.id);
-            
         this.updateDisplayConfigurationAndData(this.fieldSpecification.displayConfiguration);
     }
     
     updateDisplayConfigurationAndData(theDisplayConfiguration: GridDisplayConfiguration) {
-        // console.log("theDisplayConfiguration", theDisplayConfiguration);
         var itemPanelID: string;
         var itemPanelSpecification = null;
         
@@ -239,7 +209,7 @@ class GridWithItemPanel {
         this.itemPanelSpecification = itemPanelSpecification;
         
         if (!this.itemPanelSpecification) {
-            console.log("Trouble: no itemPanelSpecification for options: ", this.fieldSpecification);
+            console.log("Error: no itemPanelSpecification for options: ", this.fieldSpecification);
         }
         
         if (!this.model) {
@@ -266,24 +236,20 @@ class GridWithItemPanel {
         
         var itemClassName = itemPanelSpecification.modelClass;
         if (!itemClassName) {
-            console.log("ERROR: No modelClass in panel specification", itemPanelSpecification);
-            throw new Error("ERROR: No modelClass in panel specification for grid");
-            // itemClassName = "Item";
+            console.log("Error: No modelClass in panel specification", itemPanelSpecification);
+            throw new Error("Error: No modelClass in panel specification for grid");
         }
         var setClassName = itemPanelSpecification.modelClass + "Set";
         
         if (this.useTriples()) {
-            // console.log("Grid using triples", this.model);
             this.dataStore = new TripleSetDataStore(this.valueProperty, this.idProperty, this.gridConfiguration.transformDisplayedValues, setClassName, itemClassName, Globals.project().tripleStore);
         } else {
-            // console.log("Grid using objects", this.model);
             this.dataStore = new DataStore(this.valueProperty, this.idProperty, this.gridConfiguration.transformDisplayedValues, setClassName, itemClassName);
         }
         this.updateData();
     }
     
     updateData() {
-        // console.log("GridWithItemPanel updateData");
         this.dataStore.getDataArrayFromModel();
         this.sortData();
         if (this.selectedItem) {
@@ -299,13 +265,10 @@ class GridWithItemPanel {
     }
     
     static controller(args) {
-        // console.log("Making ItemPanel: ", args);
         return new GridWithItemPanel(args);
     }
     
     static view(controller: GridWithItemPanel, args) {
-        // console.log("Grid view called");
-        
         return controller.calculateView();
     }
     
@@ -319,8 +282,6 @@ class GridWithItemPanel {
     }
     
     calculateView() {
-        // console.log("GridWithItemPanel calculateView", this.dataStore);
-        
         // Deal with the fact that new items might be added at any time by other users
         // TODO: This is very inefficient. Alternatives include: listening for changes that add or remove items; or determing nature of change prompting redraw
         this.updateData();
@@ -378,7 +339,6 @@ class GridWithItemPanel {
             parts.push(this.bottomEditorForItem(panelBuilder, this.selectedItem, "edit"));
         }
         
-        // TODO: set class etc.
         return m("div", {"class": "questionExternal narrafirma-question-type-grid"}, parts);
     }
 
@@ -424,7 +384,6 @@ class GridWithItemPanel {
     private selectItemInList(e) {
         if (this.isEditing()) return;
         var itemID = e.target.getAttribute("data-item-index");
-        // console.log("item clicked", itemID);
         var item = this.dataStore.itemForId(itemID);
         if (item !== undefined) {
             this.setSelectedItem(item);
@@ -469,22 +428,10 @@ class GridWithItemPanel {
         return [];
     }
     
-    // inlineEditorForItem is not currently used...
-    private inlineEditorForItem(panelBuilder, item, mode) {
-        return m("tr", [
-            m("td", {colSpan: this.columns.length}, [
-                m.component(<any>ItemPanel, {key: this.fieldSpecification.id + "_" + "inlineEditor" + "_" + mode, panelBuilder: panelBuilder, item: item, grid: this, mode: mode})
-            ]),
-            m("td", {"vertical-align": "top"}, [m("button", {onclick: this.doneClicked.bind(this, item)}, "Close")])
-        ]);
-    }
-    
     private bottomEditorForItem(panelBuilder, item, mode) {
-        return m("div", [
-            m("td", {colSpan: this.columns.length}, [
-                m.component(<any>ItemPanel, {key: this.fieldSpecification.id + "_" + "bottomEditor" + "_" + mode, panelBuilder: panelBuilder, item: item, grid: this, mode: mode})
-            ]),
-            m("td", {"vertical-align": "top"}, [m("button", {onclick: this.doneClicked.bind(this, item)}, "Close")])
+        return m("div.narrafirma-griditempanel-divwithbutton" + "-" + mode + "ing", [
+            m("button", {onclick: this.doneClicked.bind(this, item), class: "narrafirma-griditempanel-close-button"}, "Close"),
+            m.component(<any>ItemPanel, {key: this.fieldSpecification.id + "_" + "bottomEditor" + "_" + mode, panelBuilder: panelBuilder, item: item, grid: this, mode: mode})
         ]);
     }
 
@@ -498,10 +445,8 @@ class GridWithItemPanel {
     
     private deleteItem(item) {
         if (!item) item = this.selectedItem; 
-        // console.log("deleteItem", item);
         
         // TODO: Translate
-        // TODO: Replace this with undo
         if (!confirm("Are you sure you want to delete this item?")) return;
 
         var index = this.dataStore.deleteItem(item);
@@ -525,8 +470,6 @@ class GridWithItemPanel {
     
     private editItem(item) {
         if (!item) item = this.selectedItem;
-        // console.log("editItem", item);
-        
        // TODO: This needs to create an action that affects original list  
         this.setSelectedItem(item);
         this.displayMode = "editing";
@@ -534,15 +477,12 @@ class GridWithItemPanel {
     
     private viewItem(item, index) {
         if (!item) item = this.selectedItem;
-        // console.log("viewItem", item);
-        
         this.setSelectedItem(item);
         this.displayMode = "viewing";
     }
     
     private duplicateItem(item) {        
         if (!item) item = this.selectedItem;
-        // console.log("duplicate button pressed", item);
         
         // TODO: May not need this
         if (this.isEditing) {
@@ -563,15 +503,11 @@ class GridWithItemPanel {
 
     private moveItemUp(item) {
         if (!item) item = this.selectedItem;
-        // console.log("up button pressed", item);
-        
         this.dataStore.moveItemUp(item);
     }
     
     private moveItemDown(item) {
         if (!item) item = this.selectedItem;
-        // console.log("down button pressed", item);
-        
         this.dataStore.moveItemDown(item);
     }
     
@@ -621,8 +557,6 @@ class GridWithItemPanel {
         var unavailable = this.isEditing() || (!item && !this.selectedItem) || undefined;
         var disabled = this.readOnly || unavailable;
         
-        // console.log("createButtons disabled", disabled, item, this.selectedItem, (!item && !this.selectedItem) );
-         
         if (this.gridConfiguration.removeButton) {
             var removeButton = m("button", {onclick: this.deleteItem.bind(this, item), disabled: disabled, "class": "fader"}, translate("#button_Remove|Remove"));
             buttons.push(removeButton);
@@ -634,7 +568,7 @@ class GridWithItemPanel {
         }
         
         if (this.gridConfiguration.viewButton) {
-            var viewButton = m("button", {onclick: this.viewItem.bind(this, item), disabled: unavailable, "class": "fader"}, translate("#button_View|View"));
+            var viewButton = m("button", {onclick: this.viewItem.bind(this, item), disabled: unavailable || this.isViewing(), "class": "fader"}, translate("#button_View|View"));
             buttons.push(viewButton); 
         }
         
@@ -667,15 +601,10 @@ class GridWithItemPanel {
             buttons.push(customButton);
         }
         
-        // console.log("made buttons", buttons, item);
         return buttons;
     }
 
     private rowForItem(item, index) {
-        /* TODO: Use inline editor, if some config option is set:
-        return inlineEditorForItem(panelBuilder, item, mode);
-        */
-        
         var selected = (item === this.selectedItem);
 
         var selectionClass = "";
@@ -747,7 +676,6 @@ class DataStore {
     }
     
     newIdForItem() {
-        // return new Date().toISOString();
         return generateRandomUuid(this.itemClassName);
     }
     
@@ -761,13 +689,10 @@ class DataStore {
     
    getDataArrayFromModel() {
         var data = this.valueProperty();
-        
         if (!data) {
             data = [];
-            // console.log("Grid datastore getDataArrayFromModel defaulting data to empty array");
             this.valueProperty(data);
         }
-        
         // Make a copy of the data because we will be sorting it
         // TODO: Copying data creates a problem because up/down movement wil not be reflected in original
         this.data = data.slice();
@@ -874,10 +799,8 @@ class DataStore {
         });
         
         if (sortDirection === "descending") {
-            // console.log("reversing");
             this.data.reverse();
         }
-        // console.log("sorted list", this.data);
     }
     
     reverseData() {
@@ -919,37 +842,26 @@ class TripleSetDataStore extends DataStore {
     makeCopyOfItemWithNewId(item) {
         // TODO: This needs to create an action that affects original list
         // Make a copy of the selected item
-
         this.ensureSetExists();
-        
         var newId = this.tripleStore.makeCopyOfSetItemWithNewId(this.setIdentifier, this.itemClassName, item);
-        
         this.data.push(newId);
-        
         return newId;
     }
     
     makeNewItem(): any {
         // TODO: This needs to create an action that affects original list
-
         this.ensureSetExists();
-
         var newId = this.tripleStore.makeNewSetItem(this.setIdentifier, this.itemClassName);
-        
         this.data.push(newId);
-        
         return newId;
     }
    
     deleteItem(item) {
         // TODO: This needs to create an action that affects original list
-        
         // TODO: Should the C be undefined instead of null?
         this.tripleStore.deleteSetItem(this.setIdentifier, item);
-        
         var index = this.data.indexOf(item);
         this.data.splice(index, 1);
-         
         return index;
     }
     

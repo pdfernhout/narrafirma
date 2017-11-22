@@ -410,12 +410,29 @@ form {
     display: none;
 }
 
-.narrafirma-griditempanel-editing {
+.narrafirma-griditempanel-divwithbutton-editing {
     background-color: #ffe9c4;
     border: 1px solid black;
+    border-radius: 8px;
+    margin: 1em;
+}
+
+.narrafirma-griditempanel-divwithbutton-viewing {
+    background-color: white;
+    color: #6d6c6c;
 	margin: 1em;
+	border: 1px solid #6d6c6c;
 	border-radius: 8px;
-    padding: 8px;
+}
+
+button.narrafirma-griditempanel-close-button {
+    display: block;
+    width: 10em;
+    margin: 0.6em 1em 0 auto;
+}
+
+.narrafirma-griditempanel-editing {
+    margin: 0.6em;
 }
 
 .narrafirma-griditempanel-editing .questionExternal {
@@ -423,18 +440,12 @@ form {
 }
 
 .narrafirma-griditempanel-viewing {
-    background-color: white;
-    color: #6d6c6c;
-	margin: 1em;
-	border: 1px solid black;
-	border-radius: 8px;
-	padding: 8px;
+	margin: 0.6em;
 }
 
 .narrafirma-griditempanel-viewing .questionExternal {
     background-color: white;
     color: #6d6c6c;
-	margin: 0px;
 }
 
 /* hides "copy from template" button when viewing grid item */
