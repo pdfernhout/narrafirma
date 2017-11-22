@@ -145,7 +145,7 @@ export function logoutButtonClicked() {
 
 export function loginButtonClicked() {
     // TODO: Warn if have any read-only changes that would be lost
-    if (confirm("Login?")) {
+    if (confirm("Would you like to log in a new NarraFirma user?")) {
         var isWordPressAJAX = !!window["ajaxurl"];
         if (isWordPressAJAX) {
             window.location.href = window.location.href.split("wp-content")[0] + "wp-login.php?action=login";
