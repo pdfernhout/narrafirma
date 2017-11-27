@@ -49,22 +49,18 @@ passport.use(new LocalStrategy(
 
 function writePageStart(request, response, pageType) {
     var user = request.user;
-    response.write('<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"></head><body>');
+    response.write('<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><link rel="stylesheet" href="/css/standard.css"></head><body>');
+    response.write('<div class="narrafirma-login-welcome-and-intro">');
+    response.write('<h2 class="narrafirma-login-welcome">Welcome to NarraFirma</h2>');
+    response.write('<p class="narrafirma-login-intro">NarraFirma is software for Participatory Narrative Inquiry. For more information see <a href="http://www.narrafirma.com" target="_blank">narrafirma.com</a> and <a href="http://www.workingwithstories.org" target="_blank">workingwithstories.org</a>.</p>');
+    response.write('</div>');
     if (!user) {
-        response.write("<p>");
-        // response.write('<a href="/">Home</a> | ');
-        // if (pageType !== "login") response.write('<a href="/login">Login page</a>');
-        // if (pageType !== "login") response.write("<p>");
-        response.write('<h2>Welcome to NarraFirma!</h2>');
-        if (pageType !== "login") response.write(' Please <b><a href="/login">log in</a></b>.');
+        if (pageType !== "login") response.write('<p class="narrafirma-login-text">Please <b><a href="/login">log in</a></b>.</p>');
     } else {
-        response.write("<p>");
-        // response.write('<a href="/narrafirma.html">Start NarraFirma</a>');
-        // if (pageType !== "login") response.write('<a href="/login">Log In</a> | ');
-        response.write('<a href="/logout">Logout</a>');
-        if (pageType !== "account") response.write(' | <a href="/account">Account</a>');
-        response.write("<p>");
-        response.write("<h2>Hello, " + user.userIdentifier + ".</h2>");
+        response.write('<h2 class="narrafirma-login-hello">Hello, ' + user.userIdentifier + ".</h2>");
+        response.write('<p class="narrafirma-login-action"><a href="/logout">Logout</a>');
+        //if (pageType !== "account") response.write(' | <a href="/account">Account</a>');
+        response.write("</p>");
     }
 }
 
@@ -74,15 +70,15 @@ function writePageEnd(request, response) {
 
 var loginTemplate = '<form action="/login" method="post">\n' +
 '<div>\n' +
-'<label>Username:</label>\n' +
-'<input type="text" name="username"/><br/>\n' +
+'<label>User name: </label>\n' +
+'<input type="text" class="narrafirma-login-input" name="username"/><br/><br/>\n' +
 '</div>\n' +
 '<div>\n' +
-'<label>Password:</label>\n' +
-'<input type="password" name="password"/>\n' +
+'<label>Password: </label>\n' +
+'<input type="password" class="narrafirma-login-input" name="password"/>\n' +
 '</div>\n' +
-'<div>\n' +
-'<input type="submit" value="Login"/>\n' +
+'<div><br/>\n' +
+'<input type="submit" class="narrafirma-login-button" value="Login"/>\n' +
 '</div>\n' +
 '</form>\n';
 
@@ -91,8 +87,8 @@ function writeTestPage(request, response, config) {
     // response.sendFile(baseDirectoryNormalized + "narrafirma.html");
     writePageStart(request, response, "start");
     // response.write("Example of authentication with passport; authenticated " + request.isAuthenticated());
-    if (request.isAuthenticated()) response.write('<br>Start <a href="/narrafirma.html">NarraFirma project application</a><br>');
-    if (request.isAuthenticated()) response.write('<br>Start <a href="/admin.html">NarraFirma administration tool</a>');
+    if (request.isAuthenticated()) response.write('<p class="narrafirma-login-action">Start NarraFirma <a href="/narrafirma.html">project application</a></p>');
+    if (request.isAuthenticated()) response.write('<p class="narrafirma-login-action">Start NarraFirma <a href="/admin.html">administration tool</a></p>');
     writePageEnd(request, response);
 }
 
@@ -127,8 +123,8 @@ function initialize(app, newConfig) {
         var user = request.user;
         // res.render('account', { user: req.user })
         writePageStart(request, response, "account");
-        response.write("<p>Username: " + user.userIdentifier + "</p>");
-        response.write("<p>Email: " + user.email + "</p>");
+        response.write('<p class="narrafirma-login-text">Username: ' + user.userIdentifier + "</p>");
+        response.write('<p class="narrafirma-login-text">Email: ' + user.email + "</p>");
         writePageEnd(request, response);
     });
     

@@ -50,6 +50,64 @@ select[multiple] { /* only used in story browser */
     height: 140px;
 }
 
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Login page ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
+.narrafirma-login-welcome-and-intro {
+    background-color: #b0d4d4;
+    border-bottom: 4px solid #ffbb84; 
+    padding: 0.2em;
+    margin-bottom: 1em;
+}
+
+h2.narrafirma-login-welcome {
+    font-size: 1.6em;
+    font-weight: bold;
+    margin-left: 0.2em;
+}    
+
+h2.narrafirma-login-hello {
+    padding: 0.5em;
+    font-size: 1.2em;
+    font-style: italic;
+}
+
+p.narrafirma-login-text {
+    padding: 0.5em;
+    font-size: 1.1em;
+}
+
+p.narrafirma-login-intro {
+    padding: 0 0 0 0.7em;
+    font-size: 1em;
+}
+
+p.narrafirma-login-action {
+    font-size: 1.1em;
+    margin: 1em 0 0 1.5em;
+}
+
+input[type="submit"].narrafirma-login-button {
+    background-color: #ffbb84;
+    box-shadow: 1px 1px 1px gray;
+    margin: 0.4em;
+    padding: 0.4em;
+    white-space: nowrap;
+    cursor: pointer;
+    font-size: 1em;
+}
+
+input[type="text"].narrafirma-login-input {
+    padding: 0.2em;
+}
+
+input[type="password"].narrafirma-login-input {
+    padding: 0.2em;
+}
+
+input[type="submit"].narrafirma-login-button:hover {
+    background-color: #ffa25f;
+}
+
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Navigation bar ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 #navigationDiv {
