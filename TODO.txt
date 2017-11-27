@@ -1,176 +1,162 @@
-==== NarraFirma TODO list:
+==== NarraFirma to-do list:
 
 H - high priority
 M - medium priority
 L - low priority
 W - wish list
-X - not doing right now (might do later)
+
+------------- Infrastructure -------------
+
+BUILD
+? Remove Lodash dependency (maybe?)
+
+VERSIONING
+M Create script or procedure to deal with SVN for WordPress' plugin archive
+
+LOGGING
+W Think through logging in the server, perhaps using a library
+    Ensure useful server logs are kept
+    Fix issue with PNIWorkbookServer.conf that it uses logs directory that is not server-data/logs
+W Think through logging in the client, perhaps using a library
+    Client application could report errors to server or another service
+    Client application could report usage metrics to server or another service
+W Support for socket.io to track recently added survey results and whether survey is enabled
+W Support for socket.io to replace the need for polling for changes
+
+TRANSLATION
+W Translate report answers as needed for those types like selections
+W Final review of all strings in code looking for TODO translate items or similar
+W Add support for surveys that can be in multiple languages
+
+TESTING
+W Unit tests
+W Continuous integration server that runs tests
+
+SECURITY
+W Hash password when sending from client to server (not strictly needed if use ssh, and without ssh everything is potentially insecure from MITM attacks)
+
+------------- Data storage -------------
+
+POINTREL
+W Check time server on startup in server to see if accurate enough when timestamping versions; maybe same for client
+W Ensure timestamp for latest triple store messages is being set on server and not client
+W Simplify Pointrel system further, like to not have message trace adding so PHP WordPress plugin code can be simpler and quicker
+W Simplify Pointrel system further, like to only store triples instead of general arbitrary message objects
+
+QUESTIONS
+W Improve how options are specified for questions in question designer rather than use text box
+W Make sure that short name IDs entered by user when defining questions are unique among themselves
+W Think about issue of including project name in stories and triple a field in relation to backup/restore
+W Think about what happens to data if questions change somehow in future versions of the software
+
+GRID
+M Implement duplication of items in grid
+
+EXPORT/IMPORT
+W Add way to clear out or reset old survey results? Or maybe partition them by survey?
+
+VALIDATION
+W Think about validation and how or when or if it should be done
+W Validation of page data as progress through a step
+W Validation in general when progress through tabs and error reporting
+W Validation of text fields for empty
+W Validation of text fields for length
+W Validation for checkBoxes limited by maximum number of choices as validation error
+
+DATA ENTRY
+W Autosave for current textarea or input text based on timer even if you don't leave it
+
+------------- Survey system -------------
 
 SURVEY GENERAL
 M If logged in, survey should not use "anonymous" user to connect (or should ask)
-L Ideally, all responses for selections (other than numerical sliders) should have unique IDs for each response and the stored response should have the ID as well as the chosen text at the time.
-    Add support for short names (ids) for all options for survey questions
-X Only store reference to questionnaire file resource, not the resource itself [maybe leaving as is?]
-X Support translations or other categories for multiple question texts or choice texts for a survey
-X Some easy way for two or more survey sliders to be close together under the same label
+L All responses for selections (other than sliders) should have unique IDs for each response, and the stored response should have the ID as well as the chosen text at the time.
+W Add unique ID so long survey results can be saved as progressed through and finished later if participant has unique ID
 W Better mobile support for taking survey on cell phones
-W After "update story form", is correct in "review incoming stories" under Edit but not under View (does not update for new form)
+W Support uploading of images
+W Compliance with accessibility standards
+W Only store reference to questionnaire file resource, not the resource itself
+W Support translations or other categories for multiple question texts or choice texts for a survey
+W Some easy way for two or more survey sliders to be close together under the same label 
 
 SURVEY QUESTIONS
-X Remove "What type of question is this?" question from story-eliciting questions page - NO - it's okay
-X Survey - add checkbox for "is question answer required" (maybe later)
-X Survey - start page required (what to do if nothing entered)
-X Survey - improve styling on radio buttons for question or alternative approach (maybe later)
-X Survey - back button in browser -- deal with so don't lose data
 W Ideally way to do conditional question or answer (piping), especially to pick participant group
 W Need "other" field for radiobuttons and checkboxes (maybe dropdown, probably not)
+W Survey - add checkbox for "is question answer required"
+W Survey - start page required (what to do if nothing entered)
+W Survey - improve styling on radio buttons for question or alternative approach 
+W Survey - back button in browser -- deal with so don't lose data
 
-IDs
-X Improve how options are specified for questions in question designer rather than use text box
-X Make sure that short name IDs entered by user when defining questions are unique among themselves
+------------- PNI phases -------------
 
-EXPORT/IMPORT
-X Add way to clear out or reset old survey results? Or maybe partition them by survey?
+PLANNING
 
-LOGGING
-X Think through logging in the server, perhaps using a library
-    Ensure useful server logs are kept
-    Fix issue with PNIWorkbookServer.conf that it uses logs directory that is not server-data/logs
-X Think through logging in the client, perhaps using a library
-    Client application could report errors to server or another service
-    Client application could report usage metrics to server or another service
-
-STORY THEMER
-X Support storyThemer -- a widget where people look at each story, give it 1-3 themes, then merge the themes into smaller numbers of themes
-X Page to enter themes for stories
-X Page to cluster themes into final themes
-
-GRAPH BROWSER
-M Should multiple histograms have stats calculated between them even if checkboxes?
-L In general, size graphs better based on window size
-L Support graphBrowser common maximum for multiple histograms
-
-PATTERN EXPLORER
-X Need a flip axis for slider for catalysis when graphing?
-
-CATALYSIS REPORT
-X Show percentages for question answers in title hover over questions in catalysis report configuration - not important
+COLLECTION
+L In general, size graphs better based on window size 
+W Add support for providing story browser filter options based on analyzing data from surveys to collect all actual choices as well as current questionnaire(s)
+W Remember previous filtering options for any question in story browser
+W Story list using dgrid with accordion for story
+W Add templates for annotation questions (re-add "Copy a question from a template" button, removed in commit 2dde70086198417d2d005e3a6707045c18823d22 2015-09-20 19:09:57)
 
 CATALYSIS
-X Support an excerpt list somehow --> copy and paste from story list - good enough
-X Need to be able to select text in existing story to AddToExcerpts
-X Support storiesList -- for choosing a resonant story
+W Need a flip axis for slider for catalysis when graphing? 
+W Support common maximum for multiple histograms 
+W Support multiple item selection in clustering diagram
+W Show percentages for question answers in title hover over questions in catalysis report configuration --> not important
+W Support storyThemer -- a widget where people look at each story, give it 1-3 themes, then merge the themes into smaller numbers of themes --> yes but time consuming
+W Support an excerpt list somehow --> copy and paste from story list is good enough
+W Need to be able to select text in existing story to AddToExcerpts
+W Support storiesList -- for choosing a resonant story
 
 SENSEMAKING
 
+INTERVENTION
+W One project outcome item created per participant group
+
 RETURN
 
-GRID
-L When duplicate list item, add "copy" to name (different for each) -- duplicating is not being used
+------------- Project management -------------
+
+GENERAL
+W Support Undo (including multi-user aspects with log)
+W User should be able to duplicate a project
+W User should be able to delete a project
+
 
 CONFIGURATION
 ? Add project configuration page?
 
-ALERTS
-X Look at all alerts in code and make into nicer GUI feedback
-
-TRANSLATION
-X Translate report answers as needed for those types like selections
-X Final review of all strings in code looking for TODO translate items or similar
-
-BUILD
-Remove Lodash dependency (maybe?)
-
-VALIDATION
-X Think about validation and how or when or if it should be done
-X Validation of page data as progress through a step
-X Validation in general when progress through tabs and error reporting
-X Validation of text fields for empty
-X Validation of text fields for length
-X Validation for checkBoxes limited by maximum number of choices as validation error
-
 PRINTING
-X Print section reports as HTML 
+W Print section reports as HTML 
+W Maybe have a summary page at end of each section (where they put in final notes on that phase) CFK
+W Generate HTML reports that can be downloaded
+W Maybe replace reports with one page to export report (or export data)
+W Generate PDF reports
 
-GENERAL
+------------- User interface -------------
+
+USABILITY
+W Copy selected stories to clipboard and/or a popup window CFK
+W Improve dashboards, perhaps with checkmarks and thinking through completion feedback to be better
+W Support checkBoxesWithPull -- a set of check boxes where the display texts are drawn from a list entered previously (like for participant list)
+
+MULTI USER
+W Support mult-user chat
+W Notify user of multi-user edit conflicts
+
+ALERTS / MESSAGES
+W Look at all alerts in code and make into nicer GUI feedback
 M Report when a project can't be read by the current user even if the survey can be read (fix limitation of lumping permissions)
-M Create script or procedure to deal with SVN for WordPress' plugin archive
 M Improve reporting on startup for loading project data with some kind of progress indicator or remaining count
-M Put a copy of install help from NarraFirma website into source tree as a README file 
-
-COMMUNICATIONS
 M When import story form, hundreds of triples can be generated which take minutes to send to the server (with no progress feedback, even though done in background) -- may be related to console logging
-
-==== Wish list:
-
-Think about issue of including project name in stories and triple a field in realation to backup/restore
-
-Add templates for annotation questions and re-add button removed in commit 2dde70086198417d2d005e3a6707045c18823d22 2015-09-20 19:09:57
-
-Ensure timestamp for latest triple store messages is being set on server and not client
-Simplify Pointrel system further, like to not have message trace adding so PHP WordPress plugin code can be simpler and quicker
-Simplify Pointrel system further, like to only store triples instead of general arbitrary message objects
-
-Autosave for current textarea or input text based on timer even if you don't leave it
-
-Maybe have a summary page at end of each section (where they put in final notes on that phase)
-Generate HTML reports that can be downloaded
-Maybe replace reports with one page to export report (or export data)
-
-Support Undo (including multi-user aspects with log)
-Support mult-user chat
-Notify user of multi-user edit conflicts
-
-Copy selected stories to clipboard and/or a popup window
-
-Support multiple item selection in clustering diagram
-
-Improve look of login and start pages generated by Node.js server
-Application should have better support when you need to re-authenticate due to server restart (rather than opening different browser tab by hand)
-
-User can duplicate a project
-User can delete a project
-
-Think about what happens to data if questions change somehow in future versions of the software
-
-Improve dashboards, perhaps with green checkmarks and thinking through completion feedback to be better
-
-Support for socket.io to track recently added survey results and whether survey is enabled
-Support for socket.io to replace the need for polling for changes
-
-Add support for surveys that can be in multiple languages
-Add support for providing story browser filter options based on analyzing data from surveys to collect all actual choices as well as current questionnaire(s)
-
-Remember previous filtering options for any question in story browser
-
-Better font size, maybe user adjustable
-
-Unit tests
-
-Continuous integration server that runs tests
-
-Generate PDF reports
-
-Hash password when sending from client to server (not strictly needed if use ssh, and without ssh everything is potentially insecure from MITM attacks)
-
-==== Might not do 
-
-Story list using dgrid with accordion for story
-Support checkBoxesWithPull -- a set of check boxes where the display texts are drawn from a list entered previously (like for participant list)
-
-One project outcome item created per participant group
-
-Check time server on startup in server to see if accurate enough when timestamping versions; maybe same for client
-
-Survey - maybe add unique ID so long survey results can be saved as progressed through and finished later if you have the unique ID....
-
-Support imageUploader
-Support storyBrowserCount
+W Application should have better support when you need to re-authenticate due to server restart (rather than opening different browser tab by hand)
 
 ==== DONE
 
 ---- Release 1.0.0
 
+DONE Improve look of login and start pages generated by Node.js server
+DONE After "update story form", is correct in "review incoming stories" under Edit but not under View (does not update for new form)
 DONE User definable CSS themes for surveys
 DONE Text search function (at least for stories) - can do this by searching in the "review incoming stories" table - added help to tell user this
 DONE When a Grid item is added but no data is entered like for a catalysis report, the entry in a select looks wrong - now warns user
