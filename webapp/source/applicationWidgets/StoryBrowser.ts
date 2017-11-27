@@ -18,26 +18,22 @@ import GridWithItemPanel = require("../panelBuilder/GridWithItemPanel");
 var unansweredIndicator = "{Unanswered}";
 
 function isMatch(story: surveyCollection.Story, questionChoice, selectedAnswerChoices) {
-    // console.log("isMatch", questionChoice, selectedAnswerChoices);
     if (!questionChoice) return true;
     var questionAnswer = story.fieldValue(questionChoice.id);
     if (questionAnswer === undefined || questionAnswer === null || questionAnswer === "") {
         questionAnswer = unansweredIndicator;
     } else if (typeof questionAnswer === "object") {
         // checkboxes
-        // console.log("checkboxes", questionAnswer);
         for (var key in questionAnswer) {
             if (selectedAnswerChoices[key] && questionAnswer[key]) return true;
         }
         return false;
     }
     questionAnswer = "" + questionAnswer;
-    // console.log("questionAnswer", questionAnswer);
     return !!selectedAnswerChoices[questionAnswer];
 }
     
 function optionsFromQuestion(question, stories) {
-    // console.log("*** optionsFromQuestion", question, stories);
     // TODO: Translate text for options, at least booleans?
     var options = [];
     
@@ -46,11 +42,9 @@ function optionsFromQuestion(question, stories) {
     // Compute how many of each answer -- assumes typically less than 200-1000 stories
     var totals = {};
     stories.forEach(function(story: surveyCollection.Story) {
-        // console.log("optionsFromQuestion item", item, question.id, item[question.id]);
         var choice = story.fieldValue(question.id);
         if (choice === undefined || choice === null || choice === "") {
             // Do not include "0" as unanswered
-            // console.log("&&&& Undefined or empty choice", choice);
             choice = unansweredIndicator;
         }
         var oldValue;
@@ -70,31 +64,24 @@ function optionsFromQuestion(question, stories) {
     var count;
     
     if (question.displayType === "select") {
-        // console.log("select", question, question.valueOptions);
         question.valueOptions.forEach(function(each) {
-            // console.log("option", question.id, each);
             count = totals[each];
             if (!count) count = 0;
             options.push({label: each + " (" +  count + ")", value: each});
         });
     } else if (question.displayType === "radiobuttons") {
-        // console.log("radiobuttons", question, question.valueOptions);
         question.valueOptions.forEach(function(each) {
-            // console.log("option", question.id, each);
             count = totals[each];
             if (!count) count = 0;
             options.push({label: each + " (" +  count + ")", value: each});
         });
     } else if (question.displayType === "checkboxes") {
-        // console.log("checkboxes", question, question.valueOptions);
         question.valueOptions.forEach(function(each) {
-            // console.log("option", question.id, each);
             count = totals[each];
             if (!count) count = 0;
             options.push({label: each + " (" +  count + ")", value: each});
         });
     } else if (question.displayType === "slider") {
-        // console.log("slider", question, question.displayConfiguration);
         for (var sliderTick = 0; sliderTick <= 100; sliderTick++) {
             count = totals[sliderTick];
             if (!count) count = 0;
@@ -110,19 +97,15 @@ function optionsFromQuestion(question, stories) {
             options.push({label: sliderTickText + " (" +  count + ")", value: sliderTick});
         }
     } else if (question.displayType === "boolean") {
-        // console.log("boolean", question);
         // TODO; Not sure this will really be right with true/false as booleans instead of strings
         ["true", "false"].forEach(function(each) {
-            // console.log("option", id, each);
             count = totals[each];
             if (!count) count = 0;
             options.push({label: each + " (" +  count + ")", value: each});
         });
     } else if (question.displayType === "checkbox") {
-        // console.log("checkbox", question);
         // TODO; Not sure this will really be right with true/false as checkbox instead of strings
         [true, false].forEach(function(each) {
-            // console.log("option", id, each);
             count = totals["" + each];
             if (!count) count = 0;
             options.push({label: each + " (" +  count + ")", value: each});
@@ -190,13 +173,10 @@ class Filter {
     }
     
     static controller(args) {
-        // console.log("Making Filter: ", args.name);
         return new Filter(args);
     }
     
     static view(controller, args) {
-        // console.log("Filter view called");
-        
         return controller.calculateView();
     }
 
@@ -214,9 +194,7 @@ class Filter {
     }
         
     calculateView() {
-        // console.log("calculateView this", this);
         var choices = this.storyBrowser.choices || [];
-        // console.log("^^^^^^^^^^^^ filter choices", choices);
         var selectOptions = choices.map((option) => {
             var optionOptions = {value: option.value, selected: undefined};
             if (this.selectedQuestion === option.value) optionOptions.selected = 'selected';
@@ -295,6 +273,7 @@ function getQuestionDataForSelection(questions, event) {
 class StoryBrowser {
     project: Project = null;
     storyCollectionIdentifier: string = null;
+    questionnaire: null;
     questions = [];
     choices = [];
     allStories = [];
@@ -330,18 +309,14 @@ class StoryBrowser {
     }
 
     static controller(args) {
-        // console.log("Making StoryBrowser: ", args.name);
         return new StoryBrowser(args);
     }
     
     static view(controller, args) {
-        // console.log("StoryBrowser view called");
-        
         return controller.calculateView(args);
     }
     
     calculateView(args) {
-        // console.log("StoryBrowser view");
         var panelBuilder = args.panelBuilder;
         
         // Handling of caching of questions and stories
@@ -349,7 +324,6 @@ class StoryBrowser {
         if (storyCollectionIdentifier !== this.storyCollectionIdentifier) {
             // TODO: Maybe need to handle tracking if list changed so can keep sorted list?
             this.storyCollectionIdentifier = storyCollectionIdentifier;
-            // console.log("storyCollectionIdentifier changed", this.storyCollectionIdentifier);
             this.currentStoryCollectionChanged(this.storyCollectionIdentifier);
             
             // What to do about resetting the filters?
@@ -399,10 +373,9 @@ class StoryBrowser {
     }
     
     currentStoryCollectionChanged(storyCollectionIdentifier) {
-        // console.log("currentStoryCollectionChanged", this, storyCollectionIdentifier);
-
         this.questions = [];
         this.storyCollectionIdentifier = storyCollectionIdentifier;
+        this.questionnaire = surveyCollection.getQuestionnaireForStoryCollection(storyCollectionIdentifier);
 
         var storyNameAndTextQuestions = questionnaireGeneration.getStoryNameAndTextQuestions()
         
@@ -445,7 +418,8 @@ class StoryBrowser {
     buildStoryDisplayPanel(panelBuilder: PanelBuilder, storyModel: surveyCollection.Story) {
         var storyDisplay;
         if (panelBuilder.readOnly) {
-            storyDisplay = storyCardDisplay.generateStoryCardContent(storyModel, undefined, {"location": "storyBrowser"});
+            // override questionnaire pointed to by storyModel because it may have been updated using the "update story form" button
+            storyDisplay = storyCardDisplay.generateStoryCardContent(storyModel, undefined, {"location": "storyBrowser", "questionnaire": this.questionnaire});
         } else {
             storyDisplay = panelBuilder.buildFields(this.questions, storyModel);
         }
@@ -467,13 +441,10 @@ class StoryBrowser {
     }
     
     getFilteredStoryList() {
-        // console.log("filter pressed", storyBrowserInstance);
         var question1Choice = this.filter1.selectedQuestion;
         var answers1Choices = this.filter1.selectedAnswers;
-        // console.log("question1", question1Choice, "answers1", answers1Choices);
         var question2Choice = this.filter2.selectedQuestion;
         var answers2Choices = this.filter2.selectedAnswers;
-        // console.log("question2", question2Choice, "answers2", answers2Choices);  
         var filterFunction = function (item) {
             var match1 = isMatch(item, question1Choice, answers1Choices);
             var match2 = isMatch(item, question2Choice, answers2Choices);
@@ -486,15 +457,12 @@ class StoryBrowser {
     
     setStoryListForCurrentFilters() {
         var filteredResults = this.getFilteredStoryList();
-        // console.log("Filtered results", filteredResults);
         this.filteredStories = filteredResults;
         this.grid.updateData();
-        // console.log("finished setting list with filtered results", filteredResults);
     }
     
     /* TODO: Probably need to implement something like this
     function loadLatestStories(storyBrowserInstance, allStories) {
-        // console.log("loadLatestStories", storyBrowserInstance, allStories);
         storyBrowserInstance.dataStore.setData(allStories);
         
         // Need to update choices in filters or clear them out; reettign value forces update
