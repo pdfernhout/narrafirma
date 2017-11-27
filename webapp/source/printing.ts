@@ -730,7 +730,7 @@ export function printCatalysisReport() {
     }
          
     var project = Globals.project();
-    var catalysisReportName = Globals.clientState().catalysisReportIdentifier();
+    var catalysisReportName = Globals.clientState().catalysisReportName();
     if (!catalysisReportName) {
         alert("Please pick a catalysis report to print.");
         return;
