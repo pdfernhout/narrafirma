@@ -41,6 +41,7 @@ function questionWasNotAnswered(question, value) {
 }
 
 function nameForQuestion(question) {
+    if (typeof question === "string") return escapeHtml(question);
     if (question.displayName) return escapeHtml(question.displayName);
     if (question.displayPrompt) return escapeHtml(question.displayPrompt);
     return escapeHtml(question.id);
@@ -804,7 +805,7 @@ export function d3HistogramChartForQuestion(graphBrowserInstance: GraphHolder, s
             }
         }
     }
-    return d3HistogramChartForValues(graphBrowserInstance, values, unanswered.length, matchingStories, style, chartSize, chartTitle, xAxisLabel, xAxisStart, xAxisEnd, storiesSelectedCallback);
+    return d3HistogramChartForValues(graphBrowserInstance, values, choiceQuestion, choice, unanswered.length, matchingStories, style, chartSize, chartTitle, xAxisLabel, xAxisStart, xAxisEnd, storiesSelectedCallback);
 }
 
 export function d3HistogramChartForDataIntegrity(graphBrowserInstance: GraphHolder, scaleQuestions, dataIntegrityType) {
@@ -866,10 +867,10 @@ export function d3HistogramChartForDataIntegrity(graphBrowserInstance: GraphHold
         }
         unansweredCount = -1; // don't show; meaningless
     }
-    return d3HistogramChartForValues(graphBrowserInstance, values, unansweredCount, [], "singleChartStyle", "large", dataIntegrityType, dataIntegrityType, "", "", null);
+    return d3HistogramChartForValues(graphBrowserInstance, values, null, null, unansweredCount, [], "singleChartStyle", "large", dataIntegrityType, dataIntegrityType, "", "", null);
 }
 
-export function d3HistogramChartForValues(graphBrowserInstance: GraphHolder, plotItems, unansweredCount, matchingStories, style, chartSize, chartTitle, xAxisLabel, xAxisStart, xAxisEnd, storiesSelectedCallback) {
+export function d3HistogramChartForValues(graphBrowserInstance: GraphHolder, plotItems, choiceQuestion, choice, unansweredCount, matchingStories, style, chartSize, chartTitle, xAxisLabel, xAxisStart, xAxisEnd, storiesSelectedCallback) {
     
     var margin = {top: 20, right: 15, bottom: 60, left: 80};
     var isSmallFormat = style == "smallChartStyle";
@@ -934,8 +935,8 @@ export function d3HistogramChartForValues(graphBrowserInstance: GraphHolder, plo
         .range([chart.height, 0]);
     
     chart.yScale = yScale;
-    // chart.subgraphQuestion = choiceQuestion;
-    // chart.subgraphChoice = choice;
+    chart.subgraphQuestion = choiceQuestion;
+    chart.subgraphChoice = choice;
     
     // Extra version of scale for calculating heights without subtracting as in height - yScale(value)
     var yHeightScale = d3.scale.linear()
