@@ -490,8 +490,6 @@ function htmlForLabelAndValue(key, object) {
 }
 
 function addStatisticsPanelForChart(chartPane: HTMLElement, statistics) {
-    console.log("chartPane.classList", chartPane.classList);
-
     var statsPane = document.createElement("div");
     var html = "";
     if (statistics.significance.substring("None") === 0 || statistics.calculated.length !== 0) {
