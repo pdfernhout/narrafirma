@@ -143,6 +143,57 @@ and to keep good records for the future.
 
 == Changelog ==
 
+= 1.0.0 =
+
+* Added: New data integrity graphs showing overall patterns across all questions (all scale values; per-participant means and sd; number of non-answers)
+* Added: User definable CSS for on-line and printed surveys, story cards, catalysis report
+* Added: Qualitative (free-text) answers in catalysis patterns
+* Added: More user definable fields to customize on-line story collection
+* Added: Multiple scatterplots to show scale+scale+choice question combinations
+
+* Added: Link to choose another project without logging out
+* Added: Visible slider number (0 to 100) and way to set value precisely 
+* Added: Option to set maximum number of stories participants can tell
+* Added: Story count per participant (framed as a "question" so it can form patterns with other questions)
+* Added: Auto-create story form option (using all existing questions)
+* Added: Can now choose which questions to include on story cards
+* Added: More control over the look of story cards, including custom CSS but also which questions to include and how to draw ranges
+* Added: Ability to set all story form options during CSV import
+* Added: Way to distinguish among participants during import (to count stories per participant)
+* Added: Scale conversion during import (for scale data collected with ranges other than 0-100)
+
+* Added: Way to choose types of graphs to view
+* Added: Counts above bars in bar graphs and histograms
+* Added: Correlation lines (optiona) in scatterplots
+* Added: Support for multiple observations per pattern (graph)
+* Added: Observation strength field to sort strong from weak patterns
+* Added: Interpretations to patterns list (can sort by them)
+* Added: More options for catalysis graphs including histogram bins, scatterplot dot size and opacity
+* Added: More user-supplied sections for catalysis report
+* Added: Unanswered count (number of stories with no answer to the question) to all graphs
+
+* Changed: Improved data import, with better error handling and help
+* Changed: Overhaul of screen designs and color palettes
+
+* Changed: Improved statistical information displays; improved reporting on statistical errors
+* Changed: Better error reporting and alerts to user
+* Changed: More tips and FAQ items to help system
+* Changed: More verification of statistical result against same tests in other software (you can't see this but it's important)
+* Changed: More help in various places to deal with questions people have had
+
+* Fixed: Explore Patterns page now shows cancelable progress bar when large numbers of statistical results are being calculated 
+* Fixed: Bug in chi-squared statistical calculation that disqualified too many comparisons
+* Fixed: Survey image now works
+* Fixed: Catalysis "ideas" now print in report
+* Fixed: Catalysis clustering diagram now updates better for changed interpretatations on previous page
+* Fixed: No longer showing questions in graphing sections (spot-check graphs, catalysis) that are not used in current story collection
+* Fixed: Eliciting question now included in spot-check graphs and catalysis
+* Fixed: Better graph sizing and scaling
+* Fixed: Statistical results no longer say "p=0.000" when p<0.001
+* Fixed: Better feedback when taking survey, showing that story has been submitted and accepted
+* Fixed: Better error handling for missing or untitled items (like story collections and catalysis reports)
+* Fixed: Dividing line (hr) no longer displays on story cards when they are being printed
+
 = 0.9.8 =
 
 * Added clarifying headers and popup hints for all links on dashboard (project phase) pages.
