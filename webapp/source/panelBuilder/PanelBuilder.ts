@@ -179,8 +179,6 @@ class PanelBuilder {
     }
     
     buildField(model, fieldSpecification) {
-        // console.log("buildField", fieldSpecification);
-        
         var displayVisible = fieldSpecification.displayVisible;
         if (displayVisible === undefined) displayVisible = true;
         if (typeof displayVisible === "function") displayVisible = displayVisible(this, model, fieldSpecification);
@@ -216,7 +214,6 @@ class PanelBuilder {
     
     // Returns array of widgets built from the fieldSpecifications
     buildFields(fieldSpecifications, model) {
-        // console.log("buildFields", fieldSpecifications);
         if (!fieldSpecifications) {
             throw new Error("fieldSpecifications are not defined");
         }
@@ -232,7 +229,6 @@ class PanelBuilder {
     
     // Build an entire panel; panel can be either a string ID referring to a panel or it can be a panel definition itself
     buildPanel(panelOrPanelID, model) {
-        // console.log("buildPanel", panelOrPanelID);
         var fieldSpecifications;
         if (_.isString(panelOrPanelID)) {
             var panel = this.getPanelDefinitionForPanelID(panelOrPanelID);
@@ -265,7 +261,6 @@ class PanelBuilder {
             throw new Error("No panelSpecification found by PanelBuilder for panelID: " + panelID);
         }
         
-        // console.log("getPanelDefinitionForPanelID", panelID, panelSpecification);
         return panelSpecification;
     }
     
@@ -281,7 +276,6 @@ class PanelBuilder {
             throw new Error("No pageSpecification found by PanelBuilder for pageID: " + pageID);
         }
         
-        // console.log("getPageSpecificationForPageID", pageID, pageSpecification);
         return pageSpecification;
     }
     
@@ -327,7 +321,6 @@ class PanelBuilder {
         if (!pageID) pageID = this.currentHelpPage;
         var helpID = fieldSpecification.helpID;
         if (!helpID) helpID = fieldSpecification.id;
-        // console.log("helpPageURLForField", fieldSpecification, section, pageID, helpID);
         var url = "";   
         if (section && pageID) {
             url = '/help/' + section + "/help_" + pageID + '.html';

@@ -28,7 +28,6 @@ class PanelSpecificationCollection {
     }
     
     addPanelSpecification(panelSpecification) {
-        // console.log("addPanelSpecification", panelSpecification);
         // TODO: Maybe should copy panelSpecification to ensure it won't change if changed latar by caller?
         this.allPanels.push(panelSpecification);
         this.panelIDToPanelSpecificationMap[panelSpecification.id] = panelSpecification;
@@ -55,19 +54,14 @@ class PanelSpecificationCollection {
             }
         }
         
-        // console.log("about to loop over panelFields", panelSpecification.panelFields.length);
         for (var i = 0; i < panelSpecification.panelFields.length; i++) {
             var fieldSpecification = panelSpecification.panelFields[i];
-            // console.log("about to call addFieldSpecification", fieldSpecification);
             this.addFieldSpecification(modelClass, fieldSpecification);
-            // console.log("done with call");
         }
     }
     
     addFieldSpecification(modelClass, fieldSpecification) {
-        // console.log("addFieldSpecification called", modelClass, fieldSpecification);
         var model = this.modelClassToModelFieldSpecificationsMap[modelClass];
-        // console.log("adding field specification", modelClass, fieldSpecification, model);
         // TODO: Is this modelClass line still needed?
         fieldSpecification.modelClass = modelClass;
         this.allFieldSpecifications.push(fieldSpecification);
@@ -95,7 +89,6 @@ class PanelSpecificationCollection {
     
     // This builds a specific model based on the name of the model, using data from one or more pages or panels that define that model
     buildModel(modelName) {
-        // console.log("buildModel request", modelName);
         var model = {__type: modelName};
         var modelFieldSpecifications = this.modelClassToModelFieldSpecificationsMap[modelName];
         if (!modelFieldSpecifications) {
@@ -110,14 +103,11 @@ class PanelSpecificationCollection {
                 model[fieldSpecification.id] = this.initialDataForField(fieldSpecification);
             }
         }
-        // console.log("buildModel result", modelName, model);
         return model;
     }
     
     // This ignores the model type for the page or panel and just puts all the model fields into the supplied model
     addFieldsToModel(model, fieldSpecifications) {
-        // console.log("addFieldsToModel request", fieldSpecifications);
-    
         for (var i = 0; i < fieldSpecifications.length; i++) {
             var fieldSpecification = fieldSpecifications[i];
             if (!fieldSpecification.valueType) console.log("WARNING: Missing valueType for fieldSpecification", fieldSpecification);
@@ -125,7 +115,6 @@ class PanelSpecificationCollection {
                 model[fieldSpecification.id] = this.initialDataForField(fieldSpecification);
             }
         }
-        // console.log("addFieldsToModel result", model);
         return model;
     }
     

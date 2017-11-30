@@ -48,13 +48,10 @@ class GraphBrowser {
     }
     
     static controller(args) {
-        // console.log("Making GraphBrowser: ", args);
         return new GraphBrowser(args);
     }
     
     static view(controller, args) {
-        // console.log("GraphBrowser view called");
-        
         return controller.calculateView(args);
     }
     
@@ -63,15 +60,12 @@ class GraphBrowser {
     // TODO: Track new incoming stories
     
     calculateView(args) {
-        // console.log("GraphBrowser view called", this);
-
         // Handling of caching of questions and stories
         var storyCollectionIdentifier = valuePathResolver.newValuePathForFieldSpecification(args.model, args.fieldSpecification)();
         
         if (storyCollectionIdentifier !== this.storyCollectionIdentifier) {
             // TODO: Maybe need to handle tracking if list changed so can keep sorted list?
             this.storyCollectionIdentifier = storyCollectionIdentifier;
-            // console.log("storyCollectionIdentifier changed", this.storyCollectionIdentifier);
             this.currentStoryCollectionChanged(this.storyCollectionIdentifier);
         }
         
@@ -88,7 +82,6 @@ class GraphBrowser {
                 m("div", {config: this.insertGraphResultsPaneConfig.bind(this)}),
                 m("div.narrafirma-graphbrowser-heading", "Selected stories (" + this.selectedStories.length + ")"),
                 this.selectedStories.map((story) => {
-                    // console.log("story", story);
                     return m("div", [
                         m("b", story.storyName()),
                         m("br"),
@@ -122,7 +115,6 @@ class GraphBrowser {
     
     storiesSelected(selectedStories) {
         // TODO: Finish
-        // console.log("Stories selected", selectedStories);
         this.selectedStories = selectedStories;
     }
     
@@ -158,17 +150,11 @@ class GraphBrowser {
     }
     
     loadLatestStories() {
-        // console.log("loadLatestStories", this);
-        
         this.graphHolder.allStories = surveyCollection.getStoriesForStoryCollection(this.storyCollectionIdentifier);
-        // console.log("allStories", this.graphHolder.allStories);
-    
         this.updateGraph();
     }
     
     updateGraph() {
-        // console.log("updateGraph", this);
-
         var xAxisQuestionID = this.xAxisSelectValue;
         var yAxisQuestionID = this.yAxisSelectValue;
         
@@ -198,8 +184,6 @@ class GraphBrowser {
             yAxisQuestion = null;
         }
         
-        // console.log("x y axis values", xAxisQuestion, yAxisQuestion);
-        
         if (!xAxisQuestion) return;
         
         var xType = "choice";
@@ -215,26 +199,17 @@ class GraphBrowser {
             }
         }
         
-        // console.log("types x y", xType, yType);
-         
         if (xType === "choice" && yType === null) {
-            // console.log("plot choice: Bar graph");
-            // console.log("barGraph", xAxisQuestion);
             charting.d3BarChartForQuestion(this.graphHolder, xAxisQuestion, this.storiesSelected.bind(this), true);
         } else if (xType === "choice" && yType === "choice") {
-            // console.log("plot choice: Contingency table");
             charting.d3ContingencyTable(this.graphHolder, xAxisQuestion, yAxisQuestion, this.storiesSelected.bind(this));
         } else if (xType === "choice" && yType === "scale") {
-            // console.log("plot choice: Multiple histograms");
             charting.multipleHistograms(this.graphHolder, xAxisQuestion, yAxisQuestion, this.storiesSelected.bind(this));
         } else if (xType === "scale" && yType === null) {
-            // console.log("plot choice: Histogram");
             charting.d3HistogramChartForQuestion(this.graphHolder, xAxisQuestion, null, null, this.storiesSelected.bind(this));
         } else if (xType === "scale" && yType === "choice") {
-            // console.log("plot choice: Multiple histograms");
             charting.multipleHistograms(this.graphHolder, yAxisQuestion, xAxisQuestion, this.storiesSelected.bind(this));
         } else if (xType === "scale" && yType === "scale") {
-            // console.log("plot choice: Scatter plot");
             charting.d3ScatterPlot(this.graphHolder, xAxisQuestion, yAxisQuestion, null, null, this.storiesSelected.bind(this));
         } else {
             console.log("ERROR: Unexpected graph type");

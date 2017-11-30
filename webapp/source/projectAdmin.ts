@@ -61,9 +61,6 @@ var AdminPageDisplayer: any = {
     
     view: function(controller, args) {
         var contentsDiv;
-        
-        // console.log("&&&&&&&&&& view called in AdminPageDisplayer");
-
         var buttonStyleText = "margin-left: 1em;"
         var labelStyleText = "margin-right:0.25em";
         
@@ -263,7 +260,6 @@ function messageReceived(message)  {
 // TODO: Duplicate of what is in application.js
 // TODO: Think more about how to integrate updatedServerStatus this with Mithril
 function updateServerStatus(status, text) {
-    // console.log("++++++++++++++++++++++++++++++++++++++++ updateServerStatus", text);
     // The serverStatusPane may be created only after we start talking to the server
     // if (!serverStatusPane) return;
     
@@ -530,8 +526,6 @@ function setUserPassword(newUserIdentifier, password) {
         hashOfPassword: hashOfPassword
     };
     
-    // console.log("setUserPassword", salt, userCredentials);
-
     var credentialsMessage = {
         "_topicIdentifier": {type: "authenticationInformation", userIdentifier: newUserIdentifier},
         "_topicTimestamp": new Date().toISOString(),

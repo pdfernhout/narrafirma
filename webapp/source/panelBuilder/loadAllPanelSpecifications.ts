@@ -23,7 +23,6 @@ import kludgeForUseStrict = require("../kludgeForUseStrict");
  */
 
 function loadAllPanelSpecifications(panelSpecificationCollection, navigationSections, loadingBase, callback) {
-    // console.log("loadAllPanelSpecifications", loadingBase, navigationSections);
     var panelMetadata = [];
     var navigationModules = navigationSections["navigationModules"];
     var panelSpecification;

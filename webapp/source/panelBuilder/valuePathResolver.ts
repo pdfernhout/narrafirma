@@ -46,8 +46,6 @@ class ValuePathResolver {
         var currentModel = this.baseModel;
         var currentKey: string;
         
-        // console.log("++++++++++++++ resolveModelAndField start", this.valuePath, this.baseModel, Globals);
-        
         // Parse the dependency path
         var pathParts = this.valuePath.split("/");
         
@@ -69,8 +67,6 @@ class ValuePathResolver {
        
         while (pathParts.length > 1) {
             currentKey = pathParts.shift();
-            
-            // console.log("resolveModelAndField", currentModel, currentKey);
             
             // TODO: Hard to distinguish with this between an incorrect path that might reference a field set somewhere to a string
             if (typeof currentModel === "string") {
@@ -116,13 +112,10 @@ class ValuePathResolver {
             useTripleStore: useTripleStore
         };
         
-        // console.log("resolveModelAndField result", result);
-        
         return result;
     }
     
     resolve(value = undefined): any {
-        // console.log("resolve", this.valuePath, value, this);
         var modelAndField = this.resolveModelAndField();
         if (!modelAndField) {
             console.log("ERROR: modelAndField is undefined or null", this);
@@ -175,14 +168,12 @@ class ValuePathResolver {
 }
 
 export function newValuePathForFieldSpecification(model, fieldSpecification) {
-    // console.log("newValuePathForFieldSpecification", fieldSpecification);
     var valuePath: string = fieldSpecification.valuePath;
     if (!valuePath) valuePath = fieldSpecification.id;
     return newValuePath(model, valuePath);
 }
 
 export function newValuePath(model, valuePath: string): Function {
-    // console.log("newValuePath", valuePath);
     var valuePathResolver = new ValuePathResolver(model, valuePath);
     return valuePathResolver.resolve.bind(valuePathResolver);
 }

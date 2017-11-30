@@ -37,9 +37,7 @@ export function exportEntireProject() {
 }
 
 function chooseProjectFileToImport(callback) {
-    // console.log("chooseFileToImport");
     var projectFileUploader = <HTMLInputElement>document.getElementById("projectFileUploader");
-    // console.log("cvsFileUploader", cvsFileUploader);
     projectFileUploader.onchange = function() {
         var file = projectFileUploader.files[0];
         if (!file) {
@@ -62,7 +60,6 @@ export function importEntireProject() {
     
     console.log("importEntireProject");
     chooseProjectFileToImport((contents) => {
-        // console.log("contents", contents);
         var importObject = JSON.parse(contents);
         // importObject.messages.forEach((message) => {
         //    // if (message._topicIdentifier === "surveyResults")
@@ -92,7 +89,6 @@ export function importEntireProject() {
         var messageIndexToSend = 0;
     
         function sendNextMessage() {
-            // console.log("sendNextMessage", messageIndexToSend);
             if (progressModel.cancelled) {
                 alert("Cancelled after importing " + messageIndexToSend + " messages");
             } else if (messageIndexToSend >= importObject.messages.length) {
@@ -136,25 +132,19 @@ function exportProjectCurrentState(includeSurveyResults) {
     var projectCurrentState = {};
     
     var aKeys = Object.keys(tripleStore.indexABC);
-    // console.log("aKeys", aKeys);
     aKeys.sort();
     for (var aKeyIndex = 0; aKeyIndex < aKeys.length; aKeyIndex++) {
         var aKey = aKeys[aKeyIndex];
-        // console.log("aKey", aKey);
         var aObject = tripleStore.indexABC[aKey];
-        // console.log("aObject", aObject);
         var bResult = {};
         projectCurrentState[aKey] = bResult;
         var bKeys = Object.keys(aObject);
         bKeys.sort();
-        // console.log("bKeys", bKeys);
         for (var bKeyIndex = 0; bKeyIndex < bKeys.length; bKeyIndex++) {
             var bKey = bKeys[bKeyIndex];
             bResult[bKey] = aObject[bKey].latestC;
         }
     }
-    
-    // console.log("exportProjectCurrentState", projectCurrentState);
     
     var activeQuestionnaires = null;
     var storyCollections = null;
@@ -215,7 +205,6 @@ export function importProjectCurrentState() {
   
     console.log("importProjectCurrentState");
     chooseProjectFileToImport((contents) => {
-        // console.log("contents", contents);
         var importObject = JSON.parse(contents);
         // importObject.messages.forEach((message) => {
         //    // if (message._topicIdentifier === "surveyResults")
@@ -246,20 +235,16 @@ export function importProjectCurrentState() {
         
         // Prepare triples for adding
         var aKeys = Object.keys(importObject.projectCurrentState);
-        // console.log("aKeys", aKeys);
         for (var aKeyIndex = 0; aKeyIndex < aKeys.length; aKeyIndex++) {
             var aKey = aKeys[aKeyIndex];
             var aKeyObject = JSON.parse(aKey);
             var aObject = importObject.projectCurrentState[aKey];
-            // console.log("aKey", aKey);
-            // console.log("aObject", aObject);
             // Rewrite project references in triples
             if (aKeyObject === importObject.projectIdentifier) {
                 aKeyObject = project.projectIdentifier;
             }
             
             var bKeys = Object.keys(aObject);
-            // console.log("bKeys", bKeys);
             for (var bKeyIndex = 0; bKeyIndex < bKeys.length; bKeyIndex++) {
                 var bKey = bKeys[bKeyIndex];
                 var bKeyObject = JSON.parse(bKey);
@@ -288,10 +273,7 @@ export function importProjectCurrentState() {
         
         var messagesSentCount = 0;
         
-        // console.log("messagesToSend", messagesToSend);
-        
         function sendNextMessage() {
-            // console.log("sendNextMessage", messageIndexToSend);
             if (progressModel.cancelled) {
                 alert("Cancelled after adding " + messagesSentCount + " project triples");
             } else if (messagesSentCount >= messagesToSend.length) {

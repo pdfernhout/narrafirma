@@ -150,7 +150,6 @@ var referenceMarker = "@";
 
 function printHTML(htmlToPrint: string) {
     // Display HTML in a new window
-    // console.log("printHTML", htmlToPrint);
     var w = window.open();
     if (w) {
         w.document.write(htmlToPrint);
@@ -262,10 +261,7 @@ function printQuestionText(question, instructions = "") {
 
 // TODO: Translate
 function printQuestion(question) {
-    // console.log("printQuestion", question.displayType, question);
-    
     var result;
-        
     switch (question.displayType) {
         case "boolean":
             result = [
@@ -377,43 +373,30 @@ function generateHTMLForQuestionnaire(questionnaire) {
 }
 
 export function printStoryForm(model, fieldSpecification, value) {
-    // console.log("printStoryForm");
-    
     var storyCollectionName: string = Globals.clientState().storyCollectionName();
-    
     if (!storyCollectionName) {
         // TODO: translate
         alert("Please select a story collection first.");
         return null;
     }
-
     var questionnaire = surveyCollection.getQuestionnaireForStoryCollection(storyCollectionName);
     if (!questionnaire) return;
-    
     var output = generateHTMLForQuestionnaire(questionnaire);
-    
     printHTML(output);
 }
 
 export function printStoryCards() {
-    // console.log("printStoryCards");
-    
     if (!Globals.clientState().storyCollectionName()) {
         alert("Please select a story collection for which to print story cards.");
         return;
     }
-    
     var storyCollectionName = Globals.clientState().storyCollectionName();
     var allStoriesInStoryCollection = surveyCollection.getStoriesForStoryCollection(storyCollectionName);
     if (!allStoriesInStoryCollection.length) {
         alert("There are no stories in the collection. Please add some stories before you print story cards.");
         return;
     }
-
-    // console.log("allStoriesInStoryCollection", allStoriesInStoryCollection);
-    
     var storyDivs = [];
-
     var project = Globals.project();
     var questionsToInclude = project.tripleStore.queryLatestC(storyCollectionName, "printStoryCards_questionsToInclude"); 
     var customCSS = project.tripleStore.queryLatestC(storyCollectionName, "printStoryCards_customCSS"); 
@@ -443,14 +426,11 @@ export function printStoryCards() {
 
 function printItem(item, fieldsToIgnore = {}) {
     var result = [];
-    // console.log("presentationElement", presentationElement);
     for (var fieldName in item) {
         if (fieldsToIgnore[fieldName]) continue;
         var fieldSpecification = Globals.panelSpecificationCollection().getFieldSpecificationForFieldID(fieldName);
         var shortName = fieldSpecification ? fieldSpecification.displayName : "Problem with: " + fieldName;
         var fieldValue = item[fieldName];
-        // console.log("field", fieldName, fieldValue, shortName, fieldSpecification);
-        // console.log("$", shortName + ":", fieldValue);
         result.push([
             m("div", shortName + ": " + fieldValue)
         ]);
@@ -462,9 +442,7 @@ function printList(list, fieldsToIgnore = {}, printItemFunction: Function = prin
     var result = [];
     var project = Globals.project();
     list.forEach((id) => {
-        // console.log("id", id);
         var item = project.tripleStore.makeObject(id, true);
-        // console.log("presentationElement", presentationElement);
         result.push(printItemFunction(item, fieldsToIgnore));
         result.push([
             printReturn()
@@ -476,8 +454,6 @@ function printList(list, fieldsToIgnore = {}, printItemFunction: Function = prin
 export function exportPresentationOutline() {
     var project = Globals.project();
     var presentationElementsList = project.getListForField("project_presentationElementsList");
-    // console.log("presentationElementsList", presentationElementsList);
-    // console.log("Globals.panelSpecificationCollection()", Globals.panelSpecificationCollection());
     var printItems = [
         m("div", "Presentation Outline generated " + new Date()),
         printReturnAndBlankLine()
@@ -492,7 +468,6 @@ export function exportPresentationOutline() {
 export function exportCollectionSessionAgenda(itemID) {
     var project = Globals.project();
     var collectionSessionAgenda = project.tripleStore.makeObject(itemID, true);
-    // console.log("collectionSessionAgenda", collectionSessionAgenda);
     var activitiesListID = collectionSessionAgenda["collectionSessionPlan_activitiesList"];
     var activitiesList = project.tripleStore.getListForSetIdentifier(activitiesListID);
     
@@ -515,7 +490,6 @@ export function exportCollectionSessionAgenda(itemID) {
 export function printSensemakingSessionAgenda(itemID) {
     var project = Globals.project();
     var sensemakingSessionAgenda = project.tripleStore.makeObject(itemID, true);
-    // console.log("collectionSessionAgenda", collectionSessionAgenda);
     var activitiesListID = sensemakingSessionAgenda["sensemakingSessionPlan_activitiesList"];
     var activitiesList = project.tripleStore.getListForSetIdentifier(activitiesListID);
     
@@ -536,8 +510,6 @@ export function printSensemakingSessionAgenda(itemID) {
 }
 
 function displayForGraphHolder(graphHolder: GraphHolder) {
-    // console.log("displayForGraph graphHolder", graphHolder);
-    
     if (graphHolder.chartPanes.length > 1) {
         // multiple histograms
         var result = [];
@@ -564,8 +536,6 @@ function displayForGraphHolder(graphHolder: GraphHolder) {
 }
     
 function displayForGraph(graphNode: HTMLElement) {
-    // console.log("graphNode", graphNode);
-    
     var styleNode = document.createElement("style");
     styleNode.type = 'text/css';
     
@@ -579,29 +549,16 @@ function displayForGraph(graphNode: HTMLElement) {
     */
     
     styleNode.innerHTML = "<![CDATA[" + graphResultsPaneCSS + "]]>";
-    
-    // console.log("styleNode", styleNode);
-    
     graphNode.firstChild.insertBefore(styleNode, graphNode.firstChild.firstChild);
-    
-    // console.log("graphNode", graphNode);
-    
     var imageForGraph = null;
     // remove the statistics panel
     var statisticsPanel = <HTMLElement>graphNode.childNodes.item(1);
-    
     graphNode.removeChild(statisticsPanel);
 
     var svgText = (<HTMLElement>graphNode).innerHTML;
-
-    // console.log("svgText", svgText);
-
     var canvas = document.createElement("canvas");
     canvg(canvas, svgText);
     var imgData = canvas.toDataURL("image/png");
-    
-    // console.log("imgData", imgData);
-    
     // m.trust(graphHolder.graphResultsPane.outerHTML),
     imageForGraph = m("img", {
         //src: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO9TXL0Y4OHwAAAABJRU5ErkJggg==",
@@ -625,8 +582,6 @@ function printObservationList(observationList, observationLabel, interpretationN
         
         // TODO: pattern
         var pattern = item.pattern;
-        // console.log("pattern", pattern);
-        
         var selectionCallback = function() { return this; };
         var graphHolder: GraphHolder = {
             graphResultsPane: charting.createGraphResultsPane("narrafirma-graph-results-pane chartEnclosure"),
@@ -673,8 +628,6 @@ function printObservationList(observationList, observationLabel, interpretationN
             ];
         } else {
             var graph = PatternExplorer.makeGraph(pattern, graphHolder, selectionCallback);
-            // console.log("graph", graph);
-            
             return [
                 m("div.narrafirma-catalysis-report-observation", [
                     m("span", {"class": "narrafirma-catalysis-report-observation-label"}, observationLabel),
@@ -805,7 +758,6 @@ export function printCatalysisReport() {
     let itemIndex = 0;
     
     function printNextPerspective() {
-        // console.log("printNextPerspective", perspectiveIndex, interpretationIndex);
         if (progressModel.cancelled) {
             alert("Cancelled after working on " + (perspectiveIndex + 1) + " perspective(s)");
         } else if (perspectiveIndex >= perspectives.length) {

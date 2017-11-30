@@ -6,8 +6,6 @@ import Globals = require("../Globals");
 "use strict";
 
 function add_catalysisReportGraphTypesChooser(panelBuilder: PanelBuilder, model, fieldSpecification) {
-    // console.log("add_catalysisReportGraphTypesChooser", model, fieldSpecification);
-    
     var project = Globals.project();
     
     var catalysisReportIdentifier = Globals.clientState().catalysisReportIdentifier();

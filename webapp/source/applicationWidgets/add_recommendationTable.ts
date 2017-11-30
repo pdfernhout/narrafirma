@@ -44,15 +44,12 @@ function makeTableForParticipantGroup(categoryName: string, project: Project, pa
         recommendationsObject = RecommendationsParser.recommendations();
     }
     // recommendations -> Question -> Answer -> Category -> Option
-    // console.log("recommendationsObject", recommendationsObject);
     
     var optionsForCategory = recommendationsObject.categories[categoryName];
     if (!optionsForCategory) {
         console.log("ERROR: No data for recommendationTable category: ", categoryName);
         optionsForCategory = [];
     }
-    
-    // console.log("recommendations.questions", recommendationsObject.questions);
     
     var table = m("table.recommendationsTable", 
         // Do the header
@@ -72,7 +69,6 @@ function makeTableForParticipantGroup(categoryName: string, project: Project, pa
             var yourAnswer = project.tripleStore.queryLatestC(participantGroupIdentifier, questionName);
             if (yourAnswer === undefined) yourAnswer = project.getFieldValue(questionName);
             if (yourAnswer === undefined) yourAnswer = "";
-            // console.log("questionName yourAnswer", questionName, yourAnswer);
             // Don't put rows where there is no answer
             if (!yourAnswer) return [];
             
@@ -116,7 +112,6 @@ function build_recommendationTable(panelBuilder: PanelBuilder, dialogConfigurati
     var prompt = panelBuilder.buildQuestionLabel(fieldSpecification);
     
     var categoryName = fieldSpecification.displayConfiguration;
-    // console.log("add_recommendationTable category", categoryName);
     
     // var recommendationsForTopic = recommendationsObject.recommendations[categoryName];
     

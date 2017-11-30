@@ -8,17 +8,14 @@ import Globals = require("../Globals");
 "use strict";
 
 function calculate_quizScoreResult(panelSpecificationCollection, modelFunction: Function, dependsOn) {
-    // console.log("quiz score result", dependsOn);
     if (!panelSpecificationCollection) return "ERROR in calculate_quizScoreResult: panelSpecificationCollection is not set";
     var total = 0;
     for (var dependsOnIndex = 0; dependsOnIndex < dependsOn.length; dependsOnIndex++) {
         var questionID = dependsOn[dependsOnIndex];
         var questionAnswer = modelFunction(questionID);
-        // console.log("questionAnswer", questionAnswer, questionID);
         var answerWeight = 0;
         var index = 0;
         if (questionAnswer) {
-            // console.log("questionAnswer", questionAnswer);
             var choices = panelSpecificationCollection.getFieldSpecificationForFieldID(questionID).valueOptions;
             index = choices.indexOf(questionAnswer);
             if (index === choices.length - 1) {
@@ -26,11 +23,9 @@ function calculate_quizScoreResult(panelSpecificationCollection, modelFunction: 
             } else {
                 answerWeight = index;
             }
-            // console.log("answerWeight", answerWeight);
             if (answerWeight < 0) answerWeight = 0;
             total += answerWeight;
         }
-        // console.log("questionAnswer", questionID, questionAnswer, answerWeight, total);
     }
     var possibleTotal = dependsOn.length * 3;
     var percent = Math.round(100 * total / possibleTotal);

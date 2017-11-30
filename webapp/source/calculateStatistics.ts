@@ -59,7 +59,6 @@ function collectDataForField(stories: surveyCollection.Story[], fieldName, conve
 }
 
 function isValidNumber(value) {
-    // console.log("isValidNumber", JSON.stringify(value));
     return value !== "" && !isNaN(value);
 }
 
@@ -123,7 +122,6 @@ function addValue(arrayHolder, fieldName, value) {
 }
 
 function valuesForFieldChoices(stories: surveyCollection.Story[], scaleQuestionID, choiceQuestionID) {
-    // console.log("countsForFieldChoices", stories, field1, field2);
     // TODO: Need to add in fields that were not selected with a zero count, using definition from questionnaire
     var values = {};
     for (var i = 0; i < stories.length; i++) {
@@ -140,14 +138,12 @@ function valuesForFieldChoices(stories: surveyCollection.Story[], scaleQuestionI
 
 /*
 function countsForFieldChoices(stories: surveyCollection.Story[], field1, field2) {
-    // console.log("countsForFieldChoices", stories, field1, field2);
     // TODO: Need to add in fields that were not selected with a zero count, using definition from questionnaire
     var counts = {};
     for (var i = 0; i < stories.length; i++) {
         var value1 = stories[i].fieldValue(field1);
         var value2 = stories[i].fieldValue(field2);
         var value = JSON.stringify([value1, value2]);
-        // console.log("value", value, value1, value2);
         var count = counts[value];
         if (!count) count = 0;
         count++;
@@ -159,7 +155,6 @@ function countsForFieldChoices(stories: surveyCollection.Story[], field1, field2
 
 /*
 function countsForFieldChoice(stories: surveyCollection.Story[], field1) {
-    // console.log("countsForFieldChoice", stories, field1);
     // TODO: Need to add in fields that were not selected with a zero count, using definition from questionnaire
     var counts = {};
     for (var i = 0; i < stories.length; i++) {
@@ -182,12 +177,10 @@ function valueTag(field1, field2) {
     if (field1 === null || field1 === undefined || field1 === "") field1 = "{N/A}";
     if (field2 === null || field2 === undefined || field2 === "") field2 = "{N/A}";
     var result = JSON.stringify([field1, field2]);
-    // console.log("valueTag", result);
     return result;
 }
 
 function countsForTableChoices(stories: surveyCollection.Story[], field1, field2) {
-    // console.log("countsForFieldChoices", stories, field1, field2);
     // TODO: Maybe need to add in fields that were not selected with a zero count, using definition from questionnaire?
     var counts = {};
     var field1Options = {};
@@ -204,7 +197,6 @@ function countsForTableChoices(stories: surveyCollection.Story[], field1, field2
         total++;
     }
     var result = {counts: counts, field1Options: field1Options, field2Options: field2Options, total: total};
-    // console.log("countsForTableChoices", result);
     return result;
 }
 
@@ -234,10 +226,8 @@ export function calculateStatisticsForHistogram(ratioQuestion, stories: surveyCo
     // TODO: Fix this - could report on normality
     
     // var counts = collectDataForField(stories, ratioQuestion.id);
-    // console.log("counts", counts);
     
     var values = collectDataForField(stories, ratioQuestion.id, parseFloat);
-    // console.log("calculateStatisticsForHistogram values", values);
     return calculateStatisticsForHistogramValues(values, -1); // unanswered count not needed for this use
 }
 
@@ -278,8 +268,6 @@ export function calculateStatisticsForMultipleHistogram(ratioQuestion, nominalQu
     var values = valuesForFieldChoices(stories, ratioQuestion.id, nominalQuestion.id);
     var options = Object.keys(values);
 
-    // console.log("calculateStatisticsForMultipleHistogram options", options, values);
-    
     // For every pair, compute test, and take best p score
     var pLowest = Number.MAX_VALUE;
     var uLowest = NaN;
@@ -309,7 +297,6 @@ export function calculateStatisticsForMultipleHistogram(ratioQuestion, nominalQu
             }
             allResults[options[i] + " x " + options[j]] = {p: statResult.p, u: statResult.u, n1: statResult.n1, n2: statResult.n2};
             
-            // console.log("calculateStatisticsForMultipleHistogram statResult", statResult);
             if (statResult.p <= pLowest) {
                 pLowest = statResult.p;
                 uLowest = statResult.u;
@@ -358,7 +345,6 @@ export function calculateStatisticsForScatterPlot(ratioQuestion1, ratioQuestion2
         var significance = " p=" + p.toFixed(3) + " rho=" + r.toFixed(3) + " n=" + n;
     }
     //  + " tt=" + statResult.test.toFixed(3) + " tz=" + statResult.z.toFixed(3) + " tp=" + statResult.prob.toFixed(3) ;
-    // console.log("calculateStatisticsForScatterPlot", rationQuestion1, rationQuestion2, n, t, p);
     return {significance: significance, calculated: ["p", "rho", "n", unansweredKey], p: p, rho: r, n: n, "No answer": data.unansweredCount};
 }
 
@@ -393,15 +379,11 @@ export function calculateStatisticsForTable(nominalQuestion1, nominalQuestion2, 
     // both not continuous -- look for a 'correspondence' between counts using Chi-squared test
     // Can't calculate a statistic if one or both are mutiple answer checkboxes
     
-    // console.log("calculateStatisticsForTable", nominalQuestion1, nominalQuestion2);
-    
     if (nominalQuestion1.displayType === "checkboxes" || nominalQuestion2.displayType === "checkboxes") {
         return {significance: "None (choices not mutually exclusive)", calculated: []};
     }
     
     var counts = countsForTableChoices(stories, nominalQuestion1.id, nominalQuestion2.id);
-    // console.log("counts", counts);
-    
     var observed = [];
     var expected = [];
     
@@ -488,10 +470,6 @@ export function calculateStatisticsForTable(nominalQuestion1, nominalQuestion2, 
         return {significance: "None (less than 80% of expected cells >= 5)", calculated: []};
     }
 
-    // console.log("observed", observed);
-    // console.log("expected", expected);
-    // console.log("degreesOfFreedom", degreesOfFreedom);
-    
     try {
         var statResult = chiSquare.chiSquare(observed, expected, degreesOfFreedom);
     } catch(err) {
@@ -500,7 +478,6 @@ export function calculateStatisticsForTable(nominalQuestion1, nominalQuestion2, 
         toaster.toast(errorMessage);
         return {significance: "None (error)", calculated: []};        
     }
-    // console.log("statResult.n", statResult.n);
     
     if (statResult.n !== n1 * n2) {
         var errorMessage = 'Error in chi-squared test for questions [' + nominalQuestion1.displayName + ", " + nominalQuestion2.displayName + "]: Unexpected n1 * n2. See console for details."

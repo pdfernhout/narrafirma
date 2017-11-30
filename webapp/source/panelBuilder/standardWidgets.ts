@@ -47,7 +47,6 @@ function optionsForSelect(panelBuilder: PanelBuilder, model, fieldSpecification,
         var label;
         var value;
         var selected;
-        // console.log("choice", id, each);
         if (_.isString(each)) {
             label = translate(fieldSpecification.id + "::selection:" + each, each);
             options.push({name: label, value: each});
@@ -80,9 +79,6 @@ function optionsForSelect(panelBuilder: PanelBuilder, model, fieldSpecification,
         }
     });
     
-    // console.log("isValueInChoices", isValueInChoices);
-
-    // console.log("updateChoices", currentValue, isValueInChoices, (currentValue === null || currentValue === undefined || currentValue === ""));
     // return isValueInChoices || (currentValue === null || currentValue === undefined || currentValue === "");
     
     return options;
@@ -123,7 +119,6 @@ export function displayQuestion(panelBuilder: PanelBuilder, model, fieldSpecific
     
     function change(event, value) {
         if (event) value = event.target.value;
-        // console.log("onchange", fieldSpecification.id, value);
         valueProperty(value);
     }
     
@@ -264,7 +259,6 @@ export function displayQuestion(panelBuilder: PanelBuilder, model, fieldSpecific
         var selectOptionsRaw = optionsForSelect(panelBuilder, model, fieldSpecification, value, true);
         var selectOptions = selectOptionsRaw.map(function (option, index) {
             var optionOptions = {value: option.value, selected: undefined};
-            // console.log("optionValue, value", optionValue, value, optionValue === value);
             if (option.selected) optionOptions.selected = 'selected';
             return m("option", optionOptions, option.name);
         });

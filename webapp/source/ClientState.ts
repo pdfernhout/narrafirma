@@ -116,7 +116,6 @@ class ClientState {
     
     initialize() {
         var fragment = hash();
-        // console.log("fragment when page first loaded", fragment);
         var initialHashParameters = getHashParameters(fragment);
         if (initialHashParameters["project"]) this._projectIdentifier = initialHashParameters["project"];
         if (initialHashParameters["page"]) this._pageIdentifier = "page_" + initialHashParameters["page"];
@@ -151,19 +150,13 @@ class ClientState {
             result += field.key + "=" + encodeURIComponent(value);
         }
         
-        // console.log("hashStringForClientState", result, clientState);
-        
         return result;
     }
      
     urlHashFragmentChanged(pageDisplayer) {
         var newHash = hash();
         console.log("urlHashFragmentChanged", newHash);
-        
-        // console.log("current clientState", clientState);
-        
         var hashParameters = getHashParameters(newHash);
-        // console.log("new hashParameters", hashParameters);
         
         var currentProjectIdentifier = this._projectIdentifier;
         if (currentProjectIdentifier) {
@@ -175,7 +168,6 @@ class ClientState {
                 return;
             }
         } else {
-            // console.log("changing client state for page", this._projectIdentifier, hashParameters.project);
             this._projectIdentifier = hashParameters.project;
         }
          
@@ -186,29 +178,23 @@ class ClientState {
             selectedPage = "page_" + selectedPage;
         }
         if (selectedPage !== this._pageIdentifier) {
-            // console.log("changing client state for page from:", this._pageIdentifier, "to:", selectedPage);
             this._pageIdentifier = selectedPage;
         }
         
         if (hashParameters.storyCollection && hashParameters.storyCollection !== this._storyCollectionName) {
-            // console.log("changing client state for storyCollection", this._storyCollectionIdentifier, hashParameters.storyCollection);
             this._storyCollectionName = hashParameters.storyCollection;
         }
         
         if (hashParameters.catalysisReport && hashParameters.catalysisReport !== this._catalysisReportName) {
-            // console.log("changing client state for catalysisReport", this._catalysisReportName, hashParameters.catalysisReport);
             this._catalysisReportName = hashParameters.catalysisReport;
         }
         
         if (hashParameters.debugMode && hashParameters.debugMode !== this._debugMode) {
-            // console.log("changing client state for debugMode", this._debugMode, hashParameters.debugMode);
             this._debugMode = hashParameters.debugMode;
         }
         
         // Page displayer will handle cases where the hash is not valid and also optimizing out page redraws if staying on same page
         pageDisplayer.showPage(this._pageIdentifier);
-    
-        // console.log("done with urlHashFragmentChanged");
     }
     
     updateHashIfNeededForChangedClientState() {

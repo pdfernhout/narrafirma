@@ -12,12 +12,12 @@ function stepPlural(count) {
     return "steps";
 }
 
+// this is no longer being used but we'll keep it just in case we want it again later
 function add_dashboardSectionStatusDisplay(panelBuilder: PanelBuilder, model, fieldSpecification): any {
     var sectionName = translate(fieldSpecification.id + "::prompt", fieldSpecification.displayPrompt);
     
     // TODO: Kludge of using field id to determine what section this refers to
     var pageID = fieldSpecification.id.replace("project_launchSection_", "page_");
-    
     var childPageIDs;
     
     // This collection could be null during testing
@@ -29,7 +29,6 @@ function add_dashboardSectionStatusDisplay(panelBuilder: PanelBuilder, model, fi
     }
     
     childPageIDs = panelSpecificationCollection.getChildPageIDListForHeaderID(pageID);
-    // console.log("child pages", pageID, childPageIDs);
     if (!childPageIDs) childPageIDs = [];
     
     var pageStatus = {
@@ -43,7 +42,6 @@ function add_dashboardSectionStatusDisplay(panelBuilder: PanelBuilder, model, fi
     for (var childPageIndex = 0; childPageIndex < childPageIDs.length; childPageIndex++) {
         var childPageID = childPageIDs[childPageIndex];
         var statusViewID = childPageID + "_pageStatus";
-        // console.log("statusViewID", fieldSpecification.id, statusViewID);
         // TODO: Fix if different sections get split up
         var status = Globals.project().tripleStore.queryLatestC(model, statusViewID);
         var count = pageStatus["" + status] || 0;
@@ -70,8 +68,6 @@ function add_dashboardSectionStatusDisplay(panelBuilder: PanelBuilder, model, fi
     }
     
     if (pageCount === 0) statusText = "";
-    
-    // console.log("statusText for pageStatus", statusText, pageStatus);
     
     // if (fieldSpecification.displayClass) options.class = fieldSpecification.displayClass;
     // if (fieldSpecification.displayIconClass) options.iconClass = fieldSpecification.displayIconClass;

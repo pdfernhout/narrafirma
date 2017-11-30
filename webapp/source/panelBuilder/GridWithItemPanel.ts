@@ -62,7 +62,6 @@ function computeColumnsForItemPanelSpecification(itemPanelSpecification, gridCon
     }
     
     fieldsToInclude.forEach(function (fieldSpecification) {
-        // console.log("includeField", fieldSpecification);
         var newColumn =  {
             field: fieldSpecification.id,
             label: translate(fieldSpecification.id + "::shortName", fieldSpecification.displayName)
@@ -351,7 +350,6 @@ class GridWithItemPanel {
                     // Don't sort if have move up/down buttons
                     if (this.gridConfiguration.moveUpDownButtons) return;
 
-                    // console.log("Sorting by", sortBy);
                     if (this.sortBy === sortBy) {
                         if (this.sortDirection === "ascending") {
                             this.sortDirection = "descending";
@@ -833,7 +831,6 @@ class TripleSetDataStore extends DataStore {
         // TODO: Remove temporary addition with comparison on string type (for upgrading old data)
         if (!this.setIdentifier || typeof this.setIdentifier !== "string") {
             this.setIdentifier = this.tripleStore.newIdForSet(this.setClassName);
-            // console.log("Grid triplestore getDataArrayFromModel defaulting data to empty set with id", this.setIdentifier);
             this.valueProperty(this.setIdentifier);
         }
     }

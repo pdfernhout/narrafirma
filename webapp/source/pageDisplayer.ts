@@ -19,14 +19,12 @@ var clientState: ClientState;
 
 var PageDisplayer: any = {
     controller: function(args) {
-        // console.log("PageDisplayer created");
+        ;
     },
     
     view: function(controller, args) {
         var contentsDiv;
         
-        // console.log("========== view called in PageDisplayer ==========", currentPageID);
-            
         // Setting the hash may trigger another call to the showPage function eventually, but as the new page will already be set, it should not loop further
         clientState.updateHashIfNeededForChangedClientState();
         
@@ -60,11 +58,8 @@ export function configurePageDisplayer(thePanelBuilder: PanelBuilder, theProject
 }
 
 export function showPage(pageID, forceRefresh = false, isRedrawAlreadyQueued = false) {
-    // console.log("showPage", pageID, forceRefresh);
-    
     if (!pageID) pageID = PanelSetup.startPage();
     if (currentPageID === pageID && !forceRefresh) {
-        // console.log("Page is already current; returning");
         return;
     }
     
@@ -100,7 +95,6 @@ export function showPage(pageID, forceRefresh = false, isRedrawAlreadyQueued = f
     
     // Make sure the hash is pointing to this page if this is not a forced refresh
     if (currentPageID !== pageID || badPage) {
-        // console.log("setting currentPageID to", pageID);
         currentPageID = pageID;
         currentPageSpecification = pageSpecification;
         clientState.pageIdentifier(currentPageID);

@@ -88,7 +88,6 @@ class RecommendationsParser {
         if (row > this.matrixRowCount) return null;
         if (column > this.matrixColumnCount) return null;
         var line = this.matrix[row];
-        // console.log("test1", column, line.length, line);
         if (column > line.length) return "";
         return line[column];
     }
@@ -100,18 +99,14 @@ class RecommendationsParser {
         this.matrixRowCount = 0;
         
         var lines = csvText.split("\r");
-        // console.log(JSON.stringify(lines));
-        
         for (var lineIndex in lines) {
             var line = lines[lineIndex];
-            // console.log("line:", line.length, line.substring(0, 80), "...");
             // TODO: Will not handle embedded commas
             var splitLine = line.split(",");
             var lineItems = [];
             for (var index = 0; index < splitLine.length; index++) {
                 var item = splitLine[index].trim();
                 if (startsWith(item, '"') && endsWith(item, '"')) {
-                    // console.log("trimming item '%s'", item);
                     item = item.substring(1, item.length - 1);
                     // Replace escaped double quotes
                     item = item.replace(/\"\"/, '"');
@@ -124,11 +119,6 @@ class RecommendationsParser {
         }
         this.matrixRowCount = this.matrix.length;
         if (this.matrixRowCount > 0) this.matrixColumnCount = this.matrix[0].length;
-        
-        // console.log("matrixColumnCount %s, matrixRowCount %s", this.matrixColumnCount, this.matrixRowCount);
-        // console.log("matrix", JSON.stringify(matrix, null, 2));
-        // console.log("test retrieval 5,5", this.getMatrixValue(5, 5));
-        // console.log("test retrieval 6,3", this.getMatrixValue(6, 6));
     }
 
     addRecommendation(recommendations, columnCategory, columnField, rowCategory, rowField, item) {
@@ -195,7 +185,6 @@ class RecommendationsParser {
             var line = this.matrix[lineIndex];
             rowField = this.getMatrixValue(lineIndex, 0).trim();
             if (rowField === "") continue;
-            // console.log("rowField", rowField);
             if (startsWith(rowField, "#")) {
                 rowCategory = rowField.substring(1).trim();
                 if (rowCategory === "collectionSessions #sensemakingSessions") rowCategory = "sessions";
@@ -203,7 +192,6 @@ class RecommendationsParser {
                 result[rowCategory] = [];
                 continue;
             }
-            // console.log("pushing", "::", rowCategory, "::", rowField);
             result[rowCategory].push(rowField);
         }
         return result;
@@ -215,7 +203,6 @@ class RecommendationsParser {
         var columnField = null;
         for (var columnIndex = 1; columnIndex <  this.matrixColumnCount; columnIndex++) {
             columnField = this.getMatrixValue(0, columnIndex).trim();
-            // console.log("columnField", columnField);
             if (columnField === "") continue;
             if (startsWith(columnField, "#")) {
                 columnCategory = columnField.substring(1).trim();
@@ -229,7 +216,6 @@ class RecommendationsParser {
     }
     
     parse(csvText: string) {
-        // console.log("Parsing recommendations", csvText);
         this.loadMatrixFromCSVText(csvText);
         this.categories = this.buildCategories();
         this.questions = this.buildQuestions();
@@ -245,7 +231,6 @@ class RecommendationsParser {
         if (!RecommendationsParser.recommendationsObject) {
             var recommendationsText = window["narraFirma_recommendationsText"];
             RecommendationsParser.recommendationsObject = new RecommendationsParser(recommendationsText);
-            // console.log("RecommendationsParser made new recommendationsObject", RecommendationsParser.recommendationsObject);
         }
         
         return RecommendationsParser.recommendationsObject;
@@ -256,7 +241,6 @@ class RecommendationsParser {
         if (!RecommendationsParser.recommendationsInterventionObject) {
             var recommendationsInterventionText = window["narraFirma_recommendationsInterventionText"];
             RecommendationsParser.recommendationsInterventionObject = new RecommendationsParser(recommendationsInterventionText);
-            // console.log("RecommendationsParser made new recommendationsInterventionObject", RecommendationsParser.recommendationsInterventionObject);
         }
         
         return RecommendationsParser.recommendationsInterventionObject;

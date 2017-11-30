@@ -48,8 +48,6 @@ function nameForQuestion(question) {
 }
 
 function positionForQuestionAnswer(question, answer) {
-    // console.log("positionForQuestionAnswer", question, answer);
-    
     // TODO: Confirm checkbox values are also yes/no...
     if (question.displayType === "boolean" || question.displayType === "checkbox") {
         if (answer === false) return 0;
@@ -60,7 +58,6 @@ function positionForQuestionAnswer(question, answer) {
     // TODO: How to display sliders when unanswered? Add one here?
     // TODO: Check that answer is numerical
     if (question.displayType === "slider") {
-        // console.log("slider answer", answer);
         if (answer === unansweredKey) return -10;
         return answer;
     }
@@ -86,17 +83,11 @@ function positionForQuestionAnswer(question, answer) {
     }
     
     var answerIndex = options.indexOf(answer);
-    // console.log("answerIndex", answerIndex);
-
     var position = 100 * answerIndex / (options.length - 1);
-    // console.log("calculated position: ", position);
-
     return position;  
 }
 
 function makePlotItem(xAxisQuestion, yAxisQuestion, xValue, yValue, story) {
-    // console.log("newPlotItem", xAxisQuestion, yAxisQuestion, xValue, yValue, story);
-    
     // Plot onto a 100 x 100 value to work with sliders
     var x = positionForQuestionAnswer(xAxisQuestion, xValue);
     var y = positionForQuestionAnswer(yAxisQuestion, yValue);
@@ -107,7 +98,6 @@ function incrementMapSlot(map, key) {
     var oldCount = map[key];
     if (!oldCount) oldCount = 0;
     map[key] = oldCount + 1;
-    // console.log("incrementMapSlot to map", key, map[key], map);
 }
 
 function pushToMapSlot(map, key, value) {
@@ -115,7 +105,6 @@ function pushToMapSlot(map, key, value) {
     if (!values) values = [];
     values.push(value);
     map[key] = values;
-    // console.log("pushToMapSlot", key, value, map[key]);
 }
 
 function preloadResultsForQuestionOptions(results, question) {
@@ -143,7 +132,6 @@ function limitStoryTextLength(text): string {
 }
 
 function displayTextForAnswer(answer) {
-    // console.log("displayTextForAnswer", answer);
     if (!answer && answer !== 0) return "";
     var hasCheckboxes = _.isObject(answer);
     if (!hasCheckboxes) return answer;
@@ -190,7 +178,6 @@ function createBrush(chartBody, xScale, yScale, brushendCallback) {
         brushGroup.selectAll("rect")
             .attr("y", 0)
             .attr("height", chartBody.attr("height"));
-        // console.log("********** chart height", chartBody.attr("height"), chartBody);
     }
 
     return {brush: brush, brushGroup: brushGroup};
@@ -349,7 +336,6 @@ function addYAxis(chart, yScale, configure = null) {
     }
         
     labels.append("svg:title").text(function(d, i) {
-        // console.log("addYAxis label", d, i);
         return d;
     }); 
     return yAxis;
@@ -744,12 +730,6 @@ export function d3BarChartForValues(graphBrowserInstance: GraphHolder, plotItems
 
 // choiceQuestion and choice may be undefined if this is just a simple histogram for all values
 export function d3HistogramChartForQuestion(graphBrowserInstance: GraphHolder, scaleQuestion, choiceQuestion, choice, storiesSelectedCallback) {
-    // console.log("graphBrowserInstance, scaleQuestion", graphBrowserInstance, scaleQuestion);
-    
-    // TODO: Statistics
-    
-    // Collect data
-    
     // Do not include unanswered in  histogram
     var unanswered = [];
     var values = [];
@@ -778,7 +758,6 @@ export function d3HistogramChartForQuestion(graphBrowserInstance: GraphHolder, s
             matchingStories.push(story);
         }
     }
-    // console.log("d3HistogramChartForQuestion values", values.map(function(item) { return item.value; }), choiceQuestion);
     var chartTitle = "" + nameForQuestion(scaleQuestion);
     if (choiceQuestion) chartTitle = "" + choice;
     
@@ -1006,7 +985,6 @@ export function d3HistogramChartForValues(graphBrowserInstance: GraphHolder, plo
     
     if (!isNaN(mean)) {
         // Draw mean
-        // console.log("mean", mean, valuesAsNumbers);
         chartBody.append("line")
             .attr('class', "histogram-mean")
             .attr("x1", xScale(mean))
@@ -1016,7 +994,6 @@ export function d3HistogramChartForValues(graphBrowserInstance: GraphHolder, plo
 
         if (!isNaN(standardDeviation)) {
             // Draw standard deviation
-            // console.log("standard deviation", standardDeviation, valuesAsNumbers);
             var sdLow = mean - standardDeviation;
             if (sdLow >= 0) {
                 chartBody.append("line")
@@ -1642,7 +1619,6 @@ function encodeBraces(optionText) {
 }
 
 function setCurrentSelection(chart, graphBrowserInstance: GraphHolder, extent) {
-    // console.log("setCurrentSelection", extent, chart.width, chart.height, chart.chartType);
     
     /* Chart types and scaling
     
@@ -1674,7 +1650,6 @@ function setCurrentSelection(chart, graphBrowserInstance: GraphHolder, extent) {
     var width = chart.width;
     var height = chart.height;
     if (chart.chartType === "histogram" || chart.chartType === "scatterPlot") {
-        // console.log("already scaled", chart.chartType);
         width = 100;
         height = 100;
     }
@@ -1701,8 +1676,6 @@ function setCurrentSelection(chart, graphBrowserInstance: GraphHolder, extent) {
         };
     }
     
-    // console.log("selection", selection);
-    
     graphBrowserInstance.currentSelectionExtentPercentages = selection;
     if (_.isArray(graphBrowserInstance.currentGraph)) {
         selection.subgraphQuestion = encodeBraces(nameForQuestion(chart.subgraphQuestion));
@@ -1712,9 +1685,6 @@ function setCurrentSelection(chart, graphBrowserInstance: GraphHolder, extent) {
 
 function updateSelectedStories(chart, storyDisplayItemsOrClusters, graphBrowserInstance: GraphHolder, storiesSelectedCallback, selectionTestFunction) {
     var extent = chart.brush.brush.extent();
-    
-    // console.log("updateSelectedStories extent", extent);
-    
     setCurrentSelection(chart, graphBrowserInstance, extent);
     
     var selectedStories = [];
@@ -1736,8 +1706,6 @@ function updateSelectedStories(chart, storyDisplayItemsOrClusters, graphBrowserI
         return selected;
     });
     if (storiesSelectedCallback) {
-        // console.log("updateSelectedStories doing callback", selectedStories);
-        
         storiesSelectedCallback(selectedStories);
         
         // TODO: Maybe could call sm.startComputation/m.endComputation around this instead?

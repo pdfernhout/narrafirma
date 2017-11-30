@@ -7,25 +7,15 @@ import questionnaireGeneration = require("../questionnaireGeneration");
 "use strict";
 
 function add_catalysisReportQuestionChooser(panelBuilder: PanelBuilder, model, fieldSpecification) {
-    // console.log("add_catalysisReportQuestionChooser", model, fieldSpecification);
-    
     var project = Globals.project();
-    
     var catalysisReportIdentifier = Globals.clientState().catalysisReportIdentifier();
     if (!catalysisReportIdentifier) return m("div", "Please select a catalysis report");
     
     var prompt = panelBuilder.buildQuestionLabel(fieldSpecification);
-        
     var storageFunction = valuePathResolver.newValuePathForFieldSpecification(model, fieldSpecification);
-
     var allStories = project.storiesForCatalysisReport(catalysisReportIdentifier);
-    
-    //var allStoryQuestions = project.collectAllStoryQuestions();
     var allStoryQuestions = project.storyQuestionsForCatalysisReport(catalysisReportIdentifier);
-
     var elicitingQuestions = project.elicitingQuestionsForCatalysisReport(catalysisReportIdentifier);
-
-    //var allParticipantQuestions = project.collectAllParticipantQuestions();
     var allParticipantQuestions = project.participantQuestionsForCatalysisReport(catalysisReportIdentifier);
 
     // annotation questions are not per questionnaire but global to the project (which is maybe not good?)

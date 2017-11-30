@@ -38,12 +38,10 @@ function hideDialogMethod() {
 
 class MithrilDialog {
     static controller() {
-        // console.log("Making MithrilDialog");
         return new MithrilDialog();
     }
     
     static view(controller) {
-        // console.log("MithrilDialog view called");
         var dialogContent = [];
         
         if (globalDialogConfiguration) {
@@ -62,8 +60,6 @@ class MithrilDialog {
     
     calculateView(args) {
         var dialogConfiguration = args;
-        // console.log("MithrilDalog calculateView", dialogConfiguration);
-        
         var internalView;
         try {
             internalView = dialogConfiguration.dialogConstructionFunction(dialogConfiguration, hideDialogMethod);
@@ -97,7 +93,6 @@ class MithrilDialog {
 }
 
 export function openDialog(dialogConfiguration) {  
-    // console.log("openDialog", dialogConfiguration.dialogTitle); // JSON.stringify(dialogConfiguration));
     if (!dialogConfiguration.key) dialogConfiguration.key = "standardDialog";
     
     globalDialogConfiguration = dialogConfiguration; 
@@ -105,7 +100,6 @@ export function openDialog(dialogConfiguration) {
 
 // Caller needs to call the hideDialogMethod returned as the second arg of dialogOKCallback to close the dialog
 export function openTextEditorDialog(text, dialogTitle, dialogOKButtonLabel, dialogOKCallback) {
-    // console.log("openTextEditorDialog called");
     if (!dialogTitle) dialogTitle = "Editor";
     if (!dialogOKButtonLabel) dialogOKButtonLabel = "OK";
     
@@ -133,7 +127,6 @@ function build_textEditorDialogContent(dialogConfiguration, hideDialogMethod) {
 
 // Caller needs to call the hideDialogMethod returned as the second arg of dialogOKCallback to close the dialog
 export function openProgressDialog(progressText, dialogTitle, cancelButtonLabel, dialogCancelCallback) {
-    // console.log("openProgressDialog called");
     if (!dialogTitle) dialogTitle = "Progress";
     if (!cancelButtonLabel) cancelButtonLabel = "Cancel";
     
@@ -165,7 +158,6 @@ function build_progressDialogContent(dialogConfiguration, hideDialogMethod) {
 }
 
 export function openFinishedDialog(finishedText, dialogTitle, okButtonLabel, cancelButtonLabel, dialogOKCallback) {
-    // console.log("openProgressDialog called");
     if (!dialogTitle) dialogTitle = "Finished";
     if (!okButtonLabel) okButtonLabel = "OK";
     if (!cancelButtonLabel) cancelButtonLabel = "Cancel";
@@ -231,7 +223,6 @@ function build_listChooserDialogContent(dialogConfiguration, hideDialogMethod) {
         // TODO: Translate
         var name = prompt("New project name?");
         if (!name) return;
-        // console.log("make new project", name);
         hideDialogMethod();
         args.dialogOKCallback({id: name, name: name, isNew: true});
     }

@@ -20,11 +20,7 @@ export function initialize(theProject) {
 }
 
 function processCSVContents(contents, callbackForItem) {
-    // console.log("processCSVContents contents", contents);
-    
     var rows = d3.csv.parseRows(contents);
-    // console.log("rows", rows);
-    
     var items = [];
     var header;
     
@@ -32,7 +28,7 @@ function processCSVContents(contents, callbackForItem) {
         var row = rows[rowIndex];
         // Throw away comment lines and lines with blanks at first two positions
         if (!row.length || row.length < 2 || (!row[0].trim() && !row[1].trim()) || row[0].trim().charAt(0) === ";") {
-            // console.log("comment", row[0]);
+            ;
         } else {
             if (!header) {
                 header = [];
@@ -56,8 +52,6 @@ function processCSVContents(contents, callbackForItem) {
             }
         }
     }
-    // console.log("header", header);
-    // console.log("items", items);
     return {header: header, items: items};
 }
 
@@ -107,8 +101,6 @@ function processCSVContentsForStories(contents) {
         
         return newItem;
     });
-    // console.log("processCSVContentsForStories headerAndItems", headerAndItems);
-
     var header = headerAndItems.header;
     if (!header) {
         alert("ERROR: No header line found in CSV file.")
@@ -140,7 +132,6 @@ function processCSVContentsForStories(contents) {
 
     var totalStoryCount = 0;
     for (var participantIDIndex in itemsByParticipantID) {
-        // console.log("item", item);
         // TODO: Copied code from surveyBuilder module! Need a common function with surveyBuilder to make this!!!
         var newSurveyResult = {
             __type: "org.workingwithstories.QuestionnaireResponse",
@@ -207,8 +198,6 @@ function processCSVContentsForStories(contents) {
                 }
             });
         }
-        
-        // console.log("newSurveyResult", newSurveyResult);
         surveyResults.push(newSurveyResult);
     }
        
@@ -341,7 +330,6 @@ function changeValueIfScaleAndCustomScaleValues(question, thingWithValue, questi
 
 function processCSVContentsForQuestionnaire(contents) {
     var headerAndItems = processCSVContents(contents, function (header, row) {
-        // console.log("callback", header, row);
         var newItem = {};
         var lastFieldIndex;
         for (var fieldIndex = 0; fieldIndex < row.length; fieldIndex++) {
@@ -353,13 +341,11 @@ function processCSVContentsForQuestionnaire(contents) {
             }
             // TODO: Should the value really be trimmed?
             var value = row[fieldIndex].trim();
-            // console.log("fieldName, value", fieldName, value);
             if (fieldIndex < header.length - 1) {
                 newItem[fieldName] = value;
             } else {
                 // Handle multiple values for last header items
                 var list = newItem[fieldName];
-                // console.log("list", list, fieldIndex, fieldName);
                 if (!list) {
                     list = [];
                     newItem[fieldName] = list;
@@ -369,7 +355,6 @@ function processCSVContentsForQuestionnaire(contents) {
         }
         return newItem;
     });
-    // console.log("processCSVContentsForQuestionnaire headerAndItems", headerAndItems);
     
     var header = headerAndItems.header;
     if (!header) {
@@ -394,7 +379,6 @@ function processCSVContentsForQuestionnaire(contents) {
         storyFormListIdentifier = project.tripleStore.newIdForSet("StoryFormSet");
         project.setFieldValue("project_storyForms", storyFormListIdentifier);
     }
-    // console.log("storyFormListIdentifier");
  
     // TODO: Generalize random uuid function to take class name
     // TODO: Maybe rename quesitonForm_ to storyForm_ ?
@@ -652,7 +636,6 @@ function ensureQuestionExists(question, questionCategory: string) {
         if (existingQuestion[idAccessor] === question[idAccessor]) matchingQuestion = existingQuestion;
     });
     if (!matchingQuestion) {
-        // console.log("Adding question that does not exist yet", question, questionCategory); 
         project.addQuestionForCategory(question, questionCategory);
     } else {
         // TODO: What if questions with the same shortName but different options already exist?
@@ -724,9 +707,7 @@ function questionForItem(item, questionCategory) {
 }
 
 function chooseCSVFileToImport(callback) {
-    // console.log("chooseFileToImport");
     var cvsFileUploader = <HTMLInputElement>document.getElementById("csvFileLoader");
-    // console.log("cvsFileUploader", cvsFileUploader);
     cvsFileUploader.onchange = function() {
         var file = cvsFileUploader.files[0];
         if (!file) {
@@ -755,10 +736,8 @@ export function importCSVQuestionnaire() {
 }
 
 function addCSVOutputLine(output, line) {
-    // console.log("line", line);
     var start = true;
     line.forEach(function (item) {
-        // console.log("item", item);
         if (start) {
             start = false;
         } else {
@@ -791,14 +770,12 @@ export function exportQuestionnaire() {
         alert("Please select a story collection first");
         return;
     }
-    // console.log("exportStoryCollection", storyCollectionName);
     
     var currentQuestionnaire = surveyCollection.getQuestionnaireForStoryCollection(storyCollectionName);
     if (!currentQuestionnaire) {
         alert("The story collection has not been initialized with a story form: " + storyCollectionName);
         return;
     }
-    // console.log("currentQuestionnaire", currentQuestionnaire);
     
     // Order Long name   Short name  Type    About   Answers
     var output = "";
@@ -888,7 +865,6 @@ export function exportStoryCollection() {
         alert("Please select a story collection first");
         return;
     }
-    // console.log("exportStoryCollection", storyCollectionName);
     
     var currentQuestionnaire = surveyCollection.getQuestionnaireForStoryCollection(storyCollectionName);
     if (!currentQuestionnaire) {
@@ -897,8 +873,6 @@ export function exportStoryCollection() {
     }
 
     var allStories = surveyCollection.getStoriesForStoryCollection(storyCollectionName, true);
-    // console.log("allStories", allStories);
-    
     var header1 = [];
     var header2 = [];
       
@@ -933,9 +907,6 @@ export function exportStoryCollection() {
     var adjustedAnnotationQuestions = questionnaireGeneration.convertEditorQuestions(annotationQuestions, "A_");
     headersForQuestions(adjustedAnnotationQuestions);
   
-    // console.log("header1", header1);
-    // console.log("header2", header2);
-    
     var output = "";
     function addOutputLine(line) {
         output = addCSVOutputLine(output, line);

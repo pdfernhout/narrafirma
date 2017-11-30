@@ -19,8 +19,6 @@ export function panelSpecificationCollection() {
 }
 
 function addExtraFieldSpecificationsForPageSpecification(pageID, pageSpecification) {
-    // console.log("addExtraFieldSpecificationsForPageSpecification", pageSpecification.section, pageID, pageSpecification);
-    
     function addPageChangeButton(newPageID, idExtra, prompt, displayIconClass) {
         // TODO: Translate
         if (displayIconClass !== "homeButtonImage") {
@@ -65,17 +63,14 @@ function addExtraFieldSpecificationsForPageSpecification(pageID, pageSpecificati
             _panelSpecificationCollection.addFieldSpecificationToPanelSpecification(pageSpecification, completionStatusEntryFieldSpecification);
         } else {
             // Dashboard page
-            // console.log("page dashboard as header", pageSpecification.id, pageSpecification.displayType, pageSpecification);
             // Put in dashboard
             var childPageIDs = _panelSpecificationCollection.getChildPageIDListForHeaderID(pageID);
-            // console.log("child pages", pageID, childPageIDs);
             if (!childPageIDs) childPageIDs = [];
             // Add a display to this page for each child page in the same section
             for (var childPageIndex = 0; childPageIndex < childPageIDs.length; childPageIndex++) {
                 var childPageID = childPageIDs[childPageIndex];
                 var statusViewID = childPageID + "_reminders_dashboard";
                 var childPageSpecification = _panelSpecificationCollection.getPageSpecificationForPageID(childPageID);
-                // console.log("childPageID", childPageSpecification, childPageID);
                 if (!childPageSpecification) console.log("Error: problem finding page definition for", childPageID);
                 if (childPageSpecification && childPageSpecification.displayType === "page") {
                     var prompt = translate(childPageID + "::title", childPageSpecification.displayName);
@@ -93,7 +88,6 @@ function addExtraFieldSpecificationsForPageSpecification(pageID, pageSpecificati
                     }
                     // + " " + translate("#dashboard_status_label", "reminders:")
                     // prompt = prompt  + " ";
-                    // console.log("about to call panelBuilder to add one questionAnswer for child page's status", childPageID);
                     var completionStatusDisplayFieldSpecification = {
                         id: statusViewID,
                         valueType: "none",
@@ -126,7 +120,6 @@ function addExtraFieldSpecificationsForPageSpecification(pageID, pageSpecificati
 
 export function processAllPanels() {
     var panels = _panelSpecificationCollection.buildListOfPanels();
-    // console.log("processAllPanels", panels);
     
     var lastPageID = null;
     var panelIndex;
@@ -136,11 +129,8 @@ export function processAllPanels() {
     for (panelIndex = 0; panelIndex < panels.length; panelIndex++) {
         panel = panels[panelIndex];
         
-        // console.log("defining navigatation for panel", panel.id);
-
         // For panels that are a "page", add to top level pages choices and set up navigation
         if (panel.displayType === "page") {
-            // console.log("pushing page", panel);
             // Make it easy to lookup previous and next pages from a page
             if (!panel.isHeader) {
                 var previousPage = _panelSpecificationCollection.getPageSpecificationForPageID(lastPageID);
@@ -163,8 +153,6 @@ export function processAllPanels() {
             lastSection = panel.section;
         }
         
-        // console.log("defining panel extra fields and help", panel.id);
-
         // For panels that are a "page", add extra buttons
         if (panel.displayType === "page") {
             addExtraFieldSpecificationsForPageSpecification(panel.id, panel);
@@ -189,7 +177,6 @@ function generateNavigationDataInJSON() {
     var pageBeingProcessed;
     var allPanels = _panelSpecificationCollection.buildListOfPanels();
     allPanels.forEach(function(panel) {
-        // console.log("panel", panel.displayType, panel.id, panel.section, panel.displayName);
         if (panel.isHeader) {
             if (sectionBeingProcessed) sections.push(sectionBeingProcessed);
             sectionBeingProcessed = {
@@ -210,9 +197,6 @@ function generateNavigationDataInJSON() {
             pageBeingProcessed.extraPanels.push(navigationInfo);
         }
     });
-    
-    // console.log("JSON for navigation:");
-    // console.log(JSON.stringify(sections, null, 4));
 }
 
 // TODO: For helping create all the models -- temporary

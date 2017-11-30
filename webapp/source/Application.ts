@@ -56,26 +56,6 @@ class Application {
         this.panelBuilder = new PanelBuilder(this);
     }
     
-    // Make all of the application pages selectable from the dropdown list and back/next buttons and put them in a TabContainer
-    createLayout() {
-        // console.log("createLayout start");
-    
-        // TODO: Improve status reporting
-        // serverStatusPane = panelBuilder.newContentPane({content: "Server status: unknown"});
-        // serverStatusPane.placeAt(pageControlsPane);
-        /*
-        statusTooltip = new Tooltip({
-            connectId: ["narrafirma-name"],
-            label: "Server status: unknown",
-            position: ["below", "after", "above", "before"]
-        });
-        */
-        
-        // updateServerStatus("Server status: unknown");
-        
-        // console.log("createLayout end");
-    }
-    
     // TODO: Think more about how to integrate updatedServerStatus this with Mithril
     updateServerStatus(status, text) {
         // The serverStatusPane may be created only after we start talking to the server
@@ -130,8 +110,6 @@ class Application {
     
     // dispatch the button click
     buttonClicked(panelBuilder: PanelBuilder, model, fieldSpecification, value) {
-         // console.log("buttonClicked", fieldSpecification);
-         
          var functionName = fieldSpecification.id;
          if (fieldSpecification.displayConfiguration) {
              if (_.isString(fieldSpecification.displayConfiguration)) {
@@ -169,7 +147,6 @@ class Application {
         // Set up global function used by section dashboard links
         
         window["narrafirma_openPage"] = (pageIdentifier) => {
-            // console.log("narrafirma_openPage", pageIdentifier);
             if (!pageIdentifier) return;
             Globals.clientState().pageIdentifier(pageIdentifier);
             Globals.clientState().updateHashIfNeededForChangedClientState();
@@ -343,9 +320,7 @@ class Application {
         // The tripleStore may not be updated yet, so this redraw needs to get queued for later by the application
         if (this.runningAfterInitialIdle) {
             if (!this.pendingRedraw) {
-                // console.log("queueing redrawFromProject");
                 this.pendingRedraw = setTimeout(() => {
-                    // console.log("redrawFromProject");
                     this.pendingRedraw = null;
                     m.redraw();
                 }, 0);
@@ -420,8 +395,6 @@ class Application {
     
             // Fill out initial hash string if needed
             Globals.clientState().updateHashIfNeededForChangedClientState();
-            
-            this.createLayout();
             
             // TODO: What to do while waiting for data for a project to load from server the first time? Assuming authenticated OK etc.???
             

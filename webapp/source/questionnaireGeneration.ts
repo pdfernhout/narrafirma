@@ -41,7 +41,6 @@ export function convertEditorQuestions(editorQuestions, prefixQPA) {
     
     for (var questionIndex = 0; questionIndex < editorQuestions.length; questionIndex++) {
         var question = editorQuestions[questionIndex];
-        // console.log("question", question);
         var shortName = question.storyQuestion_shortName || question.participantQuestion_shortName || question.annotationQuestion_shortName;
         // Including "S_" or "P_" or "A_" prefix for user-supplied question ID to prevent collisions with application fields like storyText and JavaScript functions and __proto__
         var id = prefixQPA + shortName;
@@ -179,8 +178,6 @@ export function buildQuestionnaire(shortName) {
     var questionnaireTemplate = project.findQuestionnaireTemplate(shortName);
     if (!questionnaireTemplate) return null;
     
-    // console.log("questionnaireTemplate", questionnaireTemplate);
-    
     return buildQuestionnaireFromTemplate(questionnaireTemplate);
 }
 
@@ -255,7 +252,6 @@ export function buildQuestionnaireFromTemplate(questionnaireTemplate: string) {
     var allElicitingQuestions = buildIdToItemMap("project_elicitingQuestionsList", "elicitingQuestion_shortName");
     var elicitingQuestionIdentifiers = project.tripleStore.getListForSetIdentifier(project.tripleStore.queryLatestC(questionnaireTemplate, "questionForm_elicitingQuestions"));
     var elicitingQuestions = buildItemListFromIdList(allElicitingQuestions, elicitingQuestionIdentifiers, "elicitingQuestion");       
-    // console.log("elicitingQuestions", elicitingQuestions);
     
     questionnaire.elicitingQuestions = convertElicitingQuestions(elicitingQuestions);
     
@@ -271,7 +267,6 @@ export function buildQuestionnaireFromTemplate(questionnaireTemplate: string) {
     ensureUniqueQuestionIDs(usedIDs, participantQuestions);      
     questionnaire.participantQuestions = convertEditorQuestions(participantQuestions, "P_");
     
-    // console.log("buildQuestionnaire result", questionnaire);
     return questionnaire;
 }
 
