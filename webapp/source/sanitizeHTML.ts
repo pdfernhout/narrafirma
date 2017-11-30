@@ -81,19 +81,15 @@ export function generateSmallerSetOfSanitizedHTMLForMithril(html) {
 }
 
 export function generateSpecificTypeOfSanitizedHTMLForMithril(html, specifiedHTMLTags) {
-    // console.log("html", html);
-    
     if (html === undefined || html === null) {
         console.log("Undefined or null html", html);
         html = "";
-        // throw new Error("Undefined or null html");
     }
     
     // Handle case where is already a Mithril object
     if (html.tag) return html;
     
     var hasMarkup = html.indexOf("<") !== -1;
-    // console.log("has markup", hasMarkup);
     if (!hasMarkup) return html;
     
     // Use a fake div tag as a conceptual placeholder
@@ -119,8 +115,6 @@ export function generateSpecificTypeOfSanitizedHTMLForMithril(html, specifiedHTM
             }
             var tagName = html.substring(i + 1, pos);
             i = pos;
-            
-            // console.log("tagName", tagName);
             
             var cssClass;
             var parts = tagName.split(".");

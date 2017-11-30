@@ -74,10 +74,8 @@ export function getStoriesForStoryCollection(storyCollectionIdentifier, includeI
             message.messageType === "surveyResult" &&
             message.change.projectIdentifier === project.projectIdentifier &&
             message.change.storyCollectionIdentifier === storyCollectionIdentifier);
-        // console.log("message", match, message);
         return match;
     });
-    // console.log("getStoriesForStoryCollection surveyMessages", surveyMessages);
     
     surveyMessages.forEach(function (message) {
         // Now add stories in survey to results, with extra participant information
@@ -89,7 +87,6 @@ export function getStoriesForStoryCollection(storyCollectionIdentifier, includeI
                 stories[storyIndex].numStoriesTold = "" + stories.length;
                 // Make a copy of the story so as not to modify original in message
                 var story = JSON.parse(JSON.stringify(stories[storyIndex]));
-                // console.log("=== story", story);
                 
                 // Add participant info for story
                 var participantData = surveyResult.participantData;
@@ -262,14 +259,8 @@ export function isStoryCollectingEnabled() {
 }
 
 export function collectQuestionsForQuestionnaire(questionnaire) {
-    // console.log("collectQuestionsForQuestionnaire", questionnaire);
-   
     if (!questionnaire) return [];
-   
     var leadingStoryQuestions = questionnaireGeneration.getLeadingStoryQuestions(questionnaire.elicitingQuestions);
-
-    // console.log("DEBUG questions used by story browser", questions);
-          
     var questions = [].concat(leadingStoryQuestions, questionnaire.storyQuestions);
     questions.push({
         id: "participantData_header",

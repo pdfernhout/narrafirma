@@ -66,8 +66,6 @@ function storeQuestionnaireResult(completedSurvey, wizardPane) {
 }
 
 function createLayout() {
-    // console.log("createLayout");
-       
     loadQuestionnaire(function(error, questionnaire, envelope) {
         if (error) {
             console.log("Error loading questionnaire", error);
@@ -93,11 +91,12 @@ function createLayout() {
 
 function receivedMessage() {
     // Do nothing
+    ;
 }
 
 function updateServerStatus(status, message) {
     // Do nothing
-    // console.log("updateServerStatus", status, message);
+    ;
 }
 
 // getHashParameters derived from: http://stackoverflow.com/questions/4197591/parsing-url-hash-fragment-identifier-with-javascript

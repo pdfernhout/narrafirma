@@ -114,7 +114,6 @@ function displayQuestion(builder, model, fieldSpecification) {
     
     function change(event, value) {
         if (event) value = event.target.value;
-        // console.log("onchange", fieldSpecification.id, value);
         model[fieldSpecification.id] = value;
         // TODO: redraw on value change seems not needed in this survey case, since values do not affect anything about rest of application?
         // redraw();
@@ -258,7 +257,6 @@ function displayQuestion(builder, model, fieldSpecification) {
                     optionValue = option.value;                    
                 }
                 var optionOptions = {value: optionValue, selected: undefined};
-                // console.log("optionValue, value", optionValue, value, optionValue === value);
                 if (optionValue === value) optionOptions.selected = 'selected';
                 return m("option", optionOptions, optionName);
             })
@@ -434,8 +432,6 @@ export function buildSurveyForm(surveyDiv, questionnaire, doneCallback, surveyOp
     surveyResult.participantData = participantDataModel;
 
     // m.render(surveyDiv, m("div", ["Hello survey ============== b", "More!!"]));
-    
-    // console.log("startQuestions", startQuestions);
     
     var stories = surveyResult.stories;
     
@@ -634,7 +630,6 @@ export function buildSurveyForm(surveyDiv, questionnaire, doneCallback, surveyOp
         } 
         
         if (typeof root === "object" && root.tag in tagsToMakeReadOnly) {
-            // console.log("makeReadOnly", root);
             if (root.tag === "textarea" || (root.tag === "input" && !root.attrs.type)) {
                 // Ensure text fields still have copy available
                 root.attrs.readOnly = true;
@@ -694,11 +689,10 @@ export function buildSurveyForm(surveyDiv, questionnaire, doneCallback, surveyOp
     };
     
     function redraw(source = "gui") {
-        // console.log("About to redraw");
         if (surveyDiv) {
             m.render(surveyDiv, view());
         } else {
-            // When the survery form is used in a Dialog, the code will be calling redraw automatically as a mounted component,
+            // When the survey form is used in a Dialog, the code will be calling redraw automatically as a mounted component,
             // so only need to call redraw for an asynchronous server response
             if (source === "network") m.redraw();
         }

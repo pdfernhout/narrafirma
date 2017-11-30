@@ -175,7 +175,6 @@ export function generateStoryCardContent(storyModel, questionsToInclude, options
     // Encode all user-supplied text to ensure it does not create HTML issues
     var elicitingQuestion = storyModel.elicitingQuestion();
     var numStoriesTold = storyModel.numStoriesTold();
-    // console.log("elicitingQuestion", elicitingQuestion);
     var storyName = storyModel.storyName();
     var storyText = storyModel.storyText();
     var formattedFields = [];
@@ -239,8 +238,6 @@ export function generateStoryCardContent(storyModel, questionsToInclude, options
         formattedFields.push(displayHTMLForField(storyModel, question, options));
     }
 
-    // console.log("otherFields", otherFields);
-    
     var textForElicitingQuestion: any = [];
     // if questionsToInclude is unspecified, it is not being called in the "print story cards" page, so include this
     if (!questionsToInclude || Object.keys(questionsToInclude).indexOf("elicitingQuestion") >= 0) {

@@ -9,7 +9,6 @@ export function calculate_report(panelSpecificationCollection, model, headerPage
     return "calculate_report: Not working right now due to switchover to only having a model for the current page";
     
     /*
-    // console.log("calculate_report", panelSpecificationsCollection, model, headerPageID);
     if (!panelSpecificationCollection) return "ERROR: in calculate_report, panelSpecificationCollection is not set";
     var report = "<br><br>";
     var pageList = panelSpecificationCollection.getChildPageIDListForHeaderID(headerPageID);
@@ -37,8 +36,6 @@ export function calculate_report(panelSpecificationCollection, model, headerPage
                 questionsAnsweredCount--;
             }
             if (value && value.length !== 0) {
-                // console.log("value", value, value.length);
-                
                 var valueToDisplay = displayStringForValue(question, value, 4);
                 var label = labelForQuestion(question);
                 report += label + " " + valueToDisplay + "</br><br>";
@@ -73,10 +70,8 @@ export function calculate_report(panelSpecificationCollection, model, headerPage
  }
 
 function indent(level) {
-    // console.log("indent", level);
     var result = "";
     for (var i = 0; i < level; i++) {
-        // result += ".";
         result += "&nbsp;";
     }
     return result;
@@ -84,26 +79,22 @@ function indent(level) {
 
 // Recursively calls itself
 function displayStringForValue(question, value, level) {
-    // console.log("displayStringForValue", value, level, question);
     // TODO: Translate -- Should translate some answers for some types... But how to know which when when nested?
     var valueToDisplay = "";
     var item;
     var itemDisplay;
     var indentChars;
     if (value instanceof Array) {
-        // console.log("array", value);
         //valueToDisplay += "<br>";
         for (var index in value) {
             item = value[index];
             // if (index !== "0") valueToDisplay += "<br>";
             indentChars = indent(level);
             itemDisplay = displayStringForValue(null, item, level);
-            // console.log("itemDisplay", itemDisplay);
             valueToDisplay += "<br>" + indentChars + itemDisplay;
         }
         valueToDisplay += "<br>";
     } else if (value.id) {
-        // console.log("value with id", value);
         for (var key in value) {
             if (!value.hasOwnProperty(key)) continue;
             if (key === "watchCallbacks") continue;
@@ -121,13 +112,10 @@ function displayStringForValue(question, value, level) {
                 label = labelForQuestion(question);
             }
             indentChars = indent(level);
-            // console.log("label", label);
             itemDisplay = displayStringForValue(null, item, level + 4);
-            // console.log("itemDisplay", itemDisplay);
             valueToDisplay += "<br>" + indentChars + label + itemDisplay;
         }
     } else {
-        // console.log("regular", value);
         // TODO: Probably need to translate more types, like checkboxes
         if (question !== null && (question.displayType === "select" || question.displayType === "radiobuttons")) value = translate(value, value);
         valueToDisplay += "<b>" + value + "</b>";

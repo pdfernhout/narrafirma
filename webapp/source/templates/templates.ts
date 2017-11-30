@@ -1763,7 +1763,6 @@ function convertSemicolonsToNewlinesForOptions(section) {
         var question = questions[questionIndex];
         if (question.options) {
             question.options = question.options.replace(/;/g, "\n");
-            // console.log("new options", question.options);
         }
     }
     return section;

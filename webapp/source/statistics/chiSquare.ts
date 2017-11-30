@@ -34,7 +34,6 @@ export function chiSquare(observed: number[], expected: number[], degreesOfFreed
     var p = 1 - jStat.chisquare.cdf(x2, degreesOfFreedom);
     
     var result = {x2: x2, p: p, k: degreesOfFreedom, n: observed.length};
-    // console.log("chiSquare", result);
     return result;
 }
 
@@ -53,7 +52,6 @@ function test() {
     var expected1 = [ 485, 541, 82, 61, 37 ];
     // Expected x2 = 9.023307936427388
     // Expected p = 0.06051952647453607
-    // console.log("chiSquare", chiSquare(observed1, expected1));
     // was // { x2: 16.413107036160778, p: 0.002512095663000702 }
     
     // Data from Wikipedia

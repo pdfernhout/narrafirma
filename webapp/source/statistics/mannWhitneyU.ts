@@ -14,18 +14,13 @@ function mannWhitneyU(x: number[], y: number[]) {
     var n2 = y.length;
     
     var allValues = x.concat(y);
-    // console.log("mannWhitneyU allValues", allValues);
-    
     var ranked = statisticsCommon.rankdata(allValues);
-    // console.log("mannWhitneyU ranked", ranked);
     
     // get the x-ranks
     var rankx = ranked.slice(0, n1);    
     
     // the rest are y-ranks
     var ranky = ranked.slice(n1);
-    
-    // console.log("mannWhitneyU rankx, ranky", rankx, ranky);
     
     // calc U for x
     var u1 = n1 * n2 + (n1 * (n1 + 1)) / 2.0 - jStat.sum(rankx);
@@ -36,24 +31,17 @@ function mannWhitneyU(x: number[], y: number[]) {
     var bigu = Math.max(u1, u2);
     var smallu = Math.min(u1, u2);
     
-    // console.log("mannWhitneyU bigu smallu", bigu, smallu);
-    
     // correction factor for tied scores
     var T = Math.sqrt(tiecorrect(ranked));
     if (T === 0) {
         throw new Error("All numbers are identical.");
     }
-    // console.log("mannWhitneyU T tiecorrect", T);
     
     var sd = Math.sqrt(T * n1 * n2 * (n1 + n2 + 1) / 12.0);
-    // console.log("mannWhitneyU sd", sd);
     
     // normal approximation for prob calc
     var z = Math.abs((bigu - n1 * n2 / 2.0) / sd);
-    // console.log("mannWhitneyU z", z);
-    
     var p = 1.0 - jStat.normal.cdf(z, 0, 1);
-    // console.log("mannWhitneyU p", p);
     
     return {p: p, u: smallu, n1: n1, n2: n2};
 }
