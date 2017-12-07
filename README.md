@@ -65,8 +65,8 @@ Most of the initial NarraFirma implementation was done by Paul D. Fernhout.
 
 ## Screenshots
 
-![Screenshot of main dashboard](screenshots/screenshots-2015-06-18/NarraFirma%20Screenshot%2003%20-%20Home.png)
+![Screenshot of home page](screenshots/screenshots-2017-12-07/NarraFirmaScreenshot03-Home.png)
 
-![Screenshot of pattern browser](screenshots/screenshots-2015-06-18/NarraFirma%20Screenshot%2012%20-%20Catalysis%20-%20Review%20trends%20-%20top.png)
+![Screenshot of reviewing stories](screenshots/screenshots-2017-12-07/NarraFirmaScreenshot10-ReviewIncomingStories.png)
 
-For more screenshots, see [here](screenshots/screenshots-2015-06-18/).
+For more screenshots, see [here](screenshots/screenshots-2017-12-07/).
