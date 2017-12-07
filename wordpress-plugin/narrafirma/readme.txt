@@ -9,7 +9,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Requires at least: 4.3.1
 Tested up to: 4.9
 Stable tag: trunk
-Version: 1.0.0
+Version: 1.0.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -99,7 +99,7 @@ Tell us about it on the WordPress support forum or the
 == Screenshots ==
 
 1. This is the main page of NarraFirma. The sections of the software (and the phases of PNI)
-are shown in the diagram and on the list to the right. Clicking on any of these buttons
+are shown in the diagram. Clicking on any of these buttons
 leads to that section.
 
 2. This the main page for the NarraFirma planning section. Links to all the pages in that section
@@ -109,8 +109,8 @@ are listed. You can enter reminders for any page; they show up on this page.
 Describing your groups helps you think about how you should collect stories and what
 you should do with them.
 
-4. Here the NarraFirma user is doing a little sensmaking exercise based on some "project stories"
-they told, about what might happen when they do the project. Thinking in stories
+4. Here the NarraFirma user is doing a little sensemaking exercise based on some stories
+they told about what might happen when they do the project. Thinking in stories
 during project planning helps to make better decisions about how to carry out the project.
 
 5. Here the NarraFirma user is deciding how they will collect stories. They are looking at recommendations
@@ -127,8 +127,13 @@ looking here only at stories told by older people who said the person in their s
 wanted to be heard.
 
 9. Here the user is looking at patterns in the data (answers to questions) collected.
-They seee thNarraFirma at older people did not often say they felt "satisfied" about their story.
-They are looking at the stories to understand why.
+The selected row of the table of patterns (at the top) 
+shows that the questions "How do you feel about this story"
+and "What is your age" are being compared, creating a contingency (bubble) graph. The user has written an
+observation about that pattern ("People under 35 more positive") and two interpretations
+of what that pattern might mean ("More weight on older shoulders" versus "Younger people
+have lots of energy"). The user has selected some stories on the graph to read; the stories appear
+in the table at the bottom of the image.
 
 10. Here the NarraFirma user is designing a plan for a sensemaking session,
 where people will work with the collected stories and patterns to make sense of the topic
@@ -142,6 +147,11 @@ interventions.
 and to keep good records for the future.
 
 == Changelog ==
+
+= 1.0.1 = 
+
+* Fixed: Made navigation bar (at top) not scroll (was accidentally made scrolling)
+* Changed: Updated WordPress screenshots for new version
 
 = 1.0.0 =
 
@@ -244,6 +254,10 @@ loading application, getting user information, or retrieving project data.
 change logs, see the [GitHub repository](https://github.com/pdfernhout/narrafirma).
 
 == Upgrade Notice ==
+
+= 1.0.1 = 
+This upgrade fixes a small bug in the NarraFirma interface. 
+It also improves the screenshots shown in the WordPress plugins directory.
 
 = 1.0.0 =
 This highly recommended upgrade improves customization of surveys and reports, 
