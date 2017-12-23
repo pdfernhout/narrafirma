@@ -226,7 +226,19 @@ export function buildQuestionnaireFromTemplate(questionnaireTemplate: string) {
         nameStoryText: "",
         tellAnotherStoryText: "",
         tellAnotherStoryButtonText: "",
-        maxNumStories: "no limit"
+        maxNumStories: "no limit",
+
+        submitSurveyButtonText: "",
+        sendingSurveyResultsText: "",
+        resubmitSurveyButtonText: "",
+        couldNotSaveSurveyText: "",
+        deleteStoryButtonText: "",
+        deleteStoryDialogPrompt: "",
+        surveyStoredText: "",
+        sliderValuePrompt: "",
+        errorMessage_noElicitationQuestionChosen: "",
+        errorMessage_noStoryText: "",
+        errorMessage_noStoryName: ""
     };
 
     questionnaire.title = project.tripleStore.queryLatestC(questionnaireTemplate, "questionForm_title");
@@ -247,6 +259,20 @@ export function buildQuestionnaireFromTemplate(questionnaireTemplate: string) {
     questionnaire.tellAnotherStoryText = project.tripleStore.queryLatestC(questionnaireTemplate, "questionForm_tellAnotherStoryText");
     questionnaire.tellAnotherStoryButtonText = project.tripleStore.queryLatestC(questionnaireTemplate, "questionForm_tellAnotherStoryButtonText");
     questionnaire.maxNumStories = project.tripleStore.queryLatestC(questionnaireTemplate, "questionForm_maxNumStories");
+
+    questionnaire.submitSurveyButtonText = project.tripleStore.queryLatestC(questionnaireTemplate, "questionForm_submitSurveyButtonText");
+    questionnaire.sendingSurveyResultsText = project.tripleStore.queryLatestC(questionnaireTemplate, "questionForm_sendingSurveyResultsText");
+    questionnaire.couldNotSaveSurveyText = project.tripleStore.queryLatestC(questionnaireTemplate, "questionForm_couldNotSaveSurveyText");
+    questionnaire.resubmitSurveyButtonText = project.tripleStore.queryLatestC(questionnaireTemplate, "questionForm_resubmitSurveyButtonText");
+    
+    questionnaire.deleteStoryButtonText = project.tripleStore.queryLatestC(questionnaireTemplate, "questionForm_deleteStoryButtonText");
+    questionnaire.deleteStoryDialogPrompt = project.tripleStore.queryLatestC(questionnaireTemplate, "questionForm_deleteStoryDialogPrompt");
+    questionnaire.surveyStoredText = project.tripleStore.queryLatestC(questionnaireTemplate, "questionForm_surveyStoredText");
+    questionnaire.sliderValuePrompt = project.tripleStore.queryLatestC(questionnaireTemplate, "questionForm_sliderValuePrompt");
+
+    questionnaire.errorMessage_noElicitationQuestionChosen = project.tripleStore.queryLatestC(questionnaireTemplate, "questionForm_errorMessage_noElicitationQuestionChosen");
+    questionnaire.errorMessage_noStoryText = project.tripleStore.queryLatestC(questionnaireTemplate, "questionForm_errorMessage_noStoryText");
+    questionnaire.errorMessage_noStoryName = project.tripleStore.queryLatestC(questionnaireTemplate, "questionForm_errorMessage_noStoryName");
     
     // TODO: Should maybe ensure unique IDs for eliciting questions?
     var allElicitingQuestions = buildIdToItemMap("project_elicitingQuestionsList", "elicitingQuestion_shortName");

@@ -86,7 +86,7 @@ function buildQuestionLabel(fieldSpecification) {
 }
 
 // Builder is used by main application, and is passed in for compatibility
-function displayQuestion(builder, model, fieldSpecification) {
+function displayQuestion(builder, model, fieldSpecification, questionnaire) {
     var fieldID = fieldSpecification.id;
     if (model) {
         fieldID = (model.storyID || model.participantID) + "__" + fieldID;
@@ -293,6 +293,7 @@ function displayQuestion(builder, model, fieldSpecification) {
         
         // Could suggest 0-100 to support <IE10 that don't have range input -- or could do polyfill
         // if (fieldSpecification.displayPrompt) questionLabel[0].children = fieldSpecification.displayPrompt + " (0-100)";
+        const valuePrompt = questionnaire.sliderValuePrompt || "Type a new value";
         parts = [
             m("span", {"class": "narrafirma-survey-low-arrow"}, "◀ "),
             m("span", {"class": "narrafirma-survey-low"}, leftSideText),
@@ -300,7 +301,7 @@ function displayQuestion(builder, model, fieldSpecification) {
             m('span', {"class": "narrafirma-survey-high"}, rightSideText),
             m('span', {"class": "narrafirma-survey-high-arrow"}, " ▶"),
             m("span", {"class": "narrafirma-survey-value", onclick: function(event) {
-                var newValueText = prompt("Type a new value", value);
+                var newValueText = prompt(valuePrompt, value);
                 var newValue = parseInt(newValueText);
                 if (newValue && newValue >= 0 && newValue <= 100) { 
                     sliderValueOptions.value = newValue;
@@ -477,25 +478,28 @@ export function buildSurveyForm(surveyDiv, questionnaire, doneCallback, surveyOp
     }
 
     function validateStoryQuestionsModel(storyQuestionsModel, index) {
-        var storyIndex = "story #" + (index + 1);
-        
-        // TODO: Translate
         var elicitingQuestion = storyQuestionsModel.elicitingQuestion;
         var storyName = storyQuestionsModel.storyName;
         var storyText = storyQuestionsModel.storyText;
 
         if (!elicitingQuestion) {
-            alert("Before proceeding, please select the question to which you are responding for " + storyIndex + ".");
+            var prompt = questionnaire.errorMessage_noElicitationQuestionChosen || "Please select the question to which story # is a response.";
+            prompt = prompt.replace("#", index + 1);
+            alert(prompt);
             return false;
         }
 
         if (!storyText) {
-            alert("Please enter a story before proceeding for " + storyIndex + ".");
+            var prompt = questionnaire.errorMessage_noStoryText || "Please enter some text for story #.";
+            prompt = prompt.replace("#", index + 1);
+            alert(prompt);
             return false;
         }
 
         if (!storyName) {
-            alert("Please give your story a name before proceeding for " + storyIndex + ".");
+            var prompt = questionnaire.errorMessage_noStoryName || "Please give story # a name.";
+            prompt = prompt.replace("#", index + 1);
+            alert(prompt);
             return false;
         }
 
@@ -504,17 +508,23 @@ export function buildSurveyForm(surveyDiv, questionnaire, doneCallback, surveyOp
     
     function displayStoryQuestions(story, index) {
         var storylabel = makeLabelForStory(story, index);
+        var storyQuestionsPart = allStoryQuestions.map(function(question, index) {
+            return displayQuestion(null, story, question, questionnaire)
+        });
+
+        const deleteStoryButtonText = questionnaire.deleteStoryButtonText || "Delete this story";
+        const deleteStoryPrompt = questionnaire.deleteStoryDialogPrompt || "Are you sure you want to delete this story?";
         var result = [
             m("button", {
                 "class": "narrafirma-survey-delete-story-button",
                 onclick: function () {
-                    if (!confirm("Are you sure you want to delete this story (" + storylabel + ")?")) return;
+                    if (!confirm(deleteStoryPrompt + " (" + storylabel + ")")) return;
                     stories.splice(index, 1);
                     redraw();
                 }
-            }, "Delete this story"),
+            }, deleteStoryButtonText),
             m("hr"),
-            allStoryQuestions.map(displayQuestion.bind(null, null, story))
+            storyQuestionsPart
         ];
         
         var evenOrOdd = (index % 2 === 1) ? "narrafirma-survey-story-odd" : "narrafirma-survey-story-even";
@@ -525,7 +535,7 @@ export function buildSurveyForm(surveyDiv, questionnaire, doneCallback, surveyOp
     function validate() {
         // TODO: Improve validation
         if (!stories.length) {
-            alert("Please add at least one story before proceeding.");
+            alert("Please add at least one story before proceeding."); // this is never used?
             return false;
         }
         for (var i = 0; i < stories.length; i++) {
@@ -574,23 +584,30 @@ export function buildSurveyForm(surveyDiv, questionnaire, doneCallback, surveyOp
     }
     
     function submitButtonOrWaitOrFinal(): any {
+
+        const submitSurveyButtonText = questionnaire.submitSurveyButtonText || "Submit Survey";
+        const couldNotSaveSurveyText = questionnaire.couldNotSaveSurveyText || "The server could not save your survey. Please try again.";
+        const sendingSurveyResultsText = questionnaire.sendingSurveyResultsText || "Now sending survey result to server. Please wait . . .";
+
         if (submitted === "never") {
-            return m("button", {"class": "narrafirma-survey-submit-survey-button", onclick: submitButtonPressed}, "Submit Survey" + (surveyOptions.previewMode ? " (preview)" : ""));
+            return m("button", {"class": "narrafirma-survey-submit-survey-button", onclick: submitButtonPressed}, submitSurveyButtonText + (surveyOptions.previewMode ? " (preview)" : ""));
         } else if (submitted === "failed") {
+            const resubmitSurveyButtonText = questionnaire.resubmitSurveyButtonText || "Resubmit Survey";
             return m("div.narrafirma-could-not-save-survey", [
-                "The server could not save your survey. Please try again.",
+                couldNotSaveSurveyText,
                 m("br"),
-                m("button", {"class": "narrafirma-survey-submit-survey-button", onclick: submitButtonPressed}, "Resubmit Survey" + (surveyOptions.previewMode ? " (preview)" : ""))
+                m("button", {"class": "narrafirma-survey-submit-survey-button", onclick: submitButtonPressed}, resubmitSurveyButtonText + (surveyOptions.previewMode ? " (preview)" : ""))
             ]);
         } else if (submitted === "pending") {
-            return m("div.narrafirma-sending-survey", m("br"), ["Now sending survey result to server. Please wait . . ."]);
+            return m("div.narrafirma-sending-survey", m("br"), [sendingSurveyResultsText]);
         } else {
+            const surveyStoredText = questionnaire.surveyStoredText || "Your survey has been accepted and stored.";
             return endQuestions.map(function(question, index) {
                 return m("div", [
                     m("br"),
-                    m("div.narrafirma-survey-accepted", ["Your survey has been accepted and stored.",
+                    m("div.narrafirma-survey-accepted", [surveyStoredText,
                         m("br"),
-                        displayQuestion(null, null, question),
+                        displayQuestion(null, null, question, questionnaire),
                         m("br"),
                         m("br")
                 ])
@@ -658,7 +675,7 @@ export function buildSurveyForm(surveyDiv, questionnaire, doneCallback, surveyOp
         var result = m("div", [
             m(imageHTML || ""),
             startQuestions.map(function(question, index) {
-                return displayQuestion(null, null, question);
+                return displayQuestion(null, null, question, questionnaire);
             }),
             
             stories.map(function(story, index) {
@@ -666,7 +683,7 @@ export function buildSurveyForm(surveyDiv, questionnaire, doneCallback, surveyOp
             }),
             (!questionnaire.maxNumStories || questionnaire.maxNumStories === "no limit" || stories.length < questionnaire.maxNumStories) ? anotherStoryButton(questionnaire) : "",
             participantQuestions.map(function(question, index) {
-                return displayQuestion(null, surveyResult.participantData, question);
+                return displayQuestion(null, surveyResult.participantData, question, questionnaire);
             }),
             submitButtonOrWaitOrFinal()
             /* 

@@ -404,7 +404,20 @@ function processCSVContentsForQuestionnaire(contents) {
         questionForm_nameStoryText: "",
         questionForm_tellAnotherStoryText: "",
         questionForm_tellAnotherStoryButtonText: "",
-        questionForm_maxNumStories: "no limit"
+        questionForm_maxNumStories: "no limit",
+
+        questionForm_submitSurveyButtonText: "",
+        questionForm_sendingSurveyResultsText: "",
+        questionForm_couldNotSaveSurveyText: "",
+        questionForm_resubmitSurveyButtonText: "",
+
+        questionForm_deleteStoryButtonText: "",
+        questionForm_deleteStoryDialogPrompt: "",
+        questionForm_surveyStoredText: "",
+        questionForm_sliderValuePrompt: "",
+        questionForm_errorMessage_noElicitationQuestionChosen: "",
+        questionForm_errorMessage_noStoryText: "",
+        questionForm_errorMessage_noStoryName: "",
         };
     
     project.tripleStore.makeNewSetItem(storyFormListIdentifier, "StoryForm", template);
@@ -506,6 +519,51 @@ function processCSVContentsForQuestionnaire(contents) {
                 case "Max num stories":
                     template.questionForm_maxNumStories = text;
                     project.tripleStore.addTriple(template.id, "questionForm_maxNumStories", text);
+                    break;
+
+                case "Submit survey button":
+                    template.questionForm_submitSurveyButtonText = text;
+                    project.tripleStore.addTriple(template.id, "questionForm_submitSurveyButtonText", text);
+                    break;
+                case "Sending survey text":
+                    template.questionForm_sendingSurveyResultsText = text;
+                    project.tripleStore.addTriple(template.id, "questionForm_sendingSurveyResultsText", text);
+                    break;
+                case "Could not save survey text":
+                    template.questionForm_couldNotSaveSurveyText = text;
+                    project.tripleStore.addTriple(template.id, "questionForm_couldNotSaveSurveyText", text);
+                    break;
+                case "Resubmit survey button":
+                    template.questionForm_resubmitSurveyButtonText = text;
+                    project.tripleStore.addTriple(template.id, "questionForm_resubmitSurveyButtonText", text);
+                    break;
+                case "Delete story button":
+                    template.questionForm_deleteStoryButtonText = text;
+                    project.tripleStore.addTriple(template.id, "questionForm_deleteStoryButtonText", text);
+                    break;
+                case "Delete story prompt":
+                    template.questionForm_deleteStoryDialogPrompt = text;
+                    project.tripleStore.addTriple(template.id, "questionForm_deleteStoryDialogPrompt", text);
+                    break;
+                case "Survey stored message":
+                    template.questionForm_surveyStoredText = text;
+                    project.tripleStore.addTriple(template.id, "questionForm_surveyStoredText", text);
+                    break;
+                case "Slider value prompt":
+                    template.questionForm_sliderValuePrompt = text;
+                    project.tripleStore.addTriple(template.id, "questionForm_sliderValuePrompt", text);
+                    break;
+                case "Error message no elicitation question chosen":
+                    template.questionForm_errorMessage_noElicitationQuestionChosen = text;
+                    project.tripleStore.addTriple(template.id, "questionForm_errorMessage_noElicitationQuestionChosen", text);
+                    break;
+                case "Error message no story text":
+                    template.questionForm_errorMessage_noStoryText = text;
+                    project.tripleStore.addTriple(template.id, "questionForm_errorMessage_noStoryText", text);
+                    break;
+                case "Error message no story name":
+                    template.questionForm_errorMessage_noStoryName = text;
+                    project.tripleStore.addTriple(template.id, "questionForm_errorMessage_noStoryName", text);
                     break;
             }
         } else if (about === "import") {
@@ -852,8 +910,23 @@ export function exportQuestionnaire() {
     addOutputLine(["" + (++lineIndex), "", "", "Tell another story text", "form", currentQuestionnaire.tellAnotherStoryText || ""]);
     addOutputLine(["" + (++lineIndex), "", "", "Tell another story button", "form", currentQuestionnaire.tellAnotherStoryButtonText || ""]);
     addOutputLine(["" + (++lineIndex), "", "", "Max num stories", "form", currentQuestionnaire.maxNumStories || ""]);
+
+    addOutputLine(["" + (++lineIndex), "", "", "Submit survey button", "form", currentQuestionnaire.submitSurveyButtonText || ""]);
+    addOutputLine(["" + (++lineIndex), "", "", "Sending survey text", "form", currentQuestionnaire.questionForm_sendingSurveyResultsText || ""]);
+    addOutputLine(["" + (++lineIndex), "", "", "Could not save survey text", "form", currentQuestionnaire.questionForm_couldNotSaveSurveyText || ""]);
+    addOutputLine(["" + (++lineIndex), "", "", "Resubmit survey button", "form", currentQuestionnaire.resubmitSurveyButtonText || ""]);
     
-     // Export questionnaire
+    addOutputLine(["" + (++lineIndex), "", "", "Delete story button", "form", currentQuestionnaire.deleteStoryButtonText || ""]);
+    addOutputLine(["" + (++lineIndex), "", "", "Delete story prompt", "form", currentQuestionnaire.deleteStoryDialogPrompt || ""]);
+    addOutputLine(["" + (++lineIndex), "", "", "Survey stored message", "form", currentQuestionnaire.surveyStoredText || ""]);
+    addOutputLine(["" + (++lineIndex), "", "", "Slider value prompt", "form", currentQuestionnaire.sliderValuePrompt || ""]);
+    
+    addOutputLine(["" + (++lineIndex), "", "", "Error message no elicitation question chosen", "form", currentQuestionnaire.errorMessage_noElicitationQuestionChosen || ""]);
+    addOutputLine(["" + (++lineIndex), "", "", "Error message no story text", "form", currentQuestionnaire.errorMessage_noStoryText || ""]);
+    addOutputLine(["" + (++lineIndex), "", "", "Error message no story name", "form", currentQuestionnaire.errorMessage_noStoryName || ""]);
+    
+
+// Export questionnaire
     var questionnaireBlob = new Blob([output], {type: "text/csv;charset=utf-8"});
     // TODO: This seems to clear the console in FireFox 40; why?
     saveAs(questionnaireBlob, "export_story_form_" + storyCollectionName + ".csv");
