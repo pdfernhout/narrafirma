@@ -37,7 +37,14 @@ var panel: Panel = {
             ],
             displayType: "checkboxes",
             displayName: "Type",
-            displayPrompt: "What <strong>type</strong> of question is this?"
+            displayPrompt: "What <strong>type</strong> of question is this? (This choice is for your own reflection; it doesn't affect how the question is asked on the story form.)"
+        },
+        {
+            id: "elicitingQuestion_notes",
+            valueType: "string",
+            displayType: "textarea",
+            displayName: "Notes",
+            displayPrompt: "You might want to record some <b>notes</b> about this question: why you want to use it, how you think people will respond, what sorts of experiences you expect it will call to mind, etc."
         },
         {
             id: "SPECIAL_templates_elicitingQuestions",

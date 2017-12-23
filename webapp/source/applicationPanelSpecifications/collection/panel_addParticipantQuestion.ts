@@ -53,6 +53,13 @@ var panel: Panel = {
             `
         },
         {
+            id: "participantQuestion_notes",
+            valueType: "string",
+            displayType: "textarea",
+            displayName: "Notes",
+            displayPrompt: "You might want to record some <b>notes</b> about this question."
+        },
+        {
             id: "SPECIAL_templates_participantQuestions",
             valueType: "none",
             displayType: "templateList",
