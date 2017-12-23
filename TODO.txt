@@ -153,6 +153,11 @@ W Application should have better support when you need to re-authenticate due to
 
 ==== DONE
 
+--- Release 1.0.2
+
+DONE Add notes fields to questions, to record decisions
+DONE All user communications in survey experience can be customized (essential for non-English surveys)
+
 --- Release 1.0.1
 
 DONE Fix scrolling navigation panel

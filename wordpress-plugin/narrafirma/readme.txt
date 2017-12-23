@@ -9,7 +9,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Requires at least: 4.3.1
 Tested up to: 4.9
 Stable tag: trunk
-Version: 1.0.1
+Version: 1.0.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -93,8 +93,7 @@ with SSL (secure sockets). Your hosting provider should be able to help you do t
 
 = What should I do if I find a bug? =
 
-Tell us about it on the WordPress support forum or the 
-[GitHub issues list](https://github.com/pdfernhout/narrafirma/issues).
+Tell us about it on the [GitHub issues list](https://github.com/pdfernhout/narrafirma/issues).
 
 == Screenshots ==
 
@@ -147,6 +146,11 @@ interventions.
 and to keep good records for the future.
 
 == Changelog ==
+
+= 1.0.2 =
+
+* Added: Notes for questions, to keep track of decisions made while choosing and editing questions
+* Fixed: All user communications in the survey can now be customized (essential for non-English surveys)
 
 = 1.0.1 = 
 
@@ -254,6 +258,10 @@ loading application, getting user information, or retrieving project data.
 change logs, see the [GitHub repository](https://github.com/pdfernhout/narrafirma).
 
 == Upgrade Notice ==
+
+= 1.0.2 =
+This minor upgrade improves your ability to control messages in the story form (especially useful for non-English surveys).
+It also adds a "notes" fields to each question, so you can keep track of your reasons to use particular questions.
 
 = 1.0.1 = 
 This upgrade fixes a small bug in the NarraFirma interface. 
