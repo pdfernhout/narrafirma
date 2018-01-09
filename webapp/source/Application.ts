@@ -230,7 +230,7 @@ class Application {
                     } else {
                         loginURL = "login";
                     }
-                    loginText = ' <a href="/" + loginURL + ">login</a>';
+                    loginText = ' <a href="/' + loginURL + '">login</a>';
                 }
                 
                 document.body.innerHTML += '<br><b>No projects. The NarraFirma application cannot run.</b> ' + recoveryText + loginText;
