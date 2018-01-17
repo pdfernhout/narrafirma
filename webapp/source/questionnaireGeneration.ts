@@ -227,6 +227,7 @@ export function buildQuestionnaireFromTemplate(questionnaireTemplate: string) {
         tellAnotherStoryText: "",
         tellAnotherStoryButtonText: "",
         maxNumStories: "no limit",
+        sliderValuePrompt: "",
 
         submitSurveyButtonText: "",
         sendingSurveyResultsText: "",
@@ -235,7 +236,9 @@ export function buildQuestionnaireFromTemplate(questionnaireTemplate: string) {
         deleteStoryButtonText: "",
         deleteStoryDialogPrompt: "",
         surveyStoredText: "",
-        sliderValuePrompt: "",
+        showSurveyResultPane: "",
+        surveyResultPaneHeader: "",
+        
         errorMessage_noElicitationQuestionChosen: "",
         errorMessage_noStoryText: "",
         errorMessage_noStoryName: ""
@@ -259,6 +262,7 @@ export function buildQuestionnaireFromTemplate(questionnaireTemplate: string) {
     questionnaire.tellAnotherStoryText = project.tripleStore.queryLatestC(questionnaireTemplate, "questionForm_tellAnotherStoryText");
     questionnaire.tellAnotherStoryButtonText = project.tripleStore.queryLatestC(questionnaireTemplate, "questionForm_tellAnotherStoryButtonText");
     questionnaire.maxNumStories = project.tripleStore.queryLatestC(questionnaireTemplate, "questionForm_maxNumStories");
+    questionnaire.sliderValuePrompt = project.tripleStore.queryLatestC(questionnaireTemplate, "questionForm_sliderValuePrompt");
 
     questionnaire.submitSurveyButtonText = project.tripleStore.queryLatestC(questionnaireTemplate, "questionForm_submitSurveyButtonText");
     questionnaire.sendingSurveyResultsText = project.tripleStore.queryLatestC(questionnaireTemplate, "questionForm_sendingSurveyResultsText");
@@ -268,7 +272,8 @@ export function buildQuestionnaireFromTemplate(questionnaireTemplate: string) {
     questionnaire.deleteStoryButtonText = project.tripleStore.queryLatestC(questionnaireTemplate, "questionForm_deleteStoryButtonText");
     questionnaire.deleteStoryDialogPrompt = project.tripleStore.queryLatestC(questionnaireTemplate, "questionForm_deleteStoryDialogPrompt");
     questionnaire.surveyStoredText = project.tripleStore.queryLatestC(questionnaireTemplate, "questionForm_surveyStoredText");
-    questionnaire.sliderValuePrompt = project.tripleStore.queryLatestC(questionnaireTemplate, "questionForm_sliderValuePrompt");
+    questionnaire.showSurveyResultPane = project.tripleStore.queryLatestC(questionnaireTemplate, "questionForm_showSurveyResultPane");
+    questionnaire.surveyResultPaneHeader = project.tripleStore.queryLatestC(questionnaireTemplate, "questionForm_surveyResultPaneHeader");
 
     questionnaire.errorMessage_noElicitationQuestionChosen = project.tripleStore.queryLatestC(questionnaireTemplate, "questionForm_errorMessage_noElicitationQuestionChosen");
     questionnaire.errorMessage_noStoryText = project.tripleStore.queryLatestC(questionnaireTemplate, "questionForm_errorMessage_noStoryText");

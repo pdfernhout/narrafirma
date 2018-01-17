@@ -277,6 +277,23 @@ var panel: Panel = {
             displayPrompt: `Please enter a message to be shown in the <strong>pop-up alert</strong> after the participant submits their story.
             If this box is left blank, the story form will say, \"Your contribution has been added to the story collection. Thank you.\"`
         },
+        {
+            id: "questionForm_showSurveyResultPane",
+            valueType: "boolean",
+            displayType: "checkbox",
+            displayName: "Show survey result pane?",
+            displayConfiguration: "Yes, show the survey result after the Submit button has been pressed.",
+            displayPrompt: "Should participants to be able to <strong>view and copy</strong> their stories after they have been submitted?"
+        },
+        {
+            id: "questionForm_surveyResultPaneHeader",
+            valueType: "string",
+            displayType: "textarea",
+            displayName: "Survey result pane header",
+            displayPrompt: `What should the <strong>header above the submitted stories</strong> say? If this box is left blank, the header will say, 
+            \"Here are the stories you contributed. You can copy this text and paste it somewhere else to keep your own copy of what you said.\"`
+        },
+       
 
         // other customizations
         {

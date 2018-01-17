@@ -407,11 +407,6 @@ export function buildSurveyForm(surveyDiv, questionnaire, doneCallback, surveyOp
     var participantQuestions = [{id: "participantHeader", displayName: "participantHeader", displayPrompt: aboutYouText, displayType: "header", valueOptions: [], displayClass: "narrafirma-participant-header"}];
     participantQuestions = participantQuestions.concat(questionnaire.participantQuestions);
 
-    // TODO: For testing
-    // participantQuestions.push({id: "test1", displayName: "test1", displayPrompt: "test checkbox", displayType: "checkbox", valueOptions:[]});
-    // participantQuestions.push({id: "test2", displayName: "test2", displayPrompt: "test boolean", displayType: "boolean", valueOptions:[]});
-    // participantQuestions.push({id: "test3", displayName: "test3", displayPrompt: "test radiobuttons", displayType: "radiobuttons", valueOptions:["one", "two", "three"]});
-    
     var timestampStart = new Date();
     
     var surveyResult = {
@@ -466,7 +461,7 @@ export function buildSurveyForm(surveyDiv, questionnaire, doneCallback, surveyOp
     
     function submitSurvey(surveyResult, wizardPane, doneCallback) {
         console.log("submitting survey...");
-        
+
         var timestampEnd = new Date();
         
         surveyResult.timestampEnd = timestampEnd.toISOString();
@@ -608,12 +603,72 @@ export function buildSurveyForm(surveyDiv, questionnaire, doneCallback, surveyOp
                     m("div.narrafirma-survey-accepted", [surveyStoredText,
                         m("br"),
                         displayQuestion(null, null, question, questionnaire),
-                        m("br"),
                         m("br")
                 ])
                 ]);
             });
         }
+    }
+
+    function questionNameForResultsPane(question) {
+        var questionName = "";
+        if (question.displayType !== "header" && question.displayType !== "label") {
+            questionName = "* " + question.displayPrompt;
+        }
+        if (question.displayType === "slider") {
+            if (question.displayConfiguration) { // for stories
+                if (question.displayConfiguration.length > 1) {
+                    questionName += " (0 = " + question.displayConfiguration[0] + "; 100 = " + question.displayConfiguration[1] + ")";
+                }
+            } else if (question.valueOptions) { // for participant data
+                if (question.valueOptions.length > 1) {
+                    questionName += " (0 = " + question.valueOptions[0] + "; 100 = " + question.valueOptions[1] + ")";
+                }
+            }
+        }
+        return questionName;
+    }
+
+    function surveyResultPanel() {
+        var parts = [];
+
+        stories.forEach((story) => {
+            allStoryQuestions.forEach((question) => {
+                var questionName = questionNameForResultsPane(question);
+                if (questionName) parts.push(questionName);
+                if (question.id in story) {
+                    var response = story[question.id];
+                    if (typeof response == "object") {
+                        var answers = Object.keys(response);
+                        for (const answer of answers) {
+                            if (response[answer]) parts.push(answer);
+                        }
+                    } else {
+                        parts.push(response);
+                    }
+                }
+            });
+            parts.push("");
+        });
+
+        participantQuestions.forEach((question) => {
+            var questionName = questionNameForResultsPane(question);
+            if (questionName) parts.push(questionName);
+            if (question.id in surveyResult.participantData) {
+                var response = surveyResult.participantData[question.id];
+                if (typeof response == "object") {
+                    var answers = Object.keys(response);
+                    for (const answer of answers) {
+                        if (response[answer]) parts.push(answer);
+                    }
+                } else {
+                    parts.push(response);
+                }
+            }
+        });
+        const surveyResultPaneHeader = questionnaire.surveyResultPaneHeader || "Here are the stories you contributed. You can copy this text and paste it somewhere else to keep your own copy of what you said.";
+        return [m("div", {"class": "narrafirma-survey-result-summary-header"}, surveyResultPaneHeader), 
+            m("textarea", {"class": "narrafirma-survey-result-summary"}, parts.join("\n"))];
     }
     
     function tellAnotherStory() {
@@ -685,7 +740,8 @@ export function buildSurveyForm(surveyDiv, questionnaire, doneCallback, surveyOp
             participantQuestions.map(function(question, index) {
                 return displayQuestion(null, surveyResult.participantData, question, questionnaire);
             }),
-            submitButtonOrWaitOrFinal()
+            submitButtonOrWaitOrFinal(),
+            (submitted === "success" && questionnaire.showSurveyResultPane) ? surveyResultPanel() : ""
             /* 
             m("hr"),
             m("button", {

@@ -405,6 +405,7 @@ function processCSVContentsForQuestionnaire(contents) {
         questionForm_tellAnotherStoryText: "",
         questionForm_tellAnotherStoryButtonText: "",
         questionForm_maxNumStories: "no limit",
+        questionForm_sliderValuePrompt: "",
 
         questionForm_submitSurveyButtonText: "",
         questionForm_sendingSurveyResultsText: "",
@@ -414,7 +415,9 @@ function processCSVContentsForQuestionnaire(contents) {
         questionForm_deleteStoryButtonText: "",
         questionForm_deleteStoryDialogPrompt: "",
         questionForm_surveyStoredText: "",
-        questionForm_sliderValuePrompt: "",
+        questionForm_showSurveyResultPane: "",
+        questionForm_surveyResultPaneHeader: "",
+
         questionForm_errorMessage_noElicitationQuestionChosen: "",
         questionForm_errorMessage_noStoryText: "",
         questionForm_errorMessage_noStoryName: "",
@@ -520,6 +523,10 @@ function processCSVContentsForQuestionnaire(contents) {
                     template.questionForm_maxNumStories = text;
                     project.tripleStore.addTriple(template.id, "questionForm_maxNumStories", text);
                     break;
+                case "Slider value prompt":
+                    template.questionForm_sliderValuePrompt = text;
+                    project.tripleStore.addTriple(template.id, "questionForm_sliderValuePrompt", text);
+                    break;
 
                 case "Submit survey button":
                     template.questionForm_submitSurveyButtonText = text;
@@ -549,10 +556,15 @@ function processCSVContentsForQuestionnaire(contents) {
                     template.questionForm_surveyStoredText = text;
                     project.tripleStore.addTriple(template.id, "questionForm_surveyStoredText", text);
                     break;
-                case "Slider value prompt":
-                    template.questionForm_sliderValuePrompt = text;
-                    project.tripleStore.addTriple(template.id, "questionForm_sliderValuePrompt", text);
+                case "Show survey result":
+                    template.questionForm_showSurveyResultPane = text;
+                    project.tripleStore.addTriple(template.id, "questionForm_showSurveyResultPane", text);
                     break;
+                case "Survey result header":
+                    template.questionForm_surveyResultPaneHeader = text;
+                    project.tripleStore.addTriple(template.id, "questionForm_surveyResultPaneHeader", text);
+                    break;
+                
                 case "Error message no elicitation question chosen":
                     template.questionForm_errorMessage_noElicitationQuestionChosen = text;
                     project.tripleStore.addTriple(template.id, "questionForm_errorMessage_noElicitationQuestionChosen", text);
@@ -910,6 +922,7 @@ export function exportQuestionnaire() {
     addOutputLine(["" + (++lineIndex), "", "", "Tell another story text", "form", currentQuestionnaire.tellAnotherStoryText || ""]);
     addOutputLine(["" + (++lineIndex), "", "", "Tell another story button", "form", currentQuestionnaire.tellAnotherStoryButtonText || ""]);
     addOutputLine(["" + (++lineIndex), "", "", "Max num stories", "form", currentQuestionnaire.maxNumStories || ""]);
+    addOutputLine(["" + (++lineIndex), "", "", "Slider value prompt", "form", currentQuestionnaire.sliderValuePrompt || ""]);
 
     addOutputLine(["" + (++lineIndex), "", "", "Submit survey button", "form", currentQuestionnaire.submitSurveyButtonText || ""]);
     addOutputLine(["" + (++lineIndex), "", "", "Sending survey text", "form", currentQuestionnaire.questionForm_sendingSurveyResultsText || ""]);
@@ -919,7 +932,8 @@ export function exportQuestionnaire() {
     addOutputLine(["" + (++lineIndex), "", "", "Delete story button", "form", currentQuestionnaire.deleteStoryButtonText || ""]);
     addOutputLine(["" + (++lineIndex), "", "", "Delete story prompt", "form", currentQuestionnaire.deleteStoryDialogPrompt || ""]);
     addOutputLine(["" + (++lineIndex), "", "", "Survey stored message", "form", currentQuestionnaire.surveyStoredText || ""]);
-    addOutputLine(["" + (++lineIndex), "", "", "Slider value prompt", "form", currentQuestionnaire.sliderValuePrompt || ""]);
+    addOutputLine(["" + (++lineIndex), "", "", "Show survey result", "form", currentQuestionnaire.showSurveyResultPane || ""]);
+    addOutputLine(["" + (++lineIndex), "", "", "Survey result header", "form", currentQuestionnaire.surveyResultPaneHeader || ""]);
     
     addOutputLine(["" + (++lineIndex), "", "", "Error message no elicitation question chosen", "form", currentQuestionnaire.errorMessage_noElicitationQuestionChosen || ""]);
     addOutputLine(["" + (++lineIndex), "", "", "Error message no story text", "form", currentQuestionnaire.errorMessage_noStoryText || ""]);
