@@ -352,6 +352,7 @@ function displayQuestion(builder, model, fieldSpecification, questionnaire) {
 interface SurveyOptions {
     previewMode?: boolean;
     ignoreTitleChange?: boolean;
+    dataEntry?: boolean;
 }
 
 export function buildSurveyForm(surveyDiv, questionnaire, doneCallback, surveyOptions: SurveyOptions = {}) {  
@@ -629,9 +630,8 @@ export function buildSurveyForm(surveyDiv, questionnaire, doneCallback, surveyOp
         return questionName;
     }
 
-    function surveyResultPanel() {
+    function surveyResultPane() {
         var parts = [];
-
         stories.forEach((story) => {
             allStoryQuestions.forEach((question) => {
                 var questionName = questionNameForResultsPane(question);
@@ -650,7 +650,6 @@ export function buildSurveyForm(surveyDiv, questionnaire, doneCallback, surveyOp
             });
             parts.push("");
         });
-
         participantQuestions.forEach((question) => {
             var questionName = questionNameForResultsPane(question);
             if (questionName) parts.push(questionName);
@@ -727,6 +726,23 @@ export function buildSurveyForm(surveyDiv, questionnaire, doneCallback, surveyOp
         if (questionnaire.image) {
             imageHTML = "img[src='" + questionnaire.image + "'][class='narrafirma-survey-image']";
         }
+        var showSurveyResultPane = false;
+        if (submitted === "success") {
+            switch (questionnaire.showSurveyResultPane) {
+                case "never":
+                    showSurveyResultPane = false;
+                    break;
+                case "only on survey":
+                    showSurveyResultPane = !surveyOptions.dataEntry;
+                    break;
+                case "only on data entry":
+                    showSurveyResultPane = surveyOptions.dataEntry;
+                    break;
+                case "always":
+                    showSurveyResultPane = true;
+                    break;
+            }
+        }
         var result = m("div", [
             m(imageHTML || ""),
             startQuestions.map(function(question, index) {
@@ -741,7 +757,7 @@ export function buildSurveyForm(surveyDiv, questionnaire, doneCallback, surveyOp
                 return displayQuestion(null, surveyResult.participantData, question, questionnaire);
             }),
             submitButtonOrWaitOrFinal(),
-            (submitted === "success" && questionnaire.showSurveyResultPane) ? surveyResultPanel() : ""
+            showSurveyResultPane ? surveyResultPane() : ""
             /* 
             m("hr"),
             m("button", {

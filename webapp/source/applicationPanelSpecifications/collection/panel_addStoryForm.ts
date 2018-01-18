@@ -279,10 +279,10 @@ var panel: Panel = {
         },
         {
             id: "questionForm_showSurveyResultPane",
-            valueType: "boolean",
-            displayType: "checkbox",
+            valueType: "string",
+            displayType: "select",
+            valueOptions: ["never", "only on survey", "only on data entry", "always"],
             displayName: "Show survey result pane?",
-            displayConfiguration: "Yes, show the survey result after the Submit button has been pressed.",
             displayPrompt: "Should participants to be able to <strong>view and copy</strong> their stories after they have been submitted?"
         },
         {
