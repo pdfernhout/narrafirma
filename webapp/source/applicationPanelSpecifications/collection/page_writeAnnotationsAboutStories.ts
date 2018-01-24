@@ -18,7 +18,7 @@ var panel: Panel = {
             valueType: "array",
             displayType: "grid",
             displayConfiguration: "panel_addAnnotationQuestion",
-            displayName: "Annotations about stories",
+            displayName: "Annotation questions",
             displayPrompt: "These are the annotation questions you have written so far."
         }
     ]

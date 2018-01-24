@@ -217,7 +217,7 @@ class PatternExplorer {
                     valueType: "array",
                     displayType: "grid",
                     displayConfiguration: "panel_addInterpretation",
-                    displayName: "Interpretation",
+                    displayName: "Interpretations",
                     displayPrompt: "Enter at least two <strong>competing interpretations</strong> for the observation here.",
                     displayVisible: function(panelBuilder, model) {
                         return model.currentObservationDescription() || model.currentObservationTitle();

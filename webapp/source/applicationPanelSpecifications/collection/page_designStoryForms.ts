@@ -17,7 +17,7 @@ var panel: Panel = {
             valueType: "array",
             displayType: "grid",
             displayConfiguration: "panel_addStoryForm",
-            displayName: "Questionnaires",
+            displayName: "Story forms",
             displayPrompt: "These are the story forms you have created so far."
         },
         {

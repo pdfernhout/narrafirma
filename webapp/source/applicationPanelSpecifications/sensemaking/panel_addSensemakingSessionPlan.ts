@@ -94,7 +94,7 @@ var panel: Panel = {
             id: "sensemakingSessionPlan_printSensemakingSessionAgendaButton",
             valueType: "none",
             displayType: "button",
-            displayPrompt: "Export session agenda",
+            displayPrompt: "Print session agenda",
             displayConfiguration: "printSensemakingSessionAgenda",
             displayVisible: function(panelBuilder, model) {
                 return panelBuilder.readOnly === false;

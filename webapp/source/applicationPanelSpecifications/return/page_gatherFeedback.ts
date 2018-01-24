@@ -18,7 +18,7 @@ var panel: Panel = {
             valueType: "array",
             displayType: "grid",
             displayConfiguration: "panel_enterFeedbackPiece",
-            displayName: "Pieces of feedback",
+            displayName: "Feedback pieces",
             displayPrompt: "These are the pieces of feedback you have entered so far."
         },
         {

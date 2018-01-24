@@ -17,7 +17,7 @@ var panel: Panel = {
             valueType: "array",
             displayType: "grid",
             displayConfiguration: "panel_addStoryQuestion",
-            displayName: "Questions about stories",
+            displayName: "Story questions",
             displayPrompt: "These are the questions you have written so far."
         },
         {

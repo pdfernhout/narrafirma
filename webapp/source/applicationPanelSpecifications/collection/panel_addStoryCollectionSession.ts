@@ -94,7 +94,7 @@ var panel: Panel = {
             id: "collectionSessionPlan_exportCollectionSessionAgendaButton",
             valueType: "none",
             displayType: "button",
-            displayPrompt: "Export session agenda",
+            displayPrompt: "Print session agenda",
             displayConfiguration: "exportCollectionSessionAgenda",
             displayVisible: function(panelBuilder, model) {
                 return panelBuilder.readOnly === false;
