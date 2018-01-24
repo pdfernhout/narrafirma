@@ -7,9 +7,9 @@ Author URI: http://www.cfkurtz.com
 Author: Cynthia Kurtz and Paul Fernhout
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=DGVVDT2D49QA8
 Requires at least: 4.3.1
-Tested up to: 4.9
+Tested up to: 4.9.2
 Stable tag: trunk
-Version: 1.0.2
+Version: 1.1.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -147,6 +147,12 @@ and to keep good records for the future.
 
 == Changelog ==
 
+= 1.1.0 =
+
+* Added: Optional summary of submitted stories and other data, for participants to copy and save
+* Added: Human readable project report with all data entered for use outside of software
+* Fixed: Bug in login link
+
 = 1.0.2 =
 
 * Added: Notes for questions, to keep track of decisions made while choosing and editing questions
@@ -258,6 +264,10 @@ loading application, getting user information, or retrieving project data.
 change logs, see the [GitHub repository](https://github.com/pdfernhout/narrafirma).
 
 == Upgrade Notice ==
+
+= 1.1.0 = 
+This upgrade adds two new ways to get your data out of NarraFirma: in the survey, a summary of submitted stories participants can copy and keep;
+and in the application, an HTML project report that summarizes everything you typed into NarraFirma (for use in other software).
 
 = 1.0.2 =
 This minor upgrade improves your ability to control messages in the story form (especially useful for non-English surveys).

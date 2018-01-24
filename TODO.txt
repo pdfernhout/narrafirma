@@ -122,21 +122,13 @@ W Support Undo (including multi-user aspects with log)
 W User should be able to duplicate a project
 W User should be able to delete a project
 
-
 CONFIGURATION
 ? Add project configuration page?
-
-PRINTING
-W Print section reports as HTML 
-W Maybe have a summary page at end of each section (where they put in final notes on that phase) CFK
-W Generate HTML reports that can be downloaded
-W Maybe replace reports with one page to export report (or export data)
-W Generate PDF reports
 
 ------------- User interface -------------
 
 USABILITY
-W Copy selected stories to clipboard and/or a popup window CFK
+W Copy selected stories to clipboard and/or a popup window 
 W Improve dashboards, perhaps with checkmarks and thinking through completion feedback to be better
 W Support checkBoxesWithPull -- a set of check boxes where the display texts are drawn from a list entered previously (like for participant list)
 
@@ -152,6 +144,16 @@ M When import story form, hundreds of triples can be generated which take minute
 W Application should have better support when you need to re-authenticate due to server restart (rather than opening different browser tab by hand)
 
 ==== DONE
+
+--- Release 1.1.0
+
+DONE Add way to save story once submitted
+DONE Add human readable project report (these are all the same thing)
+  DONE Generate HTML reports that can be downloaded
+  DONE Print section reports as HTML 
+  DONE Maybe have a summary page at end of each section (where they put in final notes on that phase) CFK
+  DONE Maybe replace reports with one page to export report (or export data)
+  DONE Generate PDF reports
 
 --- Release 1.0.2
 
