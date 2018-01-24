@@ -10,6 +10,7 @@ import charting = require("./applicationWidgets/charting");
 import dialogSupport = require("./panelBuilder/dialogSupport");
 import canvg = require("canvgModule");
 import versions = require("./versions");
+import translate = require("./panelBuilder/translate");
 
 "use strict";
 
@@ -145,6 +146,8 @@ var graphResultsPaneCSS = `
       stroke: gray;
     }
 `;
+
+// ***************************************************************************************** General 
 
 var referenceMarker = "@";
 
@@ -345,6 +348,8 @@ function printQuestion(question) {
     return result;
 }
 
+// ***************************************************************************************** Story form 
+
 function generateHTMLForQuestionnaire(questionnaire) {
      
     // TODO: Translate
@@ -384,6 +389,8 @@ export function printStoryForm(model, fieldSpecification, value) {
     var output = generateHTMLForQuestionnaire(questionnaire);
     printHTML(output);
 }
+
+// ***************************************************************************************** Story cards 
 
 export function printStoryCards() {
     if (!Globals.clientState().storyCollectionName()) {
@@ -451,6 +458,8 @@ function printList(list, fieldsToIgnore = {}, printItemFunction: Function = prin
     return result;
 }
 
+// ***************************************************************************************** Presentation outline 
+
 export function exportPresentationOutline() {
     var project = Globals.project();
     var presentationElementsList = project.getListForField("project_presentationElementsList");
@@ -464,6 +473,8 @@ export function exportPresentationOutline() {
     var htmlForPage = generateHTMLForPage("Presentation Outline", "css/standard.css", null, printItems, null);
     printHTML(htmlForPage);
 }
+
+// ***************************************************************************************** Session agendas 
 
 export function exportCollectionSessionAgenda(itemID) {
     var project = Globals.project();
@@ -508,6 +519,8 @@ export function printSensemakingSessionAgenda(itemID) {
     var htmlForPage = generateHTMLForPage("Sensemaking session agenda", "css/standard.css", null, printItems, null);
     printHTML(htmlForPage);
 }
+
+// ***************************************************************************************** Catalysis report 
 
 function displayForGraphHolder(graphHolder: GraphHolder) {
     if (graphHolder.chartPanes.length > 1) {
@@ -718,8 +731,9 @@ export function printCatalysisReport() {
         m("div.narrafirma-catalysis-report-about", aboutReport)
     ];
     
-    ClusteringDiagram.calculateClusteringForDiagram(clusteringDiagram);
-    var perspectives = clusteringDiagram.clusters;
+    var clusteredItems = [];
+    var perspectives = [];
+    [perspectives, clusteredItems] = ClusteringDiagram.calculateClusteringForDiagram(clusteringDiagram);
 
     var tocHeaderRaw = project.tripleStore.queryLatestC(catalysisReportIdentifier, "catalysisReport_tocHeaderFirstLevel");
     if (!tocHeaderRaw) tocHeaderRaw = "Perspectives in this report (#):";
@@ -856,3 +870,409 @@ export function printCatalysisReport() {
     
     setTimeout(function() { printNextPerspective(); }, 0);
 }
+
+// ***************************************************************************************** Project Report 
+
+function cssForProjectReport() {
+    var result = `div {
+        margin: 0.5em 0 0.5em 0;
+        padding: 0.2em 0 0.2em 0;
+    }
+    
+    .narrafirma-report-title {
+        font-size: 2em;
+    }
+     
+     .narrafirma-report-intro {
+         font-size: 0.9em;
+     }
+     
+     .narrafirma-report-headerpagename {
+         font-size: 1.5em;
+         font-weight: bold;
+         background-color: lightgray;
+         padding: 0.5em;
+     }
+    
+     .narrafirma-report-pagename {
+         font-size: 1.3em;
+         font-weight: bold;
+         border-bottom: 1px solid gray;
+     }
+    
+     .narrafirma-report-header {
+        font-size: 1.2em;
+        font-weight: bold;
+     }
+    
+     .narrafirma-report-label {
+        font-size: 1em;
+     }
+    
+     .narrafirma-report-question-prompt {
+        font-size: 1em;
+     }
+    
+     .narrafirma-report-question-answer {
+         margin-left: 2em;
+         border: 1px solid lightgray;
+         padding-left: 0.5em;
+     }
+    
+     .narrafirma-report-grid-item {
+        margin-left: 2em;
+        border: 2px solid lightgray;
+        padding: 0.5em;
+    }
+    
+    .narrafirma-report-grid-item-name {
+        background-color: #eeeeee;
+        padding: 0.5em;
+    }
+         
+    .narrafirma-report-clusteringdiagram, .narrafirma-report-observationlist, .narrafirma-report-project-story {
+        margin-left: 2em;
+        border: 1px solid lightgray;
+        padding-left: 0.6em;
+     }
+     `;
+    return result;
+}
+
+function replaceAll(str, find, replace) {
+    return str.replace(new RegExp(find, 'g'), replace);
+}
+
+function printPartsForField(displayType, value) {
+    var parts = [];
+    if (typeof value === "object") {
+        if (displayType === "checkboxes") {
+            const options = Object.keys(value);
+            parts.push("<div class=\"narrafirma-report-question-answer\">");
+            options.forEach(function(option) {
+                if (option) parts.push(option + "<br/>");
+            });
+            parts.push("</div>");
+        }
+    } else {
+        if (typeof value === "string") value = replaceAll(value, "\n", "<br/>"); 
+        parts.push("<div class=\"narrafirma-report-question-answer\">" + value + "</div>");
+    }
+    return parts;
+}
+
+function printPartsForGrid(field, panelSpecificationCollection, tripleStore, parentID, displayTypesNotToShow) {
+    var parts = [];
+    var gridHasUserContent = false;
+    var gridPanel = panelSpecificationCollection.getPanelSpecificationForPanelID(field.displayConfiguration);
+    if (gridPanel) {
+        parts.push("<div class=\"narrafirma-report-question-prompt\">" + field.displayPrompt + "</div>");
+        var singularGridItemName = "";
+        var lastThreeChars = field.displayName.slice(-3);
+        if (lastThreeChars === "ies") {
+            singularGridItemName = field.displayName.slice(0,-3) + "y";
+        } else {
+            singularGridItemName = field.displayName.slice(0,-1);
+        }
+
+        var setIdentifier = tripleStore.queryLatestC(parentID, field.id);
+        var itemIDs = tripleStore.getListForSetIdentifier(setIdentifier);
+
+        var items = [];
+        itemIDs.forEach(function(itemID) {
+            var item = tripleStore.makeObject(itemID);
+            item.itemID = itemID;
+            if (item) items.push(item);
+        });
+        items = items.sort(function(a, b) { return (a.order > b.order) ? 1 : -1 });
+
+        var itemCount = 1;
+        items.forEach(function(item) {
+            parts.push("<div class=\"narrafirma-report-grid-item\">");
+            parts.push("<div class=\"narrafirma-report-grid-item-name\">" + singularGridItemName + " " + itemCount + "</div>");
+            gridPanel.panelFields.forEach(function(gridField) {
+                if (displayTypesNotToShow.indexOf(gridField.displayType) >= 0) return;
+                if (gridField.displayType === "grid") {
+                    const gridParts = printPartsForGrid(gridField, panelSpecificationCollection, tripleStore, item.itemID, displayTypesNotToShow);
+                    if (gridParts) parts = parts.concat(gridParts);
+                } else {
+                    var value = item[gridField.id];
+                    if (value) {
+                        parts.push("<div class=\"narrafirma-report-question-prompt\">" + gridField.displayPrompt + "</div>");
+                        var fieldParts = printPartsForField(gridField.displayType, value);
+                        if (fieldParts) {
+                            parts = parts.concat(fieldParts);
+                            gridHasUserContent = true;
+                        }
+                    }
+                }
+            });
+            parts.push("</div>");
+            itemCount++;
+        });
+    }
+    if (gridHasUserContent) {
+        return parts;
+    } else {
+        return null;
+    }
+}
+
+function printObservations(page, project, tripleStore, catalysisReportIdentifier) {
+    var parts = [];
+    var observationsHaveUserContent = false;
+    var observationSetIdentifier = project.tripleStore.queryLatestC(catalysisReportIdentifier, "catalysisReport_observations");
+    if (observationSetIdentifier) {
+        var observations = project.tripleStore.queryAllLatestBCForA(observationSetIdentifier);
+        parts.push("<div class=\"narrafirma-report-observationlist\">");
+        for (var key in observations) {
+            var observationIdentifier = observations[key];
+            var observation = tripleStore.makeObject(observationIdentifier);
+            if (observation.observationTitle) {
+                parts.push("<p><b>" + observation.pattern.patternName + ": " + observation.observationTitle + "</b> " + observation.observationDescription + "</p>");
+                var interpretationsSetIdentifier = project.tripleStore.queryLatestC(observationIdentifier, "observationInterpretations");
+                if (interpretationsSetIdentifier) {
+                    var interpretations = project.tripleStore.getListForSetIdentifier(interpretationsSetIdentifier);  
+                    parts.push("<ul>")
+                    for (var key in interpretations) {
+                        var interpretationIdentifier = interpretations[key];
+                        var interpretation = tripleStore.makeObject(interpretationIdentifier);
+                        let printText = "<li><b>" + interpretation.interpretation_name + "</b> " + interpretation.interpretation_text
+                        if (interpretation.interpretation_idea) printText += " <i>" + interpretation.interpretation_idea + "</i>";
+                        parts.push(printText + "</li>");
+                        observationsHaveUserContent = true;
+                    }
+                    parts.push("</ul>")
+                } 
+            }
+        }
+        parts.push("</div>");             
+    }
+    if (observationsHaveUserContent) {
+        return parts 
+    } else {
+        return null;
+    }
+}
+
+function printClusteringDiagram(field, tripleStore, lookupID) {
+    var parts = [];
+    var diagramHasUserContent = false;
+    parts.push("<div class=\"narrafirma-report-question-prompt\">" + field.displayPrompt + "</div>");
+    parts.push("<div class=\"narrafirma-report-clusteringdiagram\">");
+    var data = tripleStore.queryLatestC(lookupID, field.id);
+    if (data !== undefined) {
+        var items = [];
+        var clusters = [];
+        [clusters, items] = ClusteringDiagram.calculateClusteringForDiagram(data);
+        clusters.forEach(function(cluster) {
+            parts.push("<p><b>" + cluster.name + "</b> " + cluster.notes + "</p><ul>");
+            cluster.items.forEach(function(item) {
+                parts.push("<li><i>" + item.name + "</i> " + item.notes + "</li>");
+                diagramHasUserContent = true;
+            });
+            parts.push("</ul>");
+        });
+    }
+    parts.push("</div>");
+    if (diagramHasUserContent) {
+        return parts 
+    } else {
+        return null;
+    }
+}
+
+function printQuizScoreResult(field, tripleStore, lookupID, panelSpecificationCollection) {
+    var total = 0;
+    for (var i = 0; i < field.displayConfiguration.length; i++) {
+        var questionAnswer = tripleStore.queryLatestC(lookupID, field.displayConfiguration[i]);
+        var answerWeight = 0;
+        var index = 0;
+        if (questionAnswer) {
+            var choices = panelSpecificationCollection.getFieldSpecificationForFieldID(field.displayConfiguration[i]).valueOptions;
+            index = choices.indexOf(questionAnswer);
+            if (index === choices.length - 1) {
+                answerWeight = 0;
+            } else {
+                answerWeight = index;
+            }
+            if (answerWeight < 0) answerWeight = 0;
+            total += answerWeight;
+        }
+    }
+    var possibleTotal = field.displayConfiguration.length * 3;
+    var percent = Math.round(100 * total / possibleTotal);
+    var template = translate("#calculate_quizScoreResult_template", "{{total}} of {{possibleTotal}} ({{percent}}%)");
+    var scoreResult = template.replace("{{total}}", total).replace("{{possibleTotal}}", possibleTotal).replace("{{percent}}", "" + percent);
+    return scoreResult;
+}
+
+function printPage(page, project, tripleStore, catalysisReportIdentifier, storyCollectionName, storyCollectionIdentifier, displayTypesNotToShow, panelSpecificationCollection) {
+    var pageHasUserContent = false;
+    var parts = [];
+
+    page.panelFields.forEach(function(field) {
+        if (displayTypesNotToShow.indexOf(field.displayType) >= 0) return;
+        var displayTypeToUse = field.displayType;
+        if (["catalysisReportGraphTypesChooser", "catalysisReportQuestionChooser", "printStoryCardsQuestionChooser"].indexOf(field.displayType) >= 0) displayTypeToUse = "checkboxes";
+
+        var lookupID = project.projectIdentifier;
+        if (field.valuePath) {
+            if (field.valuePath.indexOf("catalysisReportIdentifier") >= 0) {
+                lookupID = catalysisReportIdentifier;
+            } else if (field.valuePath.indexOf("storyCollectionName") >= 0) {
+                lookupID = storyCollectionName;
+            } else if (field.valuePath.indexOf("storyCollectionIdentifier") >= 0) {
+                lookupID = storyCollectionIdentifier;
+            }
+        }
+
+        if (displayTypeToUse === "grid") {
+            const gridParts = printPartsForGrid(field, panelSpecificationCollection, tripleStore, lookupID, displayTypesNotToShow);
+            if (gridParts) {
+                parts = parts.concat(gridParts);
+                pageHasUserContent = true;
+            }
+
+        } else if (displayTypeToUse === "clusteringDiagram") {
+            const diagramParts = printClusteringDiagram(field, tripleStore, lookupID);
+            if (diagramParts) {
+                parts = parts.concat(diagramParts);
+                pageHasUserContent = true;
+            }
+
+        } else if (displayTypeToUse === "storiesList") {
+            parts.push('<div class=\"narrafirma-report-question-prompt\">' + field.displayPrompt + "</div>");
+            var projectStoryIdentifiers = project.getListForField("project_projectStoriesList");
+            projectStoryIdentifiers.forEach((projectStoryIdentifier) => {
+                var projectStory = project.tripleStore.makeObject(projectStoryIdentifier);
+                parts.push("<div class=\"narrafirma-report-project-story\"><i>" + projectStory.projectStory_name + "</i> " + projectStory.projectStory_text + "</div>");
+                pageHasUserContent = true;
+            });
+
+        } else if (displayTypeToUse === "quizScoreResult") {
+            var scoreResult = printQuizScoreResult(field, tripleStore, lookupID, panelSpecificationCollection);
+            parts.push("<p><b>" + field.displayPrompt + "</b> " + scoreResult + "</p>");
+
+        } else if (displayTypeToUse === "header") {
+            parts.push("<div class=\"narrafirma-report-header\">" + field.displayPrompt + "</div>");
+
+        } else if (displayTypeToUse === "label") {
+            if (field.id !== "configureCatalysisReport_promptToSelectCatalysisReportForInterpretations" && field.id !== "promptToSelectCatalysisReportForInterpretations") {
+                // skip those two prompting fields; they are messages to the user that only appear sometimes
+                parts.push("<div class=\"narrafirma-report-label\">" + field.displayPrompt + "</div>");
+            }
+
+        } else {
+            var data = tripleStore.queryLatestC(lookupID, field.id);
+            if (data !== undefined) {
+                parts.push('<div class=\"narrafirma-report-question-prompt\">' + field.displayPrompt + "</div>");
+                var fieldParts = printPartsForField(displayTypeToUse, data);
+                parts = parts.concat(fieldParts);
+                pageHasUserContent = true;
+            } else {
+                // there are some cases where the field id does not match the value path
+                // in these cases the value path is the correct lookup id, so we need to get it from there
+                // but we can't always get it from the value path, because sometimes there isn't one
+                if (field.valuePath) {
+                    const lastSlash = field.valuePath.lastIndexOf("/");
+                    var fieldIDFromValuePath = field.valuePath.substring(lastSlash+1);
+                    var data = tripleStore.queryLatestC(lookupID, fieldIDFromValuePath);
+                    if (data !== undefined) {
+                        parts.push('<div class=\"narrafirma-report-question-prompt\">' + field.displayPrompt + "</div>");
+                        var fieldParts = printPartsForField(displayTypeToUse, data);
+                        parts = parts.concat(fieldParts);
+                        pageHasUserContent = true;
+                    } 
+                }
+
+                
+            }
+        }
+    });
+
+    // must print observations separately because they are not linked to the page specification structure
+    // want this to print after the label that describes it
+    if (page.displayName === "Explore patterns" && catalysisReportIdentifier) {
+        var observationParts = printObservations(page, project, tripleStore, catalysisReportIdentifier);
+        if (observationParts) {
+            parts = parts.concat(observationParts);
+            pageHasUserContent = true;
+        }
+    }
+
+    if (pageHasUserContent) {
+        return parts;
+    } else {
+        return null;
+    }
+}
+
+export function printProjectReport() {
+    var parts = [];
+    const project = Globals.project();
+    const tripleStore = project.tripleStore;
+    const clientState = Globals.clientState();
+    const panelSpecificationCollection = Globals.panelSpecificationCollection();
+    const allPages = panelSpecificationCollection.buildListOfPages();
+    const displayTypesNotToShow = ["button", "html", "recommendationTable", "templateList", "storyBrowser", "graphBrowser", "functionResult"];
+    const pagesNeverToPrint = ["page_startStoryCollection", "page_printQuestionForms", "page_enterStories", "page_reviewIncomingStories", "page_browseGraphs",
+        "page_stopStoryCollection", "page_startCatalysisReport", "page_printCatalysisReport"];
+
+    parts.push("<div class=\"narrafirma-report-title\">Project Report for " + project.projectName() + "</div>");
+    parts.push("<div class=\"narrafirma-report-intro\">Generated by NarraFirma " + versions.narrafirmaApplication + " on "  + new Date().toString() + ".</div>");
+    
+    allPages.forEach(function(page) {
+        if (page.section === "dashboard" || page.section === "administration") return;
+        if (pagesNeverToPrint.indexOf(page.id) >= 0) return;
+        if (page.isHeader) {
+            parts.push("<div class=\"narrafirma-report-headerpagename\">" + page.displayName + "</div>");
+        } 
+
+        if (["page_configureCatalysisReport", "page_explorePatterns", "page_clusterInterpretations"].indexOf(page.id) >= 0) {
+            var catalysisReports = tripleStore.queryLatestC(project.projectIdentifier, "project_catalysisReports");
+            if (catalysisReports) {
+                var catalysisReportIdentifiers = tripleStore.getListForSetIdentifier(catalysisReports);
+                for (var i = 0; i < catalysisReportIdentifiers.length; i++) {
+                    var reportShortName = tripleStore.queryLatestC(catalysisReportIdentifiers[i], "catalysisReport_shortName");
+                    var pageParts = printPage(page, project, tripleStore, catalysisReportIdentifiers[i], null, null, displayTypesNotToShow, panelSpecificationCollection);
+                    if (pageParts) {
+                        parts.push("<div class=\"narrafirma-report-grid-item\">");
+                        parts.push("<div class=\"narrafirma-report-grid-item-name\">Catalysis report: " + reportShortName + "</div>");
+                        parts = parts.concat(pageParts);
+                        parts.push("</div>");
+                    }
+                }
+            } 
+
+        } else if (page.id === "page_printStoryCards") {
+            var storyCollections = tripleStore.queryLatestC(project.projectIdentifier, "project_storyCollections");
+            if (storyCollections) {
+                var storyCollectionIdentifiers = tripleStore.getListForSetIdentifier(storyCollections);
+                for (var i = 0; i < storyCollectionIdentifiers.length; i++) {
+                    var collectionShortName = tripleStore.queryLatestC(storyCollectionIdentifiers[i], "storyCollection_shortName");
+                    var pageParts = printPage(page, project, tripleStore, null, collectionShortName, storyCollectionIdentifiers[i], displayTypesNotToShow, panelSpecificationCollection);
+                    if (pageParts) {
+                        parts.push("<div class=\"narrafirma-report-grid-item\">");
+                        parts.push("<div class=\"narrafirma-report-grid-item-name\">Story collection: " + collectionShortName + "</div>");
+                        parts = parts.concat(pageParts);
+                        parts.push("</div>");
+                    }
+                }
+            } 
+            
+        } else {
+            var pageParts = printPage(page, project, tripleStore, null, null, null, displayTypesNotToShow, panelSpecificationCollection);
+            if (pageParts) {
+                parts.push("<div class=\"narrafirma-report-pagename\">" + page.displayName + "</div>");
+                parts = parts.concat(pageParts);
+            }
+        }
+    });
+
+    var html = generateHTMLForPage("Report - " + project.projectName(), null, cssForProjectReport(), null, parts.join("\n"));
+    printHTML(html);
+}
+
+
+

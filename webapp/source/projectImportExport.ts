@@ -12,7 +12,7 @@ var currentProjectStateExportType = "NarraFirma_currentProjectState";
 var currentProjectStateExportFormat = "0.1.1";
 
 export function exportEntireProject() {
-    if (!confirm("Export entire project?\n(This may take a while.)")) return;
+    if (!confirm("Export project history with stories?\n\n(This may take a while.)")) return;
     
     var project = Globals.project();
     
@@ -56,7 +56,7 @@ function chooseProjectFileToImport(callback) {
 export function importEntireProject() {
     var project = Globals.project();
     
-    if (!confirm("Import entire project?")) return;
+    if (!confirm("Import project history with stories?\n\n(This should only be done with an empty project.)")) return;
     
     console.log("importEntireProject");
     chooseProjectFileToImport((contents) => {
@@ -122,8 +122,8 @@ export function importEntireProject() {
 function exportProjectCurrentState(includeSurveyResults) {
     // TODO: Translate
     var promptMessage = includeSurveyResults ?
-        "Export current state of project with survey results?" :
-        "Export current state of project without survey results?";
+        "Export project snapshot with stories?" :
+        "Export project snapshot without stories?";
     if (!confirm(promptMessage)) return;
     
     var project = Globals.project();
@@ -185,23 +185,17 @@ function exportProjectCurrentState(includeSurveyResults) {
     };
     
     var json = JSON.stringify(exportObject, null, 4);
+
+    console.log("json", json);
     
     var questionnaireBlob = new Blob([json], {type: "application/json;charset=utf-8"});
     saveAs(questionnaireBlob, exportObject.projectIdentifier + " current state exported at " + exportObject.timestamp + ".json");
 }
 
-export function exportProjectCurrentStateWithSurveyResults() {
-    exportProjectCurrentState(true);
-}
-
-export function exportProjectCurrentStateWithoutSurveyResults() {
-    exportProjectCurrentState(false);
-}
-
 export function importProjectCurrentState() {
     var project = Globals.project();
     
-    if (!confirm("Import current project state?\n(This should ideally only be done with a new empty project.)")) return;
+    if (!confirm("Import project snapshot?\n\n(This should only be done with an empty project.)")) return;
   
     console.log("importProjectCurrentState");
     chooseProjectFileToImport((contents) => {
@@ -304,3 +298,26 @@ export function importProjectCurrentState() {
         sendNextMessage();
     });
 }
+
+export function exportProject() {
+    var project = Globals.project();
+    var tripleStore = project.tripleStore;
+    const exportType = tripleStore.queryLatestC(project.projectIdentifier, "importExport_exportType");
+    if (exportType === "project history with stories") {
+        exportEntireProject();
+    } else {
+        exportProjectCurrentState(exportType ===  "project snapshot with stories");
+    }
+}
+
+export function importProject() {
+    var project = Globals.project();
+    var tripleStore = project.tripleStore;
+    const importType = tripleStore.queryLatestC(project.projectIdentifier, "importExport_importType");
+    if (importType === "project history with stories") {
+        importEntireProject();
+    } else {
+        importProjectCurrentState();
+    }
+}
+

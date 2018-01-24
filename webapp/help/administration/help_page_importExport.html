@@ -28,31 +28,35 @@ On this page you can export your data for backup, or import to restore a project
 
 <div class="text">
 <p>
-Click any of the buttons to backup or restore your project.
-<ul>
-<li><b>Export entire project with history (includes survey results)</b>: As you work in NarraFirma
-, the software saves every action you take using "messages" that together form a history. 
-This is ground work in place for an undo system 
-(which we have not yet implemented). The full project with history is much longer, but it is the most
-complete version. "Includes survey results" means the backup file will include all of the 
-data collected or entered: stories and answers to questions.
-</li>
-<li><b>Import entire project with history</b>: Copy a project JSON file into the current NarraFirma
-project, overwriting anything you already have in it, to restore it (with its full history in place).
-</li>
-<li><b>Export current state of project (with survey results)</b>: Instead of saving your project
-complete with all the messages of its history, NarraFirma can save a <em>snapshot</em> of the project
-as it is right now. Saving the project this way is faster, but removes the possibility of using
-any undo functionality we add later.</li>
-<li><b>Export current state of project (without survey results)</b>: The same as the button above, but without
-any of the collected stories and answers to questions.</li>
-<li><b>Import current state of project</b>: Copy a project JSON file into the current
-NarraFirma project, ovewriting anything you have in it, to restore it. Using this option
-assumes that the JSON file is a snapshot and has no history in it.</li>
-</ul>
+Export the current project to a file or import a previously exported project.
+</p>
 </div>
 
 <div class="heading">Frequently-asked questions</div>
+
+<div class="question">
+Should I export a project snapshot or a project history?
+</div>
+<div class="question-answer">
+<p>
+As you work in NarraFirma, the software saves every action you take using "messages" that together form a history. 
+This is ground work in place for an undo system (which we have not yet implemented). 
+A project snapshot does not include these messages; it simply saves the current state of each element in the project.
+So at this moment it doesn't make any difference if you save a project snapshot or a project history, but in the future
+it will matter.
+</p>
+</div>
+		
+<div class="question">
+Why can't I save a project history without stories?
+</div>
+<div class="question-answer">
+<p>
+A project history is a record of everything that took place since you started the project, including the addition of stories, changes to stories,
+and references to stories. It would be hard (and possibly damaging to a potential future undo system) to pull the story-related messages out of that history.
+</p>
+</div>
+
 
 <div class="question">
 Can I use import and export to copy a project?
@@ -61,6 +65,16 @@ Can I use import and export to copy a project?
 <p>
 Yes. You can export the project (with or without collected stories) to a file, then create
 a new, empty project and import the data into it.
+</p>
+</div>
+
+<div class="question">
+Can I import a project on top of an existing project, to restore it to a previous state?
+</div>
+<div class="question-answer">
+<p>
+Don't do that. It will have unpredictable results. 
+You should always import a project file to an empty project.
 </p>
 </div>
 
@@ -83,16 +97,22 @@ Yes. The file format is independent of either back end. Just export the project,
 in your other installation of NarraFirma, and import the project into it.
 </p>
 </div>
+
+<div class="question">
+What is the export format?
+</div>
+<div class="question-answer">
+<p>
+Projects are exported in JSON format. You can open a project file in any browser and see the elements defined in it. 
+</p>
+</div>
 		
 <div class="question">
 Can I use the export function to translate the entire project to another piece of software, like a word processor?
 </div>
 <div class="question-answer">
 <p>
-Yes, sort of. You can export the current state of the project (with or without survey results) and look at the 
-JSON file you get. There is a lot of gobbledygook in there, but everything you entered into NarraFirma
-(the way it looks right now) is also there. You can set up headings in your word processor, then
-copy out the parts you want from the JSON file. 
+Sort of, but the better way is to go to the Administration-Print page and print a project report. 
 </p>
 </div>
 

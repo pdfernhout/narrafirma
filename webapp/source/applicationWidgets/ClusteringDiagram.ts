@@ -729,7 +729,7 @@ class ClusteringDiagram {
             });
         });
         
-        clusteringDiagram.clusters = clusters;
+        return [clusters, items];
     }
 }
 

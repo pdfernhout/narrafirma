@@ -451,11 +451,8 @@ export var exportQuestionnaire = csvImportExport.exportQuestionnaire;
 export var exportStoryCollection = csvImportExport.exportStoryCollection;
 export var autoFillStoryForm = csvImportExport.autoFillStoryForm;
 
-export var exportEntireProject = projectImportExport.exportEntireProject;
-export var importEntireProject = projectImportExport.importEntireProject;
-export var exportProjectCurrentStateWithSurveyResults = projectImportExport.exportProjectCurrentStateWithSurveyResults;
-export var exportProjectCurrentStateWithoutSurveyResults = projectImportExport.exportProjectCurrentStateWithoutSurveyResults;
-export var importProjectCurrentState = projectImportExport.importProjectCurrentState;
+export var exportProject = projectImportExport.exportProject;
+export var importProject = projectImportExport.importProject;
 
 export var printStoryForm = printing.printStoryForm;
 export var printStoryCards = printing.printStoryCards;
@@ -463,3 +460,5 @@ export var printCatalysisReport = printing.printCatalysisReport;
 export var exportPresentationOutline = printing.exportPresentationOutline;
 export var exportCollectionSessionAgenda = printing.exportCollectionSessionAgenda;
 export var printSensemakingSessionAgenda = printing.printSensemakingSessionAgenda;
+
+export var printProjectReport = printing.printProjectReport;
