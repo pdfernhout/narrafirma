@@ -34,7 +34,7 @@ As Malcolm Gladwell has [said](http://venturebeat.com/2015/07/24/gladwell-on-dat
 - The client-side code is written in TypeScript which is transpiled to JavaScript.
 - The application supports supports multi-user editing of content using a message-based triple store approach called "Pointrel".
 - Each change to the application state generates a JSON AJAX message.
-- Interface building is done using [Mithril](https://lhorie.github.io/mithril/index.html) (an earlier version used Dojo).
+- Interface building is done using [Mithril](https://mithril.js.org/) (an earlier version used Dojo).
 - Interactive graphs are drawn using D3.
 
 ### Server-side implementation
@@ -49,7 +49,7 @@ As Malcolm Gladwell has [said](http://venturebeat.com/2015/07/24/gladwell-on-dat
 - For Node.js, you need to run "npm run build" to compile those TypeScript source files to JavaScript before running the Node.js server (or have your IDE do it for you). Otherwise you will get error messages about missing JavaScript files when you open the webapp in your browser.
 - For WordPress, the TypeScript compiler is called during the creation of the WordPress zip file.
 - For more details on installation or setup of NarraFirma from source see [INSTALL.md](INSTALL.md).
-- For more details on installation or setup of NarraFirma from a pre-built distribution, including tips on setting up WordPress or Node.js, see [this webpage](https://narrafirma.com/home/setting-up-narrafirma-on-your-local-computer/).
+- For more details on installation or setup of NarraFirma from a pre-built distribution, including tips on setting up WordPress or Node.js, see [this webpage](https://narrafirma.com/home/setting-up-narrafirma/).
 
 ---
 
