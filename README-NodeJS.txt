@@ -29,6 +29,6 @@ for server administration and use another account to work on projects.)
 (whom you gave permission for the project), and start using NarraFirma.
 
 These instructions were copied from:
-https://narrafirma.com/home/setting-up-narrafirma-on-your-local-computer
+https://narrafirma.com/home/setting-up-narrafirma/
 
 The instructions there might be more up to date than these.
