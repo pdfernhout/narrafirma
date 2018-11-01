@@ -141,6 +141,24 @@ function displayHTMLForField(storyModel: surveyCollection.Story, fieldSpecificat
         } else {
             result.push(wrap("div", "narrafirma-story-card-question-line-without-selected-item", optionsAndChecked[0]));
         }
+    } else if (fieldSpecification.displayType === "boolean") {
+        var thisBit = [];
+        thisBit.push(wrap("span", "narrafirma-story-card-field-name", fieldName + ": "));
+        if (value) {
+            thisBit.push("yes");
+        } else {
+            thisBit.push("no");
+        }
+        result.push(wrap("div", "narrafirma-story-card-question-line-without-selected-item", thisBit));
+    } else if (fieldSpecification.displayType === "checkbox") {
+        var thisBit = [];
+        thisBit.push(wrap("span", "narrafirma-story-card-field-name", fieldName + ": "));
+        if (value) {
+            thisBit.push("true");
+        } else {
+            thisBit.push("false");
+        }
+        result.push(wrap("div", "narrafirma-story-card-question-line-without-selected-item", thisBit));
     } else if (fieldSpecification.displayType === "label" || fieldSpecification.displayType === "header") {
         return [];
     } else {
