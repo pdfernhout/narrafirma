@@ -21,7 +21,14 @@ var unansweredKey = "No answer";
 var maxRangeLabelLength = 26;
 
 function correctForUnanswered(question, value) {
-    if (question.displayType === "checkbox" && !value) return "no";
+    if (question.displayType === "boolean") {
+        if (value) {
+            return "yes"
+        } else {
+            return "no"
+        }
+    }
+    if (question.displayType === "checkbox" && !value) return "false";
     if (value === undefined || value === null || value === "") return unansweredKey;
     return value;
 }
@@ -111,9 +118,12 @@ function preloadResultsForQuestionOptions(results, question) {
     /*jshint -W069 */
     var type = question.displayType;
     results[unansweredKey] = 0;
-    if (type === "boolean" || type === "checkbox") {
-        results["false"] = 0;
+    if (type === "boolean") {
+        results["yes"] = 0;
+        results["no"] = 0;
+    } else if (type === "checkbox") {
         results["true"] = 0;
+        results["false"] = 0;
     } else if (question.valueOptions) {
         for (var i = 0; i < question.valueOptions.length; i++) {
             results[question.valueOptions[i]] = 0;
@@ -1055,9 +1065,12 @@ export function multipleHistograms(graphBrowserInstance: GraphHolder, choiceQues
     if (choiceQuestion.displayType !== "checkbox") {
         options.push(unansweredKey);
     }
-    if (choiceQuestion.displayType === "boolean" || choiceQuestion.displayType === "checkbox") {
-        options.push("false");
+    if (choiceQuestion.displayType === "boolean") {
+        options.push("yes");
+        options.push("no");
+    } else if (choiceQuestion.displayType === "checkbox") {
         options.push("true");
+        options.push("false");
     } else if (choiceQuestion.valueOptions) {
         for (index in choiceQuestion.valueOptions) {
             options.push(choiceQuestion.valueOptions[index]);
@@ -1302,9 +1315,12 @@ export function multipleScatterPlot(graphBrowserInstance: GraphHolder, xAxisQues
     if (choiceQuestion.displayType !== "checkbox" && choiceQuestion.displayType !== "checkboxes") {
         options.push(unansweredKey);
     }
-    if (choiceQuestion.displayType === "boolean" || choiceQuestion.displayType === "checkbox") {
-        options.push("false");
+    if (choiceQuestion.displayType === "boolean") {
+        options.push("yes");
+        options.push("no");
+    } else if (choiceQuestion.displayType === "checkbox") {
         options.push("true");
+        options.push("false");
     } else if (choiceQuestion.valueOptions) {
         for (index in choiceQuestion.valueOptions) {
             options.push(choiceQuestion.valueOptions[index]);
