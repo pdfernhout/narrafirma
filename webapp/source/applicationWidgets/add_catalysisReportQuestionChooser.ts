@@ -13,7 +13,7 @@ function add_catalysisReportQuestionChooser(panelBuilder: PanelBuilder, model, f
     
     var prompt = panelBuilder.buildQuestionLabel(fieldSpecification);
     var storageFunction = valuePathResolver.newValuePathForFieldSpecification(model, fieldSpecification);
-    var allStories = project.storiesForCatalysisReport(catalysisReportIdentifier);
+    var allStories = project.storiesForCatalysisReport(catalysisReportIdentifier, true);
     var allStoryQuestions = project.storyQuestionsForCatalysisReport(catalysisReportIdentifier);
     var elicitingQuestions = project.elicitingQuestionsForCatalysisReport(catalysisReportIdentifier);
     var allParticipantQuestions = project.participantQuestionsForCatalysisReport(catalysisReportIdentifier);
@@ -66,7 +66,21 @@ function add_catalysisReportQuestionChooser(panelBuilder: PanelBuilder, model, f
         var naCount = 0;
         allStories.forEach((story) => {
             var value = story.fieldValue(id);
-            if (value !== undefined && value !== null && value !== {} && value !== "") {
+            if (questionType == "boolean") {
+                if (value) {
+                    increment(answerCounts, "yes");
+                } else {
+                    increment(answerCounts, "no");
+                }
+                answeredQuestionsCount++;
+            } else if (questionType == "checkbox") {
+                if (value) {
+                    increment(answerCounts, "true");
+                } else {
+                    increment(answerCounts, "false");
+                }
+                answeredQuestionsCount++;
+            } else if (value !== undefined && value !== null && value !== {} && value !== "") {
                 answeredQuestionsCount++;
                 if (questionType === "slider") {
                     // Bin the sliders

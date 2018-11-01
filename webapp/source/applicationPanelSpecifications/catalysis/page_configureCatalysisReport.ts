@@ -25,6 +25,18 @@ var panel: Panel = {
             displayName: "Catalysis report",
             displayPrompt: "Choose a catalysis <strong>report</strong> to work on."
         },
+
+        {
+            id: "configureCatalysisReport_filterNotice",
+            valueType: "object",
+            valuePath: "/clientState/catalysisReportIdentifier/catalysisReport_filter",
+            displayType: "catalysisReportFilterNotice",
+            displayPrompt: "",
+            displayVisible: function(panelBuilder, model) {
+                return !!Globals.clientState().catalysisReportIdentifier();
+            }
+        },
+
         {
             id: "configureCatalysisReport_promptToSelectCatalysisReportForInterpretations",
             valueType: "none",
@@ -34,33 +46,17 @@ var panel: Panel = {
                 return !Globals.clientState().catalysisReportIdentifier();
             }
         },
+
         {
-            id: "configureCatalysisReport_minimumSubsetSize",
-            valuePath: "/clientState/catalysisReportIdentifier/minimumSubsetSize",
-            valueType: "string",
-            valueOptions: [
-                "10",
-                "15",
-                "20",
-                "25",
-                "30",
-                "35",
-                "40",
-                "45",
-                "50",
-                "60",
-                "70",
-                "80",
-                "90",
-                "100"
-            ],
-            displayType: "select",
-            displayName: "Minimum subset size",
-            displayPrompt: "How large should <strong>subsets</strong> of stories be to be considered for statistical tests? (Test results based on low sample sizes - usually less than 30 - should be regarded as suggestive rather than conclusive.)",
+            id: "configureCatalysisReport_ShowOrHideHeader",
+            valueType: "none",
+            displayType: "header",
+            displayPrompt: "Things you can show and hide",
             displayVisible: function(panelBuilder, model) {
                 return !!Globals.clientState().catalysisReportIdentifier();
             }
-        },
+       },
+
 
         {
             id: "configureCatalysisReport_chooseGraphTypes",
@@ -72,7 +68,28 @@ var panel: Panel = {
                 return !!Globals.clientState().catalysisReportIdentifier();
             }
         },
-
+        {
+            id: "catalysisReport_filter",
+            valuePath: "/clientState/catalysisReportIdentifier/catalysisReport_filter",
+            valueType: "string",
+            displayType: "text",
+            displayPrompt: `
+            If you want to <strong>filter</strong> the stories used in this report, enter your filter here.
+            (For details on how to use this function, click Help.)`,
+            displayVisible: function(panelBuilder, model) {
+                return !!Globals.clientState().catalysisReportIdentifier();
+            }
+        },
+        {
+            id: "configureCatalysisReport_chooseQuestions",
+            valueType: "object",
+            valuePath: "/clientState/catalysisReportIdentifier/questionsToInclude",
+            displayType: "catalysisReportQuestionChooser",
+            displayPrompt: "Which <strong>questions</strong> should appear on the \"Explore Patterns\" page? (Note: Only questions checked here will be considered in data integrity graphs.)",
+            displayVisible: function(panelBuilder, model) {
+                return !!Globals.clientState().catalysisReportIdentifier();
+            }
+        },
         {
             id: "configureCatalysisReport_showInterpretationsInGrid",
             valueType: "boolean",
@@ -80,6 +97,18 @@ var panel: Panel = {
             displayType: "checkbox",
             displayConfiguration: "Yes, show interpretations in the table",
             displayPrompt: "Should <strong>interpretations</strong> be shown in the table of patterns? (Tip: Turn this on to find or review interpretations; turn it off to shrink the table height.)",
+            displayVisible: function(panelBuilder, model) {
+                return !!Globals.clientState().catalysisReportIdentifier();
+            }
+        },
+
+
+
+        {
+            id: "configureCatalysisReport_DrawingGraphsHeader",
+            valueType: "none",
+            displayType: "header",
+            displayPrompt: "How graphs are drawn",
             displayVisible: function(panelBuilder, model) {
                 return !!Globals.clientState().catalysisReportIdentifier();
             }
@@ -147,16 +176,60 @@ var panel: Panel = {
                 return !!Globals.clientState().catalysisReportIdentifier();
             }
         },
+
+
         {
-            id: "configureCatalysisReport_chooseQuestions",
-            valueType: "object",
-            valuePath: "/clientState/catalysisReportIdentifier/questionsToInclude",
-            displayType: "catalysisReportQuestionChooser",
-            displayPrompt: "Which <strong>questions</strong> should appear on the \"Explore Patterns\" page? (Note: Only questions checked here will be considered in data integrity graphs.)",
+            id: "configureCatalysisReport_StatisticalTestsHeader",
+            valueType: "none",
+            displayType: "header",
+            displayPrompt: "How statistical tests are run",
             displayVisible: function(panelBuilder, model) {
                 return !!Globals.clientState().catalysisReportIdentifier();
             }
         },
+
+        {
+            id: "configureCatalysisReport_minimumSubsetSize",
+            valuePath: "/clientState/catalysisReportIdentifier/minimumSubsetSize",
+            valueType: "string",
+            valueOptions: [
+                "10",
+                "15",
+                "20",
+                "25",
+                "30",
+                "35",
+                "40",
+                "45",
+                "50",
+                "60",
+                "70",
+                "80",
+                "90",
+                "100"
+            ],
+            displayType: "select",
+            displayName: "Minimum subset size",
+            displayPrompt: "How large should <strong>subsets</strong> of stories be to be considered for statistical tests? (Test results based on low sample sizes - usually less than 30 - should be regarded as suggestive rather than conclusive.)",
+            displayVisible: function(panelBuilder, model) {
+                return !!Globals.clientState().catalysisReportIdentifier();
+            }
+        },
+
+
+
+        {
+            id: "configureCatalysisReport_ReportLooksHeader",
+            valueType: "none",
+            displayType: "header",
+            displayPrompt: "How the report looks",
+            displayVisible: function(panelBuilder, model) {
+                return !!Globals.clientState().catalysisReportIdentifier();
+            }
+        },
+
+
+
         {
             id: "catalysisReport_notes",
             valuePath: "/clientState/catalysisReportIdentifier/catalysisReport_notes",

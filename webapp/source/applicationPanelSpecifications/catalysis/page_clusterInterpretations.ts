@@ -30,6 +30,15 @@ var panel: Panel = {
             displayPrompt: "Choose a catalysis report to work on."
         },
         {
+            id: "clusterInterpretations_filterNotice",
+            valueType: "object",
+            valuePath: "/clientState/catalysisReportIdentifier/catalysisReport_filter",
+            displayType: "catalysisReportFilterNotice",
+            displayPrompt: "",
+            displayVisible: function(panelBuilder, model) {
+                return !!Globals.clientState().catalysisReportIdentifier();
+            }
+        },        {
             id: "promptToSelectCatalysisReportForInterpretations",
             valueType: "none",
             displayType: "label",

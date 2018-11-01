@@ -402,6 +402,14 @@ button:disabled {
     border-radius: 12px;
 }
 
+.questionExternal.narrafirma-question-type-filterNotice {
+    background-color: #d7dce4;
+    margin-bottom: 4px;
+    padding: 4px 4px 4px 8px;
+    border-radius: 2px;
+    font-style: italic;
+}
+
 .htmlWidget, .narrafirma-image {
     margin-bottom: 4px;
     border-radius: 12px;
@@ -863,6 +871,13 @@ table.filterTable td {
     padding: 0.5em;
     font-size: 0.8em;
     background: #d6ebeb;
+}
+
+.narrafirma-catalysis-report-filter-warning {
+    padding: 0.5em;
+    font-size: 0.8em;
+    font-weight: 700;
+    background: #c5d2eb;
 }
 
 .narrafirma-catalysis-report-intro-note {

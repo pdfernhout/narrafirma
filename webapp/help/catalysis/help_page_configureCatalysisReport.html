@@ -91,6 +91,49 @@ can't write any observations about it.
 </div>
 
 <div class="question">
+	What's this about filtering stories?
+</div>
+<div class="question-answer">
+	<p>You can use a filter to <b>limit the scope of your catalysis report</b> to a specific subset of stories.
+		This feature is useful when you have an important division in your story collection, such as when your stories were collected in different locations
+		and you need to look at patterns within as well as among locations. (Some people call this "slicing" data.)
+	</p><p>
+		To create a filter, enter the <i>exact</i> short name of a question (one that is in your story form), 
+		followed by <b>two equals signs</b> (==), 
+		followed by either a list of <i>exact</i> answers (separated by two equals signs), or
+		the low and high values of a numerical range (separated by two equals signs). 
+		</p>
+		<p>Some examples:</p>
+		<ul>
+			<li><b>Feel about == happy</b> will include only stories for which the question "Feel about" was answered "happy."</li>
+			<li><b>Location == Northern == Eastern</b> will include stories for which the "Location" question was answered with either "Northern" or "Eastern."</li>
+			<li><b>Story ended == 0 == 20</b> will include stories for which the scale question "Story ended" was answered with a number in the range from zero to twenty, inclusive.
+			</li>
+		</ul>
+		<p>Tips on writing filters:</p>
+		<ul>
+			<li>You can use these question types in a filter: boolean, checkbox, checkboxes, select, radiobuttons, slider. 
+				You cannot use these question types in a filter: label, header, text, textarea.
+			</li>
+			<li>For a <b>boolean</b> question, the answer specified in your filter must be either "yes" or "no." </li>
+			<li>For a <b>checkbox</b> question, the answer must be either "true" or "false."</li>
+			<li>For a <b>slider</b>, you <i>must</i> specify both ends of the range. Scale ranges must be inclusive.</li>
+			<li>You can't filter on the number of stories told. It's not a normal question; it's generated.</li>
+			<li>Spaces around the equals signs are optional. They get trimmed off.</li>
+			<li>Why <i>two</i> equals signs? Because you might have one equals sign in a question name or answer.</li>
+			<li>If you have multiple story collections in your catalysis report, all matching stories will be included, as long as the question and answer names match (exactly).</li>
+			<li><b>Don't forget that you set a filter!</b> 
+			At the top of each remaining page in the catalysis section (explore patterns, cluster interpretations, print catalysis report),
+			just below the name of the catalysis report, you will see a
+			<b>reminder</b> that you are only considering a subset of the stories in your story collection(s). 
+			The same reminder appears in the printed catalysis report.</li>
+			<li>You can use the number of stories reported in the reminder to <b>check that your filter is working properly</b>. 
+			If you want to be <i>really</i> sure that you have only the stories you want in your report, check the graph for the question.
+			The answers you filtered out should be missing from the graph.</li>
+		</ul>
+</div>
+
+<div class="question">
 What happens to my observations when I hide a graph type or question?
 </div>
 <div class="question-answer">

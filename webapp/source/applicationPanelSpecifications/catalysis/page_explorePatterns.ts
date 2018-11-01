@@ -1,3 +1,4 @@
+import Globals = require("../../Globals");
 import kludgeForUseStrict = require("../../kludgeForUseStrict");
 "use strict";
 
@@ -30,11 +31,24 @@ var panel: Panel = {
             displayPrompt: "Choose a catalysis report to work on."
         },
         {
+            id: "explorePatterns_filterNotice",
+            valueType: "object",
+            valuePath: "/clientState/catalysisReportIdentifier/catalysisReport_filter",
+            displayType: "catalysisReportFilterNotice",
+            displayPrompt: "",
+            displayVisible: function(panelBuilder, model) {
+                return !!Globals.clientState().catalysisReportIdentifier();
+            }
+        },
+        {
             id: "explorePatterns_display",
             valuePath: "/clientState/catalysisReportName",
             valueType: "none",
             displayType: "patternExplorer",
-            displayPrompt: ""
+            displayPrompt: "",
+            displayVisible: function(panelBuilder, model) {
+                return !!Globals.clientState().catalysisReportIdentifier();
+            }
         }
     ]
 };

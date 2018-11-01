@@ -246,24 +246,174 @@ class Project {
         this.tripleStore.makeNewSetItem(setIdentifier, questionClass, question);
     }
     
-    storiesForCatalysisReport(catalysisReportIdentifier) {
+    storiesForCatalysisReport(catalysisReportIdentifier, showWarnings = false) {
+        // the reason to have showWarnings is that this method gets called twice on the configure report page (once by the filter warning and once by the questions chooser)
         var result = [];
-        
         var storyCollectionsIdentifier = this.tripleStore.queryLatestC(catalysisReportIdentifier, "catalysisReport_storyCollections");
         var storyCollectionItems = this.tripleStore.getListForSetIdentifier(storyCollectionsIdentifier);
-        
         if (storyCollectionItems.length === 0) return [];
-        
-        storyCollectionItems.forEach((storyCollectionPointer) => {
-            if (storyCollectionPointer) {
-                var storyCollectionIdentifier = this.tripleStore.queryLatestC(storyCollectionPointer, "storyCollection");
-                result = result.concat(surveyCollection.getStoriesForStoryCollection(storyCollectionIdentifier));
-            } else {
-                console.log("ERROR: null or undefined storyCollectionPointer", catalysisReportIdentifier);
-            }
-        });
-        
+
+        var filter = this.tripleStore.queryLatestC(catalysisReportIdentifier, "catalysisReport_filter").trim();
+        if (filter) {
+            return this.storiesForCatalysisReportWithFilter(catalysisReportIdentifier, storyCollectionItems, filter, showWarnings);
+        } else {
+            storyCollectionItems.forEach((storyCollectionPointer) => {
+                if (!storyCollectionPointer) {
+                    console.log("ERROR: null or undefined story collection pointer in catalysis report ", catalysisReportIdentifier);
+                } else {
+                    const storyCollectionIdentifier = this.tripleStore.queryLatestC(storyCollectionPointer, "storyCollection");
+                    var storiesForThisCollection = surveyCollection.getStoriesForStoryCollection(storyCollectionIdentifier);
+                    result = result.concat(storiesForThisCollection);
+                }
+            });
+        }
         return result;
+    }
+    
+    storiesForCatalysisReportWithFilter(catalysisReportIdentifier, storyCollectionItems, filter, showWarnings = false) {
+        var result = [];
+        var questionAndAnswers = filter.split("==").map(function(item) {return item.trim()});
+        var warningShown = false;
+        storyCollectionItems.forEach((storyCollectionPointer) => {
+            if (!storyCollectionPointer) {
+                console.log("ERROR: null or undefined story collection pointer in catalysis report ", catalysisReportIdentifier);
+            } else {
+                const storyCollectionIdentifier = this.tripleStore.queryLatestC(storyCollectionPointer, "storyCollection");
+                var storiesForThisCollection = surveyCollection.getStoriesForStoryCollection(storyCollectionIdentifier);
+                var questionShortName = questionAndAnswers[0];
+                var questionnaire = surveyCollection.getQuestionnaireForStoryCollection(storyCollectionIdentifier);
+                var questionID = this.questionIDForQuestionShortNameGivenQuestionnaire(questionShortName, questionnaire);
+                var question = this.questionForQuestionIDGivenQuestionnaire(questionID, questionnaire, storyCollectionIdentifier);
+                if (question) {
+                    var answers = questionAndAnswers.slice(1);
+                    if (question.displayType == "boolean") {
+                        if (answers[0] != "yes" && answers[0] != "no") {
+                            if (showWarnings && !warningShown) 
+                                alert("This question (" + questionShortName + ") is a boolean question. The specified answer must be either yes or no.");
+                            question = null;
+                            warningShown = true;
+                        }
+                    } else if (question.displayType == "checkbox") {
+                        if (answers[0] != "true" && answers[0] != "false") {
+                            if (showWarnings && !warningShown) 
+                                alert("This question (" + questionShortName + ")  is a checkbox question. The specified answer must be either true or false.");
+                            question = null;
+                            warningShown = true;
+                        }
+                    } else if (question.displayType == "slider") { 
+                        var lowerLimit = parseInt(answers[0]);
+                        if (isNaN(lowerLimit)) {
+                            if (showWarnings && !warningShown) 
+                                alert("This question (" + questionShortName + ") has a numerical range, and the lower limit you specified (" + answers[0] + ") doesn't seem to be a number.");
+                            question = null;
+                            warningShown = true;
+                        }
+                        if (answers.length > 1) {
+                            var upperLimit = parseInt(answers[1]);
+                            if (isNaN(upperLimit)) {
+                                if (showWarnings && !warningShown) 
+                                    alert("This question (" + questionShortName + ") has a numerical range, and the upper limit you specified (" + answers[1] + ") doesn't seem to be a number.");
+                                question = null;
+                                warningShown = true;
+                            }
+                        } else { 
+                            if (showWarnings && !warningShown) 
+                                alert("This question (" + questionShortName + ") has a numerical range, but you only specified one number. You need to specify a lower and upper limit (inclusive).");
+                            question = null;
+                            warningShown = true;
+                        }
+                    }
+                } else {
+                    if (showWarnings && !warningShown) 
+                        alert('No question used by the story collection "' + storyCollectionIdentifier + '" matches the name: ' + questionShortName);
+                    result = result.concat(storiesForThisCollection);
+                    warningShown = true;
+                }
+
+                if (question) {
+                    var storiesThatMatchFilter = [];
+                    for (var storyIndex = 0; storyIndex < storiesForThisCollection.length; storyIndex++) {
+                        var story = storiesForThisCollection[storyIndex];
+                        var value = story.fieldValue(question.id).trim();
+                        var storyMatches = false;
+                        if (question.displayType == "boolean") {
+                            storyMatches = (answers[0] == "yes" && value) || (answers[0] == "no" && !value);
+                        } else if (question.displayType == "checkbox") {
+                            storyMatches = (answers[0] == "true" && value) || (answers[0] == "false" && !value);
+                        } else if (value !== undefined && value !== null && value !== {} && value !== "") {
+                            if (question.displayType == "slider") {
+                                var valueAsInt = parseInt(value);
+                                if (valueAsInt >= lowerLimit && valueAsInt <= upperLimit) {
+                                    storyMatches = true;
+                                }
+                            } else if (typeof(value) == "string") { // select, radiobuttons
+                                for (var answerIndex = 0; answerIndex < answers.length; answerIndex++) {
+                                    if (value == answers[answerIndex]) {
+                                        storyMatches = true;
+                                        break;
+                                    }
+                                }
+                            } else { // checkboxes
+                                for (var answerIndex = 0; answerIndex < answers.length; answerIndex++) {
+                                    if (value[answers[answerIndex]] && value[answers[answerIndex]] == true) {
+                                        storyMatches = true;
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                        if (storyMatches) {
+                            storiesThatMatchFilter.push(story);
+                        }
+                    }
+                    result = result.concat(storiesThatMatchFilter);
+                } // if question
+            } // if storyCollectionPointer
+        }); // storyCollectionItems loop
+        return result;
+    }
+
+    questionIDForQuestionShortNameGivenQuestionnaire(questionShortName, questionnaire) {
+        // to add correct prefix (S_, P_, A_) to question name supplied by user (for catalysis report filter)
+        if (questionShortName == "Eliciting question") {
+            return "elicitingQuestion";
+        }
+        // not an eliciting question, check story questions next
+        for (var i = 0; i < questionnaire.storyQuestions.length; i++) {
+            if (questionnaire.storyQuestions[i].displayName == questionShortName) {
+                return questionnaire.storyQuestions[i].id;
+            }
+        }
+        // not eliciting or story question, check participant questions next
+        for (i = 0; i < questionnaire.participantQuestions.length; i++) {
+            if (questionnaire.participantQuestions[i].displayName == questionShortName) {
+                return questionnaire.participantQuestions[i].id;
+            }
+        }
+        // must be an annotation question - these are ID'd differently
+        return "A_" + questionShortName;
+    }
+
+    questionForQuestionIDGivenQuestionnaire(questionID, questionnaire, storyCollectionIdentifier) {
+        if (!questionID) return null;
+        if (questionID == "elicitingQuestion") {
+            return this.elicitingQuestionForStoryCollection(storyCollectionIdentifier);
+        }
+        for (var index in questionnaire.storyQuestions) {
+            var question = questionnaire.storyQuestions[index];
+            if (question.id === questionID) return question;
+        }
+        for (var index in questionnaire.participantQuestions) {
+            var question = questionnaire.participantQuestions[index];
+            if (question.id === questionID) return question;
+        }
+        var annotationQuestions = this.collectAllAnnotationQuestions();
+        for (var index in annotationQuestions) {
+            var question = annotationQuestions[index];
+            if ("A_" + question.annotationQuestion_shortName === questionID) return question;
+        }
+        console.log("ERROR: question not found for id", questionID);
+        return null;
     }
 
     elicitingQuestionForStoryCollection(storyCollectionIdentifier) {
