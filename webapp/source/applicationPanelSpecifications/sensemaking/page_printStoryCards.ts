@@ -34,6 +34,18 @@ var panel: Panel = {
             displayPrompt: ""
         },
         {
+            id: "printStoryCards_filter",
+            valuePath: "/clientState/storyCollectionName/printStoryCards_filter",
+            valueType: "string",
+            displayType: "text",
+            displayPrompt: `
+            If you want to <strong>filter</strong> the stories printed, enter your filter here.
+            (For details on how to use this function, click Help.)`,
+            displayVisible: function(panelBuilder, model) {
+                return !!Globals.clientState().storyCollectionIdentifier();
+            }
+        },
+        {
             id: "printStoryCards_chooseQuestions",
             valueType: "object",
             valuePath: "/clientState/storyCollectionName/printStoryCards_questionsToInclude",

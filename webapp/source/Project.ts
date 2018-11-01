@@ -272,104 +272,110 @@ class Project {
     
     storiesForCatalysisReportWithFilter(catalysisReportIdentifier, storyCollectionItems, filter, showWarnings = false) {
         var result = [];
-        var questionAndAnswers = filter.split("==").map(function(item) {return item.trim()});
-        var warningShown = false;
         storyCollectionItems.forEach((storyCollectionPointer) => {
             if (!storyCollectionPointer) {
                 console.log("ERROR: null or undefined story collection pointer in catalysis report ", catalysisReportIdentifier);
             } else {
                 const storyCollectionIdentifier = this.tripleStore.queryLatestC(storyCollectionPointer, "storyCollection");
                 var storiesForThisCollection = surveyCollection.getStoriesForStoryCollection(storyCollectionIdentifier);
-                var questionShortName = questionAndAnswers[0];
                 var questionnaire = surveyCollection.getQuestionnaireForStoryCollection(storyCollectionIdentifier);
-                var questionID = this.questionIDForQuestionShortNameGivenQuestionnaire(questionShortName, questionnaire);
-                var question = this.questionForQuestionIDGivenQuestionnaire(questionID, questionnaire, storyCollectionIdentifier);
-                if (question) {
-                    var answers = questionAndAnswers.slice(1);
-                    if (question.displayType == "boolean") {
-                        if (answers[0] != "yes" && answers[0] != "no") {
-                            if (showWarnings && !warningShown) 
-                                alert("This question (" + questionShortName + ") is a boolean question. The specified answer must be either yes or no.");
-                            question = null;
-                            warningShown = true;
-                        }
-                    } else if (question.displayType == "checkbox") {
-                        if (answers[0] != "true" && answers[0] != "false") {
-                            if (showWarnings && !warningShown) 
-                                alert("This question (" + questionShortName + ")  is a checkbox question. The specified answer must be either true or false.");
-                            question = null;
-                            warningShown = true;
-                        }
-                    } else if (question.displayType == "slider") { 
-                        var lowerLimit = parseInt(answers[0]);
-                        if (isNaN(lowerLimit)) {
-                            if (showWarnings && !warningShown) 
-                                alert("This question (" + questionShortName + ") has a numerical range, and the lower limit you specified (" + answers[0] + ") doesn't seem to be a number.");
-                            question = null;
-                            warningShown = true;
-                        }
-                        if (answers.length > 1) {
-                            var upperLimit = parseInt(answers[1]);
-                            if (isNaN(upperLimit)) {
-                                if (showWarnings && !warningShown) 
-                                    alert("This question (" + questionShortName + ") has a numerical range, and the upper limit you specified (" + answers[1] + ") doesn't seem to be a number.");
-                                question = null;
-                                warningShown = true;
-                            }
-                        } else { 
-                            if (showWarnings && !warningShown) 
-                                alert("This question (" + questionShortName + ") has a numerical range, but you only specified one number. You need to specify a lower and upper limit (inclusive).");
-                            question = null;
-                            warningShown = true;
-                        }
-                    }
-                } else {
+                result = result.concat(this.storiesForStoryCollectionWithFilter(storyCollectionIdentifier, storiesForThisCollection, questionnaire, filter, showWarnings));
+            }
+        }); 
+        return result;
+    }
+
+    storiesForStoryCollectionWithFilter(storyCollectionIdentifier, storiesForThisCollection, questionnaire, filter, showWarnings = false) {
+        var result = [];
+        var questionAndAnswers = filter.split("==").map(function(item) {return item.trim()});
+        var warningShown = false;
+        var questionShortName = questionAndAnswers[0];
+        var questionID = this.questionIDForQuestionShortNameGivenQuestionnaire(questionShortName, questionnaire);
+        var question = this.questionForQuestionIDGivenQuestionnaire(questionID, questionnaire, storyCollectionIdentifier);
+        if (question) {
+            var answers = questionAndAnswers.slice(1);
+            if (question.displayType == "boolean") {
+                if (answers[0] != "yes" && answers[0] != "no") {
                     if (showWarnings && !warningShown) 
-                        alert('No question used by the story collection "' + storyCollectionIdentifier + '" matches the name: ' + questionShortName);
-                    result = result.concat(storiesForThisCollection);
+                        alert("This question (" + questionShortName + ") is a boolean question. The specified answer must be either yes or no.");
+                    question = null;
                     warningShown = true;
                 }
+            } else if (question.displayType == "checkbox") {
+                if (answers[0] != "true" && answers[0] != "false") {
+                    if (showWarnings && !warningShown) 
+                        alert("This question (" + questionShortName + ")  is a checkbox question. The specified answer must be either true or false.");
+                    question = null;
+                    warningShown = true;
+                }
+            } else if (question.displayType == "slider") { 
+                var lowerLimit = parseInt(answers[0]);
+                if (isNaN(lowerLimit)) {
+                    if (showWarnings && !warningShown) 
+                        alert("This question (" + questionShortName + ") has a numerical range, and the lower limit you specified (" + answers[0] + ") doesn't seem to be a number.");
+                    question = null;
+                    warningShown = true;
+                }
+                if (answers.length > 1) {
+                    var upperLimit = parseInt(answers[1]);
+                    if (isNaN(upperLimit)) {
+                        if (showWarnings && !warningShown) 
+                            alert("This question (" + questionShortName + ") has a numerical range, and the upper limit you specified (" + answers[1] + ") doesn't seem to be a number.");
+                        question = null;
+                        warningShown = true;
+                    }
+                } else { 
+                    if (showWarnings && !warningShown) 
+                        alert("This question (" + questionShortName + ") has a numerical range, but you only specified one number. You need to specify a lower and upper limit (inclusive).");
+                    question = null;
+                    warningShown = true;
+                }
+            }
+        } else {
+            if (showWarnings && !warningShown) 
+                alert('No question used by the story collection "' + storyCollectionIdentifier + '" matches the name: ' + questionShortName);
+            result = result.concat(storiesForThisCollection);
+            warningShown = true;
+        }
 
-                if (question) {
-                    var storiesThatMatchFilter = [];
-                    for (var storyIndex = 0; storyIndex < storiesForThisCollection.length; storyIndex++) {
-                        var story = storiesForThisCollection[storyIndex];
-                        var value = story.fieldValue(question.id)
-                        var storyMatches = false;
-                        if (question.displayType == "boolean") {
-                            storyMatches = (answers[0] == "yes" && value) || (answers[0] == "no" && !value);
-                        } else if (question.displayType == "checkbox") {
-                            storyMatches = (answers[0] == "true" && value) || (answers[0] == "false" && !value);
-                        } else if (value !== undefined && value !== null && value !== {} && value !== "") {
-                            if (question.displayType == "slider") {
-                                var valueAsInt = parseInt(value);
-                                if (valueAsInt >= lowerLimit && valueAsInt <= upperLimit) {
-                                    storyMatches = true;
-                                }
-                            } else if (typeof(value) == "string") { // select, radiobuttons
-                                for (var answerIndex = 0; answerIndex < answers.length; answerIndex++) {
-                                    if (value.trim() == answers[answerIndex]) {
-                                        storyMatches = true;
-                                        break;
-                                    }
-                                }
-                            } else { // checkboxes
-                                for (var answerIndex = 0; answerIndex < answers.length; answerIndex++) {
-                                    if (value[answers[answerIndex]] && value[answers[answerIndex]] == true) {
-                                        storyMatches = true;
-                                        break;
-                                    }
-                                }
+        if (question) {
+            var storiesThatMatchFilter = [];
+            for (var storyIndex = 0; storyIndex < storiesForThisCollection.length; storyIndex++) {
+                var story = storiesForThisCollection[storyIndex];
+                var value = story.fieldValue(question.id)
+                var storyMatches = false;
+                if (question.displayType == "boolean") {
+                    storyMatches = (answers[0] == "yes" && value) || (answers[0] == "no" && !value);
+                } else if (question.displayType == "checkbox") {
+                    storyMatches = (answers[0] == "true" && value) || (answers[0] == "false" && !value);
+                } else if (value !== undefined && value !== null && value !== {} && value !== "") {
+                    if (question.displayType == "slider") {
+                        var valueAsInt = parseInt(value);
+                        if (valueAsInt >= lowerLimit && valueAsInt <= upperLimit) {
+                            storyMatches = true;
+                        }
+                    } else if (typeof(value) == "string") { // select, radiobuttons
+                        for (var answerIndex = 0; answerIndex < answers.length; answerIndex++) {
+                            if (value.trim() == answers[answerIndex]) {
+                                storyMatches = true;
+                                break;
                             }
                         }
-                        if (storyMatches) {
-                            storiesThatMatchFilter.push(story);
+                    } else { // checkboxes
+                        for (var answerIndex = 0; answerIndex < answers.length; answerIndex++) {
+                            if (value[answers[answerIndex]] && value[answers[answerIndex]] == true) {
+                                storyMatches = true;
+                                break;
+                            }
                         }
                     }
-                    result = result.concat(storiesThatMatchFilter);
-                } // if question
-            } // if storyCollectionPointer
-        }); // storyCollectionItems loop
+                }
+                if (storyMatches) {
+                    storiesThatMatchFilter.push(story);
+                }
+            }
+            result = result.concat(storiesThatMatchFilter);
+        } // if question
         return result;
     }
 

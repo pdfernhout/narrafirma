@@ -788,6 +788,11 @@ table.filterTable td {
     page-break-after: always;
 }
 
+.storyCardFilterWarning {
+    border-bottom: 1px solid black;
+    font-style: italic;
+}
+
 @media print { 
    .storyCardForPrinting hr {
        display: none;

@@ -393,27 +393,41 @@ export function printStoryForm(model, fieldSpecification, value) {
 // ***************************************************************************************** Story cards 
 
 export function printStoryCards() {
-    if (!Globals.clientState().storyCollectionName()) {
+    var storyCollectionName = Globals.clientState().storyCollectionName();
+    var storyCollectionIdentifier = Globals.clientState().storyCollectionIdentifier();
+    if (!storyCollectionName) {
         alert("Please select a story collection for which to print story cards.");
         return;
     }
-    var storyCollectionName = Globals.clientState().storyCollectionName();
-    var allStoriesInStoryCollection = surveyCollection.getStoriesForStoryCollection(storyCollectionName);
-    if (!allStoriesInStoryCollection.length) {
+    
+    var project = Globals.project();
+    var filter = project.tripleStore.queryLatestC(storyCollectionName, "printStoryCards_filter"); 
+    filter = filter.trim();
+    var storiesForThisCollection = surveyCollection.getStoriesForStoryCollection(storyCollectionName);
+    var questionnaire = surveyCollection.getQuestionnaireForStoryCollection(storyCollectionName);
+
+    var filteredStories = null;
+    if (filter) {
+        filteredStories = project.storiesForStoryCollectionWithFilter(storyCollectionIdentifier, storiesForThisCollection, questionnaire, filter, true);
+    } else {
+        filteredStories = storiesForThisCollection;
+    }
+    if (!filteredStories.length) {
         alert("There are no stories in the collection. Please add some stories before you print story cards.");
         return;
     }
-    var storyDivs = [];
-    var project = Globals.project();
-    var questionsToInclude = project.tripleStore.queryLatestC(storyCollectionName, "printStoryCards_questionsToInclude"); 
-    var customCSS = project.tripleStore.queryLatestC(storyCollectionName, "printStoryCards_customCSS"); 
-    var beforeSliderCharacter = project.tripleStore.queryLatestC(storyCollectionName, "printStoryCards_beforeSliderCharacter"); 
-    var sliderButtonCharacter = project.tripleStore.queryLatestC(storyCollectionName, "printStoryCards_sliderButtonCharacter"); 
-    var afterSliderCharacter = project.tripleStore.queryLatestC(storyCollectionName, "printStoryCards_afterSliderCharacter"); 
-    var noAnswerSliderCharacter = project.tripleStore.queryLatestC(storyCollectionName, "printStoryCards_noAnswerSliderCharacter"); 
+    var questionsToInclude = project.tripleStore.queryLatestC(storyCollectionIdentifier, "printStoryCards_questionsToInclude"); 
+    var customCSS = project.tripleStore.queryLatestC(storyCollectionIdentifier, "printStoryCards_customCSS"); 
+    var beforeSliderCharacter = project.tripleStore.queryLatestC(storyCollectionIdentifier, "printStoryCards_beforeSliderCharacter"); 
+    var sliderButtonCharacter = project.tripleStore.queryLatestC(storyCollectionIdentifier, "printStoryCards_sliderButtonCharacter"); 
+    var afterSliderCharacter = project.tripleStore.queryLatestC(storyCollectionIdentifier, "printStoryCards_afterSliderCharacter"); 
+    var noAnswerSliderCharacter = project.tripleStore.queryLatestC(storyCollectionIdentifier, "printStoryCards_noAnswerSliderCharacter"); 
 
-    for (var storyIndex = 0; storyIndex < allStoriesInStoryCollection.length; storyIndex++) {
-        var storyModel = allStoriesInStoryCollection[storyIndex];
+    var storyDivs = [];
+    if (filter) storyDivs.push(m(".storyCardFilterWarning", "Stories that match filter: " + filter));
+
+    for (var storyIndex = 0; storyIndex < filteredStories.length; storyIndex++) {
+        var storyModel = filteredStories[storyIndex];
         var options = {
             storyTextAtTop: true,
             beforeSliderCharacter: beforeSliderCharacter,
@@ -427,7 +441,7 @@ export function printStoryCards() {
         storyDivs.push(storyDiv);
     }
     
-   var htmlForPage = generateHTMLForPage("Story cards for: " + storyCollectionName, "css/standard.css", customCSS, storyDivs, null);
+   var htmlForPage = generateHTMLForPage("Story cards for: " + storyCollectionIdentifier, "css/standard.css", customCSS, storyDivs, null);
    printHTML(htmlForPage);
 }
 
