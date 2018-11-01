@@ -22,7 +22,8 @@ function add_catalysisReportFilterNotice(panelBuilder: PanelBuilder, model, fiel
         var labelText = 'This catalysis report only pertains to stories that match the filter "' +  filter + '" (' + stories.length + storyOrStoriesText + ")";
         return m("div", {"class": "questionExternal narrafirma-question-type-filterNotice"}, sanitizeHTML.generateSanitizedHTMLForMithril(labelText));
     } else {
-        return null;
+        // it wants a mithril object, so return an empty one
+        return m("");
     }
 }
 
