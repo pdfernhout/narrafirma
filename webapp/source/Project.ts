@@ -334,7 +334,7 @@ class Project {
                     var storiesThatMatchFilter = [];
                     for (var storyIndex = 0; storyIndex < storiesForThisCollection.length; storyIndex++) {
                         var story = storiesForThisCollection[storyIndex];
-                        var value = story.fieldValue(question.id).trim();
+                        var value = story.fieldValue(question.id)
                         var storyMatches = false;
                         if (question.displayType == "boolean") {
                             storyMatches = (answers[0] == "yes" && value) || (answers[0] == "no" && !value);
@@ -348,7 +348,7 @@ class Project {
                                 }
                             } else if (typeof(value) == "string") { // select, radiobuttons
                                 for (var answerIndex = 0; answerIndex < answers.length; answerIndex++) {
-                                    if (value == answers[answerIndex]) {
+                                    if (value.trim() == answers[answerIndex]) {
                                         storyMatches = true;
                                         break;
                                     }
