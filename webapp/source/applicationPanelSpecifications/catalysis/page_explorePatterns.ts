@@ -33,7 +33,6 @@ var panel: Panel = {
         {
             id: "explorePatterns_filterNotice",
             valueType: "object",
-            valuePath: "/clientState/catalysisReportIdentifier/catalysisReport_filter",
             displayType: "catalysisReportFilterNotice",
             displayPrompt: "",
             displayVisible: function(panelBuilder, model) {
