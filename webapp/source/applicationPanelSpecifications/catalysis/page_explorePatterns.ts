@@ -45,10 +45,7 @@ var panel: Panel = {
             valuePath: "/clientState/catalysisReportName",
             valueType: "none",
             displayType: "patternExplorer",
-            displayPrompt: "",
-            displayVisible: function(panelBuilder, model) {
-                return !!Globals.clientState().catalysisReportIdentifier();
-            }
+            displayPrompt: ""
         }
     ]
 };
