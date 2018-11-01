@@ -7,6 +7,7 @@ import Project = require("../Project");
 import Globals = require("../Globals");
 import m = require("mithril");
 import GridWithItemPanel = require("../panelBuilder/GridWithItemPanel");
+//import questionAndAnswerChooserSupport = require("questionAndAnswerChooserSupport");
 
 "use strict";
 
@@ -32,7 +33,7 @@ function isMatch(story: surveyCollection.Story, questionChoice, selectedAnswerCh
     questionAnswer = "" + questionAnswer;
     return !!selectedAnswerChoices[questionAnswer];
 }
-    
+
 function optionsFromQuestion(question, stories) {
     // TODO: Translate text for options, at least booleans?
     var options = [];
@@ -146,6 +147,7 @@ function optionsFromQuestion(question, stories) {
 }
 
 function getSelectedOptions(select) {
+    
     var selectedOptions = {};
     
     // select.selectedOptions is probably not implemented widely enough, so use this looping code instead over all options
@@ -160,6 +162,30 @@ function getSelectedOptions(select) {
     return selectedOptions;
 }
 
+function getQuestionDataForSelection(questions, event) {
+    
+    var newValue = event.target.value;
+     
+    var question = null;
+    
+    for (var index = 0; index < questions.length; index++) {
+        var questionToCheck = questions[index];
+        if (questionToCheck.id === newValue) {
+            question = questionToCheck;
+            break;
+        }
+    }
+    
+    //console.log("filterPaneQuestionChoiceChanged", question);
+    
+    if (!question && newValue) console.log("could not find question for id", newValue);
+    
+    return question; 
+}
+
+
+
+    
 class Filter {
     name: string = null;
     storyBrowser: StoryBrowser = null;
@@ -250,27 +276,7 @@ class Filter {
     }
 }
 
-function getQuestionDataForSelection(questions, event) {
-    var newValue = event.target.value;
-     
-    var question = null;
-    
-    for (var index = 0; index < questions.length; index++) {
-        var questionToCheck = questions[index];
-        if (questionToCheck.id === newValue) {
-            question = questionToCheck;
-            break;
-        }
-    }
-    
-    //console.log("filterPaneQuestionChoiceChanged", question);
-    
-    if (!question && newValue) console.log("could not find question for id", newValue);
-    
-    return question; 
-}
-
-class StoryBrowser {
+export class StoryBrowser {
     project: Project = null;
     storyCollectionIdentifier: string = null;
     questionnaire: null;
@@ -280,7 +286,7 @@ class StoryBrowser {
     filteredStories = [];
     itemPanelSpecification = {id: "temporary", modelClass: "Story", panelFields: []};
     gridFieldSpecification = null;
-    
+
     // Embedded components
     filter1: Filter;
     filter2: Filter;
@@ -473,5 +479,3 @@ class StoryBrowser {
     }
     */
 }
-
-export = StoryBrowser;
