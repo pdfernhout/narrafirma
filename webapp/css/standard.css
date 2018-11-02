@@ -975,6 +975,10 @@ table.filterTable td {
     background: rgb(238, 242, 250);
 }
 
+.narrafirma-catalysis-report-observations-only-page-break {
+    page-break-after: always;
+}
+
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ d3 charting ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 .narrafirma-graph-results-pane {

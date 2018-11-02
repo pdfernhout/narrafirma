@@ -37,7 +37,19 @@ var panel: Panel = {
             displayVisible: function(panelBuilder, model) {
                 return !!Globals.clientState().catalysisReportIdentifier();
             }
-        },        {
+        },     
+        {
+            id: "catalysisReportPrint_printObservationsOrClusteredInterpretations",
+            valuePath: "/clientState/catalysisReportIdentifier/catalysisReportPrint_printObservationsOrClusteredInterpretations",
+            valueType: "string",
+            valueOptions: ["clustered interpretations", "observations only"],
+            displayType: "select",
+            displayPrompt: "Would you like to print a complete report with clustered interpretations? Or a preliminary report with only observations?",
+            displayVisible: function(panelBuilder, model) {
+                return !!Globals.clientState().catalysisReportIdentifier();
+            }
+        },       
+        {
             id: "catalysisReportPrint_printButton",
             valuePath: "/clientState/catalysisReportName",
             valueType: "none",

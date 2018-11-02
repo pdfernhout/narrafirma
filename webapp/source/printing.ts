@@ -677,9 +677,9 @@ function findMarkedReferenceInText(text) {
     } else return null;
 }
 
-export function makeObservationListForInterpretation(project: Project, allObservations, interpretationName) {
+export function makeObservationListForInterpretation(project: Project, observations, interpretationName) {
     var result = [];
-    allObservations.forEach((observation) => {
+    observations.forEach((observation) => {
         var interpretationsListIdentifier = project.tripleStore.queryLatestC(observation, "observationInterpretations");
         var interpretationsList = project.tripleStore.getListForSetIdentifier(interpretationsListIdentifier);
         interpretationsList.forEach((interpretationIdentifier) => {
@@ -715,43 +715,113 @@ export function printCatalysisReport() {
         alert("Please pick a catalysis report to print.");
         return;
     }
+
     var catalysisReportIdentifier = project.findCatalysisReport(catalysisReportName);
-    var clusteringDiagram = project.tripleStore.queryLatestC(catalysisReportIdentifier, "interpretationsClusteringDiagram");
-    if (!clusteringDiagram) {
-        alert("Please cluster interpretations before printing.");
-        return;
-    }
     var allStories = project.storiesForCatalysisReport(catalysisReportIdentifier);
     var catalysisReportObservationSetIdentifier = project.tripleStore.queryLatestC(catalysisReportIdentifier, "catalysisReport_observations");
     if (!catalysisReportObservationSetIdentifier) {
         console.log("catalysisReportObservationSetIdentifier not defined");
         return;
     }
-    var progressModel = dialogSupport.openProgressDialog("Starting up...", "Generating catalysis report", "Cancel", dialogCancelled);
-    var allObservations = project.tripleStore.getListForSetIdentifier(catalysisReportObservationSetIdentifier);
-    
+
     // retrieve and clean all user supplied parts of report
-    var reportNotes = getAndCleanUserText("catalysisReport_notes", "introduction", false);
-    var aboutReport = getAndCleanUserText("catalysisReport_about", "about text", false);
-    var conclusion = getAndCleanUserText("catalysisReport_conclusion", "conclusion", false);
-    var perspectiveLabel = getAndCleanUserText("catalysisReport_perspectiveLabel", "perspective label", false);
-    var interpretationLabel = getAndCleanUserText("catalysisReport_interpretationLabel", "interpretation label", false);
-    var observationLabel = getAndCleanUserText("catalysisReport_observationLabel", "observation label", false);
+    var options = {};
+    options["reportNotes"] = getAndCleanUserText("catalysisReport_notes", "introduction", false);
+    options["aboutReport"] = getAndCleanUserText("catalysisReport_about", "about text", false);
+    options["conclusion"] = getAndCleanUserText("catalysisReport_conclusion", "conclusion", false);
+    options["perspectiveLabel"] = getAndCleanUserText("catalysisReport_perspectiveLabel", "perspective label", false);
+    options["interpretationLabel"] = getAndCleanUserText("catalysisReport_interpretationLabel", "interpretation label", false);
+    options["observationLabel"] = getAndCleanUserText("catalysisReport_observationLabel", "observation label", false);
+    options["minimumStoryCountRequiredForTest"] = project.minimumStoryCountRequiredForTest(catalysisReportIdentifier);
+    options["numHistogramBins"] = project.numberOfHistogramBins(catalysisReportIdentifier);
+    options["numScatterDotOpacityLevels"] = project.numScatterDotOpacityLevels(catalysisReportIdentifier);
+    options["scatterDotSize"] = project.scatterDotSize(catalysisReportIdentifier);
+    options["correlationLineChoice"] = project.correlationLineChoice(catalysisReportIdentifier);
+    var observations = project.tripleStore.getListForSetIdentifier(catalysisReportObservationSetIdentifier);
+
+    var printWhat = project.tripleStore.queryLatestC(catalysisReportIdentifier, "catalysisReportPrint_printObservationsOrClusteredInterpretations");
+    if (printWhat == "observations only") {
+        printCatalysisReportWithOnlyObservations(project, catalysisReportIdentifier, catalysisReportName, allStories, observations, options);
+    } else {
+        printCatalysisReportWithClusteredInterpretations(project, catalysisReportIdentifier, catalysisReportName, allStories, observations, options);
+    }
+}
+
+function filterWarningForCatalysisReport(filter, allStories) {
+    var storyOrStoriesText = " stories";
+    if (allStories.length == 1) storyOrStoriesText = " story";
+    // todo: translation
+    var labelText = 'This report only pertains to stories that match the filter "' +  filter + '" (' + allStories.length + storyOrStoriesText + ")";
+    return m("div", {"class": "narrafirma-catalysis-report-filter-warning"}, sanitizeHTML.generateSanitizedHTMLForMithril(labelText));
+}
+
+function printCatalysisReportWithOnlyObservations(project, catalysisReportIdentifier, catalysisReportName, allStories, observations, options) {
+    var progressModel = dialogSupport.openProgressDialog("Starting up...", "Generating catalysis report (observations only)", "Cancel", dialogCancelled);
+    
+    var printItems = [
+        m("div.narrafirma-catalysis-report-title", catalysisReportName),
+        m("div.narrafirma-catalysis-report-project-name-and-date", "This report for project " + project.projectIdentifier + " was generated by NarraFirma " + versions.narrafirmaApplication + " on "  + new Date().toString()),
+    ]
+    var filter = project.tripleStore.queryLatestC(catalysisReportIdentifier, "catalysisReport_filter");  
+    if (filter) printItems.push(filterWarningForCatalysisReport(filter, allStories));
+    printItems.push(m("div.narrafirma-catalysis-report-about", options["aboutReport"]));
+    
+    function progressText(observationIndex: number) {
+        return "Observation " + (observationIndex + 1) + " of " + observations.length;
+    }
+    
+    function dialogCancelled(dialogConfiguration, hideDialogMethod) {
+        progressModel.cancelled = true;
+        hideDialogMethod();
+    }
+    
+    var observationIndex = 0;
+
+    function printNextObservation() {
+        if (progressModel.cancelled) {
+            alert("Cancelled after working on " + (observationIndex + 1) + " observation(s)");
+        } else if (observationIndex >= observations.length) {
+            printItems.push(m("div.narrafirma-catalysis-report-conclusion", options["conclusion"]));
+            progressModel.hideDialogMethod();
+            // Trying to avoid popup warning if open window from timeout by using finish dialog button press to display results
+            var finishModel = dialogSupport.openFinishedDialog("Done creating report; display it?", "Finished generating catalysis report", "Display", "Cancel", function(dialogConfiguration, hideDialogMethod) {
+                // "css/standard.css"
+                var customCSS = project.tripleStore.queryLatestC(catalysisReportIdentifier, "catalysisReport_customCSS");
+                var htmlForPage = generateHTMLForPage(catalysisReportName, "css/standard.css", customCSS, printItems, null);
+                printHTML(htmlForPage);
+                hideDialogMethod();
+                progressModel.redraw();
+            });
+            finishModel.redraw();
+        } else {
+            printItems.push(<any>printObservationList([observations[observationIndex]], options["observationLabel"], "", allStories, 
+                options["minimumStoryCountRequiredForTest"], options["numHistogramBins"], options["numScatterDotOpacityLevels"], options["scatterDotSize"], options["correlationLineChoice"]));
+            printItems.push(m(".narrafirma-catalysis-report-observations-only-page-break", ""));
+            progressModel.progressText = progressText(observationIndex);
+            progressModel.redraw();
+            observationIndex++;
+            setTimeout(function() { printNextObservation(); }, 0);
+        }
+    }
+    setTimeout(function() { printNextObservation(); }, 0);
+}
+
+function printCatalysisReportWithClusteredInterpretations(project, catalysisReportIdentifier, catalysisReportName, allStories, observations, options) {
+    var clusteringDiagram = project.tripleStore.queryLatestC(catalysisReportIdentifier, "interpretationsClusteringDiagram");
+    if (!clusteringDiagram) {
+        alert("Please cluster interpretations before printing.");
+        return;
+    }
+
+    var progressModel = dialogSupport.openProgressDialog("Starting up...", "Generating catalysis report", "Cancel", dialogCancelled);
 
     var printItems = [
         m("div.narrafirma-catalysis-report-title", catalysisReportName),
         m("div.narrafirma-catalysis-report-project-name-and-date", "This report for project " + project.projectIdentifier + " was generated by NarraFirma " + versions.narrafirmaApplication + " on "  + new Date().toString()),
     ]
-    
     var filter = project.tripleStore.queryLatestC(catalysisReportIdentifier, "catalysisReport_filter");  
-    if (filter) {
-        var storyOrStoriesText = " stories";
-        if (allStories.length == 1) storyOrStoriesText = " story";
-        var labelText = 'This report only pertains to stories that match the filter "' +  filter + '" (' + allStories.length + storyOrStoriesText + ")";
-        printItems.push(m("div", {"class": "narrafirma-catalysis-report-filter-warning"}, sanitizeHTML.generateSanitizedHTMLForMithril(labelText)));
-    }
-
-    printItems.push(m("div.narrafirma-catalysis-report-about", aboutReport));
+    if (filter) printItems.push(filterWarningForCatalysisReport(filter, allStories));
+    printItems.push(m("div.narrafirma-catalysis-report-about", options["aboutReport"]));
     
     var clusteredItems = [];
     var perspectives = [];
@@ -797,7 +867,7 @@ export function printCatalysisReport() {
         if (progressModel.cancelled) {
             alert("Cancelled after working on " + (perspectiveIndex + 1) + " perspective(s)");
         } else if (perspectiveIndex >= perspectives.length) {
-            printItems.push(m("div.narrafirma-catalysis-report-conclusion", conclusion));
+            printItems.push(m("div.narrafirma-catalysis-report-conclusion", options["conclusion"]));
             progressModel.hideDialogMethod();
             // Trying to avoid popup warning if open window from timeout by using finish dialog button press to display results
             var finishModel = dialogSupport.openFinishedDialog("Done creating report; display it?", "Finished generating catalysis report", "Display", "Cancel", function(dialogConfiguration, hideDialogMethod) {
@@ -814,7 +884,7 @@ export function printCatalysisReport() {
             if (itemIndex === 0) {
                 printItems.push(m("a", {name: perspective.name}));
                 printItems.push(m("div.narrafirma-catalysis-report-perspective", 
-                    [m("span", {"class": "narrafirma-catalysis-report-perspective-label"}, perspectiveLabel),
+                    [m("span", {"class": "narrafirma-catalysis-report-perspective-label"}, options["perspectiveLabel"]),
                     perspective.name]));
                 if (perspective.notes) printItems.push(m("div.narrafirma-catalysis-report-perspective-notes", printText(perspective.notes)));
 
@@ -857,7 +927,7 @@ export function printCatalysisReport() {
                 }
                 printItems.push(m("a", {name: item.name}));
                 printItems.push(m("div.narrafirma-catalysis-report-interpretation", 
-                    [m("span", {"class": "narrafirma-catalysis-report-interpretation-label"}, interpretationLabel),
+                    [m("span", {"class": "narrafirma-catalysis-report-interpretation-label"}, options["interpretationLabel"]),
                     item.name]));
 
                 if (item.notes) {
@@ -877,10 +947,10 @@ export function printCatalysisReport() {
                     printItems.push(m("div.narrafirma-catalysis-report-interpretation-idea", printText(item.idea)));
                 }
 
-                var observationList = makeObservationListForInterpretation(project, allObservations, item.name);
-                printItems.push(<any>printObservationList(observationList, observationLabel, item.notes, allStories, minimumStoryCountRequiredForTest, numHistogramBins, numScatterDotOpacityLevels, scatterDotSize, correlationLineChoice));
+                var observationList = makeObservationListForInterpretation(project, observations, item.name);
+                printItems.push(<any>printObservationList(observationList, options["observationLabel"], item.notes, allStories, 
+                    minimumStoryCountRequiredForTest, numHistogramBins, numScatterDotOpacityLevels, scatterDotSize, correlationLineChoice));
                 
-                // TODO: Translate
                 progressModel.progressText = progressText(perspectiveIndex, itemIndex);
                 progressModel.redraw();
                 itemIndex++;
@@ -889,7 +959,6 @@ export function printCatalysisReport() {
             setTimeout(function() { printNextPerspective(); }, 0);
         }
     }
-    
     setTimeout(function() { printNextPerspective(); }, 0);
 }
 
