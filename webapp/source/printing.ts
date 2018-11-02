@@ -649,8 +649,7 @@ function printObservationList(observationList, observationLabel, interpretationN
         if (item.pattern.graphType === "texts") {
             return [
                 m("div.narrafirma-catalysis-report-observation", [
-                    m("a", {name: item.observationTitle}),
-                    m("span", {"class": "narrafirma-catalysis-report-observation-label"}, observationLabel),
+                    m("span", {"class": "narrafirma-catalysis-report-observation-label", "id": item.observationTitle}, observationLabel),
                     item.observationTitle]),
                 m("div.narrafirma-catalysis-report-observation-description", printText(observationDescriptionToPrint)),
                 printReturnAndBlankLine()
@@ -659,8 +658,7 @@ function printObservationList(observationList, observationLabel, interpretationN
             var graph = PatternExplorer.makeGraph(pattern, graphHolder, selectionCallback);
             return [
                 m("div.narrafirma-catalysis-report-observation", [
-                    m("a", {name: item.observationTitle}),
-                    m("span", {"class": "narrafirma-catalysis-report-observation-label"}, observationLabel),
+                    m("span", {"class": "narrafirma-catalysis-report-observation-label", "id": item.observationTitle}, observationLabel),
                     item.observationTitle]),
                 m("div.narrafirma-catalysis-report-observation-description", printText(observationDescriptionToPrint)),
                 displayForGraphHolder(graphHolder),
@@ -891,9 +889,8 @@ function printCatalysisReportWithClusteredInterpretations(project, catalysisRepo
         } else {
             var perspective = perspectives[perspectiveIndex];
             if (interpretationIndex === 0) {
-                printItems.push(m("a", {name: perspective.name}));
                 printItems.push(m("div.narrafirma-catalysis-report-perspective", 
-                    [m("span", {"class": "narrafirma-catalysis-report-perspective-label"}, options["perspectiveLabel"]),
+                    [m("span", {"class": "narrafirma-catalysis-report-perspective-label", "id": perspective.name}, options["perspectiveLabel"]),
                     perspective.name]));
                 if (perspective.notes) printItems.push(m("div.narrafirma-catalysis-report-perspective-notes", printText(perspective.notes)));
 
@@ -948,9 +945,8 @@ function printCatalysisReportWithClusteredInterpretations(project, catalysisRepo
                     // than have to change the entire clustering diagram to deal with it.
                     interpretation.idea = project.tripleStore.queryLatestC(interpretation.referenceUUID, "interpretation_idea") || "";
                 }
-                printItems.push(m("a", {name: interpretation.name}));
                 printItems.push(m("div.narrafirma-catalysis-report-interpretation", 
-                    [m("span", {"class": "narrafirma-catalysis-report-interpretation-label"}, options["interpretationLabel"]), interpretation.name]));
+                    [m("span", {"class": "narrafirma-catalysis-report-interpretation-label", "id": interpretation.name}, options["interpretationLabel"]), interpretation.name]));
 
                 if (interpretation.notes) {
                     var notesToPrint = interpretation.notes;
