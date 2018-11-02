@@ -33,6 +33,15 @@ var panel: Panel = {
                 return !!Globals.clientState().storyCollectionIdentifier();}
         },
         {
+            id: "project_importCSVStories",
+            valueType: "none",
+            displayType: "button",
+            displayConfiguration: "importCSVStories",
+            displayPrompt: "Import stories from CSV file...",
+            displayVisible: function(panelBuilder, model) {
+                return !!Globals.clientState().storyCollectionIdentifier();}
+        },
+        {
             id: "project_csvFileUploaderForStories",
             valueType: "none",
             displayType: "html",
@@ -40,33 +49,6 @@ var panel: Panel = {
             displayVisible: function(panelBuilder, model) {
                 return !!Globals.clientState().storyCollectionIdentifier();}
         },
-        {
-            id: "project_importCSVStories",
-            valueType: "none",
-            displayType: "button",
-            displayConfiguration: "importCSVStories",
-            displayPrompt: "Import story data from CSV file into story collection ...",
-            displayVisible: function(panelBuilder, model) {
-                return !!Globals.clientState().storyCollectionIdentifier();}
-        },
-        {
-            id: "project_exportStoryForm",
-            valueType: "none",
-            displayType: "button",
-            displayConfiguration: "exportQuestionnaire",
-            displayPrompt: "Export story form...",
-            displayVisible: function(panelBuilder, model) {
-                return !!Globals.clientState().storyCollectionIdentifier();}
-        },
-        {
-            id: "project_exportStories",
-            valueType: "none",
-            displayType: "button",
-            displayConfiguration: "exportStoryCollection",
-            displayPrompt: "Export story collection...",
-            displayVisible: function(panelBuilder, model) {
-                return !!Globals.clientState().storyCollectionIdentifier();}
-        }
     ]
 };
 

@@ -31,14 +31,14 @@ var panel: Panel = {
             valueType: "none",
             displayType: "button",
             displayConfiguration: "autoFillStoryForm",
-            displayPrompt: "Create new story form from all existing questions ..."
+            displayPrompt: "Create new story form with all questions..."
         },
         {
             id: "project_importStoryFormAndDataFromCSV",
             valueType: "none",
             displayType: "button",
             displayConfiguration: "importCSVQuestionnaire",
-            displayPrompt: "Import story form from CSV file ..."
+            displayPrompt: "Import story form from CSV file..."
         }
     ]
 };

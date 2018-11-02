@@ -24,6 +24,7 @@ import page_designStoryForms = require("./collection/page_designStoryForms");
 import page_startStoryCollection = require("./collection/page_startStoryCollection");
 import page_printQuestionForms = require("./collection/page_printQuestionForms");
 import page_enterStories = require("./collection/page_enterStories");
+import page_exportStories = require("./collection/page_exportStories");
 import page_writeAnnotationsAboutStories = require("./collection/page_writeAnnotationsAboutStories");
 import page_reviewIncomingStories = require("./collection/page_reviewIncomingStories");
 import page_browseGraphs = require("./collection/page_browseGraphs");
@@ -106,6 +107,7 @@ navigationModules["page_designStoryForms"] = page_designStoryForms;
 navigationModules["page_startStoryCollection"] = page_startStoryCollection;
 navigationModules["page_printQuestionForms"] = page_printQuestionForms;
 navigationModules["page_enterStories"] = page_enterStories;
+navigationModules["page_exportStories"] = page_exportStories;
 navigationModules["page_writeAnnotationsAboutStories"] = page_writeAnnotationsAboutStories;
 navigationModules["page_reviewIncomingStories"] = page_reviewIncomingStories;
 navigationModules["page_browseGraphs"] = page_browseGraphs;
@@ -217,6 +219,7 @@ var sections = [
             "page_writeAnnotationsAboutStories",
             "page_reviewIncomingStories",
             "page_browseGraphs",
+            "page_exportStories",
             "page_stopStoryCollection",
             "page_enterCollectionSessionRecords"
         ],
