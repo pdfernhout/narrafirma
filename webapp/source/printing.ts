@@ -712,11 +712,17 @@ export function printCatalysisReport() {
     var project = Globals.project();
     var catalysisReportName = Globals.clientState().catalysisReportName();
     if (!catalysisReportName) {
-        alert("Please pick a catalysis report to print.");
+        alert("Please choose a catalysis report to print.");
         return;
     }
 
     var catalysisReportIdentifier = project.findCatalysisReport(catalysisReportName);
+    var printWhat = project.tripleStore.queryLatestC(catalysisReportIdentifier, "catalysisReportPrint_printObservationsOrClusteredInterpretations");
+    if (!printWhat) {
+        alert("Please choose whether you want to print interpretations or observations.")
+        return;
+    }
+
     var allStories = project.storiesForCatalysisReport(catalysisReportIdentifier);
     var catalysisReportObservationSetIdentifier = project.tripleStore.queryLatestC(catalysisReportIdentifier, "catalysisReport_observations");
     if (!catalysisReportObservationSetIdentifier) {
@@ -739,7 +745,6 @@ export function printCatalysisReport() {
     options["correlationLineChoice"] = project.correlationLineChoice(catalysisReportIdentifier);
     var observations = project.tripleStore.getListForSetIdentifier(catalysisReportObservationSetIdentifier);
 
-    var printWhat = project.tripleStore.queryLatestC(catalysisReportIdentifier, "catalysisReportPrint_printObservationsOrClusteredInterpretations");
     if (printWhat == "observations only") {
         printCatalysisReportWithOnlyObservations(project, catalysisReportIdentifier, catalysisReportName, allStories, observations, options);
     } else {

@@ -26,7 +26,7 @@ var panel: Panel = {
             valueOptionsSubfield: "catalysisReport_shortName",
             displayType: "select",
             displayName: "Catalysis report",
-            displayPrompt: "Choose a catalysis report to print"
+            displayPrompt: "Choose a catalysis report to print."
         },
         {
             id: "catalysisReportPrint_filterNotice",
