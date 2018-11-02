@@ -283,7 +283,7 @@ var panel: Panel = {
             displayPrompt: `
             This header precedes the <strong>second-level table of contents</strong> (list of interpretations) 
             within each perspective section. If you leave this field blank, the header will read 
-            "Interpretations in this perspective (#)."
+            "Interpretations and observations in this perspective (#)."
             To change the header, enter some text here. A number sign (#) will be replaced
             with the number of interpretations in the perspective.`,
             displayVisible: function(panelBuilder, model) {

@@ -932,10 +932,6 @@ table.filterTable td {
 	margin-bottom: 0.5em;
 }
 
-.narrafirma-catalysis-report-interp-link {
-	margin: 0 0 0 1em;
-}
-
 .narrafirma-catalysis-report-interpretation {
     padding: 0.5em;
 	font-size: 1.5em;
@@ -966,7 +962,16 @@ table.filterTable td {
 }
 
 .narrafirma-catalysis-report-observation-label {
+}
 
+.narrafirma-catalysis-report-interpretation-links-table {
+    border: 1px solid #b0d4d4;
+    border-collapse: collapse;
+}
+
+.narrafirma-catalysis-report-interpretation-links-table-td {
+    border: 1px solid #b0d4d4;
+    padding: 0.2em 1em 0.2em 0.5em;
 }
 
 .narrafirma-catalysis-report-observation-description {
