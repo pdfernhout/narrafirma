@@ -110,7 +110,7 @@ you don't <i>need</i> to customize them; but you can. Here are some ways to phra
 		<li>Pick the question you like best.</li>
 <li>But don't say:
 <ul>
-<li>Choose the question that best fits your story. (This implies that they already "have" a story, and only one story, to tell.</li>
+<li>Choose the question that best fits your story. (This implies that they already "have" a story, and only one story, to tell.)</li>
 <li>You must choose one of these questions. (Doesn't invite; is not conversational.)</li>
 	<li>Choose the best question for your experiences. (Asking people to rank questions may cause them to think 
 				that you will be ranking their story. You can use the word "best," but use it to describe connection or fit, not quality.
@@ -264,6 +264,7 @@ How do you import a story form? What is the correct format?
 			<ul>
 				<li><b>Single choice</b>: Texts in a drop-down list</li>
 				<li><b>Multiple choice</b>: A series of labeled checkboxes</li>
+				<li><b>Multiple choice delimited</b>: A series of labeled checkboxes (but data imported from CSV will be in one column)</li>
 				<li><b>Radiobuttons</b>: A series of labeled buttons (of which only one can be clicked "on")</li>
 				<li><b>Boolean</b>: Two radio buttons labeled "yes" and "no"</li>
 				<li><b>Checkbox</b>: One labeled checkbox</li>
@@ -283,7 +284,10 @@ How do you import a story form? What is the correct format?
 			<ul>
 				<li>For questions of the types <b>Single choice</b>, <b>Multiple choice</b>, <b>Radiobuttons</b>, 
 					or <b>Checkbox</b>, enter one answer per column, moving from left to right. The order in which answers are written here will be the order they are shown on the
-					story form and on graphs. </li>
+					story form and on graphs.</li>
+				<li>For a <b>Multiple choice delimited</b> question, enter first the delimiter that will separate answers within the single column of data in your CSV file.
+					Often this delimiter will be a comma, but it could be something else. (If you do use a comma delmiter, make sure there are no commas in your answers!)
+					After the delimiter, enter one answer per column, moving from left to right.</li>
 				<li> For <b>Scale</b> questions, enter first the left-side label, then the right-side label. </li>
 				<li> For <b>Boolean</b>, <b>Text</b>, and <b>Textarea</b> questions, leave the Answer columns blank.</li>
 				<li>For the <b>Eliciting question</b>, enter the questions you want to ask people, one per Answer cell. Do not create one row per question
