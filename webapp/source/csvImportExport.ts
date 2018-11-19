@@ -61,6 +61,25 @@ function padLeadingZeros(num: number, size: number) {
     return result;
 }
 
+function questionForHeaderFieldName(fieldName, questionnaire, project) {
+    if (!questionnaire) return null;
+    if (!fieldName) return null;
+    var matchingQuestion = null;
+    for (var i = 0; i < questionnaire.storyQuestions.length; i++) {
+        if (questionnaire.storyQuestions[i].displayName === fieldName) {
+            matchingQuestion = questionnaire.storyQuestions[i];
+        }
+    }
+    if (!matchingQuestion) {
+            for (i = 0; i < questionnaire.participantQuestions.length; i++) {
+            if (questionnaire.storyQuestions[i].displayName === fieldName) {
+                matchingQuestion = questionnaire.participantQuestions[i];
+            }
+        }
+    }
+    return matchingQuestion;
+}
+
 function processCSVContentsForStories(contents) {
 
     var storyCollectionName = Globals.clientState().storyCollectionName();
@@ -80,25 +99,48 @@ function processCSVContentsForStories(contents) {
             
             // in situation where the row is shorter the the headers, because there is no value in the last cell(s), don't assign any value
             var value = undefined;
-            if (row[fieldIndex] != undefined) value = row[fieldIndex].trim();
-            // Note the value is trimmed
+            if (row[fieldIndex] != undefined) value = row[fieldIndex].trim(); // Note the value is trimmed
 
-            if (newItem[fieldName] === undefined) {
-                newItem[fieldName] = value;
-            } else {
-                // Handle case where this is a multiple choice question, which is indicated by multiple columns
-                var data = newItem[fieldName];
-                if (data && typeof data === 'object') {
-                    if (value !== "") data[value] = true;
+            var matchingQuestion = questionForHeaderFieldName(fieldName, questionnaire, project);
+            const isSpecialQuestion = (fieldName == "Story title" || fieldName == "Story text" || fieldName == "Eliciting question");
+
+            if (matchingQuestion || isSpecialQuestion) { 
+                // the delimited multi choice field must be handled separately
+                if (matchingQuestion && matchingQuestion["multiChoiceDelimiter"]) {
+                    var delimitedItems = value.split(matchingQuestion["multiChoiceDelimiter"]);
+                    if (delimitedItems) {
+                        var newData = {};
+                        delimitedItems.forEach((delimitedItem) => {
+                            var trimmedDelimitedItem = delimitedItem.trim();
+                            if (trimmedDelimitedItem !== "") newData[trimmedDelimitedItem] = true;
+                        });
+                        newItem[fieldName] = newData;
+                    }
                 } else {
-                   var newData = {};
-                   if (data !== "") newData[data] = true;
-                   if (value !== "") newData[value] = true;
-                   newItem[fieldName] = newData;
+                    // if you don't already have a stored item for this field, put this cell value in it
+                    if (newItem[fieldName] === undefined) {
+                        newItem[fieldName] = value;
+                        // text fields and single choice fields will always stop here, because they have only one column
+                    } else { // you already have a stored item for this field
+                        var data = newItem[fieldName];
+                        if (data && typeof data === 'object') {
+                            // you already made a dictionary (object) for this field
+                            // (which must be multiple-choice, or you wouldn't have made a dictionary)
+                            // so just add this cell value to the dictionary
+                            if (value !== "") data[value] = true;
+                        } else {
+                            // you didn't create a dictionary yet, so create one
+                            // then put the cell value you previously stored for the field (data) into it
+                            // and put this new cell value into it
+                            var newData = {};
+                            if (data !== "") newData[data] = true;
+                            if (value !== "") newData[value] = true;
+                            newItem[fieldName] = newData;
+                        }
+                    }
                 }
             }
         }
-        
         return newItem;
     });
     var header = headerAndItems.header;
@@ -290,13 +332,13 @@ function warnIfProblemWithCellValueForQuestion(value, questionName, questionType
             var error = "The question '" + questionName + "' should be single-choice, but the data is in multiple-choice format.";
             if (errorsToReport.indexOf(error) === -1) errorsToReport.push(error);
         } else if (value && options.indexOf(value) === -1) {
-            var error = "The cell '" + value + "' does not match any of the options [" + options.join(";") + "] for the question '" + questionName + "'";
+            var error = "The cell value '" + value + "' does not match any of the options [" + options.join(";") + "] for the question '" + questionName + "'";
             if (errorsToReport.indexOf(error) === -1) errorsToReport.push(error);
         }
     } else if (questionType === "checkboxes") {
         for (var option in value) {
             if (option && options.indexOf(option) === -1) {
-                var error = "The cell '" + option + "' does not match any of the options [" + options.join(";") + "] for the question '" + questionName + "'";
+                var error = "The cell value '" + option + "' does not match any of the options [" + options.join(";") + "] for the question '" + questionName + "'";
                 if (errorsToReport.indexOf(error) === -1) errorsToReport.push(error);
             }
         } 
@@ -601,7 +643,7 @@ function processCSVContentsForQuestionnaire(contents) {
                         }
                         answerCount += 1;
                     });
-                break;
+                    break;
             // might add other import options here later
             }
         } else if (about === "ignore") {
@@ -724,6 +766,7 @@ function questionForItem(item, questionCategory) {
     var questionType = "text";
     var valueOptions;
     var answers = item["Answers"];
+    var multiChoiceDelimiter = null;
     
     var itemType = item["Type"].trim();
     if (itemType === "Single choice") {
@@ -746,6 +789,13 @@ function questionForItem(item, questionCategory) {
         valueOptions = answers;
         if (answers.length < 2) {
             alert('Import error: For the Multiple choice question "' + item["Short name"] + '", there must be at least two entries in the Answers columns.');
+        }
+    } else if (itemType === "Multiple choice delimited") { 
+        questionType = "checkboxes";
+        multiChoiceDelimiter = answers[0];
+        valueOptions = answers.slice(1);
+        if (answers.length < 3) {
+            alert('Import error: For the Multiple choice delimited question "' + item["Short name"] + '", there must be at least three entries in the Answers columns (and the first should be the delimiter).');
         }
     } else if (itemType === "Radiobuttons") {
         questionType = "radiobuttons";
@@ -772,7 +822,7 @@ function questionForItem(item, questionCategory) {
     if (valueOptions) {
         question[questionCategory + "_options"] = valueOptions.join("\n");
     }
-    
+    question["multiChoiceDelimiter"] = multiChoiceDelimiter;
     return question;
 }
 
@@ -889,7 +939,7 @@ export function exportQuestionnaire() {
                        });
                     }
                }
-            } else {
+            } else { 
                 if (question.valueOptions) {
                    question.valueOptions.forEach(function(option) {
                        outputLine.push(option);   
@@ -975,14 +1025,14 @@ export function exportStoryCollection() {
     
     function headersForQuestions(questions) {
         for (var i = 0; i < questions.length; i++) {
-            var storyQuestion = questions[i];
+            var question = questions[i];
             // TODO: Maybe should export ID instead? Or more header lines with ID and prompt?
-            if (storyQuestion.valueOptions && storyQuestion.displayType === "checkboxes") {
-               storyQuestion.valueOptions.forEach(function(option) {
-                   header(storyQuestion.displayName, option);   
+            if (question.valueOptions && question.displayType === "checkboxes") {
+                question.valueOptions.forEach(function(option) {
+                   header(question.displayName, option);   
                });
             } else {
-                header(storyQuestion.displayName);
+                header(question.displayName);
             }
         }
     }

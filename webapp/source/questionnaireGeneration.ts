@@ -46,7 +46,7 @@ export function convertEditorQuestions(editorQuestions, prefixQPA) {
         var id = prefixQPA + shortName;
         var questionType = question.storyQuestion_type || question.participantQuestion_type || question.annotationQuestion_type;
         var prompt = question.storyQuestion_text || question.participantQuestion_text || question.annotationQuestion_text;
-        
+
         var options = [];
         var optionsString = question.storyQuestion_options || question.participantQuestion_options || question.annotationQuestion_options;
         
@@ -82,6 +82,7 @@ export function convertEditorQuestions(editorQuestions, prefixQPA) {
             displayType: questionType,
             id: id, 
             valueOptions: valueOptions, 
+            multiChoiceDelimiter: question.multiChoiceDelimiter,
             displayName: shortName, 
             displayPrompt: prompt,
             displayConfiguration: displayConfiguration
