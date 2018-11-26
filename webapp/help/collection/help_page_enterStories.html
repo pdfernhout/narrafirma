@@ -139,6 +139,11 @@ What is the correct format for importing data?
 						one available answer is "trust," all the "trust" answers should be in the same column. But all the cells in that column 
 						(except the header) should say "trust" or be empty. Do not indicate that a choice was selected by placing "1" or "yes" or anything else in the column.
 						If the person did not answer the question, leave ALL of the columns for that question blank.</li>
+					<li><b>Multiple choice yes/no</b>. As many columns as there are available answers.
+					The header of each column <i>must</i> be the question name (as given in the story form file) followed by a double equals sign (==)
+					followed by the answer name for that column (as given in the story form file). Extra spaces will be removed.
+					For each cell of the column, if the contents <i>exactly</i> match the "yes" indicator given for that question in the story form 
+					file, the answer in the column header will be added for that question.</li>
 					<li><b>Multiple choice delimited</b>. One column. Enter a list of answers separated by the character you specified as the 
 						answer delimiter in your story form file. Extra spaces will be trimmed out.
 						</li>

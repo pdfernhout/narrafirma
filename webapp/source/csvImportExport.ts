@@ -19,6 +19,14 @@ export function initialize(theProject) {
     project = theProject;
 }
 
+function stringUpTo(aString, upToWhat) {
+    return aString.split(upToWhat)[0];
+}
+
+function stringBeyond(aString, beyondWhat) {
+    return aString.split(beyondWhat).pop();
+}
+
 function processCSVContents(contents, callbackForItem) {
     var rows = d3.csv.parseRows(contents);
     var items = [];
@@ -82,6 +90,8 @@ function questionForHeaderFieldName(fieldName, questionnaire, project) {
 
 function processCSVContentsForStories(contents) {
 
+    const multiChoiceDelimiter = "==";
+
     var storyCollectionName = Globals.clientState().storyCollectionName();
     if (!storyCollectionName) {
         alert("No story collection has been selected");
@@ -95,7 +105,14 @@ function processCSVContentsForStories(contents) {
     var headerAndItems = processCSVContents(contents, function (header, row) {
         var newItem = {};
         for (var fieldIndex = 0; fieldIndex < header.length; fieldIndex++) {
-            var fieldName = header[fieldIndex];
+
+            if (header[fieldIndex].indexOf(multiChoiceDelimiter) >= 0) {
+                var fieldName = stringUpTo(header[fieldIndex], multiChoiceDelimiter).trim();
+                var answerName = stringBeyond(header[fieldIndex], multiChoiceDelimiter).trim();
+            } else {
+                var fieldName = header[fieldIndex];
+                var answerName = null;
+            }
             
             // in situation where the row is shorter the the headers, because there is no value in the last cell(s), don't assign any value
             var value = undefined;
@@ -127,7 +144,12 @@ function processCSVContentsForStories(contents) {
                             // you already made a dictionary (object) for this field
                             // (which must be multiple-choice, or you wouldn't have made a dictionary)
                             // so just add this cell value to the dictionary
-                            if (value !== "") data[value] = true;
+                            // (though the yes/no type of multiple choice is a special case)
+                            if (matchingQuestion["multiChoiceYesIndicator"] && answerName) {
+                                if (value === matchingQuestion["multiChoiceYesIndicator"]) data[answerName] = true;
+                            } else {
+                                if (value !== "") data[value] = true;
+                            }
                         } else {
                             // you didn't create a dictionary yet, so create one
                             // then put the cell value you previously stored for the field (data) into it
@@ -767,6 +789,7 @@ function questionForItem(item, questionCategory) {
     var valueOptions;
     var answers = item["Answers"];
     var multiChoiceDelimiter = null;
+    var multiChoiceYesIndicator = null;
     
     var itemType = item["Type"].trim();
     if (itemType === "Single choice") {
@@ -789,6 +812,13 @@ function questionForItem(item, questionCategory) {
         valueOptions = answers;
         if (answers.length < 2) {
             alert('Import error: For the Multiple choice question "' + item["Short name"] + '", there must be at least two entries in the Answers columns.');
+        }
+    } else if (itemType === "Multiple choice yes/no") { 
+        questionType = "checkboxes";
+        multiChoiceYesIndicator = answers[0];
+        valueOptions = answers.slice(1);
+        if (answers.length < 2) {
+            alert('Import error: For the Multiple choice yes/no question "' + item["Short name"] + '", there must be at least three entries in the Answers columns (and the first should be the yes indicator).');
         }
     } else if (itemType === "Multiple choice delimited") { 
         questionType = "checkboxes";
@@ -823,6 +853,7 @@ function questionForItem(item, questionCategory) {
         question[questionCategory + "_options"] = valueOptions.join("\n");
     }
     question["multiChoiceDelimiter"] = multiChoiceDelimiter;
+    question["multiChoiceYesIndicator"] = multiChoiceYesIndicator;
     return question;
 }
 

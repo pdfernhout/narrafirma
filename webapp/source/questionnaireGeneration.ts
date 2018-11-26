@@ -83,6 +83,7 @@ export function convertEditorQuestions(editorQuestions, prefixQPA) {
             id: id, 
             valueOptions: valueOptions, 
             multiChoiceDelimiter: question.multiChoiceDelimiter,
+            multiChoiceYesIndicator: question.multiChoiceYesIndicator,
             displayName: shortName, 
             displayPrompt: prompt,
             displayConfiguration: displayConfiguration
