@@ -76,12 +76,23 @@ function questionForHeaderFieldName(fieldName, questionnaire, project) {
     for (var i = 0; i < questionnaire.storyQuestions.length; i++) {
         if (questionnaire.storyQuestions[i].displayName === fieldName) {
             matchingQuestion = questionnaire.storyQuestions[i];
+            break;
         }
     }
     if (!matchingQuestion) {
             for (i = 0; i < questionnaire.participantQuestions.length; i++) {
-            if (questionnaire.storyQuestions[i].displayName === fieldName) {
+            if (questionnaire.participantQuestions[i].displayName === fieldName) {
                 matchingQuestion = questionnaire.participantQuestions[i];
+                break;
+            }
+        }
+    }
+    if (!matchingQuestion) {
+        var leadingStoryQuestions = questionnaireGeneration.getLeadingStoryQuestions(questionnaire.elicitingQuestions);
+        for (i = 0; i < leadingStoryQuestions.length; i++) {
+            if (leadingStoryQuestions[i].displayName === fieldName) {
+                matchingQuestion = leadingStoryQuestions[i];
+                break;
             }
         }
     }
@@ -105,66 +116,44 @@ function processCSVContentsForStories(contents) {
     var headerAndItems = processCSVContents(contents, function (header, row) {
         var newItem = {};
         for (var fieldIndex = 0; fieldIndex < header.length; fieldIndex++) {
-
-            if (header[fieldIndex].indexOf(multiChoiceDelimiter) >= 0) {
-                var fieldName = stringUpTo(header[fieldIndex], multiChoiceDelimiter).trim();
-                var answerName = stringBeyond(header[fieldIndex], multiChoiceDelimiter).trim();
-            } else {
-                var fieldName = header[fieldIndex];
-                var answerName = null;
-            }
-            
             // in situation where the row is shorter the the headers, because there is no value in the last cell(s), don't assign any value
             var value = undefined;
             if (row[fieldIndex] != undefined) value = row[fieldIndex].trim(); // Note the value is trimmed
-
-            var matchingQuestion = questionForHeaderFieldName(fieldName, questionnaire, project);
-            const isSpecialQuestion = (fieldName == "Story title" || fieldName == "Story text" || fieldName == "Eliciting question");
-
-            if (matchingQuestion || isSpecialQuestion) { 
-                // the delimited multi choice field must be handled separately
-                if (matchingQuestion && matchingQuestion["multiChoiceDelimiter"]) {
-                    var delimitedItems = value.split(matchingQuestion["multiChoiceDelimiter"]);
-                    if (delimitedItems) {
-                        var newData = {};
+            if (value !== "") {
+                // get question (and sometimes answer text) out of header
+                if (header[fieldIndex].indexOf(multiChoiceDelimiter) >= 0) {
+                    var fieldName = stringUpTo(header[fieldIndex], multiChoiceDelimiter).trim();
+                    var answerName = stringBeyond(header[fieldIndex], multiChoiceDelimiter).trim();
+                } else {
+                    var fieldName = header[fieldIndex];
+                    var answerName = null;
+                }
+                var question = questionForHeaderFieldName(fieldName, questionnaire, project);
+                if (question) { 
+                    if (["Single choice", "Radiobuttons", "Boolean", "Checkbox", "Text", "Textarea"].indexOf(question.importType) >= 0) {
+                        newItem[fieldName] = value;
+                    } else if (question.importType === "Scale") {
+                        newItem[fieldName] = parseInt(value);
+                    } else if (question.importType === "Multiple choice") {
+                        if (!newItem[fieldName]) newItem[fieldName] = {};
+                        newItem[fieldName][value] = true;
+                    } else if (question.importType === "Multiple choice yes/no") {
+                        if (!newItem[fieldName]) newItem[fieldName] = {};
+                        if (question["multiChoiceYesIndicator"] && value === question["multiChoiceYesIndicator"] && answerName) newItem[fieldName][answerName] = true;
+                    } else if (question.importType === "Multiple choice delimited") {
+                        newItem[fieldName] = {};
+                        var delimitedItems = value.split(question["multiChoiceDelimiter"]);
                         delimitedItems.forEach((delimitedItem) => {
                             var trimmedDelimitedItem = delimitedItem.trim();
-                            if (trimmedDelimitedItem !== "") newData[trimmedDelimitedItem] = true;
+                            if (trimmedDelimitedItem !== "") newItem[fieldName][trimmedDelimitedItem] = true;
                         });
-                        newItem[fieldName] = newData;
-                    }
-                } else {
-                    // if you don't already have a stored item for this field, put this cell value in it
-                    if (newItem[fieldName] === undefined) {
-                        newItem[fieldName] = value;
-                        // text fields and single choice fields will always stop here, because they have only one column
-                    } else { // you already have a stored item for this field
-                        var data = newItem[fieldName];
-                        if (data && typeof data === 'object') {
-                            // you already made a dictionary (object) for this field
-                            // (which must be multiple-choice, or you wouldn't have made a dictionary)
-                            // so just add this cell value to the dictionary
-                            // (though the yes/no type of multiple choice is a special case)
-                            if (matchingQuestion["multiChoiceYesIndicator"] && answerName) {
-                                if (value === matchingQuestion["multiChoiceYesIndicator"]) data[answerName] = true;
-                            } else {
-                                if (value !== "") data[value] = true;
-                            }
-                        } else {
-                            // you didn't create a dictionary yet, so create one
-                            // then put the cell value you previously stored for the field (data) into it
-                            // and put this new cell value into it
-                            var newData = {};
-                            if (data !== "") newData[data] = true;
-                            if (value !== "") newData[value] = true;
-                            newItem[fieldName] = newData;
-                        }
                     }
                 }
             }
         }
         return newItem;
     });
+
     var header = headerAndItems.header;
     if (!header) {
         alert("ERROR: No header line found in CSV file.")
@@ -358,11 +347,18 @@ function warnIfProblemWithCellValueForQuestion(value, questionName, questionType
             if (errorsToReport.indexOf(error) === -1) errorsToReport.push(error);
         }
     } else if (questionType === "checkboxes") {
-        for (var option in value) {
-            if (option && options.indexOf(option) === -1) {
-                var error = "The cell value '" + option + "' does not match any of the options [" + options.join(";") + "] for the question '" + questionName + "'";
-                if (errorsToReport.indexOf(error) === -1) errorsToReport.push(error);
-            }
+        if (typeof value === 'object') {
+            for (var option in value) {
+                if (option && options.indexOf(option) === -1) {
+                    var error = "The cell value '" + option + "' does not match any of the options [" + options.join(";") + "] for the question '" + questionName + "'";
+                    if (errorsToReport.indexOf(error) === -1) errorsToReport.push(error);
+                }
+            } 
+        } else { // if only one value was read it might not be a dictionary
+            if (value && options.indexOf(value) === -1) {
+                var error = "The cell value '" + value + "' does not match any of the options [" + options.join(";") + "] for the question '" + questionName + "'";
+                if (errorsToReport.indexOf(error) === -1) errorsToReport.push(error);   
+            }             
         } 
     } else if (questionType === "slider") {
         if (isNaN(value)) {
@@ -534,139 +530,143 @@ function processCSVContentsForQuestionnaire(contents) {
         } else if (about === "form") {
             var type = item.Type;
             var text = item.Answers[0];
-            switch (type) {
-                case "Title":
-                    template.questionForm_title = text; 
-                    project.tripleStore.addTriple(template.id, "questionForm_title", text);
-                    break;
-                case "Start text":
-                    template.questionForm_startText = text;
-                    project.tripleStore.addTriple(template.id, "questionForm_startText", text);
-                    break;
-                case "Image":
-                    template.questionForm_image = text;
-                    project.tripleStore.addTriple(template.id, "questionForm_image", text);
-                    break;
-                case "End text":
-                    template.questionForm_endText = text;
-                    project.tripleStore.addTriple(template.id, "questionForm_endText", text);
-                    break;
-                case "Thank you text":
-                    template.questionForm_thankYouPopupText = text;
-                    project.tripleStore.addTriple(template.id, "questionForm_thankYouPopupText", text);
-                    break;
-                case "Custom CSS":
-                    template.questionForm_customCSS = text;
-                    project.tripleStore.addTriple(template.id, "questionForm_customCSS", text);
-                    break;
-                case "Custom CSS for Printing":
-                    template.questionForm_customCSSForPrint = text;
-                    project.tripleStore.addTriple(template.id, "questionForm_customCSSForPrint", text);
-                    break;
-                case "Choose question text":
-                    template.questionForm_chooseQuestionText = text;
-                    project.tripleStore.addTriple(template.id, "questionForm_chooseQuestionText", text);
-                    break;
-                case "Enter story text":
-                    template.questionForm_enterStoryText = text;
-                    project.tripleStore.addTriple(template.id, "questionForm_enterStoryText", text);
-                    break;
-                case "Name story text":
-                    template.questionForm_nameStoryText = text;
-                    project.tripleStore.addTriple(template.id, "questionForm_nameStoryText", text);
-                    break;
-                case "Tell another story text":
-                    template.questionForm_tellAnotherStoryText = text;
-                    project.tripleStore.addTriple(template.id, "questionForm_tellAnotherStoryText", text);
-                    break;
-                case "Tell another story button":
-                    template.questionForm_tellAnotherStoryButtonText = text;
-                    project.tripleStore.addTriple(template.id, "questionForm_tellAnotherStoryButtonText", text);
-                    break;
-                case "Max num stories":
-                    template.questionForm_maxNumStories = text;
-                    project.tripleStore.addTriple(template.id, "questionForm_maxNumStories", text);
-                    break;
-                case "Slider value prompt":
-                    template.questionForm_sliderValuePrompt = text;
-                    project.tripleStore.addTriple(template.id, "questionForm_sliderValuePrompt", text);
-                    break;
+            if (text && text != "") {
+                switch (type) {
+                    case "Title":
+                        template.questionForm_title = text; 
+                        project.tripleStore.addTriple(template.id, "questionForm_title", text);
+                        break;
+                    case "Start text":
+                        template.questionForm_startText = text;
+                        project.tripleStore.addTriple(template.id, "questionForm_startText", text);
+                        break;
+                    case "Image":
+                        template.questionForm_image = text;
+                        project.tripleStore.addTriple(template.id, "questionForm_image", text);
+                        break;
+                    case "End text":
+                        template.questionForm_endText = text;
+                        project.tripleStore.addTriple(template.id, "questionForm_endText", text);
+                        break;
+                    case "Thank you text":
+                        template.questionForm_thankYouPopupText = text;
+                        project.tripleStore.addTriple(template.id, "questionForm_thankYouPopupText", text);
+                        break;
+                    case "Custom CSS":
+                        template.questionForm_customCSS = text;
+                        project.tripleStore.addTriple(template.id, "questionForm_customCSS", text);
+                        break;
+                    case "Custom CSS for Printing":
+                        template.questionForm_customCSSForPrint = text;
+                        project.tripleStore.addTriple(template.id, "questionForm_customCSSForPrint", text);
+                        break;
+                    case "Choose question text":
+                        template.questionForm_chooseQuestionText = text;
+                        project.tripleStore.addTriple(template.id, "questionForm_chooseQuestionText", text);
+                        break;
+                    case "Enter story text":
+                        template.questionForm_enterStoryText = text;
+                        project.tripleStore.addTriple(template.id, "questionForm_enterStoryText", text);
+                        break;
+                    case "Name story text":
+                        template.questionForm_nameStoryText = text;
+                        project.tripleStore.addTriple(template.id, "questionForm_nameStoryText", text);
+                        break;
+                    case "Tell another story text":
+                        template.questionForm_tellAnotherStoryText = text;
+                        project.tripleStore.addTriple(template.id, "questionForm_tellAnotherStoryText", text);
+                        break;
+                    case "Tell another story button":
+                        template.questionForm_tellAnotherStoryButtonText = text;
+                        project.tripleStore.addTriple(template.id, "questionForm_tellAnotherStoryButtonText", text);
+                        break;
+                    case "Max num stories":
+                        template.questionForm_maxNumStories = text;
+                        project.tripleStore.addTriple(template.id, "questionForm_maxNumStories", text);
+                        break;
+                    case "Slider value prompt":
+                        template.questionForm_sliderValuePrompt = text;
+                        project.tripleStore.addTriple(template.id, "questionForm_sliderValuePrompt", text);
+                        break;
 
-                case "Submit survey button":
-                    template.questionForm_submitSurveyButtonText = text;
-                    project.tripleStore.addTriple(template.id, "questionForm_submitSurveyButtonText", text);
-                    break;
-                case "Sending survey text":
-                    template.questionForm_sendingSurveyResultsText = text;
-                    project.tripleStore.addTriple(template.id, "questionForm_sendingSurveyResultsText", text);
-                    break;
-                case "Could not save survey text":
-                    template.questionForm_couldNotSaveSurveyText = text;
-                    project.tripleStore.addTriple(template.id, "questionForm_couldNotSaveSurveyText", text);
-                    break;
-                case "Resubmit survey button":
-                    template.questionForm_resubmitSurveyButtonText = text;
-                    project.tripleStore.addTriple(template.id, "questionForm_resubmitSurveyButtonText", text);
-                    break;
-                case "Delete story button":
-                    template.questionForm_deleteStoryButtonText = text;
-                    project.tripleStore.addTriple(template.id, "questionForm_deleteStoryButtonText", text);
-                    break;
-                case "Delete story prompt":
-                    template.questionForm_deleteStoryDialogPrompt = text;
-                    project.tripleStore.addTriple(template.id, "questionForm_deleteStoryDialogPrompt", text);
-                    break;
-                case "Survey stored message":
-                    template.questionForm_surveyStoredText = text;
-                    project.tripleStore.addTriple(template.id, "questionForm_surveyStoredText", text);
-                    break;
-                case "Show survey result":
-                    template.questionForm_showSurveyResultPane = text;
-                    project.tripleStore.addTriple(template.id, "questionForm_showSurveyResultPane", text);
-                    break;
-                case "Survey result header":
-                    template.questionForm_surveyResultPaneHeader = text;
-                    project.tripleStore.addTriple(template.id, "questionForm_surveyResultPaneHeader", text);
-                    break;
-                
-                case "Error message no elicitation question chosen":
-                    template.questionForm_errorMessage_noElicitationQuestionChosen = text;
-                    project.tripleStore.addTriple(template.id, "questionForm_errorMessage_noElicitationQuestionChosen", text);
-                    break;
-                case "Error message no story text":
-                    template.questionForm_errorMessage_noStoryText = text;
-                    project.tripleStore.addTriple(template.id, "questionForm_errorMessage_noStoryText", text);
-                    break;
-                case "Error message no story name":
-                    template.questionForm_errorMessage_noStoryName = text;
-                    project.tripleStore.addTriple(template.id, "questionForm_errorMessage_noStoryName", text);
-                    break;
+                    case "Submit survey button":
+                        template.questionForm_submitSurveyButtonText = text;
+                        project.tripleStore.addTriple(template.id, "questionForm_submitSurveyButtonText", text);
+                        break;
+                    case "Sending survey text":
+                        template.questionForm_sendingSurveyResultsText = text;
+                        project.tripleStore.addTriple(template.id, "questionForm_sendingSurveyResultsText", text);
+                        break;
+                    case "Could not save survey text":
+                        template.questionForm_couldNotSaveSurveyText = text;
+                        project.tripleStore.addTriple(template.id, "questionForm_couldNotSaveSurveyText", text);
+                        break;
+                    case "Resubmit survey button":
+                        template.questionForm_resubmitSurveyButtonText = text;
+                        project.tripleStore.addTriple(template.id, "questionForm_resubmitSurveyButtonText", text);
+                        break;
+                    case "Delete story button":
+                        template.questionForm_deleteStoryButtonText = text;
+                        project.tripleStore.addTriple(template.id, "questionForm_deleteStoryButtonText", text);
+                        break;
+                    case "Delete story prompt":
+                        template.questionForm_deleteStoryDialogPrompt = text;
+                        project.tripleStore.addTriple(template.id, "questionForm_deleteStoryDialogPrompt", text);
+                        break;
+                    case "Survey stored message":
+                        template.questionForm_surveyStoredText = text;
+                        project.tripleStore.addTriple(template.id, "questionForm_surveyStoredText", text);
+                        break;
+                    case "Show survey result":
+                        template.questionForm_showSurveyResultPane = text;
+                        project.tripleStore.addTriple(template.id, "questionForm_showSurveyResultPane", text);
+                        break;
+                    case "Survey result header":
+                        template.questionForm_surveyResultPaneHeader = text;
+                        project.tripleStore.addTriple(template.id, "questionForm_surveyResultPaneHeader", text);
+                        break;
+                    
+                    case "Error message no elicitation question chosen":
+                        template.questionForm_errorMessage_noElicitationQuestionChosen = text;
+                        project.tripleStore.addTriple(template.id, "questionForm_errorMessage_noElicitationQuestionChosen", text);
+                        break;
+                    case "Error message no story text":
+                        template.questionForm_errorMessage_noStoryText = text;
+                        project.tripleStore.addTriple(template.id, "questionForm_errorMessage_noStoryText", text);
+                        break;
+                    case "Error message no story name":
+                        template.questionForm_errorMessage_noStoryName = text;
+                        project.tripleStore.addTriple(template.id, "questionForm_errorMessage_noStoryName", text);
+                        break;
+                }
             }
         } else if (about === "import") {
             var type = item.Type;
             var text = item.Answers[0];
-            switch (type) {
-                case "Scale range":
-                    var answers = item["Answers"];
-                    var answerCount = 0;
-                    answers.forEach(function (textValue) {
-                        var value = parseInt(textValue);
-                        if (isNaN(value)) {
-                            var word = "minimum";
-                            if (answerCount === 1) word = "maximum";
-                            alert('The text you entered for the ' + word + ' scale value ("' + textValue + '") could not be converted to a number.');
-                        }
-                        if (answerCount === 0) {
-                            template.import_minScaleValue = value;
-                            project.tripleStore.addTriple(template.id, "import_minScaleValue", value);
-                        } else {
-                            template.import_maxScaleValue = value;
-                            project.tripleStore.addTriple(template.id, "import_maxScaleValue", value);
-                        }
-                        answerCount += 1;
-                    });
-                    break;
-            // might add other import options here later
+            if (text && text != "") {
+                switch (type) {
+                    case "Scale range":
+                        var answers = item["Answers"];
+                        var answerCount = 0;
+                        answers.forEach(function (textValue) {
+                            var value = parseInt(textValue);
+                            if (isNaN(value)) {
+                                var word = "minimum";
+                                if (answerCount === 1) word = "maximum";
+                                alert('The text you entered for the ' + word + ' scale value ("' + textValue + '") could not be converted to a number.');
+                            }
+                            if (answerCount === 0) {
+                                template.import_minScaleValue = value;
+                                project.tripleStore.addTriple(template.id, "import_minScaleValue", value);
+                            } else {
+                                template.import_maxScaleValue = value;
+                                project.tripleStore.addTriple(template.id, "import_maxScaleValue", value);
+                            }
+                            answerCount += 1;
+                        });
+                        break;
+                // might add other import options here later
+                }
             }
         } else if (about === "ignore") {
             // Ignore value so do nothing
@@ -852,6 +852,7 @@ function questionForItem(item, questionCategory) {
     if (valueOptions) {
         question[questionCategory + "_options"] = valueOptions.join("\n");
     }
+    question["importType"] = itemType;
     question["multiChoiceDelimiter"] = multiChoiceDelimiter;
     question["multiChoiceYesIndicator"] = multiChoiceYesIndicator;
     return question;

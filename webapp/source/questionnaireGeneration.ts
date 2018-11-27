@@ -82,6 +82,7 @@ export function convertEditorQuestions(editorQuestions, prefixQPA) {
             displayType: questionType,
             id: id, 
             valueOptions: valueOptions, 
+            importType: question.importType,
             multiChoiceDelimiter: question.multiChoiceDelimiter,
             multiChoiceYesIndicator: question.multiChoiceYesIndicator,
             displayName: shortName, 
@@ -135,16 +136,18 @@ export function getStoryNameAndTextQuestions() {
     var leadingStoryQuestions = [];
     leadingStoryQuestions.unshift({
         id: "storyName",
-        displayName: "Story Name",
+        displayName: "Story title",
         displayPrompt: "Please give your story a name",
         displayType: "text",
+        importType: "Text",
         valueOptions: []
     });
     leadingStoryQuestions.unshift({
         id: "storyText",
-        displayName: "Story Text",
+        displayName: "Story text",
         displayPrompt: "Please enter your response to the question above in the space below",
         displayType: "textarea",
+        importType: "Textarea",
         valueOptions: []
     });
     return leadingStoryQuestions;
@@ -163,9 +166,10 @@ export function getLeadingStoryQuestions(elicitingQuestions) {
 
     leadingStoryQuestions.unshift({
         id: "elicitingQuestion",
-        displayName: "Eliciting Question",
+        displayName: "Eliciting question",
         displayPrompt: "Please choose a question you would like to respond to",
         displayType: "select",
+        importType: "Single choice",
         valueOptions: elicitingQuestionValues
     });
     
