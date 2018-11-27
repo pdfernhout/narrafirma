@@ -370,8 +370,16 @@ function warnIfProblemWithCellValueForQuestion(value, questionName, questionType
 
 function changeValueIfScaleAndCustomScaleValues(question, thingWithValue, questionnaire) {
     if (question.displayType !== "slider") return;
-    var min = questionnaire.import_minScaleValue;
-    var max = questionnaire.import_maxScaleValue;
+    if (question.minScaleValue) {
+        var min = question.minScaleValue;
+    } else {
+        var min = questionnaire.import_minScaleValue;
+    }
+    if (question.maxScaleValue) {
+        var max = question.maxScaleValue;
+    } else {
+        var max = questionnaire.import_maxScaleValue;
+    }
     if (min === undefined || min === NaN || max === undefined || max === NaN || min === max) return;
     if (thingWithValue[question.id] === undefined || thingWithValue[question.id] === "") return;
 
@@ -790,6 +798,8 @@ function questionForItem(item, questionCategory) {
     var answers = item["Answers"];
     var multiChoiceDelimiter = null;
     var multiChoiceYesIndicator = null;
+    var minScaleValue = null;
+    var maxScaleValue = null;
     
     var itemType = item["Type"].trim();
     if (itemType === "Single choice") {
@@ -806,6 +816,23 @@ function questionForItem(item, questionCategory) {
             valueOptions = ["",""]; // put in empty slider labels so that the graphs will at least draw 
         } else {
             valueOptions = [answers[0], answers[1]];
+        }
+        if (answers.length > 2) {
+            var answerCount = 0;
+            answers.slice(2).forEach(function (textValue) {
+                var value = parseInt(textValue);
+                if (isNaN(value)) {
+                    var word = "minimum";
+                    if (answerCount === 1) word = "maximum";
+                    alert('The text you entered for the ' + word + ' scale value ("' + textValue + '") for the question "' + item["Short name"] + '" could not be converted to a number.');
+                }
+                if (answerCount === 0) {
+                    minScaleValue = value;
+                } else {
+                    maxScaleValue = value;
+                }
+                answerCount += 1;
+            });
         }
     } else if (itemType === "Multiple choice") {
         questionType = "checkboxes";
@@ -855,6 +882,8 @@ function questionForItem(item, questionCategory) {
     question["importType"] = itemType;
     question["multiChoiceDelimiter"] = multiChoiceDelimiter;
     question["multiChoiceYesIndicator"] = multiChoiceYesIndicator;
+    question["minScaleValue"] = minScaleValue;
+    question["maxScaleValue"] = maxScaleValue;
     return question;
 }
 

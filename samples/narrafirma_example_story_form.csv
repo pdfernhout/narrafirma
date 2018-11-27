@@ -35,7 +35,7 @@ Order,Long name,Short name,Type,About,Answers,,,,,
 5,What did the main character of this story want or need?,Needed,Multiple choice,story,help,to be heard,respect,trust,options,
 6,What did the main character of this story want or need?,Needed delimited,Multiple choice delimited,story,",",help,to be heard,respect,trust,options
 7,What did the main character of this story want or need?,Needed yes/no,Multiple choice yes/no,story,Yes,help,to be heard,respect,trust,options
-8,Did they get what they needed?,Got what needed,Scale,story,nothing,everything,,,,
+8,Did they get what they needed?,Got what needed,Scale,story,nothing,everything,0,100,,
 9,How well did this story end?,Ended well,Scale,story,horribly,perfectly,,,,
 10,How long will you remember this story?,Will remember,Scale,story,five minutes,the rest of my life,,,,
 11,How much trust was evident in this story?,Amount of trust,Scale,story,none,complete,,,,

@@ -85,6 +85,8 @@ export function convertEditorQuestions(editorQuestions, prefixQPA) {
             importType: question.importType,
             multiChoiceDelimiter: question.multiChoiceDelimiter,
             multiChoiceYesIndicator: question.multiChoiceYesIndicator,
+            minScaleValue: question.minScaleValue,
+            maxScaleValue: question.maxScaleValue,
             displayName: shortName, 
             displayPrompt: prompt,
             displayConfiguration: displayConfiguration
