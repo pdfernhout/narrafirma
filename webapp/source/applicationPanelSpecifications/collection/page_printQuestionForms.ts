@@ -13,8 +13,8 @@ var panel: Panel = {
             displayType: "label",
             displayPrompt: `
                 On this page you can print story forms for off-line use. 
-                Later, you can enter the completed forms into your story collection (see "Enter stories").
-                You can change the way your printed story form appears by entering custom CSS on the "Design story forms" page.
+                Later, you can enter the completed forms into your story collection (see "Enter or import stories").
+                You can change the way your printed story form appears by entering custom CSS on the "Design, generate, or import story forms" page.
                 `
         },
         {

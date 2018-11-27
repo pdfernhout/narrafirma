@@ -4,14 +4,14 @@ import kludgeForUseStrict = require("../../kludgeForUseStrict");
 
 var panel: Panel = {
     id: "page_enterStories",
-    displayName: "Enter stories",
+    displayName: "Enter or import stories",
     tooltipText: "Add stories you collected off-line.",
     panelFields: [
         {
             id: "enterStories_Label",
             valueType: "none",
             displayType: "label",
-            displayPrompt: "On this page you can <strong>enter</strong> stories you collected from participants."
+            displayPrompt: "On this page you can <strong>enter</strong> or import stories you collected from participants."
         },
         {
             id: "storyCollectionChoice_enterStories",

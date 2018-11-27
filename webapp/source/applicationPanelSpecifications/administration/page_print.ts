@@ -16,7 +16,7 @@ var panel: Panel = {
             valueType: "none",
             displayType: "html",
             displayPrompt: `A project report is a summary of <strong>everything you typed</strong> into NarraFirma.
-                It does not include stories (which you can export from the <a href="javascript:narrafirma_openPage('page_enterStories')">Enter stories</a> page) or
+                It does not include stories (which you can export from the <a href="javascript:narrafirma_openPage('page_exportStories')">Export stories or story forms</a> page) or
                 graphs (which you can export from the <a href="javascript:narrafirma_openPage('page_printCatalysisReport')">Print catalysis report</a> page).
                 `
         },

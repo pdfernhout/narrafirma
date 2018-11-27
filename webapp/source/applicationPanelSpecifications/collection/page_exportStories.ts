@@ -4,7 +4,7 @@ import kludgeForUseStrict = require("../../kludgeForUseStrict");
 
 var panel: Panel = {
     id: "page_exportStories",
-    displayName: "Export stories",
+    displayName: "Export stories or story forms",
     tooltipText: "Save your stories to a CSV file for backup or use elsewhere.",
     panelFields: [
         {

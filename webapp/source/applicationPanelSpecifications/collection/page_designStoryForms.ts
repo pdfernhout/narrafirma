@@ -3,14 +3,18 @@ import kludgeForUseStrict = require("../../kludgeForUseStrict");
 
 var panel: Panel = {
     id: "page_designStoryForms",
-    displayName: "Design story forms",
+    displayName: "Design, generate, or import story forms",
     tooltipText: "Bring your questions together into a structured conversation.",
     panelFields: [
         {
             id: "storyForms_Label",
             valueType: "none",
             displayType: "label",
-            displayPrompt: "<p>On this page you will design one or more <strong>story forms</strong> for your project. Choose from the library of questions you already created to create the form your participants will use to tell their stories and answer questions about them.</p>"
+            displayPrompt: `
+                <p>On this page you will design one or more <strong>story forms</strong> for your project. 
+                Choose from the library of questions you already created to create the form your participants will use to tell their stories and answer questions about them.
+                You can also generate a story form using all existing questions or import one from a CSV file.
+                </p>`
         },
         {
             id: "project_storyForms",
@@ -31,14 +35,14 @@ var panel: Panel = {
             valueType: "none",
             displayType: "button",
             displayConfiguration: "autoFillStoryForm",
-            displayPrompt: "Create new story form with all questions..."
+            displayPrompt: "Generate story form using all existing questions..."
         },
         {
             id: "project_importStoryFormAndDataFromCSV",
             valueType: "none",
             displayType: "button",
             displayConfiguration: "importCSVQuestionnaire",
-            displayPrompt: "Import story form from CSV file..."
+            displayPrompt: "Import CSV story form file..."
         }
     ]
 };

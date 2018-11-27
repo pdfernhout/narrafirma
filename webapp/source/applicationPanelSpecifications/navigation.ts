@@ -219,8 +219,8 @@ var sections = [
             "page_writeAnnotationsAboutStories",
             "page_reviewIncomingStories",
             "page_browseGraphs",
-            "page_exportStories",
             "page_stopStoryCollection",
+            "page_exportStories",
             "page_enterCollectionSessionRecords"
         ],
         panels: [
