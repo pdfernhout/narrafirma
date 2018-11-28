@@ -266,6 +266,7 @@ How do you import a story form? What is the correct format?
 				<li><b>Multiple choice</b>: A series of labeled checkboxes (in CSV, one answer per column, with the answer text in each cell)</li>
 				<li><b>Multiple choice yes/no</b>: A series of labeled checkboxes (in CSV, one answer per column, with the answer text in the header and a "yes indicator" (or not) in each cell)</li>
 				<li><b>Multiple choice delimited</b>: A series of labeled checkboxes (in CSV, one column only, with answers delimited by a specified string)</li>
+				<li><b>Multiple choice index delimited</b>: A series of labeled checkboxes (in CSV, one column only, with numerical answers delimited by a specified string)</li>
 				<li><b>Radiobuttons</b>: A series of labeled buttons (of which only one can be clicked "on")</li>
 				<li><b>Boolean</b>: Two radio buttons labeled "yes" and "no"</li>
 				<li><b>Checkbox</b>: One labeled checkbox</li>
@@ -290,13 +291,18 @@ How do you import a story form? What is the correct format?
 					Often this delimiter will be a comma, but it could be something else. 
 					(Whatever you use as a delimiter, make sure there are none of those things in your answers!)
 					After the delimiter, enter one answer per column, moving from left to right.</li>
-				<lil>For a <b>Multiple choice yes/no</b> question, enter first the case-sensitive indicator of a yes answer, such as "Yes" or "1."" 
+				<li>For a <b>Multiple choice yes/no</b> question, enter first the case-sensitive indicator of a yes answer, such as "Yes" or "1."" 
 					Anything other than that exact text will be taken as a "no" for that answer.
 					After the delimiter, enter one answer per column, moving from left to right.
 					(Note that the column headers in the data file for this type of question
 					<i>must</i> have the format "Q==A" where Q is the question name and A is the answer for that column.
 					These header texts <i>must</i> match the question and answer names specified here, so you may have to edit your data file to match what you put here.)
-				</lil>
+				</li>
+				<li>For a <b>Multiple choice index delimited</b> question, enter first the delimiter that will separate answer indexes within the single
+					column in your CSV file. For a space character, enter the (capital) word "SPACE" - <i>not</i> the space character. 
+					Note that for your indexes (1,2,3,etc) to work correctly, 
+					you <i>must</i> list the available answers for the question in the exact same order here as you did in your survey.
+					</li>
 				<li> For <b>Scale</b> questions, enter first the left-side label, then the right-side label. You can also enter a custom scale range
 					in the next two columns (first minimum, then maximum). The "Scale range" import option (for the whole file) is used only if these are left blank.</li>
 				<li> For <b>Boolean</b>, <b>Text</b>, and <b>Textarea</b> questions, leave the Answer columns blank.</li>
