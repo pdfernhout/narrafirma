@@ -147,6 +147,21 @@ function processCSVContentsForStories(contents) {
                             var trimmedDelimitedItem = delimitedItem.trim();
                             if (trimmedDelimitedItem !== "") newItem[fieldName][trimmedDelimitedItem] = true;
                         });
+                    } else if (question.importType === "Multiple choice index delimited") {
+                        newItem[fieldName] = {};
+                        var delimiter = question["multiChoiceDelimiter"];
+                        if (delimiter === "SPACE") delimiter = " ";
+                        var delimitedIndexTexts = value.split(delimiter);
+                        delimitedIndexTexts.forEach((delimitedIndexText) => {
+                            var delimitedIndex = parseInt(delimitedIndexText);
+                            if (!isNaN(delimitedIndex)) {
+                                for (var index = 0; index < question.valueOptions.length; index++) {
+                                    if (delimitedIndex-1 === index) {
+                                        newItem[fieldName][question.valueOptions[index]] = true;
+                                    }
+                                }
+                            }
+                        });
                     }
                 }
             }
@@ -853,6 +868,13 @@ function questionForItem(item, questionCategory) {
         valueOptions = answers.slice(1);
         if (answers.length < 3) {
             alert('Import error: For the Multiple choice delimited question "' + item["Short name"] + '", there must be at least three entries in the Answers columns (and the first should be the delimiter).');
+        }
+    } else if (itemType === "Multiple choice index delimited") { 
+        questionType = "checkboxes";
+        multiChoiceDelimiter = answers[0];
+        valueOptions = answers.slice(1);
+        if (answers.length < 3) {
+            alert('Import error: For the Multiple choice index delimited question "' + item["Short name"] + '", there must be at least three entries in the Answers columns (and the first should be the delimiter).');
         }
     } else if (itemType === "Radiobuttons") {
         questionType = "radiobuttons";
