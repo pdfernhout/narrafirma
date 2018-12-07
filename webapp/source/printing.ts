@@ -368,7 +368,7 @@ function generateHTMLForQuestionnaire(questionnaire) {
         questionnaire.storyQuestions.map(function (storyQuestion) {
             return printQuestion(storyQuestion);
         }),
-        m("div.narrafirma-survey-print-about-you-text", printText(questionnaire.aboutYouText || "About you")),
+        questionnaire.participantQuestions.length >= 1 ? m("div.narrafirma-survey-print-about-you-text", printText(questionnaire.aboutYouText || "About you"))  : "",
         questionnaire.participantQuestions.map(function (participantQuestion) {
             return printQuestion(participantQuestion);
         }),
