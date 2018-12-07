@@ -405,8 +405,11 @@ export function buildSurveyForm(surveyDiv, questionnaire, doneCallback, surveyOp
     var allStoryQuestions = initialStoryQuestions.concat(questionnaire.storyQuestions);
             
     const aboutYouText = questionnaire.aboutYouText || "About you";
-    var participantQuestions = [{id: "participantHeader", displayName: "participantHeader", displayPrompt: aboutYouText, displayType: "header", valueOptions: [], displayClass: "narrafirma-participant-header"}];
-    participantQuestions = participantQuestions.concat(questionnaire.participantQuestions);
+    var participantQuestions = [];
+    if (questionnaire.participantQuestions.length > 0) {
+        participantQuestions = [{id: "participantHeader", displayName: "participantHeader", displayPrompt: aboutYouText, displayType: "header", valueOptions: [], displayClass: "narrafirma-participant-header"}];
+        participantQuestions = participantQuestions.concat(questionnaire.participantQuestions);
+    }
 
     var timestampStart = new Date();
     
