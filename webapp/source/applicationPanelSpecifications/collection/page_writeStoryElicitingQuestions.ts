@@ -17,7 +17,16 @@ var panel: Panel = {
             id: "project_elicitingQuestionsList",
             valueType: "array",
             displayType: "grid",
-            displayConfiguration: "panel_addElicitingQuestion",
+            displayConfiguration: {
+                itemPanelID: "panel_addElicitingQuestion",
+                gridConfiguration: {
+                    viewButton: true,
+                    editButton: true,
+                    addButton: true,
+                    removeButton: true,
+                    columnsToDisplay: ["elicitingQuestion_text", "elicitingQuestion_shortName"]
+                }
+            },
             displayName: "Story eliciting questions",
             displayPrompt: "These are the <strong>eliciting questions</strong> you have created so far."
         },

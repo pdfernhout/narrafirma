@@ -59,6 +59,15 @@ var panel: Panel = {
                 If this box is left blank, the story form will say, \"Please choose a question to which you would like to respond.\"`,
         },
         {
+            id: "questionForm_elicitingQuestionGraphName",
+            valueType: "string",
+            displayType: "text",
+            displayName: "Eliciting question graph name",
+            displayPrompt: `
+                What do you want to call the graph that shows <strong>which eliciting question people answered</strong>?
+                If this box is left blank, the graphs will say, \"Eliciting question.\"`,
+        },
+        {
             id: "questionForm_errorMessage_noElicitationQuestionChosen",
             valueType: "string",
             displayType: "text",
@@ -324,6 +333,103 @@ var panel: Panel = {
             displayName: "Maximum stories",
             displayPrompt: "<b>How many stories</b> should a participant be able to enter in one session?"
         },
+
+        //  import
+        {
+            id: "questionForm_import_header",
+            valueType: "none",
+            displayType: "header",
+            displayPrompt: "Import options"
+        },
+        {
+            id: "questionForm_import_intro",
+            valueType: "none",
+            displayType: "label",
+            displayPrompt: "Use these options to specify how you want to <strong>read stories from a CSV file</strong>. If you are not importing data, you can ignore them."
+        },
+
+        // CFK read these three things from the CSV file
+        // then in all references to them, get these values from the questionnaire instead of the hard coding
+        // deal with situation where there is no "eliciting question" column in the data - not sure what to do and how it affects graphs
+
+        {
+            id: "questionForm_import_storyTitleColumnName",
+            valueType: "string",
+            displayType: "text",
+            displayName: "Story title column name",
+            displayPrompt: "In your data file, what is the data column header for the  <strong>story title</strong>?"
+        },
+        {
+            id: "questionForm_import_storyTextColumnName",
+            valueType: "string",
+            displayType: "text",
+            displayName: "Story text column name",
+            displayPrompt: "What is the data column header for the  <strong>story text</strong>?"
+        },
+        {
+            id: "questionForm_import_elicitingQuestionColumnName",
+            valueType: "string",
+            displayType: "text",
+            displayName: "Eliciting question column name",
+            displayPrompt: "What is the data column header for the  <strong>eliciting question</strong>? (If you have only one eliciting question, you can leave this field blank.)"
+        },
+        {
+            id: "questionForm_import_participantIDColumnName",
+            valueType: "string",
+            displayType: "text",
+            displayName: "Participant ID column name",
+            displayPrompt: "What is the data column header for the  <strong>participant ID</strong> field? (If participants are not identified in your data file, you can leave this field blank.)"
+        },
+        
+
+        {
+            id: "questionForm_import_minScaleValue",
+            valueType: "string",
+            displayType: "text",
+            displayName: "Minimum scale value",
+            displayPrompt: "In your data file, what is the <strong>minimum value</strong> for your scale questions? (If your scales have different minima, you can enter them separately for each scale question.)"
+        },
+        {
+            id: "questionForm_import_maxScaleValue",
+            valueType: "string",
+            displayType: "text",
+            displayName: "Maximum scale value",
+            displayPrompt: "What is the <strong>maximum value</strong> for your scale questions? (If your scales have different maxima, you can enter them separately for each scale question.)"
+        },
+        {
+            id: "questionForm_import_multiChoiceDelimiter",
+            valueType: "string",
+            displayType: "text",
+            displayName: "Multi choice delimiter",
+            displayPrompt: `If you have any questions of the type "Multi-choice single-column delimited" or "Multi-choice single-column delimited indexed",
+                what text <strong>separates the items</strong> within each cell? (If the separator is a space, don't enter a space here; enter the <i>word</i> "space".)`
+        },
+        {
+            id: "questionForm_import_multiChoiceYesIndicator",
+            valueType: "string",
+            displayType: "text",
+            displayName: "Multi choice yes indicator",
+            displayPrompt: `If you have any questions of the type "Multi-choice multi-column yes/no", what text <strong>indicates a "Yes" answer</strong>?`
+        },
+        {
+            id: "questionForm_import_multiChoiceYesQASeparator",
+            valueType: "string",
+            displayType: "text",
+            displayName: "Multi choice Q-A separator",
+            displayPrompt: `If you have any questions of the type "Multi-choice multi-column yes/no",
+                your column headers must describe the question and answer to be found in each column. 
+                NarraFirma assumes that the question name will come first, followed by some text, followed by the answer name, followed by some text (e.g., "Feel about [happy]").
+                What is the text <strong>between the question name and the answer name</strong> in each column header?` 
+        },
+        {
+            id: "questionForm_import_multiChoiceYesQAEnding",
+            valueType: "string",
+            displayType: "text",
+            displayName: "Multi choice Q-A separator",
+            displayPrompt: `If you have any questions of the type "Multi-choice multi-column yes/no",
+                what is the text <strong>after the answer name</strong> in each column header?` 
+        },
+
 
         // notes to self
         {

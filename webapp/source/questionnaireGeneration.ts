@@ -61,6 +61,26 @@ export function convertEditorQuestions(editorQuestions, prefixQPA) {
                 }
             }
         }
+
+        var import_columnName = question.storyQuestion_import_columnName || question.participantQuestion_import_columnName || question.storyQuestion_shortName || question.participantQuestion_shortName;
+        var import_valueType = question.storyQuestion_import_valueType || question.participantQuestion_import_valueType;
+        var import_minScaleValue = question.storyQuestion_import_minScaleValue || question.participantQuestion_import_minScaleValue;
+        var import_maxScaleValue = question.storyQuestion_import_maxScaleValue || question.participantQuestion_import_maxScaleValue;
+
+        var importOptions = [];
+        var importOptionsString = question.storyQuestion_import_answerNames || question.participantQuestion_import_answerNames;
+
+        if (importOptionsString) {
+            var splitImportOptions = importOptionsString.split("\n");
+            // Make sure options don't have leading or trailing space and are not otherwise blank
+            for (var index in splitImportOptions) {
+                var trimmedImportOption = splitImportOptions[index].trim();
+                if (trimmedImportOption) {
+                    importOptions.push(trimmedImportOption);
+                }
+            }
+        }
+
         // TODO: valueType might be a number or boolean sometimes
         var valueType = displayTypeToValueTypeMap[questionType];
         // Set these two vars to undefined so no object fields will appear set for these if not otherwise set
@@ -82,14 +102,14 @@ export function convertEditorQuestions(editorQuestions, prefixQPA) {
             displayType: questionType,
             id: id, 
             valueOptions: valueOptions, 
-            importType: question.importType,
-            multiChoiceDelimiter: question.multiChoiceDelimiter,
-            multiChoiceYesIndicator: question.multiChoiceYesIndicator,
-            minScaleValue: question.minScaleValue,
-            maxScaleValue: question.maxScaleValue,
             displayName: shortName, 
             displayPrompt: prompt,
-            displayConfiguration: displayConfiguration
+            displayConfiguration: displayConfiguration,
+            import_columnName: import_columnName,
+            import_valueType: import_valueType,
+            import_answerNames: importOptions,
+            import_minScaleValue: import_minScaleValue,
+            import_maxScaleValue: import_maxScaleValue
         });
     }
     
@@ -141,16 +161,14 @@ export function getStoryNameAndTextQuestions() {
         displayName: "Story title",
         displayPrompt: "Please give your story a name",
         displayType: "text",
-        importType: "Text",
-        valueOptions: []
+        valueOptions: [],
     });
     leadingStoryQuestions.unshift({
         id: "storyText",
         displayName: "Story text",
         displayPrompt: "Please enter your response to the question above in the space below",
         displayType: "textarea",
-        importType: "Textarea",
-        valueOptions: []
+        valueOptions: [],
     });
     return leadingStoryQuestions;
 }
@@ -171,8 +189,7 @@ export function getLeadingStoryQuestions(elicitingQuestions) {
         displayName: "Eliciting question",
         displayPrompt: "Please choose a question you would like to respond to",
         displayType: "select",
-        importType: "Single choice",
-        valueOptions: elicitingQuestionValues
+        valueOptions: elicitingQuestionValues,
     });
     
     return leadingStoryQuestions;
@@ -223,8 +240,19 @@ export function buildQuestionnaireFromTemplate(questionnaireTemplate: string) {
         thankYouPopupText: "",
         customCSS: "",
         customCSSForPrint: "",
+
         import_minScaleValue: "",
         import_maxScaleValue: "",
+        import_multiChoiceYesQASeparator: "",
+        import_multiChoiceYesQAEnding: "",
+        import_multiChoiceYesIndicator: "Yes",
+        import_multiChoiceDelimiter: ",",
+        import_storyTitleColumnName: "Story title",
+        import_storyTextColumnName: "Story text",
+        import_participantIDColumnName: "Participant ID",
+        import_elicitingQuestionColumnName: "Eliciting question",
+        elicitingQuestionGraphName: "Eliciting question",
+
         elicitingQuestions: [],
         storyQuestions: [],
         participantQuestions: [],
@@ -261,10 +289,21 @@ export function buildQuestionnaireFromTemplate(questionnaireTemplate: string) {
     questionnaire.customCSS = project.tripleStore.queryLatestC(questionnaireTemplate, "questionForm_customCSS");
     questionnaire.customCSSForPrint = project.tripleStore.queryLatestC(questionnaireTemplate, "questionForm_customCSSForPrint");
     
-    questionnaire.import_minScaleValue = project.tripleStore.queryLatestC(questionnaireTemplate, "import_minScaleValue"); 
-    questionnaire.import_maxScaleValue = project.tripleStore.queryLatestC(questionnaireTemplate, "import_maxScaleValue"); 
+    questionnaire.import_minScaleValue = project.tripleStore.queryLatestC(questionnaireTemplate, "questionForm_import_minScaleValue"); 
+    questionnaire.import_maxScaleValue = project.tripleStore.queryLatestC(questionnaireTemplate, "questionForm_import_maxScaleValue"); 
+    questionnaire.import_multiChoiceYesQASeparator = project.tripleStore.queryLatestC(questionnaireTemplate, "questionForm_import_multiChoiceYesQASeparator"); 
+    questionnaire.import_multiChoiceYesQAEnding = project.tripleStore.queryLatestC(questionnaireTemplate, "questionForm_import_multiChoiceYesQAEnding"); 
+    questionnaire.import_multiChoiceYesIndicator = project.tripleStore.queryLatestC(questionnaireTemplate, "questionForm_import_multiChoiceYesIndicator"); 
+    questionnaire.import_multiChoiceDelimiter = project.tripleStore.queryLatestC(questionnaireTemplate, "questionForm_import_multiChoiceDelimiter"); 
+    questionnaire.import_storyTitleColumnName = project.tripleStore.queryLatestC(questionnaireTemplate, "questionForm_import_storyTitleColumnName"); 
+    questionnaire.import_storyTextColumnName = project.tripleStore.queryLatestC(questionnaireTemplate, "questionForm_import_storyTextColumnName"); 
+    questionnaire.import_elicitingQuestionColumnName = project.tripleStore.queryLatestC(questionnaireTemplate, "questionForm_import_elicitingQuestionColumnName"); 
+
+    questionnaire.import_participantIDColumnName = project.tripleStore.queryLatestC(questionnaireTemplate, "questionForm_import_participantIDColumnName"); 
 
     questionnaire.chooseQuestionText = project.tripleStore.queryLatestC(questionnaireTemplate, "questionForm_chooseQuestionText");
+    questionnaire.elicitingQuestionGraphName = project.tripleStore.queryLatestC(questionnaireTemplate, "questionForm_elicitingQuestionGraphName");
+    
     questionnaire.enterStoryText = project.tripleStore.queryLatestC(questionnaireTemplate, "questionForm_enterStoryText");
     questionnaire.nameStoryText = project.tripleStore.queryLatestC(questionnaireTemplate, "questionForm_nameStoryText");
     questionnaire.tellAnotherStoryText = project.tripleStore.queryLatestC(questionnaireTemplate, "questionForm_tellAnotherStoryText");
@@ -331,12 +370,13 @@ export function ensureAtLeastOneElicitingQuestion(elicitingQuestions) {
     // TODO: How to prevent this potential problem of no eliciting questions during questionnaire design in GUI?
     if (elicitingQuestions.length === 0) {
         // TODO: Translate
-        var message = "No eliciting questions were defined! Adding one with 'What happened?' for testing.";
+        var defaultElicitingQuestion = "What happened?";
+        var message = 'No eliciting questions were defined! Adding "' + defaultElicitingQuestion + '".';
         console.log("PROBLEM", message);
-        console.log("Adding an eliciting question for testing", message);
+        console.log("Adding eliciting question: ", defaultElicitingQuestion);
         var testElicitingQuestionInfo = {
-            text: "What happened?",
-            id: "what happened",
+            text: defaultElicitingQuestion,
+            id: defaultElicitingQuestion,
             type: {"what happened": true}
         };
         elicitingQuestions.push(testElicitingQuestionInfo);

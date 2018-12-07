@@ -19,6 +19,27 @@ var panel: Panel = {
             displayName: "Short Name",
             displayPrompt: "Enter a short <strong>name</strong> for this question, to use as a reference."
         },
+
+        {
+            id: "elicitingQuestion_import_header",
+            valueType: "none",
+            displayType: "header",
+            displayPrompt: "Import options"
+        },
+        {
+            id: "elicitingQuestion_importName",
+            valueType: "string",
+            displayType: "text",
+            displayName: "Answer cell name",
+            displayPrompt: "In your data file, what does it say <strong>in the data cell</strong> when the participant chose this eliciting question?"
+        },
+
+        {
+            id: "elicitingQuestion_notesHeader",
+            valueType: "none",
+            displayType: "header",
+            displayPrompt: "Your notes"
+        },
         {
             id: "elicitingQuestion_type",
             valueType: "dictionary",

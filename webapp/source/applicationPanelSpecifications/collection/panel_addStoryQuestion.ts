@@ -52,6 +52,73 @@ var panel: Panel = {
                 to use \"Does not apply\"). 
             `
         },
+
+        {
+            id: "storyQuestions_import_header",
+            valueType: "none",
+            displayType: "header",
+            displayPrompt: "Import options"
+        },
+        {
+            id: "storyQuestions_import_intro",
+            valueType: "none",
+            displayType: "label",
+            displayPrompt: "Use these options to specify how you want to <strong>read stories from a CSV file</strong>. If you are not importing data, you can ignore them."
+        },
+        {
+            id: "storyQuestion_import_columnName",
+            valueType: "string",
+            displayType: "text",
+            displayName: "Data column name",
+            displayPrompt: "In your data file, what is the <strong>data column header</strong> for this question? (What you write here must match the header in your data file exactly. Extra spaces will be trimmed off.)"
+        },
+        {
+            id: "storyQuestion_import_valueType",
+            valueType: "string",
+            valueOptions: [
+                "Single choice",
+                "Single choice indexed",
+                "Scale",
+                "Text",
+                "Multi-choice multi-column texts",
+                "Multi-choice multi-column yes/no",
+                "Multi-choice single-column delimited",
+                "Multi-choice single-column delimited indexed",
+            ],
+            displayType: "select",
+            displayName: "Import type",
+            displayPrompt: "In your data file, how is this question <strong>formatted</strong>? (For an explanation of these import data types, click the Help button.)"
+        },
+        {
+            id: "storyQuestion_import_answerNames",
+            valueType: "string",
+            displayType: "textarea",
+            displayName: "Choice names in data file",
+            displayPrompt: `If your data file has <strong>choices</strong> for this question, either in the column headers or in the data cells, what are those choices? 
+                If they are the same as listed above, or if this is an indexed question type, leave this field blank. 
+                If they are different, list the choices NarraFirma will find in your data file <strong>in the same order</strong> as the choices listed above.`
+        },
+        {
+            id: "storyQuestion_import_minScaleValue",
+            valueType: "string",
+            displayType: "text",
+            displayName: "Min scale value",
+            displayPrompt: "If this question is a scale, what is the <strong>minimum</strong> value in its column? (This must be a number. If this field is blank, the default minimum of zero will be used.)"
+        },
+        {
+            id: "storyQuestion_import_maxScaleValue",
+            valueType: "string",
+            displayType: "text",
+            displayName: "Max scale value",
+            displayPrompt: "If this question is a scale, what is the <strong>maximum</strong> value in its column? (This must be a number. If this field is blank, the default maximum of 100 will be used.)"
+        },
+
+        {
+            id: "storyQuestions_notesHeader",
+            valueType: "none",
+            displayType: "header",
+            displayPrompt: "Your notes"
+        },
         {
             id: "storyQuestion_notes",
             valueType: "string",

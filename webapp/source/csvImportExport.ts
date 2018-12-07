@@ -20,11 +20,28 @@ export function initialize(theProject) {
 }
 
 function stringUpTo(aString, upToWhat) {
-    return aString.split(upToWhat)[0];
+    if (upToWhat !== "") {
+        return aString.split(upToWhat)[0];
+    } else {
+        return aString;
+    }
 }
 
 function stringBeyond(aString, beyondWhat) {
-    return aString.split(beyondWhat).pop();
+    if (beyondWhat !== "") {
+        return aString.split(beyondWhat).pop();
+    } else {
+        return aString;
+    }
+}
+
+function rowIsEmpty(row) {
+    for (var i = 0; i < row.length; i++) {
+        if (row[i] != "") {
+            return false;
+        }
+    }
+    return true;
 }
 
 function processCSVContents(contents, callbackForItem) {
@@ -34,8 +51,9 @@ function processCSVContents(contents, callbackForItem) {
     
     for (var rowIndex = 0; rowIndex < rows.length; rowIndex++) {
         var row = rows[rowIndex];
-        // Throw away comment lines and lines with blanks at first two positions
-        if (!row.length || row.length < 2 || (!row[0].trim() && !row[1].trim()) || row[0].trim().charAt(0) === ";") {
+        if (rowIsEmpty(row)) {
+            ;
+        } else if (row[0].trim().charAt(0) === ";") { 
             ;
         } else {
             if (!header) {
@@ -52,10 +70,13 @@ function processCSVContents(contents, callbackForItem) {
                         header.push(label);
                     } else {
                         headerEnded = true;
+                        // don't actually want item; this is just a way to check if the header is correct before the rest of the data is read
+                        var headerIsOkay = callbackForItem(header, row, true); 
+                        if (!headerIsOkay) return {header: null, items: null};
                     }
                 }
             } else {
-                var newItem = callbackForItem(header, row);
+                var newItem = callbackForItem(header, row, false);
                 if (newItem) items.push(newItem);
             }
         }
@@ -74,14 +95,14 @@ function questionForHeaderFieldName(fieldName, questionnaire, project) {
     if (!fieldName) return null;
     var matchingQuestion = null;
     for (var i = 0; i < questionnaire.storyQuestions.length; i++) {
-        if (questionnaire.storyQuestions[i].displayName === fieldName) {
+        if (questionnaire.storyQuestions[i].import_columnName === fieldName) {
             matchingQuestion = questionnaire.storyQuestions[i];
             break;
         }
     }
     if (!matchingQuestion) {
             for (i = 0; i < questionnaire.participantQuestions.length; i++) {
-            if (questionnaire.participantQuestions[i].displayName === fieldName) {
+            if (questionnaire.participantQuestions[i].import_columnName === fieldName) {
                 matchingQuestion = questionnaire.participantQuestions[i];
                 break;
             }
@@ -90,7 +111,7 @@ function questionForHeaderFieldName(fieldName, questionnaire, project) {
     if (!matchingQuestion) {
         var leadingStoryQuestions = questionnaireGeneration.getLeadingStoryQuestions(questionnaire.elicitingQuestions);
         for (i = 0; i < leadingStoryQuestions.length; i++) {
-            if (leadingStoryQuestions[i].displayName === fieldName) {
+            if (leadingStoryQuestions[i].import_columnName === fieldName) {
                 matchingQuestion = leadingStoryQuestions[i];
                 break;
             }
@@ -99,9 +120,29 @@ function questionForHeaderFieldName(fieldName, questionnaire, project) {
     return matchingQuestion;
 }
 
-function processCSVContentsForStories(contents) {
+function getDisplayAnswerNameForDataAnswerName(value, question) {
+    // the question MIGHT have import_answerNames, but it will ALWAYS have valueOptions
+    if (!question.valueOptions || question.valueOptions.length < 1) {
+        return value;
+    } else {
+        for (var i = 0; i < question.valueOptions.length; i++) {
+            // first check to see if it matches the import option name
+            if (i < question.import_answerNames.length) {
+                if (value === question.import_answerNames[i]) {
+                    return question.valueOptions[i];
+                }
+            }
+            if (value === question.valueOptions[i]) {
+                return question.valueOptions[i];
+            }
 
-    const multiChoiceDelimiter = "==";
+            
+        }
+    }
+    return null;
+}
+
+function processCSVContentsForStories(contents) {
 
     var storyCollectionName = Globals.clientState().storyCollectionName();
     if (!storyCollectionName) {
@@ -113,71 +154,114 @@ function processCSVContentsForStories(contents) {
     
     var progressModel = dialogSupport.openProgressDialog("Processing CSV file...", "Progress writing imported stories", "Cancel", dialogCancelled);
   
-    var headerAndItems = processCSVContents(contents, function (header, row) {
-        var newItem = {};
-        for (var fieldIndex = 0; fieldIndex < header.length; fieldIndex++) {
-            // in situation where the row is shorter the the headers, because there is no value in the last cell(s), don't assign any value
-            var value = undefined;
-            if (row[fieldIndex] != undefined) value = row[fieldIndex].trim(); // Note the value is trimmed
-            if (value !== "") {
-                // get question (and sometimes answer text) out of header
-                if (header[fieldIndex].indexOf(multiChoiceDelimiter) >= 0) {
-                    var fieldName = stringUpTo(header[fieldIndex], multiChoiceDelimiter).trim();
-                    var answerName = stringBeyond(header[fieldIndex], multiChoiceDelimiter).trim();
-                } else {
-                    var fieldName = header[fieldIndex];
-                    var answerName = null;
-                }
-                var question = questionForHeaderFieldName(fieldName, questionnaire, project);
-                if (question) { 
-                    if (["Single choice", "Radiobuttons", "Boolean", "Checkbox", "Text", "Textarea"].indexOf(question.importType) >= 0) {
-                        newItem[fieldName] = value;
-                    } else if (question.importType === "Scale") {
-                        newItem[fieldName] = parseInt(value);
-                    } else if (question.importType === "Multiple choice") {
-                        if (!newItem[fieldName]) newItem[fieldName] = {};
-                        newItem[fieldName][value] = true;
-                    } else if (question.importType === "Multiple choice yes/no") {
-                        if (!newItem[fieldName]) newItem[fieldName] = {};
-                        if (question["multiChoiceYesIndicator"] && value === question["multiChoiceYesIndicator"] && answerName) newItem[fieldName][answerName] = true;
-                    } else if (question.importType === "Multiple choice delimited") {
-                        newItem[fieldName] = {};
-                        var delimitedItems = value.split(question["multiChoiceDelimiter"]);
-                        delimitedItems.forEach((delimitedItem) => {
-                            var trimmedDelimitedItem = delimitedItem.trim();
-                            if (trimmedDelimitedItem !== "") newItem[fieldName][trimmedDelimitedItem] = true;
-                        });
-                    } else if (question.importType === "Multiple choice index delimited") {
-                        newItem[fieldName] = {};
-                        var delimiter = question["multiChoiceDelimiter"];
-                        if (delimiter === "SPACE") delimiter = " ";
-                        var delimitedIndexTexts = value.split(delimiter);
-                        delimitedIndexTexts.forEach((delimitedIndexText) => {
-                            var delimitedIndex = parseInt(delimitedIndexText);
-                            if (!isNaN(delimitedIndex)) {
-                                for (var index = 0; index < question.valueOptions.length; index++) {
-                                    if (delimitedIndex-1 === index) {
-                                        newItem[fieldName][question.valueOptions[index]] = true;
+    var headerAndItems = processCSVContents(contents, function (header, row, rowIsHeader) {
+        if (rowIsHeader) {
+            if (!row) {
+                alert("ERROR: No header line found in CSV file.")
+                return false;
+            }
+            if (!(row.includes(questionnaire.import_storyTitleColumnName) && row.includes(questionnaire.import_storyTextColumnName))) {
+                alert("ERROR: Data file header (first row) is missing at least one required cell. It must have entries for Story title and Story text, as specified in the story form.")
+                return false;
+            }
+            return true; // header is okay, can read data
+        } else {
+            var newItem = {};
+            for (var fieldIndex = 0; fieldIndex < header.length; fieldIndex++) {
+                // in situation where the row is shorter the the headers, because there is no value in the last cell(s), don't assign any value
+                var value = undefined;
+                if (row[fieldIndex] != undefined) value = row[fieldIndex].trim(); // Note the value is trimmed
+                if (value !== "") {
+                    if (header[fieldIndex] === questionnaire.import_storyTitleColumnName) {
+                        newItem["Story title"] = value;
+                    } else if (header[fieldIndex] === questionnaire.import_storyTextColumnName) {
+                        newItem["Story text"] = value;
+                    } else if (header[fieldIndex] === questionnaire.import_elicitingQuestionColumnName) {
+                        newItem["Eliciting question"] = value;
+                    } else if (header[fieldIndex] === questionnaire.import_participantIDColumnName) {
+                        newItem["Participant ID"] = value;
+                    } else {
+                        if (header[fieldIndex].indexOf(questionnaire.import_multiChoiceYesQASeparator) >= 0) {
+                            var separator = questionnaire.import_multiChoiceYesQASeparator;
+                            if (separator.toLowerCase() === "space") {
+                                separator = " ";
+                            }
+                            var fieldName = stringUpTo(header[fieldIndex], separator);
+                            var answerName = stringBeyond(header[fieldIndex], separator).trim();
+                            answerName = stringUpTo(answerName, questionnaire.import_multiChoiceYesQAEnding);
+                        } else {
+                            var fieldName = header[fieldIndex];
+                            var answerName = null;
+                        }
+                        var question = questionForHeaderFieldName(fieldName, questionnaire, project);
+                        if (question) { 
+                            if (["Single choice", "Radiobuttons", "Boolean", "Checkbox", "Text", "Textarea"].indexOf(question.import_valueType) >= 0) {
+                                var answerNameToUse = getDisplayAnswerNameForDataAnswerName(value, question);
+                                if (answerNameToUse) {
+                                    newItem[fieldName] = answerNameToUse;
+                                }
+                            } else if (question.import_valueType === "Single choice indexed") {
+                                var valueAsInt = parseInt(value);
+                                if (!isNaN(valueAsInt)) {
+                                    for (var index = 0; index < question.valueOptions.length; index++) {
+                                        if (valueAsInt-1 === index) {
+                                            newItem[fieldName] = question.valueOptions[index];
+                                            break;
+                                        }
                                     }
                                 }
+                            } else if (question.import_valueType === "Scale") {
+                                newItem[fieldName] = parseInt(value);
+                            } else if (question.import_valueType === "Multi-choice multi-column texts") {
+                                var answerNameToUse = getDisplayAnswerNameForDataAnswerName(value, question);
+                                if (answerNameToUse) {
+                                    if (!newItem[fieldName]) newItem[fieldName] = {};
+                                    newItem[fieldName][answerNameToUse] = true;
+                                }
+                            } else if (question.import_valueType === "Multi-choice multi-column yes/no") {
+                                if (value === questionnaire.import_multiChoiceYesIndicator) {
+                                    if (!newItem[fieldName]) newItem[fieldName] = {};
+                                    var answerNameToUse = getDisplayAnswerNameForDataAnswerName(answerName, question);
+                                    if (answerNameToUse) newItem[fieldName][answerNameToUse] = true;
+                                }
+                            } else if (question.import_valueType === "Multi-choice single-column delimited") {
+                                newItem[fieldName] = {};
+                                var delimiter = questionnaire.import_multiChoiceDelimiter;
+                                if (delimiter.toLowerCase() === "space") delimiter = " ";
+                                var delimitedItems = value.split(delimiter);
+                                delimitedItems.forEach((delimitedItem) => {
+                                    var trimmedDelimitedItem = delimitedItem.trim();
+                                    if (trimmedDelimitedItem !== "") {
+                                        var answerNameToUse = getDisplayAnswerNameForDataAnswerName(trimmedDelimitedItem, question);
+                                        if (answerNameToUse) {
+                                            newItem[fieldName][answerNameToUse] = true;
+                                        }
+                                    }
+                                });
+                            } else if (question.import_valueType === "Multi-choice single-column delimited indexed") {
+                                newItem[fieldName] = {};
+                                var delimiter = questionnaire.import_multiChoiceDelimiter;
+                                if (delimiter.toLowerCase() === "space") delimiter = " ";
+                                var delimitedIndexTexts = value.split(delimiter);
+                                delimitedIndexTexts.forEach((delimitedIndexText) => {
+                                    var delimitedIndex = parseInt(delimitedIndexText);
+                                    if (!isNaN(delimitedIndex)) {
+                                        for (var index = 0; index < question.valueOptions.length; index++) {
+                                            if (delimitedIndex-1 === index) {
+                                                newItem[fieldName][question.valueOptions[index]] = true;
+                                                break;
+                                            }
+                                        }
+                                    }
+                                });
                             }
-                        });
+                        }
                     }
                 }
             }
+            return newItem;
         }
-        return newItem;
     });
-
-    var header = headerAndItems.header;
-    if (!header) {
-        alert("ERROR: No header line found in CSV file.")
-        return;
-    }
-    if (!(header.includes("Story title") && header.includes("Story text"))) {
-        alert("ERROR: Header is missing at least one required cell. It must have entries for Story title and Story text. It also must be the first readable row in the CSV file.")
-        return;
-    }
 
     var errorsToReport = [];
 
@@ -241,7 +325,7 @@ function processCSVContentsForStories(contents) {
                 var value = storyItem[question.id.substring("S_".length)];
                 story[question.id] = value;
                 changeValueIfScaleAndCustomScaleValues(question, story, questionnaire);
-                warnIfProblemWithCellValueForQuestion(value, question.displayName, question.displayType, question.valueOptions, errorsToReport);
+                warnIfProblemWithCellValueForQuestion(value, question.displayName, question.import_valueType, question.storyQuestion_import_answerNames || question.valueOptions, errorsToReport);
             }
 
             newSurveyResult.stories.push(story);
@@ -251,20 +335,8 @@ function processCSVContentsForStories(contents) {
                 var value = storyItem[question.id.substring("S_".length)];
                 newSurveyResult.participantData[question.id] = value;
                 changeValueIfScaleAndCustomScaleValues(question, newSurveyResult.participantData, questionnaire);
-                warnIfProblemWithCellValueForQuestion(value, question.displayName, question.displayType, question.valueOptions, errorsToReport);
+                warnIfProblemWithCellValueForQuestion(value, question.displayName, question.import_valueType, question.participantQuestion_import_answerNames || question.valueOptions, errorsToReport);
             }
-            
-            // Add any annotations
-            project.collectAllAnnotationQuestions().forEach((annotationQuestion) => {
-                var id = annotationQuestion.annotationQuestion_shortName;
-                var value = storyItem[id];
-                if (value !== null && value !== undefined) {
-                    newSurveyResult.participantData["A_" + id] = value;
-                    changeValueIfScaleAndCustomScaleValues(question, newSurveyResult.participantData, questionnaire);
-                    warnIfProblemWithCellValueForQuestion(value, annotationQuestion.annotationQuestion_shortName, annotationQuestion.annotationQuestion_type, annotationQuestion.annotationQuestion_options, errorsToReport);
-                    
-                }
-            });
         }
         surveyResults.push(newSurveyResult);
     }
@@ -352,104 +424,101 @@ function processCSVContentsForStories(contents) {
 }
 
 function warnIfProblemWithCellValueForQuestion(value, questionName, questionType, options, errorsToReport) {
-    if (questionType === "select" || questionType === "boolean" || questionType == "radiobuttons" || questionType == "checkbox") {
-        // check for multiple choice data (Object) trying to fit a single-choice question
-        if (typeof value === 'object') {
-            var error = "The question '" + questionName + "' should be single-choice, but the data is in multiple-choice format.";
-            if (errorsToReport.indexOf(error) === -1) errorsToReport.push(error);
-        } else if (value && options.indexOf(value) === -1) {
-            var error = "The cell value '" + value + "' does not match any of the options [" + options.join(";") + "] for the question '" + questionName + "'";
+    if (!options || !value) return;
+    if (questionType === "Single choice") {
+        if (value && options.indexOf(value) === -1) {
+            var error = "The answer '" + value + "' does not match any of the available answers [" + options.join(";") + "] for the question '" + questionName + "'";
             if (errorsToReport.indexOf(error) === -1) errorsToReport.push(error);
         }
-    } else if (questionType === "checkboxes") {
-        if (typeof value === 'object') {
-            for (var option in value) {
-                if (option && options.indexOf(option) === -1) {
-                    var error = "The cell value '" + option + "' does not match any of the options [" + options.join(";") + "] for the question '" + questionName + "'";
-                    if (errorsToReport.indexOf(error) === -1) errorsToReport.push(error);
-                }
-            } 
-        } else { // if only one value was read it might not be a dictionary
-            if (value && options.indexOf(value) === -1) {
-                var error = "The cell value '" + value + "' does not match any of the options [" + options.join(";") + "] for the question '" + questionName + "'";
-                if (errorsToReport.indexOf(error) === -1) errorsToReport.push(error);   
-            }             
-        } 
-    } else if (questionType === "slider") {
-        if (isNaN(value)) {
-            var error = "The cell value '" + value + "' for the question '" + questionName + "' should be a number but is not.";
-            if (errorsToReport.indexOf(error) === -1) errorsToReport.push(error);
+    } else if (questionType === "Multi-choice multi-column texts" || questionType === "Multi-choice single-column delimited") {
+        for (var i = 0; i < value.length; i++) {
+            var valueElement = value[i];
+            if (valueElement && options.indexOf(valueElement) === -1) {
+                var error = "The answer '" + valueElement + "' does not match any of the answers [" + options.join(";") + "] for the question '" + questionName + "'";
+                if (errorsToReport.indexOf(error) === -1) errorsToReport.push(error);
+            }
         }
     }
+    // nothing to check for Single choice indexed, Multi-choice single-column delimited indexed, Multi-choice multi-column yes/no
+    // because these were all converted to the available answers during initial processing
+    // so  at this point they will either be corrector missing
+    // the Scale type was already dealt with in changeValueIfScaleAndCustomScaleValues 
 }
 
 function changeValueIfScaleAndCustomScaleValues(question, thingWithValue, questionnaire) {
     if (question.displayType !== "slider") return;
-    if (question.minScaleValue) {
-        var min = question.minScaleValue;
-    } else {
-        var min = questionnaire.import_minScaleValue;
+    var min = undefined;
+    if (question.import_minScaleValue) {
+        min = question.import_minScaleValue;
+    } else if (questionnaire.import_minScaleValue) {
+        min = questionnaire.import_minScaleValue;
     }
-    if (question.maxScaleValue) {
-        var max = question.maxScaleValue;
-    } else {
-        var max = questionnaire.import_maxScaleValue;
+    var max = undefined;
+    if (question.import_maxScaleValue) {
+        max = question.import_maxScaleValue;
+    } else if (questionnaire.import_maxScaleValue) {
+        max = questionnaire.import_maxScaleValue;
     }
     if (min === undefined || min === NaN || max === undefined || max === NaN || min === max) return;
     if (thingWithValue[question.id] === undefined || thingWithValue[question.id] === "") return;
 
     var value = parseInt(thingWithValue[question.id]);
-    if (value === min) {
+    if (value <= min) {
         thingWithValue[question.id] = "0";
-    } else if (value === max) {
+    } else if (value >= max) {
         thingWithValue[question.id] = "100";
     } else {
         var multiplier = 100 / (max - min);
         if (multiplier && multiplier > 0) {
-            thingWithValue[question.id] = "" + Math.round((value - min) * multiplier);
+             var adjustedValue = Math.round((value - min) * multiplier);
+             if (adjustedValue > 100) adjustedValue = 100;
+             if (adjustedValue < 0) adjustedValue = 0;
+             thingWithValue[question.id] = "" + adjustedValue;
         }
     }
 }
 
 function processCSVContentsForQuestionnaire(contents) {
-    var headerAndItems = processCSVContents(contents, function (header, row) {
-        var newItem = {};
-        var lastFieldIndex;
-        for (var fieldIndex = 0; fieldIndex < row.length; fieldIndex++) {
-            var fieldName = header[fieldIndex];
-            if (fieldName) {
-                lastFieldIndex = fieldIndex;
-            } else {
-                fieldName = header[lastFieldIndex];
+    var headerAndItems = processCSVContents(contents, function (header, row, rowIsHeader) {
+        if (rowIsHeader) { // this is to check header before the rest of the file is read
+            if (!row) {
+                alert("ERROR: No header line found in CSV file.")
+                return false;
             }
-            // TODO: Should the value really be trimmed?
-            var value = row[fieldIndex].trim();
-            if (fieldIndex < header.length - 1) {
-                newItem[fieldName] = value;
-            } else {
-                // Handle multiple values for last header items
-                var list = newItem[fieldName];
-                if (!list) {
-                    list = [];
-                    newItem[fieldName] = list;
+            if (!(row.includes("Data column name") && row.includes("Short name") && row.includes("Long name") && row.includes("Type") && row.includes("About") && row.includes("Answers"))) {
+                alert("ERROR: Header is missing at least one required cell. It must have entries for Data column name, Short name, Long name, Type, About, and Answers. It also must be the first readable row in the CSV file.")
+                return false;
+            }
+            return true; // header is okay, can go on to read data
+        } else {
+            var newItem = {};
+            var lastFieldIndex;
+            for (var fieldIndex = 0; fieldIndex < row.length; fieldIndex++) {
+                var fieldName = header[fieldIndex];
+                if (fieldName) {
+                    lastFieldIndex = fieldIndex;
+                } else {
+                    fieldName = header[lastFieldIndex];
                 }
-                if (value) list.push(value);
+                // TODO: Should the value really be trimmed?
+                var value = row[fieldIndex].trim();
+                if (fieldIndex < header.length - 1) {
+                    newItem[fieldName] = value;
+                } else {
+                    // Handle multiple values for last header items
+                    var list = newItem[fieldName];
+                    if (!list) {
+                        list = [];
+                        newItem[fieldName] = list;
+                    }
+                    if (value) list.push(value);
+                }
             }
+            return newItem;
         }
-        return newItem;
     });
     
-    var header = headerAndItems.header;
-    if (!header) {
-        alert("ERROR: No header line found in CSV file.")
-        return;
-    }
-    if (!(header.includes("Long name") && header.includes("Short name") && header.includes("Type") && header.includes("About") && header.includes("Answers"))) {
-        alert("ERROR: Header is missing at least one required cell. It must have entries for Long name, Short name, Type, About, and Answers. It also must be the first readable row in the CSV file.")
-        return;
-    }
-
-    var shortName = prompt("Please enter a short name for the new story form. (It should be unique within the project.)");
+    var shortName = prompt("Please enter a short name for the new story form. (It must be unique within the project.)");
     if (!shortName) return;
     if (questionnaireGeneration.buildQuestionnaire(shortName)) {
         alert('A story form already exists with that name: "' + shortName + '"');
@@ -464,7 +533,7 @@ function processCSVContentsForQuestionnaire(contents) {
     }
  
     // TODO: Generalize random uuid function to take class name
-    // TODO: Maybe rename quesitonForm_ to storyForm_ ?
+    // TODO: Maybe rename questionForm_ to storyForm_ ?
 
     var template = {
         id: generateRandomUuid("StoryForm"),
@@ -479,10 +548,7 @@ function processCSVContentsForQuestionnaire(contents) {
         questionForm_thankYouPopupText: "",
         questionForm_customCSS: "",
         questionForm_customCSSForPrint: "",
-        import_minScaleValue: 0,
-        import_maxScaleValue: 0,
 
-        questionForm_chooseQuestionText: "",
         questionForm_enterStoryText: "",
         questionForm_nameStoryText: "",
         questionForm_tellAnotherStoryText: "",
@@ -504,7 +570,21 @@ function processCSVContentsForQuestionnaire(contents) {
         questionForm_errorMessage_noElicitationQuestionChosen: "",
         questionForm_errorMessage_noStoryText: "",
         questionForm_errorMessage_noStoryName: "",
-        };
+    
+        import_minScaleValue: 0,
+        import_maxScaleValue: 0,
+        import_multiChoiceYesIndicator: "Yes",
+        import_multiChoiceYesQASeparator: "",
+        import_multiChoiceYesQAEnding: "",
+        import_multiChoiceDelimiter: ",",
+        import_storyTitleColumnName: "Story title",
+        import_storyTextColumnName: "Story text",
+        import_participantIDColumnName: "Participant ID",
+
+        import_elicitingQuestionColumnName: "Eliciting question",
+        import_elicitingQuestionGraphName: "Eliciting question",
+        questionForm_chooseQuestionText: "What question would you like to answer?",
+};
     
     project.tripleStore.makeNewSetItem(storyFormListIdentifier, "StoryForm", template);
     
@@ -529,22 +609,26 @@ function processCSVContentsForQuestionnaire(contents) {
             question = questionForItem(item, "participantQuestion");
             reference = ensureQuestionExists(question, "participantQuestion");
             addReferenceToList(template.questionForm_participantQuestions, reference, "participantQuestion", "ParticipantQuestionChoice");
-        } else if (about === "annotation") {
-            question = questionForItem(item, "annotationQuestion");
-            reference = ensureQuestionExists(question, "annotationQuestion");
-            // addReference(template.questionForm_annotationQuestions, reference, "annotationQuestion", "AnnotationQuestionChoice");
         } else if (about === "eliciting") {
+            template.import_elicitingQuestionColumnName = item["Data column name"],
+            template.import_elicitingQuestionGraphName = item["Short name"];
+            template.questionForm_chooseQuestionText = item["Long name"]; 
             var answers = item["Answers"];
             answers.forEach(function (elicitingQuestionDefinition) {
                 if (!elicitingQuestionDefinition) elicitingQuestionDefinition = "ERROR:MissingElicitingText";
                 var sections = elicitingQuestionDefinition.split("|");
-                // If only one section, use it as both id and text
+                // If only one section, use it as import name, short name, AND text
+                // if two sections, use first as both import name and short name, use second as text
                 if (sections.length < 2) {
-                    sections.push(sections[0]);
+                    sections.push(sections[0]); // copy import name to short name
+                    sections.push(sections[0]); // copy import name to text
+                } else if (sections.length < 3) {
+                    sections.splice(1, 0, sections[0]); // copy import name to short name, leaving text alone
                 }
                 var elicitingQuestion = {
-                    elicitingQuestion_text: sections[1].trim(),
-                    elicitingQuestion_shortName: sections[0].trim(),
+                    elicitingQuestion_importName: sections[0].trim(),
+                    elicitingQuestion_shortName: sections[1].trim(),
+                    elicitingQuestion_text: sections[2].trim(),
                     elicitingQuestion_type: {}
                 };
                 reference = ensureQuestionExists(elicitingQuestion, "elicitingQuestion");
@@ -583,15 +667,14 @@ function processCSVContentsForQuestionnaire(contents) {
                         template.questionForm_customCSSForPrint = text;
                         project.tripleStore.addTriple(template.id, "questionForm_customCSSForPrint", text);
                         break;
-                    case "Choose question text":
-                        template.questionForm_chooseQuestionText = text;
-                        project.tripleStore.addTriple(template.id, "questionForm_chooseQuestionText", text);
-                        break;
                     case "Enter story text":
                         template.questionForm_enterStoryText = text;
                         project.tripleStore.addTriple(template.id, "questionForm_enterStoryText", text);
                         break;
-                    case "Name story text":
+                    case "Choose question text": // this is legacy; i've moved it to the eliciting question long name, but some old files may still have this
+                        template.questionForm_chooseQuestionText = text;
+                        project.tripleStore.addTriple(template.id, "questionForm_chooseQuestionText", text);
+                case "Name story text":
                         template.questionForm_nameStoryText = text;
                         project.tripleStore.addTriple(template.id, "questionForm_nameStoryText", text);
                         break;
@@ -648,7 +731,6 @@ function processCSVContentsForQuestionnaire(contents) {
                         template.questionForm_surveyResultPaneHeader = text;
                         project.tripleStore.addTriple(template.id, "questionForm_surveyResultPaneHeader", text);
                         break;
-                    
                     case "Error message no elicitation question chosen":
                         template.questionForm_errorMessage_noElicitationQuestionChosen = text;
                         project.tripleStore.addTriple(template.id, "questionForm_errorMessage_noElicitationQuestionChosen", text);
@@ -667,28 +749,46 @@ function processCSVContentsForQuestionnaire(contents) {
             var type = item.Type;
             var text = item.Answers[0];
             if (text && text != "") {
-                switch (type) {
-                    case "Scale range":
-                        var answers = item["Answers"];
-                        var answerCount = 0;
-                        answers.forEach(function (textValue) {
-                            var value = parseInt(textValue);
-                            if (isNaN(value)) {
-                                var word = "minimum";
-                                if (answerCount === 1) word = "maximum";
-                                alert('The text you entered for the ' + word + ' scale value ("' + textValue + '") could not be converted to a number.');
-                            }
-                            if (answerCount === 0) {
-                                template.import_minScaleValue = value;
-                                project.tripleStore.addTriple(template.id, "import_minScaleValue", value);
-                            } else {
-                                template.import_maxScaleValue = value;
-                                project.tripleStore.addTriple(template.id, "import_maxScaleValue", value);
-                            }
-                            answerCount += 1;
-                        });
-                        break;
-                // might add other import options here later
+                if (type === "Scale range") {
+                    var answers = item["Answers"];
+                    var answerCount = 0;
+                    answers.forEach(function (textValue) {
+                        var value = parseInt(textValue);
+                        if (isNaN(value)) {
+                            var word = "minimum";
+                            if (answerCount === 1) word = "maximum";
+                            alert('The text you entered for the ' + word + ' scale value ("' + textValue + '") could not be converted to a number.');
+                        }
+                        if (answerCount === 0) {
+                            template.import_minScaleValue = value;
+                            project.tripleStore.addTriple(template.id, "questionForm_import_minScaleValue", value);
+                        } else {
+                            template.import_maxScaleValue = value;
+                            project.tripleStore.addTriple(template.id, "questionForm_import_maxScaleValue", value);
+                        }
+                        answerCount += 1;
+                    });
+                } else if (type === "Multi choice single column delimiter") {
+                    template.import_multiChoiceDelimiter = text;
+                    project.tripleStore.addTriple(template.id, "questionForm_import_multiChoiceDelimiter", text);
+                } else if (type === "Yes no questions yes indicator") {
+                    template.import_multiChoiceYesIndicator = text;
+                    project.tripleStore.addTriple(template.id, "questionForm_import_multiChoiceYesIndicator", text);
+                } else if (type === "Yes no questions Q-A separator") {
+                    template.import_multiChoiceYesQASeparator = text;
+                    project.tripleStore.addTriple(template.id, "questionForm_import_multiChoiceYesQASeparator", text);
+                } else if (type === "Yes no questions Q-A ending") {
+                    template.import_multiChoiceYesQAEnding = text;
+                    project.tripleStore.addTriple(template.id, "questionForm_import_multiChoiceYesQAEnding", text);
+                } else if (type === "Story title column name") {
+                    template.import_storyTitleColumnName = text;
+                    project.tripleStore.addTriple(template.id, "questionForm_import_storyTitleColumnName", text);
+                } else if (type === "Story text column name") {
+                    template.import_storyTextColumnName = text;
+                    project.tripleStore.addTriple(template.id, "questionForm_import_storyTextColumnName", text);
+                } else if (type === "Participant ID column name") {
+                    template.import_participantIDColumnName = text;
+                    project.tripleStore.addTriple(template.id, "questionForm_import_participantIDColumnName", text);
                 }
             }
         } else if (about === "ignore") {
@@ -806,23 +906,76 @@ function ensureQuestionExists(question, questionCategory: string) {
     return question[idAccessor];
 }
 
+function valueAndImportOptionsForAnswers(answers) {
+    var valueOptions = [];
+    var import_answerNames = [];
+    for (var i = 0; i < answers.length; i++) {
+        if (answers[i].indexOf("|") >= 0) {
+            var dataAndDisplay = answers[i].split("|");
+            if (dataAndDisplay.length > 1) {
+                import_answerNames.push(dataAndDisplay[0]);
+                valueOptions.push(dataAndDisplay[1]);
+            } else {
+                valueOptions.push(dataAndDisplay[0]);
+                import_answerNames.push(dataAndDisplay[0]); // there could be different answers for only some entries
+            }
+        } else {
+            valueOptions.push(answers[i]);
+        }
+    }
+    return [valueOptions, import_answerNames];
+}
+
 function questionForItem(item, questionCategory) {
     var valueType = "string";
     var questionType = "text";
     var valueOptions;
-    var answers = item["Answers"];
-    var multiChoiceDelimiter = null;
-    var multiChoiceYesIndicator = null;
-    var minScaleValue = null;
-    var maxScaleValue = null;
+    var import_columnName;
+    var import_answerNames;
+    var import_minScaleValue = null;
+    var import_maxScaleValue = null;
     
     var itemType = item["Type"].trim();
-    if (itemType === "Single choice") {
+    var answers = item["Answers"];
+
+    // legacy - old name for "Multi-choice multi-column texts" was "Multiple choice"
+    if (itemType === "Multiple choice") {
+        itemType = "Multi-choice multi-column texts";
+    }
+
+    if (["Single choice", "Single choice indexed"].indexOf(itemType) >= 0) {
         questionType = "select";
-        valueOptions = answers;
+        var valueAndImportOptions = valueAndImportOptionsForAnswers(answers);
+        valueOptions = valueAndImportOptions[0];
+        import_answerNames = valueAndImportOptions[1];
         if (answers.length < 2) {
             alert('Import error: For the Single choice question "' + item["Short name"] + '", there must be at least two entries in the Answers columns.');
         }
+    } else if (["Multi-choice multi-column texts", "Multi-choice multi-column yes/no", "Multi-choice single-column delimited", "Multi-choice single-column delimited indexed"].indexOf(itemType) >= 0) {
+        questionType = "checkboxes";
+        var valueAndImportOptions = valueAndImportOptionsForAnswers(answers);
+        valueOptions = valueAndImportOptions[0];
+        import_answerNames = valueAndImportOptions[1];
+        if (answers.length < 2) {
+            alert('Import error: For the Multiple choice question "' + item["Short name"] + '", there must be at least two entries in the Answers columns.');
+        }
+    } else if (itemType === "Radiobuttons") {
+        questionType = "radiobuttons";
+        var valueAndImportOptions = valueAndImportOptionsForAnswers(answers);
+        valueOptions = valueAndImportOptions[0];
+        import_answerNames = valueAndImportOptions[1];
+        if (answers.length < 2) {
+            alert('Import error: For the Radiobuttons question "' + item["Short name"] + '", there must be at least two entries in the Answers columns.');
+        }
+    } else if (itemType === "Boolean") {
+        questionType = "boolean";
+    } else if (itemType === "Checkbox") {
+        questionType = "checkbox";
+        valueOptions = answers;
+    } else if (itemType === "Text") {
+        questionType = "text";
+    } else if (itemType === "Textarea") {
+        questionType = "textarea";
     } else if (itemType === "Scale") {
         valueType = "number";
         questionType = "slider";
@@ -842,54 +995,13 @@ function questionForItem(item, questionCategory) {
                     alert('The text you entered for the ' + word + ' scale value ("' + textValue + '") for the question "' + item["Short name"] + '" could not be converted to a number.');
                 }
                 if (answerCount === 0) {
-                    minScaleValue = value;
+                    import_minScaleValue = value;
                 } else {
-                    maxScaleValue = value;
+                    import_maxScaleValue = value;
                 }
                 answerCount += 1;
             });
         }
-    } else if (itemType === "Multiple choice") {
-        questionType = "checkboxes";
-        valueOptions = answers;
-        if (answers.length < 2) {
-            alert('Import error: For the Multiple choice question "' + item["Short name"] + '", there must be at least two entries in the Answers columns.');
-        }
-    } else if (itemType === "Multiple choice yes/no") { 
-        questionType = "checkboxes";
-        multiChoiceYesIndicator = answers[0];
-        valueOptions = answers.slice(1);
-        if (answers.length < 2) {
-            alert('Import error: For the Multiple choice yes/no question "' + item["Short name"] + '", there must be at least three entries in the Answers columns (and the first should be the yes indicator).');
-        }
-    } else if (itemType === "Multiple choice delimited") { 
-        questionType = "checkboxes";
-        multiChoiceDelimiter = answers[0];
-        valueOptions = answers.slice(1);
-        if (answers.length < 3) {
-            alert('Import error: For the Multiple choice delimited question "' + item["Short name"] + '", there must be at least three entries in the Answers columns (and the first should be the delimiter).');
-        }
-    } else if (itemType === "Multiple choice index delimited") { 
-        questionType = "checkboxes";
-        multiChoiceDelimiter = answers[0];
-        valueOptions = answers.slice(1);
-        if (answers.length < 3) {
-            alert('Import error: For the Multiple choice index delimited question "' + item["Short name"] + '", there must be at least three entries in the Answers columns (and the first should be the delimiter).');
-        }
-    } else if (itemType === "Radiobuttons") {
-        questionType = "radiobuttons";
-        valueOptions = answers;
-        if (answers.length < 2) {
-            alert('Import error: For the Radiobuttons question "' + item["Short name"] + '", there must be at least two entries in the Answers columns.');
-        }
-    } else if (itemType === "Boolean") {
-        questionType = "boolean";
-    } else if (itemType === "Checkbox") {
-        questionType = "checkbox";
-    } else if (itemType === "Text") {
-        questionType = "text";
-    } else if (itemType === "Textarea") {
-        questionType = "textarea";
     } else {
         console.log("IMPORT ERROR: unsupported question type: ", itemType);
     }
@@ -901,11 +1013,18 @@ function questionForItem(item, questionCategory) {
     if (valueOptions) {
         question[questionCategory + "_options"] = valueOptions.join("\n");
     }
-    question["importType"] = itemType;
-    question["multiChoiceDelimiter"] = multiChoiceDelimiter;
-    question["multiChoiceYesIndicator"] = multiChoiceYesIndicator;
-    question["minScaleValue"] = minScaleValue;
-    question["maxScaleValue"] = maxScaleValue;
+
+    // legacy - older files will not have the "Data column name" field, but the "Short name" field should work for it
+    if (!item["Data column name"]) {
+        question["import_columnName"] = item["Short name"];
+    } else {
+        question["import_columnName"] = item["Data column name"];
+    }
+
+    question["import_valueType"] = itemType;
+    question["import_minScaleValue"] = import_minScaleValue;
+    question["import_maxScaleValue"] = import_maxScaleValue;
+    if (import_answerNames && import_answerNames.length > 0) question["import_answerNames"] = import_answerNames;
     return question;
 }
 
@@ -959,7 +1078,7 @@ function addCSVOutputLine(output, line) {
 var exportQuestionTypeMap = {
     "select": "Single choice",
     "slider": "Scale",
-    "checkboxes": "Multiple choice",
+    "checkboxes": "Multi-choice multi-column texts",
     "radiobuttons": "Radiobuttons",
     "boolean": "Boolean",
     "checkbox": "Checkbox",
@@ -980,17 +1099,16 @@ export function exportQuestionnaire() {
         return;
     }
     
-    // Order Long name   Short name  Type    About   Answers
     var output = "";
     var lineIndex = 1;
     function addOutputLine(line) {
         output = addCSVOutputLine(output, line);
     }
     
-    var header = ["Order", "Long name", "Short name", "Type", "About", "Answers"];
+    var header = ["Data column name", "Type", "About", "Short name", "Long name", "Answers"];
     addOutputLine(header);
     
-    var elicitingLine = ["1", "Eliciting question", "Eliciting question", "Eliciting question", "eliciting"];
+    var elicitingLine = ["Eliciting question", "eliciting", "eliciting", "Eliciting question", "Eliciting question"];
     currentQuestionnaire.elicitingQuestions.forEach(function (elicitingQuestionSpecification) {
         elicitingLine.push(elicitingQuestionSpecification.id + "|" + elicitingQuestionSpecification.text);
     });
@@ -1000,18 +1118,28 @@ export function exportQuestionnaire() {
         for (var i = 0; i < questions.length; i++) {
             var outputLine = [];
             var question = questions[i];
-            outputLine.push("" + (++lineIndex));
-            outputLine.push(question.displayPrompt || "");
-            outputLine.push(question.displayName || "");
+
+            // data column name
+            outputLine.push(question.displayName || ""); // short name is also data column name for export
             
+            // type
             var questionType = exportQuestionTypeMap[question.displayType];
             if (!questionType) {
                 console.log("EXPORT ERROR: unsupported question type: ", question.displayType);
                 questionType = "UNSUPPORTED:" + question.displayType;
             }
             outputLine.push(questionType);
+
+            // about
             outputLine.push(about);
-            
+
+            // short name
+            outputLine.push(question.displayName || ""); 
+
+            // long name
+            outputLine.push(question.displayPrompt || ""); 
+
+            // answers
             if (question.displayType === "slider") {
                 if (question.displayConfiguration) {
                     if (question.displayConfiguration.length === 1) {
@@ -1040,40 +1168,43 @@ export function exportQuestionnaire() {
     var adjustedAnnotationQuestions = questionnaireGeneration.convertEditorQuestions(annotationQuestions, "A_");
     outputQuestions(adjustedAnnotationQuestions, "annotation");
 
-    addOutputLine(["" + (++lineIndex), "", "", "Title", "form", currentQuestionnaire.title || ""]);
-    addOutputLine(["" + (++lineIndex), "", "", "Start text", "form", currentQuestionnaire.startText || ""]);
-    addOutputLine(["" + (++lineIndex), "", "", "Image", "form", currentQuestionnaire.image || ""]);
-    addOutputLine(["" + (++lineIndex), "", "", "End text", "form", currentQuestionnaire.endText || ""]);
-    addOutputLine(["" + (++lineIndex), "", "", "About you text", "form", currentQuestionnaire.aboutYouText || ""]);
-    addOutputLine(["" + (++lineIndex), "", "", "Thank you text", "form", currentQuestionnaire.thankYouPopupText || ""]);
-    addOutputLine(["" + (++lineIndex), "", "", "Custom CSS", "form", currentQuestionnaire.customCSS || ""]);
-    addOutputLine(["" + (++lineIndex), "", "", "Custom CSS for Printing", "form", currentQuestionnaire.customCSSForPrint || ""]);
+    addOutputLine(["", "Title", "form", "", "", currentQuestionnaire.title || ""]);
+    addOutputLine(["", "Start text", "form", "", "", currentQuestionnaire.startText || ""]);
+    addOutputLine(["", "Image", "form", "", "", currentQuestionnaire.image || ""]);
+    addOutputLine(["", "End text", "form", "", "", currentQuestionnaire.endText || ""]);
+    addOutputLine(["", "About you text", "form", "", "", currentQuestionnaire.aboutYouText || ""]);
+    addOutputLine(["", "Thank you text", "form", "", "", currentQuestionnaire.thankYouPopupText || ""]);
+    addOutputLine(["", "Custom CSS", "form", "", "", currentQuestionnaire.customCSS || ""]);
+    addOutputLine(["", "Custom CSS for Printing", "form", "", "", currentQuestionnaire.customCSSForPrint || ""]);
 
-    addOutputLine(["" + (++lineIndex), "", "", "Choose question text", "form", currentQuestionnaire.chooseQuestionText || ""]);
-    addOutputLine(["" + (++lineIndex), "", "", "Enter story text", "form", currentQuestionnaire.enterStoryText || ""]);
-    addOutputLine(["" + (++lineIndex), "", "", "Name story text", "form", currentQuestionnaire.nameStoryText || ""]);
-    addOutputLine(["" + (++lineIndex), "", "", "Tell another story text", "form", currentQuestionnaire.tellAnotherStoryText || ""]);
-    addOutputLine(["" + (++lineIndex), "", "", "Tell another story button", "form", currentQuestionnaire.tellAnotherStoryButtonText || ""]);
-    addOutputLine(["" + (++lineIndex), "", "", "Max num stories", "form", currentQuestionnaire.maxNumStories || ""]);
-    addOutputLine(["" + (++lineIndex), "", "", "Slider value prompt", "form", currentQuestionnaire.sliderValuePrompt || ""]);
+    addOutputLine(["", "Choose question text", "form", "", "", currentQuestionnaire.chooseQuestionText || ""]);
+    addOutputLine(["", "Enter story text", "form", "", "", currentQuestionnaire.enterStoryText || ""]);
+    addOutputLine(["", "Name story text", "form", "", "", currentQuestionnaire.nameStoryText || ""]);
+    addOutputLine(["", "Tell another story text", "form", "", "", currentQuestionnaire.tellAnotherStoryText || ""]);
+    addOutputLine(["", "Tell another story button", "form", "", "", currentQuestionnaire.tellAnotherStoryButtonText || ""]);
+    addOutputLine(["", "Max num stories", "form", "", "", currentQuestionnaire.maxNumStories || ""]);
+    addOutputLine(["", "Slider value prompt", "form", "", "", currentQuestionnaire.sliderValuePrompt || ""]);
 
-    addOutputLine(["" + (++lineIndex), "", "", "Submit survey button", "form", currentQuestionnaire.submitSurveyButtonText || ""]);
-    addOutputLine(["" + (++lineIndex), "", "", "Sending survey text", "form", currentQuestionnaire.questionForm_sendingSurveyResultsText || ""]);
-    addOutputLine(["" + (++lineIndex), "", "", "Could not save survey text", "form", currentQuestionnaire.questionForm_couldNotSaveSurveyText || ""]);
-    addOutputLine(["" + (++lineIndex), "", "", "Resubmit survey button", "form", currentQuestionnaire.resubmitSurveyButtonText || ""]);
+    addOutputLine(["", "Submit survey button", "form", "", "", currentQuestionnaire.submitSurveyButtonText || ""]);
+    addOutputLine(["", "Sending survey text", "form", "", "", currentQuestionnaire.questionForm_sendingSurveyResultsText || ""]);
+    addOutputLine(["", "Could not save survey text", "form", "", "", currentQuestionnaire.questionForm_couldNotSaveSurveyText || ""]);
+    addOutputLine(["", "Resubmit survey button", "form", "", "", currentQuestionnaire.resubmitSurveyButtonText || ""]);
     
-    addOutputLine(["" + (++lineIndex), "", "", "Delete story button", "form", currentQuestionnaire.deleteStoryButtonText || ""]);
-    addOutputLine(["" + (++lineIndex), "", "", "Delete story prompt", "form", currentQuestionnaire.deleteStoryDialogPrompt || ""]);
-    addOutputLine(["" + (++lineIndex), "", "", "Survey stored message", "form", currentQuestionnaire.surveyStoredText || ""]);
-    addOutputLine(["" + (++lineIndex), "", "", "Show survey result", "form", currentQuestionnaire.showSurveyResultPane || ""]);
-    addOutputLine(["" + (++lineIndex), "", "", "Survey result header", "form", currentQuestionnaire.surveyResultPaneHeader || ""]);
+    addOutputLine(["", "Delete story button", "form", "", "", currentQuestionnaire.deleteStoryButtonText || ""]);
+    addOutputLine(["", "Delete story prompt", "form", "", "", currentQuestionnaire.deleteStoryDialogPrompt || ""]);
+    addOutputLine(["", "Survey stored message", "form", "", "", currentQuestionnaire.surveyStoredText || ""]);
+    addOutputLine(["", "Show survey result", "form", "", "", currentQuestionnaire.showSurveyResultPane || ""]);
+    addOutputLine(["", "Survey result header", "form", "", "", currentQuestionnaire.surveyResultPaneHeader || ""]);
     
-    addOutputLine(["" + (++lineIndex), "", "", "Error message no elicitation question chosen", "form", currentQuestionnaire.errorMessage_noElicitationQuestionChosen || ""]);
-    addOutputLine(["" + (++lineIndex), "", "", "Error message no story text", "form", currentQuestionnaire.errorMessage_noStoryText || ""]);
-    addOutputLine(["" + (++lineIndex), "", "", "Error message no story name", "form", currentQuestionnaire.errorMessage_noStoryName || ""]);
-    
+    addOutputLine(["", "Error message no elicitation question chosen", "form", "", "", currentQuestionnaire.errorMessage_noElicitationQuestionChosen || ""]);
+    addOutputLine(["", "Error message no story text", "form", "", "", currentQuestionnaire.errorMessage_noStoryText || ""]);
 
-// Export questionnaire
+    // do not need to write "Scale range" because scale data was converted to 0-100 scale during import
+    // do not need to write "Yes no questions Q-A separator" or "Yes no questions Q-A ending" or "Yes no questions yes indicator" or "Multi choice single column delimiter"
+    // because only the original multi-choice format is used (Multi-choice multi-column texts) for which there are no import options
+    // do not need to write "Story title column name" or "Story text column name" or "Eliciting question column name" or "Participant ID column name"
+    // because the default (non specified) options will work for all of these things
+
     var questionnaireBlob = new Blob([output], {type: "text/csv;charset=utf-8"});
     // TODO: This seems to clear the console in FireFox 40; why?
     saveAs(questionnaireBlob, "export_story_form_" + storyCollectionName + ".csv");
@@ -1112,7 +1243,7 @@ export function exportStoryCollection() {
             // TODO: Maybe should export ID instead? Or more header lines with ID and prompt?
             if (question.valueOptions && question.displayType === "checkboxes") {
                 question.valueOptions.forEach(function(option) {
-                   header(question.displayName, option);   
+                    header(question.displayName, option);   
                });
             } else {
                 header(question.displayName);
@@ -1161,11 +1292,6 @@ export function exportStoryCollection() {
         addOutputLine(outputLine);
     }); 
     
-    // Testing
-    //var blob = new Blob(["Hello, world!"], {type: "text/plain;charset=utf-8"});
-    //saveAs(blob, "hello world.csv");
-    
-    // Export story collection
     var storyCollectionBlob = new Blob([output], {type: "text/csv;charset=utf-8"});
     // TODO: This seems to clear the console in FireFox 40; why?
     saveAs(storyCollectionBlob, "export_story_collection_" + storyCollectionName + ".csv");
