@@ -1,0 +1,1894 @@
+<!DOCTYPE html> 
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>NarraFirma Help: Collection: A guide to importing data into NarraFirma from other survey systems</title>
+    <link rel="stylesheet" href="../../css/help.css">
+</head>
+<body>
+<div class="header">
+	<span class="narrafirma-name">NarraFirma&trade; Help</span>
+	<span class="breadcrumb">
+	<a href="../dashboard/help_page_dashboard.html">Home</a> &gt; 
+	<a href="help_page_collection.html">Collection</a> &gt; 
+	A guide to importing data into NarraFirma from other survey systems 
+	</span>
+</div>
+
+<div id="page-collection-design-story-forms" class="page">
+
+<div class="page-title">A guide to importing data into NarraFirma from other survey systems</div>
+<div class="text">
+<p>
+<h2 id="toc">Table of contents</h2>
+</p>
+<ul>
+    <li><a href="#beforeyoustart">Before you start: requirements</a></li>
+    <li><a href="#exporttocsv">Step One: Export your data to CSV</a></li>
+    <li><a href="#lookatheaders">Step Two: Look at your data file headers</a></li>
+    <li><a href="#describedata">Step Three: Describe your data to NarraFirma</a>
+        <ul>
+            <li><a href="#usingnf">Describe your data to NarraFirma by building a story form in NarraFirma</a></li>
+            <ul>
+                <li><a href="#nf_eliciting">Eliciting questions</a></li>
+                <li><a href="#nf_stories">Questions about stories</a>
+                <li><a href="#nf_datatypes">Import data types</a></li>
+                <ul>
+                    <li><a href="#nf_singlechoice">Single choice questions</a></li>
+                    <li><a href="#nf_singlechoiceindexed">Single choice indexed questions</a></li>
+                    <li><a href="#nf_multicolumntexts">Multi-choice multi-column text questions</a></li>
+                    <li><a href="#nf_multicolumnyesno">Multi-choice multi-column yes/no questions</a></li>
+                    <li><a href="#nf_multicolumndelimited">Multi-choice single-column delimited questions</a></li>
+                    <li><a href="#nf_multicolumndelimitedindexed">Multi-choice single-column delimited indexed questions</a></li>
+                    <li><a href="#nf_scale">Scale questions</a></li>
+                    <li><a href="#nf_text">Text questions</li>
+                    <li><a href="#nf_ifnomatch">If your data doesn't match any of these types</a></li>
+                </ul>
+                </li>
+                <li><a href="#nf_participants">Questions about participants</a></li>
+                <li><a href="#nf_form">Create your story form</a></li>
+            </ul>
+            <li><a href="#usingcsv">Describe your data to NarraFirma by importing a story form CSV file you created in a spreadsheet program</a>
+            <ul>
+                <li><a href="#csv_participantID">Participant identifier</a></li>
+                <li><a href="#csv_eliciting">Eliciting question</a></li>
+                <li><a href="#csv_storytexts">Story texts</a></li>
+                <li><a href="#csv_storytitles">Story titles</li>
+                <li><a href="#csv_singlechoice">Single choice questions</a></li>
+                <li><a href="#csv_singlechoiceindexed">Single choice indexed questions</a></li>
+                <li><a href="#csv_scale">Scale questions</a></li>
+                <li><a href="#csv_multicolumntext">Multi-choice multi-column text questions</a></li>
+                <li><a href="#csv_multicolumnyesno">Multi-choice multi-column yes/no questions</a></li>
+                <li><a href="#csv_multicolumndelimited">Multi-choice single-column delimited questions</a></li>
+                <li><a href="#csv_multicolumndelimitedindexed">Multi-choice single-column delimited indexed questions</a></li>
+                <li><a href="#csv_text">Text questions</a></li>
+                <li><a href="#csv_importfile">Import your story form CSV file</a></li>
+                <li><a href="#csv_formoptions">Form options you can specify in your story form CSV file</a></li>
+                <li><a href="#csv_othernotes">Other notes on the story form CSV file format</a></li>
+                <li><a href="#csv_completedfile">Our finished example story form CSV file</a></li>
+            </ul>
+            </li>
+        </ul>
+    </li>
+    <li><a href="#importstories">Step Four: Import your stories</a></li>
+    <li><a href="#tips">Tips and tricks</a></li>
+    <li><a href="#exportstories">Exporting stories from NarraFirma</a></li>
+    <li><a href="#needmorehelp">Need more help?</a></li>
+</ul>
+
+</div>
+
+<div class="heading" id="beforeyoustart">Before you start: Requirements for a data file NarraFirma can read</div>
+<div class="text">
+<p>
+NarraFirma assumes that any file of story data you import has these features:
+<ul>
+    <li>The file is in the <b>CSV</b> (comma-separated values) format.</li>
+    <li>The file is encoded in the <b>UTF-8</b> encoding format.</li>
+    <li>The first row of the file is a <b>header</b> in which each cell describes the contents of the cells beneath it.</li>
+    <li>All the cells in all the rows beneath the header contain data that match both the <b>descriptions</b> in the header cells
+        and the <b>data types</b> NarraFirma knows how to read (see below).</li>
+    <li>Any rows that are not the header or data are marked as <b>comments</b> because the very first character in the very first cell of the row is a semicolon (;).</li>
+    <li>Each data row contains the data for <b>one story</b> only.</li>
+    <li>There are no rows that describe only participants. <b>Participant data is repeated</b> on each row that represents a story they told.</li>
+    <li>Custom answers from <b>write-in "other" options</b> are in their own separate columns (with the question type "Text").
+        Written-in answers are never intermingled (in the same column) with answers listed on the survey.</li>
+</ul>
+<p>
+If your data file doesn't meet these requirements, you will need to edit the file until it does.
+</p>
+<p>NarraFirma considers these things to be <b>optional</b> when you import data:</p>
+<ul>
+    <li>Each non-header row will <i>usually</i> have in it a cell with <b>the text of a story</b>. But you can import data with no stories. In that case, the story texts
+        will show up as blank spaces when you look at your stories in NarraFirma.</li>
+    <li>Each non-header row will <i>usually</i> have in it a cell with <b>the name of a story</b>. But you can import data with no story names. In that case, NarraFirma
+        will assign story names of "Untitled" plus a number.</li>
+    <li>Each non-header row will <i>usually</i> have in it a cell with <b>the name of the question the participant answered</b> by telling the story. 
+        If there is no data on eliciting questions in your data file, 
+        NarraFirma will assign the name of the first eliciting question in your story form as the answer to the "Eliciting question" question for each story.
+        If you have not defined <i>any</i> eliciting questions in your story form, 
+        the answer to the "Eliciting question" question will be "What happened?" for each story (but you can ignore it).</li>
+</ul>
+
+<p>The following sections tell you how to import data to NarraFirma from another surveying system.</p>
+</div>
+
+<div class="heading" id="exporttocsv">Step One: Export your data to CSV</div>
+<div class="text">
+<p>
+Go into your surveying system and choose either <b>CSV</b> (comma-separated values) or <b>XLS</b> (Excel) export. 
+</p>
+<p>
+If there are options for formatting your data, we recommend trying all of them, 
+then looking at the data files you get and seeing which format is the easiest to work with. 
+</p>
+</div>
+
+<div class="heading" id="lookatheaders">Step Two: Look at your data file headers</div>
+<div class="text">
+<p>
+Open your CSV or XLS file using your favorite spreadsheet program. 
+Look down the columns of the spreadsheet and <b>see if all the answers are in the right columns</b>.
+Make sure you look all the way down to the end of your file. 
+If you see answers to the same question scattered around in different columns, try opening the data file in a different way.
+In Excel, for example, you can open a new Workbook, choose Data – Get External Data – Import Text File, 
+then mess with the options there until your data looks correct. 
+</p>
+<p>
+    The first row in your data file should be a <b>header</b> row in which each cell describes the column of data beneath it. 
+    Check that each header cell uniquely describes what lies beneath it. Familiarize yourself with your header row,
+    because you will need to use it to explain to NarraFirma how to read your data. 
+    NarraFirma doesn't care about the order of columns in your data file, and it doesn't care if you have extra columns.
+    You are going to <b>tell NarraFirma what columns you want it to read and what to do with the data</b> it finds in them.
+</p>
+<p>If you have more than one header row, consolidate them into one row. Or you can comment out all but one header row by typing a semicolon (;) 
+   as the first character in the first cell of each row you want NarraFirma to ignore. 
+</p>
+
+</div>
+
+<div class="heading" id="describedata">Step Three: Describe your data to NarraFirma</div>
+<div class="text">
+<p>
+There are two ways to tell NarraFirma how to interpret your data:
+</p>
+<ul>
+    <li>You can describe your data <b><a href="#usingnf">using NarraFirma itself</a></b>.</li>
+    <li>You can edit a <b><a href="#usingcsv">CSV story form file</a></b> in a spreadsheet, then import it to NarraFirma.</li>
+</ul>
+
+<p>
+Which to choose? If you like working in spreadsheets, you are likely to want to do that. 
+If spreadsheets confuse you, you are more likely to want to use NarraFirma. Both methods are identical in outcome.
+</p>
+
+<p>
+        In this guide, we will pretend to be importing a fictional data file that contains all of the question types NarraFirma can read. It looks like this: 
+        </p>
+        
+<table border="1" cellpadding="4" cellspacing="0">
+        <tr>
+            <td>Respondent</td>
+            <td>EQuestion</td>
+            <td>SText</td>
+            <td>STitle</td>
+            <td>LongAgo</td>
+            <td>Source</td>
+            <td>Remember</td>
+            <td>Feel about</td>
+            <td>Feel about</td>
+            <td>Needed [help]</td>
+            <td>Needed [understanding]</td>
+            <td>Helped</td>
+            <td>Surprised</td>
+            <td>Comment</td>
+        </tr>
+        <tr>
+            <td>2554</td>
+            <td>Surprise</td>
+            <td>I was surprised one day when...</td>
+            <td>Never would have guessed</td>
+            <td>1 year</td>
+            <td>1</td>
+            <td>3</td>
+            <td>happy</td>
+            <td></td>
+            <td>Yes</td>
+            <td>No</td>
+            <td>manager, colleague</td>
+            <td>1 4</td>
+            <td>It's okay</td>
+        </tr>
+        <tr>
+            <td>1543</td>
+            <td>ReallyLike</td>
+            <td>It was on my last day at work...</td>
+            <td>Finally</td>
+            <td>3 months</td>
+            <td>3</td>
+            <td>7</td>
+            <td></td>
+            <td>sad</td>
+            <td>No</td>
+            <td>Yes</td>
+            <td>friend</td>
+            <td>2</td>
+            <td>Really upset about this</td>
+        </tr>
+        <tr>
+            <td>532</td>
+            <td>Discovered</td>
+            <td>I never knew before that...</td>
+            <td>Never knew</td>
+            <td>Last week</td>
+            <td>2</td>
+            <td>9</td>
+            <td>happy</td>
+            <td></td>
+            <td>Yes</td>
+            <td>No</td>
+            <td>colleague, friend</td>
+            <td>2 3</td>
+            <td>No comment!</td>
+        </tr>
+        </table>
+        
+        <p>The question types in the example file are:</p>
+        
+        <table border="1" cellpadding="4" cellspacing="0">
+                <tr>
+                    <td>Respondent</td>
+                    <td>EQuestion</td>
+                    <td>SText</td>
+                    <td>STitle</td>
+                    <td>LongAgo</td>
+                    <td>Source</td>
+                    <td>Remember</td>
+                    <td>Feel about</td>
+                    <td>Feel about</td>
+                    <td>Needed [help]</td>
+                    <td>Needed [understanding]</td>
+                    <td>Helped</td>
+                    <td>Surprised</td>
+                    <td>Comment</td>
+                </tr>
+                <tr>
+                    <td>Participant identifier</td>
+                    <td>Eliciting question</td>
+                    <td>Story texts</td>
+                    <td>Story titles</td>
+                    <td>Single choice</td>
+                    <td>Single choice indexed</td>
+                    <td>Scale</td>
+                    <td colspan="2">Multi-choice multi-column texts</td>
+                    <td colspan="2">Multi-choice multi-column yes/no</td>
+                    <td>Multi-choice single-column delimited</td>
+                    <td>Multi-choice single-column delimited indexed</td>
+                    <td>Text</td>
+                </tr>
+                </table>
+
+<p>The following descriptions of format specification using NarraFirma or a CSV file use the same example.</p>
+
+</div>
+
+<div class="heading" id="usingnf">Describe your data to NarraFirma by building a story form in NarraFirma</div>
+<div class="text">
+<p>
+When you collect data using NarraFirma as a surveying system, you follow a process like this:
+</p>
+<ol>
+    <li>Write your eliciting questions</li>
+    <li>Write questions about the stories people will tell in response</li>
+    <li>Write questions you will ask people about themselves</li>
+    <li>Bring all the questions together into a story form</li>
+</ol>
+<p>When you import data into NarraFirma, it works best to follow the same sequence.
+</p>
+
+<h2 id="nf_eliciting">Eliciting questions</h2>
+
+<p>If you gave people a choice of questions to answer by telling a story, or if you asked people a series of questions (that they answered by telling stories),
+    you are likely to have in your data file a column that recorded which question they answered.
+    If you did <i>not</i> ask at least two eliciting questions, you can skip this step.
+</p>
+
+<p>To enter your eliciting questions, go to the NarraFirma home page, click on <b>Collection</b>, then click on <b>Write story eliciting questions</b>.
+    Under the table of questions, click <b>Add</b>. Then enter a question and a short name to describe an eliciting question represented in your data file. 
+    Under the <b>Import options</b> header, type the corresponding text <i>exactly</i> as it appears in your data file. 
+    For example, the "EQuestion" column of our example data file looks like this:
+</p>
+
+<table border="1" cellpadding="4" cellspacing="0">
+        <tr>
+            <td>EQuestion</td>
+        </tr>
+        <tr>
+            <td>Surprise</td>
+        </tr>
+        <tr>
+            <td>ReallyLike</td>
+        </tr>
+        <tr>
+            <td>Discovered</td>
+        </tr>
+        </table>
+
+<p>The "ReallyLike" eliciting question looks like this when it is created in NarraFirma:</p>
+
+<img src="help_importGuide_elicitingQuestion.png">
+
+<p>Do this for all of the eliciting questions referred to in your data. You will tell NarraFirma the heading of the column that describes
+    <i>which</i> eliciting question each person picked ("EQuestion" in our example) when you get to <a href="#nf_form">creating your story form</a>.
+</p>
+
+<h2 id="nf_stories">Questions about stories</h2>
+
+<p>Now look at your data file and go through all the questions that were asked <i>about stories</i>. Go to the NarraFirma home page, click on <b>Collection</b>, and then click on 
+<b>Write questions about stories</b>. For each story-related question in your data file, under the table of questions, click <b>Add</b>, then describe the question.
+</p>
+
+<p>Let's try this with an example question from our data file: How long ago the story was told.
+    First, write out the full question, as you asked it in your survey. Then choose a question type. These are NarraFirma's <i>internal</i> question types, 
+so most of them don't apply to imported data. Choose one of these types:</p>
+
+<ul>
+    <li>select: single-choice data</li>
+    <li>slider: scale data</li>
+    <li>checkboxes: multi-choice data</li>
+    <li>text: things people said or typed in</li>
+</ul>
+
+<p>Next, give the question a short name to be used on graphs.
+    Then enter the answer names (if there are any) you want to display on your graphs. 
+    This is how the screen should look
+    for the "LongAgo" question in our example data file.
+</p>
+
+<img src="help_importGuide_questionDisplay.png">
+
+<p>Now scroll down to the <b>Import options</b> part of the question description. This is where you need to tell NarraFirma 
+what to expect in your data file.</p>
+
+<p>First enter <b>the <i>exact</i> header name</b>, as you see it in your data file, for the question. Then choose an <b>import question type</b>. The "LongAgo" question
+in our example data file is of the type <a href="#nf_singlechoice">Single choice</a> because its column has one text answer from a prepared list.
+</p>
+<p>Next, enter <b>the answers in your data file</b> for that column. Make sure the answers you enter here <i>exactly</i> match the contents of the cells in your file.
+    </p>
+<p>These answer names do <i>not</i> have to be the same as the answer names you typed in above (where it said "If your question requires choices, enter them here").
+    In fact, there are two entry fields for answers precisely because you are likely to want to see nicer names on your graphs than can be found in your data file.
+    <b>The order of the answers <i>must</i> be identical</b> in the two lists. Make sure you double-check that the order of the two lists is the same, because
+    otherwise you may end up having graphs with the wrong patterns in them.
+</p>
+<p> 
+Here's what the import options for the "LongAgo" question look like in NarraFirma.</p>
+
+<img src="help_importGuide_questionImportOptions.png">
+
+<h4 id="nf_datatypes">Import data types</h4>
+
+<p>Now let's talk about those import data types. It is important to chose the right import type for each question in your data file,
+    because if you don't, the data will be garbled coming in. 
+</p>
+
+<h4 id="nf_singlechoice">Single choice questions</h4>
+
+<p>This type of question covers one column, each cell of which contains only one text answer. That answer <i>exactly</i> matches one of the options given for the question
+    (in the "Import options" part of the question definition). 
+    In our example data file, the "LongAgo" question is of this type:</p>
+
+<table border="1" cellpadding="4" cellspacing="0">
+        <tr>
+            <td>LongAgo</td>
+        </tr>
+        <tr>
+            <td>1 year</td>
+        </tr>
+        <tr>
+            <td>3 months</td>
+        </tr>
+        <tr>
+            <td>Last week</td>
+        </tr>
+        </table>
+
+<h4 id="nf_singlechoiceindexed">Single choice indexed questions</h4>
+
+<p>This type of question covers one column, each cell of which contains a <i>number</i> that corresponds to the option chosen for the question.
+    In our example data file, the "Source" question is of this type:</p>
+
+<table border="1" cellpadding="4" cellspacing="0">
+        <tr>
+            <td>Source</td>
+        </tr>
+        <tr>
+            <td>1</td>
+        </tr>
+        <tr>
+            <td>3</td>
+        </tr>
+        <tr>
+            <td>2</td>
+        </tr>
+        </table>
+
+<p>When you create such a question in NarraFirma, make sure the order in which you write the answers matches the order in which the
+    answers were presented in your survey. The answers under the "Import options" header are ignored for this type of question, because you would
+    just be entering 1,2,3 and so on.
+</p>
+
+<h4 id="nf_scale">Scale questions</h4>
+
+<p>This type of question covers one column, and its cells contain numbers that correspond to locations along a linear scale. 
+        In our example data file, the "Remember" question is of this type:</p>
+
+<table border="1" cellpadding="4" cellspacing="0">
+        <tr>
+            <td>Remember</td>
+        </tr>
+        <tr>
+            <td>3</td>
+        </tr>
+        <tr>
+            <td>7</td>
+        </tr>
+        <tr>
+            <td>9</td>
+        </tr>
+        </table>
+
+<p>The default NarraFirma scale goes from zero to 100. If your scale is not from zero to 100, you can set a custom scale range in either of two places:
+    for each question, or for the story form in general. If all of your scale questions use the same scale, it's easier to 
+    <a href="#nf_form">set the range at the story
+    form level</a>. However, if each scale question has its own minimum and maximum, you can set them in the 
+    "Import options" for each question, like this: 
+</p>
+
+<img src="help_importGuide_questionScaleRange.png">
+
+<h4 id="nf_text">Text questions</h4>
+
+<p>This type of question is just a bit of text somebody said or typed in. 
+    There are no answers to list for this data type.
+        In our example data file, the "Comment" question is of this type:</p>
+
+<table border="1" cellpadding="4" cellspacing="0">
+        <tr>
+            <td>Comment</td>
+        </tr>
+        <tr>
+            <td>It's okay</td>
+        </tr>
+        <tr>
+            <td>Really upset about this</td>
+        </tr>
+        <tr>
+            <td>No comment!</td>
+        </tr>
+        </table>
+
+<h4 id="nf_multicolumntexts">Multi-choice multi-column text questions</h4>
+
+<p>This type of question covers multiple columns, one per answer. The header for each column in the set is identical - it has just the name of the question in it. 
+    The cell values of all the columns contain <i>exact</i> matches for the options given for the question.
+    In our example data file, the "Feel about" question is of this type:</p>
+</p>
+
+<table border="1" cellpadding="4" cellspacing="0">
+        <tr>
+        <td>Feel about</td>
+        <td>Feel about</td>
+    </tr>
+    <tr>
+        <td>happy</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td></td>
+        <td>sad</td>
+    </tr>
+    <tr>
+        <td>happy</td>
+        <td></td>
+    </tr>
+    </table>
+
+<h4 id="nf_multicolumnyesno">Multi-choice multi-column yes/no questions</h4>
+
+<p>This type of question covers multiple columns, one per answer. The column headers in such a set are <i>not</i> identical.
+Each has in it the question name <i>and</i> the answer name for that column. The cell values themselves contain a binary
+indicator, like "Yes" or "No," or "1" or "0."
+In our example data file, the "Needed" question is of this type:</p>
+
+<table border="1" cellpadding="4" cellspacing="0">
+        <tr>
+            <td>Needed [help]</td>
+            <td>Needed [understanding]</td>
+        </tr>
+        <tr>
+            <td>Yes</td>
+            <td>No</td>
+        </tr>
+        <tr>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        <tr>
+            <td>Yes</td>
+            <td>No</td>
+        </tr>
+        </table>
+
+<p>A story form with this type of question in it requires you to define three import options <a href="#nf_form">at the level of the story form</a>: 
+    "Yes no questions yes indicator," "Yes no questions Q-A separator," and "Yes no questions Q-A ending."
+</p>
+
+<h4 id="nf_multicolumndelimited">Multi-choice single-column delimited questions</h4>
+
+<p>This type of question covers one column. The cells contain all of the answers to the question (which exactly match those on the given list), separated by something (usually a comma). 
+        In our example data file, the "Helped" question is of this type:</p>
+
+    <table border="1" cellpadding="4" cellspacing="0">
+            <tr>
+                <td>Helped</td>
+            </tr>
+            <tr>
+                <td>manager, colleague</td>
+            </tr>
+            <tr>
+                <td>friend</td>
+            </tr>
+            <tr>
+                <td>colleague, friend</td>
+            </tr>
+            </table>
+
+<p>A story form with this type of question in it requires you to define one import option <a href="#nf_form">at the level of the story form</a>: 
+    "Multi choice single column delimiter."</p>
+
+<h4 id="nf_multicolumndelimitedindexed">Multi-choice single-column delimited indexed questions</h4>
+
+<p>This type of question covers one column. The cells contain all of the answers to the question, but they are not the answer texts.
+    They are index numbers for the chosen answers. In our example data file, the "Surprised" question is of this type:
+</p>
+
+<table border="1" cellpadding="4" cellspacing="0">
+        <tr>
+            <td>Surprised</td>
+        </tr>
+        <tr>
+            <td>1 4</td>
+        </tr>
+        <tr>
+            <td>2</td>
+        </tr>
+        <tr>
+            <td>2 3</td>
+        </tr>
+        </table>
+
+        <p>A story form with this type of question in it requires you to define one import option <a href="#nf_form">at the level of the story form</a>: 
+                "Multi choice single column delimiter."</p>
+            
+
+
+<h4 id="nf_ifnomatch">If your data doesn't match any of these types</h4>
+
+<p>If you are looking at a column of data in your file and you can't match it to any of these types,
+    you can usually fix the problem with some careful editing of your CSV file in a spreadsheet. 
+    If you can't figure out what to do, find that friend or colleague who is a whiz at spreadsheets
+    and show them the problem. It is likely that you will find a solution. Remember to back up your work,
+    and keep multiple versions of your file, so you can fix mistakes.
+</p>
+
+<h2 id="nf_participants">Questions about participants</h2>
+
+<p>When you have got through all the questions in your data file that have to do with stories, it is time to tell NarraFirma
+    about the questions you asked about people. Go to the NarraFirma home page, click on <b>Collection</b>, and then click on <b>Write participant questions</b>.
+    Under the table of questions, click <b>Add</b>. Then follow the same directions as given above for story questions. In summary, for each question:
+    </p>
+<ul>
+    <li>Enter a long text, a short name, and a NarraFirma question type (choosing from select, slider, checkboxes, and text).</li>
+    <li>Enter the answers as you want to display them (and in the order you want to see them) in your graphs.</li>
+    <li>Under the "Import options" header, enter the data column header name, the import data type, and the answers as they appear in the file, in the same order.</li>
+    <li>If it's a scale question, if you need to, enter a special scale range.</li>
+</ul>
+
+<h2 id="nf_form">Create your story form</h2>
+
+<p>Once you have entered all of your eliciting questions, questions about stories, and questions about participants,
+    you need to enter some <b>overall import options</b> to help NarraFirma read your data. 
+    </p>
+    <p>
+    Go to the NarraFirma home page, 
+    click on <b>Collection</b>, and then click on <b>Design, generate, or import story forms</b>.
+    Then click on <b>Generate story form using all existing questions</b>. Enter a name for the story form.
+    It will appear in the table of story forms. Select it and click <b>Edit</b>. 
+</p>
+<p>Now look over your generated story form.
+    The order in which the eliciting questions, story questions, and participant questions appear in the form
+    is the order in which they will appear in lists. If that order is fine with you, you can leave those lists alone;
+    or you can edit the order placements (click a question name in any of those three lists and click "Edit.")
+</p>
+
+<p>When you are satisfied with the order of your questions,
+    scroll down to the <b>Import options</b> section. Obviously you will want to pay a lot of attention to this section. Let's go through the options one at a time. </p>
+        
+<table border="1" cellpadding="4" cellspacing="0">
+    <tr>
+        <th>Question</th>
+        <th>What to do</th>
+    </tr>
+    <tr>
+    <td>In your data file, what is the data column header for the story title?</td>
+    <td>Look at your data file and find the column with story titles in it. Copy and paste the exact header for that column here.</td>
+    </tr>
+
+    <tr>
+    <td>What is the data column header for the story text?</td>
+    <td>Copy the header for the column that has the stories in it.</td>
+    </tr>
+        
+    <tr>
+    <td>What is the data column header for the eliciting question?</td>
+    <td>Copy the header for the eliciting question response here, if you have one.</td>
+    </tr>
+        
+    <tr>
+    <td>What is the data column header for the participant ID field?</td>
+    <td>If participants are identified in your data file, copy and paste
+        the header for that column of the file here. Remember that participant data must be <i>repeated</i> on every row of story data for that participant.</td>
+    </tr>
+
+    <tr>
+    <td>In your data file, what is the minimum value for your scale questions?</td>
+    <td>If you have scale questions in your file, and they are all (or mostly)
+        the same, and their ranges do not go from zero to 100, enter the lowest number on your scales here.</td>
+    </tr>
+
+    <tr>
+    <td>What is the maximum value for your scale questions?</td>
+    <td>Enter the highest possible number for all scales.</td>
+    </tr>
+ 
+    <tr>
+    <td>If you have any questions of the type "Multi-choice single-column delimited" or "Multi-choice single-column delimited indexed", what text separates the items within each cell?</td>
+    <td>This is about data columns in which multiple answers look like lists (e.g., "happy,enthused,inspired"). If you have data like that, you need to tell NarraFirma
+            how to separate the items in each list. The most common separator is a comma, but it could be lots of other things.
+            Note that the same delimiter is used for both regular and indexed (1,2,3) data (which you are rarely going to have in the same file).
+            If your delimiter is an actual space, do not enter a space here. Enter the word "space."</td>
+    </tr>
+
+    <tr>
+    <td>If you have any questions of the type "Multi-choice multi-column yes/no", what text indicates a "Yes" answer?</td>
+    <td>For the question type where the cell contents are "Yes" or "No,"
+            this is what signifies a "Yes" answer. Look in your data file and see what it says in the cells for that type of question.
+            Sometimes it will literally say "Yes," but some survey systems use other values, like "1" or "yes" (and case matters - it has to be exact).</td>
+    </tr>
+
+    <tr>
+    <td>If you have any questions of the type "Multi-choice multi-column yes/no" ... What is the text between the question name and the answer name in each column header?</td>
+    <td>The headers for those yes/no choice columns describe both the question and the answer for that column. 
+            But different surveying systems put together the question and answer names in different ways. NarraFirma assumes that yes/no headers will look like this:
+            <ol>
+                <li>the name of the question</li>
+                <li>something in the middle</li>
+                <li>the name of the answer</li>
+            <li>(maybe) something at the end</li>
+            </ol>
+            You need to tell NarraFirma what the "something in the middle" and the "something at the end" are so it can find the question and answer names.
+            Look at your column headers and figure out what lies between the question name and the answer name. Some common separators are a square bracket ([)
+            and a colon (:). Don't worry about extra spaces; they will be trimmed out. 
+            If it is impossible to pull apart your column headers by specifying
+            things to find between the question and answer names (for example, if the "something in the middle" changes from one column to another), 
+            you will need to edit your column headers using a spreadsheet program to make them fit this scheme.
+        </td>
+    </tr>
+
+    <tr>
+    <td>If you have any questions of the type "Multi-choice multi-column yes/no", what is the text after the answer name in each column header?</td>
+    <td> This is the "something at the end" from the previous question.</td>
+    </tr>
+        
+</table>    
+
+<p>And that's it, you have described your data file to NarraFirma. <b>You can now <a href="#importstories">import your stories</a></b>.</p>
+
+</div>
+
+<div class="heading" id="usingcsv">Describe your data to NarraFirma by importing a story form CSV file you created in a spreadsheet program</div>
+<div class="text">
+<p>
+To describe your data to NarraFirma by importing a CSV file, the first thing you should do is <b>create a new, empty spreadsheet file</b>.
+In the first row of the new spreadsheet, <b>type these header column names</b>:
+
+<table border="1" cellpadding="4" cellspacing="0">
+    <tr>
+        <td>Data column name</td>
+        <td>Type</td>
+        <td>About</td>	
+        <td>Short name</td>	
+        <td>Long name</td>	
+        <td>Answers</td>
+    </tr>
+</table>
+
+<p>
+Then go back to your data file and take a good long look at its header (first) row. 
+Look at each column name and think about the data in that column so you can describe it to NarraFirma.
+Let's go through the columns in our example data file one at a time.
+</p>
+
+<h2 id="csv_participantID">Participant identifier</h2>
+
+<p>Your data file may identify participants by a name or number or unique ID. In our example data file, the participant IDs look like this:
+    </p>
+
+    <table border="1" cellpadding="4" cellspacing="0">
+            <tr>
+                <td>Respondent</td>
+            </tr>
+            <tr>
+                <td>2554</td>
+            </tr>
+            <tr>
+                <td>1543</td>
+            </tr>
+            <tr>
+                <td>532</td>
+            </tr>
+            </table>
+    
+    <p>
+        If you have participant IDs in your data file, tell NarraFirma about them by creating a row in your story form CSV file that looks like this:
+</p>
+
+<table border="1" cellpadding="4" cellspacing="0">
+        <tr>
+            <td>Data column name</td>
+            <td>Type</td>
+            <td>About</td>	
+            <td>Short name</td>	
+            <td>Long name</td>	
+            <td>Answers</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>Participant ID column name</td>
+            <td>import</td>
+            <td></td>
+            <td></td>
+            <td>Respondent</td>
+        </tr>
+    </table>
+
+<p>This will tell NarraFirma that the cells in the column marked "Respondent" will group
+    stories together by who told them. It does not matter what you have in that column, as long as each participant's identifier
+    is unique. 
+</p>
+
+<h2 id="csv_eliciting">Eliciting question</h2>
+
+<p>In our example data file, the "EQuestion" column tells NarraFirma which question people answered by telling a story. It looks like this:</p>
+
+<table border="1" cellpadding="4" cellspacing="0">
+        <tr>
+            <td>EQuestion</td>
+        </tr>
+        <tr>
+            <td>Surprise</td>
+        </tr>
+        <tr>
+            <td>ReallyLike</td>
+        </tr>
+        <tr>
+            <td>Discovered</td>
+        </tr>
+        </table>
+
+    <p>We can tell NarraFirma about this column by filling out a row in our story form CSV file like this:</p>
+
+<table border="1" cellpadding="4" cellspacing="0">
+        <tr>
+            <td>Data column name</td>
+            <td>Type</td>
+            <td>About</td>	
+            <td>Short name</td>	
+            <td>Long name</td>	
+            <td>Answers</td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>EQuestion</td>
+            <td>eliciting</td>
+            <td>eliciting</td>
+            <td>Eliciting question</td>
+            <td>Please choose a question to which you would like to respond.</td>
+            <td>Surprise|Surprise|What has been your biggest surprise in the past year?</td>
+            <td>ReallyLike|Really like|What experience comes to mind when you think about what success is really like?</td>
+            <td>Discovered|Discovery|What was your biggest discovery at work in the past year?</td>
+        </tr>
+    </table>
+<p>
+    The "Type" and "About" fields for the eliciting question <i>must</i> say "eliciting." 
+    The "Short name" field sets the name of the graph used to display the choice of eliciting question. 
+    The "Long name" field controls the actual question asked on the survey in NarraFirma. 
+<p>
+    Starting at the first column labeled "Answers," write your eliciting questions, one question per column. Within each column,
+    specify how NarraFirma should read and display the question, in three parts, separated by pipe characters (|):
+</p>
+ <ol>
+     <li>The text NarraFirma will find in the data cell when a participant answered that question (e.g., "ReallyLike")</li>
+     <li>The short name you want to use to label this answer in graphs (e.g., "Really like")</li>
+     <li>The long text for this question (e.g., "What experience comes to mind when you think about what success is really like?")</li>
+ </ol> 
+<p>
+    If you only enter one name (without any pipes), it will be used as all three things (the data cell name, the graph name, and the question text).
+    If you enter two names here, the first will be used as the data cell name and the graph name, and the second will be used as the question text.
+</p>
+<p>   If your data file has no column that says which eliciting question people answered, you can leave this row out of your story form file.
+       NarraFirma will create a generic eliciting question ("What happened?") and assign it to all of your stories.
+    </p>
+
+<h2 id="csv_storytexts">Story texts</h2>
+
+<p>In our example data file, the "SText" column holds the story texts.</p>
+
+<table border="1" cellpadding="4" cellspacing="0">
+        <tr>
+            <td>SText</td>
+        </tr>
+        <tr>
+            <td>I was surprised one day when...</td>
+        </tr>
+        <tr>
+            <td>It was on my last day at work...</td>
+        </tr>
+        <tr>
+            <td>I never knew before that...</td>
+        </tr>
+        </table>
+
+<p>Because there is no actual question being asked here,
+you must use an import option to tell NarraFirma how to read this column. Enter a row like this:
+</p>
+
+<table border="1" cellpadding="4" cellspacing="0">
+        <tr>
+            <td>Data column name</td>
+            <td>Type</td>
+            <td>About</td>	
+            <td>Short name</td>	
+            <td>Long name</td>	
+            <td>Answers</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>Story text column name</td>
+            <td>import</td>
+            <td></td>
+            <td></td>
+            <td>SText</td>
+        </tr>
+    </table>
+
+<p>This tells NarraFirma that it can find your story texts in a column labeled with the header "SText".</p>
+
+<h2 id="csv_storytitles">Story titles</h2>
+
+<p>In our example data file, the "STitle" column holds the story titles.</p>
+
+<table border="1" cellpadding="4" cellspacing="0">
+        <tr>
+            <td>STitle</td>
+        </tr>
+        <tr>
+            <td>Never would have guessed</td>
+        </tr>
+        <tr>
+            <td>Finally</td>
+        </tr>
+        <tr>
+            <td>Never knew</td>
+        </tr>
+        </table>
+
+<p>Use an import option to tell NarraFirma how to read this column.
+</p>
+
+<table border="1" cellpadding="4" cellspacing="0">
+        <tr>
+            <td>Data column name</td>
+            <td>Type</td>
+            <td>About</td>	
+            <td>Short name</td>	
+            <td>Long name</td>	
+            <td>Answers</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>Story title column name</td>
+            <td>import</td>
+            <td></td>
+            <td></td>
+            <td>STitle</td>
+        </tr>
+    </table>
+
+<h2 id="csv_singlechoice">Single choice questions</h2>
+
+<p>
+    In our example data file, the column labeled "LongAgo" describes how long ago the events of the story happened. 
+    The participant could choose only one of these answers. The answer chosen is listed in the cell. 
+</p>
+
+<table border="1" cellpadding="4" cellspacing="0">
+        <tr>
+            <td>LongAgo</td>
+        </tr>
+        <tr>
+            <td>1 year</td>
+        </tr>
+        <tr>
+            <td>3 months</td>
+        </tr>
+        <tr>
+            <td>Last week</td>
+        </tr>
+        </table>
+
+<p>
+To describe this type of question to NarraFirma, write a row in your story form CSV file like this:
+</p>
+
+<table border="1" cellpadding="4" cellspacing="0">
+        <tr>
+            <td>Data column name</td>
+            <td>Type</td>
+            <td>About</td>	
+            <td>Short name</td>
+            <td>Long name</td>
+            <td>Answers</td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>LongAgo</td>
+            <td>Single choice</td>
+            <td>story</td>
+            <td>How long ago</td>
+            <td>How long ago did this story take place?</td>
+            <td>Last week|In the past week</td>
+            <td>3 months|Within the past 3 months</td>
+            <td>6 months|From 3 to 6 months ago</td>
+            <td>1 year|From 6 months to a year ago</td>
+        </tr>
+    </table>
+<p>
+With this question type (and any other type that has fixed, prepared answers), you can give your answers nicer names (for graphs)
+by writing first the name to be found in the data file (e.g., "Last week"), followed by a pipe symbol (|), followed by the
+name to write on graphs (e.g., "In the past week"). If you don't want to use different names on your graphs, you can just 
+write the answer name once (without a pipe symbol).
+</p>
+
+<h2 id="csv_singlechoiceindexed">Single choice indexed questions</h2>
+
+<p>Some survey systems don't write the actual choice the person picked in the data file. Instead, they write the index number
+    of the choice - that is, its place in the list of choices. For example, if the choices for "Favorite fruit" are "apple, pear, banana",
+    and I chose "banana," that cell in the data file will say "3", not "banana". In our example data file, the column labeled "Source"
+    is of this type. 
+</p>
+
+<table border="1" cellpadding="4" cellspacing="0">
+        <tr>
+            <td>Source</td>
+        </tr>
+        <tr>
+            <td>1</td>
+        </tr>
+        <tr>
+            <td>3</td>
+        </tr>
+        <tr>
+            <td>2</td>
+        </tr>
+        </table>
+
+<p>
+    Tell NarraFirma how to read a question of this type like this:
+</p>
+
+<table border="1" cellpadding="4" cellspacing="0">
+        <tr>
+            <td>Data column name</td>
+            <td>Type</td>
+            <td>About</td>	
+            <td>Short name</td>
+            <td>Long name</td>
+            <td>Answers</td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>Source</td>
+            <td>Single choice indexed</td>
+            <td>story</td>
+            <td>Where story came from</td>
+            <td>Where did this story come from?</td>
+            <td>first-person</td>
+            <td>second-hand</td>
+            <td>rumor and I believe it</td>
+            <td>rumor and I don't believe it</td>
+        </tr>
+    </table>
+
+<p>
+    In this case you don't need separate data and graph names for the answers, because the "names" in the data file are digits.
+</p>
+
+<h2 id="csv_scale">Scale questions</h2>
+
+<p>In our example data file, the column labeled "Remember" has a series of numbers that represent locations along a linear scale.
+    </p>
+    
+    <table border="1" cellpadding="4" cellspacing="0">
+            <tr>
+                <td>Remember</td>
+            </tr>
+            <tr>
+                <td>3</td>
+            </tr>
+            <tr>
+                <td>7</td>
+            </tr>
+            <tr>
+                <td>9</td>
+            </tr>
+            </table>
+            
+<p>Let's say I happen to know that I asked this question on a scale from one to ten. 
+    NarraFirma's default scale runs from zero to 100, so I will need to tell NarraFirma that I want a custom scale range for this question.
+</p>
+
+<table border="1" cellpadding="4" cellspacing="0">
+        <tr>
+            <td>Data column name</td>
+            <td>Type</td>
+            <td>About</td>	
+            <td>Short name</td>
+            <td>Long name</td>
+            <td>Answers</td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>Remember</td>
+            <td>Scale</td>
+            <td>story</td>
+            <td>How long remember</td>
+            <td>How long do you think you will remember this story?</td>
+            <td>for a few minutes</td>
+            <td>for the rest of my life</td>
+            <td>1</td>
+            <td>10</td>
+        </tr>
+    </table>
+
+<p>The first two columns under "Answers" label the left and right sides of the scale. The third and fourth columns give the minimum and maximum values for the scale.
+</p>
+
+<p>If <i>all</i> of the scales in your data file have the same range, you can leave the last two columns off and instead use an import option that applies to all the scales in the file:</p>
+
+<table border="1" cellpadding="4" cellspacing="0">
+        <tr>
+            <td>Data column name</td>
+            <td>Type</td>
+            <td>About</td>	
+            <td>Short name</td>	
+            <td>Long name</td>	
+            <td>Answers</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>Scale range</td>
+            <td>import</td>
+            <td></td>
+            <td></td>
+            <td>1</td>
+            <td>10</td>
+        </tr>
+    </table>
+
+<p>If you specify the scale range in both places, the question scale range will take precedence (so you can set a general scale range, plus a special one for only one or a few questions).</p>
+
+<h2 id="csv_multicolumntext">Multi-choice multi-column text questions</h2>
+
+<p>The next two columns to consider in our example data file are both called "Feel about." The cells in these two columns 
+    have texts in them that correspond to the available answers for that question.
+    If someone chose an answer, that text is in the cell. 
+</p>
+
+<table border="1" cellpadding="4" cellspacing="0">
+        <tr>
+        <td>Feel about</td>
+        <td>Feel about</td>
+    </tr>
+    <tr>
+        <td>happy</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td></td>
+        <td>sad</td>
+    </tr>
+    <tr>
+        <td>happy</td>
+        <td></td>
+    </tr>
+    </table>
+
+<p>
+Specify this type of column thus:</p>
+
+<table border="1" cellpadding="4" cellspacing="0">
+        <tr>
+            <td>Data column name</td>
+            <td>Type</td>
+            <td>About</td>	
+            <td>Short name</td>
+            <td>Long name</td>
+            <td>Answers</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>Feel about</td>
+            <td>Multi-choice multi-column texts</td>
+            <td>story</td>
+            <td>Feel about</td>
+            <td>How do you feel about this story?</td>
+            <td>happy|positive</td>
+            <td>sad|negative</td>
+        </tr>
+    </table>
+
+    <p>In the "Answers" column, and to the right, enter one answer per column, in the order you would like them displayed in your graphs.
+        If you want to use a different name for the answer in your graphs, use
+        a pipe separator to specify two sets of names. First write what it says in your data file, then a pipe, then what you want it to say on the graphs.
+    </p>
+
+<h2 id="csv_multicolumnyesno">Multi-choice multi-column yes/no questions</h2>
+
+<p>In our example data file, the cells in the next two columns, "Needed [help]" and "Needed [understanding]," do not have answer texts in them. 
+    Instead, they have the words "Yes" and "No," like this:</p>
+
+<table border="1" cellpadding="4" cellspacing="0">
+        <tr>
+            <td>Needed [help]</td>
+            <td>Needed [understanding]</td>
+        </tr>
+        <tr>
+            <td>Yes</td>
+            <td>No</td>
+        </tr>
+        <tr>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        <tr>
+            <td>Yes</td>
+            <td>No</td>
+        </tr>
+        </table>
+<p>
+    If your data looks like this, you can describe it to NarraFirma thus:
+</p>
+
+<table border="1" cellpadding="4" cellspacing="0">
+        <tr>
+            <td>Data column name</td>
+            <td>Type</td>
+            <td>About</td>	
+            <td>Short name</td>
+            <td>Long name</td>
+            <td>Answers</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>Needed</td>
+            <td>Multi-choice multi-column yes/no</td>
+            <td>story</td>
+            <td>Needed</td>
+            <td>What did the people in this story need?</td>
+            <td>help|to be helped</td>
+            <td>understanding|to be understood</td>
+        </tr>
+    </table>
+
+    <p>As with any other kind of question with preset answers, you can specify what the answers look like in the column headers, then a pipe, then what you want them to look like in
+        your graphs. If you don't want to change the names of your answers in your graphs, you can leave out the pipe and the alternate wording, and 
+        NarraFirma will use the same texts for both. 
+    </p>
+
+<p>If you have this kind of data in your story file, you will need to specify a few import options to help NarraFirma read it correctly.
+    You do not have to do this for each question. Just do it once, anywhere in the file, like this:
+</p>
+
+<table border="1" cellpadding="4" cellspacing="0">
+        <tr>
+                <td>Data column name</td>
+                <td>Type</td>
+                <td>About</td>	
+                <td>Short name</td>
+                <td>Long name</td>
+                <td>Answers</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>Yes no questions yes indicator</td>
+                <td>import</td>
+                <td></td>
+                <td></td>
+                <td>Yes</td>
+            </tr>
+        <tr>
+                <td></td>
+                <td>Yes no questions Q-A separator</td>
+                <td>import</td>
+                <td></td>
+                <td></td>
+                <td> [</td>
+            </tr>
+        <tr>
+                <td></td>
+                <td>Yes no questions Q-A ending</td>
+                <td>import</td>
+                <td></td>
+                <td></td>
+                <td>]</td>
+        </tr>
+        </table>
+
+<p>
+    Let's go through these three import options. First, you need to tell NarraFirma
+    how to recognize a "yes" answer. It could be "yes," but it could also be "1" or "true" or lots of things. 
+    Case matters, so make sure you enter here <i>exactly</i> what it says in the column 
+    when someone picked an answer.
+</p>
+<p>Next you need to tell NarraFirma how to read the header of a column of this type. NarraFirma assumes that you must have
+    column headers for this type of question that look like this:
+</p>
+<ol>
+    <li>the name of the question</li>
+    <li>something in the middle</li>
+    <li>the name of the answer</li>
+    <li>(maybe) something at the end</li>
+</ol>
+<p>The import option "Yes no questions Q-A separator" tells NarraFirma what to look for <i>between</i> the question name and the answer name. 
+    The import option "Yes no questions Q-A ending" tells NarraFirma what to discard <i>after</i> the answer name. Spaces will be automatically trimmed, so you don't need to specify them.
+    If your "something in the middle" <i>is</i> a space, don't put a space in your spreadsheet; NarraFirma will disregard it. Put the actual word "space."
+</p>
+<p>
+    In the unlikely event that your column headers cannot be parsed with this something-between-something-after system, you will need to 
+    <i>edit</i> your headers (for this type of question) in a spreadsheet program.
+</p>
+
+<h2 id="csv_multicolumndelimited">Multi-choice single-column delimited questions</h2>
+
+<p>
+In our example data file, the column labeled "Helped" has data in which there are multiple answers separated by commas. It looks like this:
+</p>
+
+<table border="1" cellpadding="4" cellspacing="0">
+        <tr>
+            <td>Helped</td>
+        </tr>
+        <tr>
+            <td>manager, colleague</td>
+        </tr>
+        <tr>
+            <td>friend</td>
+        </tr>
+        <tr>
+            <td>colleague, friend</td>
+        </tr>
+        </table>
+
+<p>
+Tell NarraFirma about this kind of question like this:
+</p>
+
+<table border="1" cellpadding="4" cellspacing="0">
+        <tr>
+            <td>Data column name</td>
+            <td>Type</td>
+            <td>About</td>	
+            <td>Short name</td>
+            <td>Long name</td>
+            <td>Answers</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>Helped</td>
+            <td>Multi-choice single-column delimited</td>
+            <td>story</td>
+            <td>People who helped</td>
+            <td>Who helped the main person in this story get what they needed?</td>
+            <td>manager|A manager</td>
+            <td>colleague|A colleague</td>
+            <td>friend|A friend</td>
+            <td>family|A family member</td>
+            <td>self|They helped themselves</td>
+        </tr>
+    </table>
+
+<p>
+For this data type you need to tell NarraFirma how the answers in your data cells are to be separated. Do that with this import option:
+</p>
+
+<table border="1" cellpadding="4" cellspacing="0">
+        <tr>
+                <td>Data column name</td>
+                <td>Type</td>
+                <td>About</td>	
+                <td>Short name</td>
+                <td>Long name</td>
+                <td>Answers</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>Multi choice single column delimiter</td>
+                <td>import</td>
+                <td></td>
+                <td></td>
+                <td>,</td>
+            </tr>
+        </table>
+
+<p>
+    Often this separator will be a comma. If your answer separator is a space, do not put a space in the column. Put the word "space."
+</p>
+
+<h2 id="csv_multicolumndelimitedindexed">Multi-choice single-column delimited indexed questions</h2>
+
+<p>
+In our example data file, the column labeled "Surprised" has data in which there are multiple numerical answers. It looks like this:
+</p>
+
+<table border="1" cellpadding="4" cellspacing="0">
+        <tr>
+            <td>Surprised</td>
+        </tr>
+        <tr>
+            <td>1 4</td>
+        </tr>
+        <tr>
+            <td>2</td>
+        </tr>
+        <tr>
+            <td>2 3</td>
+        </tr>
+        </table>
+
+<p>
+This question type is just like the "Single choice indexed" question type, except that multiple answers are allowed. Describe it to NarraFirma thus:
+</p>
+
+<table border="1" cellpadding="4" cellspacing="0">
+        <tr>
+            <td>Data column name</td>
+            <td>Type</td>
+            <td>About</td>	
+            <td>Short name</td>
+            <td>Long name</td>
+            <td>Answers</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>Surprised</td>
+            <td>Multi-choice single-column delimited indexed</td>
+            <td>story</td>
+            <td>Who would be surprised</td>
+            <td>Who be surprised to hear this story?</td>
+            <td>the people at the head office</td>
+            <td>our customers</td>
+            <td>the people I work with</td>
+            <td>our competitors</td>
+            <td>our shareholders</td>
+        </tr>
+    </table>
+
+<p>
+    You don't need to specify both ugly and pretty names, since the ugly names are numbers.
+</p>
+<p>
+        For this data type you need to tell NarraFirma how the answers in your data cells are to be separated. Do that with this import option:
+        </p>
+        
+        <table border="1" cellpadding="4" cellspacing="0">
+                <tr>
+                        <td>Data column name</td>
+                        <td>Type</td>
+                        <td>About</td>	
+                        <td>Short name</td>
+                        <td>Long name</td>
+                        <td>Answers</td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td>Multi choice single column delimiter</td>
+                        <td>import</td>
+                        <td></td>
+                        <td></td>
+                        <td>space</td>
+                    </tr>
+                </table>
+        
+        <p>
+            If (as in this case) your answer separator is a space, do not put a space in the column. Put the word "space."
+        </p>
+        <p>
+            Note that this global import option is the same one used for the "Multi-choice single column delimited" data type.
+            If you happened to have both types of data in one file and they were delimited differently, that could be a problem;
+            but that is <i>very</i> unlikely to happen. If it <i>did</i> happen, you could change the delimiter in the questions of one type
+            using a spreadsheet program.
+        </p>
+        
+
+<h2 id="csv_text">Text questions</h2>
+
+<p>The "Text" question type is simple: the cell in your data file should contain the text of the answer. In our example data file, the "Comment"
+    question is like this.
+</p>
+
+<table border="1" cellpadding="4" cellspacing="0">
+        <tr>
+            <td>Comment</td>
+        </tr>
+        <tr>
+            <td>It's okay</td>
+        </tr>
+        <tr>
+            <td>Really upset about this</td>
+        </tr>
+        <tr>
+            <td>No comment!</td>
+        </tr>
+        </table>
+
+<p>Specify a text question like this, with the "Answers" column left blank:</p>
+
+<table border="1" cellpadding="4" cellspacing="0">
+        <tr>
+            <td>Data column name</td>
+            <td>Type</td>
+            <td>About</td>	
+            <td>Short name</td>
+            <td>Long name</td>
+            <td>Answers</td>
+        </tr>
+        <tr>
+            <td>Comment</td>
+            <td>Text</td>
+            <td>story</td>
+            <td>Comment</td>
+            <td>If you would like to say anything else, please type it here.</td>
+            <td></td>
+        </tr>
+    </table>
+
+<h2>Lesser-known question types</h2>
+
+<p>Technically, there are four other question types NarraFirma uses internally and <i>could</i> read during import:</p>
+<ul>
+    <li>Radiobuttons: same as Single choice</li>
+    <li>Boolean: data cell must read either "yes" or anything else (and has no "answers")</li>
+    <li>Checkbox: has only one "answer" (specified in the "Answers" column); data cell must read <i>exactly</i> that (or it will count as a "no")</li>
+    <li>Textarea: just a longer text (which means nothing at all during import)</li>
+</ul>
+
+<p>You are not likely to need any of these obscure types when you import data from another system. Even if you did have data that
+    technically matched them, you could handle the same data using the types described above. So it's probably best to ignore them.
+</p>
+
+
+<h2 id="csv_importfile">Import your story form CSV file</h2>
+
+<p>Once you have finished writing your CSV file, go to the NarraFirma home page, click on <b>Collection</b>, then click on <b>Design, generate, or import story forms</b>.
+On that page, click <b>Import CSV story form file</b>. Choose the file name you saved. If NarraFirma has any problems reading the file, it will give you some
+error messages. If not, look over the story form in the NarraFirma interface. (Use the instructions above to make sure everything looks the way it should.)
+Then you will be ready to create a story collection and import your stories to it.</p>
+    
+<p>These are a few <b>things that could go wrong</b> when you import a CSV story form file:</p>
+<ul>
+        <li><b>You see extra questions</b>. This is probably because you entered the same question multiple times, but with changes. 
+            To preserve data, NarraFirma doesn't delete questions when you delete a story form;
+            it just "unmoors" them. If you create another story form <i>with the same name</i>, it reconnects any "lost" questions with the new form.
+            So if you are creating and deleting story forms (perhaps while trying to get your CSV files right), make sure you <i>use
+            a new name for each form</i>. That way you won't get extra questions in the way. (This also means you can get
+            a story form back if you deleted it by accident: just create another one with the same name.)</li>
+        <li><b>New or changed answers get discarded</b>. 
+            This is because you are trying to import over the same question.
+            NarraFirma <i>really</i> doesn't want you to lose your data. So if you try to import a question that has the same name
+            as an existing question but has different answers, it will keep your old question and throw away your new answers. To import a new question
+            with the same name and new answers, go to the "Write questions about stories" or "Write questions about participants" screen and delete the question there. 
+            Then import the story form again. This time your new options will appear.
+        </li>
+    
+</ul>
+
+<h2 id="csv_formoptions">Form options you can specify in your story form CSV file</h2>
+
+<p>
+    In your CSV story form file, you can also specify messages to participants, to be shown at the start and end of your story form. 
+    This is not really for importing data, but you can use it to (for example) copy the same story form to several projects.
+    To set form options, create one row per specified message, each with the "About" cell reading "form" and a "Type" cell reading one of:
+    </p>
+    <ul>
+        <li><b>Title</b>: a short title to be shown at the top of the story form</li>
+        <li><b>Start text</b>: introductory text to be shown after the title</li>
+        <li><b>Image</b>: a valid web link (URL) to be shown at the top of the form (must be a full web address, starting with "http://www.")</li>
+        <li><b>About you text</b>: header for the questions about participants</li>
+        <li><b>Thank you text</b>: what to say in the popup dialog after the form is submitted</li>
+        <li><b>End text</b>: what to say on the page after the form is submitted</li>
+        <li><b>Enter story text</b>: what to say other than "Please enter your response in the box below."</li>
+        <li><b>Name story text</b>: what to say other than "Please give your story a name."</li>
+        <li><b>Tell another story text</b>: what to say other than "Would you like to tell another story?"</li>
+        <li><b>Tell another story button</b>: what the button should say other than "Yes, I'd like to tell another story."</li>
+        <li><b>Max num stories</b>: how many stories people can tell (before the "tell another story" page element stops appearing)</li>
+        <li><b>Custom CSS</b>: text that changes the formatting of elements on the page</li>
+        <li><b>Custom CSS for Printing</b>: text that changes the formatting of elements in the printed story form</li>
+        </ul>
+<p>
+    For any of these form options, in the first "Answers" column, place the text to be shown in the specified area. 
+    These HTML tags are allowed: b, big, em, i, s, small, sup, sub, strong, strike, u. If you enter custom CSS text, 
+    make sure it is fully contained within the spreadsheet cell and doesn't spill over to other cells.
+</p>		
+
+<h2 id="csv_othernotes">Other notes on the story form CSV file format</h2>
+
+<p>These are some other technical details you might find useful about the CSV story form file format.</p>
+
+<ul>
+    <li>The order in which you list the questions in your story form file will be the order in which questions are shown 
+        on the story form and in lists. (Actually, this is true only <i>within</i> the subsets of questions about stories
+        and questions about participants. Questions about participants are <i>always</i> shown after questions about stories.)</li>
+    <li>You can include comment lines in your story form file. Place a semicolon (;) as the very first character on the line. Everything else on that line 
+    will be ignored. Empty lines will also be ignored. </li>
+    <li>You can include extra or comment columns. Any columns with names other than <b>Data column name</b>, <b>Type</b>, <b>About</b>, 
+    <b>Short name</b>, <b>Long name</b>,, or <b>Answers</b> will be ignored. However, place your extra columns <i>to the left</i> of
+    the <b>Answers</b> column. All texts in cells to the right of that column will be treated as answers. </li>
+    <li>Remember that a CSV file is not the same thing as a spreadsheet file. You can work in a spreadsheet format (like XLSX), but be aware that any
+        special formatting will be lost when you convert the file to CSV. It's usually better to edit the file directly in the CSV format
+        so you don't put anything into it that will be lost when you convert to CSV.</li>
+    <li>Example story form CSV files can be found in the <b>samples</b> folder in your NarraFirma installation.
+        You can copy those files and amend them to match your story form.</li>
+</ul>
+
+<h2 id="csv_completedfile">Our finished example story form CSV file</h2>
+
+<p>This is what the completed story form CSV file looks like for our example data set. 
+</p>
+
+<table border="1" cellpadding="4" cellspacing="0">
+        <tr>
+            <td>Data column name</td>
+            <td>Type</td>
+            <td>About</td>	
+            <td>Short name</td>
+            <td>Long name</td>
+            <td>Answers</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+
+        <tr>
+                <td></td>
+                <td>Participant ID column name</td>
+                <td>import</td>
+                <td></td>
+                <td></td>
+                <td>Respondent</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>EQuestion</td>
+                <td>eliciting</td>
+                <td>eliciting</td>
+                <td>Eliciting question</td>
+                <td>Please choose a question to which you would like to respond.</td>
+                <td>Surprise|Surprise|What has been your biggest surprise in the past year?</td>
+                <td>ReallyLike|Really like|What experience comes to mind when you think about what success is really like?</td>
+                <td>Discovered|Discovery|What was your biggest discovery at work in the past year?</td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>Story text column name</td>
+                <td>import</td>
+                <td></td>
+                <td></td>
+                <td>SText</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>Story title column name</td>
+                <td>import</td>
+                <td></td>
+                <td></td>
+                <td>STitle</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>LongAgo</td>
+                <td>Single choice</td>
+                <td>story</td>
+                <td>How long ago</td>
+                <td>How long ago did this story take place?</td>
+                <td>Last week|In the past week</td>
+                <td>3 months|Within the past 3 months</td>
+                <td>6 months|From 3 to 6 months ago</td>
+                <td>1 year|From 6 months to a year ago</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>Source</td>
+                <td>Single choice indexed</td>
+                <td>story</td>
+                <td>Where story came from</td>
+                <td>Where did this story come from?</td>
+                <td>first-person</td>
+                <td>second-hand</td>
+                <td>rumor and I believe it</td>
+                <td>rumor and I don't believe it</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>Remember</td>
+                <td>Scale</td>
+                <td>story</td>
+                <td>How long remember</td>
+                <td>How long do you think you will remember this story?</td>
+                <td>for a few minutes</td>
+                <td>for the rest of my life</td>
+                <td>1</td>
+                <td>10</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>Scale range</td>
+                <td>import</td>
+                <td></td>
+                <td></td>
+                <td>1</td>
+                <td>10</td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>Feel about</td>
+                <td>Multi-choice multi-column texts</td>
+                <td>story</td>
+                <td>Feel about</td>
+                <td>How do you feel about this story?</td>
+                <td>happy|positive</td>
+                <td>sad|negative</td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>Needed</td>
+                <td>Multi-choice multi-column yes/no</td>
+                <td>story</td>
+                <td>Needed</td>
+                <td>What did the people in this story need?</td>
+                <td>help|to be helped</td>
+                <td>understanding|to be understood</td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+                <tr>
+                    <td></td>
+                    <td>Yes no questions yes indicator</td>
+                    <td>import</td>
+                    <td></td>
+                    <td></td>
+                    <td>Yes</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            <tr>
+                    <td></td>
+                    <td>Yes no questions Q-A separator</td>
+                    <td>import</td>
+                    <td></td>
+                    <td></td>
+                    <td> [</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            <tr>
+                    <td></td>
+                    <td>Yes no questions Q-A ending</td>
+                    <td>import</td>
+                    <td></td>
+                    <td></td>
+                    <td>]</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+            </tr>
+            <tr>
+                <td>Helped</td>
+                <td>Multi-choice single-column delimited</td>
+                <td>story</td>
+                <td>People who helped</td>
+                <td>Who helped the main person in this story get what they needed?</td>
+                <td>manager|A manager</td>
+                <td>colleague|A colleague</td>
+                <td>friend|A friend</td>
+                <td>family|A family member</td>
+                <td>self|They helped themselves</td>
+            </tr>
+                <tr>
+                    <td></td>
+                    <td>Multi choice single column delimiter</td>
+                    <td>import</td>
+                    <td></td>
+                    <td></td>
+                    <td>,</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            <tr>
+                <td>Surprised</td>
+                <td>Multi-choice single-column delimited indexed</td>
+                <td>story</td>
+                <td>Who would be surprised</td>
+                <td>Who be surprised to hear this story?</td>
+                <td>the people at the head office</td>
+                <td>our customers</td>
+                <td>the people I work with</td>
+                <td>our competitors</td>
+                <td>our shareholders</td>
+            </tr>
+        <tr>
+            <td>Comment</td>
+            <td>Text</td>
+            <td>participant</td>
+            <td>Comment</td>
+            <td>If you would like to say anything else, please type it here.</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+    </table>
+
+</div>
+
+<div class="heading" id="importstories">Step Four: Import your stories</div>
+<div class="text">
+<p>
+Whether you created a NarraFirma story form inside NarraFirma or by importing a CSV file, you should now be at the point where
+NarraFirma is ready to read your data file. Before you can import your data file, you need to <b>create a story collection</b> to put the stories in.
+</p>
+<p>Go to the NarraFirma home page, click on <b>Collection</b>, then click on <b>Start story collection</b>. Click <b>Add</b>,
+give your new story collection a name, and select the story form you previously created or imported from CSV. Then click <b>Close</b> to create the collection.</p>
+ 
+<p>Make sure you <b>read the warnings</b> on the "Start story collection" page! They are especially important when you are importing data. Every time you make a non-trivial change to 
+your story form, you will need to create a new story collection to use it. You can click the <b>Update Story Form</b> button for
+smaller changes (like misspellings), but you should not use the update function for larger changes (like adding an answer to a list of answers).</p>
+
+<p>Once you have created a story collection, go back to the <b>Collection</b> screen (or click the arrow key at the upper right twice) 
+to get to the screen labeled <b>Enter or import stories</b>. Choose the story collection you created from the drop-down list, then click <b>Import stories from CSV file</b>.
+Choose your data file. If you see any import errors, look at your data file to fix them. 
+</p>
+
+<p>These are some <b>things that could go wrong</b> when you import your data:
+</p>
+<ul>
+    <li><b>You get empty graphs.</b> Check for mismatches between the "Column data name" (in NarraFirma or your story form CSV file) and the headers in your data file. 
+        Case matters, so check for upper-case and lower-case mismatches. Also check for missing or displaced spaces between things.
+        </li>
+        <li><b>A graph count is wrong.</b> For text answers (single or multiple choice) the contents of your data file cells 
+            must <i>exactly</i> match the answers you give for each question. For example, if you say that one of the answers for a question should be "both of them,"
+            and your data file has a cell that says "both," that answer will not be counted. The cell texts must match up exactly.
+            <b>When importing data, you should always spot-check a few story counts</b>. To do this, import your data into NarraFirma, 
+                look at a graph, choose a random count, then
+                go into a spreadsheet program and <b>count the stories manually</b>. If you don't get the same number, find out why, and fix it.
+        </li>
+        <li><b>You see more stories than you should see.</b> To preserve data, NarraFirma doesn't delete stories when you delete a story collection;
+        it just "unmoors" them. If you create another story collection <i>with the same name</i>, it reconnects any "lost" stories with the new collection.
+        So if you are creating and deleting story collections (perhaps while trying to get your CSV files right), make sure you <b>use
+        a new name for each story collection</b>. That way you won't get extra stories in the way. (This also means you can get
+        a story collection back if you deleted it by accident: just create another one with the same name, and the stories will come back.)</li>
+    </ul>
+
+</div>
+
+<div class="heading" id="tips">Tips and tricks</div>
+<div class="text">
+
+<p>These are just some things we've noticed that you might find helpful.
+    </p>
+    <ul>
+        <li>You can use a spreadsheet program to get a list of all the answers in a particular column. In Excel, select a cell, then
+            right-click and choose "Pick from drop-down list" from the menu that pops up. In OpenOffice, you can do the same thing, but
+            choose "Selection List" from the popup menu. If you don't see an option like this for your spreadsheet program, look 
+            around for help on how to see all the unique items in a column. This can be a helpful function when you need to be sure of 
+            what is in a column with hundreds of entries in it.
+        </li>
+        <li>Annotation questions cannot be imported, because they belong to a NarraFirma project, not an individual story collection.
+            However, if you <i>export</i> a story collection, answers to any annotation questions you added to the stories in NarraFirma
+            will be included.
+        </li>
+        <li>"xxx</li>
+        <li>"xxx</li>
+        <li>"xxx</li>
+    </ul>
+</div>
+
+<div class="heading" id="exportstories">Exporting stories from NarraFirma</div>
+<div class="text">
+
+<p>You can export story forms and story collections from NarraFirma to CSV format for backup, for transfer to another NarraFirma installation,
+    or to use outside NarraFirma. Please note that when you export your data from NarraFirma, it does not preserve any special formatting you used to import it.
+    Instead, NarraFirma exports data using the formats it prefers:
+    </p>
+    <ul>
+        <li>"Single choice" format for all single-choice questions, with answer texts in the column</li>
+        <li>"Multi-choice multi-column texts" format for all multi-choice questions, with answer texts in multiple columns</li>
+        <li>"Scale" format for all scalar questions, with a range from zero to 100</li>
+    </ul>
+<p>This means you can't import data to NarraFirma, change it in NarraFirma, and then <i>return</i> it to your preferred surveying system.
+But that's a pretty unlikely scenario.</p>
+</div>
+
+<div class="heading" id="needmorehelp">Need more help?</div>
+<div class="text">
+<p>
+        <b>Please report any problems this guide did not solve for you</b>. If you had trouble importing data into NarraFirma that this guide did not help you fix, 
+        please let us know. We would like to help, and you can help us learn how we need to improve our import functionality.
+        </p>
+</div>
+    
+
+</div>
+</body>
+</html>
