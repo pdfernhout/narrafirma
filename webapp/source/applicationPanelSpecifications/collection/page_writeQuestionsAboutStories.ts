@@ -16,9 +16,19 @@ var panel: Panel = {
             id: "project_storyQuestionsList",
             valueType: "array",
             displayType: "grid",
-            displayConfiguration: "panel_addStoryQuestion",
             displayName: "Story questions",
-            displayPrompt: "These are the questions you have written so far."
+            displayPrompt: "These are the questions you have written so far.",
+            displayConfiguration: {
+                itemPanelID: "panel_addStoryQuestion",
+                gridConfiguration: {
+                    columnsToDisplay: ["storyQuestion_text", "storyQuestion_type", "storyQuestion_shortName", "storyQuestion_options"],
+                    viewButton: true,
+                    editButton: true,
+                    addButton: true,
+                    removeButton: true, 
+                    navigationButtons: true,
+               }
+            }
         },
         {
             id: "SPECIAL_storyQuestionRecommendations",

@@ -46,7 +46,6 @@ var panel: Panel = {
             displayPrompt: `
                 If your question requires <strong>choices</strong>, enter them here. 
                 Write each choice on a separate line.
-                <br><br>
                 For a slider, enter the texts to place on the left and right sides of the slider, 
                 then the text to show on the \"Does not apply\" checkbox (or leave the third line blank
                 to use \"Does not apply\"). 

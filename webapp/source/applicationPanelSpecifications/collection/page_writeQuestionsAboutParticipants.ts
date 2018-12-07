@@ -16,9 +16,19 @@ var panel: Panel = {
             id: "project_participantQuestionsList",
             valueType: "array",
             displayType: "grid",
-            displayConfiguration: "panel_addParticipantQuestion",
             displayName: "Participant questions",
-            displayPrompt: "These are the questions you have written so far."
+            displayPrompt: "These are the questions you have written so far.",
+            displayConfiguration: {
+                itemPanelID: "panel_addParticipantQuestion",
+                gridConfiguration: {
+                    columnsToDisplay: ["participantQuestion_text", "participantQuestion_type", "participantQuestion_shortName", "participantQuestion_options"],
+                    viewButton: true,
+                    editButton: true,
+                    addButton: true,
+                    removeButton: true, 
+                    navigationButtons: true,
+               }
+            }
         },
         {
             id: "SPECIAL_participantQuestionRecommendations",
