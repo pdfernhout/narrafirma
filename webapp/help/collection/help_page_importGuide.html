@@ -159,8 +159,8 @@ There are two ways to tell NarraFirma how to interpret your data:
 </ul>
 
 <p>
-Which to choose? If you like working in spreadsheets, you are likely to want to do that. 
-If spreadsheets confuse you, you are more likely to want to use NarraFirma. Both methods are identical in outcome.
+Both of these methods have the same outcome. If you like working with spreadsheet files (for example, if you like to see all of your information at once),
+that might be an easier option for you. On the other hand, if you don't want to remember what to type where, you might find it easier to create a story form using NarraFirma. 
 </p>
 
 <p>
@@ -1821,6 +1821,23 @@ to get to the screen labeled <b>Enter or import stories</b>. Choose the story co
 Choose your data file. If you see any import errors, look at your data file to fix them. 
 </p>
 
+</div>
+
+<div class="heading" id="spotcheck">Step Five: Spot-check your data for correctness</div>
+<div class="text">
+<p>
+    When you import data into NarraFirma, you should <b>always spot-check a few story counts</b>. To do this, import your data into NarraFirma, 
+    look at a graph, choose a random count from the graph (like, people chose the answer "Feel about: happy" 39 times), then
+    go into a spreadsheet program and <b>count the answers manually</b>. 
+    If you don't get the same number as you saw in your graph, find out why, and fix the problem.
+    Do this for at <i>least</i> three counts, scattered around different questions.
+</p>
+
+<p>Another way you can spot-check imported stories is to go to the <b>Review imported stories</b> page and 
+randomly pick a few to several stories, checking back and forth between the screen display and your CSV data file.
+If you see any answers that don't match what you see in your data file, you've got a problem. Looking across all of your
+imported questions for a few stories will give you a broad view of your imported data.</p>
+
 <p>These are some <b>things that could go wrong</b> when you import your data:
 </p>
 <ul>
@@ -1840,17 +1857,6 @@ Choose your data file. If you see any import errors, look at your data file to f
 
 </div>
 
-<div class="heading" id="spotcheck">Step Five: Spot-check your data for correctness</div>
-<div class="text">
-<p>
-    When you import data into NarraFirma, you should <b>always spot-check a few story counts</b>. To do this, import your data into NarraFirma, 
-    look at a graph, choose a random count from the graph (like, people chose the answer "Feel about: happy" 39 times), then
-    go into a spreadsheet program and <b>count the answers manually</b>. 
-    If you don't get the same number as you saw in your graph, find out why, and fix the problem.
-    Do this for at <i>least</i> three counts, scattered around different questions.
-</p>
-</div>
-
 <div class="heading" id="tips">Tips and tricks</div>
 <div class="text">
 
@@ -1867,9 +1873,13 @@ Choose your data file. If you see any import errors, look at your data file to f
             However, if you <i>export</i> a story collection, answers to any annotation questions you added to the stories in NarraFirma
             will be included.
         </li>
-        <li>xxx</li>
-        <li>xxx</li>
-        <li>xxx</li>
+        <li>For multiple-choice questions, LimeSurvey seems to prefer the "Multi-choice multi-column yes/no" option. The Open Data Toolkit
+            likes the "Multi-choice single-column delimited indexed" option. Google Forms likes the "Multi-choice single-column delimited"
+            option.
+        </li>
+        <li>When we say "Short name," we do mean a short name. If your short names are too long, your graphs will look messy. Keep short names to
+            about 30 characters or fewer. The same thing goes for answer names.
+        </li>
     </ul>
 </div>
 
@@ -1877,7 +1887,9 @@ Choose your data file. If you see any import errors, look at your data file to f
 <div class="text">
 
 <p>You can export story forms and story collections from NarraFirma to CSV format for backup, for transfer to another NarraFirma installation,
-    or to use outside NarraFirma. Please note that when you export your data from NarraFirma, it does not preserve any special formatting you used to import it.
+    or to use outside NarraFirma.
+</p>
+<p>Please note that when you export your data from NarraFirma, it does not preserve any special formatting you used to import it.
     Instead, NarraFirma exports data using the formats it prefers:
     </p>
     <ul>
