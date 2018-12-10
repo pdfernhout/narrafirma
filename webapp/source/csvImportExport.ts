@@ -195,37 +195,38 @@ function processCSVContentsForStories(contents) {
                         }
                         var question = questionForHeaderFieldName(fieldName, questionnaire, project);
                         if (question) { 
+                            var questionNameToUse = question.displayName;
                             if (["Single choice", "Radiobuttons", "Boolean", "Checkbox", "Text", "Textarea"].indexOf(question.import_valueType) >= 0) {
                                 var answerNameToUse = getDisplayAnswerNameForDataAnswerName(value, question);
                                 if (answerNameToUse) {
-                                    newItem[fieldName] = answerNameToUse;
+                                    newItem[questionNameToUse] = answerNameToUse;
                                 }
                             } else if (question.import_valueType === "Single choice indexed") {
                                 var valueAsInt = parseInt(value);
                                 if (!isNaN(valueAsInt)) {
                                     for (var index = 0; index < question.valueOptions.length; index++) {
                                         if (valueAsInt-1 === index) {
-                                            newItem[fieldName] = question.valueOptions[index];
+                                            newItem[questionNameToUse] = question.valueOptions[index];
                                             break;
                                         }
                                     }
                                 }
                             } else if (question.import_valueType === "Scale") {
-                                newItem[fieldName] = parseInt(value);
+                                newItem[questionNameToUse] = parseInt(value);
                             } else if (question.import_valueType === "Multi-choice multi-column texts") {
                                 var answerNameToUse = getDisplayAnswerNameForDataAnswerName(value, question);
                                 if (answerNameToUse) {
-                                    if (!newItem[fieldName]) newItem[fieldName] = {};
-                                    newItem[fieldName][answerNameToUse] = true;
+                                    if (!newItem[questionNameToUse]) newItem[questionNameToUse] = {};
+                                    newItem[questionNameToUse][answerNameToUse] = true;
                                 }
                             } else if (question.import_valueType === "Multi-choice multi-column yes/no") {
                                 if (value === questionnaire.import_multiChoiceYesIndicator) {
-                                    if (!newItem[fieldName]) newItem[fieldName] = {};
+                                    if (!newItem[questionNameToUse]) newItem[questionNameToUse] = {};
                                     var answerNameToUse = getDisplayAnswerNameForDataAnswerName(answerName, question);
-                                    if (answerNameToUse) newItem[fieldName][answerNameToUse] = true;
+                                    if (answerNameToUse) newItem[questionNameToUse][answerNameToUse] = true;
                                 }
                             } else if (question.import_valueType === "Multi-choice single-column delimited") {
-                                newItem[fieldName] = {};
+                                newItem[questionNameToUse] = {};
                                 var delimiter = questionnaire.import_multiChoiceDelimiter;
                                 if (delimiter.toLowerCase() === "space") delimiter = " ";
                                 var delimitedItems = value.split(delimiter);
@@ -234,12 +235,12 @@ function processCSVContentsForStories(contents) {
                                     if (trimmedDelimitedItem !== "") {
                                         var answerNameToUse = getDisplayAnswerNameForDataAnswerName(trimmedDelimitedItem, question);
                                         if (answerNameToUse) {
-                                            newItem[fieldName][answerNameToUse] = true;
+                                            newItem[questionNameToUse][answerNameToUse] = true;
                                         }
                                     }
                                 });
                             } else if (question.import_valueType === "Multi-choice single-column delimited indexed") {
-                                newItem[fieldName] = {};
+                                newItem[questionNameToUse] = {};
                                 var delimiter = questionnaire.import_multiChoiceDelimiter;
                                 if (delimiter.toLowerCase() === "space") delimiter = " ";
                                 var delimitedIndexTexts = value.split(delimiter);
@@ -248,7 +249,7 @@ function processCSVContentsForStories(contents) {
                                     if (!isNaN(delimitedIndex)) {
                                         for (var index = 0; index < question.valueOptions.length; index++) {
                                             if (delimitedIndex-1 === index) {
-                                                newItem[fieldName][question.valueOptions[index]] = true;
+                                                newItem[questionNameToUse][question.valueOptions[index]] = true;
                                                 break;
                                             }
                                         }
