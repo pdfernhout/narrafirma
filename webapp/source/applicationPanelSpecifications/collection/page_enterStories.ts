@@ -33,6 +33,15 @@ var panel: Panel = {
                 return !!Globals.clientState().storyCollectionIdentifier();}
         },
         {
+            id: "project_checkCSVStories",
+            valueType: "none",
+            displayType: "button",
+            displayConfiguration: "checkCSVStories",
+            displayPrompt: "Check stories in CSV file (view log in browser console) ...",
+            displayVisible: function(panelBuilder, model) {
+                return !!Globals.clientState().storyCollectionIdentifier();}
+        },
+        {
             id: "project_importCSVStories",
             valueType: "none",
             displayType: "button",
@@ -42,10 +51,10 @@ var panel: Panel = {
                 return !!Globals.clientState().storyCollectionIdentifier();}
         },
         {
-            id: "project_csvFileUploaderForStories",
+            id: "project_csvFileUploader",
             valueType: "none",
             displayType: "html",
-            displayPrompt: '<input type="file" id="csvFileLoader" name="files" title="Import Stories from CSV File" style="display:none"/>',
+            displayPrompt: '<input type="file" id="csvFileLoader" name="files" title="Import Data from CSV File" style="display:none"/>',
             displayVisible: function(panelBuilder, model) {
                 return !!Globals.clientState().storyCollectionIdentifier();}
         },

@@ -27,7 +27,7 @@ var panel: Panel = {
             displayPrompt: "Import options"
         },
         {
-            id: "elicitingQuestion_importName",
+            id: "elicitingQuestion_dataColumnName",
             valueType: "string",
             displayType: "text",
             displayName: "Answer cell name",

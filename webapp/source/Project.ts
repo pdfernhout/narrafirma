@@ -245,6 +245,41 @@ class Project {
         }
         this.tripleStore.makeNewSetItem(setIdentifier, questionClass, question);
     }
+
+    deleteQuestionInCategory(question, questionCategory: string) {
+        var questionListName;
+        var questionClass;
+        
+        switch (questionCategory) {
+            case "elicitingQuestion":
+                questionListName = "project_elicitingQuestionsList";
+                questionClass = "ElicitingQuestion";
+                break;
+            case "storyQuestion":
+                questionListName = "project_storyQuestionsList";
+                questionClass = "StoryQuestion";
+                break;
+            case "participantQuestion":
+                questionListName = "project_participantQuestionsList";
+                questionClass = "ParticipantQuestion";
+                break;
+            case "annotationQuestion":
+                questionListName = "project_annotationQuestionsList";
+                questionClass = "AnnotationQuestion";
+                break;
+            default:
+                throw new Error("Unexpected question category: " + questionCategory);
+        }
+        
+        var setIdentifier = this.getFieldValue(questionListName);
+        if (!setIdentifier) {
+            // Need to create list
+            setIdentifier = this.tripleStore.newIdForSet(questionClass + "Set");
+            // console.log("Making set for ", questionListName, setIdentifier); 
+            this.setFieldValue(questionListName, setIdentifier);
+        }
+        this.tripleStore.deleteSetItem(setIdentifier, question.id);
+    }
     
     storiesForCatalysisReport(catalysisReportIdentifier, showWarnings = false) {
         // the reason to have showWarnings is that this method gets called twice on the configure report page (once by the filter warning and once by the questions chooser)
@@ -253,9 +288,9 @@ class Project {
         var storyCollectionItems = this.tripleStore.getListForSetIdentifier(storyCollectionsIdentifier);
         if (storyCollectionItems.length === 0) return [];
 
-        var filter = this.tripleStore.queryLatestC(catalysisReportIdentifier, "catalysisReport_filter").trim();
+        var filter = this.tripleStore.queryLatestC(catalysisReportIdentifier, "catalysisReport_filter");
         if (filter) {
-            return this.storiesForCatalysisReportWithFilter(catalysisReportIdentifier, storyCollectionItems, filter, showWarnings);
+            return this.storiesForCatalysisReportWithFilter(catalysisReportIdentifier, storyCollectionItems, filter.trim(), showWarnings);
         } else {
             storyCollectionItems.forEach((storyCollectionPointer) => {
                 if (!storyCollectionPointer) {

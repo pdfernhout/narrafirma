@@ -69,8 +69,7 @@ export function convertEditorQuestions(editorQuestions, prefixQPA) {
 
         var importOptions = [];
         var importOptionsString = question.storyQuestion_import_answerNames || question.participantQuestion_import_answerNames;
-
-        if (importOptionsString) {
+        if (importOptionsString && typeof importOptionsString === "string") {
             var splitImportOptions = importOptionsString.split("\n");
             // Make sure options don't have leading or trailing space and are not otherwise blank
             for (var index in splitImportOptions) {
@@ -79,6 +78,8 @@ export function convertEditorQuestions(editorQuestions, prefixQPA) {
                     importOptions.push(trimmedImportOption);
                 }
             }
+        } else {
+            importOptions = question.storyQuestion_import_answerNames || question.participantQuestion_import_answerNames;
         }
 
         // TODO: valueType might be a number or boolean sometimes
@@ -203,7 +204,7 @@ export function buildQuestionnaire(shortName) {
     var questionnaireTemplate = project.findQuestionnaireTemplate(shortName);
     if (!questionnaireTemplate) return null;
     
-    return buildQuestionnaireFromTemplate(questionnaireTemplate);
+    return buildQuestionnaireFromTemplate(questionnaireTemplate, shortName);
 }
 
 function convertElicitingQuestions(elicitingQuestions) {
@@ -212,10 +213,12 @@ function convertElicitingQuestions(elicitingQuestions) {
         var storySolicitationQuestionText = elicitingQuestions[elicitingQuestionIndex].elicitingQuestion_text;
         var storySolicitationQuestionShortName = elicitingQuestions[elicitingQuestionIndex].elicitingQuestion_shortName;
         var storySolicitationQuestionType = elicitingQuestions[elicitingQuestionIndex].elicitingQuestion_type;
+        var storySolicitationQuestionImportName = elicitingQuestions[elicitingQuestionIndex].elicitingQuestion_dataColumnName;
         var elicitingQuestionInfo = {
             text: storySolicitationQuestionText,
             id: storySolicitationQuestionShortName,
-            "type": storySolicitationQuestionType
+            "type": storySolicitationQuestionType,
+            importName: storySolicitationQuestionImportName,
         };
         result.push(elicitingQuestionInfo);
     }
@@ -223,7 +226,7 @@ function convertElicitingQuestions(elicitingQuestions) {
     return result;
 }
 
-export function buildQuestionnaireFromTemplate(questionnaireTemplate: string) {
+export function buildQuestionnaireFromTemplate(questionnaireTemplate: string, shortName) {
     var project = Globals.project();
     
     var usedIDs = {
@@ -232,6 +235,7 @@ export function buildQuestionnaireFromTemplate(questionnaireTemplate: string) {
     
     var questionnaire = {
         __type: "org.workingwithstories.Questionnaire",
+        shortName: shortName,
         title: "",
         image: "",
         startText: "",
@@ -250,6 +254,7 @@ export function buildQuestionnaireFromTemplate(questionnaireTemplate: string) {
         import_storyTitleColumnName: "Story title",
         import_storyTextColumnName: "Story text",
         import_participantIDColumnName: "Participant ID",
+        import_columnsToIgnore: [],
         import_elicitingQuestionColumnName: "Eliciting question",
         elicitingQuestionGraphName: "Eliciting question",
 
@@ -298,8 +303,8 @@ export function buildQuestionnaireFromTemplate(questionnaireTemplate: string) {
     questionnaire.import_storyTitleColumnName = project.tripleStore.queryLatestC(questionnaireTemplate, "questionForm_import_storyTitleColumnName"); 
     questionnaire.import_storyTextColumnName = project.tripleStore.queryLatestC(questionnaireTemplate, "questionForm_import_storyTextColumnName"); 
     questionnaire.import_elicitingQuestionColumnName = project.tripleStore.queryLatestC(questionnaireTemplate, "questionForm_import_elicitingQuestionColumnName"); 
-
     questionnaire.import_participantIDColumnName = project.tripleStore.queryLatestC(questionnaireTemplate, "questionForm_import_participantIDColumnName"); 
+    questionnaire.import_columnsToIgnore = project.tripleStore.queryLatestC(questionnaireTemplate, "questionForm_import_columnsToIgnore"); 
 
     questionnaire.chooseQuestionText = project.tripleStore.queryLatestC(questionnaireTemplate, "questionForm_chooseQuestionText");
     questionnaire.elicitingQuestionGraphName = project.tripleStore.queryLatestC(questionnaireTemplate, "questionForm_elicitingQuestionGraphName");

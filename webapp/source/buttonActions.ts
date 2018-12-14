@@ -170,7 +170,7 @@ function previewQuestionForm(model, fieldSpecification) {
 */
 
 export function previewQuestionForm(model, fieldSpecification) {
-    var questionnaire = questionnaireGeneration.buildQuestionnaireFromTemplate(model);
+    var questionnaire = questionnaireGeneration.buildQuestionnaireFromTemplate(model, "");
     window["narraFirma_previewQuestionnaire"] = questionnaire;
     
     var w = window.open("survey.html#preview=" + (new Date().toISOString()), "_blank");
@@ -447,7 +447,9 @@ export var storyCollectionStop = surveyCollection.storyCollectionStop;
 
 export var importCSVQuestionnaire = csvImportExport.importCSVQuestionnaire;
 export var importCSVStories = csvImportExport.importCSVStories;
+export var checkCSVStories = csvImportExport.checkCSVStories;
 export var exportQuestionnaire = csvImportExport.exportQuestionnaire;
+export var exportQuestionnaireForImport = csvImportExport.exportQuestionnaireForImport;
 export var exportStoryCollection = csvImportExport.exportStoryCollection;
 export var autoFillStoryForm = csvImportExport.autoFillStoryForm;
 

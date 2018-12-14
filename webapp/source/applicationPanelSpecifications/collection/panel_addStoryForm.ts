@@ -17,7 +17,7 @@ var panel: Panel = {
             id: "questionForm_shortName",
             valueType: "string",
             displayType: "text",
-            displayName: "Title",
+            displayName: "Short name",
             displayPrompt: "Please enter a short <strong>name</strong> for the story form, so we can refer to it elsewhere in the project. <strong>It must be unique within the project.</strong>"
         },
         {
@@ -348,10 +348,6 @@ var panel: Panel = {
             displayPrompt: "Use these options to specify how you want to <strong>read stories from a CSV file</strong>. If you are not importing data, you can ignore them."
         },
 
-        // CFK read these three things from the CSV file
-        // then in all references to them, get these values from the questionnaire instead of the hard coding
-        // deal with situation where there is no "eliciting question" column in the data - not sure what to do and how it affects graphs
-
         {
             id: "questionForm_import_storyTitleColumnName",
             valueType: "string",
@@ -380,7 +376,13 @@ var panel: Panel = {
             displayName: "Participant ID column name",
             displayPrompt: "What is the data column header for the  <strong>participant ID</strong> field? (If participants are not identified in your data file, you can leave this field blank.)"
         },
-        
+        {
+            id: "questionForm_import_columnsToIgnore",
+            valueType: "string",
+            displayType: "textarea",
+            displayName: "Columns to ignore",
+            displayPrompt: "If your story data file has <strong>columns you want to ignore</strong>, enter the column headers here, one per line."
+        },
 
         {
             id: "questionForm_import_minScaleValue",

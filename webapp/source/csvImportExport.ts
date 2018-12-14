@@ -60,23 +60,19 @@ function processCSVContents(contents, callbackForItem) {
                 header = [];
                 var headerEnded = false;
                 for (var headerIndex = 0; headerIndex < row.length; headerIndex++) {
-                    var label = row[headerIndex];
-                    if (label) {
-                        // Should be an error if header fields are missing but more show up later
-                        if (headerEnded) {
+                    var headerCellValue = row[headerIndex];
+                    if (headerCellValue) {
+                        if (headerEnded) { // already read empty cell (so header appears to be ended) but it really isn't
                             console.log("ERROR: header has empty field before end");
-                            alert("ERROR: At least one column in the data file has no header. There should be no empty column headers. ");
+                            alert("ERROR: The column at index " + headerIndex + " in the data file has no header. There should be no empty column headers. ");
                         }
-                        header.push(label);
-                    } else {
+                        header.push(headerCellValue);
+                    } else { // empty header cell - assume header is over
                         headerEnded = true;
-                        // don't actually want item; this is just a way to check if the header is correct before the rest of the data is read
-                        var headerIsOkay = callbackForItem(header, row, true); 
-                        if (!headerIsOkay) return {header: null, items: null};
                     }
                 }
-            } else {
-                var newItem = callbackForItem(header, row, false);
+            } else { // header already exists
+                var newItem = callbackForItem(header, row);
                 if (newItem) items.push(newItem);
             }
         }
@@ -90,7 +86,7 @@ function padLeadingZeros(num: number, size: number) {
     return result;
 }
 
-function questionForHeaderFieldName(fieldName, questionnaire, project) {
+function questionForHeaderFieldName(fieldName, fieldIndex, questionnaire, project) {
     if (!questionnaire) return null;
     if (!fieldName) return null;
     var matchingQuestion = null;
@@ -127,7 +123,7 @@ function getDisplayAnswerNameForDataAnswerName(value, question) {
     } else {
         for (var i = 0; i < question.valueOptions.length; i++) {
             // first check to see if it matches the import option name
-            if (i < question.import_answerNames.length) {
+            if (question.import_answerNames && i < question.import_answerNames.length) {
                 if (value === question.import_answerNames[i]) {
                     return question.valueOptions[i];
                 }
@@ -142,127 +138,236 @@ function getDisplayAnswerNameForDataAnswerName(value, question) {
     return null;
 }
 
-function processCSVContentsForStories(contents) {
+function getElicitingQuestionDisplayNameForColumnName(value, questionnaire) {
+    for (var i = 0; i < questionnaire.elicitingQuestions.length; i++) {
+        var question = questionnaire.elicitingQuestions[i];
+        if (value === question.importName) {
+            return question.id;
+        }
+    }
+    return null;
+}
+
+function processCSVContentsForStories(contents, saveStories, writeLog) {
+
+    var logItems = [];
+    var questionAnswerCounts = {};
+
+    function log(text) {
+        if (writeLog) {
+            if (logItems.indexOf(text) < 0) {
+                logItems.push(text);
+            }
+        }
+    }
+
+    function count(questionName, answerName) {
+        if (!questionAnswerCounts[questionName]) {
+            questionAnswerCounts[questionName] = {};
+        }
+        if (!questionAnswerCounts[questionName][answerName]) {
+            questionAnswerCounts[questionName][answerName] = 0;
+        }
+        questionAnswerCounts[questionName][answerName]++;
+    }
 
     var storyCollectionName = Globals.clientState().storyCollectionName();
-    if (!storyCollectionName) {
-        alert("No story collection has been selected");
-    }
+    if (!storyCollectionName) alert("No story collection has been selected");
     
     var questionnaire = surveyCollection.getQuestionnaireForStoryCollection(storyCollectionName, true);
     if (!questionnaire) return;
+    log("INFO||Data check for story collection: " + storyCollectionName);
+    log("INFO||Data column headers and cell values are only logged the first time their unique value is encountered. Subsequent identical messages are suppressed.");
+    log("INFO||Text answers are not reported.");
     
-    var progressModel = dialogSupport.openProgressDialog("Processing CSV file...", "Progress writing imported stories", "Cancel", dialogCancelled);
+    var messageText = "";
+    if (saveStories) {
+        messageText = "Progress importing stories";
+    } else {
+        messageText = "Progress checking stories";
+    }
+    var progressModel = dialogSupport.openProgressDialog("Processing CSV file...", messageText, "Cancel", dialogCancelled);
+
+    var rowNumber = 0;
   
-    var headerAndItems = processCSVContents(contents, function (header, row, rowIsHeader) {
-        if (rowIsHeader) {
-            if (!row) {
-                alert("ERROR: No header line found in CSV file.")
-                return false;
-            }
-            if (!(row.includes(questionnaire.import_storyTitleColumnName) && row.includes(questionnaire.import_storyTextColumnName))) {
-                alert("ERROR: Data file header (first row) is missing at least one required cell. It must have entries for Story title and Story text, as specified in the story form.")
-                return false;
-            }
-            return true; // header is okay, can read data
-        } else {
-            var newItem = {};
-            for (var fieldIndex = 0; fieldIndex < header.length; fieldIndex++) {
-                // in situation where the row is shorter the the headers, because there is no value in the last cell(s), don't assign any value
-                var value = undefined;
-                if (row[fieldIndex] != undefined) value = row[fieldIndex].trim(); // Note the value is trimmed
-                if (value !== "") {
-                    if (header[fieldIndex] === questionnaire.import_storyTitleColumnName) {
-                        newItem["Story title"] = value;
-                    } else if (header[fieldIndex] === questionnaire.import_storyTextColumnName) {
-                        newItem["Story text"] = value;
-                    } else if (header[fieldIndex] === questionnaire.import_elicitingQuestionColumnName) {
-                        newItem["Eliciting question"] = value;
-                    } else if (header[fieldIndex] === questionnaire.import_participantIDColumnName) {
-                        newItem["Participant ID"] = value;
+    var headerAndItems = processCSVContents(contents, function (header, row) {
+        rowNumber++;
+        log("INFO||<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< PROCESSING ROW " + rowNumber + " >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+        var newItem = {};
+        for (var fieldIndex = 0; fieldIndex < header.length; fieldIndex++) {
+            // in situation where the row is shorter the the headers, because there is no value in the last cell(s), don't assign any value
+            var value = undefined;
+            if (row[fieldIndex] != undefined) value = row[fieldIndex].trim(); // Note the value is trimmed
+            if (value !== "") {
+                var headerName = header[fieldIndex];
+                if (headerName === questionnaire.import_storyTitleColumnName) {
+                    newItem["Story title"] = value;
+                    log("INFO||Story title: " + value);
+                } else if (headerName === questionnaire.import_storyTextColumnName) {
+                    newItem["Story text"] = value;
+                    log("INFO||Story text: " + value.slice(0,50) + "...");
+                } else if (headerName === questionnaire.import_elicitingQuestionColumnName) {
+                    var questionShortName = getElicitingQuestionDisplayNameForColumnName(value, questionnaire);
+                    if (questionShortName) {
+                        newItem["Eliciting question"] = questionShortName;
+                        log("INFO||Eliciting question: " + questionShortName);
                     } else {
-                        if (header[fieldIndex].indexOf(questionnaire.import_multiChoiceYesQASeparator) >= 0) {
-                            var separator = questionnaire.import_multiChoiceYesQASeparator;
-                            if (separator.toLowerCase() === "space") {
-                                separator = " ";
-                            }
-                            var fieldName = stringUpTo(header[fieldIndex], separator);
-                            var answerName = stringBeyond(header[fieldIndex], separator).trim();
-                            answerName = stringUpTo(answerName, questionnaire.import_multiChoiceYesQAEnding);
-                        } else {
-                            var fieldName = header[fieldIndex];
-                            var answerName = null;
+                        var importNames = [];
+                        questionnaire.elicitingQuestions.forEach(function(question) {
+                            importNames.push(question.importName);
+                        });
+                        log("ERROR||NO MATCHING ANSWER FOUND for eliciting question name: " + value + " out of \n" + importNames.join("\n"));
+                    }
+                } else if (headerName === questionnaire.import_participantIDColumnName) {
+                    newItem["Participant ID"] = value;
+                    log("INFO||Participant id: " + value);
+                } else {
+                    if (headerName.indexOf(questionnaire.import_multiChoiceYesQASeparator) >= 0) {
+                        var separator = questionnaire.import_multiChoiceYesQASeparator;
+                        if (separator.toLowerCase() === "space") {
+                            separator = " ";
                         }
-                        var question = questionForHeaderFieldName(fieldName, questionnaire, project);
-                        if (question) { 
-                            var questionNameToUse = question.displayName;
-                            if (["Single choice", "Radiobuttons", "Boolean", "Checkbox", "Text", "Textarea"].indexOf(question.import_valueType) >= 0) {
-                                var answerNameToUse = getDisplayAnswerNameForDataAnswerName(value, question);
-                                if (answerNameToUse) {
-                                    newItem[questionNameToUse] = answerNameToUse;
+                        var fieldName = stringUpTo(headerName, separator);
+                        var answerName = stringBeyond(headerName, separator).trim();
+                        answerName = stringUpTo(answerName, questionnaire.import_multiChoiceYesQAEnding);
+                    } else {
+                        var fieldName = headerName;
+                        var answerName = null;
+                    }
+                    var question = questionForHeaderFieldName(fieldName, fieldIndex, questionnaire, project);
+                    if (question) { 
+                        var questionNameToUse = question.displayName;
+                        log("INFO||Data column name: " + fieldName + " matched with question: " + questionNameToUse);
+                        if (["Single choice", "Radiobuttons", "Boolean", "Checkbox", "Text", "Textarea"].indexOf(question.import_valueType) >= 0) {
+                            var answerNameToUse = getDisplayAnswerNameForDataAnswerName(value, question);
+                            if (answerNameToUse) {
+                                newItem[questionNameToUse] = answerNameToUse;
+                                if (["Text", "Textarea"].indexOf(question.import_valueType) < 0) { 
+                                    log("INFO||Answer for " + question.displayName + " (" + question.import_valueType + "): " + answerNameToUse);
+                                    count(questionNameToUse, answerNameToUse);
                                 }
-                            } else if (question.import_valueType === "Single choice indexed") {
-                                var valueAsInt = parseInt(value);
-                                if (!isNaN(valueAsInt)) {
+                            } else {
+                                if (["Text", "Textarea"].indexOf(question.import_valueType) < 0) { 
+                                    log("ERROR||Answer for " + question.displayName + " (" + question.import_valueType + "): NO MATCHING ANSWER FOUND for answer name: " + value);
+                                }
+                            }
+                        } else if (question.import_valueType === "Single choice indexed") {
+                            var valueAsInt = parseInt(value);
+                            var valueAssigned = false;
+                            if (!isNaN(valueAsInt)) {
+                                for (var index = 0; index < question.valueOptions.length; index++) {
+                                    if (valueAsInt-1 === index) {
+                                        newItem[questionNameToUse] = question.valueOptions[index];
+                                        valueAssigned = true;
+                                        log("INFO||Answer for " + question.displayName + " (" + question.import_valueType + "): " + question.valueOptions[index] + "(" + valueAsInt + ")");
+                                        count(questionNameToUse, valueAsInt);
+                                        break;
+                                    }
+                                }
+                            }
+                            if (!valueAssigned) {
+                                log("ERROR||Answer for " + question.displayName + " (" + question.import_valueType + "): NO MATCHING ANSWER FOUND for answer index: " + valueAsInt);
+                            }
+                        } else if (question.import_valueType === "Scale") {
+                            var valueAsInt = parseInt(value);
+                            var adjustedValue = changeValueForCustomScaleValues(valueAsInt, question, questionnaire);
+                            newItem[questionNameToUse] = adjustedValue;
+                            var infoString = "INFO||Answer for " + question.displayName + " (" + question.import_valueType + "): " + adjustedValue;
+                            if (adjustedValue != valueAsInt) {
+                                infoString += " (adjusted from " + valueAsInt + ")";
+                            }
+                            log(infoString);
+                            count(questionNameToUse, adjustedValue);
+                        } else if (question.import_valueType === "Multi-choice multi-column texts") {
+                            var answerNameToUse = getDisplayAnswerNameForDataAnswerName(value, question);
+                            if (answerNameToUse) {
+                                if (!newItem[questionNameToUse]) newItem[questionNameToUse] = {};
+                                newItem[questionNameToUse][answerNameToUse] = true;
+                                log("INFO||Answer for " + question.displayName + " (" + question.import_valueType + "): " + answerNameToUse);
+                                count(questionNameToUse, answerNameToUse);
+                            } else {
+                                log("ERROR||Answer for " + question.displayName + " (" + question.import_valueType + "): NO MATCHING ANSWER FOUND for answer name: " + value);
+                            }
+                        } else if (question.import_valueType === "Multi-choice multi-column yes/no") {
+                            if (value === questionnaire.import_multiChoiceYesIndicator) {
+                                if (!newItem[questionNameToUse]) newItem[questionNameToUse] = {};
+                                var answerNameToUse = getDisplayAnswerNameForDataAnswerName(answerName, question);
+                                if (answerNameToUse) {
+                                    newItem[questionNameToUse][answerNameToUse] = true;
+                                    log("INFO||Answer for " + question.displayName + " (" + question.import_valueType + "): " + answerNameToUse);
+                                    count(questionNameToUse, answerNameToUse);
+                                } else {
+                                    log("ERROR||Answer for " + question.displayName + " (" + question.import_valueType + "): NO MATCHING ANSWER FOUND for answer name: " + answerName);
+                                }
+                            }
+                        } else if (question.import_valueType === "Multi-choice single-column delimited") {
+                            newItem[questionNameToUse] = {};
+                            var delimiter = questionnaire.import_multiChoiceDelimiter;
+                            if (delimiter.toLowerCase() === "space") delimiter = " ";
+                            var delimitedItems = value.split(delimiter);
+                            delimitedItems.forEach((delimitedItem) => {
+                                var trimmedDelimitedItem = delimitedItem.trim();
+                                if (trimmedDelimitedItem !== "") {
+                                    var answerNameToUse = getDisplayAnswerNameForDataAnswerName(trimmedDelimitedItem, question);
+                                    if (answerNameToUse) {
+                                        newItem[questionNameToUse][answerNameToUse] = true;
+                                        log("INFO||Answer for " + question.displayName + " (" + question.import_valueType + "): " + answerNameToUse);
+                                        count(questionNameToUse, answerNameToUse);
+                                    } else {
+                                        log("ERROR||Answer for " + question.displayName + " (" + question.import_valueType + "): NO MATCHING ANSWER FOUND for answer name: " + trimmedDelimitedItem);
+                                    }
+                                }
+                            });
+                        } else if (question.import_valueType === "Multi-choice single-column delimited indexed") {
+                            newItem[questionNameToUse] = {};
+                            var delimiter = questionnaire.import_multiChoiceDelimiter;
+                            if (delimiter.toLowerCase() === "space") delimiter = " ";
+                            var delimitedIndexTexts = value.split(delimiter);
+                            delimitedIndexTexts.forEach((delimitedIndexText) => {
+                                var delimitedIndex = parseInt(delimitedIndexText);
+                                var valueAssigned = false;
+                                if (!isNaN(delimitedIndex)) {
                                     for (var index = 0; index < question.valueOptions.length; index++) {
-                                        if (valueAsInt-1 === index) {
-                                            newItem[questionNameToUse] = question.valueOptions[index];
+                                        if (delimitedIndex-1 === index) {
+                                            var answerNameToUse = question.valueOptions[index];
+                                            newItem[questionNameToUse][answerNameToUse] = true;
+                                            valueAssigned = true;
+                                            log("INFO||Answer for " + question.displayName + " (" + question.import_valueType + "): " + answerNameToUse);
+                                            count(questionNameToUse, answerNameToUse);
                                             break;
                                         }
                                     }
                                 }
-                            } else if (question.import_valueType === "Scale") {
-                                newItem[questionNameToUse] = parseInt(value);
-                            } else if (question.import_valueType === "Multi-choice multi-column texts") {
-                                var answerNameToUse = getDisplayAnswerNameForDataAnswerName(value, question);
-                                if (answerNameToUse) {
-                                    if (!newItem[questionNameToUse]) newItem[questionNameToUse] = {};
-                                    newItem[questionNameToUse][answerNameToUse] = true;
-                                }
-                            } else if (question.import_valueType === "Multi-choice multi-column yes/no") {
-                                if (value === questionnaire.import_multiChoiceYesIndicator) {
-                                    if (!newItem[questionNameToUse]) newItem[questionNameToUse] = {};
-                                    var answerNameToUse = getDisplayAnswerNameForDataAnswerName(answerName, question);
-                                    if (answerNameToUse) newItem[questionNameToUse][answerNameToUse] = true;
-                                }
-                            } else if (question.import_valueType === "Multi-choice single-column delimited") {
-                                newItem[questionNameToUse] = {};
-                                var delimiter = questionnaire.import_multiChoiceDelimiter;
-                                if (delimiter.toLowerCase() === "space") delimiter = " ";
-                                var delimitedItems = value.split(delimiter);
-                                delimitedItems.forEach((delimitedItem) => {
-                                    var trimmedDelimitedItem = delimitedItem.trim();
-                                    if (trimmedDelimitedItem !== "") {
-                                        var answerNameToUse = getDisplayAnswerNameForDataAnswerName(trimmedDelimitedItem, question);
-                                        if (answerNameToUse) {
-                                            newItem[questionNameToUse][answerNameToUse] = true;
-                                        }
-                                    }
-                                });
-                            } else if (question.import_valueType === "Multi-choice single-column delimited indexed") {
-                                newItem[questionNameToUse] = {};
-                                var delimiter = questionnaire.import_multiChoiceDelimiter;
-                                if (delimiter.toLowerCase() === "space") delimiter = " ";
-                                var delimitedIndexTexts = value.split(delimiter);
-                                delimitedIndexTexts.forEach((delimitedIndexText) => {
-                                    var delimitedIndex = parseInt(delimitedIndexText);
-                                    if (!isNaN(delimitedIndex)) {
-                                        for (var index = 0; index < question.valueOptions.length; index++) {
-                                            if (delimitedIndex-1 === index) {
-                                                newItem[questionNameToUse][question.valueOptions[index]] = true;
-                                                break;
-                                            }
-                                        }
-                                    }
-                                });
+                            if (!valueAssigned) {
+                                log("ERROR||Answer for " + question.displayName + " (" + question.import_valueType + "): NO MATCHING ANSWER FOUND for answer index: " + delimitedIndex);
                             }
+                            });
+                        }
+                    } else { // no question found
+                        if (questionnaire.import_columnsToIgnore && questionnaire.import_columnsToIgnore.indexOf(headerName) >= 0) {
+                            log("INFO||Ignoring data column: " + fieldName);
+                        } else {
+                            log("ERROR||NO MATCHING QUESTION FOUND for data column name: " + fieldName);
                         }
                     }
                 }
             }
-            return newItem;
         }
+        return newItem;
     });
+
+    var header = headerAndItems.header;
+    if (!header) {
+        alert("ERROR: No header line found in CSV data file.")
+        return false;
+    }
+    if (!header.includes(questionnaire.import_storyTitleColumnName)) {
+        alert("ERROR: Data file header (first row) is missing an entry for for the story title. It should have a header like this: " + questionnaire.import_storyTitleColumnName);
+        return false;
+    } else if (!header.includes(questionnaire.import_storyTextColumnName)) {
+        alert("ERROR: Data file header (first row) is missing an entry for for the story text. It should have a header like this: " + questionnaire.import_storyTextColumnName);
+        return false;
+    }
 
     var errorsToReport = [];
 
@@ -325,8 +430,6 @@ function processCSVContentsForStories(contents) {
                 question = questionnaire.storyQuestions[i];
                 var value = storyItem[question.id.substring("S_".length)];
                 story[question.id] = value;
-                changeValueIfScaleAndCustomScaleValues(question, story, questionnaire);
-                warnIfProblemWithCellValueForQuestion(value, question.displayName, question.import_valueType, question.storyQuestion_import_answerNames || question.valueOptions, errorsToReport);
             }
 
             newSurveyResult.stories.push(story);
@@ -335,8 +438,6 @@ function processCSVContentsForStories(contents) {
                 question = questionnaire.participantQuestions[i];
                 var value = storyItem[question.id.substring("S_".length)];
                 newSurveyResult.participantData[question.id] = value;
-                changeValueIfScaleAndCustomScaleValues(question, newSurveyResult.participantData, questionnaire);
-                warnIfProblemWithCellValueForQuestion(value, question.displayName, question.import_valueType, question.participantQuestion_import_answerNames || question.valueOptions, errorsToReport);
             }
         }
         surveyResults.push(newSurveyResult);
@@ -412,8 +513,43 @@ function processCSVContentsForStories(contents) {
     }
     
     // Start sending survey results
-    sendNextSurveyResult();
+    if (saveStories) {
+        sendNextSurveyResult();
+    }
 
+    if (logItems.length > 0) {
+        console.clear();
+        logItems.forEach(function(item) {
+            var typeAndText = item.split("||");
+            var type = typeAndText[0];
+            var text = typeAndText[1];
+            if (type === "INFO") {
+                console.info(text);
+            } else if (type === "WARN") {
+                console.warn(text);
+            } else if (type === "ERROR") {
+                console.error(text);
+            }
+        });
+    }
+    var questionNames = Object.keys(questionAnswerCounts);
+    if (questionNames.length > 0) {
+        console.info("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< ANSWER COUNTS >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+        for (var questionIndex = 0; questionIndex < questionNames.length; questionIndex++) {
+            var questionName = questionNames[questionIndex];
+            var answerOutputText = "";
+            var answerInfo = questionAnswerCounts[questionName];
+            var answerNames = Object.keys(answerInfo);
+            for (var answerIndex = 0; answerIndex < answerNames.length; answerIndex++) {
+                var answerName = answerNames[answerIndex];
+                answerOutputText += answerName + ": " + answerInfo[answerName];
+                if (answerIndex < answerNames.length-1) {
+                    answerOutputText += "; "
+                }
+            }
+            console.info(questionName + ": " + answerOutputText);
+        }
+    }
     if (errorsToReport.length > 0) {
         var text = "Errors reading stories:\n\n";
         for (var index = 0; index < errorsToReport.length; index++) {
@@ -422,102 +558,84 @@ function processCSVContentsForStories(contents) {
         alert(text);
         console.log(text);
     }
-}
-
-function warnIfProblemWithCellValueForQuestion(value, questionName, questionType, options, errorsToReport) {
-    if (!options || !value) return;
-    if (questionType === "Single choice") {
-        if (value && options.indexOf(value) === -1) {
-            var error = "The answer '" + value + "' does not match any of the available answers [" + options.join(";") + "] for the question '" + questionName + "'";
-            if (errorsToReport.indexOf(error) === -1) errorsToReport.push(error);
-        }
-    } else if (questionType === "Multi-choice multi-column texts" || questionType === "Multi-choice single-column delimited") {
-        for (var i = 0; i < value.length; i++) {
-            var valueElement = value[i];
-            if (valueElement && options.indexOf(valueElement) === -1) {
-                var error = "The answer '" + valueElement + "' does not match any of the answers [" + options.join(";") + "] for the question '" + questionName + "'";
-                if (errorsToReport.indexOf(error) === -1) errorsToReport.push(error);
-            }
-        }
+    if (!saveStories) {
+        alert("Finished checking " + totalStoryCount + " stories. Check browser console for INFO and ERROR entries.");
+        progressModel.hideDialogMethod();
+        progressModel.redraw();
     }
-    // nothing to check for Single choice indexed, Multi-choice single-column delimited indexed, Multi-choice multi-column yes/no
-    // because these were all converted to the available answers during initial processing
-    // so  at this point they will either be corrector missing
-    // the Scale type was already dealt with in changeValueIfScaleAndCustomScaleValues 
 }
 
-function changeValueIfScaleAndCustomScaleValues(question, thingWithValue, questionnaire) {
-    if (question.displayType !== "slider") return;
+function changeValueForCustomScaleValues(value, question, questionnaire) {
+    if (question.displayType !== "slider") return null;
     var min = undefined;
-    if (question.import_minScaleValue) {
-        min = question.import_minScaleValue;
-    } else if (questionnaire.import_minScaleValue) {
-        min = questionnaire.import_minScaleValue;
+    if (question.import_minScaleValue != undefined) {
+        min = parseInt(question.import_minScaleValue);
+    } else if (questionnaire.import_minScaleValue != undefined) {
+        min = parseInt(questionnaire.import_minScaleValue);
     }
     var max = undefined;
-    if (question.import_maxScaleValue) {
-        max = question.import_maxScaleValue;
-    } else if (questionnaire.import_maxScaleValue) {
-        max = questionnaire.import_maxScaleValue;
+    if (question.import_maxScaleValue != undefined) {
+        max = parseInt(question.import_maxScaleValue);
+    } else if (questionnaire.import_maxScaleValue != undefined) {
+        max = parseInt(questionnaire.import_maxScaleValue);
     }
-    if (min === undefined || min === NaN || max === undefined || max === NaN || min === max) return;
-    if (thingWithValue[question.id] === undefined || thingWithValue[question.id] === "") return;
+    if (min === undefined || min === NaN || max === undefined || max === NaN || min === max) {
+        return value;
+    }
 
-    var value = parseInt(thingWithValue[question.id]);
     if (value <= min) {
-        thingWithValue[question.id] = "0";
+        return 0;
     } else if (value >= max) {
-        thingWithValue[question.id] = "100";
+        return 100;
     } else {
         var multiplier = 100 / (max - min);
         if (multiplier && multiplier > 0) {
              var adjustedValue = Math.round((value - min) * multiplier);
              if (adjustedValue > 100) adjustedValue = 100;
              if (adjustedValue < 0) adjustedValue = 0;
-             thingWithValue[question.id] = "" + adjustedValue;
+             return adjustedValue;
         }
     }
 }
 
 function processCSVContentsForQuestionnaire(contents) {
-    var headerAndItems = processCSVContents(contents, function (header, row, rowIsHeader) {
-        if (rowIsHeader) { // this is to check header before the rest of the file is read
-            if (!row) {
-                alert("ERROR: No header line found in CSV file.")
-                return false;
+
+    var headerAndItems = processCSVContents(contents, function (header, row) {
+        var newItem = {};
+        var lastFieldIndex;
+        for (var fieldIndex = 0; fieldIndex < row.length; fieldIndex++) {
+            var fieldName = header[fieldIndex];
+            if (fieldName) {
+                lastFieldIndex = fieldIndex;
+            } else {
+                fieldName = header[lastFieldIndex];
             }
-            if (!(row.includes("Data column name") && row.includes("Short name") && row.includes("Long name") && row.includes("Type") && row.includes("About") && row.includes("Answers"))) {
-                alert("ERROR: Header is missing at least one required cell. It must have entries for Data column name, Short name, Long name, Type, About, and Answers. It also must be the first readable row in the CSV file.")
-                return false;
-            }
-            return true; // header is okay, can go on to read data
-        } else {
-            var newItem = {};
-            var lastFieldIndex;
-            for (var fieldIndex = 0; fieldIndex < row.length; fieldIndex++) {
-                var fieldName = header[fieldIndex];
-                if (fieldName) {
-                    lastFieldIndex = fieldIndex;
-                } else {
-                    fieldName = header[lastFieldIndex];
+            // TODO: Should the value really be trimmed?
+            var value = row[fieldIndex].trim();
+            if (fieldIndex < header.length - 1) {
+                newItem[fieldName] = value;
+            } else {
+                // Handle multiple values for last header items
+                var list = newItem[fieldName];
+                if (!list) {
+                    list = [];
+                    newItem[fieldName] = list;
                 }
-                // TODO: Should the value really be trimmed?
-                var value = row[fieldIndex].trim();
-                if (fieldIndex < header.length - 1) {
-                    newItem[fieldName] = value;
-                } else {
-                    // Handle multiple values for last header items
-                    var list = newItem[fieldName];
-                    if (!list) {
-                        list = [];
-                        newItem[fieldName] = list;
-                    }
-                    if (value) list.push(value);
-                }
+                if (value) list.push(value);
             }
-            return newItem;
         }
+        return newItem;
     });
+
+    var header = headerAndItems.header;
+    if (!header) {
+        alert("ERROR: No header line found in CSV file.")
+        return false;
+    }
+    if (!(header.includes("Data column name") && header.includes("Short name") && header.includes("Long name") && header.includes("Type") && header.includes("About") && header.includes("Answers"))) {
+        alert("ERROR: Header is missing at least one required cell. It must have entries for Data column name, Short name, Long name, Type, About, and Answers. It also must be the first readable row in the CSV file.")
+        return false;
+    }
     
     var shortName = prompt("Please enter a short name for the new story form. (It must be unique within the project.)");
     if (!shortName) return;
@@ -581,6 +699,7 @@ function processCSVContentsForQuestionnaire(contents) {
         import_storyTitleColumnName: "Story title",
         import_storyTextColumnName: "Story text",
         import_participantIDColumnName: "Participant ID",
+        import_columnsToIgnore: [],
 
         import_elicitingQuestionColumnName: "Eliciting question",
         import_elicitingQuestionGraphName: "Eliciting question",
@@ -590,7 +709,8 @@ function processCSVContentsForQuestionnaire(contents) {
     project.tripleStore.makeNewSetItem(storyFormListIdentifier, "StoryForm", template);
     
     // For all items:
-    //   Check if one with that name already exists; warn if options or type is different
+    //   Check if one with that name already exists
+    //   if it does exist, ask if they want to overwrite it
     //   If does not exist, create it in the related set
     //   Add a reference to the question in the story form
         
@@ -611,25 +731,40 @@ function processCSVContentsForQuestionnaire(contents) {
             reference = ensureQuestionExists(question, "participantQuestion");
             addReferenceToList(template.questionForm_participantQuestions, reference, "participantQuestion", "ParticipantQuestionChoice");
         } else if (about === "eliciting") {
-            template.import_elicitingQuestionColumnName = item["Data column name"],
+            template.import_elicitingQuestionColumnName = item["Data column name"];
+            project.tripleStore.addTriple(template.id, "questionForm_import_elicitingQuestionColumnName", item["Data column name"]);
             template.import_elicitingQuestionGraphName = item["Short name"];
+            project.tripleStore.addTriple(template.id, "questionForm_import_elicitingQuestionGraphName", item["Data column name"]);
             template.questionForm_chooseQuestionText = item["Long name"]; 
+            project.tripleStore.addTriple(template.id, "questionForm_chooseQuestionText", item["Data column name"]);
             var answers = item["Answers"];
             answers.forEach(function (elicitingQuestionDefinition) {
-                if (!elicitingQuestionDefinition) elicitingQuestionDefinition = "ERROR:MissingElicitingText";
+                if (!elicitingQuestionDefinition) elicitingQuestionDefinition = "ERROR: Missing eliciting question text";
                 var sections = elicitingQuestionDefinition.split("|");
+                var dataColumnName = "";
+                var shortName = "";
+                var longName = "";
                 // If only one section, use it as import name, short name, AND text
                 // if two sections, use first as both import name and short name, use second as text
                 if (sections.length < 2) {
-                    sections.push(sections[0]); // copy import name to short name
-                    sections.push(sections[0]); // copy import name to text
+                    dataColumnName = sections[0];
+                    shortName = sections[0];
+                    longName = sections[0];
+                // if two sections, copy import name to short name, leaving text alone
                 } else if (sections.length < 3) {
-                    sections.splice(1, 0, sections[0]); // copy import name to short name, leaving text alone
+                    dataColumnName = sections[0];
+                    shortName = sections[0];
+                    longName = sections[1];
+                // if all three sections, correct order is import, short, long
+                } else {
+                    dataColumnName = sections[0];
+                    shortName = sections[1];
+                    longName = sections[2];
                 }
                 var elicitingQuestion = {
-                    elicitingQuestion_importName: sections[0].trim(),
-                    elicitingQuestion_shortName: sections[1].trim(),
-                    elicitingQuestion_text: sections[2].trim(),
+                    elicitingQuestion_dataColumnName: dataColumnName.trim(),
+                    elicitingQuestion_shortName: shortName.trim(),
+                    elicitingQuestion_text: longName.trim(),
                     elicitingQuestion_type: {}
                 };
                 reference = ensureQuestionExists(elicitingQuestion, "elicitingQuestion");
@@ -790,6 +925,10 @@ function processCSVContentsForQuestionnaire(contents) {
                 } else if (type === "Participant ID column name") {
                     template.import_participantIDColumnName = text;
                     project.tripleStore.addTriple(template.id, "questionForm_import_participantIDColumnName", text);
+                } else if (type === "Data columns to ignore") {
+                    var answersAsLines = item["Answers"].join("\n");
+                    template.import_columnsToIgnore = answersAsLines;
+                    project.tripleStore.addTriple(template.id, "questionForm_import_columnsToIgnore", answersAsLines);
                 }
             }
         } else if (about === "ignore") {
@@ -896,14 +1035,15 @@ function ensureQuestionExists(question, questionCategory: string) {
     if (!matchingQuestion) {
         project.addQuestionForCategory(question, questionCategory);
     } else {
-        // TODO: What if questions with the same shortName but different options already exist?
-        // TODO: Should check type as well
-        if (matchingQuestion[questionCategory + "_options"] !== question[questionCategory + "_options"]) {
-            console.log("IMPORT ISSUE: options don't match for questions", question, matchingQuestion);
-            alert("The question " + question[idAccessor] + " already exists, but with different answers. To reuse the same question name with different answers, remove the existing question first.");
+        var storyOrParticipant = "story";
+        if (questionCategory === "participantQuestion") {
+            storyOrParticipant = "participant";
+        }
+        if (confirm('A ' + storyOrParticipant + ' question with the name "' + matchingQuestion[questionCategory + "_shortName"] + '" already exists.\n\nDo you want to overwrite it?')) {
+            project.deleteQuestionInCategory(matchingQuestion, questionCategory);
+            project.addQuestionForCategory(question, questionCategory);
         }
     } 
-
     return question[idAccessor];
 }
 
@@ -911,17 +1051,13 @@ function valueAndImportOptionsForAnswers(answers) {
     var valueOptions = [];
     var import_answerNames = [];
     for (var i = 0; i < answers.length; i++) {
-        if (answers[i].indexOf("|") >= 0) {
-            var dataAndDisplay = answers[i].split("|");
-            if (dataAndDisplay.length > 1) {
-                import_answerNames.push(dataAndDisplay[0]);
-                valueOptions.push(dataAndDisplay[1]);
-            } else {
-                valueOptions.push(dataAndDisplay[0]);
-                import_answerNames.push(dataAndDisplay[0]); // there could be different answers for only some entries
-            }
+        var dataAndDisplay = answers[i].split("|");
+        if (dataAndDisplay.length > 1) {
+            import_answerNames.push(dataAndDisplay[0]);
+            valueOptions.push(dataAndDisplay[1]);
         } else {
             valueOptions.push(answers[i]);
+            import_answerNames.push(answers[i]);
         }
     }
     return [valueOptions, import_answerNames];
@@ -933,8 +1069,8 @@ function questionForItem(item, questionCategory) {
     var valueOptions;
     var import_columnName;
     var import_answerNames;
-    var import_minScaleValue = null;
-    var import_maxScaleValue = null;
+    var import_minScaleValue;
+    var import_maxScaleValue;
     
     var itemType = item["Type"].trim();
     var answers = item["Answers"];
@@ -1002,6 +1138,9 @@ function questionForItem(item, questionCategory) {
                 }
                 answerCount += 1;
             });
+        if (import_minScaleValue != undefined && import_maxScaleValue != undefined && import_minScaleValue > import_maxScaleValue) {
+            alert('For the question "' + item["Short name"] + '" the minimum scale value (' + import_minScaleValue + ') is higher than the maximum scale value (' + import_maxScaleValue + ').');
+        }
         }
     } else {
         console.log("IMPORT ERROR: unsupported question type: ", itemType);
@@ -1011,25 +1150,17 @@ function questionForItem(item, questionCategory) {
     question[questionCategory + "_type"] = questionType;
     question[questionCategory + "_shortName"] = item["Short name"];
     question[questionCategory + "_text"] = item["Long name"];
-    if (valueOptions) {
-        question[questionCategory + "_options"] = valueOptions.join("\n");
-    }
+    if (valueOptions) question[questionCategory + "_options"] = valueOptions.join("\n");
 
-    // legacy - older files will not have the "Data column name" field, but the "Short name" field should work for it
-    if (!item["Data column name"]) {
-        question["import_columnName"] = item["Short name"];
-    } else {
-        question["import_columnName"] = item["Data column name"];
-    }
-
-    question["import_valueType"] = itemType;
-    question["import_minScaleValue"] = import_minScaleValue;
-    question["import_maxScaleValue"] = import_maxScaleValue;
-    if (import_answerNames && import_answerNames.length > 0) question["import_answerNames"] = import_answerNames;
+    question[questionCategory + "_import_columnName"] = item["Data column name"];
+    question[questionCategory + "_import_valueType"] = itemType;
+    question[questionCategory + "_import_minScaleValue"] = import_minScaleValue;
+    question[questionCategory + "_import_maxScaleValue"] = import_maxScaleValue;
+    if (import_answerNames) question[questionCategory + "_import_answerNames"] = import_answerNames.join("\n");
     return question;
 }
 
-function chooseCSVFileToImport(callback) {
+function chooseCSVFileToImport(callback, saveStories, writeLog) {
     var cvsFileUploader = <HTMLInputElement>document.getElementById("csvFileLoader");
     cvsFileUploader.onchange = function() {
         var file = cvsFileUploader.files[0];
@@ -1039,7 +1170,10 @@ function chooseCSVFileToImport(callback) {
         var reader = new FileReader();
         reader.onload = function(e: Event) {
             var contents = (<FileReader>e.target).result;
-            callback(contents);
+            if (writeLog) {
+                console.log("=================================== START OF VERBOSE LOG reading CSV story file: " + <FileReader>e.target);
+            }
+            callback(contents, saveStories, writeLog);
         };
         reader.readAsText(file);
     };
@@ -1051,11 +1185,21 @@ export function importCSVStories() {
         // TODO: Translate
         return alert("You need to select a story collection before you can import stories.");
     }
-    chooseCSVFileToImport(processCSVContentsForStories);
+    // save stories, do not write verbose log
+    chooseCSVFileToImport(processCSVContentsForStories, true, false);
+}
+
+export function checkCSVStories() {
+    if (!Globals.clientState().storyCollectionName()) {
+        // TODO: Translate
+        return alert("You need to select a story collection before you can check a story CSV file.");
+    }
+    // do not save stories, do write verbose log
+    chooseCSVFileToImport(processCSVContentsForStories, false, true);
 }
 
 export function importCSVQuestionnaire() {
-    chooseCSVFileToImport(processCSVContentsForQuestionnaire);
+    chooseCSVFileToImport(processCSVContentsForQuestionnaire, true, false);
 }
 
 function addCSVOutputLine(output, line) {
@@ -1065,6 +1209,9 @@ function addCSVOutputLine(output, line) {
             start = false;
         } else {
             output += ",";
+        }
+        if (typeof item == 'number') {
+            item = "" + item;
         }
         if (item && item.indexOf(",") !== -1) {
             item = item.replace(/"/g, '""');
@@ -1210,6 +1357,139 @@ export function exportQuestionnaire() {
     // TODO: This seems to clear the console in FireFox 40; why?
     saveAs(questionnaireBlob, "export_story_form_" + storyCollectionName + ".csv");
 }
+
+export function exportQuestionnaireForImport() {
+    var storyCollectionName = Globals.clientState().storyCollectionName();
+    if (!storyCollectionName) {
+        alert("Please select a story collection first");
+        return;
+    }
+    
+    var currentQuestionnaire = surveyCollection.getQuestionnaireForStoryCollection(storyCollectionName);
+    if (!currentQuestionnaire) {
+        alert("The story collection has not been initialized with a story form: " + storyCollectionName);
+        return;
+    }
+    
+    var output = "";
+    var lineIndex = 1;
+    function addOutputLine(line) {
+        output = addCSVOutputLine(output, line);
+    }
+    
+    var header = ["Data column name", "Type", "About", "Short name", "Long name", "Answers"];
+    addOutputLine(header);
+
+    var elicitingLine = [
+        currentQuestionnaire.import_elicitingQuestionColumnName, "eliciting", "eliciting", 
+        currentQuestionnaire.import_elicitingQuestionGraphName, 
+        currentQuestionnaire.chooseQuestionText];
+    currentQuestionnaire.elicitingQuestions.forEach(function (elicitingQuestionSpecification) {
+        elicitingLine.push(elicitingQuestionSpecification.importName + "|" + elicitingQuestionSpecification.id + "|" + elicitingQuestionSpecification.text);
+    });
+    addOutputLine(elicitingLine);
+
+    function outputQuestions(questions, about) {
+        for (var i = 0; i < questions.length; i++) {
+            var outputLine = [];
+            var question = questions[i];
+
+            outputLine.push(question.import_columnName || ""); 
+            outputLine.push(question.import_valueType || "");
+            outputLine.push(about || "");
+            outputLine.push(question.displayName || ""); 
+            outputLine.push(question.displayPrompt || ""); 
+
+            // answers
+            if (question.displayType === "slider") {
+                if (question.displayConfiguration) {
+                    if (question.displayConfiguration.length === 1) {
+                        outputLine.push(question.displayConfiguration);
+                    } else if (question.displayConfiguration.length > 1) {
+                        question.displayConfiguration.forEach(function(option) {
+                           outputLine.push(option);   
+                       });
+                    }
+                    if (question.import_minScaleValue != undefined) {
+                        outputLine.push("" + question.import_minScaleValue);
+                    }
+                    if (question.import_maxScaleValue != undefined) {
+                        outputLine.push("" + question.import_maxScaleValue);
+                    }
+               }
+            } else { 
+                if (question.valueOptions) {
+                    for (var j = 0; j < question.valueOptions.length; j++) {
+                       var cellValue = "";
+                       if (question.import_answerNames && j < question.import_answerNames.length) {
+                           cellValue += question.import_answerNames[j] + "|";
+                       }
+                       cellValue += question.valueOptions[j];
+                       outputLine.push(cellValue);   
+                    }   
+                }
+            }
+            addOutputLine(outputLine);
+        }
+    }
+    
+    outputQuestions(currentQuestionnaire.storyQuestions, "story");
+    outputQuestions(currentQuestionnaire.participantQuestions, "participant");
+    
+    addOutputLine(["", "Title", "form", "", "", currentQuestionnaire.title || ""]);
+    addOutputLine(["", "Start text", "form", "", "", currentQuestionnaire.startText || ""]);
+    addOutputLine(["", "Image", "form", "", "", currentQuestionnaire.image || ""]);
+    addOutputLine(["", "End text", "form", "", "", currentQuestionnaire.endText || ""]);
+    addOutputLine(["", "About you text", "form", "", "", currentQuestionnaire.aboutYouText || ""]);
+    addOutputLine(["", "Thank you text", "form", "", "", currentQuestionnaire.thankYouPopupText || ""]);
+    addOutputLine(["", "Custom CSS", "form", "", "", currentQuestionnaire.customCSS || ""]);
+    addOutputLine(["", "Custom CSS for Printing", "form", "", "", currentQuestionnaire.customCSSForPrint || ""]);
+
+    addOutputLine(["", "Choose question text", "form", "", "", currentQuestionnaire.chooseQuestionText || ""]);
+    addOutputLine(["", "Enter story text", "form", "", "", currentQuestionnaire.enterStoryText || ""]);
+    addOutputLine(["", "Name story text", "form", "", "", currentQuestionnaire.nameStoryText || ""]);
+    addOutputLine(["", "Tell another story text", "form", "", "", currentQuestionnaire.tellAnotherStoryText || ""]);
+    addOutputLine(["", "Tell another story button", "form", "", "", currentQuestionnaire.tellAnotherStoryButtonText || ""]);
+    addOutputLine(["", "Max num stories", "form", "", "", currentQuestionnaire.maxNumStories || ""]);
+    addOutputLine(["", "Slider value prompt", "form", "", "", currentQuestionnaire.sliderValuePrompt || ""]);
+
+    addOutputLine(["", "Submit survey button", "form", "", "", currentQuestionnaire.submitSurveyButtonText || ""]);
+    addOutputLine(["", "Sending survey text", "form", "", "", currentQuestionnaire.questionForm_sendingSurveyResultsText || ""]);
+    addOutputLine(["", "Could not save survey text", "form", "", "", currentQuestionnaire.questionForm_couldNotSaveSurveyText || ""]);
+    addOutputLine(["", "Resubmit survey button", "form", "", "", currentQuestionnaire.resubmitSurveyButtonText || ""]);
+    
+    addOutputLine(["", "Delete story button", "form", "", "", currentQuestionnaire.deleteStoryButtonText || ""]);
+    addOutputLine(["", "Delete story prompt", "form", "", "", currentQuestionnaire.deleteStoryDialogPrompt || ""]);
+    addOutputLine(["", "Survey stored message", "form", "", "", currentQuestionnaire.surveyStoredText || ""]);
+    addOutputLine(["", "Show survey result", "form", "", "", currentQuestionnaire.showSurveyResultPane || ""]);
+    addOutputLine(["", "Survey result header", "form", "", "", currentQuestionnaire.surveyResultPaneHeader || ""]);
+    
+    addOutputLine(["", "Error message no elicitation question chosen", "form", "", "", currentQuestionnaire.errorMessage_noElicitationQuestionChosen || ""]);
+    addOutputLine(["", "Error message no story text", "form", "", "", currentQuestionnaire.errorMessage_noStoryText || ""]);
+
+    addOutputLine(["", "Scale range", "import", "", "", "" + currentQuestionnaire.import_minScaleValue || "", "" + currentQuestionnaire.import_maxScaleValue || ""]);
+    addOutputLine(["", "Yes no questions Q-A separator", "import", "", "", currentQuestionnaire.import_multiChoiceYesQASeparator || ""]);
+    addOutputLine(["", "Yes no questions Q-A ending", "import", "", "", currentQuestionnaire.import_multiChoiceYesQAEnding || ""]);
+    addOutputLine(["", "Yes no questions yes indicator", "import", "", "", currentQuestionnaire.import_multiChoiceYesIndicator || ""]);
+    addOutputLine(["", "Multi choice single column delimiter", "import", "", "", currentQuestionnaire.import_multiChoiceDelimiter || ""]);
+    addOutputLine(["", "Story title column name", "import", "", "", currentQuestionnaire.import_storyTitleColumnName || ""]);
+    addOutputLine(["", "Story text column name", "import", "", "", currentQuestionnaire.import_storyTextColumnName || ""]);
+    addOutputLine(["", "Participant ID column name", "import", "", "", currentQuestionnaire.import_participantIDColumnName || ""]);
+    
+    var columnsToIgnoreOutputLine = ["", "Data columns to ignore", "import", "", ""];
+    var columnList = currentQuestionnaire.import_columnsToIgnore.split("\n");
+    if (columnList) {
+        columnList.forEach(function(item) {
+            columnsToIgnoreOutputLine.push(item);
+        });
+    }
+    addOutputLine(columnsToIgnoreOutputLine);
+
+    var questionnaireBlob = new Blob([output], {type: "text/csv;charset=utf-8"});
+    // TODO: This seems to clear the console in FireFox 40; why?
+    saveAs(questionnaireBlob, "export_story_form_for_import_" + storyCollectionName + ".csv");
+}
+
 
 export function exportStoryCollection() {
     var storyCollectionName = Globals.clientState().storyCollectionName();
