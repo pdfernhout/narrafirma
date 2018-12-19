@@ -36,8 +36,8 @@
                 m("h3", "NarraFirma projects and permissions"), 
                 m("button", {onclick: newProject.bind(null, controller)}, "Create New Project"),
                 m("p", "New projects are not saved until you click the \"Save changes\" button below. Deleting a project will make it unavailable, but the data will still be stored and can be re-accessed by creating a project with the same name."),
-                m("p", "To specify project permissions, enter one or more space-separated user IDs (e.g. samsmith) or " + 
-                "roles (e.g. administrator, editor, author, contributor, subscriber). " + 
+                m("p", "To specify project permissions, enter one or more space-separated WordPress user IDs (e.g. samsmith) or " + 
+                "WordPress roles (e.g. administrator, editor, author, contributor, subscriber). " + 
                 "Write access also grants read access and survey access. Only give write access to people you trust. "),
                 Object.keys(controller.journalDefinitions).map(function(journalIdentifier) {
                     return displayJournal(controller, journalIdentifier);
@@ -49,7 +49,8 @@
                 m("br"),
                 m("div[style='margin-top: 1em;']", [
                     m("span", {"for": "narrafirma-displayJSON"}, "Edit project permissions directly as JSON"),
-                    m("input[type=checkbox][style='margin-left:0.5em']", {id: "narrafirma-displayJSON", onclick: m.withAttr("checked", showJSONChecked.bind(null, controller)), checked: controller.showJSON})
+                    m("input[type=checkbox][style='margin-left:0.5em']", 
+                        {id: "narrafirma-displayJSON", onclick: m.withAttr("checked", showJSONChecked.bind(null, controller)), checked: controller.showJSON})
                 ])
             ]);
         }
@@ -70,19 +71,19 @@
             writeJournalDefinitionsToTextarea(controller.journalDefinitions);
         };
         return m("label", {style: "margin-left: 2em"}, [
-            "anonymous " + field,
+            "Anonymous (not logged in) users have " + field + " access ",
             m("input[type=checkbox]", {onclick: m.withAttr("checked", updateAnonymousAccess), checked: checked})
         ]);
     }
     
-    function permissionsEditor(controller, journalIdentifier, journalDefinition, field) {
+    function permissionsEditor(controller, journalIdentifier, journalDefinition, field, message) {
         var permissionsToDisplay = journalDefinition[field].filter(function (each) {
             return each !== true;
         });
         var checked = journalDefinition[field].indexOf(true) !== -1;
         return m("label", {style: "margin-left: 2em"}, [
-            field + ": ",
-            m("input[type=text]", {style: "width: 90%", value: permissionsToDisplay.join(" "), onchange: function (event) {
+            message + ": ",
+            m("input[type=text]", {style: "width: 90%; margin-left: 2em;", value: permissionsToDisplay.join(" "), onchange: function (event) {
                 var items = event.currentTarget.value.trim().split(/\s+/g);
                 if (checked) items.push(true);
                 journalDefinition[field] = items;
@@ -104,15 +105,15 @@
             m("button.delete-button", {style: "margin-left: 0.5em", onclick: deleteJournal.bind(null, controller, journalIdentifier)}, "Delete"),
             m("br"),
             m("br"),
-            permissionsEditor(controller, journalIdentifier, journalDefinition, "write"),
+            permissionsEditor(controller, journalIdentifier, journalDefinition, "write", "These WordPress user IDs or roles have WRITE access (can see and change information on project screens)"),
             anonymousAccessCheckbox(controller, journalIdentifier, journalDefinition, "write"),
             m("br"),
             m("br"),
-            permissionsEditor(controller, journalIdentifier, journalDefinition, "read"),
+            permissionsEditor(controller, journalIdentifier, journalDefinition, "read", "These WordPress user IDs or roles have READ access (can see but not change information on project screens)"),
             anonymousAccessCheckbox(controller, journalIdentifier, journalDefinition, "read"),
             m("br"),
             m("br"),
-            permissionsEditor(controller, journalIdentifier, journalDefinition, "survey"),
+            permissionsEditor(controller, journalIdentifier, journalDefinition, "survey", "These WordPress user IDs or roles have SURVEY access (can take the survey but cannot see or change information on project screens)"),
             anonymousAccessCheckbox(controller, journalIdentifier, journalDefinition, "survey"),
             m("br"),
             m("hr")
