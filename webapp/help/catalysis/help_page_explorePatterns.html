@@ -179,6 +179,9 @@ Tables of count results where the expected counts are very different
 from the observed counts are likely to produce significant test
 results from the chi-squared test.
 </p>
+<p>You can hover your mouse over any of the circles to see how many stories were expected
+	to be found there and how many were actually found there.
+</p>
 </div>
 
 <div class="question">
@@ -225,28 +228,41 @@ When you write the observation, begin each section with a <strong>header</strong
 and ends with the @ character (for example, @A@ and @B@, @One@ and @Two@, @first@ and @second@). 
 Then refer to the headers in your interpretations. 
 When you print your catalysis report, NarraFirma will print only the section of
-the observation referred to by each interpretation.
+the observation referred to by the header specified in each interpretation.
+You can segment observation titles in the same way.
 </p>
 <p>
 For example, say you write an observation with two parts, like this:
 </p>
 <pre>
-@A@ There are more stories about cats than about dogs. @B@ The stories people told about cats seem more friendly.
+    @A@ There are more stories about cats than about dogs. @B@ The stories people told about cats seem more friendly.
+</pre>
+<p>And say you give your observation this name:</p>
+<pre>
+    @A@ More Cats Than Dogs @B@ Cats Better
 </pre>
 <p>
 Now say that one of your interpretations has the text
 </p>
-<pre>@B@ People who have cats are friendlier people.
-</pre>
-When NarraFirma prints your catalysis report, it will print
-<pre>People who have cats are friendlier people.
-	
-	The stories people told about cats seem more friendly.
+<pre>
+	@B@ People who have cats are friendlier people.
 </pre>
 <p>
-These headers, which do not apear in the report, must be identical in both places.
-They must be located <i>at the start</i> of the interpretation text or observation section. They 
-must have @ signs before and after them. 
+That means that the interpretation refers to only the part of the observation (and its name) labeled
+by the header "B".
+When NarraFirma prints your catalysis report, when it gets to your "friendlier people" interpretation, it will print
+</p>
+<pre>
+	People who have cats are friendlier people.
+	
+		Cats Better
+
+		The stories people told about cats seem more friendly.
+</pre>
+<p>
+These headers, which do not apear in the report, must be identical in both the interpretation and the observation.
+They must be located <i>at the start</i> of the interpretation text, observation text, or observation name. 
+They must have @ signs before and after them. 
 </p>
 </div>
 	
