@@ -19,6 +19,10 @@ export function initialize(theProject) {
     project = theProject;
 }
 
+//------------------------------------------------------------------------------------------------------------------------------------------
+// string functions
+//------------------------------------------------------------------------------------------------------------------------------------------
+
 function stringUpTo(aString, upToWhat) {
     if (upToWhat !== "") {
         return aString.split(upToWhat)[0];
@@ -43,6 +47,16 @@ function rowIsEmpty(row) {
     }
     return true;
 }
+
+function padLeadingZeros(num: number, size: number) {
+    var result = num + "";
+    while (result.length < size) result = "0" + result;
+    return result;
+}
+
+//------------------------------------------------------------------------------------------------------------------------------------------
+// reading CSV - in general
+//------------------------------------------------------------------------------------------------------------------------------------------
 
 function processCSVContents(contents, callbackForItem) {
     var rows = d3.csv.parseRows(contents);
@@ -80,73 +94,29 @@ function processCSVContents(contents, callbackForItem) {
     return {header: header, items: items};
 }
 
-function padLeadingZeros(num: number, size: number) {
-    var result = num + "";
-    while (result.length < size) result = "0" + result;
-    return result;
+function chooseCSVFileToImport(callback, saveStories, writeLog) {
+    var cvsFileUploader = <HTMLInputElement>document.getElementById("csvFileLoader");
+    cvsFileUploader.onchange = function() {
+        var file = cvsFileUploader.files[0];
+        if (!file) {
+            return;
+        }
+        var reader = new FileReader();
+        reader.onload = function(e: Event) {
+            var contents = (<FileReader>e.target).result;
+            if (writeLog) {
+                console.log("=================================== START OF VERBOSE LOG reading CSV story file: " + <FileReader>e.target);
+            }
+            callback(contents, saveStories, writeLog);
+        };
+        reader.readAsText(file);
+    };
+    cvsFileUploader.click();
 }
 
-function questionForHeaderFieldName(fieldName, fieldIndex, questionnaire, project) {
-    if (!questionnaire) return null;
-    if (!fieldName) return null;
-    var matchingQuestion = null;
-    for (var i = 0; i < questionnaire.storyQuestions.length; i++) {
-        if (questionnaire.storyQuestions[i].import_columnName === fieldName) {
-            matchingQuestion = questionnaire.storyQuestions[i];
-            break;
-        }
-    }
-    if (!matchingQuestion) {
-            for (i = 0; i < questionnaire.participantQuestions.length; i++) {
-            if (questionnaire.participantQuestions[i].import_columnName === fieldName) {
-                matchingQuestion = questionnaire.participantQuestions[i];
-                break;
-            }
-        }
-    }
-    if (!matchingQuestion) {
-        var leadingStoryQuestions = questionnaireGeneration.getLeadingStoryQuestions(questionnaire.elicitingQuestions);
-        for (i = 0; i < leadingStoryQuestions.length; i++) {
-            if (leadingStoryQuestions[i].import_columnName === fieldName) {
-                matchingQuestion = leadingStoryQuestions[i];
-                break;
-            }
-        }
-    }
-    return matchingQuestion;
-}
-
-function getDisplayAnswerNameForDataAnswerName(value, question) {
-    // the question MIGHT have import_answerNames, but it will ALWAYS have valueOptions
-    if (!question.valueOptions || question.valueOptions.length < 1) {
-        return value;
-    } else {
-        for (var i = 0; i < question.valueOptions.length; i++) {
-            // first check to see if it matches the import option name
-            if (question.import_answerNames && i < question.import_answerNames.length) {
-                if (value === question.import_answerNames[i]) {
-                    return question.valueOptions[i];
-                }
-            }
-            if (value === question.valueOptions[i]) {
-                return question.valueOptions[i];
-            }
-
-            
-        }
-    }
-    return null;
-}
-
-function getElicitingQuestionDisplayNameForColumnName(value, questionnaire) {
-    for (var i = 0; i < questionnaire.elicitingQuestions.length; i++) {
-        var question = questionnaire.elicitingQuestions[i];
-        if (value === question.importName) {
-            return question.id;
-        }
-    }
-    return null;
-}
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// reading stories
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 function processCSVContentsForStories(contents, saveStories, writeLog) {
 
@@ -577,6 +547,72 @@ function processCSVContentsForStories(contents, saveStories, writeLog) {
     }
 }
 
+//------------------------------------------------------------------------------------------------------------------------------------------
+// support functions for reading stories
+//------------------------------------------------------------------------------------------------------------------------------------------
+
+function questionForHeaderFieldName(fieldName, fieldIndex, questionnaire, project) {
+    if (!questionnaire) return null;
+    if (!fieldName) return null;
+    var matchingQuestion = null;
+    for (var i = 0; i < questionnaire.storyQuestions.length; i++) {
+        if (questionnaire.storyQuestions[i].import_columnName === fieldName) {
+            matchingQuestion = questionnaire.storyQuestions[i];
+            break;
+        }
+    }
+    if (!matchingQuestion) {
+            for (i = 0; i < questionnaire.participantQuestions.length; i++) {
+            if (questionnaire.participantQuestions[i].import_columnName === fieldName) {
+                matchingQuestion = questionnaire.participantQuestions[i];
+                break;
+            }
+        }
+    }
+    if (!matchingQuestion) {
+        var leadingStoryQuestions = questionnaireGeneration.getLeadingStoryQuestions(questionnaire.elicitingQuestions);
+        for (i = 0; i < leadingStoryQuestions.length; i++) {
+            if (leadingStoryQuestions[i].import_columnName === fieldName) {
+                matchingQuestion = leadingStoryQuestions[i];
+                break;
+            }
+        }
+    }
+    return matchingQuestion;
+}
+
+function getDisplayAnswerNameForDataAnswerName(value, question) {
+    // the question MIGHT have import_answerNames, but it will ALWAYS have valueOptions
+    if (!question.valueOptions || question.valueOptions.length < 1) {
+        return value;
+    } else {
+        for (var i = 0; i < question.valueOptions.length; i++) {
+            // first check to see if it matches the import option name
+            if (question.import_answerNames && i < question.import_answerNames.length) {
+                if (value === question.import_answerNames[i]) {
+                    return question.valueOptions[i];
+                }
+            }
+            if (value === question.valueOptions[i]) {
+                return question.valueOptions[i];
+            }
+
+            
+        }
+    }
+    return null;
+}
+
+function getElicitingQuestionDisplayNameForColumnName(value, questionnaire) {
+    for (var i = 0; i < questionnaire.elicitingQuestions.length; i++) {
+        var question = questionnaire.elicitingQuestions[i];
+        if (value === question.importName) {
+            return question.id;
+        }
+    }
+    return null;
+}
+
 function changeValueForCustomScaleValues(value, question, questionnaire) {
     if (question.displayType !== "slider") return null;
     var min = undefined;
@@ -609,6 +645,10 @@ function changeValueForCustomScaleValues(value, question, questionnaire) {
         }
     }
 }
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// reading story form
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 function processCSVContentsForQuestionnaire(contents) {
 
@@ -972,70 +1012,9 @@ function processCSVContentsForQuestionnaire(contents) {
     }
 }
 
-export function autoFillStoryForm() {
-        var questionnaireName = prompt("Please enter a short name for the new story form.");
-        if (!questionnaireName) return;
-        if (questionnaireGeneration.buildQuestionnaire(questionnaireName)) {
-            alert('A story form already exists with that name: "' + questionnaireName + '"');
-            return;
-        }
-       
-        var storyFormListIdentifier = project.getFieldValue("project_storyForms");
-        if (!storyFormListIdentifier) {
-            storyFormListIdentifier = project.tripleStore.newIdForSet("StoryFormSet");
-            project.setFieldValue("project_storyForms", storyFormListIdentifier);
-        }
-        var template = {
-            id: generateRandomUuid("StoryForm"),
-            questionForm_shortName: questionnaireName,
-            questionForm_elicitingQuestions: project.tripleStore.newIdForSet("ElicitingQuestionChoiceSet"),
-            questionForm_storyQuestions: project.tripleStore.newIdForSet("StoryQuestionChoiceSet"),
-            questionForm_participantQuestions: project.tripleStore.newIdForSet("ParticipantQuestionChoiceSet")
-        };
-        project.tripleStore.makeNewSetItem(storyFormListIdentifier, "StoryForm", template);
-
-        var questionTypeCounts = {};        
-        var question;
-        var questionIndex;
-    
-        var elicitingQuestions = project.collectAllElicitingQuestions();
-        for (questionIndex in elicitingQuestions) {
-            question = elicitingQuestions[questionIndex];
-            addReferenceToList(template.questionForm_elicitingQuestions, question.elicitingQuestion_shortName, "elicitingQuestion", "ElicitingQuestionChoice");
-        }
-
-        var storyQuestions = project.collectAllStoryQuestions();
-        for (questionIndex in storyQuestions) {
-            question = storyQuestions[questionIndex];
-            addReferenceToList(template.questionForm_storyQuestions, question.storyQuestion_shortName, "storyQuestion", "StoryQuestionChoice");
-        }
-
-        var participantQuestions = project.collectAllParticipantQuestions();
-        for (questionIndex in participantQuestions) {
-            question = participantQuestions[questionIndex];
-            addReferenceToList(template.questionForm_participantQuestions, question.participantQuestion_shortName, "participantQuestion", "ParticipantQuestionChoice");
-        }
-
-        m.redraw();
-        
-        toaster.toast("Finished generating story form \"" + questionnaireName + "\" from available questions.");
-        
-        function addReferenceToList(listIdentifier: string, reference: string, fieldName: string, className: string) {
-            var order = questionTypeCounts[fieldName];
-            if (!order) {
-                order = 0;
-            }
-            order = order + 1;
-            questionTypeCounts[fieldName] = order;
-            
-            var choice = {
-                order: order
-            };
-            choice[fieldName] = reference;
-            
-            project.tripleStore.makeNewSetItem(listIdentifier, className, choice);
-        }
-}
+//------------------------------------------------------------------------------------------------------------------------------------------
+// support functions for reading story form
+//------------------------------------------------------------------------------------------------------------------------------------------
 
 function ensureQuestionExists(question, questionCategory: string) {
     var idAccessor = questionCategory + "_shortName";
@@ -1057,22 +1036,6 @@ function ensureQuestionExists(question, questionCategory: string) {
         }
     } 
     return question[idAccessor];
-}
-
-function valueAndImportOptionsForAnswers(answers) {
-    var valueOptions = [];
-    var import_answerNames = [];
-    for (var i = 0; i < answers.length; i++) {
-        var dataAndDisplay = answers[i].split("|");
-        if (dataAndDisplay.length > 1) {
-            import_answerNames.push(dataAndDisplay[0]);
-            valueOptions.push(dataAndDisplay[1]);
-        } else {
-            valueOptions.push(answers[i]);
-            import_answerNames.push(answers[i]);
-        }
-    }
-    return [valueOptions, import_answerNames];
 }
 
 function questionForItem(item, questionCategory) {
@@ -1170,79 +1133,94 @@ function questionForItem(item, questionCategory) {
     return question;
 }
 
-function chooseCSVFileToImport(callback, saveStories, writeLog) {
-    var cvsFileUploader = <HTMLInputElement>document.getElementById("csvFileLoader");
-    cvsFileUploader.onchange = function() {
-        var file = cvsFileUploader.files[0];
-        if (!file) {
-            return;
-        }
-        var reader = new FileReader();
-        reader.onload = function(e: Event) {
-            var contents = (<FileReader>e.target).result;
-            if (writeLog) {
-                console.log("=================================== START OF VERBOSE LOG reading CSV story file: " + <FileReader>e.target);
-            }
-            callback(contents, saveStories, writeLog);
-        };
-        reader.readAsText(file);
-    };
-    cvsFileUploader.click();
-}
-
-export function importCSVStories() {
-    if (!Globals.clientState().storyCollectionName()) {
-        // TODO: Translate
-        return alert("You need to select a story collection before you can import stories.");
-    }
-    // save stories, do not write verbose log
-    chooseCSVFileToImport(processCSVContentsForStories, true, false);
-}
-
-export function checkCSVStories() {
-    if (!Globals.clientState().storyCollectionName()) {
-        // TODO: Translate
-        return alert("You need to select a story collection before you can check a story CSV file.");
-    }
-    // do not save stories, do write verbose log
-    chooseCSVFileToImport(processCSVContentsForStories, false, true);
-}
-
-export function importCSVQuestionnaire() {
-    chooseCSVFileToImport(processCSVContentsForQuestionnaire, true, false);
-}
-
-function addCSVOutputLine(output, line) {
-    var start = true;
-    line.forEach(function (item) {
-        if (start) {
-            start = false;
+function valueAndImportOptionsForAnswers(answers) {
+    var valueOptions = [];
+    var import_answerNames = [];
+    for (var i = 0; i < answers.length; i++) {
+        var dataAndDisplay = answers[i].split("|");
+        if (dataAndDisplay.length > 1) {
+            import_answerNames.push(dataAndDisplay[0]);
+            valueOptions.push(dataAndDisplay[1]);
         } else {
-            output += ",";
+            valueOptions.push(answers[i]);
+            import_answerNames.push(answers[i]);
         }
-        if (typeof item == 'number') {
-            item = "" + item;
-        }
-        if (item && item.indexOf(",") !== -1) {
-            item = item.replace(/"/g, '""');
-            item = '"' + item + '"';
-        }
-        output += item;
-    });
-    output += "\n";
-    return output;
+    }
+    return [valueOptions, import_answerNames];
 }
 
-var exportQuestionTypeMap = {
-    "select": "Single choice",
-    "slider": "Scale",
-    "checkboxes": "Multi-choice multi-column texts",
-    "radiobuttons": "Radiobuttons",
-    "boolean": "Boolean",
-    "checkbox": "Checkbox",
-    "text": "Text",
-    "textarea": "Textarea"
-};
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// generating story form
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+export function autoFillStoryForm() {
+    var questionnaireName = prompt("Please enter a short name for the new story form.");
+    if (!questionnaireName) return;
+    if (questionnaireGeneration.buildQuestionnaire(questionnaireName)) {
+        alert('A story form already exists with that name: "' + questionnaireName + '"');
+        return;
+    }
+   
+    var storyFormListIdentifier = project.getFieldValue("project_storyForms");
+    if (!storyFormListIdentifier) {
+        storyFormListIdentifier = project.tripleStore.newIdForSet("StoryFormSet");
+        project.setFieldValue("project_storyForms", storyFormListIdentifier);
+    }
+    var template = {
+        id: generateRandomUuid("StoryForm"),
+        questionForm_shortName: questionnaireName,
+        questionForm_elicitingQuestions: project.tripleStore.newIdForSet("ElicitingQuestionChoiceSet"),
+        questionForm_storyQuestions: project.tripleStore.newIdForSet("StoryQuestionChoiceSet"),
+        questionForm_participantQuestions: project.tripleStore.newIdForSet("ParticipantQuestionChoiceSet")
+    };
+    project.tripleStore.makeNewSetItem(storyFormListIdentifier, "StoryForm", template);
+
+    var questionTypeCounts = {};        
+    var question;
+    var questionIndex;
+
+    var elicitingQuestions = project.collectAllElicitingQuestions();
+    for (questionIndex in elicitingQuestions) {
+        question = elicitingQuestions[questionIndex];
+        addReferenceToList(template.questionForm_elicitingQuestions, question.elicitingQuestion_shortName, "elicitingQuestion", "ElicitingQuestionChoice");
+    }
+
+    var storyQuestions = project.collectAllStoryQuestions();
+    for (questionIndex in storyQuestions) {
+        question = storyQuestions[questionIndex];
+        addReferenceToList(template.questionForm_storyQuestions, question.storyQuestion_shortName, "storyQuestion", "StoryQuestionChoice");
+    }
+
+    var participantQuestions = project.collectAllParticipantQuestions();
+    for (questionIndex in participantQuestions) {
+        question = participantQuestions[questionIndex];
+        addReferenceToList(template.questionForm_participantQuestions, question.participantQuestion_shortName, "participantQuestion", "ParticipantQuestionChoice");
+    }
+
+    m.redraw();
+    
+    toaster.toast("Finished generating story form \"" + questionnaireName + "\" from available questions.");
+    
+    function addReferenceToList(listIdentifier: string, reference: string, fieldName: string, className: string) {
+        var order = questionTypeCounts[fieldName];
+        if (!order) {
+            order = 0;
+        }
+        order = order + 1;
+        questionTypeCounts[fieldName] = order;
+        
+        var choice = {
+            order: order
+        };
+        choice[fieldName] = reference;
+        
+        project.tripleStore.makeNewSetItem(listIdentifier, className, choice);
+    }
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// exporting story form
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 export function exportQuestionnaire() {
     var storyCollectionName = Globals.clientState().storyCollectionName();
@@ -1368,7 +1346,39 @@ export function exportQuestionnaire() {
     saveAs(questionnaireBlob, "export_story_form_" + storyCollectionName + ".csv");
 }
 
-export function exportQuestionnaireForImport() {
+var exportQuestionTypeMap = {
+    "select": "Single choice",
+    "slider": "Scale",
+    "checkboxes": "Multi-choice multi-column texts",
+    "radiobuttons": "Radiobuttons",
+    "boolean": "Boolean",
+    "checkbox": "Checkbox",
+    "text": "Text",
+    "textarea": "Textarea"
+};
+
+function addCSVOutputLine(output, line) {
+    var start = true;
+    line.forEach(function (item) {
+        if (start) {
+            start = false;
+        } else {
+            output += ",";
+        }
+        if (typeof item == 'number') {
+            item = "" + item;
+        }
+        if (item && item.indexOf(",") !== -1) {
+            item = item.replace(/"/g, '""');
+            item = '"' + item + '"';
+        }
+        output += item;
+    });
+    output += "\n";
+    return output;
+}
+
+export function exportQuestionnaireForImport() { // to preserve import options for externally derived data
     var storyCollectionName = Globals.clientState().storyCollectionName();
     if (!storyCollectionName) {
         alert("Please select a story collection first");
@@ -1500,6 +1510,9 @@ export function exportQuestionnaireForImport() {
     saveAs(questionnaireBlob, "export_story_form_for_import_" + storyCollectionName + ".csv");
 }
 
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// exporting stories
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 export function exportStoryCollection() {
     var storyCollectionName = Globals.clientState().storyCollectionName();
@@ -1586,4 +1599,30 @@ export function exportStoryCollection() {
     var storyCollectionBlob = new Blob([output], {type: "text/csv;charset=utf-8"});
     // TODO: This seems to clear the console in FireFox 40; why?
     saveAs(storyCollectionBlob, "export_story_collection_" + storyCollectionName + ".csv");
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// exported functions
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+export function importCSVStories() {
+    if (!Globals.clientState().storyCollectionName()) {
+        // TODO: Translate
+        return alert("You need to select a story collection before you can import stories.");
+    }
+    // save stories, do not write verbose log
+    chooseCSVFileToImport(processCSVContentsForStories, true, false);
+}
+
+export function checkCSVStories() {
+    if (!Globals.clientState().storyCollectionName()) {
+        // TODO: Translate
+        return alert("You need to select a story collection before you can check a story CSV file.");
+    }
+    // do not save stories, do write verbose log
+    chooseCSVFileToImport(processCSVContentsForStories, false, true);
+}
+
+export function importCSVQuestionnaire() {
+    chooseCSVFileToImport(processCSVContentsForQuestionnaire, true, false);
 }

@@ -117,44 +117,42 @@ export function convertEditorQuestions(editorQuestions, prefixQPA) {
     return adjustedQuestions;
 }
 
-function buildIdToItemMap(itemListField, idField: string) {
-    var project = Globals.project();
-    var itemList = project.getListForField(itemListField);
-    var result = {};
-    itemList.forEach(function (item) {
-        var id = project.tripleStore.queryLatestC(item, idField);
-        result[id] = item;
-    });
-    return result;
-}
-
-function buildItemListFromIdList(idToItemMap, idItemList, idField) {
-    var project = Globals.project();
+function convertElicitingQuestions(elicitingQuestions) {
     var result = [];
-    idItemList.forEach(function (idItem) {
-        // TODO: Fix access here for tripleStore use
-        var id = project.tripleStore.queryLatestC(idItem, idField);
-        var order = project.tripleStore.queryLatestC(idItem, "order");
-        var item = idToItemMap[id];
-        if (item) {
-            // Retrieve the latest for all the fields of the object (which will include deleted/null fields)
-            // TODO: Remove any deleted/null fields
-            var itemObject = project.tripleStore.makeObject(item, true);
-            itemObject.order = order;
-            result.push(itemObject);
-        } else {
-            console.log("Editing error: Missing question definition for", idItem);
-        }
-    });
-    result.sort(function(a, b) {
-        if (a.order < b.order) return -1;
-        if (a.order > b.order) return 1;
-        return 0;
-    });
+    for (var elicitingQuestionIndex = 0; elicitingQuestionIndex < elicitingQuestions.length; elicitingQuestionIndex++) {
+        var storySolicitationQuestionText = elicitingQuestions[elicitingQuestionIndex].elicitingQuestion_text;
+        var storySolicitationQuestionShortName = elicitingQuestions[elicitingQuestionIndex].elicitingQuestion_shortName;
+        var storySolicitationQuestionType = elicitingQuestions[elicitingQuestionIndex].elicitingQuestion_type;
+        var storySolicitationQuestionImportName = elicitingQuestions[elicitingQuestionIndex].elicitingQuestion_dataColumnName;
+        var elicitingQuestionInfo = {
+            text: storySolicitationQuestionText,
+            id: storySolicitationQuestionShortName,
+            "type": storySolicitationQuestionType,
+            importName: storySolicitationQuestionImportName,
+        };
+        result.push(elicitingQuestionInfo);
+    }
+    ensureAtLeastOneElicitingQuestion(result);
     return result;
 }
 
-// Are names just hints as to purpose of code? Can never convey all aspects of interrelationships?
+export function ensureAtLeastOneElicitingQuestion(elicitingQuestions) {
+    // TODO: How to prevent this potential problem of no eliciting questions during questionnaire design in GUI?
+    if (elicitingQuestions.length === 0) {
+        // TODO: Translate
+        var defaultElicitingQuestion = "What happened?";
+        var message = 'No eliciting questions were defined! Adding "' + defaultElicitingQuestion + '".';
+        console.log("PROBLEM", message);
+        console.log("Adding eliciting question: ", defaultElicitingQuestion);
+        var testElicitingQuestionInfo = {
+            text: defaultElicitingQuestion,
+            id: defaultElicitingQuestion,
+            type: {"what happened": true}
+        };
+        elicitingQuestions.push(testElicitingQuestionInfo);
+    }
+}
+
 export function getStoryNameAndTextQuestions() {
     var leadingStoryQuestions = [];
     leadingStoryQuestions.unshift({
@@ -196,6 +194,43 @@ export function getLeadingStoryQuestions(elicitingQuestions) {
     return leadingStoryQuestions;
 }
 
+function buildIdToItemMap(itemListField, idField: string) {
+    var project = Globals.project();
+    var itemList = project.getListForField(itemListField);
+    var result = {};
+    itemList.forEach(function (item) {
+        var id = project.tripleStore.queryLatestC(item, idField);
+        result[id] = item;
+    });
+    return result;
+}
+
+function buildItemListFromIdList(idToItemMap, idItemList, idField) {
+    var project = Globals.project();
+    var result = [];
+    idItemList.forEach(function (idItem) {
+        // TODO: Fix access here for tripleStore use
+        var id = project.tripleStore.queryLatestC(idItem, idField);
+        var order = project.tripleStore.queryLatestC(idItem, "order");
+        var item = idToItemMap[id];
+        if (item) {
+            // Retrieve the latest for all the fields of the object (which will include deleted/null fields)
+            // TODO: Remove any deleted/null fields
+            var itemObject = project.tripleStore.makeObject(item, true);
+            itemObject.order = order;
+            result.push(itemObject);
+        } else {
+            console.log("Editing error: Missing question definition for", idItem);
+        }
+    });
+    result.sort(function(a, b) {
+        if (a.order < b.order) return -1;
+        if (a.order > b.order) return 1;
+        return 0;
+    });
+    return result;
+}
+
 // TODO: How to save the fact we have exported this in the project? Make a copy??? Or keep original in document somewhere? Versus what is returned from server for surveys?
 export function buildQuestionnaire(shortName) {
     // TODO: Redo for if questionnaire template is made of triples
@@ -205,25 +240,6 @@ export function buildQuestionnaire(shortName) {
     if (!questionnaireTemplate) return null;
     
     return buildQuestionnaireFromTemplate(questionnaireTemplate, shortName);
-}
-
-function convertElicitingQuestions(elicitingQuestions) {
-    var result = [];
-    for (var elicitingQuestionIndex = 0; elicitingQuestionIndex < elicitingQuestions.length; elicitingQuestionIndex++) {
-        var storySolicitationQuestionText = elicitingQuestions[elicitingQuestionIndex].elicitingQuestion_text;
-        var storySolicitationQuestionShortName = elicitingQuestions[elicitingQuestionIndex].elicitingQuestion_shortName;
-        var storySolicitationQuestionType = elicitingQuestions[elicitingQuestionIndex].elicitingQuestion_type;
-        var storySolicitationQuestionImportName = elicitingQuestions[elicitingQuestionIndex].elicitingQuestion_dataColumnName;
-        var elicitingQuestionInfo = {
-            text: storySolicitationQuestionText,
-            id: storySolicitationQuestionShortName,
-            "type": storySolicitationQuestionType,
-            importName: storySolicitationQuestionImportName,
-        };
-        result.push(elicitingQuestionInfo);
-    }
-    ensureAtLeastOneElicitingQuestion(result);
-    return result;
 }
 
 export function buildQuestionnaireFromTemplate(questionnaireTemplate: string, shortName) {
@@ -371,19 +387,3 @@ function ensureUniqueQuestionIDs(usedIDs, editorQuestions) {
     }
 }
 
-export function ensureAtLeastOneElicitingQuestion(elicitingQuestions) {
-    // TODO: How to prevent this potential problem of no eliciting questions during questionnaire design in GUI?
-    if (elicitingQuestions.length === 0) {
-        // TODO: Translate
-        var defaultElicitingQuestion = "What happened?";
-        var message = 'No eliciting questions were defined! Adding "' + defaultElicitingQuestion + '".';
-        console.log("PROBLEM", message);
-        console.log("Adding eliciting question: ", defaultElicitingQuestion);
-        var testElicitingQuestionInfo = {
-            text: defaultElicitingQuestion,
-            id: defaultElicitingQuestion,
-            type: {"what happened": true}
-        };
-        elicitingQuestions.push(testElicitingQuestionInfo);
-    }
-}
