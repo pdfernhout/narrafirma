@@ -196,7 +196,7 @@ class PatternExplorer {
                     id: "observationPanel_title",
                     valuePath: "currentObservationTitle",
                     displayName: "Observation",
-                    displayPrompt: "Please give this observation a <strong>name</strong>.",
+                    displayPrompt: "Please give this observation a short <strong>name</strong>.",
                     displayType: "text"
                     // Maybe TODO: Tab order problem if hide this is not visible when tab out of previous field -- it will skip to page notes
                     // displayVisible: function(panelBuilder, model) {
