@@ -216,7 +216,7 @@ function processCSVContentsForStories(contents, saveStories, writeLog) {
                         questionnaire.elicitingQuestions.forEach(function(question) {
                             importNames.push(question.importName);
                         });
-                        log("ERROR||NO MATCHING ANSWER FOUND for eliciting question name: " + value + " out of \n" + importNames.join("\n"));
+                        log("ERROR||NO MATCHING ANSWER FOUND for eliciting question name: " + value + "\nout of list: \n" + importNames.join("\n"));
                     }
                 } else if (headerName === questionnaire.import_participantIDColumnName) {
                     newItem["Participant ID"] = value;
@@ -248,7 +248,10 @@ function processCSVContentsForStories(contents, saveStories, writeLog) {
                                 }
                             } else {
                                 if (["Text", "Textarea"].indexOf(question.import_valueType) < 0) { 
-                                    log("ERROR||Answer for " + question.displayName + " (" + question.import_valueType + "): NO MATCHING ANSWER FOUND for answer name: " + value);
+                                    var listToShow = question.import_answerNames;
+                                    if (!listToShow) listToShow = question.valueOptions;
+                                    log("ERROR||Answer for " + question.displayName + " (" + question.import_valueType + "): NO MATCHING ANSWER FOUND for answer name: " + value + 
+                                        "\nout of list: " + listToShow.join("\n"));
                                 }
                             }
                         } else if (question.import_valueType === "Single choice indexed") {
@@ -286,7 +289,10 @@ function processCSVContentsForStories(contents, saveStories, writeLog) {
                                 log("INFO||Answer for " + question.displayName + " (" + question.import_valueType + "): " + answerNameToUse);
                                 count(questionNameToUse, answerNameToUse);
                             } else {
-                                log("ERROR||Answer for " + question.displayName + " (" + question.import_valueType + "): NO MATCHING ANSWER FOUND for answer name: " + value);
+                                var listToShow = question.import_answerNames;
+                                if (!listToShow) listToShow = question.valueOptions;
+                                log("ERROR||Answer for " + question.displayName + " (" + question.import_valueType + "): NO MATCHING ANSWER FOUND for answer name: " + value + 
+                                    "\nout of list: " + listToShow.join("\n"));
                             }
                         } else if (question.import_valueType === "Multi-choice multi-column yes/no") {
                             if (value === questionnaire.import_multiChoiceYesIndicator) {
@@ -297,7 +303,10 @@ function processCSVContentsForStories(contents, saveStories, writeLog) {
                                     log("INFO||Answer for " + question.displayName + " (" + question.import_valueType + "): " + answerNameToUse);
                                     count(questionNameToUse, answerNameToUse);
                                 } else {
-                                    log("ERROR||Answer for " + question.displayName + " (" + question.import_valueType + "): NO MATCHING ANSWER FOUND for answer name: " + answerName);
+                                    var listToShow = question.import_answerNames;
+                                    if (!listToShow) listToShow = question.valueOptions;
+                                    log("ERROR||Answer for " + question.displayName + " (" + question.import_valueType + "): NO MATCHING ANSWER FOUND for answer name: " + answerName + 
+                                        "\nout of list: " + listToShow.join("\n"));
                                 }
                             }
                         } else if (question.import_valueType === "Multi-choice single-column delimited") {
@@ -314,7 +323,10 @@ function processCSVContentsForStories(contents, saveStories, writeLog) {
                                         log("INFO||Answer for " + question.displayName + " (" + question.import_valueType + "): " + answerNameToUse);
                                         count(questionNameToUse, answerNameToUse);
                                     } else {
-                                        log("ERROR||Answer for " + question.displayName + " (" + question.import_valueType + "): NO MATCHING ANSWER FOUND for answer name: " + trimmedDelimitedItem);
+                                        var listToShow = question.import_answerNames;
+                                        if (!listToShow) listToShow = question.valueOptions;
+                                        log("ERROR||Answer for " + question.displayName + " (" + question.import_valueType + "): NO MATCHING ANSWER FOUND for answer name: " + trimmedDelimitedItem + 
+                                            "\nout of list: " + listToShow.join("\n"));
                                     }
                                 }
                             });
@@ -1069,8 +1081,8 @@ function questionForItem(item, questionCategory) {
     var valueOptions;
     var import_columnName;
     var import_answerNames;
-    var import_minScaleValue;
-    var import_maxScaleValue;
+    var import_minScaleValue = "";
+    var import_maxScaleValue = "";
     
     var itemType = item["Type"].trim();
     var answers = item["Answers"];
@@ -1124,7 +1136,8 @@ function questionForItem(item, questionCategory) {
         }
         if (answers.length > 2) {
             var answerCount = 0;
-            answers.slice(2).forEach(function (textValue) {
+            var minAndMax = answers.slice(2);
+            minAndMax.forEach(function (textValue) {
                 var value = parseInt(textValue);
                 if (isNaN(value)) {
                     var word = "minimum";
@@ -1132,15 +1145,12 @@ function questionForItem(item, questionCategory) {
                     alert('The text you entered for the ' + word + ' scale value ("' + textValue + '") for the question "' + item["Short name"] + '" could not be converted to a number.');
                 }
                 if (answerCount === 0) {
-                    import_minScaleValue = value;
+                    import_minScaleValue = textValue;
                 } else {
-                    import_maxScaleValue = value;
+                    import_maxScaleValue = textValue;
                 }
                 answerCount += 1;
             });
-        if (import_minScaleValue != undefined && import_maxScaleValue != undefined && import_minScaleValue > import_maxScaleValue) {
-            alert('For the question "' + item["Short name"] + '" the minimum scale value (' + import_minScaleValue + ') is higher than the maximum scale value (' + import_maxScaleValue + ').');
-        }
         }
     } else {
         console.log("IMPORT ERROR: unsupported question type: ", itemType);
