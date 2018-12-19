@@ -46,7 +46,7 @@ var panel: Panel = {
             }
         },
         {
-            id: "printStoryCards_chooseQuestions",
+            id: "printStoryCards_questionsToInclude",
             valueType: "object",
             valuePath: "/clientState/storyCollectionName/printStoryCards_questionsToInclude",
             displayType: "printStoryCardsQuestionChooser",
