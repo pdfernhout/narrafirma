@@ -17,8 +17,8 @@ interface StoryPlotItem {
     value: number;
 }
 
-var unansweredKey = "No answer";
-var maxRangeLabelLength = 26;
+const unansweredKey = "No answer";
+const maxRangeLabelLength = 26;
 
 function correctForUnanswered(question, value) {
     if (question.displayType === "boolean") {
@@ -368,7 +368,7 @@ function addXAxisLabel(chart, label, labelLengthLimit = 64, textAnchor = "middle
     
     var shortenedLabelSVG = chart.chart.append("text")
         .attr("class", "x-axis-label")
-        .attr("text-anchor", textAnchor)
+        .attr("text-anchor", textAnchor) 
         .attr("x", xPosition)
         .attr("y", yPosition)
         .text(shortenedLabel);
