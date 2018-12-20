@@ -271,7 +271,10 @@ export function buildQuestionnaireFromTemplate(questionnaireTemplate: string, sh
         import_storyTextColumnName: "Story text",
         import_participantIDColumnName: "Participant ID",
         import_columnsToIgnore: [],
+        import_columnsToAppendToStoryText: [],
         import_elicitingQuestionColumnName: "Eliciting question",
+        import_minWordsToIncludeStory: "",
+        import_stringsToRemoveFromHeaders: "",
         elicitingQuestionGraphName: "Eliciting question",
 
         elicitingQuestions: [],
@@ -319,9 +322,13 @@ export function buildQuestionnaireFromTemplate(questionnaireTemplate: string, sh
     questionnaire.import_storyTitleColumnName = project.tripleStore.queryLatestC(questionnaireTemplate, "questionForm_import_storyTitleColumnName"); 
     questionnaire.import_storyTextColumnName = project.tripleStore.queryLatestC(questionnaireTemplate, "questionForm_import_storyTextColumnName"); 
     questionnaire.import_elicitingQuestionColumnName = project.tripleStore.queryLatestC(questionnaireTemplate, "questionForm_import_elicitingQuestionColumnName"); 
+    questionnaire.import_minWordsToIncludeStory = project.tripleStore.queryLatestC(questionnaireTemplate, "questionForm_import_minWordsToIncludeStory"); 
+    questionnaire.import_stringsToRemoveFromHeaders = project.tripleStore.queryLatestC(questionnaireTemplate, "questionForm_import_stringsToRemoveFromHeaders"); 
+
     questionnaire.import_participantIDColumnName = project.tripleStore.queryLatestC(questionnaireTemplate, "questionForm_import_participantIDColumnName"); 
     questionnaire.import_columnsToIgnore = project.tripleStore.queryLatestC(questionnaireTemplate, "questionForm_import_columnsToIgnore"); 
-
+    questionnaire.import_columnsToAppendToStoryText = project.tripleStore.queryLatestC(questionnaireTemplate, "questionForm_import_columnsToAppendToStoryText"); 
+    
     questionnaire.chooseQuestionText = project.tripleStore.queryLatestC(questionnaireTemplate, "questionForm_chooseQuestionText");
     questionnaire.elicitingQuestionGraphName = project.tripleStore.queryLatestC(questionnaireTemplate, "questionForm_elicitingQuestionGraphName");
     

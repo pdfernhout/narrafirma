@@ -62,9 +62,12 @@
                 <li><a href="#csv_multicolumnyesno">Multi-choice multi-column yes/no questions</a></li>
                 <li><a href="#csv_multicolumndelimited">Multi-choice single-column delimited questions</a></li>
                 <li><a href="#csv_multicolumndelimitedindexed">Multi-choice single-column delimited indexed questions</a></li>
-                <li><a href="#csv_importfile">Import your story form CSV file</a></li>
-                <li><a href="#csv_formoptions">Form options you can specify in your story form CSV file</a></li>
+                <li><a href="#csv_lesserknown">Lesser-known question types</a></li>
+                <li><a href="#csv_formleveloptions">Form-level import options</a></li>
+                <li><a href="#csv_specialproblems">Special problems and solutions</a></li>
+                <li><a href="#csv_formoptions">Form options you can specify</a></li>
                 <li><a href="#csv_othernotes">Other notes on the story form CSV file format</a></li>
+                <li><a href="#csv_importfile">Import your story form CSV file</a></li>
                 <li><a href="#csv_completedfile">Our finished example story form CSV file</a></li>
             </ul>
             </li>
@@ -630,12 +633,22 @@ In our example data file, the "Needed" question is of this type:</p>
     </tr>
     <tr>
     <td>In your data file, what is the data column header for the <b>story title</b>?</td>
-    <td>Look at your data file and find the column with story titles in it. Copy and paste the exact header for that column here.</td>
+    <td>Look at your data file and find the column with story titles in it. Copy and paste the exact header for that column here.
+    </td>
     </tr>
 
     <tr>
     <td>What is the data column header for the <b>story text</b>?</td>
-    <td>Copy the header for the column that has the stories in it.</td>
+    <td>Copy the header for the column that has the stories in it.
+    </td>
+    </tr>
+
+    <tr>
+    <td>If you want to <b>append additional text columns to your story text</b>, enter the column names here, one per line.</td>
+    <td>After someone has told a story, you might want to ask them for more details on it in a follow-up question, and you might want those details
+        to be included in the story text itself, instead of in a separate question. Use this box to tell NarraFirma the names of column
+        header to append to the story text. Make sure you copy the column headers <i>exactly</i> as they are in your data file, and place one per line in the text box.
+    </td>
     </tr>
         
     <tr>
@@ -650,12 +663,32 @@ In our example data file, the "Needed" question is of this type:</p>
     </tr>
 
     <tr>
+    <td><b>How many words</b> should a row have in its story text field to be imported?</td>
+    <td>If you collected a lot of partial responses to your survey, you might want to skip over rows in your data file with really short stories in them.
+        Choose a minimum number of "words" (characters separated by spaces) that must be in a story's text to keep that row during import.
+        You can find out how many stories have been skipped over by looking at the INFO messages you get when you <a href=#checkstories>check your stories</a>.
+    </td>
+    </tr>
+
+    <tr>
         <td>If your story data file has <b>columns you want to ignore</b>, enter the column headers here, one per line.</td>
         <td>Survey data often has lots of extra information in it, like the date and time the survey was taken. Enter 
             a list of headers for columns in your data file that you want NarraFirma to pass over.
-            To be clear, it would pass over them anyway, because you haven't specified them as questions to be imported,
-            but if you enter them here, they won't show up as errors when you are checking your data file.
+            To be clear, it would pass over them anyway, because you haven't specified them as questions to be imported.
+            But if you enter them here, they won't show up as errors when you are <a href=#checkstories>checking your stories</a>.
         </td>
+    </tr>
+
+    <tr>
+    <td>If your story data file has <b>texts you need to remove from your column names</b>, enter the texts here, one per line.</td>
+    <td>If your survey system uses the same characters to mean different things in different columns, it can confuse NarraFirma.
+        You can avoid having to edit your data file by telling NarraFirma to remove conflict-creating texts from your headers. 
+        Place each text you want to remove on a separate line.
+        <br/><br/>
+        Here is an example to illustrate. LimeSurvey uses the same syntax to denote a question type (e.g., "Remember[SLIDER]") and an answer name (e.g., "Feeling[happy]").
+        This confuses NarraFirma, because it thinks "SLIDER" is the answer to a question.
+        To fix this conflict, you can enter "[SLIDER]" here, and NarraFirma will remove that text from every column header <i>before</i> processing the column name. 
+    </td>
     </tr>
 
     <tr>
@@ -1528,7 +1561,7 @@ This question type is just like the "Single choice indexed" question type, excep
         </p>
         
 
-<h2>Lesser-known question types</h2>
+<h2 id="csv_lesserknown">Lesser-known question types</h2>
 
 <p>Technically, there are four other question types NarraFirma uses internally and <i>could</i> read during import:</p>
 <ul>
@@ -1542,33 +1575,250 @@ This question type is just like the "Single choice indexed" question type, excep
     technically matched them, you could handle the same data using the types described above. So it's probably best to ignore them.
 </p>
 
+<h2 id="csv_formleveloptions">Form-level import options</h2>
 
-<h2 id="csv_importfile">Import your story form CSV file</h2>
+<p>There are some other import options you can (and should) specify about your story form in your CSV file. 
+    Some form-level options have been addressed above in relation to the data types they support, but there 
+    are a few others that apply to the whole story form, as follows.
+</p>
 
-<p>Once you have finished writing your CSV file, go to the <b>Design, generate, or import story forms</b> page.
-On that page, click <b>Import CSV story form file</b>. Choose the file name you saved. If NarraFirma has any problems reading the file, it will give you some
-error messages. If not, look over the story form in the NarraFirma interface. (Use the instructions above to make sure everything looks the way it should.)
-Then you will be ready to create a story collection and import your stories to it.</p>
-    
-<p>These are a few <b>things that could go wrong</b> when you import a CSV story form file:</p>
-<ul>
-        <li><b>You see extra questions</b>. This is probably because you entered the same question multiple times, but with changes. 
-            To preserve data, NarraFirma doesn't delete questions when you delete a story form;
-            it just "unmoors" them. If you create another story form <i>with the same name</i>, it reconnects any "lost" questions with the new form.
-            So if you are creating and deleting story forms (perhaps while trying to get your CSV files right), make sure you <i>use
-            a new name for each form</i>. That way you won't get extra questions in the way. (This also means you can get
-            a story form back if you deleted it by accident: just create another one with the same name.)</li>
-        <li><b>New or changed answers get discarded</b>. 
-            This is because you are trying to import over the same question.
-            NarraFirma <i>really</i> doesn't want you to lose your data. So if you try to import a question that has the same name
-            as an existing question but has different answers, it will keep your old question and throw away your new answers. To import a new question
-            with the same name and new answers, go to the "Write questions about stories" or "Write questions about participants" screen and delete the question there. 
-            Then import the story form again. This time your new options will appear.
-        </li>
-    
-</ul>
+<p><b>Scale range</b>. If all of your scales use a custom range (not zero to 100, which is NarraFirma's default range), enter it using this form option:</p>
 
-<h2 id="csv_formoptions">Form options you can specify in your story form CSV file</h2>
+<table border="1" cellpadding="4" cellspacing="0">
+        <tr>
+                <td>Data column name</td>
+                <td>Type</td>
+                <td>About</td>	
+                <td>Short name</td>
+                <td>Long name</td>
+                <td>Answers</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>Scale range</td>
+                <td>import</td>
+                <td></td>
+                <td></td>
+                <td>1</td>
+                <td>10</td>
+            </tr>
+        </table>
+
+<p><b>Story title column name</b>. The names of the stories in your data file should be found in a column, and you need to tell NarraFirma
+    what that column is called. Specify it thus.</p>
+
+    <table border="1" cellpadding="4" cellspacing="0">
+            <tr>
+                    <td>Data column name</td>
+                    <td>Type</td>
+                    <td>About</td>	
+                    <td>Short name</td>
+                    <td>Long name</td>
+                    <td>Answers</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>Story title column name</td>
+                    <td>import</td>
+                    <td></td>
+                    <td></td>
+                    <td>SName</td>
+                </tr>
+            </table>
+
+<p><b>Story text column name</b>. Tell NarraFirma in which column to find your story texts.</p>
+
+    <table border="1" cellpadding="4" cellspacing="0">
+            <tr>
+                    <td>Data column name</td>
+                    <td>Type</td>
+                    <td>About</td>	
+                    <td>Short name</td>
+                    <td>Long name</td>
+                    <td>Answers</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>Story text column name</td>
+                    <td>import</td>
+                    <td></td>
+                    <td></td>
+                    <td>TStory</td>
+                </tr>
+            </table>
+
+<p><b>Participant ID column name</b>. Sometimes when people can tell more than one story, 
+    you can find some interestingly different patterns between people who had more or less to say.
+    If you want NarraFirma to count how many stories people told and compare their stories,
+    you need to tell it who told what story. You can do this by designating a column in your data
+    file to identify each participant (identical for each story they told).
+    This identifier can be anything -- a name, a number, whatever -- as long as each participant's identifier
+    is unique. Specify it thus.
+    </p>
+
+<table border="1" cellpadding="4" cellspacing="0">
+            <tr>
+                    <td>Data column name</td>
+                    <td>Type</td>
+                    <td>About</td>	
+                    <td>Short name</td>
+                    <td>Long name</td>
+                    <td>Answers</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>Participant ID column name</td>
+                    <td>import</td>
+                    <td></td>
+                    <td></td>
+                    <td>Participant</td>
+                </tr>
+            </table>
+
+<h2 id="csv_specialproblems">Special problems and solutions</h2>
+
+<p>These are some problems or special situations you might encounter when importing data.</p>
+
+<h3>Your story texts cover more than one question.</h3>
+
+<p>Sometimes it's a good idea to give people an opportunity to say more about a story later on in the survey or interview.
+    In that case, you might want to <i>append</i> those additional texts to the story. You can tell NarraFirma to do this 
+    with the "Data columns to append to story text" import option. In your CSV story form file, enter the data columns like this:
+    </p>
+<table border="1" cellpadding="4" cellspacing="0">
+        <tr>
+            <td>Data column name</td>
+            <td>Type</td>
+            <td>About</td>	
+            <td>Short name</td>
+            <td>Long name</td>
+            <td>Answers</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>Data columns to append to story text</td>
+            <td>import</td>
+            <td></td>
+            <td></td>
+            <td>More about the story</td>
+            <td>Advice to people who have stories like this one</td>
+        </tr>
+    </table>
+
+<p>In that example, two additional questions ("Would you like to say more about the story you told?" and "What advice do you have for people
+    in similar situations?") are enough about the story that you want them to be merged with it. They will not be considered
+    separate questions, but parts of the story text.
+</p>
+
+<h3>You have a lot of incomplete survey results you want to ignore.</h3>
+
+<p>Sometimes you end up with a lot of survey results where people didn't tell stories, or they just typed in a few words and then quit. You can
+    deal with this (without having to delete data rows by hand) by setting a minimum number of words per story. By "words" we mean "things separated
+    by spaces," because that's how NarraFirma counts them. You can specify this option thus:
+</p>
+
+<table border="1" cellpadding="4" cellspacing="0">
+        <tr>
+            <td>Data column name</td>
+            <td>Type</td>
+            <td>About</td>	
+            <td>Short name</td>
+            <td>Long name</td>
+            <td>Answers</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>Minimum words to include story</td>
+            <td>import</td>
+            <td></td>
+            <td></td>
+            <td>10</td>
+        </tr>
+    </table>
+
+<p>In this case any story text field with fewer than ten words will be skipped over during import. 
+    (This does not include any fields appended to the story text.)
+</p>
+
+<h3>You have a lot of extra columns you want to ignore.</h3>
+
+<p>Most survey systems add in a lot of extra columns with information like when the person took the survey and how long it took them to do it. 
+    That's all nice information, but if you don't care about it, it's in your way. You can delete these columns by hand, but if you don't want to,
+    you can tell NarraFirma to ignore them, like this:
+</p>
+
+<table border="1" cellpadding="4" cellspacing="0">
+        <tr>
+            <td>Data column name</td>
+            <td>Type</td>
+            <td>About</td>	
+            <td>Short name</td>
+            <td>Long name</td>
+            <td>Answers</td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>Data columns to ignore</td>
+            <td>import</td>
+            <td></td>
+            <td></td>
+            <td>Start date</td>
+            <td>time</td>
+            <td>ip</td>
+        </tr>
+    </table>
+
+<p>Of course, NarraFirma will ignore any column you haven't described to it in some way (as a question or as having some other form-specific meaning).
+    So it is not necessary to specify columns to ignore. Doing this just keeps you from being annoyed with a lot of ERROR messages
+    when you <a href="#checkestories">check your stories</a>.
+</p>
+
+<h3>The naming schemes in your column names conflict.</h3>
+
+<p>Here's another possible problem. LimeSurvey uses the same syntax to denote a question type 
+    (e.g., "Remember[SLIDER]") and an answer name (e.g., "Feeling[happy]"). 
+    This confuses NarraFirma, because if you said "Feeling" was a multi-column yes/no question, it is going to think that "SLIDER" is also the answer to a question.</p>
+
+<p>To avoid this and other syntax conflicts, you can give NarraFirma a list of texts to <b>strip out</b> of column headers as it reads them.
+In the LimeSurvey example, you would ask NarraFirma to strip out "[SLIDER]" and act as if that bit of text never appeared in a column header. Do this as follows:</p>
+
+<table border="1" cellpadding="4" cellspacing="0">
+        <tr>
+            <td>Data column name</td>
+            <td>Type</td>
+            <td>About</td>	
+            <td>Short name</td>
+            <td>Long name</td>
+            <td>Answers</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>Texts to remove from column headers</td>
+            <td>import</td>
+            <td></td>
+            <td></td>
+            <td>[OPTIONAL]</td>
+            <td>[REQUIRED]</td>
+        </tr>
+    </table>
+
+<p>In this case, the texts "[OPTIONAL]" and "[REQUIRED]" were conflicting with what NarraFirma needed to read,
+    so we instructed NarraFirma to ignore those things when it found them.
+</p>
+
+<p><b>Be careful with this option.</b> Remember that these texts will be removed from <i>every</i> header. Make sure you aren't garbling any headers by doing this.</p>
+
+<h3>You wrote some test stories, and now you want to ignore them.</h3>
+
+<p>This isn't an option you can specify, but if the story title or story text on any row in your data file consists of <i>exactly</i> the text "testing123" (capitalized or not),
+NarraFirma will ignore that row of data.</p>
+
+<h2 id="csv_formoptions">Form options you can specify</h2>
 
 <p>
     In your CSV story form file, you can also specify messages to participants, to be shown at the start and end of your story form. 
@@ -1607,8 +1857,11 @@ Then you will be ready to create a story collection and import your stories to i
     <li>You can include comment lines in your story form file. Place a semicolon (;) as the very first character on the line. Everything else on that line 
     will be ignored. Empty lines will also be ignored. </li>
     <li>You can include extra or comment columns. Any columns with names other than <b>Data column name</b>, <b>Type</b>, <b>About</b>, 
-    <b>Short name</b>, <b>Long name</b>,, or <b>Answers</b> will be ignored. However, place your extra columns <i>to the left</i> of
+    <b>Short name</b>, <b>Long name</b>, or <b>Answers</b> will be ignored. However, place your extra columns <i>to the left</i> of
     the <b>Answers</b> column. All texts in cells to the right of that column will be treated as answers. </li>
+    <li>Watch out for encoding problems. If you import a CSV file and then have problems reading your story data, look for special characters
+        that are different in the story form CSV file and data CSV file. Make sure both files are being saved using UTF-8 encoding.
+    </li>
     <li>Remember that a CSV file is not the same thing as a spreadsheet file. You can work in a spreadsheet format (like XLSX), but be aware that any
         special formatting will be lost when you convert the file to CSV. It's usually better to edit the file directly in the CSV format
         so you don't put anything into it that will be lost when you convert to CSV.</li>
@@ -1616,6 +1869,13 @@ Then you will be ready to create a story collection and import your stories to i
         You can copy those files and amend them to match your story form.</li>
 </ul>
 
+<h2 id="csv_importfile">Import your story form CSV file</h2>
+
+<p>Once you have finished writing your CSV file, go to the <b>Design, generate, or import story forms</b> page.
+On that page, click <b>Import CSV story form file</b>. Choose the file name you saved. If NarraFirma has any problems reading the file, it will give you some
+error messages. If not, look over the story form in the NarraFirma interface. (Use the instructions above to make sure everything looks the way it should.)
+Then you will be ready to create a story collection and import your stories to it.</p>
+    
 <h2 id="csv_completedfile">Our finished example story form CSV file</h2>
 
 <p>This is what the completed story form CSV file looks like for our example data set. 
@@ -1862,7 +2122,8 @@ To do this:</p>
     <li>
             <b>Check your story data</b>. With the developer console open, go back to NarraFirma and navigate to the <b>Enter or import stories</b> page. 
             Choose the story collection you created. Then click <b>Check stories in CSV file</b>.
-            Choose your data file. Now look at the developer console. You should see two categories of messages from NarraFirma.
+            Choose your data file. Now look at the developer console. You should see four categories of messages from NarraFirma.
+            (Your developer console will probably have buttons to show or hide the different types of messages.)
             <ul>
                 <li><b>INFO messages</b> tell you about normal imports: answers to questions NarraFirma knows about. 
                     To save you having to look though many thousands of lines, cell values are only reported the <i>first</i> time they are encountered.
@@ -1870,10 +2131,13 @@ To do this:</p>
                     it finds "happy" in your data file. It's a good idea to look through the first few stories in your data file
                     and verify that all of their data fields are being read in correctly.
                     </li>
+                <li><b>WARN messages</b> tell you that something was skipped - usually a story with too few words in it or a testing story.</li>
                 <li><b>ERROR messages</b> tell you when something is wrong with the import process. Usually what goes wrong is that NarraFirma encounters a question
                     or answer name it doesn't recognize. Look carefully at these error messages. Change the options in your story form and keep checking your data
                     until you get no more ERROR messages.  (Remember that if you make any non-trivial changes to your story form, you must create a new story collection to pick them up.)
                 </li>
+                <li><b>LOG messages</b> tell you which rows of the data file, and which story texts and participant IDs, NarraFirma is reading when the other messages appear. 
+                You won't need to pay attention to these unless you want to know what line an error or warning appears on.</li>
             </ul>
     </li>
     <li><b>Compare answer counts</b>. At the bottom of the console are a series of INFO messages marked "<b>ANSWER COUNTS</b>." 
@@ -1896,7 +2160,7 @@ Whether you created a NarraFirma story form inside NarraFirma or by importing a 
 NarraFirma is ready to read your data file.
 <p>
 Before you can import your data file, you need to <b>create a story collection</b> to put the stories in.
-    Go to the <b>Start story collection</b> page, then click <b>Add</b>.
+    If you haven't done this already, go to the <b>Start story collection</b> page, then click <b>Add</b>.
     Give your new story collection a name, and select the story form you previously created or imported from CSV. Then click <b>Close</b> to create the collection.
 </p>
 <p>Remember that if you make non-trivial changes to a story form, you must create a new story collection to pick them up.
@@ -1923,6 +2187,11 @@ Before you can import your data file, you need to <b>create a story collection</
 <p>These are just some things we've noticed that you might find helpful.
     </p>
     <ul>
+        <li>When you have just imported some stories and go to spot-check your graphs, you may find that a graph has lower
+            numbers than you expected. Wait half a minute, then reload the page and check the graph again.
+            This is due to the nature of web applications. Basically, it's possible to ask NarraFirma to count answers before they are all stored.
+        </li>
+        <li>Any imported rows in which the story title or story text is "testing123" (case insensitive) will be skipped during import.</li>
         <li>You can use a spreadsheet program to get a list of all the answers in a particular column. In Excel, select a cell, then
             right-click and choose "Pick from drop-down list" from the menu that pops up. In OpenOffice, you can do the same thing, but
             choose "Selection List" from the popup menu. If you don't see an option like this for your spreadsheet program, look 
@@ -1930,7 +2199,7 @@ Before you can import your data file, you need to <b>create a story collection</
             what is in a column with hundreds of entries in it.
         </li>
         <li>Annotation questions cannot be imported, because they belong to a NarraFirma project, not an individual story collection.
-            However, if you <i>export</i> a story collection, answers to any annotation questions you added to the stories in NarraFirma
+            However, if you <i>export</i> a story collection (in NarraFirma's native format), answers to any annotation questions you added to the stories in NarraFirma
             will be included.
         </li>
         <li>For multiple-choice questions, LimeSurvey seems to prefer the "Multi-choice multi-column yes/no" option. The Open Data Toolkit
@@ -1938,23 +2207,19 @@ Before you can import your data file, you need to <b>create a story collection</
             option.
         </li>
         <li>When we say "Short name," we do mean a short name. If your short names are too long, your graphs will look messy. Keep short names to
-            about 30 characters or fewer. The same thing goes for answer names.
+            about 20 characters or fewer. The same thing goes for answer names.
         </li>
         <li>When you are creating a CSV story form file, one shortcut that can save time is to copy the headers from your data file,
             then go to your new story form file and "Paste Special" the headers, but transposed, into the "Data column name" column.
             Then you can go through each column, removing those you don't care about and adding information to the ones you want to keep.
         </li>
-        <li>Watch out for header names that collide with the method you use to separate questions and answers for yes/no column data.
-            For example, if your yes/no columns are designated like this: "Role[Parent]" and you have a completely different
-            question whose header reads "Remember[SLIDER]" those things will collide. In that case you would need to change the header
-            "Remember[SLIDER]" to "Remember(SLIDER)" or just "Remember" so NarraFirma no longer thinks it designates both a
-            question name and an answer name.
-        </li>
-        <li>When you are importing stories over and over, because NarraFirma uses a journaling data storage system and never
-                actually removes stories (it just "unmoors" them), you might end up in a situation where you have many
-                invisible stories and your system gets slow. (We did not originally intend NarraFirma to be heavily used
-                with other surveying systems, so we did not foresee this problem.) You can fix this by exporting the project without
-                its history and importing it into a new project. 
+        <li>NarraFirma uses a journaling data storage system that never
+                actually removes stories (it just "unmoors" them). This means that if you are importing stories over and over, you could end up with many
+                invisible (unmoored) stories, and that could make your system slow down. (We did not originally intend NarraFirma to be heavily used
+                with other surveying systems, so we did not foresee this problem.) You can avoid this problem
+                by not importing your stories at all until you have <a href="#checkyourstories">checked them</a> and are sure they are correct.
+                You can also go the Administration page, export your project without
+                its history, and then import it into a new, empty project. This will clear out all the invisible stories.
         </li>
     </ul>
 </div>

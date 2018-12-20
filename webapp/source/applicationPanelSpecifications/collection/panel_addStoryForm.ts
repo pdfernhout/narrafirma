@@ -363,6 +363,13 @@ var panel: Panel = {
             displayPrompt: "What is the data column header for the  <strong>story text</strong>?"
         },
         {
+            id: "questionForm_import_columnsToAppendToStoryText",
+            valueType: "string",
+            displayType: "textarea",
+            displayName: "Columns to append to story text",
+            displayPrompt: "If you want to <strong>append additional text columns to your story text</strong>, enter the column names here, one per line. (See the help system for more details.)"
+        },
+        {
             id: "questionForm_import_elicitingQuestionColumnName",
             valueType: "string",
             displayType: "text",
@@ -377,11 +384,26 @@ var panel: Panel = {
             displayPrompt: "What is the data column header for the  <strong>participant ID</strong> field? (If participants are not identified in your data file, you can leave this field blank.)"
         },
         {
+            id: "questionForm_import_minWordsToIncludeStory",
+            valueType: "string",
+            displayType: "select",
+            valueOptions: ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "25", "30", "35", "40", "45", "50", "60", "70", "80", "90", "100"],
+            displayName: "Minimum words to include story",
+            displayPrompt: "<strong>How many words</strong> should a row have in its story text field to be imported?"
+        },
+        {
             id: "questionForm_import_columnsToIgnore",
             valueType: "string",
             displayType: "textarea",
             displayName: "Columns to ignore",
             displayPrompt: "If your story data file has <strong>columns you want to ignore</strong>, enter the column headers here, one per line."
+        },
+        {
+            id: "questionForm_import_stringsToRemoveFromHeaders",
+            valueType: "string",
+            displayType: "textarea",
+            displayName: "Texts to remove from headers",
+            displayPrompt: "If your story data file has <strong>texts you need to remove from your column names</strong>, enter the texts here, one per line. (See the help system for an explanation of this function.)"
         },
 
         {

@@ -23,6 +23,10 @@ export function initialize(theProject) {
 // string functions
 //------------------------------------------------------------------------------------------------------------------------------------------
 
+function replaceAll(str, find, replace) {
+    return str.replace(new RegExp(find, 'g'), replace);
+}
+
 function stringUpTo(aString, upToWhat) {
     if (upToWhat !== "") {
         return aString.split(upToWhat)[0];
@@ -52,6 +56,11 @@ function padLeadingZeros(num: number, size: number) {
     var result = num + "";
     while (result.length < size) result = "0" + result;
     return result;
+}
+
+function shortenTextIfNecessary(text) {
+    if (!text || text.length < 50) return text;
+    return text.slice(0,50) + "...";
 }
 
 //------------------------------------------------------------------------------------------------------------------------------------------
@@ -146,9 +155,8 @@ function processCSVContentsForStories(contents, saveStories, writeLog) {
     
     var questionnaire = surveyCollection.getQuestionnaireForStoryCollection(storyCollectionName, true);
     if (!questionnaire) return;
-    log("INFO||Data check for story collection: " + storyCollectionName);
-    log("INFO||Data column headers and cell values are only logged the first time their unique value is encountered. Subsequent identical messages are suppressed.");
-    log("INFO||Text answers are not reported.");
+    log("LOG||Data check for story collection: " + storyCollectionName);
+    log("LOG||Data column headers and cell values are only logged the first time their unique value is encountered. Subsequent identical messages are suppressed. Text answers are not reported.");
     
     var messageText = "";
     if (saveStories) {
@@ -159,23 +167,106 @@ function processCSVContentsForStories(contents, saveStories, writeLog) {
     var progressModel = dialogSupport.openProgressDialog("Processing CSV file...", messageText, "Cancel", dialogCancelled);
 
     var rowNumber = 0;
+    var numRowsSkipped = 0;
+
+    var canCheckStoryLength = true;
+    var minWords = 0;
+    if (questionnaire.import_minWordsToIncludeStory) {
+        minWords = parseInt(questionnaire.import_minWordsToIncludeStory);
+        if (isNaN(minWords)) {
+            log("ERROR||Import option for minimum words to include a story (" + questionnaire.import_minWordsToIncludeStory + ") is not a number.");
+            canCheckStoryLength = false;
+        }
+    }
   
     var headerAndItems = processCSVContents(contents, function (header, row) {
         rowNumber++;
-        log("INFO||<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< PROCESSING ROW " + rowNumber + " >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+        log("LOG||<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< PROCESSING ROW " + rowNumber + " >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
         var newItem = {};
+        var saveStory = true;
+
+        // get lists of special columns
+        var columnsToAppendToStoryText = [];
+        if (questionnaire.import_columnsToAppendToStoryText != "") {
+            columnsToAppendToStoryText = questionnaire.import_columnsToAppendToStoryText.split("\n");
+        }
+        var columnsToIgnore = [];
+        if (questionnaire.import_columnsToIgnore != "") {
+            columnsToIgnore = questionnaire.import_columnsToIgnore.split("\n");
+        }
+
+        // read row by column
         for (var fieldIndex = 0; fieldIndex < header.length; fieldIndex++) {
+            if (!saveStory) break;
+
+            // get cell value
             // in situation where the row is shorter the the headers, because there is no value in the last cell(s), don't assign any value
             var value = undefined;
             if (row[fieldIndex] != undefined) value = row[fieldIndex].trim(); // Note the value is trimmed
-            if (value !== "") {
+
+            // if nothing in cell AND it is the story text cell AND empty stories are to be ignored, stop reading row
+            if ((value === undefined || value === "") && (header[fieldIndex] === questionnaire.import_storyTitleColumnName) && canCheckStoryLength) {
+                log("WARN||Row skipped because story text is empty.");
+                saveStory = false;
+                numRowsSkipped++;
+                break;
+            }
+            if (value != undefined && value !== "") {
                 var headerName = header[fieldIndex];
+                // user may have entered list of strings to remove from header names 
+                // because they conflict with other things (like yes/no answer formatting)
+                if (questionnaire.import_stringsToRemoveFromHeaders != "") {
+                    var stringsToRemove = questionnaire.import_stringsToRemoveFromHeaders.split("\n");
+                    if (stringsToRemove.length) {
+                        for (var stringIndex = 0; stringIndex < stringsToRemove.length; stringIndex++) {
+                            var stringToRemove = stringsToRemove[stringIndex];
+                            if (headerName.indexOf(stringToRemove) >= 0) {
+                                headerName = replaceAll(headerName, stringsToRemove[stringIndex], "");
+                            }
+                        }
+                    }
+                }
+
+                // story title
                 if (headerName === questionnaire.import_storyTitleColumnName) {
-                    newItem["Story title"] = value;
-                    log("INFO||Story title: " + value);
+                    if (value.toLowerCase() === "testing123") {
+                        log('WARN||Row with story name "testing123" skipped.');
+                        saveStory = false;
+                        numRowsSkipped++;
+                    } else {
+                        newItem["Story title"] = value;
+                        log("INFO||Story title: " + value);
+                    }
+
+                // story text - check length if desired
                 } else if (headerName === questionnaire.import_storyTextColumnName) {
-                    newItem["Story text"] = value;
-                    log("INFO||Story text: " + value.slice(0,50) + "...");
+                    if (value.toLowerCase() === "testing123") {
+                        log('WARN||Row ' + rowNumber + ' with story text "testing123" skipped.');
+                        saveStory = false;
+                        numRowsSkipped++;
+                    } else {
+                        if (canCheckStoryLength && minWords > 0) {
+                            var storyAsWords = value.split(" ");
+                            if (storyAsWords.length < minWords) {
+                                log("WARN||Row skipped because story text length (" + storyAsWords.length + ") is below minimum of " + minWords + "; text is: " + value);
+                                saveStory = false;
+                                numRowsSkipped++;
+                            } else {
+                                newItem["Story text"] = value;
+                                log("LOG||Story text (" + storyAsWords.length + " words): " + shortenTextIfNecessary(value) + "...");
+                            }
+                        } else { // cannot check story length, either because the minimum is zero or the minimum could not be read
+                            newItem["Story text"] = value;
+                            log("LOG||Story text (no word length check): " + shortenTextIfNecessary(value) + "...");
+                        }
+                    }
+
+                // additional text columns to be appended to story text (must be to the right of story text in data file)
+                } else if (columnsToAppendToStoryText.indexOf(headerName) >= 0) {
+                    newItem["Story text"] = newItem["Story text"] + " ---- " + value;
+                    log("LOG||Text for column " + headerName + " (" + shortenTextIfNecessary(value) + ") added to story text.");
+
+                // eliciting question
                 } else if (headerName === questionnaire.import_elicitingQuestionColumnName) {
                     var questionShortName = getElicitingQuestionDisplayNameForColumnName(value, questionnaire);
                     if (questionShortName) {
@@ -186,12 +277,15 @@ function processCSVContentsForStories(contents, saveStories, writeLog) {
                         questionnaire.elicitingQuestions.forEach(function(question) {
                             importNames.push(question.importName);
                         });
-                        log("ERROR||NO MATCHING ANSWER FOUND for eliciting question name: " + value + "\nout of list: \n" + importNames.join("\n"));
+                        log("ERROR||NO MATCHING ANSWER FOUND for eliciting question name [" + value + "] out of list [" + importNames.join(" | ") + "]");
                     }
+
+                // participant ID
                 } else if (headerName === questionnaire.import_participantIDColumnName) {
                     newItem["Participant ID"] = value;
-                    log("INFO||Participant id: " + value);
+                    log("LOG||Participant id: " + value);
                 } else {
+                    // answer to question - get question and potentially answer name from column header
                     if (headerName.indexOf(questionnaire.import_multiChoiceYesQASeparator) >= 0) {
                         var separator = questionnaire.import_multiChoiceYesQASeparator;
                         if (separator.toLowerCase() === "space") {
@@ -204,10 +298,14 @@ function processCSVContentsForStories(contents, saveStories, writeLog) {
                         var fieldName = headerName;
                         var answerName = null;
                     }
+
+                    // it's not one of those special fields, so it must be the answer to a question
                     var question = questionForHeaderFieldName(fieldName, fieldIndex, questionnaire, project);
                     if (question) { 
                         var questionNameToUse = question.displayName;
                         log("INFO||Data column name: " + fieldName + " matched with question: " + questionNameToUse);
+
+                        // simple data types, text is answer
                         if (["Single choice", "Radiobuttons", "Boolean", "Checkbox", "Text", "Textarea"].indexOf(question.import_valueType) >= 0) {
                             var answerNameToUse = getDisplayAnswerNameForDataAnswerName(value, question);
                             if (answerNameToUse) {
@@ -220,10 +318,12 @@ function processCSVContentsForStories(contents, saveStories, writeLog) {
                                 if (["Text", "Textarea"].indexOf(question.import_valueType) < 0) { 
                                     var listToShow = question.import_answerNames;
                                     if (!listToShow) listToShow = question.valueOptions;
-                                    log("ERROR||Answer for " + question.displayName + " (" + question.import_valueType + "): NO MATCHING ANSWER FOUND for answer name: " + value + 
-                                        "\nout of list: " + listToShow.join("\n"));
+                                    log("ERROR||Answer for " + question.displayName + " (" + question.import_valueType + "): NO MATCHING ANSWER FOUND for answer name [" + value + 
+                                        "] out of list [" + listToShow.join(" | ") + "]");
                                 }
                             }
+
+                        // number is index of choice in list
                         } else if (question.import_valueType === "Single choice indexed") {
                             var valueAsInt = parseInt(value);
                             var valueAssigned = false;
@@ -241,6 +341,8 @@ function processCSVContentsForStories(contents, saveStories, writeLog) {
                             if (!valueAssigned) {
                                 log("ERROR||Answer for " + question.displayName + " (" + question.import_valueType + "): NO MATCHING ANSWER FOUND for answer index: " + valueAsInt);
                             }
+
+                        // number is scale value
                         } else if (question.import_valueType === "Scale") {
                             var valueAsInt = parseInt(value);
                             var adjustedValue = changeValueForCustomScaleValues(valueAsInt, question, questionnaire);
@@ -251,6 +353,8 @@ function processCSVContentsForStories(contents, saveStories, writeLog) {
                             }
                             log(infoString);
                             count(questionNameToUse, adjustedValue);
+
+                        // text is answer, but to multi-choice question
                         } else if (question.import_valueType === "Multi-choice multi-column texts") {
                             var answerNameToUse = getDisplayAnswerNameForDataAnswerName(value, question);
                             if (answerNameToUse) {
@@ -261,9 +365,11 @@ function processCSVContentsForStories(contents, saveStories, writeLog) {
                             } else {
                                 var listToShow = question.import_answerNames;
                                 if (!listToShow) listToShow = question.valueOptions;
-                                log("ERROR||Answer for " + question.displayName + " (" + question.import_valueType + "): NO MATCHING ANSWER FOUND for answer name: " + value + 
-                                    "\nout of list: " + listToShow.join("\n"));
+                                log("ERROR||Answer for " + question.displayName + " (" + question.import_valueType + "): NO MATCHING ANSWER FOUND for answer name [" + value + 
+                                    "] out of list [" + listToShow.join(" | ") + "]");
                             }
+
+                        // text is yes/no answer to multi-choice question (answer was in header)
                         } else if (question.import_valueType === "Multi-choice multi-column yes/no") {
                             if (value === questionnaire.import_multiChoiceYesIndicator) {
                                 if (!newItem[questionNameToUse]) newItem[questionNameToUse] = {};
@@ -275,10 +381,12 @@ function processCSVContentsForStories(contents, saveStories, writeLog) {
                                 } else {
                                     var listToShow = question.import_answerNames;
                                     if (!listToShow) listToShow = question.valueOptions;
-                                    log("ERROR||Answer for " + question.displayName + " (" + question.import_valueType + "): NO MATCHING ANSWER FOUND for answer name: " + answerName + 
-                                        "\nout of list: " + listToShow.join("\n"));
+                                    log("ERROR||Answer for " + question.displayName + " (" + question.import_valueType + "): NO MATCHING ANSWER FOUND for answer name [" + answerName + 
+                                        "] out of list [" + listToShow.join(" | ") + "]");
                                 }
                             }
+
+                        // text is full list of multi-choice answers
                         } else if (question.import_valueType === "Multi-choice single-column delimited") {
                             newItem[questionNameToUse] = {};
                             var delimiter = questionnaire.import_multiChoiceDelimiter;
@@ -295,11 +403,13 @@ function processCSVContentsForStories(contents, saveStories, writeLog) {
                                     } else {
                                         var listToShow = question.import_answerNames;
                                         if (!listToShow) listToShow = question.valueOptions;
-                                        log("ERROR||Answer for " + question.displayName + " (" + question.import_valueType + "): NO MATCHING ANSWER FOUND for answer name: " + trimmedDelimitedItem + 
-                                            "\nout of list: " + listToShow.join("\n"));
+                                        log("ERROR||Answer for " + question.displayName + " (" + question.import_valueType + "): NO MATCHING ANSWER FOUND for answer name [" + trimmedDelimitedItem + 
+                                            "] out of list " + listToShow.join(" | ") + "]");
                                     }
                                 }
                             });
+
+                        // text is full list of multi-choice answers, except they are numerical indexes to answers
                         } else if (question.import_valueType === "Multi-choice single-column delimited indexed") {
                             newItem[questionNameToUse] = {};
                             var delimiter = questionnaire.import_multiChoiceDelimiter;
@@ -325,8 +435,9 @@ function processCSVContentsForStories(contents, saveStories, writeLog) {
                             }
                             });
                         }
+                        
                     } else { // no question found
-                        if (questionnaire.import_columnsToIgnore && questionnaire.import_columnsToIgnore.indexOf(headerName) >= 0) {
+                        if (columnsToIgnore.indexOf(headerName) >= 0) {
                             log("INFO||Ignoring data column: " + fieldName);
                         } else {
                             log("ERROR||NO MATCHING QUESTION FOUND for data column name: " + fieldName);
@@ -335,7 +446,11 @@ function processCSVContentsForStories(contents, saveStories, writeLog) {
                 }
             }
         }
-        return newItem;
+        if (saveStory) {
+            return newItem;
+        } else {
+            return null;
+        }
     });
 
     var header = headerAndItems.header;
@@ -509,6 +624,8 @@ function processCSVContentsForStories(contents, saveStories, writeLog) {
                 console.info(text);
             } else if (type === "WARN") {
                 console.warn(text);
+            } else if (type === "LOG") {
+                console.log(text);
             } else if (type === "ERROR") {
                 console.error(text);
             }
@@ -541,7 +658,7 @@ function processCSVContentsForStories(contents, saveStories, writeLog) {
         console.log(text);
     }
     if (!saveStories) {
-        alert("Finished checking " + totalStoryCount + " stories. Check browser console for INFO and ERROR entries.");
+        alert("Finished checking " + totalStoryCount + " stories. " + numRowsSkipped + " rows skipped. Check browser console for INFO and ERROR entries.");
         progressModel.hideDialogMethod();
         progressModel.redraw();
     }
@@ -752,6 +869,9 @@ function processCSVContentsForQuestionnaire(contents) {
         import_storyTextColumnName: "Story text",
         import_participantIDColumnName: "Participant ID",
         import_columnsToIgnore: [],
+        import_columnsToAppendToStoryText: [],
+        import_minWordsToIncludeStory: "0",
+        import_stringsToRemoveFromHeaders: "",
 
         import_elicitingQuestionColumnName: "Eliciting question",
         import_elicitingQuestionGraphName: "Eliciting question",
@@ -981,6 +1101,24 @@ function processCSVContentsForQuestionnaire(contents) {
                     var answersAsLines = item["Answers"].join("\n");
                     template.import_columnsToIgnore = answersAsLines;
                     project.tripleStore.addTriple(template.id, "questionForm_import_columnsToIgnore", answersAsLines);
+                } else if (type === "Data columns to append to story text") {
+                    var answersAsLines = item["Answers"].join("\n");
+                    template.import_columnsToAppendToStoryText = answersAsLines;
+                    project.tripleStore.addTriple(template.id, "questionForm_import_columnsToAppendToStoryText", answersAsLines);
+                } else if (type === "Minimum words to include story") {
+                    var minWords = parseInt(text);
+                    if (isNaN(minWords)) {
+                        alert("The value you entered for the minimum words to include for a story (" + text + ") is not a number. It must be a number.");
+                        template.import_minWordsToIncludeStory = "0";
+                        project.tripleStore.addTriple(template.id, "questionForm_import_minWordsToIncludeStory", "0");
+                    } else {
+                        template.import_minWordsToIncludeStory = text;
+                        project.tripleStore.addTriple(template.id, "questionForm_import_minWordsToIncludeStory", text);
+                    }
+                } else if (type === "Texts to remove from column headers") {
+                    var answersAsLines = item["Answers"].join("\n");
+                    template.import_stringsToRemoveFromHeaders = answersAsLines;
+                    project.tripleStore.addTriple(template.id, "questionForm_import_stringsToRemoveFromHeaders", answersAsLines);
                 }
             }
         } else if (about === "ignore") {
@@ -1495,6 +1633,16 @@ export function exportQuestionnaireForImport() { // to preserve import options f
     addOutputLine(["", "Story title column name", "import", "", "", currentQuestionnaire.import_storyTitleColumnName || ""]);
     addOutputLine(["", "Story text column name", "import", "", "", currentQuestionnaire.import_storyTextColumnName || ""]);
     addOutputLine(["", "Participant ID column name", "import", "", "", currentQuestionnaire.import_participantIDColumnName || ""]);
+    addOutputLine(["", "Minimum words to include story", "import", "", "", currentQuestionnaire.import_minWordsToIncludeStory || ""]);
+
+    var textsToRemoveOutputLine = ["", "Texts to remove from column headers", "import", "", ""];
+    var textsList = currentQuestionnaire.import_stringsToRemoveFromHeaders.split("\n");
+    if (textsList) {
+        textsList.forEach(function(item) {
+            textsToRemoveOutputLine.push(item);
+        });
+    }
+    addOutputLine(textsToRemoveOutputLine);
     
     var columnsToIgnoreOutputLine = ["", "Data columns to ignore", "import", "", ""];
     var columnList = currentQuestionnaire.import_columnsToIgnore.split("\n");
@@ -1504,6 +1652,15 @@ export function exportQuestionnaireForImport() { // to preserve import options f
         });
     }
     addOutputLine(columnsToIgnoreOutputLine);
+
+    var columnsToAppendOutputLine = ["", "Data columns to append to story text", "import", "", ""];
+    var columnList = currentQuestionnaire.import_columnsToAppendToStoryText.split("\n");
+    if (columnList) {
+        columnList.forEach(function(item) {
+            columnsToAppendOutputLine.push(item);
+        });
+    }
+    addOutputLine(columnsToAppendOutputLine);
 
     var questionnaireBlob = new Blob([output], {type: "text/csv;charset=utf-8"});
     // TODO: This seems to clear the console in FireFox 40; why?
