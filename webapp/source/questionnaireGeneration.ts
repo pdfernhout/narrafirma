@@ -218,6 +218,7 @@ function buildItemListFromIdList(idToItemMap, idItemList, idField) {
             // TODO: Remove any deleted/null fields
             var itemObject = project.tripleStore.makeObject(item, true);
             itemObject.order = order;
+            itemObject.id = id;
             result.push(itemObject);
         } else {
             console.log("Editing error: Missing question definition for", idItem);
@@ -242,14 +243,14 @@ export function buildQuestionnaire(shortName) {
     return buildQuestionnaireFromTemplate(questionnaireTemplate, shortName);
 }
 
-export function buildQuestionnaireFromTemplate(questionnaireTemplate: string, shortName) {
+export function buildQuestionnaireFromTemplate(storyFormTemplate: string, shortName) {
     var project = Globals.project();
     
     var usedIDs = {
         __createdIDCount: 0
     };
     
-    var questionnaire = {
+    var storyForm = {
         __type: "org.workingwithstories.Questionnaire",
         shortName: shortName,
         title: "",
@@ -304,76 +305,75 @@ export function buildQuestionnaireFromTemplate(questionnaireTemplate: string, sh
         errorMessage_noStoryName: ""
     };
 
-    questionnaire.title = project.tripleStore.queryLatestC(questionnaireTemplate, "questionForm_title");
-    questionnaire.image = project.tripleStore.queryLatestC(questionnaireTemplate, "questionForm_image");
-    questionnaire.startText = project.tripleStore.queryLatestC(questionnaireTemplate, "questionForm_startText");
-    questionnaire.endText = project.tripleStore.queryLatestC(questionnaireTemplate, "questionForm_endText"); 
-    questionnaire.aboutYouText = project.tripleStore.queryLatestC(questionnaireTemplate, "questionForm_aboutYouText");
-    questionnaire.thankYouPopupText = project.tripleStore.queryLatestC(questionnaireTemplate, "questionForm_thankYouPopupText");
-    questionnaire.customCSS = project.tripleStore.queryLatestC(questionnaireTemplate, "questionForm_customCSS");
-    questionnaire.customCSSForPrint = project.tripleStore.queryLatestC(questionnaireTemplate, "questionForm_customCSSForPrint");
+    storyForm.title = project.tripleStore.queryLatestC(storyFormTemplate, "questionForm_title");
+    storyForm.image = project.tripleStore.queryLatestC(storyFormTemplate, "questionForm_image");
+    storyForm.startText = project.tripleStore.queryLatestC(storyFormTemplate, "questionForm_startText");
+    storyForm.endText = project.tripleStore.queryLatestC(storyFormTemplate, "questionForm_endText"); 
+    storyForm.aboutYouText = project.tripleStore.queryLatestC(storyFormTemplate, "questionForm_aboutYouText");
+    storyForm.thankYouPopupText = project.tripleStore.queryLatestC(storyFormTemplate, "questionForm_thankYouPopupText");
+    storyForm.customCSS = project.tripleStore.queryLatestC(storyFormTemplate, "questionForm_customCSS");
+    storyForm.customCSSForPrint = project.tripleStore.queryLatestC(storyFormTemplate, "questionForm_customCSSForPrint");
     
-    questionnaire.import_minScaleValue = project.tripleStore.queryLatestC(questionnaireTemplate, "questionForm_import_minScaleValue"); 
-    questionnaire.import_maxScaleValue = project.tripleStore.queryLatestC(questionnaireTemplate, "questionForm_import_maxScaleValue"); 
-    questionnaire.import_multiChoiceYesQASeparator = project.tripleStore.queryLatestC(questionnaireTemplate, "questionForm_import_multiChoiceYesQASeparator"); 
-    questionnaire.import_multiChoiceYesQAEnding = project.tripleStore.queryLatestC(questionnaireTemplate, "questionForm_import_multiChoiceYesQAEnding"); 
-    questionnaire.import_multiChoiceYesIndicator = project.tripleStore.queryLatestC(questionnaireTemplate, "questionForm_import_multiChoiceYesIndicator"); 
-    questionnaire.import_multiChoiceDelimiter = project.tripleStore.queryLatestC(questionnaireTemplate, "questionForm_import_multiChoiceDelimiter"); 
-    questionnaire.import_storyTitleColumnName = project.tripleStore.queryLatestC(questionnaireTemplate, "questionForm_import_storyTitleColumnName"); 
-    questionnaire.import_storyTextColumnName = project.tripleStore.queryLatestC(questionnaireTemplate, "questionForm_import_storyTextColumnName"); 
-    questionnaire.import_elicitingQuestionColumnName = project.tripleStore.queryLatestC(questionnaireTemplate, "questionForm_import_elicitingQuestionColumnName"); 
-    questionnaire.import_minWordsToIncludeStory = project.tripleStore.queryLatestC(questionnaireTemplate, "questionForm_import_minWordsToIncludeStory"); 
-    questionnaire.import_stringsToRemoveFromHeaders = project.tripleStore.queryLatestC(questionnaireTemplate, "questionForm_import_stringsToRemoveFromHeaders"); 
+    storyForm.import_minScaleValue = project.tripleStore.queryLatestC(storyFormTemplate, "questionForm_import_minScaleValue"); 
+    storyForm.import_maxScaleValue = project.tripleStore.queryLatestC(storyFormTemplate, "questionForm_import_maxScaleValue"); 
+    storyForm.import_multiChoiceYesQASeparator = project.tripleStore.queryLatestC(storyFormTemplate, "questionForm_import_multiChoiceYesQASeparator"); 
+    storyForm.import_multiChoiceYesQAEnding = project.tripleStore.queryLatestC(storyFormTemplate, "questionForm_import_multiChoiceYesQAEnding"); 
+    storyForm.import_multiChoiceYesIndicator = project.tripleStore.queryLatestC(storyFormTemplate, "questionForm_import_multiChoiceYesIndicator"); 
+    storyForm.import_multiChoiceDelimiter = project.tripleStore.queryLatestC(storyFormTemplate, "questionForm_import_multiChoiceDelimiter"); 
+    storyForm.import_storyTitleColumnName = project.tripleStore.queryLatestC(storyFormTemplate, "questionForm_import_storyTitleColumnName"); 
+    storyForm.import_storyTextColumnName = project.tripleStore.queryLatestC(storyFormTemplate, "questionForm_import_storyTextColumnName"); 
+    storyForm.import_elicitingQuestionColumnName = project.tripleStore.queryLatestC(storyFormTemplate, "questionForm_import_elicitingQuestionColumnName"); 
+    storyForm.import_minWordsToIncludeStory = project.tripleStore.queryLatestC(storyFormTemplate, "questionForm_import_minWordsToIncludeStory"); 
+    storyForm.import_stringsToRemoveFromHeaders = project.tripleStore.queryLatestC(storyFormTemplate, "questionForm_import_stringsToRemoveFromHeaders"); 
 
-    questionnaire.import_participantIDColumnName = project.tripleStore.queryLatestC(questionnaireTemplate, "questionForm_import_participantIDColumnName"); 
-    questionnaire.import_columnsToIgnore = project.tripleStore.queryLatestC(questionnaireTemplate, "questionForm_import_columnsToIgnore"); 
-    questionnaire.import_columnsToAppendToStoryText = project.tripleStore.queryLatestC(questionnaireTemplate, "questionForm_import_columnsToAppendToStoryText"); 
+    storyForm.import_participantIDColumnName = project.tripleStore.queryLatestC(storyFormTemplate, "questionForm_import_participantIDColumnName"); 
+    storyForm.import_columnsToIgnore = project.tripleStore.queryLatestC(storyFormTemplate, "questionForm_import_columnsToIgnore"); 
+    storyForm.import_columnsToAppendToStoryText = project.tripleStore.queryLatestC(storyFormTemplate, "questionForm_import_columnsToAppendToStoryText"); 
     
-    questionnaire.chooseQuestionText = project.tripleStore.queryLatestC(questionnaireTemplate, "questionForm_chooseQuestionText");
-    questionnaire.elicitingQuestionGraphName = project.tripleStore.queryLatestC(questionnaireTemplate, "questionForm_elicitingQuestionGraphName");
+    storyForm.chooseQuestionText = project.tripleStore.queryLatestC(storyFormTemplate, "questionForm_chooseQuestionText");
+    storyForm.elicitingQuestionGraphName = project.tripleStore.queryLatestC(storyFormTemplate, "questionForm_elicitingQuestionGraphName");
     
-    questionnaire.enterStoryText = project.tripleStore.queryLatestC(questionnaireTemplate, "questionForm_enterStoryText");
-    questionnaire.nameStoryText = project.tripleStore.queryLatestC(questionnaireTemplate, "questionForm_nameStoryText");
-    questionnaire.tellAnotherStoryText = project.tripleStore.queryLatestC(questionnaireTemplate, "questionForm_tellAnotherStoryText");
-    questionnaire.tellAnotherStoryButtonText = project.tripleStore.queryLatestC(questionnaireTemplate, "questionForm_tellAnotherStoryButtonText");
-    questionnaire.maxNumStories = project.tripleStore.queryLatestC(questionnaireTemplate, "questionForm_maxNumStories");
-    questionnaire.sliderValuePrompt = project.tripleStore.queryLatestC(questionnaireTemplate, "questionForm_sliderValuePrompt");
+    storyForm.enterStoryText = project.tripleStore.queryLatestC(storyFormTemplate, "questionForm_enterStoryText");
+    storyForm.nameStoryText = project.tripleStore.queryLatestC(storyFormTemplate, "questionForm_nameStoryText");
+    storyForm.tellAnotherStoryText = project.tripleStore.queryLatestC(storyFormTemplate, "questionForm_tellAnotherStoryText");
+    storyForm.tellAnotherStoryButtonText = project.tripleStore.queryLatestC(storyFormTemplate, "questionForm_tellAnotherStoryButtonText");
+    storyForm.maxNumStories = project.tripleStore.queryLatestC(storyFormTemplate, "questionForm_maxNumStories");
+    storyForm.sliderValuePrompt = project.tripleStore.queryLatestC(storyFormTemplate, "questionForm_sliderValuePrompt");
 
-    questionnaire.submitSurveyButtonText = project.tripleStore.queryLatestC(questionnaireTemplate, "questionForm_submitSurveyButtonText");
-    questionnaire.sendingSurveyResultsText = project.tripleStore.queryLatestC(questionnaireTemplate, "questionForm_sendingSurveyResultsText");
-    questionnaire.couldNotSaveSurveyText = project.tripleStore.queryLatestC(questionnaireTemplate, "questionForm_couldNotSaveSurveyText");
-    questionnaire.resubmitSurveyButtonText = project.tripleStore.queryLatestC(questionnaireTemplate, "questionForm_resubmitSurveyButtonText");
+    storyForm.submitSurveyButtonText = project.tripleStore.queryLatestC(storyFormTemplate, "questionForm_submitSurveyButtonText");
+    storyForm.sendingSurveyResultsText = project.tripleStore.queryLatestC(storyFormTemplate, "questionForm_sendingSurveyResultsText");
+    storyForm.couldNotSaveSurveyText = project.tripleStore.queryLatestC(storyFormTemplate, "questionForm_couldNotSaveSurveyText");
+    storyForm.resubmitSurveyButtonText = project.tripleStore.queryLatestC(storyFormTemplate, "questionForm_resubmitSurveyButtonText");
     
-    questionnaire.deleteStoryButtonText = project.tripleStore.queryLatestC(questionnaireTemplate, "questionForm_deleteStoryButtonText");
-    questionnaire.deleteStoryDialogPrompt = project.tripleStore.queryLatestC(questionnaireTemplate, "questionForm_deleteStoryDialogPrompt");
-    questionnaire.surveyStoredText = project.tripleStore.queryLatestC(questionnaireTemplate, "questionForm_surveyStoredText");
-    questionnaire.showSurveyResultPane = project.tripleStore.queryLatestC(questionnaireTemplate, "questionForm_showSurveyResultPane");
-    questionnaire.surveyResultPaneHeader = project.tripleStore.queryLatestC(questionnaireTemplate, "questionForm_surveyResultPaneHeader");
+    storyForm.deleteStoryButtonText = project.tripleStore.queryLatestC(storyFormTemplate, "questionForm_deleteStoryButtonText");
+    storyForm.deleteStoryDialogPrompt = project.tripleStore.queryLatestC(storyFormTemplate, "questionForm_deleteStoryDialogPrompt");
+    storyForm.surveyStoredText = project.tripleStore.queryLatestC(storyFormTemplate, "questionForm_surveyStoredText");
+    storyForm.showSurveyResultPane = project.tripleStore.queryLatestC(storyFormTemplate, "questionForm_showSurveyResultPane");
+    storyForm.surveyResultPaneHeader = project.tripleStore.queryLatestC(storyFormTemplate, "questionForm_surveyResultPaneHeader");
 
-    questionnaire.errorMessage_noElicitationQuestionChosen = project.tripleStore.queryLatestC(questionnaireTemplate, "questionForm_errorMessage_noElicitationQuestionChosen");
-    questionnaire.errorMessage_noStoryText = project.tripleStore.queryLatestC(questionnaireTemplate, "questionForm_errorMessage_noStoryText");
-    questionnaire.errorMessage_noStoryName = project.tripleStore.queryLatestC(questionnaireTemplate, "questionForm_errorMessage_noStoryName");
+    storyForm.errorMessage_noElicitationQuestionChosen = project.tripleStore.queryLatestC(storyFormTemplate, "questionForm_errorMessage_noElicitationQuestionChosen");
+    storyForm.errorMessage_noStoryText = project.tripleStore.queryLatestC(storyFormTemplate, "questionForm_errorMessage_noStoryText");
+    storyForm.errorMessage_noStoryName = project.tripleStore.queryLatestC(storyFormTemplate, "questionForm_errorMessage_noStoryName");
     
     // TODO: Should maybe ensure unique IDs for eliciting questions?
     var allElicitingQuestions = buildIdToItemMap("project_elicitingQuestionsList", "elicitingQuestion_shortName");
-    var elicitingQuestionIdentifiers = project.tripleStore.getListForSetIdentifier(project.tripleStore.queryLatestC(questionnaireTemplate, "questionForm_elicitingQuestions"));
+    var elicitingQuestionIdentifiers = project.tripleStore.getListForSetIdentifier(project.tripleStore.queryLatestC(storyFormTemplate, "questionForm_elicitingQuestions"));
     var elicitingQuestions = buildItemListFromIdList(allElicitingQuestions, elicitingQuestionIdentifiers, "elicitingQuestion");       
-    
-    questionnaire.elicitingQuestions = convertElicitingQuestions(elicitingQuestions);
+    storyForm.elicitingQuestions = convertElicitingQuestions(elicitingQuestions);
     
     var allStoryQuestions = buildIdToItemMap("project_storyQuestionsList", "storyQuestion_shortName");
-    var storyQuestionIdentifiers = project.tripleStore.getListForSetIdentifier(project.tripleStore.queryLatestC(questionnaireTemplate, "questionForm_storyQuestions"));
+    var storyQuestionIdentifiers = project.tripleStore.getListForSetIdentifier(project.tripleStore.queryLatestC(storyFormTemplate, "questionForm_storyQuestions"));
     var storyQuestions = buildItemListFromIdList(allStoryQuestions, storyQuestionIdentifiers, "storyQuestion");       
     ensureUniqueQuestionIDs(usedIDs, storyQuestions);
-    questionnaire.storyQuestions = convertEditorQuestions(storyQuestions, "S_");
+    storyForm.storyQuestions = convertEditorQuestions(storyQuestions, "S_");
     
     var allParticipantQuestions = buildIdToItemMap("project_participantQuestionsList", "participantQuestion_shortName");
-    var participantQuestionIdentifiers = project.tripleStore.getListForSetIdentifier(project.tripleStore.queryLatestC(questionnaireTemplate, "questionForm_participantQuestions"));
+    var participantQuestionIdentifiers = project.tripleStore.getListForSetIdentifier(project.tripleStore.queryLatestC(storyFormTemplate, "questionForm_participantQuestions"));
     var participantQuestions = buildItemListFromIdList(allParticipantQuestions, participantQuestionIdentifiers, "participantQuestion");       
     ensureUniqueQuestionIDs(usedIDs, participantQuestions);      
-    questionnaire.participantQuestions = convertEditorQuestions(participantQuestions, "P_");
+    storyForm.participantQuestions = convertEditorQuestions(participantQuestions, "P_");
     
-    return questionnaire;
+    return storyForm;
 }
 
 function ensureUniqueQuestionIDs(usedIDs, editorQuestions) {
