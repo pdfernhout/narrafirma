@@ -70,8 +70,8 @@ var AdminPageDisplayer: any = {
                     "class": clientState.serverStatus,
                     "title": clientState.serverStatusText
                 }, "NarraFirma™"),
-                m("b", "Project Administration Tool"),
-                " | Logged in as: " + userIdentifier + " ",
+                m("b", " Project Administration Tool"),
+                " -- Logged in as: " + userIdentifier + " -- ",
                 m("a", {href: "/logout"}, "Log Out")
             ]),
             m("br"),
