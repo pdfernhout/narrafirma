@@ -677,6 +677,7 @@ function printObservationList(observationList, observationLabel, interpretationN
 }
 
 function portionOfTextMatchingReference(textToDrawPortionFrom, textWithReferenceInit) {
+        if (!textToDrawPortionFrom) return textToDrawPortionFrom;
         var textPortion = textToDrawPortionFrom;
         var reference = findMarkedReferenceInText(textWithReferenceInit);
         if (reference) {
@@ -694,6 +695,8 @@ function portionOfTextMatchingReference(textToDrawPortionFrom, textWithReference
                     charIndex++;
                 }
             }
+        } else {
+            textPortion = replaceAll(textPortion, referenceMarker, ""); // if no reference, is being printed alone; remove tags so they don't look ugly
         }
     return textPortion;
 }
@@ -781,8 +784,8 @@ export function printCatalysisReport() {
         switch (printWhat) {
             case "observations (strong)": printStrengths = ["3 (strong)"]; break;
             case "observations (medium)": printStrengths = ["2 (medium)"]; break;
-            case "observations (strong and medium)": printStrengths = ["2 (medium)", "3 (strong)"]; break;
             case "observations (weak)": printStrengths = ["1 (weak)"]; break;
+            case "observations (strong and medium)": printStrengths = ["2 (medium)", "3 (strong)"]; break;
         }
         observationIDs.forEach((id) => {
             var item = project.tripleStore.makeObject(id, true);
