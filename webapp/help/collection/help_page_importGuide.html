@@ -89,7 +89,10 @@
 NarraFirma assumes that any file of story data you import has these features:
 <ul>
     <li>The file is in the <b>CSV</b> (comma-separated values) format.</li>
-    <li>The file is encoded in the <b>UTF-8</b> encoding format.</li>
+    <li>The file is encoded in the <b>UTF-8</b> encoding format. 
+        <b>Be careful!</b> Ignoring this requirement can cause mismatches and garbled data.
+        Check the internet for information on how to save a CSV file with UTF-8 encoding using your favorite spreadsheet program.
+    </li>
     <li>The first row of the file is a <b>header</b> in which each cell describes the contents of the cells beneath it.</li>
     <li>All the cells in all the rows beneath the header contain data that match both the <b>descriptions</b> in the header cells
         and the <b>data types</b> NarraFirma knows how to read (see below).</li>
@@ -148,11 +151,33 @@ In Excel, for example, you can open a new Workbook, choose Data – Get External
 then mess with the options there until your data looks correct. 
 </p>
 <p>
-    The first row in your data file should be a <b>header</b> row in which each cell describes the column of data beneath it. 
-    Check that each header cell uniquely describes what lies beneath it. Familiarize yourself with your header row,
-    because you will need to use it to explain to NarraFirma how to read your data. 
-    NarraFirma doesn't care about the order of columns in your data file.
-    You are going to <b>tell NarraFirma what to do with the data</b> it finds in your columns.
+    The first row in your data file should be a <b>header</b> row in which each cell describes the column of data beneath it, like this:
+</p>
+<table border="1" cellpadding="4" cellspacing="0">
+    <tr>
+        <td>Age</td>
+        <td>Gender</td>
+        <td>Position</td>
+    </tr>
+    <tr>
+        <td>52</td>
+        <td>Male</td>
+        <td>Scientist</td>
+    </tr>
+    <tr>
+        <td>28</td>
+        <td>Male</td>
+        <td>Accountant</td>
+    </tr>
+    <tr>
+        <td>39</td>
+        <td>Female</td>
+        <td>Manager</td>
+    </tr>
+</table>
+<p>
+    NarraFirma doesn't care about the order of columns in your data file, but it does care about your column headers.
+    Make sure each header cell describes what lies beneath it. No two headers should be identical. 
 </p>
 <p>If you have more than one header row, consolidate them into one row. Or you can comment out all but one header row by typing a semicolon (;) 
    as the first character in the first cell of each row you want NarraFirma to ignore. 
@@ -288,7 +313,7 @@ that might be an easier option for you. On the other hand, if you don't want to 
 <div class="heading" id="usingnf">Describe your data to NarraFirma by building a story form in NarraFirma</div>
 <div class="text">
 <p>
-When you collect data using NarraFirma as a surveying system, you follow a process like this:
+If you were collecting your data using NarraFirma as a surveying system, you would follow a process like this:
 </p>
 <ol>
     <li>Write your eliciting questions</li>
@@ -303,7 +328,8 @@ When you collect data using NarraFirma as a surveying system, you follow a proce
 
 <p>If you gave people a choice of questions to answer by telling a story, or if you asked people a series of questions (that they answered by telling stories),
     you are likely to have in your data file a column that recorded which question they answered.
-    If you did <i>not</i> ask at least two eliciting questions, you can skip this step.
+</p><p>
+    <b>If you did not ask at least two eliciting questions, you can skip this step.</b>
 </p>
 
 <p>To enter your eliciting questions, go to the <b>Write story eliciting questions</b> page.
@@ -427,7 +453,7 @@ Here's what the import options for the "LongAgo" question look like in NarraFirm
 
 <p>When you create such a question in NarraFirma, make sure the order in which you write the answers matches the order in which the
     answers were presented in your survey. The answers under the "Import options" header are ignored for this type of question, because you would
-    just be entering 1,2,3 and so on.
+    just be entering 1, 2, 3, and so on.
 </p>
 
 <h4 id="nf_scale">Scale questions</h4>
@@ -648,6 +674,7 @@ In our example data file, the "Needed" question is of this type:</p>
     <td>After someone has told a story, you might want to ask them for more details on it in a follow-up question, and you might want those details
         to be included in the story text itself, instead of in a separate question. Use this box to tell NarraFirma the names of column
         header to append to the story text. Make sure you copy the column headers <i>exactly</i> as they are in your data file, and place one per line in the text box.
+        Also, these additional columns must be located <i>to the right</i> of the story text in your data file.
     </td>
     </tr>
         
@@ -1044,7 +1071,7 @@ To describe this type of question to NarraFirma, write a row in your story form 
 With this question type (and any other type that has fixed, prepared answers), you can give your answers nicer names (for graphs)
 by writing first the name to be found in the data file (e.g., "Last week"), followed by a pipe symbol (|), followed by the
 name to write on graphs (e.g., "In the past week"). If you don't want to use different names on your graphs, you can just 
-write the answer name once (without a pipe symbol).
+write the answer name once (without a pipe symbol). (But watch out for too-long names on graphs! Short names should be no longer than 20 characters or so.)
 </p>
 
 <h2 id="csv_singlechoiceindexed">Single choice indexed questions</h2>
@@ -1684,7 +1711,8 @@ This question type is just like the "Single choice indexed" question type, excep
 
 <p>Sometimes it's a good idea to give people an opportunity to say more about a story later on in the survey or interview.
     In that case, you might want to <i>append</i> those additional texts to the story. You can tell NarraFirma to do this 
-    with the "Data columns to append to story text" import option. In your CSV story form file, enter the data columns like this:
+    with the "Data columns to append to story text" import option. Note that these additional columns must be located <i>to the right</i>
+    of the story text in your data file. In your CSV story form file, enter the data columns like this:
     </p>
 <table border="1" cellpadding="4" cellspacing="0">
         <tr>
@@ -1709,7 +1737,7 @@ This question type is just like the "Single choice indexed" question type, excep
 
 <p>In that example, two additional questions ("Would you like to say more about the story you told?" and "What advice do you have for people
     in similar situations?") are enough about the story that you want them to be merged with it. They will not be considered
-    separate questions, but parts of the story text.
+    separate questions, but parts of the story text. 
 </p>
 
 <h3>You have a lot of incomplete survey results you want to ignore.</h3>
@@ -1794,7 +1822,6 @@ In the LimeSurvey example, you would ask NarraFirma to strip out "[SLIDER]" and 
             <td>Short name</td>
             <td>Long name</td>
             <td>Answers</td>
-            <td></td>
         </tr>
         <tr>
             <td></td>
@@ -1802,14 +1829,9 @@ In the LimeSurvey example, you would ask NarraFirma to strip out "[SLIDER]" and 
             <td>import</td>
             <td></td>
             <td></td>
-            <td>[OPTIONAL]</td>
-            <td>[REQUIRED]</td>
+            <td>[SLIDER]</td>
         </tr>
     </table>
-
-<p>In this case, the texts "[OPTIONAL]" and "[REQUIRED]" were conflicting with what NarraFirma needed to read,
-    so we instructed NarraFirma to ignore those things when it found them.
-</p>
 
 <p><b>Be careful with this option.</b> Remember that these texts will be removed from <i>every</i> header. Make sure you aren't garbling any headers by doing this.</p>
 
@@ -1856,8 +1878,8 @@ NarraFirma will ignore that row of data.</p>
         and questions about participants. Questions about participants are <i>always</i> shown after questions about stories.)</li>
     <li>You can include comment lines in your story form file. Place a semicolon (;) as the very first character on the line. Everything else on that line 
     will be ignored. Empty lines will also be ignored. </li>
-    <li>You can include extra or comment columns. Any columns with names other than <b>Data column name</b>, <b>Type</b>, <b>About</b>, 
-    <b>Short name</b>, <b>Long name</b>, or <b>Answers</b> will be ignored. However, place your extra columns <i>to the left</i> of
+    <li>You can include extra or comment columns in your story form CSV file. Any columns with names other than <b>Data column name</b>, <b>Type</b>, <b>About</b>, 
+    <b>Short name</b>, <b>Long name</b>, and <b>Answers</b> will be ignored. However, place your extra columns <i>to the left</i> of
     the <b>Answers</b> column. All texts in cells to the right of that column will be treated as answers. </li>
     <li>Watch out for encoding problems. If you import a CSV file and then have problems reading your story data, look for special characters
         that are different in the story form CSV file and data CSV file. Make sure both files are being saved using UTF-8 encoding.
@@ -1865,8 +1887,7 @@ NarraFirma will ignore that row of data.</p>
     <li>Remember that a CSV file is not the same thing as a spreadsheet file. You can work in a spreadsheet format (like XLSX), but be aware that any
         special formatting will be lost when you convert the file to CSV. It's usually better to edit the file directly in the CSV format
         so you don't put anything into it that will be lost when you convert to CSV.</li>
-    <li>Example story form CSV files can be found in the <b>samples</b> folder in your NarraFirma installation.
-        You can copy those files and amend them to match your story form.</li>
+    <li>Example story form CSV files can be found in the <b>samples</b> folder in your NarraFirma installation.</li>
 </ul>
 
 <h2 id="csv_importfile">Import your story form CSV file</h2>
@@ -2137,7 +2158,7 @@ To do this:</p>
                     until you get no more ERROR messages.  (Remember that if you make any non-trivial changes to your story form, you must create a new story collection to pick them up.)
                 </li>
                 <li><b>LOG messages</b> tell you which rows of the data file, and which story texts and participant IDs, NarraFirma is reading when the other messages appear. 
-                You won't need to pay attention to these unless you want to know what line an error or warning appears on.</li>
+                You won't need to pay attention to LOG messages unless you want to know what line an error or warning appears on.</li>
             </ul>
     </li>
     <li><b>Compare answer counts</b>. At the bottom of the console are a series of INFO messages marked "<b>ANSWER COUNTS</b>." 
@@ -2184,7 +2205,7 @@ Before you can import your data file, you need to <b>create a story collection</
 <div class="heading" id="tips">Tips and tricks</div>
 <div class="text">
 
-<p>These are just some things we've noticed that you might find helpful.
+<p>These are some things we've noticed that you might find helpful.
     </p>
     <ul>
         <li>When you have just imported some stories and go to spot-check your graphs, you may find that a graph has lower
@@ -2206,20 +2227,18 @@ Before you can import your data file, you need to <b>create a story collection</
             likes the "Multi-choice single-column delimited indexed" option. Google Forms likes the "Multi-choice single-column delimited"
             option.
         </li>
-        <li>When we say "Short name," we do mean a short name. If your short names are too long, your graphs will look messy. Keep short names to
-            about 20 characters or fewer. The same thing goes for answer names.
+        <li>When we say "Short name," we do mean a short name. If your short names are too long, your graphs will look messy. Keep short names (of questions and answers) to
+            about 20 characters or fewer. 
         </li>
         <li>When you are creating a CSV story form file, one shortcut that can save time is to copy the headers from your data file,
             then go to your new story form file and "Paste Special" the headers, but transposed, into the "Data column name" column.
             Then you can go through each column, removing those you don't care about and adding information to the ones you want to keep.
         </li>
-        <li>NarraFirma uses a journaling data storage system that never
-                actually removes stories (it just "unmoors" them). This means that if you are importing stories over and over, you could end up with many
-                invisible (unmoored) stories, and that could make your system slow down. (We did not originally intend NarraFirma to be heavily used
-                with other surveying systems, so we did not foresee this problem.) You can avoid this problem
-                by not importing your stories at all until you have <a href="#checkyourstories">checked them</a> and are sure they are correct.
-                You can also go the Administration page, export your project without
-                its history, and then import it into a new, empty project. This will clear out all the invisible stories.
+        <li>NarraFirma uses a journaling data storage system that never actually removes stories (it just "unmoors" them). 
+                This means that if you import the same stories over and over, you could end up with extra, invisible copies,
+                and they could slow your system down. If you <a href="#checkyourstories">check your stories</a> before you import 
+                them, you should not run into this problem. However, if you do end up with unmoored stories, you can purge them. 
+                Go to the Administration page, export your project without its history, then import it into a new, empty project. This will clear out all unconnected stories.
         </li>
     </ul>
 </div>
@@ -2228,20 +2247,16 @@ Before you can import your data file, you need to <b>create a story collection</
 <div class="text">
 
 <p>You can export story forms and story collections from NarraFirma to CSV format for backup, for transfer to another NarraFirma installation,
-    or to use outside NarraFirma. 
+    or to use outside NarraFirma. You can export a story form using NarraFirma's native formats or the format
+    you specified in your original import options.
 </p>
-<p>Please note that when you export your data from NarraFirma, it does not preserve any special formatting you used to import it.
-    Instead, NarraFirma exports data using the formats it prefers:
+<p>NarraFirma's native CSV export format uses these data types:
     </p>
     <ul>
         <li>"Single choice" format for all single-choice questions, with answer texts in the column</li>
         <li>"Multi-choice multi-column texts" format for all multi-choice questions, with answer texts in multiple columns</li>
         <li>"Scale" format for all scalar questions, with a range from zero to 100</li>
     </ul>
-<p>You can also export a story form with import options. This is for times when you have described story data
-    within NarraFirma, and want to transfer or backup your story form information, but you still want to read your
-    data from an external source.
-</p>
 </div>
 
 <div class="heading" id="needmorehelp">Need more help?</div>
