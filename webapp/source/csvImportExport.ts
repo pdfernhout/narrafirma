@@ -215,6 +215,11 @@ function processCSVContentsForStories(contents, saveStories, writeLog) {
                 value = row[fieldIndex].trim(); // note the value is trimmed
             }
 
+            // if there is nothing in the cell, record nothing
+            if (value === undefined || value === "") {
+                continue; 
+            }
+
             var headerName = header[fieldIndex];
 
             // check to see if the header name is in the list of names to be changed because they conflict with other things (like yes/no answer formatting)
@@ -329,10 +334,16 @@ function processCSVContentsForStories(contents, saveStories, writeLog) {
                     if (["Single choice", "Radiobuttons", "Boolean", "Checkbox", "Text", "Textarea"].indexOf(importValueType) >= 0) {
                         var answerNameToUse = getDisplayAnswerNameForDataAnswerName(value, question);
                         if (answerNameToUse) {
-                            newItem[questionName] = answerNameToUse;
-                            if (["Text", "Textarea"].indexOf(importValueType) < 0) { 
+                            if (["Text", "Textarea"].indexOf(importValueType) >= 0) { // don't log anything when reading text entries
+                                newItem[questionName] = answerNameToUse;
+                            } else {
+                                // if you want to set a value but the value has already been set (because of lumping),
+                                // it's okay to set it again, but you don't want to COUNT it twice, because the import counts will be too high
+                                // so for all data types, the count is only incremented the FIRST time the value is set for the story
+                                // the count must be incremented BEFORE the value is assigned, so you can tell if it has already been assigned
+                                if (!newItem[questionName]) count(questionName, answerNameToUse);
+                                newItem[questionName] = answerNameToUse;
                                 log("INFO||Answer for " + questionName + " (" + importValueType + "): " + answerNameToUse);
-                                count(questionName, answerNameToUse);
                             }
                         } else { // no match, log error
                             if (["Text", "Textarea"].indexOf(importValueType) < 0) { 
@@ -350,10 +361,10 @@ function processCSVContentsForStories(contents, saveStories, writeLog) {
                         if (!isNaN(valueAsInt)) {
                             for (var index = 0; index < question.valueOptions.length; index++) {
                                 if (valueAsInt-1 === index) {
+                                    if (!newItem[questionName]) count(questionName, question.valueOptions[index]);
                                     newItem[questionName] = question.valueOptions[index];
                                     valueAssigned = true;
                                     log("INFO||Answer for " + questionName + " (" + importValueType + "): " + question.valueOptions[index] + "(" + valueAsInt + ")");
-                                    count(questionName, valueAsInt);
                                     break;
                                 }
                             }
@@ -375,13 +386,15 @@ function processCSVContentsForStories(contents, saveStories, writeLog) {
                         count(questionName, adjustedValue);
 
                     // Multi-choice multi-column texts, text is one answer to add to list
+                    // in case of lumping, dictionary entry will be set to true again
                     } else if (importValueType === "Multi-choice multi-column texts") {
                         var answerNameToUse = getDisplayAnswerNameForDataAnswerName(value, question);
                         if (answerNameToUse) {
                             if (!newItem[questionName]) newItem[questionName] = {};
+                            if (!newItem[questionName][answerNameToUse]) count(questionName, answerNameToUse);
                             newItem[questionName][answerNameToUse] = true;
                             log("INFO||Answer for " + questionName + " (" + importValueType + "): " + answerNameToUse);
-                            count(questionName, answerNameToUse);
+                            
                         } else { // no match, log error
                             var listToShow = question.import_answerNames;
                             if (!listToShow) listToShow = question.valueOptions;
@@ -390,14 +403,15 @@ function processCSVContentsForStories(contents, saveStories, writeLog) {
                         }
 
                     // Multi-choice multi-column yes/no, text is yes indicator (or something else), answer was in header
+                    // in case of lumping, dictionary entry will be set to true again
                     } else if (importValueType === "Multi-choice multi-column yes/no") {
                         if (value === questionnaire.import_multiChoiceYesIndicator) {
                             if (!newItem[questionName]) newItem[questionName] = {};
                             var answerNameToUse = getDisplayAnswerNameForDataAnswerName(answerName, question);
                             if (answerNameToUse) {
+                                if (!newItem[questionName][answerNameToUse]) count(questionName, answerNameToUse);
                                 newItem[questionName][answerNameToUse] = true;
                                 log("INFO||Answer for " + questionName + " (" + importValueType + "): " + answerNameToUse);
-                                count(questionName, answerNameToUse);
                             } else { // no match, log error
                                 var listToShow = question.import_answerNames;
                                 if (!listToShow) listToShow = question.valueOptions;
@@ -407,6 +421,7 @@ function processCSVContentsForStories(contents, saveStories, writeLog) {
                         }
 
                     // Multi-choice single-column delimited, text is whole list of answers
+                    // in case of lumping, dictionary entry will be set to true again
                     } else if (importValueType === "Multi-choice single-column delimited") {
                         newItem[questionName] = {};
                         var delimiter = questionnaire.import_multiChoiceDelimiter;
@@ -417,9 +432,9 @@ function processCSVContentsForStories(contents, saveStories, writeLog) {
                             if (trimmedDelimitedItem !== "") {
                                 var answerNameToUse = getDisplayAnswerNameForDataAnswerName(trimmedDelimitedItem, question);
                                 if (answerNameToUse) {
+                                    if (!newItem[questionName][answerNameToUse]) count(questionName, answerNameToUse);
                                     newItem[questionName][answerNameToUse] = true;
                                     log("INFO||Answer for " + questionName + " (" + importValueType + "): " + answerNameToUse);
-                                    count(questionName, answerNameToUse);
                                 } else { // no match, log error
                                     var listToShow = question.import_answerNames;
                                     if (!listToShow) listToShow = question.valueOptions;
@@ -430,6 +445,7 @@ function processCSVContentsForStories(contents, saveStories, writeLog) {
                         });
 
                     // Multi-choice single-column delimited indexed, text is whole list of multi-choice answers, except they are numerical indexes to answers
+                    // in case of lumping, dictionary entry will be set to true again
                     } else if (importValueType === "Multi-choice single-column delimited indexed") {
                         newItem[questionName] = {};
                         var delimiter = questionnaire.import_multiChoiceDelimiter;
@@ -442,10 +458,10 @@ function processCSVContentsForStories(contents, saveStories, writeLog) {
                                 for (var index = 0; index < question.valueOptions.length; index++) {
                                     if (delimitedIndex-1 === index) {
                                         var answerNameToUse = question.valueOptions[index];
+                                        if (!newItem[questionName][answerNameToUse]) count(questionName, answerNameToUse);
                                         newItem[questionName][answerNameToUse] = true;
                                         valueAssigned = true;
                                         log("INFO||Answer for " + questionName + " (" + importValueType + "): " + answerNameToUse);
-                                        count(questionName, answerNameToUse);
                                         break;
                                     }
                                 }
