@@ -404,6 +404,30 @@ Here's what the import options for the "LongAgo" question look like in NarraFirm
 
 <img src="help_importGuide_questionImportOptions.png">
 
+<p>By the way, you can use this fancy-naming facility to consolidate data. Any answers with the <i>exact</i> same name
+        in the "If your question requires choices, enter them here" list will be lumped together. 
+</p>
+<p>For example, let's say your data file has these answers for a question:
+    </p>
+    
+    <table border="1" cellpadding="4" cellspacing="0">
+            <tr><td>happy</td><td>satisfied</td><td>relieved</td><td>content</td><td>angry</td><td>sad</td><td>disappointed</td></tr>
+        </table>
+    
+    <p>And you would like to lump together all of the positive and negative answers. You can change your list from this:</p>
+
+    <img src="help_importGuide_lumping_before.png" width="400" border="1">
+
+    <p>to this:</p>
+
+    <img src="help_importGuide_lumping_after.png" width="400" border="1">
+    
+    <p>And NarraFirma will translate your answers into only "positive" (formerly happy, satisfied, relieved, and/or content) and "negative" (formerly angry, sad, and/or disappointed).
+    <b>But be careful doing this.</b> Consolidating answers during import changes how your data looks throughout NarraFirma, in all lists and graphs and story cards.
+    The original data is lost during import and is not retained. If you want to lump data and still preserve the original values,
+    use the <a href="help_page_writeAnnotationsAboutStories.html">annotation system</a> instead.
+    </p>
+
 <h4 id="nf_datatypes">Import data types</h4>
 
 <p>Now let's talk about those import data types. It is important to chose the right import type for each question in your data file,
@@ -1072,6 +1096,32 @@ With this question type (and any other type that has fixed, prepared answers), y
 by writing first the name to be found in the data file (e.g., "Last week"), followed by a pipe symbol (|), followed by the
 name to write on graphs (e.g., "In the past week"). If you don't want to use different names on your graphs, you can just 
 write the answer name once (without a pipe symbol). (But watch out for too-long names on graphs! Short names should be no longer than 20 characters or so.)
+</p>
+<p>
+    Note that you can use this fancy-naming facility to consolidate answers. Any answers (for any question type that has a list of answers) with the <i>exact</i> same name
+    in the graph-name spot will be lumped together. For example, if your data file has these answers for a question:
+</p>
+
+<table border="1" cellpadding="4" cellspacing="0">
+        <tr><td>happy</td><td>satisfied</td><td>relieved</td><td>content</td><td>angry</td><td>sad</td><td>disappointed</td></tr>
+    </table>
+
+<p>And you would like to lump together all of the positive and negative answers, you can enter your answers in the story form CSV file like this:</p>
+
+<table border="1" cellpadding="4" cellspacing="0">
+        <tr><td>happy|positive</td><td>satisfied|positive</td><td>relieved|positive</td><td>content|positive</td><td>angry|negative</td><td>sad|negative</td><td>disappointed|negative</td></tr>
+    </table>
+
+<p>And NarraFirma will translate your answers into only these two:</p>
+
+<table border="1" cellpadding="4" cellspacing="0">
+        <tr><td>positive</td><td>negative</td></tr>
+    </table>
+
+    <p>
+Be careful! Consolidating answers during import changes how your data looks throughout NarraFirma, in all lists and graphs and story cards.
+The original data is lost during import and is not retained. If you want to lump data and still preserve the original values,
+use the annotation system instead.
 </p>
 
 <h2 id="csv_singlechoiceindexed">Single choice indexed questions</h2>
