@@ -211,7 +211,7 @@ export function generateStoryCardContent(storyModel, questionsToInclude, options
     var storyName = storyModel.storyName();
 
     var storyText = storyModel.storyText();
-    if (options.cutoff) {
+    if (options.cutoff && options.cutoff !== "no limit") {
         var cutoffValue = parseInt(options.cutoff);
         if (!isNaN(cutoffValue)) {
             if (storyText.length > cutoffValue) {
