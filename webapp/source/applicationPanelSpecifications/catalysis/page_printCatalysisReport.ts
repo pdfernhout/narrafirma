@@ -44,7 +44,7 @@ var panel: Panel = {
             valueType: "string",
             valueOptions: ["clustered interpretations", "observations (all)", "observations (strong)", "observations (medium)", "observations (weak)", "observations (strong and medium)"],
             displayType: "select",
-            displayPrompt: "Would you like to print a complete report with clustered interpretations? Or a preliminary report with only observations?",
+            displayPrompt: "Would you like to print a <strong>complete</strong> report with clustered interpretations? Or a <strong>preliminary</strong> report with only observations?",
             displayVisible: function(panelBuilder, model) {
                 return !!Globals.clientState().catalysisReportIdentifier();
             }
