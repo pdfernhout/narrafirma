@@ -435,6 +435,7 @@ export function printStoryCards() {
     var sliderButtonCharacter = project.tripleStore.queryLatestC(storyCollectionName, "printStoryCards_sliderButtonCharacter"); 
     var afterSliderCharacter = project.tripleStore.queryLatestC(storyCollectionName, "printStoryCards_afterSliderCharacter"); 
     var noAnswerSliderCharacter = project.tripleStore.queryLatestC(storyCollectionName, "printStoryCards_noAnswerSliderCharacter"); 
+    var order = project.tripleStore.queryLatestC(storyCollectionName, "printStoryCards_order"); 
 
     var storyDivs = [];
     if (filter) storyDivs.push(m(".storyCardFilterWarning", "Stories that match filter: " + filter));
@@ -446,7 +447,8 @@ export function printStoryCards() {
             beforeSliderCharacter: beforeSliderCharacter,
             sliderButtonCharacter: sliderButtonCharacter,
             afterSliderCharacter: afterSliderCharacter,
-            noAnswerSliderCharacter: noAnswerSliderCharacter
+            noAnswerSliderCharacter: noAnswerSliderCharacter,
+            order: order
         }
         var storyContent = storyCardDisplay.generateStoryCardContent(storyModel, questionsToInclude, options);
         

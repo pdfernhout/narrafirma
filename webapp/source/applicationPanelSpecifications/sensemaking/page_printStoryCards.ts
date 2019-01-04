@@ -56,6 +56,20 @@ var panel: Panel = {
             }
         },
         {
+            id: "printStoryCards_order",
+            valueType: "string",
+            valuePath: "/clientState/storyCollectionName/printStoryCards_order",
+            valueOptions: [
+                "order on story form, scales separate",
+                "order on story form, scales mixed in",
+                "alphabetical order, scales separate",
+                "alphabetical order, scales mixed in"
+            ],
+            displayType: "select",
+            displayName: "Order",
+            displayPrompt: "In what <strong>order</strong> would you like the answers to questions to appear?"
+        },
+        {
             id: "printStoryCards_beforeSliderCharacter",
             valueType: "string",
             valuePath: "/clientState/storyCollectionName/printStoryCards_beforeSliderCharacter",

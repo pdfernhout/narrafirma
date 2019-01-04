@@ -60,7 +60,7 @@ function displayHTMLForSlider(fieldSpecification, fieldName, value, options) {
         sliderText.push(m("span", {"class": "narrafirma-story-card-slider-bars-no-answer"}, sliderTextAfter));
     }
     return m("tr", [
-        m("span", {"class": "narrafirma-story-card-field-name " + replaceSpacesWithDashes(fieldName)}, fieldName),
+        wrap("td", "narrafirma-story-card-slider-name", m("span", {"class": "narrafirma-story-card-field-name " + replaceSpacesWithDashes(fieldName)}, fieldName)),
         wrap("td", "narrafirma-story-card-slider-label-left", lowLabel),
         wrap("td", "narrafirma-story-card-slider-contents", sliderText),
         wrap("td", "narrafirma-story-card-slider-label-right", highLabel)
@@ -199,6 +199,7 @@ interface Options {
     sliderButtonCharacter?: string;
     afterSliderCharacter?: string;
     noAnswerSliderCharacter?: string;
+    order?: string;
 }
 
 export function generateStoryCardContent(storyModel, questionsToInclude, options: Options = {}) {
@@ -231,41 +232,61 @@ export function generateStoryCardContent(storyModel, questionsToInclude, options
         questions = allQuestions;
     }
 
-    questions.sort(function(a, b) {
-        var aName = a.displayName || a.displayPrompt || "";
-        aName = aName.toLowerCase();
-        var bName = b.displayName || b.displayPrompt || "";
-        bName = bName.toLowerCase();
-            
-        var aIsAnnotationQuestion = a.id.indexOf("A_") >= 0;
-        var bIsAnnotationQuestion = b.id.indexOf("A_") >= 0;
+    //valueOptions: [
+    //    "order on story form, scales separate",
+    //    "order on story form, scales mixed in",
+    //    "alphabetical order, scales separate",
+    //    "alphabetical order, scales mixed in"
+    //],
 
-        if ((aIsAnnotationQuestion && bIsAnnotationQuestion) || (!aIsAnnotationQuestion && !bIsAnnotationQuestion)) {
-            if (aName < bName) return -1;
-            if (aName > bName) return 1;
-        } else if (aIsAnnotationQuestion && !bIsAnnotationQuestion) {
-            return 1;
-        } else if (!aIsAnnotationQuestion && bIsAnnotationQuestion) {
-            return -1;
-        }
-        return 0;
-    });
+    var sortAlphabetically = options.order && options.order.indexOf("alphabetical") >= 0;
+    var sortScalesSeparately = options.order && options.order.indexOf("scales separate") >= 0;
+
+    if (sortAlphabetically) {
+        questions.sort(function(a, b) {
+            var aName = a.displayName || a.displayPrompt || "";
+            aName = aName.toLowerCase();
+            var bName = b.displayName || b.displayPrompt || "";
+            bName = bName.toLowerCase();
+                
+            var aIsAnnotationQuestion = a.id.indexOf("A_") >= 0;
+            var bIsAnnotationQuestion = b.id.indexOf("A_") >= 0;
+
+            if ((aIsAnnotationQuestion && bIsAnnotationQuestion) || (!aIsAnnotationQuestion && !bIsAnnotationQuestion)) {
+                if (aName < bName) return -1;
+                if (aName > bName) return 1;
+            } else if (aIsAnnotationQuestion && !bIsAnnotationQuestion) {
+                return 1;
+            } else if (!aIsAnnotationQuestion && bIsAnnotationQuestion) {
+                return -1;
+            }
+            return 0;
+        });
+    }
     
     var question;
     var i;
     
-    // Put sliders in a table at the start, so loop twice with different conditions
-    for (i = 0; i < questions.length; i++) {
-        question = questions[i];
-        if (question.displayType !== "slider") continue;
-        formattedFields.push(displayHTMLForField(storyModel, question, options, "nobreak"));
+    // Put sliders in a table at the start, so loop twice with different conditions (but only if they chose that option)
+    if (sortScalesSeparately) {
+        for (i = 0; i < questions.length; i++) {
+            question = questions[i];
+            if (question.displayType !== "slider") continue;
+            var fieldHTML = displayHTMLForField(storyModel, question, options, "nobreak");
+            formattedFields.push(fieldHTML);
+        }
+        if (formattedFields.length) formattedFields = [m("table", {"class": "narrafirma-story-card-sliders-table"}, formattedFields)];
     }
-    if (formattedFields.length) formattedFields = [m("table", formattedFields)];
     
     for (i = 0; i < questions.length; i++) {
         question = questions[i];
-        if (question.displayType === "slider") continue;
-        formattedFields.push(displayHTMLForField(storyModel, question, options));
+        if (sortScalesSeparately && question.displayType === "slider") continue;
+        var fieldHTML = displayHTMLForField(storyModel, question, options);
+        if (!sortScalesSeparately && question.displayType === "slider") {
+            var fieldName = question.displayName || question.displayPrompt;
+            fieldHTML = [m("div", {"class": "narrafirma-story-card-question-line-with-slider"}, m("table", {"class": "narrafirma-story-card-one-slider-table"}, fieldHTML))];
+        }
+        formattedFields.push(fieldHTML);
     }
 
     var textForElicitingQuestion: any = [];
