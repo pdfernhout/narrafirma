@@ -200,6 +200,8 @@ interface Options {
     afterSliderCharacter?: string;
     noAnswerSliderCharacter?: string;
     order?: string;
+    cutoff?: string,
+    cutoffMessage?: string
 }
 
 export function generateStoryCardContent(storyModel, questionsToInclude, options: Options = {}) {
@@ -207,7 +209,17 @@ export function generateStoryCardContent(storyModel, questionsToInclude, options
     var elicitingQuestion = storyModel.elicitingQuestion();
     var numStoriesTold = storyModel.numStoriesTold();
     var storyName = storyModel.storyName();
+
     var storyText = storyModel.storyText();
+    if (options.cutoff) {
+        var cutoffValue = parseInt(options.cutoff);
+        if (!isNaN(cutoffValue)) {
+            if (storyText.length > cutoffValue) {
+                storyText = storyText.slice(0, cutoffValue) + " ... (" + options.cutoffMessage + ")";
+            }
+        }
+    }
+
     var formattedFields = [];
 
     var questionnaire = storyModel.questionnaire();

@@ -70,6 +70,23 @@ var panel: Panel = {
             displayPrompt: "In what <strong>order</strong> would you like the answers to questions to appear?"
         },
         {
+            id: "printStoryCards_storyTextCutoff",
+            valueType: "string",
+            valuePath: "/clientState/storyCollectionName/printStoryCards_storyTextCutoff",
+            valueOptions: ["500", "550", "600", "650", "700", "750", "800", "850", "900", "950", "1000", "1100", "1200", "1300", "1400", "1500", "1600", "1700", "1800", "1900", "2000", "no limit"],
+            displayType: "select",
+            displayName: "Story text length",
+            displayPrompt: "At what <strong>length</strong> (number of characters) should stories be truncated?"
+        },
+        {
+            id: "printStoryCards_storyTextCutoffMessage",
+            valueType: "string",
+            valuePath: "/clientState/storyCollectionName/printStoryCards_storyTextCutoffMessage",
+            displayType: "text",
+            displayName: "Story text cutoff message",
+            displayPrompt: "What should it say on the story card <strong>when a story is truncated</strong>?"
+        },
+        {
             id: "printStoryCards_beforeSliderCharacter",
             valueType: "string",
             valuePath: "/clientState/storyCollectionName/printStoryCards_beforeSliderCharacter",
