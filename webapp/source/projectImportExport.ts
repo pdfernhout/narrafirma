@@ -156,8 +156,11 @@ function exportProjectCurrentState(includeSurveyResults) {
 
         if (questionnaireMessages.length) activeQuestionnaires = questionnaireMessages[questionnaireMessages.length - 1].change;
     
+        const storyCollectionsInUse = project.getListForField("project_storyCollections");
+
         var surveyResultMessages = project.pointrelClient.filterMessages((message) => {
-            return message._topicIdentifier === "surveyResults";
+            return message._topicIdentifier === "surveyResults" && 
+                (storyCollectionsInUse.indexOf(message.change.storyCollectionIdentifier) >= 0);
         });
         
         storyCollections = {};
@@ -186,7 +189,7 @@ function exportProjectCurrentState(includeSurveyResults) {
     
     var json = JSON.stringify(exportObject, null, 4);
 
-    console.log("json", json);
+    //console.log("json", json);
     
     var questionnaireBlob = new Blob([json], {type: "application/json;charset=utf-8"});
     saveAs(questionnaireBlob, exportObject.projectIdentifier + " current state exported at " + exportObject.timestamp + ".json");
@@ -319,5 +322,32 @@ export function importProject() {
     } else {
         importProjectCurrentState();
     }
+}
+
+export function listOfRemovedStoryCollections() {
+    var result = [];
+    var project = Globals.project();
+    const storyCollectionsIDsInUse = project.getListForField("project_storyCollections");
+    var storyCollectionNamesInUse = [];
+    for (var i = 0; i < storyCollectionsIDsInUse.length; i++) {
+        storyCollectionNamesInUse.push(project.tripleStore.queryLatestC(storyCollectionsIDsInUse[i], "storyCollection_shortName"));
+    }
+    var allStoryCollectionNames = [];
+    project.pointrelClient.filterMessages((message) => {
+        if (message._topicIdentifier === "surveyResults") {
+            const id = message.change.storyCollectionIdentifier;
+            if (allStoryCollectionNames.indexOf(id) < 0) {
+                allStoryCollectionNames.push(id);
+            }
+        }
+    });
+    for (i = 0; i < allStoryCollectionNames.length; i++) {
+        const collectionName = allStoryCollectionNames[i];
+        if (storyCollectionNamesInUse.indexOf(collectionName) < 0 && result.indexOf(collectionName) < 0) {
+            result.push(collectionName);
+        }
+    }
+    
+    return result;
 }
 
