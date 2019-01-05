@@ -441,6 +441,26 @@ export function copyAttributesToClusteringDiagram(model) {
     copyClusteringDiagramElements("project_storyElements_attributesClusteringDiagram", "item", "project_storyElements_attributeClustersClusteringDiagram", "item");
 }
 
+export function showListOfRemovedStoryCollections() {
+    const removedCollections = projectImportExport.listOfRemovedStoryCollections();
+    var message = "";
+    if (!removedCollections.length) {
+        message = "No story collections exist that have been removed from the project but still have stories associated with them.";
+    } else {
+        message = "These story collections have been removed from the project. ";
+        message += "The stories associated with them have not been removed. ";
+        message += "You can access any of these collections (along with their stories) ";
+        message += "by creating a new story collection with the same name.\n\n";
+        for (var i = 0; i < removedCollections.length; i++) {
+            message += removedCollections[i] + "\n";
+        }
+        message += "\nTo remove the stories associated any of with these collections, ";
+        message += "go to the Project administration - Data removal page ";
+        message += 'and choose "Remove all stories associated with deleted story collections."';
+    }
+    alert(message);
+}
+
 export var enterSurveyResult = openSurveyDialog;
 export var toggleWebActivationOfSurvey = surveyCollection.toggleWebActivationOfSurvey;
 export var storyCollectionStop = surveyCollection.storyCollectionStop;
