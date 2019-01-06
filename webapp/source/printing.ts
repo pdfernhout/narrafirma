@@ -1375,7 +1375,7 @@ export function printProjectReport() {
     const panelSpecificationCollection = Globals.panelSpecificationCollection();
     const allPages = panelSpecificationCollection.buildListOfPages();
     const displayTypesNotToShow = ["button", "html", "recommendationTable", "templateList", "storyBrowser", "graphBrowser", "functionResult"];
-    const pagesNeverToPrint = ["page_startStoryCollection", "page_printQuestionForms", "page_enterStories", "page_importExportStories", "page_reviewIncomingStories", "page_browseGraphs",
+    const pagesNeverToPrint = ["page_startStoryCollection", "page_printQuestionForms", "page_enterStories", "page_importExportStories", "page_removeData", "page_reviewIncomingStories", "page_browseGraphs",
         "page_stopStoryCollection", "page_startCatalysisReport", "page_printCatalysisReport"];
 
     parts.push("<div class=\"narrafirma-report-title\">Project Report for " + project.projectName() + "</div>");
