@@ -6,6 +6,10 @@ To run, cd to this directory and type:
 
 $ node NarraFirmaServer.js
 
+You may want to increase the Javascript heap size by calling node in this way:
+
+$ node --max-old-space-size=8192 NarraFirmaServer.js
+
 To have server restart when making code changes, first install "supervisor":
 
 $ npm install -g supervisor
