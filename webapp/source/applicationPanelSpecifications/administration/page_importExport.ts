@@ -9,7 +9,7 @@ var panel: Panel = {
             id: "importExport_header",
             valueType: "none",
             displayType: "label",
-            displayPrompt: "This page can be used to import or export project data in various ways."
+            displayPrompt: "This page can be used to export project data (for backup or transfer), to reset (empty) a project, or to import project data to an empty project."
         },
         {
             id: "importExport_exportHeader",
@@ -48,6 +48,49 @@ var panel: Panel = {
         },
 
         {
+            id: "importExport_resetHeader",
+            valueType: "none",
+            displayType: "header",
+            displayPrompt: "Reset"
+        },
+        {
+            id: "storyCollection_resetLabel",
+            valueType: "none",
+            displayType: "label",
+            displayPrompt: `<p>When you delete a story collection, NarraFirma removes the collection from its list,
+                but it does not delete the stories themselves. It just disconnects them.
+                You can get the stories back by creating a new story collection with the same name.
+                </p><p>
+                This is generally a good thing! 
+                But if you happen to be importing data, and you are adding and removing story collections over and over to get things right, 
+                you could end up with a lot of disconnected stories; 
+                and that could cause NarraFirma to run slowly or even run out of memory. 
+                If you think you might have this problem, click the button that says "Show removed story collections" below.
+                If it says you have disconnected stories (and you think that's a problem), you can remove the stories by doing this:</p>
+                <ol>
+                <li>In the "Export" section above, choose "project snapshot with stories," then click "Export project". Save the file.</li>
+                <li>Click the "Reset project" button below to empty out the project.</li>
+                <li>In the "Import" section below, choose "project snapshot (with or without stories), then click "Import project." Choose the file you saved in step one.</li>
+                </ol>
+                <p>This will remove all disconnected stories from the project.</p>`
+        },
+        {
+            id: "project_showDeletedStoryCollections",
+            valueType: "none",
+            displayType: "button",
+            displayConfiguration: "showListOfRemovedStoryCollections",
+            displayPrompt: "Show removed story collections"
+        },
+        {
+            id: "importExport_resetProject",
+            valueType: "none",
+            displayType: "button",
+            displayConfiguration: "resetProject",
+            displayPrompt: "Reset project"
+        },
+
+
+        {
             id: "importExport_importHeader",
             valueType: "none",
             displayType: "header",
@@ -70,6 +113,8 @@ var panel: Panel = {
             displayConfiguration: "importProject",
             displayPrompt: "Import project"
         },
+
+
         {
             id: "importExport_otherImports",
             valueType: "none",

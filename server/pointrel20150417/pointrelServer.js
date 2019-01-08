@@ -130,7 +130,7 @@ function addJournalSync(journalIdentifier) {
    var journalDirectory = configuration.journalsDirectory + journalIdentifier + "/";
 
    if (isUsingFiles()) {
-       if (!fs.existsSync(journalDirectory)){
+       if (!fs.existsSync(journalDirectory)) {
            fs.mkdirSync(journalDirectory);
            log("Made directory: " + journalDirectory);
        }
@@ -141,6 +141,36 @@ function addJournalSync(journalIdentifier) {
    
    // console.log("journals", journals);
 }
+
+function resetJournalSync(journalIdentifier) {
+    log("----- resetJournalSync", journalIdentifier, "--------------------------------------------------");
+    var sanitizedFileName = utility.sanitizeFileName(journalIdentifier);
+    if (journalIdentifier !== sanitizedFileName) {
+        throw new Error("resetJournalSync: journalIdentifier contains unacceptable characters like spaces, double periods, or slashes");
+    }
+    
+    if (journalIdentifier.length > 63) {
+        // TODO: Arbitrary limit for now. What should it be?
+        throw new Error("resetJournalSync: journalIdentifier is more than 63 characters long");
+    }
+    
+    var journalDirectory = configuration.journalsDirectory + journalIdentifier + "/";
+    const fileDate = new Date().toISOString();
+    var journalDirectoryBackup = configuration.journalsDirectory + "." + journalIdentifier + ".backup-" + fileDate + "/";
+ 
+    if (isUsingFiles()) {
+        if (!fs.existsSync(journalDirectory)) {
+            throw new Error("resetJournalSync: journal does not exist on disk");
+        }
+        fs.renameSync(journalDirectory, journalDirectoryBackup);
+        log("Renamed directory: " + journalDirectory + " to: " + journalDirectoryBackup);
+        fs.mkdirSync(journalDirectory);
+        log("Made directory: " + journalDirectory);
+    }
+  
+    var journal = makeJournal(journalIdentifier, journalDirectory);
+    journals[JSON.stringify(journalIdentifier)] = journal;
+ }
 
 //--- Indexing
 
@@ -862,6 +892,7 @@ function processRequest(apiRequest, callback, request) {
             var requestedCapability = "read";
             if (requestType === "pointrel20150417_storeMessage") requestedCapability = "write";
             if (requestType === "pointrel20150417_createJournal") requestedCapability = "administrate";
+            if (requestType === "pointrel20150417_resetJournal") requestedCapability = "administrate";
             
             var authorized = true;
             if (configuration.isAuthorizedCallback) {
@@ -907,8 +938,15 @@ function processRequest(apiRequest, callback, request) {
         
         if (requestType === "pointrel20150417_createJournal") {
             if (journal) return callback(makeFailureResponse(409, "Conflict: Journal already exists", {journalIdentifier: journalIdentifier}));
-            // TODO: Should make this all into a funciton, and this call shoudl be asynchronous
+            // TODO: Should make this all into a function, and this call should be asynchronous
             addJournalSync(apiRequest.journalIdentifier);
+            return callback(makeSuccessResponse(200, "Success", {journalIdentifier: journalIdentifier}));
+        }
+
+        if (requestType === "pointrel20150417_resetJournal") {
+            if (!journal) return callback(makeFailureResponse(409, "Journal does not exist", {journalIdentifier: journalIdentifier}));
+            // TODO: Should make this all into a function, and this call should be asynchronous
+            resetJournalSync(apiRequest.journalIdentifier);
             return callback(makeSuccessResponse(200, "Success", {journalIdentifier: journalIdentifier}));
         }
         

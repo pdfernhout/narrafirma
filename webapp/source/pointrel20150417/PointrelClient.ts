@@ -99,7 +99,7 @@ class PointrelClient {
     private static lastTimestamp = null;
     private static lastTimestampIncrement = 0;
     private static timestampIncrementPadding = "000";
-    private static timestampRandomPadding = "000";   
+    private static timestampRandomPadding = "000"; 
     
     constructor(apiURL, journalIdentifier, userCredentials, messageReceivedCallback = null, serverStatusCallback = null) {
         if (!apiURL) throw new Error("No apiURL supplied");
@@ -128,6 +128,15 @@ class PointrelClient {
         
         this.messageReceivedCallback = messageReceivedCallback;
         this.serverStatusCallback = serverStatusCallback;
+    }
+
+    resetJournalContents() {
+        this.lastReceivedTimestampConsidered = null;
+        this.incomingMessageRecords = [];
+        this.messagesSortedByReceivedTimeArray = [];
+        this.sha256AndLengthToMessageMap = {};
+        this.areOutgoingMessagesSuspended = false;
+        this.outgoingMessageQueue = [];
     }
     
     prepareApiRequestForSending(apiRequest) {
@@ -378,6 +387,51 @@ class PointrelClient {
              }, function(error) {
                 self.serverStatus("failure", "Problem with createJournal from server: " + error.description);
                 console.log("Got server error for createJournal", error.message);
+                callback(error);
+            });
+        }
+    }
+
+    resetJournal(journalIdentifier, callback) {
+        if (this.apiURL === "loopback") {
+            callback(null, {
+                success: true, 
+                statusCode: 200,
+                description: "Success",
+                timestamp: this.getCurrentUniqueTimestamp(),
+                status: 'OK',
+                version: "PointrelServer-loopback",
+                currentUniqueTimestamp: this.getCurrentUniqueTimestamp(),
+                journalIdentifier: journalIdentifier
+            });
+        } else {
+            // Send to a real server immediately
+    
+            var apiRequest = {
+                action: "pointrel20150417_resetJournal",
+                journalIdentifier: journalIdentifier
+            };
+            if (debugMessaging) console.log("sending resetJournal request", apiRequest);
+            this.prepareApiRequestForSending(apiRequest);
+            
+            // Do not set outstandingServerRequestSentAtTimestamp as this is an immediate request that does not block polling
+            this.serverStatus("waiting", "requesting resetJournal " + new Date().toISOString());
+            
+            var self = this;
+            this.apiRequestSend(apiRequest, shortTimeout_ms, function(response) {
+                if (debugMessaging) console.log("Got resetJournal response", response);
+                if (!response.success) {
+                    console.log("ERROR: report resetJournal failure", response);
+                    self.serverStatus("failure", "Report resetJournal failure: " + response.statusCode + " :: " + response.description);
+                    callback(response || "Failed");
+                } else {
+                    self.okStatus();
+                    self.resetJournalContents();
+                    callback(null, response);
+                }
+             }, function(error) {
+                self.serverStatus("failure", "Problem with resetJournal from server: " + error.description);
+                console.log("Got server error for resetJournal", error.message);
                 callback(error);
             });
         }

@@ -1,3 +1,4 @@
+import toaster = require("./panelBuilder/toaster");
 import Globals = require("./Globals");
 import dialogSupport = require("./panelBuilder/dialogSupport");
 import surveyStorage = require("./surveyStorage");
@@ -92,7 +93,7 @@ export function importEntireProject() {
             if (progressModel.cancelled) {
                 alert("Cancelled after importing " + messageIndexToSend + " messages");
             } else if (messageIndexToSend >= importObject.messages.length) {
-                alert("Done importing messages");
+                alert("Finished importing " + importObject.messages.length + " messages.");
                 progressModel.hideDialogMethod();
                 progressModel.redraw();
             } else {
@@ -272,9 +273,9 @@ export function importProjectCurrentState() {
         
         function sendNextMessage() {
             if (progressModel.cancelled) {
-                alert("Cancelled after adding " + messagesSentCount + " project triples");
+                alert("Cancelled after adding " + messagesSentCount + " project messages.");
             } else if (messagesSentCount >= messagesToSend.length) {
-                alert("Done importing project triples");
+                alert("Successfully imported " + messagesSentCount + " project messages.");
                 progressModel.hideDialogMethod();
                 progressModel.redraw();
             } else {
@@ -285,7 +286,7 @@ export function importProjectCurrentState() {
                 }
                 
                 // TODO: Translate
-                progressModel.progressText = "Sending " + messagesSentCount + " of " + messagesToSend.length + " triples";
+                progressModel.progressText = "Sending " + messagesSentCount + " of " + messagesToSend.length + " messages";
                 progressModel.redraw();
                 setTimeout(function() {
                     if (triple) {
@@ -324,6 +325,28 @@ export function importProject() {
     }
 }
 
+export function resetProject() {
+    var project = Globals.project();
+    if (confirm("Are you sure you want to reset this project? This action cannot be undone. Make sure you have a project snapshot file ready to restore the project afterwards.")) {
+        const journalIdentifier = project.journalIdentifier;
+        project.pointrelClient.resetJournal(journalIdentifier, function(error, response) {
+            if (error || !response.success) {
+                console.log("Error resetting project", journalIdentifier, error, response);
+                var message = "error";
+                if (response) message = response.description;
+                if (error) message = error.description;
+                if (error && typeof error.error === "string") message += "\n" + error.error.split("\n")[0];
+                toaster.toast("Error resetting project: " + journalIdentifier + " :: " + message);
+            } else {
+                console.log("Successfully reset project", journalIdentifier, response);
+                // Need to call redraw as event changing data was triggered by network
+                alert("The project " + project.projectName() + " was successfully reset and is now empty.");
+                location.reload();
+            }
+        });
+    }
+}
+
 export function listOfRemovedStoryCollections() {
     var result = [];
     var project = Globals.project();
@@ -332,19 +355,21 @@ export function listOfRemovedStoryCollections() {
     for (var i = 0; i < storyCollectionsIDsInUse.length; i++) {
         storyCollectionNamesInUse.push(project.tripleStore.queryLatestC(storyCollectionsIDsInUse[i], "storyCollection_shortName"));
     }
-    var allStoryCollectionNames = [];
+    var storyCollectionNamesAndCounts = {};
     project.pointrelClient.filterMessages((message) => {
         if (message._topicIdentifier === "surveyResults") {
             const id = message.change.storyCollectionIdentifier;
-            if (allStoryCollectionNames.indexOf(id) < 0) {
-                allStoryCollectionNames.push(id);
+            if (!storyCollectionNamesAndCounts[id]) {
+                storyCollectionNamesAndCounts[id] = 0;
             }
+            storyCollectionNamesAndCounts[id] += 1;
         }
     });
-    for (i = 0; i < allStoryCollectionNames.length; i++) {
-        const collectionName = allStoryCollectionNames[i];
+    var keys = Object.keys(storyCollectionNamesAndCounts);
+    for (i = 0; i < keys.length; i++) {
+        const collectionName = keys[i];
         if (storyCollectionNamesInUse.indexOf(collectionName) < 0 && result.indexOf(collectionName) < 0) {
-            result.push(collectionName);
+            result.push(collectionName + ": " + storyCollectionNamesAndCounts[collectionName] + " stories");
         }
     }
     
