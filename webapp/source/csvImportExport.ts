@@ -832,8 +832,8 @@ function processCSVContentsForQuestionnaire(contents) {
         alert("ERROR: No header line found in CSV file.")
         return false;
     }
-    if (!(header.includes("Data column name") && header.includes("Short name") && header.includes("Long name") && header.includes("Type") && header.includes("About") && header.includes("Answers"))) {
-        alert("ERROR: Header is missing at least one required cell. It must have entries for Data column name, Short name, Long name, Type, About, and Answers. It also must be the first readable row in the CSV file.")
+    if (!(header.includes("Short name") && header.includes("Long name") && header.includes("Type") && header.includes("About") && header.includes("Answers"))) {
+        alert("ERROR: Header is missing at least one required cell. It must have entries for Short name, Long name, Type, About, and Answers. (It should also have a Data column name header, but for legacy files Short name will be taken to mean the same thing.) The header row must be the first readable row in the CSV file.")
         return false;
     }
     
@@ -918,7 +918,13 @@ function processCSVContentsForQuestionnaire(contents) {
     //   Add a reference to the question in the story form
         
     var questionTypeCounts = {};
-    
+
+    // in pre-1.2 files, headers for eliciting question, story title, story text, and participant ID were hard coded
+    project.tripleStore.addTriple(template.id, "questionForm_import_elicitingQuestionColumnName", "Eliciting question");
+    project.tripleStore.addTriple(template.id, "questionForm_import_storyTitleColumnName", "Story title");
+    project.tripleStore.addTriple(template.id, "questionForm_import_storyTextColumnName", "Story text");
+    project.tripleStore.addTriple(template.id, "import_participantIDColumnName", "Participant ID");
+
     var items = headerAndItems.items;
     for (var itemIndex = 0; itemIndex < items.length; itemIndex++) {
         var item = items[itemIndex];
@@ -934,12 +940,12 @@ function processCSVContentsForQuestionnaire(contents) {
             reference = ensureQuestionExists(question, "participantQuestion");
             addReferenceToList(template.questionForm_participantQuestions, reference, "participantQuestion", "ParticipantQuestionChoice");
         } else if (about === "eliciting") {
-            template.import_elicitingQuestionColumnName = item["Data column name"];
-            project.tripleStore.addTriple(template.id, "questionForm_import_elicitingQuestionColumnName", item["Data column name"]);
-            template.import_elicitingQuestionGraphName = item["Short name"];
-            project.tripleStore.addTriple(template.id, "questionForm_import_elicitingQuestionGraphName", item["Data column name"]);
-            template.questionForm_chooseQuestionText = item["Long name"]; 
-            project.tripleStore.addTriple(template.id, "questionForm_chooseQuestionText", item["Data column name"]);
+            template.import_elicitingQuestionColumnName = item["Data column name"] || "Eliciting question";
+            project.tripleStore.addTriple(template.id, "questionForm_import_elicitingQuestionColumnName", item["Data column name"] || "Eliciting question");
+            template.import_elicitingQuestionGraphName = item["Short name"] || "Eliciting question";
+            project.tripleStore.addTriple(template.id, "questionForm_import_elicitingQuestionGraphName", item["Short name"] || "Eliciting question");
+            template.questionForm_chooseQuestionText = item["Long name"] || "Eliciting question"; 
+            project.tripleStore.addTriple(template.id, "questionForm_chooseQuestionText", item["Long name"] || "Eliciting question");
             var answers = item["Answers"];
             answers.forEach(function (elicitingQuestionDefinition) {
                 if (!elicitingQuestionDefinition) elicitingQuestionDefinition = "ERROR: Missing eliciting question text";
@@ -1158,7 +1164,7 @@ function processCSVContentsForQuestionnaire(contents) {
             console.log("Error: unexpected About type of ", about);
         }
     }
-    
+
     m.redraw();
     
     toaster.toast("Finished reading story form: " + shortName);
@@ -1294,7 +1300,7 @@ function questionForItem(item, questionCategory) {
     question[questionCategory + "_text"] = item["Long name"];
     if (valueOptions) question[questionCategory + "_options"] = valueOptions.join("\n");
 
-    question[questionCategory + "_import_columnName"] = item["Data column name"];
+    question[questionCategory + "_import_columnName"] = item["Data column name"] || item["Short name"];
     question[questionCategory + "_import_valueType"] = itemType;
     question[questionCategory + "_import_minScaleValue"] = import_minScaleValue;
     question[questionCategory + "_import_maxScaleValue"] = import_maxScaleValue;
