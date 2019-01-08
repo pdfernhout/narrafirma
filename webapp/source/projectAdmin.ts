@@ -123,7 +123,11 @@ var AdminPageDisplayer: any = {
                 m("input", {id: "jn1", value: journalName(), onchange: m.withAttr("value", journalName)}),
                 m("button[style='" + buttonStyleText + "']", {onclick: addJournalClicked}, "Create Project"),
                 m("button[style='" + buttonStyleText + "']", {onclick: grantAnonymousAccessToJournalForSurveysClicked}, "Grant Anonymous Survey Access"),
-                m("br")
+                m("br"),
+                m("p", "To temporarily hide a project, " + 
+                    'rename its directory (under server_data) with anything other than "NarraFirmaProject-" at the start (e.g., prefix the directory name with "old" or "hide").' +
+                    " Or you can move that project's directory out of the server_data directory." +
+                    " To permanently delete a project, delete its directory. In any of these cases, stop and restart the NarraFirma server to refresh the list of projects.")
             ]),
             m("br"),
             m("hr", {style: "display: block; clear: both; height: 2px;"}),
@@ -307,18 +311,18 @@ function addJournal(journalIdentifier) {
     
     pointrelClient.createJournal(journalIdentifier, function(error, response) {
         if (error || !response.success) {
-            console.log("Error creating journal", journalIdentifier, error, response);
+            console.log("Error creating project", journalIdentifier, error, response);
             var message = "error";
             if (response) message = response.description;
             if (error) message = error.description
             if (error && typeof error.error === "string") message += "\n" + error.error.split("\n")[0];
-            toaster.toast("Error: creating journal: " + journalIdentifier + " :: " + message);
+            toaster.toast("Error creating project: " + journalIdentifier + " :: " + message);
         } else {
-            console.log("Created journal OK", journalIdentifier, response);
-            toaster.toast("Created journal OK: " + journalIdentifier);
+            console.log("Created project", journalIdentifier, response);
             allProjectsModel.projects.push({name: journalIdentifier.substring(narrafirmaProjectPrefix.length)});
             // Need to call redraw as event changing data was triggered by network
-            m.redraw();
+            alert("Created project: " + journalIdentifier);
+            location.reload();
         }
     });
 
