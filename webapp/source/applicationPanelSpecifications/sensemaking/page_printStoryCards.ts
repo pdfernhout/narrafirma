@@ -84,7 +84,7 @@ var panel: Panel = {
             valuePath: "/clientState/storyCollectionName/printStoryCards_storyTextCutoffMessage",
             displayType: "text",
             displayName: "Story text cutoff message",
-            displayPrompt: "What should it say on the story card <strong>when a story is truncated</strong>?"
+            displayPrompt: `What should the story card say <strong>after a story that has been truncated</strong>? (If this field is left blank, it will say "... (truncated)".)`
         },
         {
             id: "printStoryCards_beforeSliderCharacter",

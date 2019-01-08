@@ -213,9 +213,10 @@ export function generateStoryCardContent(storyModel, questionsToInclude, options
     var storyText = storyModel.storyText();
     if (options.cutoff && options.cutoff !== "no limit") {
         var cutoffValue = parseInt(options.cutoff);
+        var cutoffMessageToUse = options.cutoffMessage || "... (truncated)";
         if (!isNaN(cutoffValue)) {
             if (storyText.length > cutoffValue) {
-                storyText = storyText.slice(0, cutoffValue) + " ... (" + options.cutoffMessage + ")";
+                storyText = storyText.slice(0, cutoffValue) + cutoffMessageToUse;
             }
         }
     }
