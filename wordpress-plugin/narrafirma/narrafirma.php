@@ -111,18 +111,17 @@ class NarraFirmaSettingsPage
 <div class="wrap">
 
     <h2><?php echo "NarraFirma $NARRAFIRMA_VERSION"; ?></h2>
-    <p>The NarraFirma&trade; web application supports Participatory Narrative Inquiry (PNI). 
-    PNI is a method in which ordinary people share ordinary stories in a way that helps them 
-    discover insights they can use. To learn more about PNI, visit <a href="http://www.narrafirma.com" target="_blank">narrafirma.com</a>
-    and <a href="http://www.workingwithstories.org" target="_blank">workingwithstories.org</a>.
+    <p>The NarraFirma&trade; web application supports Participatory Narrative Inquiry. 
+    PNI helps ordinary people share ordinary stories to discover insights they can use. 
+    To learn more about PNI, visit <a href="http://www.narrafirma.com" target="_blank">narrafirma.com</a>
+    or <a href="http://www.workingwithstories.org" target="_blank">workingwithstories.org</a>.
     </p>
     <p>
     <i>The NarraFirma plugin uses WordPress as an application server, 
-    user authentication system, and data store. Using WordPress in this way makes the NarraFirma software easier to install and 
-    configure. The NarraFirma application is not otherwise integrated with WordPress pages 
-    and runs in its own web page.</i>
+    user authentication system, and data store. Using WordPress in this way makes NarraFirma easier to install and 
+    configure. NarraFirma is not otherwise integrated with WordPress pages and runs in its own web page.</i>
     </p>
-    <h2><a href="<?php echo $launchLink; ?>" target="_blank">Click here to launch the NarraFirma application</a></h2>
+    <h2 style="text-align: center"><a style="border: 1px solid gray; text-decoration: none; background: #ffbb84; color: black; padding: 0.5em; margin-top: 1em;" href="<?php echo $launchLink; ?>" target="_blank">Start NarraFirma</a></h2>
     
     <div id="narrafirma-project-list-editor">
     </div>
@@ -138,18 +137,29 @@ class NarraFirmaSettingsPage
         </form>
         
         <div id="narrafirma-example">
-            You can create projects by editing the NarraFirma configuration data here in JSON format.<br>
-            <br>
-            An example:
+            <h3>Help on changing project settings</h3>
+            <p>This is an example of what a project definition looks like in JSON format.</p>
             <pre>
-            {
-                "NarraFirmaProject-test1": {
-                     "write": ["editor", "pdfernhout", "cfkurtz"],
-                     "read": ["subscriber"],
-                     "survey": [true]
-                }
-            }
-            </pre>
+{
+    "NarraFirmaProject-My Project": {
+            "write": ["editor", "pdfernhout", "cfkurtz"],
+            "read": ["subscriber"],
+            "survey": ["subscriber", true]
+    }
+}</pre>
+            <p>
+            The project name must start with "NarraFirmaProject-". 
+            The rest of the project name (e.g., "My Project") must be 20 characters or shorter.
+</p>
+<p>
+            List WordPress roles or user IDs in quotes, separated by commas, for each type of permission you want to specify.
+            To grant any type of permission to anonymous (not logged in) site visitors, add <b>true</b> (not in quotes) to the list.
+        </p>
+        <p>
+            If you edit your settings in this way and then see an error message (or a blank screen) when you open a project, 
+            come back to the JSON configuration and check your syntax. 
+            Make sure all the quotes and commas and square/curly brackets are in place as in the example.
+            </p>
         </div>
     </div>
 
@@ -162,14 +172,14 @@ class NarraFirmaSettingsPage
 
         add_settings_section(
             'narrafirma_setting_section_id',
-            'NarraFirma Settings',
+            '',
             array( $this, 'print_section_info' ),
             'narrafirma-settings-admin'
         ); 
 
         add_settings_field(
             'journals', 
-            'Projects', 
+            '<p>You can change project permissions and create new projects here by editing the NarraFirma configuration data directly in JSON format.</p>', 
             array( $this, 'display_journals' ), 
             'narrafirma-settings-admin', 
             'narrafirma_setting_section_id'
@@ -198,18 +208,20 @@ class NarraFirmaSettingsPage
         foreach($journals as $name => $permissions) {
             if (!doesJournalTableExist($name)) {
                 // error_log("ensureAllJournalsExists about to create table for: " . $name);
-                makeJournalTable($name);
+                $success = makeJournalTable($name);
+                if ($success === false) {
+                    error_log("Could not make journal " . $name);
+                }
             }
         }
    }
 
     public function print_section_info() {
-        print 'Enter your settings below:';
+        echo("<br>");
     }
 
     public function display_journals() {
-            printf(
-            '<textarea cols="40" rows="5" name="narrafirma_admin_settings[journals]" style="white-space: pre-wrap;">%s</textarea>',
+            printf('<textarea cols="40" rows="5" name="narrafirma_admin_settings[journals]" style="white-space: pre-wrap;">%s</textarea>',
             isset( $this->options['journals'] ) ? esc_textarea( $this->options['journals']) : ''
         );
     }
@@ -284,18 +296,9 @@ function makeSuccessResponse($statusCode, $description, $extra = false) {
 
 function tableNameForJournal($journalName) {
     global $wpdb;
-    
     $sanitizedJournalName = preg_replace('/[^a-zA-Z0-9_]+/', '_', $journalName);
-    
     $table_name = $wpdb->prefix . 'narrafirma_j_' . $sanitizedJournalName;
-    
     $table_name = strtolower($table_name);
-    
-    // Enforce MySQL limit on table name length
-    if (strlen($table_name) > 64) {
-        throw new Exception('NarraFirma user table name length for journal longer than 64 characters: ' . $table_name);
-    }
-    
     return $table_name;
 }
 
@@ -310,6 +313,11 @@ function makeJournalTable($journalName) {
     global $wpdb;
     
     $table_name = tableNameForJournal($journalName);
+    // Enforce MySQL limit on table name length
+    if (strlen($table_name) > 64) {
+        // throw new \Exception('NarraFirma user table name length for journal longer than 64 characters: ' . $table_name);
+        return false;
+    }
     
     $charset_collate = $wpdb->get_charset_collate();
 
@@ -331,6 +339,7 @@ function makeJournalTable($journalName) {
 
     require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
     dbDelta( $sql );
+    return true;
 }
 
 function isUserAuthorized($userID, $permissions) {
@@ -436,6 +445,10 @@ function pointrel20150417_dispatch() {
     if ($requestType == "pointrel20150417_createJournal") {
         pointrel20150417_createJournal($apiRequest);
     }
+
+    if ($requestType == "pointrel20150417_resetJournal") {
+        pointrel20150417_resetJournal($apiRequest);
+    }
     
     if ($requestType == "pointrel20150417_reportJournalStatus") {
         pointrel20150417_reportJournalStatus($apiRequest);
@@ -495,7 +508,8 @@ function pointrel20150417_createJournal($apiRequest) {
     // error_log("Called pointrel20150417_createJournal");
     
 	if (!current_user_can( 'manage_options' )) {
-	    wp_send_json( makeFailureResponse(403, "Forbidden -- User is not an admin") );
+        wp_send_json( makeFailureResponse(403, "Forbidden -- User is not an administrator") );
+        return;
 	}
 	
 	$journalIdentifier = $apiRequest->journalIdentifier;
@@ -511,6 +525,43 @@ function pointrel20150417_createJournal($apiRequest) {
 	
 	wp_send_json( $response );
 	*/
+}
+
+function pointrel20150417_resetJournal($apiRequest) {
+    global $wpdb;
+    
+	if (!current_user_can( 'manage_options' )) {
+        wp_send_json( makeFailureResponse(403, "Forbidden -- User is not an administrator") );
+        return;
+	}
+	
+	$journalIdentifier = $apiRequest->journalIdentifier;
+    if (!doesJournalTableExist($journalIdentifier)) {
+        wp_send_json( makeFailureResponse(500, "Journal does not exist") );
+        return;
+    }
+
+    $table_name = tableNameForJournal($journalIdentifier);
+    $backup_table_name = substr($table_name, 0, 50) . "-" . strtotime("now");
+
+    $success = $wpdb->query("RENAME TABLE `$table_name` TO `$backup_table_name`");
+    if ($success === false) {
+        wp_send_json( makeFailureResponse(500, "Journal could not be renamed to backup") );
+        return;
+    }
+
+    $createdJournal = makeJournalTable($journalIdentifier);
+    $result = ($createdJournal) ? 'true' : 'false';
+    if ($createdJournal === false) {
+        wp_send_json( makeFailureResponse(500, "Journal name is too long") );
+        return;
+    }
+
+    $response = makeSuccessResponse(200, "Success", array(
+        'journalIdentifier' => $journalIdentifier
+    ));
+    
+    wp_send_json( $response );
 }
 
 function pointrel20150417_reportJournalStatus($apiRequest) {

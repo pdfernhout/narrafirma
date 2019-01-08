@@ -32,26 +32,26 @@
                 console.log("Problem comparing JSON for old and new journal definitions", e);
             }
                 
+            const buttonStyle = "font-size: 1.2em; background: #ffbb84; padding: 0.3em; margin-bottom: 0.5em";
             return m("div", [
-                m("h3", "NarraFirma projects and permissions"), 
-                m("button", {onclick: newProject.bind(null, controller)}, "Create New Project"),
+                m("h3", "NarraFirma projects"), 
                 m("p", "New projects are not saved until you click the \"Save changes\" button below. Deleting a project will make it unavailable, but the data will still be stored and can be re-accessed by creating a project with the same name."),
                 m("p", "To specify project permissions, enter one or more space-separated WordPress user IDs (e.g. samsmith) or " + 
                 "WordPress roles (e.g. administrator, editor, author, contributor, subscriber). " + 
                 "Write access also grants read access and survey access. Only give write access to people you trust. "),
+                m("button", {"style": buttonStyle, onclick: newProject.bind(null, controller)}, "Create New Project"),
                 Object.keys(controller.journalDefinitions).map(function(journalIdentifier) {
                     return displayJournal(controller, journalIdentifier);
                 }),
-                m("br"),
-                m("button", {onclick: cancelChanges.bind(null, controller), disabled: isJSONUnchanged}, "Cancel changes"),
+                m("button", {"style": buttonStyle, onclick: cancelChanges.bind(null, controller), disabled: isJSONUnchanged}, "Cancel changes"),
                 " ",
-                m("button", {onclick: saveChanges.bind(null, controller), disabled: isJSONUnchanged}, "Save changes"),
+                m("button", {"style": buttonStyle, onclick: saveChanges.bind(null, controller), disabled: isJSONUnchanged}, "Save changes"),
                 m("br"),
                 m("div[style='margin-top: 1em;']", [
-                    m("span", {"for": "narrafirma-displayJSON"}, "Edit project permissions directly as JSON"),
                     m("input[type=checkbox][style='margin-left:0.5em']", 
-                        {id: "narrafirma-displayJSON", onclick: m.withAttr("checked", showJSONChecked.bind(null, controller)), checked: controller.showJSON})
-                ])
+                        {id: "narrafirma-displayJSON", onclick: m.withAttr("checked", showJSONChecked.bind(null, controller)), checked: controller.showJSON}),
+                        m("span", {"for": "narrafirma-displayJSON"}, "Edit project permissions directly as JSON"),
+                    ])
             ]);
         }
     };
@@ -70,9 +70,10 @@
             }
             writeJournalDefinitionsToTextarea(controller.journalDefinitions);
         };
-        return m("label", {style: "margin-left: 2em"}, [
-            "Anonymous (not logged in) users have " + field + " access ",
-            m("input[type=checkbox]", {onclick: m.withAttr("checked", updateAnonymousAccess), checked: checked})
+        const id = "narrafirma-anonymous-access-" + field;
+        return m("div", {"style": "margin-left: 2em"}, [
+            m("input[type=checkbox]", {id: id, onclick: m.withAttr("checked", updateAnonymousAccess), checked: checked}),
+            m("label", {"for": id}, "Anonymous (not logged in) site visitors have " + field + " access "),
         ]);
     }
     
@@ -127,11 +128,15 @@
     }
     
     function newProject(controller) {
-        var newName = prompt("Please enter a short name for the new project.");
+        var newName = prompt("Please enter a short name for the new project. It must be 20 characters or shorter.");
         if (!newName) return;
-        var key = narrafirmaProjectPrefix + newName;
+        if (newName.length > 20) {
+            alert("That project name is " + newName.length + " characters long. Please try again with name that is 20 characters or shorter.");
+            return;
+        }
+        var key = narrafirmaProjectPrefix;
         if (controller.journalDefinitions[key]) {
-            alert("A project with that name already exists");
+            alert("A project with that name already exists.");
             return;
         }
         controller.journalDefinitions[key] = {
@@ -179,9 +184,7 @@
     function startup() {
         jsonForm = document.getElementById("narrafirma-json-form");
         jsonForm.style.display = 'none';
-        
         journalsTextarea = document.getElementsByName("narrafirma_admin_settings[journals]")[0];
-        
         m.mount(document.getElementById("narrafirma-project-list-editor"), NarraFirmaAdminComponent);
     }
     
