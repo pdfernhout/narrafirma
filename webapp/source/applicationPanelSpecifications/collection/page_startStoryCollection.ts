@@ -36,23 +36,6 @@ var panel: Panel = {
             displayName: "Story collections",
             displayPrompt: "These are the story collections you have created so far."
         },
-        {
-            id: "storyCollection_removalLabel",
-            valueType: "none",
-            displayType: "label",
-            displayPrompt: `Note: Removing a story collection does not remove the stories associated with it. 
-                To access the stories again, create a new story collection with the same name. 
-                To remove the stories, visit the Project administration - Data Removal page.` 
-        },
-        {
-            id: "project_showDeletedStoryCollections",
-            valueType: "none",
-            displayType: "button",
-            displayConfiguration: "showListOfRemovedStoryCollections",
-            displayPrompt: "Show list of removed story collections"
-        }
-
-
     ]
 };
 
