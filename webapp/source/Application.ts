@@ -298,19 +298,20 @@ class Application {
         
         singleUsePointrelClient.createJournal(this.journalIdentifier, (error, response) => {
             if (error || !response.success) {
-                console.log("Error creating journal", this.journalIdentifier, error, response);
+                console.log("Error creating project", this.journalIdentifier, error, response);
                 var message = "error";
                 if (response) message = response.description;
                 if (error) message = error.description;
-                toaster.toast("Error: creating journal: " + this.journalIdentifier + " :: " + message);
+                toaster.toast("Error: creating project: " + this.journalIdentifier + " :: " + message);
                 // location.reload();
             } else {
-                console.log("Created journal OK", this.journalIdentifier, response);
-                toaster.toast("Created journal OK: " + this.journalIdentifier);
+                console.log("Created project", this.journalIdentifier, response);
                 // allProjectsModel.projects.push({name: this.journalIdentifier.substring(narrafirmaProjectPrefix.length)});
-                // Need to call redraw as event changing data was triggered by network
-                // m.redraw();
                 console.log("About to trigger page reload for changed project");
+
+                // Need to call redraw as event changing data was triggered by network
+                // and alert has to be AFTER reload or it is not seen
+                alert("Created project: " + this.journalIdentifier);
                 location.reload();
             }
         });
