@@ -75,27 +75,43 @@ var AdminPageDisplayer: any = {
                 m("a", {href: "/logout"}, "Log Out")
             ]),
             m("br"),
-            !!userToDisplay ? m("div", {style: "height: 300px; overflow: auto; float: right; min-width: 75%; margin-right: 1em; background: #d5dae6; border: solid 1px #7b8cb2;"}, [
+            !!userToDisplay ? m("div", {style: "height: 200px; overflow: auto; float: right; min-width: 75%; margin-right: 1em; background: white; border: solid 3px #b0d4d4;"}, [
                 m("h3[style='margin-left:0.25em;']", "Roles for user: " + userToDisplay), 
                 m("pre", JSON.stringify(allProjectsModel.users[userToDisplay].rolesForJournals, null, 4))
-            ]) : m("div", {style: "height: 300px; overflow: auto; float: right; min-width: 75%"}),
-            m("b", "Choose user:"),
-            m("br"),
+            ]) : m("div", {style: "height: 200px; overflow: auto; float: right; min-width: 75%"}),
+            m("h2", "Users"),
+            m('p', "Click a user name to see their project permissions."),
             Object.keys(allProjectsModel.users).sort().map(function(userIdentifier) {
                 var user = allProjectsModel.users[userIdentifier];
                 return m("div[style='white-space:pre']", ["   ", m("a", {href: "javascript:projectAdmin_selectUser('" +  user.userIdentifier + "')"}, user.userIdentifier)]);
             }),
+
             m("br"),
-            m("b", "Choose project:"),
-            m("br"),
-            allProjectsModel.projects.sort(compareProjects).map(function(project) {
-               return m("div[style='white-space:pre']", ["   ", m("a", {href: "javascript:projectAdmin_selectJournal('" +  project.name + "')"}, project.name)]);
-            }),
-            m("br"),
-            m("hr", {style: "display: block; clear: both; height: 2px;"}),
+            m("hr", {style: "display: block; clear: both; height: 3px; background: #b0d4d4; color: #b0d4d4"}),
+            m("div", [
+                m("h2", "Add New User"),
+                m("label[style='" + labelStyleText + "']", {"for": "un2"}, "User name"),
+                m("input", {id: "un2", value: userName(), onchange: m.withAttr("value", userName)}),
+                m("br"),
+                m("label[style='" + labelStyleText + "']", {"for": "p2"}, "Password"),
+                m("input", {id: "p2", value: userPassword(), onchange: m.withAttr("value", userPassword), disabled: userName().trim() === "anonymous"}),
+                m("button[style='" + buttonStyleText + "']", {onclick: addUserClicked}, "Add User"),
+                m("br")
+            ]),
+
+            m("hr", {style: "display: block; clear: both; height: 3px; background: #b0d4d4; color: #b0d4d4"}),
+            m("div", [
+                m("h2", "Projects"),
+                m('p', "Click a project name to change its permissions."),
+                allProjectsModel.projects.sort(compareProjects).map(function(project) {
+                return m("div[style='white-space:pre']", ["   ", m("a", {href: "javascript:projectAdmin_selectJournal('" +  project.name + "')"}, project.name)]);
+                }),
+                m("br"),
+            ]),
+
+            m("hr", {style: "display: block; clear: both; height: 3px; background: #b0d4d4; color: #b0d4d4"}),
             m("div", [
                 m("h2", "Edit Project Permissions"),
-                m("p", "Only give write privileges to people you trust."),
                 m("label[style='" + labelStyleText + "']", {"for": "jn3"}, "Project: " + narrafirmaProjectPrefix),
                 m("input", {id: "jn3", value: journalName(), onchange: m.withAttr("value", journalName)}),
                 m("br"),
@@ -110,10 +126,17 @@ var AdminPageDisplayer: any = {
                 //m("br"),
                 m("button[style='" + buttonStyleText + "']", {onclick: accessClicked.bind(null, "grant")}, "Grant"),
                 m("button[style='" + buttonStyleText + "']", {onclick: accessClicked.bind(null, "revoke")}, "Revoke"),
-                m("br")
+                m("br"),
+                m("p", `Readers can view (but not edit) project fields and stories. 
+                    Writers can edit project fields and add (and import) stories. 
+                    ("readerWriter" assigns both reader and writer roles.) 
+                    Administrators can also import and reset projects. 
+                    All of these permissions are per project. 
+                    Only the superuser administrator can create new projects and new users.`),
+                m('p[style="font-weight: bold"]', "Only give write and admin privileges to people you trust. "),
             ]),
-            m("br"),
-            m("hr", {style: "display: block; clear: both; height: 2px;"}),
+
+            m("hr", {style: "display: block; clear: both; height: 3px; background: #b0d4d4; color: #b0d4d4"}),
             m("div", [
                 m("h2", "Create New Project"),
                 m("p", "A project name can have alphanumeric characters, underscores, dashes, and dots (one dot at a time). " +
@@ -129,19 +152,8 @@ var AdminPageDisplayer: any = {
                     " Or you can move that project's directory out of the server_data directory." +
                     " To permanently delete a project, delete its directory. In any of these cases, stop and restart the NarraFirma server to refresh the list of projects.")
             ]),
-            m("br"),
-            m("hr", {style: "display: block; clear: both; height: 2px;"}),
-            m("div", [
-                m("h2", "Add New User"),
-                m("label[style='" + labelStyleText + "']", {"for": "un2"}, "User name"),
-                m("input", {id: "un2", value: userName(), onchange: m.withAttr("value", userName)}),
-                m("br"),
-                m("label[style='" + labelStyleText + "']", {"for": "p2"}, "Password"),
-                m("input", {id: "p2", value: userPassword(), onchange: m.withAttr("value", userPassword), disabled: userName().trim() === "anonymous"}),
-                m("button[style='" + buttonStyleText + "']", {onclick: addUserClicked}, "Add User"),
-                m("br"),
-                m("br")
-            ]),
+
+
         ]);
     }
 };
