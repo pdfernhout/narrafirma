@@ -869,6 +869,36 @@ function printCatalysisReportWithOnlyObservations(project, catalysisReportIdenti
     setTimeout(function() { printNextObservation(); }, 0);
 }
 
+function compareRowsInPerspectiveLinksTable (a, b) {
+    var strengthStrings = ["1 (weak)", "2 (medium)", "3 (strong)"];
+    var strengthInA = "";
+    var strengthInB = "";
+
+    // this will not work if strength is not in the third column of the table; need to change if change format of table
+    if (a.children.length > 2 && a.children[2].children.length > 0) {
+        strengthInA = a.children[2].children[0];
+    }
+    if (b.children.length > 2 && b.children[2].children.length > 0) {
+        strengthInB = b.children[2].children[0];
+    }
+    
+    if (strengthInA && strengthInB) {
+        const indexOfA = strengthStrings.indexOf(strengthInA);
+        const indexOfB = strengthStrings.indexOf(strengthInB);
+        if (indexOfA > indexOfB) {
+            return -1;
+        } else if (indexOfB > indexOfA) {
+            return 1;
+        } else {
+            return 0;
+        }
+    } else if (strengthInA) {
+        return -1;
+    } else {
+        return 0;
+    }
+}
+
 function printCatalysisReportWithClusteredInterpretations(project, catalysisReportIdentifier, catalysisReportName, allStories, observationIDs, options) {
     var clusteringDiagram = project.tripleStore.queryLatestC(catalysisReportIdentifier, "interpretationsClusteringDiagram");
     if (!clusteringDiagram) {
@@ -927,8 +957,9 @@ function printCatalysisReportWithClusteredInterpretations(project, catalysisRepo
     var perspectiveIndex = 0;
     let interpretationIndex = 0;
     var observationsIDsForInterpretation = {};
-    
+
     function printNextInterpretation() {
+
         if (progressModel.cancelled) {
             alert("Cancelled after working on " + (perspectiveIndex + 1) + " perspective(s)");
         } else if (perspectiveIndex >= perspectives.length) {
@@ -984,6 +1015,7 @@ function printCatalysisReportWithClusteredInterpretations(project, catalysisRepo
                     }
                     printItemsForThisPerspective.push(m("tr", {"class": "narrafirma-catalysis-report-interpretation-links-table-tr"}, printItemsForThisInterpretation));         
                 }
+                printItemsForThisPerspective.sort(compareRowsInPerspectiveLinksTable);
                 printItems.push(m("table", {"class": "narrafirma-catalysis-report-interpretation-links-table"}, printItemsForThisPerspective));
                 printItems.push(m("br"));
             }
