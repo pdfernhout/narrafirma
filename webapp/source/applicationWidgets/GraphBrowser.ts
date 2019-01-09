@@ -39,6 +39,7 @@ class GraphBrowser {
             currentGraph: null,
             currentSelectionExtentPercentages: null,
             minimumStoryCountRequiredForTest: Project.defaultMinimumStoryCountRequiredForTest,
+            minimumStoryCountRequiredForGraph: Project.defaultMinimumStoryCountRequiredForGraph,
             numHistogramBins: Project.defaultNumHistogramBins,
             numScatterDotOpacityLevels: Project.defaultNumScatterDotOpacityLevels,
             scatterDotSize: Project.defaultScatterDotSize,

@@ -1,6 +1,44 @@
 import Globals = require("../../Globals");
 "use strict";
 
+// start, 1, 2, 5, 10, 50, 100
+function fillChoiceArray(start, lastSequential, lastEveryTwo = null, lastEveryFive = null, lastEveryTen = null, lastEveryFifty = null, lastEveryHundred = null) {
+    var result = [];
+    for (var i = start; i <= lastSequential; i++) {
+        result.push("" + i);
+    }
+    if (lastEveryTwo) {
+        for (i = lastSequential+2; i <= lastEveryTwo; i += 2) {
+            result.push("" + i);
+            console.log(i);
+        }
+    }
+    if (lastEveryFive) {
+        for (i = lastEveryTwo+5; i <= lastEveryFive; i += 5) {
+            result.push("" + i);
+            console.log(i);
+        }
+    }
+    if (lastEveryTen) {
+        for (i = lastEveryFive+10; i <= lastEveryTen; i += 10) {
+            result.push("" + i);
+            console.log(i);
+        }  
+    }
+    if (lastEveryFifty) {
+        for (i = lastEveryTen+50; i <= lastEveryFifty; i += 50) {
+            result.push("" + i);
+            console.log(i);
+        } 
+    }
+    if (lastEveryHundred) 
+        for (i = lastEveryFifty+100; i <= lastEveryHundred; i += 100) {
+            result.push("" + i);
+            console.log(i);
+        }  
+    return result;
+}
+
 var panel: Panel = {
     id: "page_configureCatalysisReport",
     displayName: "Configure Catalysis Report",
@@ -115,17 +153,26 @@ var panel: Panel = {
         },
 
         {
+            id: "configureCatalysisReport_minimumStoryCountRequiredForGraph",
+            valuePath: "/clientState/catalysisReportIdentifier/minimumStoryCountRequiredForGraph",
+            valueType: "string",
+            valueOptions: fillChoiceArray(1, 30, 60, 100, 300, 500, 1000), // start, 1, 2, 5, 10, 50, 100
+            displayType: "select",
+            displayName: "Minimum story count for graph",
+            displayPrompt: `How many stories should a subset have to <strong>draw a graph</strong>? 
+                (This choice affects multiple histograms and multiple scatterplots 
+                    on the Explore patterns page and the printed catalysis report.
+                    Note that higher numbers could create graph sets with one or even zero graphs in them.
+                    )`,
+            displayVisible: function(panelBuilder, model) {
+                return !!Globals.clientState().catalysisReportIdentifier();
+            }
+
+        },        {
             id: "configureCatalysisReport_numHistogramBins",
             valuePath: "/clientState/catalysisReportIdentifier/numHistogramBins",
             valueType: "string",
-            valueOptions: [
-                "5",
-                "10",
-                "15",
-                "20",
-                "25",
-                "30"
-            ],
+            valueOptions: ["5", "10", "15", "20", "25", "30"],
             displayType: "select",
             displayName: "Number of histogram bins",
             displayPrompt: "For <strong>histograms</strong>, how many <strong>bins</strong> (bars) should the data be sorted into?",
@@ -192,22 +239,7 @@ var panel: Panel = {
             id: "configureCatalysisReport_minimumSubsetSize",
             valuePath: "/clientState/catalysisReportIdentifier/minimumSubsetSize",
             valueType: "string",
-            valueOptions: [
-                "10",
-                "15",
-                "20",
-                "25",
-                "30",
-                "35",
-                "40",
-                "45",
-                "50",
-                "60",
-                "70",
-                "80",
-                "90",
-                "100"
-            ],
+            valueOptions: ["1", "5", "10", "15", "20", "25", "30", "35", "40", "45", "50", "60", "70", "80", "90", "100", "120", "140", "160", "180", "200", "250", "300"],
             displayType: "select",
             displayName: "Minimum subset size",
             displayPrompt: "How large should <strong>subsets</strong> of stories be to be considered for statistical tests? (Test results based on low sample sizes - usually less than 30 - should be regarded as suggestive rather than conclusive.)",
@@ -215,9 +247,7 @@ var panel: Panel = {
                 return !!Globals.clientState().catalysisReportIdentifier();
             }
         },
-
-
-
+        
         {
             id: "configureCatalysisReport_ReportLooksHeader",
             valueType: "none",
@@ -227,8 +257,6 @@ var panel: Panel = {
                 return !!Globals.clientState().catalysisReportIdentifier();
             }
         },
-
-
 
         {
             id: "catalysisReport_notes",

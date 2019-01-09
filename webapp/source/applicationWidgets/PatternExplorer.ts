@@ -98,6 +98,7 @@ class PatternExplorer {
     textAnswersPanelSpecification = null;
     
     minimumStoryCountRequiredForTest = Project.defaultMinimumStoryCountRequiredForTest;
+    minimumStoryCountRequiredForGraph = Project.defaultMinimumStoryCountRequiredForGraph;
     numHistogramBins = Project.defaultNumHistogramBins;
     showInterpretationsInGrid = Project.defaultShowInterpretationsInGrid;
     numScatterDotOpacityLevels = Project.defaultNumScatterDotOpacityLevels;
@@ -117,6 +118,7 @@ class PatternExplorer {
             currentGraph: null,
             currentSelectionExtentPercentages: null,
             minimumStoryCountRequiredForTest: Project.defaultMinimumStoryCountRequiredForTest,
+            minimumStoryCountRequiredForGraph: Project.defaultMinimumStoryCountRequiredForGraph,
             numHistogramBins: Project.defaultNumHistogramBins,
             numScatterDotOpacityLevels: Project.defaultNumScatterDotOpacityLevels,
             scatterDotSize: Project.defaultScatterDotSize,
@@ -455,7 +457,9 @@ class PatternExplorer {
             return;
         }
         this.minimumStoryCountRequiredForTest = this.project.minimumStoryCountRequiredForTest(catalysisReportIdentifier);
+        this.minimumStoryCountRequiredForGraph = this.project.minimumStoryCountRequiredForGraph(catalysisReportIdentifier);
         this.graphHolder.minimumStoryCountRequiredForTest = this.minimumStoryCountRequiredForTest; 
+        this.graphHolder.minimumStoryCountRequiredForGraph = this.minimumStoryCountRequiredForGraph;
         this.numHistogramBins = this.project.numberOfHistogramBins(catalysisReportIdentifier);
         this.graphHolder.numHistogramBins = this.numHistogramBins; 
         this.showInterpretationsInGrid = this.project.showInterpretationsInGrid(catalysisReportIdentifier);

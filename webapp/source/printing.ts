@@ -629,7 +629,7 @@ function displayForGraph(graphNode: HTMLElement) {
     ];
 }
 
-function printObservationList(observationList, observationLabel, interpretationNotes, allStories, minimumStoryCountRequiredForTest: number, numHistogramBins: number, numScatterDotOpacityLevels: number, scatterDotSize: number, correlationLineChoice) {
+function printObservationList(observationList, observationLabel, interpretationNotes, allStories, minimumStoryCountRequiredForTest: number, minimumStoryCountRequiredForGraph: number, numHistogramBins: number, numScatterDotOpacityLevels: number, scatterDotSize: number, correlationLineChoice) {
     // For now, just print all observations
     return printList(observationList, {}, function (item) {
         var project = Globals.project();
@@ -645,6 +645,7 @@ function printObservationList(observationList, observationLabel, interpretationN
             currentSelectionExtentPercentages: null,
             excludeStoryTooltips: true,
             minimumStoryCountRequiredForTest: minimumStoryCountRequiredForTest,
+            minimumStoryCountRequiredForGraph: minimumStoryCountRequiredForGraph,
             numHistogramBins: numHistogramBins,
             numScatterDotOpacityLevels: numScatterDotOpacityLevels,
             scatterDotSize: scatterDotSize,
@@ -778,6 +779,7 @@ export function printCatalysisReport() {
     options["interpretationLabel"] = getAndCleanUserText("catalysisReport_interpretationLabel", "interpretation label", false);
     options["observationLabel"] = getAndCleanUserText("catalysisReport_observationLabel", "observation label", false);
     options["minimumStoryCountRequiredForTest"] = project.minimumStoryCountRequiredForTest(catalysisReportIdentifier);
+    options["minimumStoryCountRequiredForGraph"] = project.minimumStoryCountRequiredForGraph(catalysisReportIdentifier);
     options["numHistogramBins"] = project.numberOfHistogramBins(catalysisReportIdentifier);
     options["numScatterDotOpacityLevels"] = project.numScatterDotOpacityLevels(catalysisReportIdentifier);
     options["scatterDotSize"] = project.scatterDotSize(catalysisReportIdentifier);
@@ -852,8 +854,11 @@ function printCatalysisReportWithOnlyObservations(project, catalysisReportIdenti
             });
             finishModel.redraw();
         } else {
-            printItems.push(<any>printObservationList([observationIDs[observationIndex]], options["observationLabel"], "", allStories, 
-                options["minimumStoryCountRequiredForTest"], options["numHistogramBins"], options["numScatterDotOpacityLevels"], options["scatterDotSize"], options["correlationLineChoice"]));
+            printItems.push(<any>printObservationList([observationIDs[observationIndex]], 
+                options["observationLabel"], "", allStories, 
+                options["minimumStoryCountRequiredForTest"], options["minimumStoryCountRequiredForGraph"], 
+                options["numHistogramBins"], options["numScatterDotOpacityLevels"], 
+                options["scatterDotSize"], options["correlationLineChoice"]));
             printItems.push(m(".narrafirma-catalysis-report-observations-only-page-break", ""));
             progressModel.progressText = progressText(observationIndex);
             progressModel.redraw();
@@ -904,6 +909,7 @@ function printCatalysisReportWithClusteredInterpretations(project, catalysisRepo
     printItems.push(m("br"));
     
     var minimumStoryCountRequiredForTest = project.minimumStoryCountRequiredForTest(catalysisReportIdentifier);
+    var minimumStoryCountRequiredForGraph = project.minimumStoryCountRequiredForGraph(catalysisReportIdentifier);
     var numHistogramBins = project.numberOfHistogramBins(catalysisReportIdentifier);
     var numScatterDotOpacityLevels = project.numScatterDotOpacityLevels(catalysisReportIdentifier);
     var scatterDotSize = project.scatterDotSize(catalysisReportIdentifier);
@@ -1021,7 +1027,7 @@ function printCatalysisReportWithClusteredInterpretations(project, catalysisRepo
                 }
 
                 printItems.push(<any>printObservationList(observationsIDsForInterpretation[interpretation.uuid], options["observationLabel"], interpretation.notes, allStories, 
-                    minimumStoryCountRequiredForTest, numHistogramBins, numScatterDotOpacityLevels, scatterDotSize, correlationLineChoice));
+                    minimumStoryCountRequiredForTest, minimumStoryCountRequiredForGraph, numHistogramBins, numScatterDotOpacityLevels, scatterDotSize, correlationLineChoice));
                 
                 progressModel.progressText = progressText(perspectiveIndex, interpretationIndex);
                 progressModel.redraw();

@@ -19,6 +19,7 @@ class Project {
     tripleStore: TripleStore;
     redrawCallback: Function;
     static defaultMinimumStoryCountRequiredForTest = 20;
+    static defaultMinimumStoryCountRequiredForGraph = 1;
     static defaultNumHistogramBins = 20;
     static defaultShowInterpretationsInGrid = false;
     static defaultNumScatterDotOpacityLevels = 3;
@@ -656,6 +657,18 @@ class Project {
             return parseInt(minimumStoryCountRequiredForTest, 10);
         } else {
             return Project.defaultMinimumStoryCountRequiredForTest;
+        }
+    }
+
+    minimumStoryCountRequiredForGraph(catalysisReportIdentifier) {
+        if (!catalysisReportIdentifier) {
+            throw new Error("catalysisReportIdentifier was not supplied");
+        }
+        var minimumStoryCountRequiredForGraph = this.tripleStore.queryLatestC(catalysisReportIdentifier, "minimumStoryCountRequiredForGraph");
+        if (minimumStoryCountRequiredForGraph) {
+            return parseInt(minimumStoryCountRequiredForGraph, 10);
+        } else {
+            return Project.defaultMinimumStoryCountRequiredForGraph;
         }
     }
 

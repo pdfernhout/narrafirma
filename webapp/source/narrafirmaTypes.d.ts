@@ -17,6 +17,7 @@ interface GraphHolder {
     currentSelectionExtentPercentages: GraphSelection;
     excludeStoryTooltips?: boolean;
     minimumStoryCountRequiredForTest: number;
+    minimumStoryCountRequiredForGraph: number;
     numHistogramBins: number;
     numScatterDotOpacityLevels: number;
     scatterDotSize: number;

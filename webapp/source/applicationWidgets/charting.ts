@@ -768,6 +768,9 @@ export function d3HistogramChartForQuestion(graphBrowserInstance: GraphHolder, s
             matchingStories.push(story);
         }
     }
+    if (matchingStories.length < graphBrowserInstance.minimumStoryCountRequiredForGraph) {
+        return null;
+    }
     var chartTitle = "" + nameForQuestion(scaleQuestion);
     if (choiceQuestion) chartTitle = "" + choice;
     
@@ -1108,7 +1111,7 @@ export function multipleHistograms(graphBrowserInstance: GraphHolder, choiceQues
         var option = options[index];
         // TODO: Maybe need to pass which chart to the storiesSelectedCallback
         var subchart = d3HistogramChartForQuestion(graphBrowserInstance, scaleQuestion, choiceQuestion, option, storiesSelectedCallback);
-        charts.push(subchart);
+        if (subchart) charts.push(subchart);
     }
     
     // End the float
@@ -1155,6 +1158,9 @@ export function d3ScatterPlot(graphBrowserInstance: GraphHolder, xAxisQuestion, 
 
         var newPlotItem = makePlotItem(xAxisQuestion, yAxisQuestion, xValue, yValue, story);
         allPlotItems.push(newPlotItem);
+    }
+    if (allPlotItems.length < graphBrowserInstance.minimumStoryCountRequiredForGraph) {
+        return null;
     }
 
     // Build chart
@@ -1341,7 +1347,7 @@ export function multipleScatterPlot(graphBrowserInstance: GraphHolder, xAxisQues
     for (index in options) {
         var option = options[index];
         var subchart = d3ScatterPlot(graphBrowserInstance, xAxisQuestion, yAxisQuestion, choiceQuestion, option, storiesSelectedCallback)
-        charts.push(subchart);
+        if (subchart) charts.push(subchart);
     }
     
     // End the float
