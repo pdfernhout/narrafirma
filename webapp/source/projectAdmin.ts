@@ -81,9 +81,22 @@ var AdminPageDisplayer: any = {
             ]) : m("div", {style: "height: 200px; overflow: auto; float: right; min-width: 75%"}),
             m("h2", "Users"),
             m('p', "Click a user name to see their project permissions."),
+            // don't show users who have no roles for any existing projects 
+            // because there is no real way to remove a user, and it's annoying to have to look at them forever
             Object.keys(allProjectsModel.users).sort().map(function(userIdentifier) {
                 var user = allProjectsModel.users[userIdentifier];
-                return m("div[style='white-space:pre']", ["   ", m("a", {href: "javascript:projectAdmin_selectUser('" +  user.userIdentifier + "')"}, user.userIdentifier)]);
+                var userHasRoles = false;
+                Object.keys(user.rolesForJournals).map(function(journalIdentifier) {
+                    if (user.rolesForJournals[journalIdentifier].length > 0) {
+                        userHasRoles = true;
+                        return;
+                    }
+                });
+                if (userHasRoles) {
+                    return m("div[style='white-space:pre']", ["   ", m("a", {href: "javascript:projectAdmin_selectUser('" +  user.userIdentifier + "')"}, user.userIdentifier)]);
+                } else {
+                    return m("");
+                }
             }),
 
             m("br"),
@@ -96,7 +109,7 @@ var AdminPageDisplayer: any = {
                 m("label[style='" + labelStyleText + "']", {"for": "p2"}, "Password"),
                 m("input", {id: "p2", value: userPassword(), onchange: m.withAttr("value", userPassword), disabled: userName().trim() === "anonymous"}),
                 m("button[style='" + buttonStyleText + "']", {onclick: addUserClicked}, "Add User"),
-                m("br")
+                m("p", "To remove a user, revoke all of their project permissions."),
             ]),
 
             m("hr", {style: "display: block; clear: both; height: 3px; background: #b0d4d4; color: #b0d4d4"}),
@@ -120,7 +133,7 @@ var AdminPageDisplayer: any = {
                 m("br"),
                 m("label[style='" + labelStyleText + "']", {"for": "r3"}, "Role"),
                 m("input", {id: "r3", value: roleName(), onchange: m.withAttr("value", roleName)}),
-                m("span", {style: 'float: left; display: inline-block; margin-left:0.5em;'}, "Role should be one of: ", r("reader"), ", ", r("writer"), ", ", r("readerWriter"), ", or ", r("administrator")),
+                m("span", {style: 'float: left; display: inline-block; margin-left:0.5em;'}, "Role should be one of: ", r("reader"), ", ", r("writer"), ", or ", r("administrator")),
                 //m("label[style='" + labelStyleText + "']", {"for": "t3"}, "Topic"),
                 //m("input", {id: "t3", value: topicName(), onchange: m.withAttr("value", topicName)}),
                 //m("br"),
@@ -128,11 +141,10 @@ var AdminPageDisplayer: any = {
                 m("button[style='" + buttonStyleText + "']", {onclick: accessClicked.bind(null, "revoke")}, "Revoke"),
                 m("br"),
                 m("p", `Readers can view (but not edit) project fields and stories. 
-                    Writers can edit project fields and add (and import) stories. 
-                    ("readerWriter" assigns both reader and writer roles.) 
+                    Writers can edit project fields and add (and edit and import) stories. 
                     Administrators can also import and reset projects. 
                     All of these permissions are per project. 
-                    Only the superuser administrator can create new projects and new users.`),
+                    Only the built-in superuser account can create new projects and new users.`),
                 m('p[style="font-weight: bold"]', "Only give write and admin privileges to people you trust. "),
             ]),
 
