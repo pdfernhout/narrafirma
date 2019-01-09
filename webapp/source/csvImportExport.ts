@@ -764,16 +764,17 @@ function getElicitingQuestionDisplayNameForColumnName(value, questionnaire) {
 function changeValueForCustomScaleValues(value, question, questionnaire) {
     if (question.displayType !== "slider") return null;
     var min = undefined;
-    if (question.import_minScaleValue != undefined) {
-        min = parseInt(question.import_minScaleValue);
-    } else if (questionnaire.import_minScaleValue != undefined) {
-        min = parseInt(questionnaire.import_minScaleValue);
+    // the "" + is because apparently there are situations in which the scale value is an integer
+    if (question.import_minScaleValue) {
+        min = parseInt("" + question.import_minScaleValue);
+    } else if (questionnaire.import_minScaleValue) {
+        min = parseInt("" + questionnaire.import_minScaleValue);
     }
     var max = undefined;
-    if (question.import_maxScaleValue != undefined) {
-        max = parseInt(question.import_maxScaleValue);
-    } else if (questionnaire.import_maxScaleValue != undefined) {
-        max = parseInt(questionnaire.import_maxScaleValue);
+    if (question.import_maxScaleValue) {
+        max = parseInt("" + question.import_maxScaleValue);
+    } else if (questionnaire.import_maxScaleValue) {
+        max = parseInt("" + questionnaire.import_maxScaleValue);
     }
     if (min === undefined || min === NaN || max === undefined || max === NaN || min === max) {
         return value;
@@ -923,7 +924,7 @@ function processCSVContentsForQuestionnaire(contents) {
     project.tripleStore.addTriple(template.id, "questionForm_import_elicitingQuestionColumnName", "Eliciting question");
     project.tripleStore.addTriple(template.id, "questionForm_import_storyTitleColumnName", "Story title");
     project.tripleStore.addTriple(template.id, "questionForm_import_storyTextColumnName", "Story text");
-    project.tripleStore.addTriple(template.id, "import_participantIDColumnName", "Participant ID");
+    project.tripleStore.addTriple(template.id, "questionForm_import_participantIDColumnName", "Participant ID");
 
     var items = headerAndItems.items;
     for (var itemIndex = 0; itemIndex < items.length; itemIndex++) {
