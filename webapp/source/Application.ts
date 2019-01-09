@@ -213,7 +213,8 @@ class Application {
                     name: key.substring(narrafirmaProjectPrefix.length),
                     read: permissions.read,
                     write: permissions.write,
-                    admin: permissions.admin
+                    // in node.js this is called "administrate"; in WordPress it is called "admin"
+                    admin: permissions.admin || permissions.administrate
                 });
             }
             
