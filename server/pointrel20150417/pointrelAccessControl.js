@@ -118,6 +118,14 @@ function isAuthenticated(userIdentifier, userCredentials) {
     return result;
 }
 
+function isSuperUser(userIdentifier) {
+    var result = false;
+    if (superuserInformation && userIdentifier === superuserInformation.userIdentifier) {
+        result = true;
+    }
+    return result;
+}
+
 // Stored authentication information should have the form:
 // {userIdentifier: "the-user", salt: "someSalt", hashOfPassword: "sha256-hash-of-someSalt+secret"}
 // Supplied credentials should have the form:
@@ -336,5 +344,6 @@ function determineJournalsAccessibleByUser(userIdentifier) {
 exports.initialize = initialize;
 exports.isAuthenticated = isAuthenticated;
 exports.isAuthorized = isAuthorized;
+exports.isSuperUser = isSuperUser;
 exports.determineJournalsAccessibleByUser = determineJournalsAccessibleByUser;
 exports.getUserInformation = getUserInformation;

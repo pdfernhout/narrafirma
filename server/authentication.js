@@ -58,7 +58,7 @@ function writePageStart(request, response, pageType) {
         if (pageType !== "login") response.write('<p class="narrafirma-login-text">Please <b><a href="/login">log in</a></b>.</p>');
     } else {
         response.write('<h2 class="narrafirma-login-hello">Hello, ' + user.userIdentifier + ".</h2>");
-        response.write('<p class="narrafirma-login-action"><a href="/logout">Logout</a>');
+        response.write('<p class="narrafirma-login-action"><a href="/logout">Log out</a>');
         //if (pageType !== "account") response.write(' | <a href="/account">Account</a>');
         response.write("</p>");
     }
@@ -78,17 +78,18 @@ var loginTemplate = '<form action="/login" method="post">\n' +
 '<input type="password" class="narrafirma-login-input" name="password"/>\n' +
 '</div>\n' +
 '<div><br/>\n' +
-'<input type="submit" class="narrafirma-login-button" value="Login"/>\n' +
+'<input type="submit" class="narrafirma-login-button" value="Log in"/>\n' +
 '</div>\n' +
 '</form>\n';
 
-function writeTestPage(request, response, config) {
+function writeLaunchPage(request, response, config) {
     // response.sendFile(pointrelConfig.baseDirectory + "narrafirma.html");
     // response.sendFile(baseDirectoryNormalized + "narrafirma.html");
     writePageStart(request, response, "start");
+    const isSuperUser = pointrelAccessControl.isSuperUser(request.user.userIdentifier);
     // response.write("Example of authentication with passport; authenticated " + request.isAuthenticated());
-    if (request.isAuthenticated()) response.write('<p class="narrafirma-login-action">Start NarraFirma <a href="/narrafirma.html">project application</a></p>');
-    if (request.isAuthenticated()) response.write('<p class="narrafirma-login-action">Start NarraFirma <a href="/admin.html">administration tool</a></p>');
+    if (request.isAuthenticated()) response.write('<p class="narrafirma-login-action">Choose a NarraFirma <a href="/narrafirma.html">project</a> to work on</p>');
+    if (request.isAuthenticated() && isSuperUser) response.write('<p class="narrafirma-login-action">Start the NarraFirma <a href="/admin.html">administration tool</a></p>');
     writePageEnd(request, response);
 }
 
@@ -152,7 +153,7 @@ function initialize(app, newConfig) {
     });
     
     app.get("/start", function (request, response) {
-        writeTestPage(request, response, config);
+        writeLaunchPage(request, response, config);
     });
 }
 
