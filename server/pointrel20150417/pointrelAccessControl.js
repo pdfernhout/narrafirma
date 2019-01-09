@@ -331,11 +331,14 @@ function determineJournalsAccessibleByUser(userIdentifier) {
         return results;
     }
 
+    var journalIdentifiersThatExist = pointrelServer.getAllJournalIdentifiers();
     for (journalIdentifier in userInformation.rolesForJournals) {
-        var rolesForJournal = userInformation.rolesForJournals[journalIdentifier];
-        var unionOfPermissionsForUser = makeUnionOfPermissionsForUser(rolesForJournal);
-        // TODO: Might want to omit results if there are no true values for permissions for a journal?
-        results[journalIdentifier] = unionOfPermissionsForUser;
+        if (journalIdentifiersThatExist.indexOf(journalIdentifier) >= 0) {
+            var rolesForJournal = userInformation.rolesForJournals[journalIdentifier];
+            var unionOfPermissionsForUser = makeUnionOfPermissionsForUser(rolesForJournal);
+            // TODO: Might want to omit results if there are no true values for permissions for a journal?
+            results[journalIdentifier] = unionOfPermissionsForUser;
+        }
     }
     
     return results;
