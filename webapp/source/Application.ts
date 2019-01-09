@@ -357,6 +357,7 @@ class Application {
                     if (project.id !== projectIdentifier) return;
                     this.readOnly = !project.write;
                     Globals.project().readOnly = this.readOnly;
+                    Globals.project().currentUserHasAdminAccess = project.admin;
                     // this.panelBuilder.readOnly = isReadOnly;
                     if (this.readOnly) {
                         toaster.toast("Project is read-only for this user");

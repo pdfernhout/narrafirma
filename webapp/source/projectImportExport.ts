@@ -316,7 +316,7 @@ export function exportProject() {
 
 export function importProject() {
     var project = Globals.project();
-    if (!userHasAdminPermssionForProject()) {
+    if (!project.currentUserHasAdminAccess) {
         alert("You must have administrative permission to import into the project.");
         return;
     }
@@ -329,24 +329,9 @@ export function importProject() {
     }
 }
 
-function userHasAdminPermssionForProject() {
-    var project = Globals.project();
-    var result = false;
-    project.pointrelClient.reportJournalStatus((error, response) => {
-        console.log("import project reportJournalStatus response", error, response);
-        if (error) {
-            console.log("Failed to get user permission status for importing project", error);
-            result = false;
-        } else {
-            result = response.permissions.admin;
-        }
-    });
-    return result;
-}
-
 export function resetProject() {
     var project = Globals.project();
-    if (!userHasAdminPermssionForProject()) {
+    if (!project.currentUserHasAdminAccess) {
         alert("You must have administrative permission to reset the project.");
         return;
     }

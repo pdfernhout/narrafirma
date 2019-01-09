@@ -14,6 +14,7 @@ class Project {
     projectIdentifier: string;
     userIdentifier: any;
     readOnly: boolean = false;
+    currentUserHasAdminAccess: boolean = false;
     pointrelClient: PointrelClient;
     tripleStore: TripleStore;
     redrawCallback: Function;
