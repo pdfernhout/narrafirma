@@ -15,9 +15,11 @@ var utility = require('./pointrelUtility');
 // Right now, only four default roles are supported: read, write, readWrite, and administrate
 // Eventually, these could be stored in a journal if more are required.
 // These are of the form: "role: {action: true}"
+// cfk changed writer to also read - can't imagine why you'd want to edit things and not be able to see what you did!
+// this means readerWriter is redundant, and it was confusing, so I removed it from the interface (but people can still use it if they type it in)
 var allRoles = {
     reader: {read: true},
-    writer: {write: true},
+    writer: {read: true, write: true},
     readerWriter: {read: true, write: true},
     administrator: {read: true, write: true, administrate: true}
 };
