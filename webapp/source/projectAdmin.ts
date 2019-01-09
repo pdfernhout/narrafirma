@@ -346,7 +346,8 @@ function addJournal(journalIdentifier) {
             allProjectsModel.projects.push({name: journalIdentifier.substring(narrafirmaProjectPrefix.length)});
             // Need to call redraw as event changing data was triggered by network
             alert("Created project: " + journalIdentifier);
-            location.reload();
+            //location.reload();
+            m.redraw();
         }
     });
 
