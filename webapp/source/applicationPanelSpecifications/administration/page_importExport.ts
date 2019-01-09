@@ -42,8 +42,8 @@ var panel: Panel = {
             displayType: "html",
             displayPrompt: `<p>Other things you can export:</p>
                 <ul>
-                    <li><a href="javascript:narrafirma_openPage('page_enterStories')">A story form</a></li>
-                    <li><a href="javascript:narrafirma_openPage('page_enterStories')">A story collection</a></li>
+                    <li><a href="javascript:narrafirma_openPage('page_exportStories')">A story form</a></li>
+                    <li><a href="javascript:narrafirma_openPage('page_exportStories')">A story collection</a></li>
                 </ul>`
         },
 
@@ -72,7 +72,7 @@ var panel: Panel = {
                 <li>Click the "Reset project" button below to empty out the project.</li>
                 <li>In the "Import" section below, choose "project snapshot (with or without stories), then click "Import project." Choose the file you saved in step one.</li>
                 </ol>
-                <p>This will remove all disconnected stories from the project. Note that resetting a project requires administrator permission.</p>`
+                <p>This will restore the project without the disconnected stories. Note that resetting a project requires administrator permission.</p>`
         },
         {
             id: "importExport_showDeletedStoryCollections",
