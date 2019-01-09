@@ -54,7 +54,7 @@ var panel: Panel = {
             displayPrompt: "Reset"
         },
         {
-            id: "storyCollection_resetLabel",
+            id: "importExport_resetLabel",
             valueType: "none",
             displayType: "label",
             displayPrompt: `<p>When you delete a story collection, NarraFirma removes the collection from its list,
@@ -72,10 +72,10 @@ var panel: Panel = {
                 <li>Click the "Reset project" button below to empty out the project.</li>
                 <li>In the "Import" section below, choose "project snapshot (with or without stories), then click "Import project." Choose the file you saved in step one.</li>
                 </ol>
-                <p>This will remove all disconnected stories from the project.</p>`
+                <p>This will remove all disconnected stories from the project. Note that resetting a project requires administrator permission.</p>`
         },
         {
-            id: "project_showDeletedStoryCollections",
+            id: "importExport_showDeletedStoryCollections",
             valueType: "none",
             displayType: "button",
             displayConfiguration: "showListOfRemovedStoryCollections",
@@ -97,14 +97,20 @@ var panel: Panel = {
             displayPrompt: "Import"
         },
         {
+            id: "importExport_importLabel",
+            valueType: "none",
+            displayType: "label",
+            displayPrompt: `Importing should be done only if the current project is empty. It requires administrator permission.`
+        },
+        {
             id: "importExport_importType",
             valueType: "string",
             displayType: "radiobuttons",
             valueOptions: ["project snapshot (with or without stories)", "project history with stories"],
             displayName: "Import type",
-            displayPrompt: `In what way would you like to <strong>import a previously exported project</strong>? (Note that this should only be done if the current project is empty. 
+            displayPrompt: `In what way would you like to <strong>import a previously exported project</strong>? 
                 If you aren't sure which option to pick, check your project file name. 
-                The name of a project snapshot file will include the words \"current state.\")`
+                The name of a snapshot file will include the words \"current state.\"`
         },
         {
             id: "importExport_importProject",

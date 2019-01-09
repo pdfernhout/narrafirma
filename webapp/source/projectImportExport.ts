@@ -316,6 +316,10 @@ export function exportProject() {
 
 export function importProject() {
     var project = Globals.project();
+    if (!userHasAdminPermssionForProject()) {
+        alert("You must have administrative permission to import into the project.");
+        return;
+    }
     var tripleStore = project.tripleStore;
     const importType = tripleStore.queryLatestC(project.projectIdentifier, "importExport_importType");
     if (importType === "project history with stories") {
@@ -325,8 +329,27 @@ export function importProject() {
     }
 }
 
+function userHasAdminPermssionForProject() {
+    var project = Globals.project();
+    var result = false;
+    project.pointrelClient.reportJournalStatus((error, response) => {
+        console.log("import project reportJournalStatus response", error, response);
+        if (error) {
+            console.log("Failed to get user permission status for importing project", error);
+            result = false;
+        } else {
+            result = response.permissions.admin;
+        }
+    });
+    return result;
+}
+
 export function resetProject() {
     var project = Globals.project();
+    if (!userHasAdminPermssionForProject()) {
+        alert("You must have administrative permission to reset the project.");
+        return;
+    }
     if (confirm("Are you sure you want to reset this project? This action cannot be undone. Make sure you have a project snapshot file ready to restore the project afterwards.")) {
         const journalIdentifier = project.journalIdentifier;
         project.pointrelClient.resetJournal(journalIdentifier, function(error, response) {
