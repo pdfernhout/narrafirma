@@ -35,17 +35,25 @@
             const buttonStyle = "font-size: 1.2em; background: #ffbb84; padding: 0.3em; margin-bottom: 0.5em";
             return m("div", [
                 m("h3", "NarraFirma projects"), 
-                m("p", "New projects are not saved until you click the \"Save changes\" button below. Deleting a project will make it unavailable, but the data will still be stored and can be re-accessed by creating a project with the same name."),
-                m("p", "To specify project permissions, enter one or more space-separated WordPress user IDs (e.g. samsmith) or " + 
-                "WordPress roles (e.g. administrator, editor, author, contributor, subscriber). " + 
-                "Write access also grants read access and survey access. Only give write access to people you trust. "),
-                m("button", {"style": buttonStyle, onclick: newProject.bind(null, controller)}, "Create New Project"),
+                m("p", `
+                    To specify project permissions, enter one or more space-separated WordPress user IDs (e.g. samsmith) or 
+                    WordPress roles (e.g. administrator, editor, author, contributor, subscriber). 
+                    Only give write access to people you trust. 
+                    `),
+                Object.keys(controller.journalDefinitions).length ? 
                 Object.keys(controller.journalDefinitions).map(function(journalIdentifier) {
                     return displayJournal(controller, journalIdentifier);
-                }),
+                }) : m("p[style='font-weight: bold; font-style: italic;']", "No projects yet! Create a new one.")
+                ,
                 m("button", {"style": buttonStyle, onclick: cancelChanges.bind(null, controller), disabled: isJSONUnchanged}, "Cancel changes"),
                 " ",
                 m("button", {"style": buttonStyle, onclick: saveChanges.bind(null, controller), disabled: isJSONUnchanged}, "Save changes"),
+                " ",
+                m("button", {"style": buttonStyle, onclick: newProject.bind(null, controller)}, "Create New Project"),
+                m("p", `New projects are not saved until you click the \"Save changes\" button. 
+                    Deleting a project will make it unavailable, but the data will still be stored and can be re-accessed 
+                    by creating a project with the same name.
+                    `),
                 m("br"),
                 m("div[style='margin-top: 1em;']", [
                     m("input[type=checkbox][style='margin-left:0.5em']", 
@@ -55,6 +63,9 @@
             ]);
         }
     };
+
+    // NF WP entry project
+    // NLEDU5
     
     function anonymousAccessCheckbox(controller, journalIdentifier, journalDefinition, field) {
         var checked = journalDefinition[field].indexOf(true) !== -1;
@@ -106,17 +117,21 @@
             m("button.delete-button", {style: "margin-left: 0.5em", onclick: deleteJournal.bind(null, controller, journalIdentifier)}, "Delete"),
             m("br"),
             m("br"),
-            permissionsEditor(controller, journalIdentifier, journalDefinition, "write", "These WordPress user IDs or roles have WRITE access (can see and change information on project screens)"),
-            anonymousAccessCheckbox(controller, journalIdentifier, journalDefinition, "write"),
+
+            permissionsEditor(controller, journalIdentifier, journalDefinition, "survey", "These WordPress user IDs or roles have SURVEY access (can take the survey but cannot see or change information on project screens)"),
+            anonymousAccessCheckbox(controller, journalIdentifier, journalDefinition, "survey"),
             m("br"),
             m("br"),
+
             permissionsEditor(controller, journalIdentifier, journalDefinition, "read", "These WordPress user IDs or roles have READ access (can see but not change information on project screens)"),
             anonymousAccessCheckbox(controller, journalIdentifier, journalDefinition, "read"),
             m("br"),
             m("br"),
-            permissionsEditor(controller, journalIdentifier, journalDefinition, "survey", "These WordPress user IDs or roles have SURVEY access (can take the survey but cannot see or change information on project screens)"),
-            anonymousAccessCheckbox(controller, journalIdentifier, journalDefinition, "survey"),
+
+            permissionsEditor(controller, journalIdentifier, journalDefinition, "write", "These WordPress user IDs or roles have WRITE access (can see and change information on project screens; can also take the survey)"),
+            anonymousAccessCheckbox(controller, journalIdentifier, journalDefinition, "write"),
             m("br"),
+
             m("hr")
         ]);
     }
@@ -134,7 +149,7 @@
             alert("That project name is " + newName.length + " characters long. Please try again with name that is 20 characters or shorter.");
             return;
         }
-        var key = narrafirmaProjectPrefix;
+        var key = narrafirmaProjectPrefix + newName;
         if (controller.journalDefinitions[key]) {
             alert("A project with that name already exists.");
             return;

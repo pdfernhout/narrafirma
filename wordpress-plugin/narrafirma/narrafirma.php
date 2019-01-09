@@ -116,12 +116,12 @@ class NarraFirmaSettingsPage
     To learn more about PNI, visit <a href="http://www.narrafirma.com" target="_blank">narrafirma.com</a>
     or <a href="http://www.workingwithstories.org" target="_blank">workingwithstories.org</a>.
     </p>
-    <p>
+    <p style="margin-bottom: 2em">
     <i>The NarraFirma plugin uses WordPress as an application server, 
     user authentication system, and data store. Using WordPress in this way makes NarraFirma easier to install and 
     configure. NarraFirma is not otherwise integrated with WordPress pages and runs in its own web page.</i>
     </p>
-    <h2 style="text-align: center"><a style="border: 1px solid gray; text-decoration: none; background: #ffbb84; color: black; padding: 0.5em; margin-top: 1em;" href="<?php echo $launchLink; ?>" target="_blank">Start NarraFirma</a></h2>
+    <h2 style="text-align: center"><a style="border: 1px solid gray; text-decoration: none; background: #ffbb84; color: black; padding: 0.5em;" href="<?php echo $launchLink; ?>" target="_blank">Start NarraFirma</a></h2>
     
     <div id="narrafirma-project-list-editor">
     </div>
