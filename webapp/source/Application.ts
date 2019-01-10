@@ -227,7 +227,7 @@ class Application {
                     var isWordPressAJAX = !!window["ajaxurl"];
                     var loginURL;
                     if (isWordPressAJAX) {
-                        loginURL = "wp-login.php";
+                        loginURL = "wordpress/wp-login.php";
                     } else {
                         loginURL = "login";
                     }
