@@ -106,6 +106,11 @@ function addJournal(journalIdentifier) {
     pointrelServer.addJournalSync(journalIdentifier);
 }
 
+function hideJournal(journalIdentifier) {
+    console.log("hide-journal", journalIdentifier);
+    pointrelServer.hideJournalSync(journalIdentifier);
+}
+
 function addUser(userIdentifier, password) {
     console.log("add-user", userIdentifier, password);
     

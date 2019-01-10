@@ -172,6 +172,30 @@ function resetJournalSync(journalIdentifier) {
     journals[JSON.stringify(journalIdentifier)] = journal;
  }
 
+ function hideJournalSync(journalIdentifier) {
+    log("----- hideJournalSync", journalIdentifier, "--------------------------------------------------");
+    var sanitizedFileName = utility.sanitizeFileName(journalIdentifier);
+    if (journalIdentifier !== sanitizedFileName) {
+        throw new Error("hideJournalSync: journalIdentifier contains unacceptable characters like spaces, double periods, or slashes");
+    }
+    
+    if (journalIdentifier.length > 63) {
+        // TODO: Arbitrary limit for now. What should it be?
+        throw new Error("hideJournalSync: journalIdentifier is more than 63 characters long");
+    }
+    
+    var journalDirectory = configuration.journalsDirectory + journalIdentifier + "/";
+    var journalDirectoryHidden = configuration.journalsDirectory + "." + journalIdentifier + "/";
+ 
+    if (isUsingFiles()) {
+        if (!fs.existsSync(journalDirectory)) {
+            throw new Error("hideJournalSync: journal does not exist on disk");
+        }
+        fs.renameSync(journalDirectory, journalDirectoryHidden);
+        log("Renamed directory: " + journalDirectory + " to: " + journalDirectoryHidden);
+    }
+ }
+
 //--- Indexing
 
 function isSHA256AndLengthIndexed(journal, sha256AndLength) {
@@ -893,6 +917,7 @@ function processRequest(apiRequest, callback, request) {
             if (requestType === "pointrel20150417_storeMessage") requestedCapability = "write";
             if (requestType === "pointrel20150417_createJournal") requestedCapability = "administrate";
             if (requestType === "pointrel20150417_resetJournal") requestedCapability = "administrate";
+            if (requestType === "pointrel20150417_hideJournal") requestedCapability = "administrate";
             
             var authorized = true;
             if (configuration.isAuthorizedCallback) {
@@ -947,6 +972,13 @@ function processRequest(apiRequest, callback, request) {
             if (!journal) return callback(makeFailureResponse(409, "Journal does not exist", {journalIdentifier: journalIdentifier}));
             // TODO: Should make this all into a function, and this call should be asynchronous
             resetJournalSync(apiRequest.journalIdentifier);
+            return callback(makeSuccessResponse(200, "Success", {journalIdentifier: journalIdentifier}));
+        }
+
+        if (requestType === "pointrel20150417_hideJournal") {
+            if (!journal) return callback(makeFailureResponse(409, "Journal does not exist", {journalIdentifier: journalIdentifier}));
+            // TODO: Should make this all into a function, and this call should be asynchronous
+            hideJournalSync(apiRequest.journalIdentifier);
             return callback(makeSuccessResponse(200, "Success", {journalIdentifier: journalIdentifier}));
         }
         

@@ -61,8 +61,16 @@ var AdminPageDisplayer: any = {
     
     view: function(controller, args) {
         var contentsDiv;
-        var buttonStyleText = "margin-left: 1em;"
-        var labelStyleText = "margin-right:0.25em";
+        const buttonStyleText = "margin-left: 1em;"
+        const labelStyleText = "margin-right: 0.25em";
+        const hrStyleText = "display: block; clear: both; height: 2px; border-top: 2px solid #c5d2eb; background-color: #c5d2eb; margin-top: 1em; margin-right: 1em; border-radius: 5px;";
+        var chooseProjectLink;
+        var isWordPressAJAX = !!window["ajaxurl"];
+        if (!isWordPressAJAX) {
+            chooseProjectLink = "\\";
+        } else {
+            chooseProjectLink = "../webapp/narrafirma.html";
+        }
         
         return m("div.pageContents", {key: "pageContents"}, [
             m("div", [
@@ -70,11 +78,13 @@ var AdminPageDisplayer: any = {
                     "class": clientState.serverStatus,
                     "title": clientState.serverStatusText
                 }, "NarraFirma™"),
-                m("b", " Project Administration Tool"),
-                " -- Logged in as: " + userIdentifier + " -- ",
-                m("a", {href: "/logout"}, "Log Out")
+                m("b", " Site Administration"),
+                m("span", " | " + userIdentifier + " | "),
+                m("a", {href: "/logout"}, "Log out"),
+                m("span", " | "),
+                m("a", {href: chooseProjectLink}, "Open project")
             ]),
-            m("br"),
+            m("hr", {style: hrStyleText}),
             !!userToDisplay ? m("div", {style: "height: 200px; overflow: auto; float: right; min-width: 75%; margin-right: 1em; background: white; border: solid 3px #b0d4d4;"}, [
                 m("h3[style='margin-left:0.25em;']", "Roles for user: " + userToDisplay), 
                 m("pre", JSON.stringify(allProjectsModel.users[userToDisplay].rolesForJournals, null, 4))
@@ -100,7 +110,7 @@ var AdminPageDisplayer: any = {
             }),
 
             m("br"),
-            m("hr", {style: "display: block; clear: both; height: 3px; background: #b0d4d4; color: #b0d4d4"}),
+            m("hr", {style: hrStyleText}),
             m("div", [
                 m("h2", "Add New User"),
                 m("label[style='" + labelStyleText + "']", {"for": "un2"}, "User name"),
@@ -112,7 +122,7 @@ var AdminPageDisplayer: any = {
                 m("p", "To remove a user, revoke all of their project permissions."),
             ]),
 
-            m("hr", {style: "display: block; clear: both; height: 3px; background: #b0d4d4; color: #b0d4d4"}),
+            m("hr", {style: hrStyleText}),
             m("div", [
                 m("h2", "Projects"),
                 m('p', "Click a project name to change its permissions."),
@@ -122,7 +132,7 @@ var AdminPageDisplayer: any = {
                 m("br"),
             ]),
 
-            m("hr", {style: "display: block; clear: both; height: 3px; background: #b0d4d4; color: #b0d4d4"}),
+            m("hr", {style: hrStyleText}),
             m("div", [
                 m("h2", "Edit Project Permissions"),
                 m("label[style='" + labelStyleText + "']", {"for": "jn3"}, "Project: " + narrafirmaProjectPrefix),
@@ -148,7 +158,7 @@ var AdminPageDisplayer: any = {
                 m('p[style="font-weight: bold"]', "Only give write and admin privileges to people you trust. "),
             ]),
 
-            m("hr", {style: "display: block; clear: both; height: 3px; background: #b0d4d4; color: #b0d4d4"}),
+            m("hr", {style: hrStyleText}),
             m("div", [
                 m("h2", "Create New Project"),
                 m("p", "A project name can have alphanumeric characters, underscores, dashes, and dots (one dot at a time). " +
@@ -159,10 +169,20 @@ var AdminPageDisplayer: any = {
                 m("button[style='" + buttonStyleText + "']", {onclick: addJournalClicked}, "Create Project"),
                 m("button[style='" + buttonStyleText + "']", {onclick: grantAnonymousAccessToJournalForSurveysClicked}, "Grant Anonymous Survey Access"),
                 m("br"),
-                m("p", "To temporarily hide a project, " + 
-                    'rename its directory (under server_data) with anything other than "NarraFirmaProject-" at the start (e.g., prefix the directory name with "old" or "hide").' +
-                    " Or you can move that project's directory out of the server_data directory." +
-                    " To permanently delete a project, delete its directory. In any of these cases, stop and restart the NarraFirma server to refresh the list of projects.")
+            ]),
+
+            m("hr", {style: hrStyleText}),
+            m("div", [
+                m("h2", "Hide Project"),
+                m("p", "Hiding a project renames its directory so NarraFirma can't find it. " +
+                "This requires a server restart to take effect. " + 
+                "To bring back a hidden project, remove the full-stop (period) from the front of its name, then restart the server. " +
+                'To permanently delete a project, find its renamed directory (in server_data, with "___" in front of it) and delete or move it.'),
+                m("br"),
+                m("label[style='" + labelStyleText + "']", {"for": "jn1"}, "Project name: " + narrafirmaProjectPrefix),
+                m("input", {id: "jn1", value: journalName(), onchange: m.withAttr("value", journalName)}),
+                m("button[style='" + buttonStyleText + "']", {onclick: hideJournalClicked}, "Hide Project"),
+                m("br"),
             ]),
 
 
@@ -190,6 +210,16 @@ function addJournalClicked() {
     }
 
     addJournal(narrafirmaProjectPrefix + journalName().trim());
+}
+
+function hideJournalClicked() {
+    console.log("hideJournalClicked", journalName());
+    if (!journalName().trim()) {
+        toaster.toast("No journal name was specified");
+        return;
+    }
+
+    hideJournal(narrafirmaProjectPrefix + journalName().trim());
 }
 
 function addUserClicked() {
@@ -264,12 +294,16 @@ function initialize(theUserIdentifier, theProjects) {
             document.body.innerHTML += '<br>Problem connecting to project journal on server for: "<b>' + usersJournalIdentifier + '</b>"';
         } else {
             var permissions = response.permissions;
+            const pleaseLogoutMessage = `<p style="margin-left: 1em">The NarraFirma site administration tool can only be accessed 
+                with the site administrator account.</p>
+                <p style="margin-left: 1em">Please <a href="/logout">log out</a>, then log back in with that account.`;
             if (!permissions.read) {
-                alert("No read access -- try logging in as superuser");
+                document.body.innerHTML = pleaseLogoutMessage;
                 return;
             }
             if (!permissions.write) {
-                alert("No write access -- try logging in as superuser");
+                document.body.innerHTML = pleaseLogoutMessage;
+                return;
             }
         }
     });
@@ -348,6 +382,26 @@ function addJournal(journalIdentifier) {
             alert("Created project: " + journalIdentifier);
             //location.reload();
             m.redraw();
+        }
+    });
+
+}
+
+function hideJournal(journalIdentifier) {
+    console.log("hide-journal", journalIdentifier);
+    
+    pointrelClient.hideJournal(journalIdentifier, function(error, response) {
+        if (error || !response.success) {
+            console.log("Error hiding project", journalIdentifier, error, response);
+            var message = "error";
+            if (response) message = response.description;
+            if (error) message = error.description
+            if (error && typeof error.error === "string") message += "\n" + error.error.split("\n")[0];
+            toaster.toast("Error hiding project: " + journalIdentifier + " :: " + message);
+        } else {
+            console.log("Successfully hid project", journalIdentifier, response);
+            // Need to call redraw as event changing data was triggered by network
+            alert('The directory for "' + journalIdentifier + '" has been renamed to ".' + journalIdentifier + '". Stop and restart the server (then reload this page) to refresh the project list.');
         }
     });
 

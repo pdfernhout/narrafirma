@@ -436,6 +436,51 @@ class PointrelClient {
             });
         }
     }
+
+    hideJournal(journalIdentifier, callback) {
+        if (this.apiURL === "loopback") {
+            callback(null, {
+                success: true, 
+                statusCode: 200,
+                description: "Success",
+                timestamp: this.getCurrentUniqueTimestamp(),
+                status: 'OK',
+                version: "PointrelServer-loopback",
+                currentUniqueTimestamp: this.getCurrentUniqueTimestamp(),
+                journalIdentifier: journalIdentifier
+            });
+        } else {
+            // Send to a real server immediately
+    
+            var apiRequest = {
+                action: "pointrel20150417_hideJournal",
+                journalIdentifier: journalIdentifier
+            };
+            if (debugMessaging) console.log("sending hideJournal request", apiRequest);
+            this.prepareApiRequestForSending(apiRequest);
+            
+            // Do not set outstandingServerRequestSentAtTimestamp as this is an immediate request that does not block polling
+            this.serverStatus("waiting", "requesting hideJournal " + new Date().toISOString());
+            
+            var self = this;
+            this.apiRequestSend(apiRequest, shortTimeout_ms, function(response) {
+                if (debugMessaging) console.log("Got hideJournal response", response);
+                if (!response.success) {
+                    console.log("ERROR: report hideJournal failure", response);
+                    self.serverStatus("failure", "Report hideJournal failure: " + response.statusCode + " :: " + response.description);
+                    callback(response || "Failed");
+                } else {
+                    self.okStatus();
+                    //self.resetJournalContents();  don't need this because it is only called from the admin screen
+                    callback(null, response);
+                }
+             }, function(error) {
+                self.serverStatus("failure", "Problem with hideJournal from server: " + error.description);
+                console.log("Got server error for hideJournal", error.message);
+                callback(error);
+            });
+        }
+    }
     
     reportJournalStatus(callback) {
         if (this.apiURL === "loopback") {
