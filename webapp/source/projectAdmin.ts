@@ -73,7 +73,18 @@ var AdminPageDisplayer: any = {
         }
         
         return m("div.pageContents", {key: "pageContents"}, [
-            m("div", [
+            // note this style is copied from standard.css (navigationDiv) 
+            m("div", {"style": ` 
+                background-color: #b0d4d4;
+                border-bottom: 4px solid #ffbb84; 
+                padding: 0.75em 0.2em 0.2em 0em;
+                position: fixed;
+                top: 0;
+                left: 0;
+                z-index: 999;
+                width: 100%;
+                height: 1.8em;`
+            }, [
                 m("span[id=narrafirma-name]", {
                     "class": clientState.serverStatus,
                     "title": clientState.serverStatusText
@@ -89,7 +100,7 @@ var AdminPageDisplayer: any = {
                 m("h3[style='margin-left:0.25em;']", "Roles for user: " + userToDisplay), 
                 m("pre", JSON.stringify(allProjectsModel.users[userToDisplay].rolesForJournals, null, 4))
             ]) : m("div", {style: "height: 200px; overflow: auto; float: right; min-width: 75%"}),
-            m("h2", "Users"),
+            m("h3", "Users"),
             m('p', "Click a user name to see their project permissions."),
             // don't show users who have no roles for any existing projects 
             // because there is no real way to remove a user, and it's annoying to have to look at them forever
@@ -112,7 +123,7 @@ var AdminPageDisplayer: any = {
             m("br"),
             m("hr", {style: hrStyleText}),
             m("div", [
-                m("h2", "Add New User"),
+                m("h3", "Add New User"),
                 m("label[style='" + labelStyleText + "']", {"for": "un2"}, "User name"),
                 m("input", {id: "un2", value: userName(), onchange: m.withAttr("value", userName)}),
                 m("br"),
@@ -124,8 +135,8 @@ var AdminPageDisplayer: any = {
 
             m("hr", {style: hrStyleText}),
             m("div", [
-                m("h2", "Projects"),
-                m('p', "Click a project name to change its permissions."),
+                m("h3", "Projects"),
+                m('p', "Click a project name to change its permissions below."),
                 allProjectsModel.projects.sort(compareProjects).map(function(project) {
                 return m("div[style='white-space:pre']", ["   ", m("a", {href: "javascript:projectAdmin_selectJournal('" +  project.name + "')"}, project.name)]);
                 }),
@@ -134,7 +145,7 @@ var AdminPageDisplayer: any = {
 
             m("hr", {style: hrStyleText}),
             m("div", [
-                m("h2", "Edit Project Permissions"),
+                m("h3", "Edit Project Permissions"),
                 m("label[style='" + labelStyleText + "']", {"for": "jn3"}, "Project: " + narrafirmaProjectPrefix),
                 m("input", {id: "jn3", value: journalName(), onchange: m.withAttr("value", journalName)}),
                 m("br"),
@@ -153,14 +164,14 @@ var AdminPageDisplayer: any = {
                 m("p", `Readers can view (but not edit) project fields and stories. 
                     Writers can edit project fields and add (and edit and import) stories. 
                     Administrators can also import and reset projects. 
+                    Only give write and admin privileges to people you trust.
                     All of these permissions are per project. 
-                    Only the built-in superuser account can create new projects and new users.`),
-                m('p[style="font-weight: bold"]', "Only give write and admin privileges to people you trust. "),
+                    Only the site administrator (superuser) account can create new projects and new users.`),
             ]),
 
             m("hr", {style: hrStyleText}),
             m("div", [
-                m("h2", "Create New Project"),
+                m("h3", "Create New Project"),
                 m("p", "A project name can have alphanumeric characters, underscores, dashes, and dots (one dot at a time). " +
                 "It cannot include spaces, forward slashes, two or more dots in a row, or non-alphanumeric characters."),
                 m("br"),
@@ -173,11 +184,12 @@ var AdminPageDisplayer: any = {
 
             m("hr", {style: hrStyleText}),
             m("div", [
-                m("h2", "Hide Project"),
-                m("p", "Hiding a project renames its directory so NarraFirma can't find it. " +
-                "This requires a server restart to take effect. " + 
-                "To bring back a hidden project, remove the full-stop (period) from the front of its name, then restart the server. " +
-                'To permanently delete a project, find its renamed directory (in server_data, with "___" in front of it) and delete or move it.'),
+                m("h3", "Hide Project"),
+                m("p", `Hiding a project renames its directory to a "hidden" state -- that is, with a full stop (period) in front of it. ` +
+                "NarraFirma ignores project directories that start that way. " +
+                "The project will disappear from the choose-a-project list (and this page) as soon as the server is restarted. " + 
+                "To bring back a hidden project, find its directory  (in server_data), remove the full stop (period), and restart the server. " +
+                'To permanently delete a project, find its directory and delete it or move it out of the server_data directory.'),
                 m("br"),
                 m("label[style='" + labelStyleText + "']", {"for": "jn1"}, "Project name: " + narrafirmaProjectPrefix),
                 m("input", {id: "jn1", value: journalName(), onchange: m.withAttr("value", journalName)}),
