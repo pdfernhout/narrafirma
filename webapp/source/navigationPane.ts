@@ -42,8 +42,8 @@ var Navigation: any = {
                 "Read only") : [],
             // These next links float right and so are added in reverse order
             userIdentifier === "anonymous" ?
-                m("a[id=narrafirma-login-link]", {href: loginCommand, title: "Login (instead of being anonymous)"}, 'Login') : 
-                m("a[id=narrafirma-logout-link]", {href: logoutCommand, title: "Logout the current user"}, 'Logout (' + userIdentifier + ')'),
+                m("a[id=narrafirma-login-link]", {href: loginCommand, title: "Log in (instead of being anonymous)"}, 'Log in') : 
+                m("a[id=narrafirma-logout-link]", {href: logoutCommand, title: "Log out the current user"}, 'Log out (' + userIdentifier + ')'),
            
             m("a[id=narrafirma-help-link]", {href: launchHelpCommand, title: "Open online help for this page"}, "Help"),
             m("a[id=narrafirma-next-page]", {href: nextPageLink(), title: nextPageTitle(), "class": nextPageClass()}, "⇨"),
