@@ -13,7 +13,7 @@ function add_dashboardStoryCollectionStatusDisplay(panelBuilder: PanelBuilder, m
     var chooseProjectLink;
     var isWordPressAJAX = !!window["ajaxurl"];
     if (!isWordPressAJAX) {
-        chooseProjectLink = "\\";
+        chooseProjectLink = "\\start";
     } else {
         chooseProjectLink = "../webapp/narrafirma.html";
     }
