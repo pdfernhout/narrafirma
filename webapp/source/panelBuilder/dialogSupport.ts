@@ -99,7 +99,7 @@ export function openDialog(dialogConfiguration) {
 }
 
 // Caller needs to call the hideDialogMethod returned as the second arg of dialogOKCallback to close the dialog
-export function openTextEditorDialog(text, dialogTitle, dialogOKButtonLabel, dialogOKCallback) {
+export function openTextEditorDialog(text, dialogTitle, dialogOKButtonLabel, dialogOKCallback, showCancelButton = true) {
     if (!dialogTitle) dialogTitle = "Editor";
     if (!dialogOKButtonLabel) dialogOKButtonLabel = "OK";
     
@@ -112,16 +112,22 @@ export function openTextEditorDialog(text, dialogTitle, dialogOKButtonLabel, dia
         dialogConstructionFunction: build_textEditorDialogContent,
         dialogOKButtonLabel: dialogOKButtonLabel,
         dialogOKCallback: function(dialogConfiguration, hideDialogMethod) { dialogOKCallback(model.text, hideDialogMethod); },
-        dialogCancelButtonLabel: "Cancel"
+        dialogCancelButtonLabel: showCancelButton ? "Cancel" : ""
     };
     
     openDialog(dialogConfiguration);
 }
 
 function build_textEditorDialogContent(dialogConfiguration, hideDialogMethod) {
-    // style: "min-height: 400px; min-width: 600px; max-height: 800px; max-width: 800px; overflow: auto"
     return m("div", [
-        m("textarea", {key: "standardTextEditorTextarea", "class": "textEditorInDialog", onchange: function(event) { dialogConfiguration.dialogModel.text = event.target.value; }, value: dialogConfiguration.dialogModel.text }) 
+        m("textarea", 
+            {
+                key: "standardTextEditorTextarea", 
+                class: "textEditorInDialog", 
+                onchange: function(event) { dialogConfiguration.dialogModel.text = event.target.value; }, 
+                value: dialogConfiguration.dialogModel.text 
+            }
+        ) 
     ]);
 }
 

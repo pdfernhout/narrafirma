@@ -219,21 +219,21 @@ input[type="submit"].narrafirma-login-button:hover {
 .narrafirma-dashboard-story-collection-status table {
     border-collapse: collapse;
     margin-right: 1em;
-	}
+}
 
 .narrafirma-dashboard-story-collection-status th {
     font-weight: normal;
     background-color: #b0d4d4;
 	border: 1px solid black;
 	padding: 0.2em;
-	}
+}
 
 .narrafirma-dashboard-story-collection-status td {
     border: 1px solid black;
     background-color: #eaf0f8;
     padding: 0.2em;
     max-width: 16em;
-    }
+}
     
 .narrafirma-dashboard-header {
 	display: block;
@@ -613,19 +613,19 @@ table.scrolling tr:hover {
     max-height: 400px;
     overflow-y: scroll;
     border-collapse: collapse;
-  }
+}
   
-  .narrafirma-stories-list th {
-      background-color: #b0d4d4;
-      padding: 10px;
-      border: 1px solid black;
-  }
+.narrafirma-stories-list th {
+    background-color: #b0d4d4;
+    padding: 10px;
+    border: 1px solid black;
+}
   
-  .narrafirma-stories-list td {
-      padding: 6px;
-      border: 1px solid black;
-      height: 1em;
-  }
+.narrafirma-stories-list td {
+    padding: 6px;
+    border: 1px solid black;
+    height: 1em;
+}
   
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Story browser ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
@@ -1226,6 +1226,13 @@ table.filterTable td {
 }
 
 textarea.textEditorInDialog {
-    width: 100%;
     min-height: 350px;
+    resize: none;
+    margin: none;
+    border: none;
+    width: 100%;
+    height: 100%; 
+    box-sizing: border-box;         /* For IE and modern versions of Chrome */
+    -moz-box-sizing: border-box;    /* For Firefox                          */
+    -webkit-box-sizing: border-box; /* For Safari  
 }

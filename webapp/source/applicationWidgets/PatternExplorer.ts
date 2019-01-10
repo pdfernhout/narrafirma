@@ -158,7 +158,14 @@ class PatternExplorer {
         
         this.saveGraphSelectionSpecification = {
             "id": "saveGraphSelectionPanel",
-            panelFields: [        
+            panelFields: [    
+                {
+                    id: "saveGraphSelectionPanel_copySelectedStoriesToClipboard",
+                    displayPrompt: "Show selected story texts",
+                    displayType: "button",
+                    displayPreventBreak: true,
+                    displayConfiguration: this.copySelectedStoriesToClipboard.bind(this)
+                },    
                 {
                     id: "saveGraphSelectionPanel_insertGraphSelection",
                     displayPrompt: "Save graph selection to observation",
@@ -840,6 +847,24 @@ class PatternExplorer {
         textarea.selectionStart = selectionStart;
         textarea.selectionEnd = selectionStart + textToInsert.length;
         textarea.focus();
+    }
+
+    copySelectedStoriesToClipboard() {
+        var stories = this.modelForStoryGrid.storiesSelectedInGraph;
+        if (!stories.length) {
+            alert("Please select some stories to show.");
+            return;
+        }
+        const header = "\n----------------------------------------------------------------------------------------------------\n";
+        var text = "Stories selected in graph: " + this.currentPattern.patternName + "\n";
+        for (var i = 0; i < stories.length; i++) {
+            text += header + stories[i].model.storyName + header + stories[i].model.storyText + "\n";
+        }
+        dialogSupport.openTextEditorDialog(text, "Copy stories", "Close", this.closeCopyStoriesDialogClicked.bind(this), false);
+    }
+
+    closeCopyStoriesDialogClicked(text, hideDialogMethod) {     
+        hideDialogMethod();
     }
     
     scanForSelectionJSON(doFocus = false) {
