@@ -58,13 +58,15 @@ function writePageStart(request, response, pageType) {
         if (pageType !== "login") response.write('<p class="narrafirma-login-text">Please <b><a href="/login">log in</a></b>.</p>');
     } else {
         response.write('<h2 class="narrafirma-login-hello">Hello, ' + user.userIdentifier + ".</h2>");
-        response.write('<p class="narrafirma-login-action"><a href="/logout">Log out</a>');
-        //if (pageType !== "account") response.write(' | <a href="/account">Account</a>');
         response.write("</p>");
     }
 }
 
 function writePageEnd(request, response) {
+    if (request.user) {
+        response.write('<p class="narrafirma-login-action"><a href="/logout">Log out</a>');
+        response.write("</p>");
+    }
     response.end("</body></html>");
 }
 
