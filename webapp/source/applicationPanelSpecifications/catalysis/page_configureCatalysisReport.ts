@@ -10,31 +10,26 @@ function fillChoiceArray(start, lastSequential, lastEveryTwo = null, lastEveryFi
     if (lastEveryTwo) {
         for (i = lastSequential+2; i <= lastEveryTwo; i += 2) {
             result.push("" + i);
-            console.log(i);
         }
     }
     if (lastEveryFive) {
         for (i = lastEveryTwo+5; i <= lastEveryFive; i += 5) {
             result.push("" + i);
-            console.log(i);
         }
     }
     if (lastEveryTen) {
         for (i = lastEveryFive+10; i <= lastEveryTen; i += 10) {
             result.push("" + i);
-            console.log(i);
         }  
     }
     if (lastEveryFifty) {
         for (i = lastEveryTen+50; i <= lastEveryFifty; i += 50) {
             result.push("" + i);
-            console.log(i);
         } 
     }
     if (lastEveryHundred) 
         for (i = lastEveryFifty+100; i <= lastEveryHundred; i += 100) {
             result.push("" + i);
-            console.log(i);
         }  
     return result;
 }
