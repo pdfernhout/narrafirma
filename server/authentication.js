@@ -88,8 +88,8 @@ function writeLaunchPage(request, response, config) {
     writePageStart(request, response, "start");
     const isSuperUser = pointrelAccessControl.isSuperUser(request.user.userIdentifier);
     // response.write("Example of authentication with passport; authenticated " + request.isAuthenticated());
-    if (request.isAuthenticated()) response.write('<p class="narrafirma-login-action">Choose a NarraFirma <a href="/narrafirma.html">project</a> to work on</p>');
-    if (request.isAuthenticated() && isSuperUser) response.write('<p class="narrafirma-login-action">Start the NarraFirma <a href="/admin.html">administration tool</a></p>');
+    if (request.isAuthenticated()) response.write('<p class="narrafirma-login-action">Choose a <a href="/narrafirma.html">project</a> to work on</p>');
+    if (request.isAuthenticated() && isSuperUser) response.write('<p class="narrafirma-login-action">Site <a href="/admin.html">administration</a></p>');
     writePageEnd(request, response);
 }
 
