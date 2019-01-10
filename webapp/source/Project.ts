@@ -25,6 +25,7 @@ class Project {
     static defaultNumScatterDotOpacityLevels = 3;
     static defaultScatterDotSize = 8;
     static defaultCorrelationLineChoice = "0.05";
+    static defaultOutputGraphFormat = "SVG";
     static defaultGraphTypesToCreate = {
         "data integrity graphs": false,
         "texts": false,
@@ -729,6 +730,18 @@ class Project {
             return correlationLineChoice;
         } else {
             return Project.defaultCorrelationLineChoice;
+        }
+    }
+
+    outputGraphFormat(catalysisReportIdentifier) {
+        if (!catalysisReportIdentifier) {
+            throw new Error("catalysisReportIdentifier was not supplied");
+        }
+        var outputGraphFormat = this.tripleStore.queryLatestC(catalysisReportIdentifier, "outputGraphFormat");
+        if (outputGraphFormat) {
+            return outputGraphFormat;
+        } else {
+            return Project.defaultOutputGraphFormat;
         }
     }
 

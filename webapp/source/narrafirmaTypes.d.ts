@@ -22,6 +22,7 @@ interface GraphHolder {
     numScatterDotOpacityLevels: number;
     scatterDotSize: number;
     correlationLineChoice: string;
+    outputGraphFormat: string;
     graphTypesToCreate: {};
 }
 

@@ -104,6 +104,7 @@ class PatternExplorer {
     numScatterDotOpacityLevels = Project.defaultNumScatterDotOpacityLevels;
     scatterDotSize = Project.defaultScatterDotSize;
     correlationLineChoice = Project.defaultCorrelationLineChoice;
+    outputGraphFormat = Project.defaultOutputGraphFormat;
     graphTypesToCreate = Project.defaultGraphTypesToCreate;
     
     constructor(args) {
@@ -123,6 +124,7 @@ class PatternExplorer {
             numScatterDotOpacityLevels: Project.defaultNumScatterDotOpacityLevels,
             scatterDotSize: Project.defaultScatterDotSize,
             correlationLineChoice: Project.defaultCorrelationLineChoice,
+            outputGraphFormat: Project.defaultOutputGraphFormat,
             graphTypesToCreate: Project.defaultGraphTypesToCreate
         };
         
@@ -468,7 +470,8 @@ class PatternExplorer {
         this.scatterDotSize = this.project.scatterDotSize(catalysisReportIdentifier);
         this.graphHolder.scatterDotSize = this.scatterDotSize;
         this.correlationLineChoice = this.project.correlationLineChoice(catalysisReportIdentifier);
-        this.graphHolder.correlationLineChoice = this.correlationLineChoice; // because need to pass it in to charting methods
+        this.graphHolder.correlationLineChoice = this.correlationLineChoice; 
+        this.graphHolder.outputGraphFormat = this.project.outputGraphFormat(catalysisReportIdentifier);
         this.graphTypesToCreate = this.project.graphTypesToCreate(catalysisReportIdentifier);
         
         this.catalysisReportObservationSetIdentifier = this.getObservationSetIdentifier(catalysisReportIdentifier);

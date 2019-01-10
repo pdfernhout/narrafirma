@@ -965,11 +965,14 @@ table.filterTable td {
 }
 
 .narrafirma-catalysis-report-observation {
-	font-size: 1.em;
+	font-size: 1.0em;
     font-weight: 700;
     padding: 0.5em;
     background: #c5d2eb;
     margin-top: 0.5em;
+}
+
+.narrafirma-catalysis-report-graph {
 }
 
 .narrafirma-catalysis-report-observation-label {
@@ -1148,7 +1151,7 @@ table.filterTable td {
 .contingencyChart .expected {
   stroke-width: 1px;
   stroke: #8e8789;
-  stroke-dasharray: "5,5";
+  stroke-dasharray: "5, 5";
   fill: none;
 }
 

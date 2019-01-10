@@ -573,7 +573,7 @@ function displayForGraphHolder(graphHolder: GraphHolder) {
                 var graphIndex = rowIndex * 3 + colIndex + 1;
                 if (graphIndex >= graphHolder.chartPanes.length) break;
                 var graphPane = graphHolder.chartPanes[graphIndex];
-                columnsForThisRow.push(m("td", displayForGraph(graphPane)));
+                columnsForThisRow.push(m("td", displayForGraph(graphPane, graphHolder)));
             }
             rows.push(m("tr", columnsForThisRow));
         } 
@@ -585,11 +585,11 @@ function displayForGraphHolder(graphHolder: GraphHolder) {
         
         return result;
     } else {
-        return displayForGraph(<HTMLElement>graphHolder.graphResultsPane.firstChild);
+        return displayForGraph(<HTMLElement>graphHolder.graphResultsPane.firstChild, graphHolder);
     }
 }
     
-function displayForGraph(graphNode: HTMLElement) {
+function displayForGraph(graphNode: HTMLElement, graphHolder: GraphHolder) {
     var styleNode = document.createElement("style");
     styleNode.type = 'text/css';
     
@@ -604,32 +604,36 @@ function displayForGraph(graphNode: HTMLElement) {
     
     styleNode.innerHTML = "<![CDATA[" + graphResultsPaneCSS + "]]>";
     graphNode.firstChild.insertBefore(styleNode, graphNode.firstChild.firstChild);
-    var imageForGraph = null;
     // remove the statistics panel
     var statisticsPanel = <HTMLElement>graphNode.childNodes.item(1);
     if (statisticsPanel) graphNode.removeChild(statisticsPanel);
 
     var svgText = (<HTMLElement>graphNode).innerHTML;
-    var canvas = document.createElement("canvas");
-    canvg(canvas, svgText);
-    var imgData = canvas.toDataURL("image/png");
-    // m.trust(graphHolder.graphResultsPane.outerHTML),
-    imageForGraph = m("img", {
-        //src: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO9TXL0Y4OHwAAAABJRU5ErkJggg==",
-        //src: `data:image/svg+xml;utf8,<svg width="400" height="110"><rect width="300" height="100" style="fill:rgb(0,0,255);stroke-width:3;stroke:rgb(0,0,0)"></rect>Sorry, your browser does not support inline SVG.</svg>`,
-        src: imgData,
-        alt: "observation graph"
-    });
-
-    return [
-        imageForGraph || [],
-        //printReturnAndBlankLine(),
-        m.trust(statisticsPanel ? statisticsPanel.outerHTML : ""),
-        //printReturnAndBlankLine()
-    ];
+    if (graphHolder.outputGraphFormat === "PNG") {
+        var canvas = document.createElement("canvas");
+        canvg(canvas, svgText);
+        var imgData = canvas.toDataURL("image/png");
+        var imageForGraph = m("img", {
+            src: imgData,
+            class: "narrafirma-catalysis-report-graph",
+            alt: "observation graph"
+        });
+        return [
+            m("div:narrafirma-graph-image", 
+                imageForGraph || []),
+                m.trust(statisticsPanel ? statisticsPanel.outerHTML : ""),
+        ];
+    } else if (graphHolder.outputGraphFormat === "SVG") {
+        return [
+            m("div:narrafirma-graph-image", m.trust(svgText)),
+            m.trust(statisticsPanel ? statisticsPanel.outerHTML : ""),
+        ];
+    } else {
+        throw Error("Unsupported graph type: " + graphHolder.outputGraphFormat);
+    }
 }
 
-function printObservationList(observationList, observationLabel, interpretationNotes, allStories, minimumStoryCountRequiredForTest: number, minimumStoryCountRequiredForGraph: number, numHistogramBins: number, numScatterDotOpacityLevels: number, scatterDotSize: number, correlationLineChoice) {
+function printObservationList(observationList, observationLabel, interpretationNotes, allStories, minimumStoryCountRequiredForTest: number, minimumStoryCountRequiredForGraph: number, numHistogramBins: number, numScatterDotOpacityLevels: number, scatterDotSize: number, correlationLineChoice, outputGraphFormat) {
     // For now, just print all observations
     return printList(observationList, {}, function (item) {
         var project = Globals.project();
@@ -650,6 +654,7 @@ function printObservationList(observationList, observationLabel, interpretationN
             numScatterDotOpacityLevels: numScatterDotOpacityLevels,
             scatterDotSize: scatterDotSize,
             correlationLineChoice: correlationLineChoice,
+            outputGraphFormat: outputGraphFormat,
             graphTypesToCreate: {}
         };
 
@@ -784,6 +789,7 @@ export function printCatalysisReport() {
     options["numScatterDotOpacityLevels"] = project.numScatterDotOpacityLevels(catalysisReportIdentifier);
     options["scatterDotSize"] = project.scatterDotSize(catalysisReportIdentifier);
     options["correlationLineChoice"] = project.correlationLineChoice(catalysisReportIdentifier);
+    options["outputGraphFormat"] = project.outputGraphFormat(catalysisReportIdentifier);
     var observationIDs = project.tripleStore.getListForSetIdentifier(catalysisReportObservationSetIdentifier);
 
     if (printWhat.indexOf("observations") >= 0) {
@@ -858,7 +864,7 @@ function printCatalysisReportWithOnlyObservations(project, catalysisReportIdenti
                 options["observationLabel"], "", allStories, 
                 options["minimumStoryCountRequiredForTest"], options["minimumStoryCountRequiredForGraph"], 
                 options["numHistogramBins"], options["numScatterDotOpacityLevels"], 
-                options["scatterDotSize"], options["correlationLineChoice"]));
+                options["scatterDotSize"], options["correlationLineChoice"], options["outputGraphFormat"]));
             printItems.push(m(".narrafirma-catalysis-report-observations-only-page-break", ""));
             progressModel.progressText = progressText(observationIndex);
             progressModel.redraw();
@@ -944,6 +950,7 @@ function printCatalysisReportWithClusteredInterpretations(project, catalysisRepo
     var numScatterDotOpacityLevels = project.numScatterDotOpacityLevels(catalysisReportIdentifier);
     var scatterDotSize = project.scatterDotSize(catalysisReportIdentifier);
     var correlationLineChoice = project.correlationLineChoice(catalysisReportIdentifier);
+    var outputGraphFormat = project.outputGraphFormat(catalysisReportIdentifier);
     
     function progressText(perspectiveIndex: number, interpretationIndex: number) {
         return "Perspective " + (perspectiveIndex + 1) + " of " + perspectives.length + ", interpretation " + (interpretationIndex + 1) + " of " + perspectives[perspectiveIndex].items.length;
@@ -1058,8 +1065,10 @@ function printCatalysisReportWithClusteredInterpretations(project, catalysisRepo
                     printItems.push(m("div.narrafirma-catalysis-report-interpretation-idea", printText(interpretation.idea)));
                 }
 
-                printItems.push(<any>printObservationList(observationsIDsForInterpretation[interpretation.uuid], options["observationLabel"], interpretation.notes, allStories, 
-                    minimumStoryCountRequiredForTest, minimumStoryCountRequiredForGraph, numHistogramBins, numScatterDotOpacityLevels, scatterDotSize, correlationLineChoice));
+                printItems.push(<any>printObservationList(observationsIDsForInterpretation[interpretation.uuid], 
+                    options["observationLabel"], interpretation.notes, allStories, 
+                    minimumStoryCountRequiredForTest, minimumStoryCountRequiredForGraph, 
+                    numHistogramBins, numScatterDotOpacityLevels, scatterDotSize, correlationLineChoice, outputGraphFormat));
                 
                 progressModel.progressText = progressText(perspectiveIndex, interpretationIndex);
                 progressModel.redraw();

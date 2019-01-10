@@ -152,6 +152,23 @@ var panel: Panel = {
             }
         },
 
+        
+        {
+            id: "configureCatalysisReport_outputGraphFormat",
+            valuePath: "/clientState/catalysisReportIdentifier/outputGraphFormat",
+            valueType: "string",
+            valueOptions: ["SVG", "PNG"],
+            displayType: "select",
+            displayName: "Output graph format",
+            displayPrompt: `What <strong>output format</strong> should be used to draw the graphs in the printed report? 
+                SVG graphs have good resolution and can be styled with CSS classes, but cannot be copied or saved. (You can take screenshots of them, though.)
+                PNG graphs can be easily saved and copied, but have lower resolution and can't be changed. 
+                `,
+            displayVisible: function(panelBuilder, model) {
+                return !!Globals.clientState().catalysisReportIdentifier();
+            }
+        },
+
         {
             id: "configureCatalysisReport_minimumStoryCountRequiredForGraph",
             valuePath: "/clientState/catalysisReportIdentifier/minimumStoryCountRequiredForGraph",

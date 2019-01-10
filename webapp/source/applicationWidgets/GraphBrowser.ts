@@ -44,6 +44,7 @@ class GraphBrowser {
             numScatterDotOpacityLevels: Project.defaultNumScatterDotOpacityLevels,
             scatterDotSize: Project.defaultScatterDotSize,
             correlationLineChoice: null,
+            outputGraphFormat: Project.defaultOutputGraphFormat,
             graphTypesToCreate: {}
         }; 
     }

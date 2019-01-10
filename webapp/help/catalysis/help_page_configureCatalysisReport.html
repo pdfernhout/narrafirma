@@ -202,18 +202,20 @@ you can make scatter-plot dots semi-transparent, so a dark dot represents more s
 		</p>
 		<p>Next go to the "custom CSS" field for your catalysis report (on the the "Configure catalysis report" page) and
 		write a class selector (label) and declaration (set of formatting lines)
-		for that class. 
+		for that class. You can use your browser's style editor to experiment with CSS until you get the styling you want.
+		</p><p>
 		For example, if you wanted to change your report so that your perspective names appear in blue, you would write a CSS statement
 		like this:
-		<code><br/><br/>
-		.narrafirma-catalysis-report-perspective { <br/>
-		&nbsp; &nbsp; color: blue;<br/>
-		}<br/><br/>
-		</code>
-		<p>
-		Then reload your browser and print the report again to see your change. 
-		(You can't just reload the report page; you have to reload the NarraFirma application, then click the "Print selected catalysis report" button again.)
 		</p>
+		<code>     .narrafirma-catalysis-report-perspective { color: blue; }</code>
+		<p>
+		Then print the report again to see your change. 
+		(You can't just reload the report page; you have to click the "Print selected catalysis report" button again.)
+		</p>
+		<p>If you are using the SVG graph type for your report, you can also style the elements of your graphs. For example, this
+			line will make the "observed" circles in your contingency graphs red:</p>
+		<code>     .contingencyChart ellipse.storyCluster.observed { stroke: red; }</code>
+		<p>Changes to CSS SVG styles have no effect on graphs produced with the PNG option, sadly.</p>
 		</div>
 	
 	</div>
