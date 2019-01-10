@@ -71,6 +71,7 @@ var AdminPageDisplayer: any = {
         } else {
             chooseProjectLink = "../webapp/narrafirma.html";
         }
+        const pWithStyle = 'p[style="margin-right: 0.5em"]';
         
         return m("div.pageContents", {key: "pageContents"}, [
             // note this style is copied from standard.css (navigationDiv) 
@@ -101,7 +102,7 @@ var AdminPageDisplayer: any = {
                 m("pre", JSON.stringify(allProjectsModel.users[userToDisplay].rolesForJournals, null, 4))
             ]) : m("div", {style: "height: 200px; overflow: auto; float: right; min-width: 75%"}),
             m("h3", "Users"),
-            m('p', "Click a user name to see their project permissions."),
+            m(pWithStyle, "Click a user name to see their project permissions."),
             // don't show users who have no roles for any existing projects 
             // because there is no real way to remove a user, and it's annoying to have to look at them forever
             Object.keys(allProjectsModel.users).sort().map(function(userIdentifier) {
@@ -136,7 +137,7 @@ var AdminPageDisplayer: any = {
             m("hr", {style: hrStyleText}),
             m("div", [
                 m("h3", "Projects"),
-                m('p', "Click a project name to change its permissions below."),
+                m(pWithStyle, "Click a project name to change its permissions below."),
                 allProjectsModel.projects.sort(compareProjects).map(function(project) {
                 return m("div[style='white-space:pre']", ["   ", m("a", {href: "javascript:projectAdmin_selectJournal('" +  project.name + "')"}, project.name)]);
                 }),
@@ -161,7 +162,7 @@ var AdminPageDisplayer: any = {
                 m("button[style='" + buttonStyleText + "']", {onclick: accessClicked.bind(null, "grant")}, "Grant"),
                 m("button[style='" + buttonStyleText + "']", {onclick: accessClicked.bind(null, "revoke")}, "Revoke"),
                 m("br"),
-                m("p", `Readers can view (but not edit) project fields and stories. 
+                m(pWithStyle, `Readers can view (but not edit) project fields and stories. 
                     Writers can edit project fields and add (and edit and import) stories. 
                     Administrators can also import and reset projects. 
                     Only give write and admin privileges to people you trust.
@@ -172,7 +173,7 @@ var AdminPageDisplayer: any = {
             m("hr", {style: hrStyleText}),
             m("div", [
                 m("h3", "Create New Project"),
-                m("p", "A project name can have alphanumeric characters, underscores, dashes, and dots (one dot at a time). " +
+                m(pWithStyle, "A project name can have alphanumeric characters, underscores, dashes, and dots (one dot at a time). " +
                 "It cannot include spaces, forward slashes, two or more dots in a row, or non-alphanumeric characters."),
                 m("br"),
                 m("label[style='" + labelStyleText + "']", {"for": "jn1"}, "Project name: " + narrafirmaProjectPrefix),
@@ -184,16 +185,16 @@ var AdminPageDisplayer: any = {
 
             m("hr", {style: hrStyleText}),
             m("div", [
-                m("h3", "Hide Project"),
-                m("p", `Hiding a project renames its directory to a "hidden" state -- that is, with a full stop (period) in front of it. ` +
+                m("h3", "Archive Project"),
+                m(pWithStyle, `Archiving a project renames its directory to a "hidden" state -- that is, with a full stop (period) in front of it. ` +
                 "NarraFirma ignores project directories that start that way. " +
                 "The project will disappear from the choose-a-project list (and this page) as soon as the server is restarted. " + 
-                "To bring back a hidden project, find its directory  (in server_data), remove the full stop (period), and restart the server. " +
+                "To bring back an archived project, find its directory  (in server_data), remove the full stop (period), and restart the server. " +
                 'To permanently delete a project, find its directory and delete it or move it out of the server_data directory.'),
                 m("br"),
                 m("label[style='" + labelStyleText + "']", {"for": "jn1"}, "Project name: " + narrafirmaProjectPrefix),
                 m("input", {id: "jn1", value: journalName(), onchange: m.withAttr("value", journalName)}),
-                m("button[style='" + buttonStyleText + "']", {onclick: hideJournalClicked}, "Hide Project"),
+                m("button[style='" + buttonStyleText + "']", {onclick: hideJournalClicked}, "Archive Project"),
                 m("br"),
             ]),
 
