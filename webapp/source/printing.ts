@@ -900,6 +900,8 @@ function compareRowsInPerspectiveLinksTable (a, b) {
         }
     } else if (strengthInA) {
         return -1;
+    } else if (strengthInB) {
+        return 1;
     } else {
         return 0;
     }
