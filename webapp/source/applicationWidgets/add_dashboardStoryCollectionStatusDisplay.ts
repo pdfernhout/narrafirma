@@ -108,7 +108,7 @@ function add_dashboardStoryCollectionStatusDisplay(panelBuilder: PanelBuilder, m
         resultItems = resultItems.concat(storyCollectionItems);
 
     if (resultItems.length && resultItems[0]) {
-        resultItems.unshift(m("p", "Quick links:"));
+        resultItems.unshift(m("p", "Quick links for " + Globals.project().projectName()));
     }
     
     // project admin
@@ -118,14 +118,18 @@ function add_dashboardStoryCollectionStatusDisplay(panelBuilder: PanelBuilder, m
     var chooseProjectLink;
     var isWordPressAJAX = !!window["ajaxurl"];
     if (!isWordPressAJAX) {
-        chooseProjectLink = "\\start";
+        chooseProjectLink = "\\";
     } else {
         chooseProjectLink = "../webapp/narrafirma.html";
     }
     resultItems = resultItems.concat([m("br"), m("a", {href: chooseProjectLink, title: "Choose another project"}, "Choose another project"), m("br")]); 
 
+    // site admin
+    if (Globals.project().currentUserIsSuperUser) {
+        // no need to get WordPress URL because superuser account does not exist there
+        resultItems = resultItems.concat([m("br"), m("a", {href: "\\admin.html", title: "Site administration"}, "Site administration"), m("br")]); 
+    }
     return m("div.narrafirma-dashboard-story-collection-status", resultItems);
-
 }
 
 export = add_dashboardStoryCollectionStatusDisplay;

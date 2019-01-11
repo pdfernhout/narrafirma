@@ -15,6 +15,7 @@ class Project {
     userIdentifier: any;
     readOnly: boolean = false;
     currentUserHasAdminAccess: boolean = false;
+    currentUserIsSuperUser: boolean = false;
     pointrelClient: PointrelClient;
     tripleStore: TripleStore;
     redrawCallback: Function;
@@ -68,6 +69,7 @@ class Project {
                 callback(error);
             } else {
                 this.pointrelClient.startup();
+                this.currentUserIsSuperUser = response.permissions.superUser;
                 callback(null, response);
             }
         });

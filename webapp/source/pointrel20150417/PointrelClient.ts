@@ -501,7 +501,8 @@ class PointrelClient {
                 permissions: {
                     read: true,
                     write: true,
-                    admin: true
+                    admin: true,
+                    superUser: true
                 }
             });
         } else {

@@ -78,12 +78,17 @@ var configuration = {
     // An optional function that should return a boolean if a user is authenticated; userCredentials typically has userIdentifier and userPassword
     // Typically this should be set to pointrelAccessControl.isAuthenticated
     // isAuthenticated(userIdentifier, userCredentials)
-    
     isAuthenticatedCallback: null,
+
     // An optional function that should return a boolean if a request is authorized for the user
     // Typically this should be set to pointrelAccessControl.isAuthorized
     // isAuthorized(journalIdentifier, userIdentifier, requestedAction, apiRequest, request)
     isAuthorizedCallback: null,
+
+    // An optional function that should return a boolean if the user is the superuser
+    // Typically this should be set to pointrelAccessControl.isSuperUser
+    // isSuperUser(userIdentifier)
+    isSuperUserCallback: null,
     
     // An optional callback to return an object listing the journals a user can access and the permissions authorized
     // Typically this should be set to pointrelAccessControl.determineJournalsAccessibleByUser
@@ -404,7 +409,7 @@ function indexAllMessagesInDirectory(journal, directory) {
 
 //---  Status request
 
-function respondForReportJournalStatusRequest(journal, isAuthorizedPartial, callback) {
+function respondForReportJournalStatusRequest(journal, userIdentifier, isAuthorizedPartial, isSuperUser, callback) {
     var sortedReceivedRecords = journal.allMessageReceivedRecordsSortedByTimestamp;
     var earliestRecord = null;
     var latestRecord = null;
@@ -426,7 +431,8 @@ function respondForReportJournalStatusRequest(journal, isAuthorizedPartial, call
             // TODO: What about partial authorization for only some messages?
             read: readAuthorization,
             write: writeAuthorization,
-            admin: adminAuthorization
+            admin: adminAuthorization,
+            superUser: isSuperUser()
         }
     };
     
@@ -958,7 +964,14 @@ function processRequest(apiRequest, callback, request) {
                     return true;
                 }
             };
-            return respondForReportJournalStatusRequest(journal, isAuthorizedPartial, callback);
+            var isSuperUser = function() {
+                if (configuration.isSuperUserCallback) {
+                    return configuration.isSuperUserCallback(userIdentifier);
+                } else {
+                    return false;
+                }
+            }
+            return respondForReportJournalStatusRequest(journal, userIdentifier, isAuthorizedPartial, isSuperUser, callback);
         }
         
         if (requestType === "pointrel20150417_createJournal") {
