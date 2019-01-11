@@ -33,19 +33,13 @@ var panel: Panel = {
         },
 
         {
-            id: "project_adminPageLink",
-            valueType: "none",
-            displayType: "html",
-            displayPrompt: `<a href="javascript:narrafirma_openPage('page_administration')">Project administration</a>`
-        },
-        
-        
-        {
             id: "project_mainDashboardStoryCollectionStatus",
             valueType: "none",
             displayType: "dashboardStoryCollectionStatusDisplay",
             displayPrompt: "Story collections"
-        }
+        },
+
+
      ]
 };
 

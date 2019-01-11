@@ -198,7 +198,7 @@ input[type="submit"].narrafirma-login-button:hover {
 
 .narrafirma-pni-phases-image {
     float: left;
-	margin: 0.2em 1.2em 0.5em 0;
+	margin: 0.2em 1.2em 0.5em 0.2em;
 }
 
 .narrafirma-dashboardStatusButton {
@@ -345,7 +345,7 @@ button:disabled {
 .narrafirma-page-name {
     font-weight: 700;
     font-size: 1.3em;
-    margin: 1em 0 0 0.35em;
+    margin: 0.5em 0 0 0.35em;
 }
  
 .questionExternal {
