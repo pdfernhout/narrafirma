@@ -1150,7 +1150,7 @@ table.filterTable td {
 
 .contingencyChart .expected {
   stroke-width: 1px;
-  stroke: #8e8789;
+  stroke: black;
   stroke-dasharray: "5, 5";
   fill: none;
 }
