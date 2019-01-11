@@ -120,7 +120,6 @@ RETURN
 GENERAL
 W Support Undo (including multi-user aspects with log)
 W User should be able to duplicate a project
-W User should be able to delete a project
 
 CONFIGURATION
 ? Add project configuration page?
@@ -128,7 +127,6 @@ CONFIGURATION
 ------------- User interface -------------
 
 USABILITY
-W Copy selected stories to clipboard and/or a popup window 
 W Improve dashboards, perhaps with checkmarks and thinking through completion feedback to be better
 W Support checkBoxesWithPull -- a set of check boxes where the display texts are drawn from a list entered previously (like for participant list)
 
@@ -141,9 +139,50 @@ W Look at all alerts in code and make into nicer GUI feedback
 M Report when a project can't be read by the current user even if the survey can be read (fix limitation of lumping permissions)
 M Improve reporting on startup for loading project data with some kind of progress indicator or remaining count
 M When import story form, hundreds of triples can be generated which take minutes to send to the server (with no progress feedback, even though done in background) -- may be related to console logging
-W Application should have better support when you need to re-authenticate due to server restart (rather than opening different browser tab by hand)
 
 ==== DONE
+
+--- Release 1.2.0
+
+NEW FEATURES
+DONE Added "filter" to create catalysis report and story cards using subset of stories based on answer(s) to question
+DONE Added option to print catalysis report with observations only (for group catalysis workshop) and with only particular strengths
+DONE Improved catalysis report with links to observations as well as interpretations for each perspective (sorted by strength)
+DONE Added method to reset (empty) project and clear out old data to reduce size loaded into memory (important when importing data)
+DONE Added ability to hide graphs with few stories (applies to multiple histograms/scatterplots only)
+DONE Added ability to save catalysis report graphs in SVG format (better resolution and can be styled with CSS)
+DONE Import: Added options for indexed single choice; delimited multi-choice (one column, by name or index); yes/no multi-choice options (multiple columns)
+DONE Import: Added many new options to (in most cases) remove need to edit data file before import
+DONE Import: Made it possible to edit all import options in NarraFirma itself (no longer need to write CSV story form file)
+DONE Import: Added verbose data check to make sure story data is being read correctly before stories are imported
+DONE Import: Added options to append "more detail" text fields to story and ignore rows with empty or too-short story entries
+DONE Import: Wrote detailed "import guide" to help make data import process easier
+
+SMALL ENHANCEMENTS
+DONE Renamed pages in Collection section with Import buttons to make it more obvious how to import data
+DONE Moved export buttons to their own page in story collection
+DONE Added ability to refer to portion of observation name as well as text using @header@ system (see help)
+DONE Added classes for custom CSS for particular (named) elements in catalysis reports (perspectives, observations, interpretations) and story cards (question names)
+DONE Added choice of sort order when printing story cards: alphabetically or in story form order, and with scales separate or mixed in
+DONE Added ability to truncate very long stories when printing story cards
+DONE Added explanation (in help for design story forms page and import guide) of how to lump together answers during import
+DONE Added way to see names of deleted story collections that still have stories associated with them
+DONE Added check in node.js version to see if all projects user has access to still exist
+DONE Improved design, organization, and explanations of administration pages in both node.js and WordPress versions
+DONE Added check for admin permission for project import and reset
+DONE In Explore patterns, added button to show selected story texts (to copy)
+DONE Stress tested software with 13K stories; works fine, but you may need to increase the memory to WordPress or node.js, and things will slow down
+DONE Added "quick links" to home page to access elements of projects (questions, forms, etc)
+
+BUG FIXES
+DONE Fixed bug that created spurious error messages during report generation
+DONE Fixed bug in bar graphs for boolean questions (where "no" was being reported as a non-answer)
+DONE Fixed bug that created error messages about missing IDs when creating story forms
+DONE Changed "name" anchors to "id" anchors in generated HTML (because "name" anchors are deprecated in HTML 5)
+DONE Fixed bad handling of missing/empty custom CSS in imported story form file
+DONE Fixed too-wide catalysis report pages for multi-graph results
+DONE Fixed bug that caused WordPress error when project name was too long (project names are now limited)
+DONE Fixed problem in node.js version where link appeared to screen user did not actually have access to
 
 --- Release 1.1.0
 
