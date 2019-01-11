@@ -45,8 +45,7 @@ As Malcolm Gladwell has [said](http://venturebeat.com/2015/07/24/gladwell-on-dat
 
 ## Configuring and running the NarraFirma server
 
-- You need to have Node.js and npm installed first.
-- For Node.js, you need to run "npm run build" to compile those TypeScript source files to JavaScript before running the Node.js server (or have your IDE do it for you). Otherwise you will get error messages about missing JavaScript files when you open the webapp in your browser.
+- For Node.js, You need to have Node.js and npm installed first. You need to run "npm run build" to compile those TypeScript source files to JavaScript before running the Node.js server (or have your IDE do it for you). Otherwise you will get error messages about missing JavaScript files when you open the webapp in your browser.
 - For WordPress, the TypeScript compiler is called during the creation of the WordPress zip file.
 - For more details on installation or setup of NarraFirma from source see [INSTALL.md](INSTALL.md).
 - For more details on installation or setup of NarraFirma from a pre-built distribution, including tips on setting up WordPress or Node.js, see [this webpage](https://narrafirma.com/home/setting-up-narrafirma/).
