@@ -37,7 +37,7 @@ function add_dashboardStoryCollectionStatusDisplay(panelBuilder: PanelBuilder, m
 
     // annotation questions
     var annotationQuestionIdentifiers = Globals.project().getListForField("project_annotationQuestionsList");
-    newItems = mithrilArrayForListOfThingsAndLink("Annotation question", annotationQuestionIdentifiers, "page_writeAnnotationsAboutParticipants");
+    newItems = mithrilArrayForListOfThingsAndLink("Annotation question", annotationQuestionIdentifiers, "page_writeAnnotationsAboutStories");
     if (newItems) resultItems = resultItems.concat(newItems);
 
     // story forms
