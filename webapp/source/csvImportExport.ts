@@ -196,6 +196,12 @@ function processCSVContentsForStories(contents, saveStories, writeLog) {
             columnsToAppendToStoryText = questionnaire.import_columnsToAppendToStoryText.split("\n");
         }
 
+        // get list of things to write before appended texts
+        var textsToWriteBeforeAppendedColumns = [];
+        if (questionnaire.import_textsToWriteBeforeAppendedColumns) {
+            textsToWriteBeforeAppendedColumns = questionnaire.import_textsToWriteBeforeAppendedColumns.split("\n")
+        }
+
         // get list of columns to ignore completely
         var columnsToIgnore = [];
         if (questionnaire.import_columnsToIgnore) {
@@ -282,8 +288,13 @@ function processCSVContentsForStories(contents, saveStories, writeLog) {
 
             // column is one of additional text columns to be appended to story text (must be to the right of story text in data file)
             } else if (columnsToAppendToStoryText.indexOf(headerName) >= 0) {
-                newItem["Story text"] = newItem["Story text"] + " ---- " + value;
-                log("LOG||Text for column " + headerName + " (" + shortenTextIfNecessary(value) + ") added to story text.");
+                var indexOfColumnInList = columnsToAppendToStoryText.indexOf(headerName);
+                var textBefore = " --- ";
+                if (textsToWriteBeforeAppendedColumns.length > indexOfColumnInList && textsToWriteBeforeAppendedColumns[indexOfColumnInList]) {
+                    textBefore = textsToWriteBeforeAppendedColumns[indexOfColumnInList];
+                }
+                newItem["Story text"] = newItem["Story text"] + " " + textBefore + " " + value;
+                log('LOG||Text for column [' + headerName + '] (' + shortenTextIfNecessary(value) + ') added to story text, with "' + textBefore + '" before it.');
 
             // column is eliciting question chosen
             } else if (headerName === questionnaire.import_elicitingQuestionColumnName) {
@@ -901,7 +912,8 @@ function processCSVContentsForQuestionnaire(contents) {
         import_storyTextColumnName: "Story text",
         import_participantIDColumnName: "Participant ID",
         import_columnsToIgnore: [],
-        import_columnsToAppendToStoryText: [],
+        import_columnsToAppendToStoryText: "",
+        import_textsToWriteBeforeAppendedColumns: "",
         import_minWordsToIncludeStory: "0",
         import_stringsToRemoveFromHeaders: "",
 
@@ -1140,9 +1152,25 @@ function processCSVContentsForQuestionnaire(contents) {
                     template.import_columnsToIgnore = answersAsLines;
                     project.tripleStore.addTriple(template.id, "questionForm_import_columnsToIgnore", answersAsLines);
                 } else if (type === "Data columns to append to story text") {
-                    var answersAsLines = item["Answers"].join("\n");
-                    template.import_columnsToAppendToStoryText = answersAsLines;
-                    project.tripleStore.addTriple(template.id, "questionForm_import_columnsToAppendToStoryText", answersAsLines);
+                    var columnsToAppend = [];
+                    var textsBeforeColumns = [];
+                    item["Answers"].forEach(function (answer) {
+                        var sections = answer.split("|");
+                        if (sections.length > 0) {
+                            columnsToAppend.push(sections[0]);
+                        }
+                        if (sections.length > 1) {
+                            textsBeforeColumns.push(sections[1]);
+                        } 
+                    });
+                    var columnsAsLines = columnsToAppend.join("\n");
+                    template.import_columnsToAppendToStoryText = columnsAsLines;
+                    project.tripleStore.addTriple(template.id, "questionForm_import_columnsToAppendToStoryText", columnsAsLines);
+                    if (textsBeforeColumns) {
+                        var textsAsLines = textsBeforeColumns.join("\n");
+                        template.import_textsToWriteBeforeAppendedColumns = textsAsLines;
+                        project.tripleStore.addTriple(template.id, "questionForm_import_textsToWriteBeforeAppendedColumns", textsBeforeColumns);
+                    }
                 } else if (type === "Minimum words to include story") {
                     var minWords = parseInt(text);
                     if (isNaN(minWords)) {
@@ -1700,11 +1728,19 @@ export function exportQuestionnaireForImport() { // to preserve import options f
     
     if (questionnaire.import_columnsToAppendToStoryText) {
         var columnsToAppendOutputLine = ["", "Data columns to append to story text", "import", "", ""];
-        var columnList = questionnaire.import_columnsToAppendToStoryText.split("\n");
-        if (columnList) {
-            columnList.forEach(function(item) {
-                columnsToAppendOutputLine.push(item);
-            });
+        var columnsToAppend = questionnaire.import_columnsToAppendToStoryText.split("\n");
+        if (columnsToAppend) {
+            var textsBeforeColumns = [];
+            if (questionnaire.import_textsToWriteBeforeColumns) {
+                textsBeforeColumns = questionnaire.import_textsToWriteBeforeAppendedColumns.split("\n");
+            }
+            for (var i = 0; i < columnsToAppend.length; i++) {
+                var textToWrite = columnsToAppend[i];
+                if (textsBeforeColumns) {
+                    textToWrite += "|" + textsBeforeColumns[i];
+                }
+            columnsToAppendOutputLine.push(textToWrite);
+            }
         }
         addOutputLine(columnsToAppendOutputLine);
     }

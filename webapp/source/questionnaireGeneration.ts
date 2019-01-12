@@ -272,7 +272,8 @@ export function buildQuestionnaireFromTemplate(storyFormTemplate: string, shortN
         import_storyTextColumnName: "Story text",
         import_participantIDColumnName: "Participant ID",
         import_columnsToIgnore: [],
-        import_columnsToAppendToStoryText: [],
+        import_columnsToAppendToStoryText: "",
+        import_textsToWriteBeforeAppendedColumns: "",
         import_elicitingQuestionColumnName: "Eliciting question",
         import_minWordsToIncludeStory: "",
         import_stringsToRemoveFromHeaders: "",
@@ -329,6 +330,7 @@ export function buildQuestionnaireFromTemplate(storyFormTemplate: string, shortN
     storyForm.import_participantIDColumnName = project.tripleStore.queryLatestC(storyFormTemplate, "questionForm_import_participantIDColumnName"); 
     storyForm.import_columnsToIgnore = project.tripleStore.queryLatestC(storyFormTemplate, "questionForm_import_columnsToIgnore"); 
     storyForm.import_columnsToAppendToStoryText = project.tripleStore.queryLatestC(storyFormTemplate, "questionForm_import_columnsToAppendToStoryText"); 
+    storyForm.import_textsToWriteBeforeAppendedColumns = project.tripleStore.queryLatestC(storyFormTemplate, "questionForm_import_textsToWriteBeforeAppendedColumns"); 
     
     storyForm.chooseQuestionText = project.tripleStore.queryLatestC(storyFormTemplate, "questionForm_chooseQuestionText");
     storyForm.elicitingQuestionGraphName = project.tripleStore.queryLatestC(storyFormTemplate, "questionForm_elicitingQuestionGraphName");

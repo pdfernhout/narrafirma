@@ -699,6 +699,22 @@ In our example data file, the "Needed" question is of this type:</p>
         to be included in the story text itself, instead of in a separate question. Use this box to tell NarraFirma the names of column
         header to append to the story text. Make sure you copy the column headers <i>exactly</i> as they are in your data file, and place one per line in the text box.
         Also, these additional columns must be located <i>to the right</i> of the story text in your data file.
+        Note that this option <i>changes the story text</i> during import. You can't take appended texts back out of the story after import.
+    </td>
+    </tr>
+
+    <tr>
+    <td>If you entered columns to append to story texts above, enter <strong>introductory texts</strong> to be written before each appended text.</td>
+    <td>This list controls what is written in front of each piece of text appended to the story, to introduce it.
+        For example, if you asked people for more information about a particular aspect of their story, 
+        you might want to explain that in your story cards. 
+        The line order here must match exactly the line order in the question above it. 
+        All entries will have spaces placed before and after them, so "[more]" will print as " [more] ".
+        If you don't want to specify introductory texts, leave this box blank, and answers will be preceded by " --- ". 
+        Or, if you don't like that way of separating stories, enter anything else here and it will be used as a separator;
+        but you must include an entry for each appended column of text. So if, for example, you wanted to
+        introduce each of your three appended columns with a fancy unicode separator, 
+        you would need to enter it in this list three times, on three separate lines.
     </td>
     </tr>
         
@@ -1780,14 +1796,35 @@ This question type is just like the "Single choice indexed" question type, excep
             <td>import</td>
             <td></td>
             <td></td>
-            <td>More about the story</td>
-            <td>Advice to people who have stories like this one</td>
+            <td>More|[More about the story]</td>
+            <td>Advice|[Advice to people who have stories like this one]</td>
         </tr>
     </table>
 
 <p>In that example, two additional questions ("Would you like to say more about the story you told?" and "What advice do you have for people
     in similar situations?") are enough about the story that you want them to be merged with it. They will not be considered
     separate questions, but parts of the story text. 
+</p>
+
+<p>
+    Optionally, you can specify introductory texts to write <i>before</i> each additional answer. 
+    Do this by adding a pipe character (|), followed by the introductory text, to the column name.
+    In the example here, a story might read something like this:
+</p>
+
+<quote>
+            I went to the doctor's office this morning, and they kept me waiting for half an hour,
+            and then when I got in there, the doctor said I didn't need to come in at all, I could
+            have got the help I needed over the phone. Why didn't they tell me that up front?
+            [More about the story] Well, I just wish they had some way of, you know, finding out what you need
+            up front, so everybody doesn't have to wait every time. [Advice to people who have stories like this one] I guess get ready
+            to wait, because probably there's nothing anybody can do about it.
+</quote>
+
+<p>If you don't specify introductory texts, all appended texts will have " --- " in front of them.
+    Note that introductory texts will be surrounded by one space on each side. So if you have
+    "Advice|Advice to other parents" your story will actually include the introductory text 
+    " Advice to other parents ".
 </p>
 
 <h3>You have a lot of incomplete survey results you want to ignore.</h3>

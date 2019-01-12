@@ -370,6 +370,14 @@ var panel: Panel = {
             displayPrompt: "If you want to <strong>append additional text columns to your story text</strong>, enter the column names here, one per line. (See the help system for more details.)"
         },
         {
+            id: "questionForm_import_textsToWriteBeforeAppendedColumns",
+            valueType: "string",
+            displayType: "textarea",
+            displayName: "Texts in front of columns to append to story text",
+            displayPrompt: 'If you entered columns to append to story texts above, enter <strong>introductory texts</strong> to be written before each appended text. (If this box is left blank, the separator " --- " will be used.)'
+        },
+
+        {
             id: "questionForm_import_elicitingQuestionColumnName",
             valueType: "string",
             displayType: "text",
