@@ -387,13 +387,14 @@ export class StoryBrowser {
         
         var elicitingQuestion = this.project.elicitingQuestionForStoryCollection(this.storyCollectionIdentifier);
         var numStoriesToldQuestions = this.project.numStoriesToldQuestionForStoryCollection(this.storyCollectionIdentifier);
+        var storyLengthQuestions = this.project.storyLengthQuestionForStoryCollection(this.storyCollectionIdentifier);
 
         var storyQuestions = this.project.storyQuestionsForStoryCollection(this.storyCollectionIdentifier);
         var participantQuestions = this.project.participantQuestionsForStoryCollection(this.storyCollectionIdentifier);
         // annotations are not per collection/questionnaire
         var annotationQuestions = questionnaireGeneration.convertEditorQuestions(this.project.collectAllAnnotationQuestions(), "A_");
         
-        this.questions = this.questions.concat(storyNameAndTextQuestions, [elicitingQuestion], annotationQuestions, storyQuestions, participantQuestions, numStoriesToldQuestions);
+        this.questions = this.questions.concat(storyNameAndTextQuestions, [elicitingQuestion], annotationQuestions, storyQuestions, participantQuestions, numStoriesToldQuestions, storyLengthQuestions);
 
         this.choices = surveyCollection.optionsForAllQuestions(this.questions);
         this.allStories = surveyCollection.getStoriesForStoryCollection(storyCollectionIdentifier, true);

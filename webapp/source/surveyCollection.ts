@@ -57,6 +57,15 @@ export class Story {
     numStoriesTold(newValue = undefined) {
         return this.fieldValue("numStoriesTold", newValue);
     }
+
+    storyLength() {
+        const storyText = this.fieldValue("storyText");
+        if (storyText) {
+            return storyText.length;
+        } else {
+            return 0;
+        }
+    }
     
     fieldValue(fieldName, newValue = undefined) {
         if (newValue === undefined) {
@@ -85,6 +94,7 @@ export function getStoriesForStoryCollection(storyCollectionIdentifier, includeI
             for (var storyIndex in stories) {
                 // calculate derived count of number of stories told in each survey session (to be shown in graphs)
                 stories[storyIndex].numStoriesTold = "" + stories.length;
+                stories[storyIndex].storyLength = "" + stories[storyIndex].length;
                 // Make a copy of the story so as not to modify original in message
                 var story = JSON.parse(JSON.stringify(stories[storyIndex]));
                 

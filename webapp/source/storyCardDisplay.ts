@@ -208,6 +208,7 @@ export function generateStoryCardContent(storyModel, questionsToInclude, options
     // Encode all user-supplied text to ensure it does not create HTML issues
     var elicitingQuestion = storyModel.elicitingQuestion();
     var numStoriesTold = storyModel.numStoriesTold();
+    var storyLength = storyModel.storyLength();
     var storyName = storyModel.storyName();
 
     var storyText = storyModel.storyText();
@@ -308,7 +309,7 @@ export function generateStoryCardContent(storyModel, questionsToInclude, options
         textForElicitingQuestion = m(
             ".narrafirma-story-card-eliciting-question", 
             [wrap("span", "narrafirma-story-card-eliciting-question-name", "Eliciting question: "), 
-            elicitingQuestion, m("br")]);
+            elicitingQuestion]);
     }
     
     var textForNumStoriesTold: any = [];
@@ -317,7 +318,16 @@ export function generateStoryCardContent(storyModel, questionsToInclude, options
         textForNumStoriesTold = m(
             ".narrafirma-story-card-num-stories-question", 
             [wrap("span", "narrafirma-story-card-num-stories-question-name", "Number of stories told by this participant: "), 
-            numStoriesTold, m("br")]);
+            numStoriesTold]);
+    }
+
+    var textForStoryLength: any = [];
+    // if questionsToInclude is unspecified, it is not being called in the "print story cards" page, so include this
+    if (!questionsToInclude || Object.keys(questionsToInclude).indexOf("storyLength") >= 0) {
+        textForStoryLength = m(
+            ".narrafirma-story-card-story-length-question", 
+            [wrap("span", "narrafirma-story-card-story-length-question-name", "Story length: "), 
+            storyLength, " characters", m("br")]);
     }
     
     var storyTextAtTop: any = [];
@@ -341,6 +351,7 @@ export function generateStoryCardContent(storyModel, questionsToInclude, options
         storyTextAtBottom,
         textForElicitingQuestion,
         textForNumStoriesTold,
+        textForStoryLength,
         m("hr.narrafirma-story-card-divider")
     ]);
     

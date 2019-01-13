@@ -180,7 +180,21 @@ var panel: Panel = {
                 return !!Globals.clientState().catalysisReportIdentifier();
             }
 
-        },        {
+        },  
+        {
+            id: "configureCatalysisReport_maxStoryLengthToShow",
+            valuePath: "/clientState/catalysisReportIdentifier/maxStoryLengthToShow",
+            valueType: "string",
+            valueOptions: ["500", "600", "700", "800", "900", "1000", "1500", "2000", "2500", "3000", "3500", "4000", "4500", "5000", "6000", "7000", "8000", "9000", "10000"],
+            displayType: "select",
+            displayName: "Maximum story length to show",
+            displayPrompt: `In the <strong>story length graph</strong>, above what character length do you want to lump all remaining stories into the last bin?`,
+            displayVisible: function(panelBuilder, model) {
+                return !!Globals.clientState().catalysisReportIdentifier();
+            }
+
+        },      
+        {
             id: "configureCatalysisReport_numHistogramBins",
             valuePath: "/clientState/catalysisReportIdentifier/numHistogramBins",
             valueType: "string",

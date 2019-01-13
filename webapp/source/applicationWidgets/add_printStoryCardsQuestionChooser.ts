@@ -56,6 +56,15 @@ function add_printStoryCardsQuestionChooser(panelBuilder: PanelBuilder, model, f
             m("br")
         ]);
     }
+
+    function buildQuestionCheckboxSpecialForStoryLength(): any {
+        var id = "storyLength";
+        return m("div", [
+            m("input[type=checkbox]", {id: id, checked: isChecked(id), onchange: function(event) { isChecked(id, event.target.checked); }}),
+            m("label", {"for": id}, "Story length"),
+            m("br")
+        ]);
+    }
     
     function selectAll() {
         var map = {};
@@ -72,6 +81,7 @@ function add_printStoryCardsQuestionChooser(panelBuilder: PanelBuilder, model, f
             map["A_" + question.displayName] = true;
         });
         map["numStoriesTold"] = true;
+        map["storyLength"] = true;
         storageFunction(map);
     }
     
@@ -191,6 +201,7 @@ function add_printStoryCardsQuestionChooser(panelBuilder: PanelBuilder, model, f
                 return buildQuestionCheckboxSpecialForElicitingQuestion();
             }),
             buildQuestionCheckboxSpecialForNumStoriesTold(),
+            buildQuestionCheckboxSpecialForStoryLength(),
             m("br"),
         ]),
     m("br"),

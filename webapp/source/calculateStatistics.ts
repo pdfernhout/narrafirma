@@ -58,13 +58,37 @@ function collectDataForField(stories: surveyCollection.Story[], fieldName, conve
     return result;
 }
 
+function getStoryLengthValue(story, question) {
+    var value = story.storyLength();
+    if (value == 0) {
+        return unansweredKey;
+    } else {
+        var result = null;
+        for (var i = 0; i < question.valueOptions.length; i++) {
+            const optionAsInt = parseInt(question.valueOptions[i]);
+            if (value <= optionAsInt) {
+                result = question.valueOptions[i];
+                break;
+            }
+        }
+        if (!result) result = question.valueOptions[question.valueOptions.length-1];
+        return result;
+    }
+}
+
 function isValidNumber(value) {
     return value !== "" && !isNaN(value);
 }
 
-function correctForUnanswered(question, value) {
-    if (question.displayType === "checkbox" && !value) return "no";
-    if (value === undefined || value === null || value === "") return unansweredKey;
+function getChoiceValueForQuestion(question, story) {
+    var value;
+    if (question.id === "storyLength") {
+        value = getStoryLengthValue(story, question);
+    } else {
+        value = story.fieldValue(question.id);
+        if (question.displayType === "checkbox" && !value) return "no";
+        if (value === undefined || value === null || value === "") return unansweredKey;
+    }
     return value;
 }
 var unansweredKey = "No answer";
@@ -81,7 +105,7 @@ function collectXYDataForFields(stories: surveyCollection.Story[], xFieldName, y
 
         if (!isValidNumber(xValue) || !isValidNumber(yValue)) {
             if (choiceQuestion) {
-                var choiceValue = correctForUnanswered(choiceQuestion, stories[i].fieldValue(choiceQuestion.id));
+                var choiceValue = getChoiceValueForQuestion(choiceQuestion, stories[i]);
                 skip = false;
                 if (choiceQuestion.displayType === "checkboxes") {
                     if (!choiceValue[option]) skip = true;
@@ -99,7 +123,7 @@ function collectXYDataForFields(stories: surveyCollection.Story[], xFieldName, y
 
         if (choiceQuestion) {
             // Only count results where the choice matches
-            var choiceValue = correctForUnanswered(choiceQuestion, stories[i].fieldValue(choiceQuestion.id));
+            var choiceValue = getChoiceValueForQuestion(choiceQuestion, stories[i]);
             skip = false;
             if (choiceQuestion.displayType === "checkboxes") {
                 if (!choiceValue[option]) skip = true;
@@ -121,14 +145,19 @@ function addValue(arrayHolder, fieldName, value) {
     arrayHolder[fieldName] = values;
 }
 
-function valuesForFieldChoices(stories: surveyCollection.Story[], scaleQuestionID, choiceQuestionID) {
+function valuesForFieldChoices(stories: surveyCollection.Story[], scaleQuestion, choiceQuestion) {
     // TODO: Need to add in fields that were not selected with a zero count, using definition from questionnaire
     var values = {};
     for (var i = 0; i < stories.length; i++) {
-        var scaleValue = stories[i].fieldValue(scaleQuestionID);
+        var scaleValue = stories[i].fieldValue(scaleQuestion.id);
         if (scaleValue === null || scaleValue === undefined || scaleValue === "") continue; // value1 = "{N/A}";
 
-        var choiceValue = stories[i].fieldValue(choiceQuestionID);
+        var choiceValue;
+        if (choiceQuestion.id === "storyLength") {
+            choiceValue = getStoryLengthValue(stories[i], choiceQuestion);
+        } else {
+            choiceValue = stories[i].fieldValue(choiceQuestion.id);
+        }
         if (choiceValue === null || choiceValue === undefined || scaleValue === "") continue; // value1 = "{N/A}";
 
         addValue(values, choiceValue, scaleValue);
@@ -187,9 +216,19 @@ function countsForTableChoices(stories: surveyCollection.Story[], field1, field2
     var field2Options = {};
     var total = 0;
     for (var i = 0; i < stories.length; i++) {
-        var value1 = stories[i].fieldValue(field1);
+        var value1;
+        if (field1.id === "storyLength") {
+            value1 = getStoryLengthValue(stories[i], field1);
+        } else {
+            value1 = stories[i].fieldValue(field1);
+        }
         if (value1 === null || value1 === undefined || value1 === "") continue; // value1 = "{N/A}";
-        var value2 = stories[i].fieldValue(field2);
+        var value2;
+        if (field2.id === "storyLength") {
+            value2 = getStoryLengthValue(stories[i], field2);
+        } else {
+            value2 = stories[i].fieldValue(field2);
+        }
         if (value2 === null || value2 === undefined || value2 === "") continue; // value2 = "{N/A}";
         increment(counts, valueTag(value1, value2));
         increment(field1Options, "" + value1);
@@ -263,9 +302,7 @@ export function calculateStatisticsForMultipleHistogram(ratioQuestion, nominalQu
         return {significance: "None (choices not mutually exclusive)", calculated: []};
     }
     
-    // var data = collectDataForField(stories, nominalQuestion.id);
-    // var counts = countsForFieldChoice(stories, nominalQuestion.id);
-    var values = valuesForFieldChoices(stories, ratioQuestion.id, nominalQuestion.id);
+    var values = valuesForFieldChoices(stories, ratioQuestion, nominalQuestion);
     var options = Object.keys(values);
 
     // For every pair, compute test, and take best p score
