@@ -36,14 +36,15 @@ function displayHTMLForSlider(fieldSpecification, fieldName, value, options) {
     var bucketCount = 50;
     var bucketSize = 100.0 / bucketCount;
     var placed = false;
+    var answerClass = "narrafirma-story-card-answer-for-" + replaceSpacesWithDashes(fieldName);
     if (value) {
         for (var i = 0; i < bucketCount; i++) {
             var bucketLow = i * bucketSize;
             var bucketHigh = i * bucketSize + bucketSize;
             if (!placed) {
                 if (value && ((value < bucketHigh) || (value && i === bucketCount - 1))) {
-                    sliderText.push(m("span", {"class": "narrafirma-story-card-slider-bars-before"}, sliderTextBefore));
-                    sliderText.push(m("span", {"class": "narrafirma-story-card-slider-button"}, options.sliderButtonCharacter || "|"));
+                    sliderText.push(m("span", {"class": "narrafirma-story-card-slider-bars-before " + answerClass + '-slider-bars-before'}, sliderTextBefore));
+                    sliderText.push(m("span", {"class": "narrafirma-story-card-slider-button " + answerClass + "-slider-button"}, options.sliderButtonCharacter || "|"));
                     placed = true;
                 } else {
                     sliderTextBefore += options.beforeSliderCharacter || "-";
@@ -53,11 +54,11 @@ function displayHTMLForSlider(fieldSpecification, fieldName, value, options) {
                 //sliderText.push("-");
             }
         }
-        sliderText.push(m("span", {"class": "narrafirma-story-card-slider-bars-after"}, sliderTextAfter));
+        sliderText.push(m("span", {"class": "narrafirma-story-card-slider-bars-after " + answerClass + "-slider-bars-after"}, sliderTextAfter));
     } else {
         // no answer
         sliderTextAfter = new Array(bucketCount + 1).join(options.noAnswerSliderCharacter || "-");
-        sliderText.push(m("span", {"class": "narrafirma-story-card-slider-bars-no-answer"}, sliderTextAfter));
+        sliderText.push(m("span", {"class": "narrafirma-story-card-slider-bars-no-answer " + answerClass + "-slider-bars-no-answer"}, sliderTextAfter));
     }
     return m("tr", [
         wrap("td", "narrafirma-story-card-slider-name", m("span", {"class": "narrafirma-story-card-field-name-" + replaceSpacesWithDashes(fieldName)}, fieldName)),
