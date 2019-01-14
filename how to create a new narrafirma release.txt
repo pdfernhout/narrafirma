@@ -1,0 +1,241 @@
+How to Create a New NarraFirma Release
+
+Note: These are my instructions to myself (Cynthia Kurtz) on how to do this. 
+They refer to the conditions and locations I am working with.
+They might not be exactly the same for you. Still, I have checked
+them in to the GitHub repository so as to keep them safe for me
+and available for others to learn from (in case they ever work on
+NarraFirma in the future).
+
+====================================================================
+A. Update version numbers
+====================================================================
+
+In Visual Studio Code (VSC), search on the old version number in all files (*.*) and
+replace the old with the new version number. Make sure it is changed in
+narrafirma.php and package.JSON.
+
+====================================================================
+B. Update to-do list
+====================================================================
+
+Make sure TODO.txt is up to date with new version number. Make sure to-do items
+under new version number match commits made since last version.
+
+====================================================================
+C. Update WP readme
+====================================================================
+
+Open readme.txt in wordpress-plugin > narrafirma folder and:
+
+C1. Make new version number section in "changelog". Copy section of TODO done
+things there (or rewrite more nicely).
+
+C2. Add new section in "Upgrade Notice" section. Say why people should upgrade.
+
+C3. Update the Version number at the top of the file.
+
+C4. Update the "Tested up to" (WordPress version) if needed.
+
+Check in these changes to Github.
+
+====================================================================
+D. Remove .DS_Store files
+====================================================================
+
+D1. In the Visual Studio Code terminal, type
+
+    find . | grep .DS_Store
+
+You will see a list of all the .DS_Store files.
+
+D2. Type
+
+    find . -name ".DS_Store" -type f -delete
+
+This will delete all of the .DS_Store files. (Then do the first find command
+again to make sure they are gone.)
+
+You don't have to do this every time you rebuild the WP plugin, just the LAST
+time you build it before the release. If you are still testing you can leave
+this step out. But MAKE SURE YOU DO THIS before you build the FINAL distribution
+copy of the plugin zip.
+
+====================================================================
+E. Build WP version
+====================================================================
+
+Open a terminal. CD to the NarraFirma project's top-level directory. Type:
+
+    npm run build-wp
+
+====================================================================
+F. Test WP version
+====================================================================
+
+Test the WordPress zip file by loading it onto your local WordPress
+installation.
+
+F1. Open the Bitnami Wordpress Stack application (icon is a gear with
+manager-osx)
+
+F2. In the Bitnami app, click "Manage Servers" then start MySQL and Apache Web
+Server.
+
+F3. In a browser go to localhost:8082/wordpress. You may need to temporarily
+turn off the node.js server if you are running it on the same port. (The port is
+set in the Bitnami Wordpress Stack application, under "Configure" for the Apache
+server.)
+
+F4. Login to WordPress (Firefox has the password). In the WordPress dashboard,
+deactivate and delete the old version of the NarraFirma plugin.
+
+F5. Load the new plugin version
+(cfkurtz/Workspace/NarraCoachProject/distribution/narrafirma.zip) and test that
+it works.
+
+Keep building and testing the plugin until you are sure the new version works
+correctly. Remember to remove the .DS_Store files when you are done testing and
+are ready to finalize the last zip file for the version.
+
+====================================================================
+G. Create GitHub tag
+====================================================================
+
+G1. In the VSC terminal, type
+
+    git tag
+
+This will show you all the previous tags.
+
+G2. Create a git tag, with a command like this:
+
+    git tag vX.X.X
+
+where X.X.X is the release number.
+
+G3. Push the tag up to the server. Type
+
+    git push origin vX.X.X
+
+(If you make a mistake and set the tag before you finish committing your
+changes, do:
+    git push --delete origin vX.X.X
+and
+    git tag --delete vX.X.X
+
+then commit your changes, and do steps G2 and G3 again.)
+
+====================================================================
+H. Create Github release
+====================================================================
+
+H1. Go to the Github site. THIS MUST BE DONE FROM CHROME, NOT FIREFOX. Click on
+Releases. Then click "Draft a new release".
+
+H2. Choose the version tag you already pushed from the drop-down list (vX.X.X).
+Then give the release the title "NarraFirma vX.X.X"
+
+H3. Describe the version. At the end of the text field, paste this text:
+----------------------------------------------------------
+**To use the WordPress version of NarraFirma**, first download the zip file
+(narrafirma-wordpress-plugin-vX.X.X.zip) from the link you see above. Then
+upload the zip file into the plugins section of a running WordPress
+installation. _Caution! Don't mix up the WordPress zip file
+(narrafirma-wordpress-plugin-vX.X.X.zip) with the source code file
+(narrafirma.zip)._
+
+For more installation instructions, go to
+[https://narrafirma.com/home/setting-up-narrafirma](https://narrafirma.com/home/
+setting-up-narrafirma).
+----------------------------------------------------------
+(replace X.X.X with the new version number!!!! TWICE!!!)
+
+H4. While the release is still a draft, click "Attach binaries by dropping them
+here or selecting them". Pick the "narrafirma.zip" file in the distribution
+folder. DO NOT RENAME THE ZIP FILE LOCALLY. Upload it.
+
+H5. Rename the file after uploading it, on Github, to
+narrafirma-wordpress-plugin-vX.X.X.zip.
+
+H6. Click "Publish release." Check that it looks okay.
+
+====================================================================
+I. Update WP SVN repository
+====================================================================
+
+I1. In VSC, do File-New Window. If "narrafirma-wp" is not in the Recent section,
+click "Open folder" and choose "narrafirma-wp".
+
+(If the "narrafirma-wp" folder doesn't exist, go to the Workspace folder (in the
+terminal) and type "svn co http://plugins.svn.wordpress.org/narrafirma/". ("co"
+means "checkout") It will not create a folder called "narrafirma-wp" so you need
+to rename the folder so it says that. It may destroy any existing folder called
+"narrafirma" so if you have one you will need to rename it first so it doesn't
+get overwritten.)
+
+I2. Open the terminal view in that VSC window (on narrafirma-wp). Type
+
+    svn status
+
+to make sure the code there is up to date with the WordPress svn repository. If
+there is no response to the command, it is up to date.
+
+If (and only if) it says there are any changes to the svn repository, type
+
+    svn update
+
+(If any new files have been added, you must do a
+
+    svn add
+
+for the new file. Any new file added to the project has to be handled
+this way.)
+
+I3. In the Finder, go to NarraFirma/wordpress plugin/release zips and unzip the
+generated WordPress zip file
+(cfkurtz/Workspace/NarraCoachProject/distribution/narrafirma.zip) there. (This
+is temporary. You can delete it later.)
+
+I4. Copy the unzipped folder's contents (BUT NOT the "assets" folder) to
+cfkurtz/Workspace/narrafirma-wp/trunk. Choose "Replace" so all files are
+replaced with new versions.
+
+I5. Go back to the terminal view in VSC (looking at narrafirma-wp) and remove
+all .DS_Store files from the narrafirma-wp folder. Type
+
+    find . -name ".DS_Store" -type f -delete
+
+Make sure you do not have the folder open in Finder while you are doing this,
+because it will make new .DS_Store files.
+
+I6. Still in the VSC terminal (looking at narrafirma-wp), type
+
+    svn status
+
+to see the changes created by the file replacements.
+
+I7. Still in the VSC terminal (looking at narrafirma-wp), type:
+
+    svn cp trunk tags/X.X.X
+
+I8. Still in the VSC terminal (looking at narrafirma-wp), type:
+
+    svn commit --message "Version X.X.X"
+
+I9. If svn asks for the password, look in your emails for (the exact text)
+"Wordpress.org forums: password" to find the right username and password to use.
+
+====================================================================
+J. Final check and announcement
+====================================================================
+
+J1. Check that the release has shown up on
+
+    https://wordpress.org/plugins/narrafirma/
+
+J2. Update the plugin (example installation) on narrafirma.com to test that the
+update notice comes out all right and there are no problems updating.
+
+J3. Write a release blog post for NarraFirma web site. Can copy writing from
+GitHub release.
