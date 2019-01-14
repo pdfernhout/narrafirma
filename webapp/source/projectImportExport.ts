@@ -337,8 +337,8 @@ export function exportEntireProject() {
 function exportProjectCurrentState(includeSurveyResults) {
     // TODO: Translate
     var promptMessage = includeSurveyResults ?
-        "Export project snapshot with stories?" :
-        "Export project snapshot without stories?";
+        "Are you sure you want to export a project snapshot with stories?" :
+        "Are you sure you want to export a project snapshot without stories?";
     if (!confirm(promptMessage)) return;
     
     var project = Globals.project();
