@@ -7,9 +7,9 @@ Author URI: http://www.cfkurtz.com
 Author: Cynthia Kurtz and Paul Fernhout
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=DGVVDT2D49QA8
 Requires at least: 4.3.1
-Tested up to: 4.9.2
+Tested up to: 5.0.3
 Stable tag: trunk
-Version: 1.1.0
+Version: 1.2.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -81,19 +81,14 @@ To install NarraFirma:
 Take a look at the book behind NarraFirma, [Working with Stories in Your Community Or Organization: 
 Participatory Narrative Inquiry](http://www.workingwithstories.org)
 
-= Does NarraFirma work for other kinds of surveys and projects? =
+= What should I do if I find a bug? =
 
-NarraFirma is meant to work mainly with participatory narrative inquiry. But if you want to collect 
-stories for some other reason, you could still use NarraFirma for that. It's pretty flexible.
+Tell us about it on the [GitHub issues list](https://github.com/pdfernhout/narrafirma/issues).
 
 = What about web security? =
 
 We strongly suggest that you set up any web site on which you intend to install NarraFirma 
 with SSL (secure sockets). Your hosting provider should be able to help you do that.
-
-= What should I do if I find a bug? =
-
-Tell us about it on the [GitHub issues list](https://github.com/pdfernhout/narrafirma/issues).
 
 == Screenshots ==
 
@@ -146,6 +141,52 @@ interventions.
 and to keep good records for the future.
 
 == Changelog ==
+
+= 1.2.0 =
+
+Added: Many new import options to accommodate/manage/massage CSV data files from a variety of surveying systems
+Added: Detailed guide to importing data
+Added: All CSV import options are now specifiable in NarraFirma itself (instead of only through a specification file)
+Added: Data consolidation (lumping together similar answers) using CSV import 
+Added: Pre-import data check to verify CSV data integrity before actually adding stories to project
+
+Added: New graph type - choice by choice by scale, or a contingency table with little pseudo-histogram boxes
+Added: Added story length question (generated) to graphs
+Added: Table of links in catalysis report to observations and interpretations for each perspective (sorted by strength)
+Added: Filter to limit catalysis report to subset of stories based on answer(s) to question
+Added: Option to print catalysis report with observations only (for group catalysis workshop) and with only particular strengths
+Added: Option to hide graphs with few stories (applies to multiple histograms/scatterplots on Explore patterns page and catalysis report)
+Added: Ability to save catalysis report graphs in SVG format rather than PNG (better resolution and can be styled with CSS)
+Added: Ability to refer to portion of observation name as well as text using @header@ system 
+Added: Button on Explore patterns page to show stories selected in graph (for copying)
+Added: CSS classes for named elements in catalysis reports (to style particular perspectives, observations, and interpretations)
+
+Added: Filter to limit story cards to subset of stories based on answer(s) to question
+Added: Choice of question sort order when printing story cards: alphabetically or in story form order, with scales separate or mixed in
+Added: Option to truncate very long stories when printing story cards
+Added: CSS classes to style particular question names and answers in story cards 
+
+Added: "Quick links" on home page to access elements of projects (questions, forms, reports, etc)
+Added: Method to reset (empty out) project, removing "hidden" stories connected to deleted story collections (project admin only)
+Added: Button to display names of deleted story collections (so you can get them back again, or avoid doing so)
+Added: Method to archive (hide) old projects (site admin only)
+
+Changed: Moved around some buttons and pages in Collection to make it more clear how/where to import and export data
+Changed: Improved names of graph types on configure catalysis report page (to make it clear why would want each one)
+Changed: Project import now requires administrator permission (so does new reset function)
+Changed: Project import now warns user if there is data in the project (questions, forms, collections, reports)
+Changed: Link to site administration page (formerly called "Administration tool") is now visible only to site administrator (and is now on Home page)
+Changed: Improved design, organization, explanations of site administration pages in both node.js and WordPress versions
+Changed: Improved layout of catalysis report pages for multi-graph results
+Changed: Stress tested with 13K stories; works fine, though slowly (may need increased memory setting at these numbers)
+
+Fixed: Bug where "admin" project permission was not being set properly in node.js version (but it was not being used for anything)
+Fixed: Bug where creating new project with long name in WordPress version caused 500 server error (now name length is restricted to <= 20 characters)
+Fixed: Bug that caused spurious error messages during report generation
+Fixed: Bug that caused spurious error messages about missing IDs when creating story forms
+Fixed: Bug in bar graphs for boolean questions ("no" was being counted as a non-answer)
+Fixed: Bad handling of missing/empty custom CSS in imported story form file
+Fixed: Navigate-in-page "name" anchors changed to "id" anchors (because "name" anchors are deprecated in HTML 5)
 
 = 1.1.0 =
 
@@ -264,6 +305,10 @@ loading application, getting user information, or retrieving project data.
 change logs, see the [GitHub repository](https://github.com/pdfernhout/narrafirma).
 
 == Upgrade Notice ==
+
+= 1.2.0 =
+This higly recommended upgrade improves catalysis reports and story cards,
+and provides many more import options. It also includes many usability improvements and small bug fixes. 
 
 = 1.1.0 = 
 This upgrade adds two new ways to get your data out of NarraFirma: in the survey, a summary of submitted stories participants can copy and keep;

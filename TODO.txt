@@ -145,7 +145,9 @@ M When import story form, hundreds of triples can be generated which take minute
 --- Release 1.2.0
 
 NEW FEATURES
+DONE New graph type - choice by choice by scale, or a contingency table with little pseudo-histogram boxes
 DONE Added "filter" to create catalysis report and story cards using subset of stories based on answer(s) to question
+DONE Added story length generated question
 DONE Added option to print catalysis report with observations only (for group catalysis workshop) and with only particular strengths
 DONE Improved catalysis report with links to observations as well as interpretations for each perspective (sorted by strength)
 DONE Added method to reset (empty) project and clear out old data to reduce size loaded into memory (important when importing data)
@@ -159,6 +161,7 @@ DONE Import: Added options to append "more detail" text fields to story and igno
 DONE Import: Wrote detailed "import guide" to help make data import process easier
 
 SMALL ENHANCEMENTS
+DONE Improved names of graph types on configure catalysis report page (to make it clear why would want each one)
 DONE Renamed pages in Collection section with Import buttons to make it more obvious how to import data
 DONE Moved export buttons to their own page in story collection
 DONE Added ability to refer to portion of observation name as well as text using @header@ system (see help)
