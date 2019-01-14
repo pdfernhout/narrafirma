@@ -480,15 +480,21 @@ function htmlForLabelAndValue(key, object) {
         }
     } else if (["n", "n1", "n2", "k", unansweredKey].indexOf(key) >= 0) { // these are all integers
         value = value.toFixed(0); 
-    } else {
-        if (key === "p" && value < 0.001) {
-            value = "<0.001";
+    } else if (key === "p") { // significance
+        if (value < 0.0001) {
+            value = "<0.0001";
         } else {
             if (isNaN(value)) {
                 value = "NaN"
             } else {
-                value = value.toFixed(3);
+                value = value.toFixed(4);
             }
+        }
+    } else { // other non-integer values
+        if (isNaN(value)) {
+            value = "NaN"
+        } else {
+            value = value.toFixed(4);
         }
     }
     var keyToReport = key;
@@ -517,7 +523,7 @@ function htmlForLabelAndValue(key, object) {
     return '<span class="statistics-name">' + keyToReport + '</span>: <span class="statistics-value">' + value + "</span>";
 }
 
-function addStatisticsPanelForChart(chartPane: HTMLElement, statistics, chartSize) {
+function addStatisticsPanelForChart(chartPane: HTMLElement, statistics, chartTitle, chartSize) {
     var statsPane = document.createElement("div");
     var html = "";
     if (statistics.significance.substring("None") === 0 || statistics.calculated.length !== 0) {
@@ -525,7 +531,8 @@ function addStatisticsPanelForChart(chartPane: HTMLElement, statistics, chartSiz
             html += "Statistics: " + statistics.significance;
         } 
         if (statistics.allResults) {
-            html += '<span class="narrafirma-mann-whitney-title">Mann-Whitney U test results for multiple histograms, sorted by significance value (p)</span><br>\n';
+            html += '<span class="narrafirma-mann-whitney-title">Mann-Whitney U test results for multiple histograms, sorted by significance value (p) ' +
+                '<br>' + chartTitle + '</span><br>\n';
         }
         let delimiter;
         if (chartPane.classList.contains("smallChartStyle")) {
@@ -665,7 +672,7 @@ export function d3BarChartForValues(graphBrowserInstance: GraphHolder, plotItems
     var statistics = calculateStatistics.calculateStatisticsForBarGraphValues(function(plotItem) { return plotItem.value; });
     // don't want to show "Statistics: none" thing when in graph browser
     if (!inGraphBrowser) {
-        addStatisticsPanelForChart(chartPane, statistics, "large"); 
+        addStatisticsPanelForChart(chartPane, statistics, chartTitle, "large"); 
     }
     
     // draw the x axis
@@ -917,7 +924,7 @@ export function d3HistogramChartForValues(graphBrowserInstance: GraphHolder, plo
     
     var values = plotItems.map(function(item) { return parseFloat(item.value); });
     var statistics = calculateStatistics.calculateStatisticsForHistogramValues(values, unansweredCount);
-    addStatisticsPanelForChart(chartPane, statistics, isSmallFormat ? "small" : "large");
+    addStatisticsPanelForChart(chartPane, statistics, chartTitle, isSmallFormat ? "small" : "large");
     
     var mean = statistics.mean;
     var standardDeviation = statistics.sd;
@@ -1160,7 +1167,7 @@ export function multipleHistograms(graphBrowserInstance: GraphHolder, choiceQues
     
     // Add these statistics at the bottom after all other graphs
     var statistics = calculateStatistics.calculateStatisticsForMultipleHistogram(scaleQuestion, choiceQuestion, graphBrowserInstance.allStories, graphBrowserInstance.minimumStoryCountRequiredForTest);
-    addStatisticsPanelForChart(graphBrowserInstance.graphResultsPane, statistics, "large");
+    addStatisticsPanelForChart(graphBrowserInstance.graphResultsPane, statistics, title, "large");
   
     return charts;
 }
@@ -1229,7 +1236,7 @@ export function d3ScatterPlot(graphBrowserInstance: GraphHolder, xAxisQuestion, 
     chart.subgraphChoice = option;
 
     var statistics = calculateStatistics.calculateStatisticsForScatterPlot(xAxisQuestion, yAxisQuestion, choiceQuestion, option, stories, graphBrowserInstance.minimumStoryCountRequiredForTest);
-    addStatisticsPanelForChart(chartPane, statistics, isSmallFormat ? "small" : "large");
+    addStatisticsPanelForChart(chartPane, statistics, chartTitle, isSmallFormat ? "small" : "large");
     
     // draw the x axis
     
@@ -1597,7 +1604,7 @@ export function d3ContingencyTable(graphBrowserInstance: GraphHolder, xAxisQuest
     } else {
         statistics = calculateStatistics.calculateStatisticsForTable(xAxisQuestion, yAxisQuestion, stories, graphBrowserInstance.minimumStoryCountRequiredForTest);
     }
-    addStatisticsPanelForChart(chartPane, statistics, "large");
+    addStatisticsPanelForChart(chartPane, statistics, chartTitle, "large");
   
     // X axis and label
     
