@@ -87,11 +87,11 @@ turn off the node.js server if you are running it on the same port. (The port is
 set in the Bitnami Wordpress Stack application, under "Configure" for the Apache
 server.)
 
-F4. Login to WordPress (Firefox has the password). In the WordPress dashboard,
+F4. Login to WordPress. In the WordPress dashboard,
 deactivate and delete the old version of the NarraFirma plugin.
 
 F5. Load the new plugin version
-(cfkurtz/Workspace/NarraCoachProject/distribution/narrafirma.zip) and test that
+(Workspace/NarraCoachProject/distribution/narrafirma.zip) and test that
 it works.
 
 Keep building and testing the plugin until you are sure the new version works
@@ -194,11 +194,11 @@ this way.)
 
 I3. In the Finder, go to NarraFirma/wordpress plugin/release zips and unzip the
 generated WordPress zip file
-(cfkurtz/Workspace/NarraCoachProject/distribution/narrafirma.zip) there. (This
+(Workspace/NarraCoachProject/distribution/narrafirma.zip) there. (This
 is temporary. You can delete it later.)
 
 I4. Copy the unzipped folder's contents (BUT NOT the "assets" folder) to
-cfkurtz/Workspace/narrafirma-wp/trunk. Choose "Replace" so all files are
+Workspace/narrafirma-wp/trunk. Choose "Replace" so all files are
 replaced with new versions.
 
 I5. Go back to the terminal view in VSC (looking at narrafirma-wp) and remove
