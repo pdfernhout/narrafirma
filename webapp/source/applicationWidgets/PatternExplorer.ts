@@ -589,7 +589,7 @@ class PatternExplorer {
     buildPatternList() {
         var result = [];
         var nominalQuestions = [];
-        var ratioQuestions = [];
+        var scaleQuestions = [];
         var textQuestions = [];
 
         if (!this.questionsToInclude) return result;
@@ -598,7 +598,7 @@ class PatternExplorer {
             // Skip questions that are not included in configuration
             if (this.questionsToInclude[question.id]) {
                 if (question.displayType === "slider") {
-                    ratioQuestions.push(question);
+                    scaleQuestions.push(question);
                 } else if (question.displayType === "text" || question.displayType === "textarea") {
                     textQuestions.push(question);
                 } else if (nominalQuestionTypes.indexOf(question.displayType) !== -1)  {
@@ -613,11 +613,11 @@ class PatternExplorer {
         }
 
         if (this.graphTypesToCreate["data integrity graphs"]) {
-            result.push(this.makePattern(nextID(), "data integrity", ratioQuestions, "All scale values"));
-            result.push(this.makePattern(nextID(), "data integrity", ratioQuestions, "Participant means"));
-            result.push(this.makePattern(nextID(), "data integrity", ratioQuestions, "Participant standard deviations"));
+            result.push(this.makePattern(nextID(), "data integrity", scaleQuestions, "All scale values"));
+            result.push(this.makePattern(nextID(), "data integrity", scaleQuestions, "Participant means"));
+            result.push(this.makePattern(nextID(), "data integrity", scaleQuestions, "Participant standard deviations"));
             result.push(this.makePattern(nextID(), "data integrity", nominalQuestions, "Unanswered choice questions"));
-            result.push(this.makePattern(nextID(), "data integrity", ratioQuestions, "Unanswered scale questions"));
+            result.push(this.makePattern(nextID(), "data integrity", scaleQuestions, "Unanswered scale questions"));
         }
 
         if (this.graphTypesToCreate["texts"]) {
@@ -646,14 +646,27 @@ class PatternExplorer {
             });
         };
 
+        if (this.graphTypesToCreate["contingency-histogram tables"]) {
+            usedQuestions = [];
+            nominalQuestions.forEach((question1) => {
+                usedQuestions.push(question1);
+                nominalQuestions.forEach((question2) => {
+                    if (usedQuestions.indexOf(question2) !== -1) return;
+                    scaleQuestions.forEach((question3) => {
+                        result.push(this.makePattern(nextID(), "contingency-histogram", [question1, question2, question3], null));
+                    });
+                });
+            });
+        };
+
         if (this.graphTypesToCreate["histograms"]) {
-            ratioQuestions.forEach((question1) => {
+            scaleQuestions.forEach((question1) => {
                 result.push(this.makePattern(nextID(), "histogram", [question1], null));
             });
         };
 
         if (this.graphTypesToCreate["multiple histograms"]) {
-            ratioQuestions.forEach((question1) => {
+            scaleQuestions.forEach((question1) => {
                 nominalQuestions.forEach((question2) => {
                     result.push(this.makePattern(nextID(), "multiple histogram", [question1, question2], null));
                 });
@@ -662,9 +675,9 @@ class PatternExplorer {
 
         if (this.graphTypesToCreate["scatterplots"]) {
             usedQuestions = [];
-            ratioQuestions.forEach((question1) => {
+            scaleQuestions.forEach((question1) => {
                 usedQuestions.push(question1);
-                ratioQuestions.forEach((question2) => {
+                scaleQuestions.forEach((question2) => {
                     if (usedQuestions.indexOf(question2) !== -1) return;
                     result.push(this.makePattern(nextID(), "scatter", [question1, question2], null));
                 });
@@ -673,9 +686,9 @@ class PatternExplorer {
 
         if (this.graphTypesToCreate["multiple scatterplots"]) {
             usedQuestions = [];
-            ratioQuestions.forEach((question1) => {
+            scaleQuestions.forEach((question1) => {
                 usedQuestions.push(question1);
-                ratioQuestions.forEach((question2) => {
+                scaleQuestions.forEach((question2) => {
                     if (usedQuestions.indexOf(question2) !== -1) return;
                     nominalQuestions.forEach((question3) => {
                     result.push(this.makePattern(nextID(), "multiple scatter", [question1, question2, question3], null));
@@ -755,12 +768,16 @@ class PatternExplorer {
         var q2 = pattern.questions[1];
         var q3 = pattern.questions[2]
         var newGraph = null;
+        console.log("graphType", graphType);
         switch (graphType) {
             case "bar":
                 newGraph = charting.d3BarChartForQuestion(graphHolder, q1, selectionCallback);
                 break;
             case "table":
-                newGraph = charting.d3ContingencyTable(graphHolder, q1, q2, selectionCallback);
+                newGraph = charting.d3ContingencyTable(graphHolder, q1, q2, null, selectionCallback);
+                break;
+            case "contingency-histogram":
+                newGraph = charting.d3ContingencyTable(graphHolder, q1, q2, q3, selectionCallback);
                 break;
             case "histogram":
                 newGraph = charting.d3HistogramChartForQuestion(graphHolder, q1, null, null, selectionCallback);
@@ -794,7 +811,7 @@ class PatternExplorer {
                 alert("ERROR: Unexpected graph type");
                 break;
         }
-        
+        console.log("newGraph", newGraph);
         return newGraph;
     }
 

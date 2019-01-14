@@ -205,7 +205,7 @@ class GraphBrowser {
         if (xType === "choice" && yType === null) {
             charting.d3BarChartForQuestion(this.graphHolder, xAxisQuestion, this.storiesSelected.bind(this), true);
         } else if (xType === "choice" && yType === "choice") {
-            charting.d3ContingencyTable(this.graphHolder, xAxisQuestion, yAxisQuestion, this.storiesSelected.bind(this));
+            charting.d3ContingencyTable(this.graphHolder, xAxisQuestion, yAxisQuestion, null, this.storiesSelected.bind(this));
         } else if (xType === "choice" && yType === "scale") {
             charting.multipleHistograms(this.graphHolder, xAxisQuestion, yAxisQuestion, this.storiesSelected.bind(this));
         } else if (xType === "scale" && yType === null) {

@@ -654,16 +654,16 @@ table.filterTable td {
 }
 
 .singleChartStyle {
-    width: 700px;
+    width: 800px; /* this must match largeGraphWidth in charting.ts */ 
 }
 
 .smallChartStyle {
-    width: 200px;
+    width: 267px; /* this must match largeGraphWidth/3 in charting.ts */
     float: left;
 }
 
 .mediumChartStyle {
-    width: 400px;
+    width: 400px; /* this must match largeGraphWidth/2 in charting.ts */
     float: left;
 }
 
@@ -865,15 +865,38 @@ table.filterTable td {
 
 .narrafirma-statistics-panel-header {
 	margin: 0.5em 0 0.5em 0;
-	font-weight: 700;
+	font-weight: bold;
 }
 
 .narrafirma-statistics-panel {
     background-color: #c5d2eb;
 	padding: 0.5em;
 	margin: 0.5em;
-	font-size: 0.9em;
+    font-size: 0.9em;
 } 
+
+.narrafirma-statistics-panel-small {
+    background-color: #c5d2eb;
+	padding: 0.5em;
+	margin: 0.5em;
+    font-size: 0.9em;
+    max-width: 267px; /* this must match largeGraphWidth/3 in charting.ts */
+}
+
+.narrafirma-mann-whitney-title {
+    font-weight: bold;
+}
+
+table.narrafirma-mw-all-results {
+    margin: 0.5em;
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+
+td.narrafirma-mw-nested-title, td.narrafirma-mw-nested-stats {
+    border: 1px solid black;
+    padding: 0.25em;
+}
 
 .narrafirma-catalysis-report-title {
 	font-size: 2.5em;
@@ -1152,6 +1175,29 @@ table.filterTable td {
   stroke: black;
   stroke-dasharray: "5, 5";
   fill: none;
+}
+
+.contingencyChart .miniHistogram {
+    fill: #eff4ff;
+    stroke: black;
+    stroke-width: 1px;
+}
+
+.contingencyChart .miniHistogram.selected {
+    fill: #ffbb84;
+    stroke: black;
+    stroke-width: 1px;
+}
+
+.contingencyChart .miniHistogramMean {
+    fill: blue;
+    stroke: none;
+}
+
+.contingencyChart .miniHistogramStdDev {
+    fill: #b0d4d4; 
+    stroke: black;
+    stroke-width: 1px;
 }
 
 .contingencyChart .axis path {

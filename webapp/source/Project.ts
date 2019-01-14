@@ -33,6 +33,7 @@ class Project {
         "bar graphs": false,
         "histograms": false,
         "tables": false,
+        "contingency-histogram tables": false,
         "multiple histograms": false,
         "scatterplots": false,
         "multiple scatterplots": false

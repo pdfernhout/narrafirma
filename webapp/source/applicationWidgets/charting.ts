@@ -222,21 +222,24 @@ function createBrush(chartBody, xScale, yScale, brushendCallback) {
     return {brush: brush, brushGroup: brushGroup};
 }
 
+const largeGraphWidth = 800;
+const largeGraphHeight = 600;
+
 function makeChartFramework(chartPane: HTMLElement, chartType, size, margin) {
     var fullWidth = 0;
     var fullHeight = 0;
     if (size == "large") {
-        fullWidth = 700;
-        fullHeight = 500;
+        fullWidth = largeGraphWidth;
+        fullHeight = largeGraphHeight;
     } else if (size === "tall") {
-        fullWidth = 700;
-        fullHeight = 700;       
+        fullWidth = largeGraphWidth;
+        fullHeight = largeGraphWidth;       
     } else if (size == "small") {
-        fullWidth = 200;
-        fullHeight = 200;
+        fullWidth = largeGraphWidth / 3;
+        fullHeight = largeGraphWidth / 3;
     } else if (size == "medium") {
-        fullWidth = 400;
-        fullHeight = 400;
+        fullWidth = largeGraphWidth / 2;
+        fullHeight = largeGraphWidth / 2;
     } else {
         throw new Error("Unexpected chart size: " + size); 
     }
@@ -514,18 +517,15 @@ function htmlForLabelAndValue(key, object) {
     return '<span class="statistics-name">' + keyToReport + '</span>: <span class="statistics-value">' + value + "</span>";
 }
 
-function addStatisticsPanelForChart(chartPane: HTMLElement, statistics) {
+function addStatisticsPanelForChart(chartPane: HTMLElement, statistics, chartSize) {
     var statsPane = document.createElement("div");
     var html = "";
     if (statistics.significance.substring("None") === 0 || statistics.calculated.length !== 0) {
-        //html += '<div class="narrafirma-statistics-panel-header">Statistics</div>';
         if (statistics.calculated.length === 0) {
             html += "Statistics: " + statistics.significance;
-        } else {
-            // html += "statistics: ";
-        }
+        } 
         if (statistics.allResults) {
-            html += '<span class="narrafirma-mann-whitney-title">Mann-Whitney U test results for multiple histograms</span><br>\n';
+            html += '<span class="narrafirma-mann-whitney-title">Mann-Whitney U test results for multiple histograms, sorted by significance value (p)</span><br>\n';
         }
         let delimiter;
         if (chartPane.classList.contains("smallChartStyle")) {
@@ -562,7 +562,14 @@ function addStatisticsPanelForChart(chartPane: HTMLElement, statistics) {
             }
             html += "</table>\n";
         }
-        statsPane.className = "narrafirma-statistics-panel";
+        if (chartSize === "small") {
+            statsPane.className = "narrafirma-statistics-panel-small";
+        } else if (chartSize === "large") {
+            statsPane.className = "narrafirma-statistics-panel";
+        } else {
+            console.log("No chart size specified");
+            alert("ERROR: No chart size specified for addStatisticsPanelForChart")
+        }
     } 
     statsPane.innerHTML = html;
     chartPane.appendChild(statsPane);
@@ -658,7 +665,7 @@ export function d3BarChartForValues(graphBrowserInstance: GraphHolder, plotItems
     var statistics = calculateStatistics.calculateStatisticsForBarGraphValues(function(plotItem) { return plotItem.value; });
     // don't want to show "Statistics: none" thing when in graph browser
     if (!inGraphBrowser) {
-        addStatisticsPanelForChart(chartPane, statistics); 
+        addStatisticsPanelForChart(chartPane, statistics, "large"); 
     }
     
     // draw the x axis
@@ -910,7 +917,7 @@ export function d3HistogramChartForValues(graphBrowserInstance: GraphHolder, plo
     
     var values = plotItems.map(function(item) { return parseFloat(item.value); });
     var statistics = calculateStatistics.calculateStatisticsForHistogramValues(values, unansweredCount);
-    addStatisticsPanelForChart(chartPane, statistics);
+    addStatisticsPanelForChart(chartPane, statistics, isSmallFormat ? "small" : "large");
     
     var mean = statistics.mean;
     var standardDeviation = statistics.sd;
@@ -1128,13 +1135,11 @@ export function multipleHistograms(graphBrowserInstance: GraphHolder, choiceQues
       
     var optionsText = "";
     if (scaleQuestion.displayConfiguration && scaleQuestion.displayConfiguration.length > 1) {
-        optionsText = " (" + scaleQuestion.displayConfiguration[0] + " to " + scaleQuestion.displayConfiguration[1] + ")";
+        optionsText = " (" + scaleQuestion.displayConfiguration[0] + " - " + scaleQuestion.displayConfiguration[1] + ")";
     }
-    var title = "" + nameForQuestion(scaleQuestion) + optionsText + " vs. " + nameForQuestion(choiceQuestion) + " ...";
+    var title = "" + nameForQuestion(scaleQuestion) + optionsText + " x " + nameForQuestion(choiceQuestion) + " ...";
     
     var content = m("span", {style: "text-align: center;"}, [m("b", title), m("br")]);
-    
-    // TODO: Trying out rendering into node
     m.render(chartPane, content);
 
     // var content = domConstruct.toDom('<span style="text-align: center;"><b>' + title + '</b></span><br>');
@@ -1155,7 +1160,7 @@ export function multipleHistograms(graphBrowserInstance: GraphHolder, choiceQues
     
     // Add these statistics at the bottom after all other graphs
     var statistics = calculateStatistics.calculateStatisticsForMultipleHistogram(scaleQuestion, choiceQuestion, graphBrowserInstance.allStories, graphBrowserInstance.minimumStoryCountRequiredForTest);
-    addStatisticsPanelForChart(graphBrowserInstance.graphResultsPane, statistics);
+    addStatisticsPanelForChart(graphBrowserInstance.graphResultsPane, statistics, "large");
   
     return charts;
 }
@@ -1210,8 +1215,7 @@ export function d3ScatterPlot(graphBrowserInstance: GraphHolder, xAxisQuestion, 
 
     var chartPane = newChartPane(graphBrowserInstance, style);
     
-    // x 700 - 15 - 90 =  595 // y 500 - 20 - 90 = 390 // 205 difference to make square
-    var margin = {top: 20, right: 15 + 205, bottom: 90, left: 90};
+    var margin = {top: 20, right: 15 + largeGraphWidth / 4, bottom: 90, left: 90};
     if (isSmallFormat) {
         margin.right = 20;
     }
@@ -1225,7 +1229,7 @@ export function d3ScatterPlot(graphBrowserInstance: GraphHolder, xAxisQuestion, 
     chart.subgraphChoice = option;
 
     var statistics = calculateStatistics.calculateStatisticsForScatterPlot(xAxisQuestion, yAxisQuestion, choiceQuestion, option, stories, graphBrowserInstance.minimumStoryCountRequiredForTest);
-    addStatisticsPanelForChart(chartPane, statistics);
+    addStatisticsPanelForChart(chartPane, statistics, isSmallFormat ? "small" : "large");
     
     // draw the x axis
     
@@ -1387,7 +1391,7 @@ export function multipleScatterPlot(graphBrowserInstance: GraphHolder, xAxisQues
     return charts;
 }
 
-export function d3ContingencyTable(graphBrowserInstance: GraphHolder, xAxisQuestion, yAxisQuestion, storiesSelectedCallback) {
+export function d3ContingencyTable(graphBrowserInstance: GraphHolder, xAxisQuestion, yAxisQuestion, scaleQuestion, storiesSelectedCallback) {
     // Collect data
     
     var columnLabels = {};
@@ -1529,6 +1533,33 @@ export function d3ContingencyTable(graphBrowserInstance: GraphHolder, xAxisQuest
             var observedValue = results[xySelector] || 0;
             var storiesForNewPlotItem = plotItemStories[xySelector] || [];
             var observedPlotItem = {x: c, y: r, value: observedValue, stories: storiesForNewPlotItem, expectedValue: expectedValue};
+            if (scaleQuestion) {
+                var scaleValues = [];
+                for (var i = 0; i < storiesForNewPlotItem.length; i++) {
+                    var story = storiesForNewPlotItem[i];
+                    var scaleValue = parseInt(story.fieldValue(scaleQuestion.id));
+                    if (scaleValue) {
+                        scaleValues.push(scaleValue);
+                    }
+                }
+                var mean = jStat.mean(scaleValues);
+                if (!isNaN(mean)) {
+                    var sd = jStat.stdev(scaleValues, true);
+                    observedPlotItem["mean"] = mean;
+                    if (!isNaN(sd)) {
+                        observedPlotItem["sd"] = sd;
+                    }
+                    var skewness = jStat.skewness(scaleValues);
+                    if (!isNaN(skewness)) {
+                        observedPlotItem["skewness"] = skewness;
+                    }
+                    var kurtosis = jStat.kurtosis(scaleValues);
+                    if (!isNaN(kurtosis)) {
+                        observedPlotItem["kurtosis"] = kurtosis;
+                    }
+                }
+                //console.log("mean", observedPlotItem["mean"], "sd", observedPlotItem["sd"], "scaleValues", scaleValues);
+            }
             observedPlotItems.push(observedPlotItem);
             
         }
@@ -1539,7 +1570,15 @@ export function d3ContingencyTable(graphBrowserInstance: GraphHolder, xAxisQuest
 
     var chartPane = newChartPane(graphBrowserInstance, "singleChartStyle");
     
-    var chartTitle = "" + nameForQuestion(xAxisQuestion) + " vs. " + nameForQuestion(yAxisQuestion);
+    var chartTitle = "" + nameForQuestion(xAxisQuestion) + " x " + nameForQuestion(yAxisQuestion);
+    if (scaleQuestion) {
+        chartTitle += " + " + nameForQuestion(scaleQuestion);
+        if (scaleQuestion.displayConfiguration && scaleQuestion.displayConfiguration.length > 1) {
+            chartTitle += escapeHtml(" (" + scaleQuestion.displayConfiguration[0] + " - " + scaleQuestion.displayConfiguration[1] + ")");
+        }
+    }
+    var content = m("span", {style: "text-align: center;"}, [m("b", chartTitle), m("br")]);
+    m.render(chartPane, content);
 
     var letterSize = 6;
     var margin = {top: 20, right: 15, bottom: 90 + longestColumnTextLength * letterSize, left: 90 + longestRowTextLength * letterSize};
@@ -1551,9 +1590,14 @@ export function d3ContingencyTable(graphBrowserInstance: GraphHolder, xAxisQuest
     }
     var chart = makeChartFramework(chartPane, "contingencyChart", graphSize, margin);
     var chartBody = chart.chartBody;
-    
-    var statistics = calculateStatistics.calculateStatisticsForTable(xAxisQuestion, yAxisQuestion, stories, graphBrowserInstance.minimumStoryCountRequiredForTest);
-    addStatisticsPanelForChart(chartPane, statistics);
+
+    var statistics;
+    if (scaleQuestion) {
+        statistics = calculateStatistics.calculateStatisticsForMiniHistograms(scaleQuestion, xAxisQuestion, yAxisQuestion, stories, graphBrowserInstance.minimumStoryCountRequiredForTest);
+    } else {
+        statistics = calculateStatistics.calculateStatisticsForTable(xAxisQuestion, yAxisQuestion, stories, graphBrowserInstance.minimumStoryCountRequiredForTest);
+    }
+    addStatisticsPanelForChart(chartPane, statistics, "large");
   
     // X axis and label
     
@@ -1587,62 +1631,158 @@ export function d3ContingencyTable(graphBrowserInstance: GraphHolder, xAxisQuest
     // Compute a scaling factor to map plotItem values onto a widgth and height
     var maxPlotItemValue = d3.max(observedPlotItems, function(plotItem) { return plotItem.value; });
     
-    if (maxPlotItemValue === 0) {
-        var xValueMultiplier = 0;
-        var yValueMultiplier = 0;
-    } else {
-        var xValueMultiplier = xScale.rangeBand() / maxPlotItemValue / 2.0;
-        var yValueMultiplier = yScale.rangeBand() / maxPlotItemValue / 2.0;
-    }
-    
-    var storyDisplayClusters = chartBody.selectAll(".storyCluster")
-            .data(observedPlotItems)
-        .enter().append("ellipse")
-            .attr("class", "storyCluster observed")
-            // TODO: Scale size of plot item
-            .attr("rx", function (plotItem) { return xValueMultiplier * plotItem.value; } )
-            .attr("ry", function (plotItem) { return yValueMultiplier * plotItem.value; } )
-            .attr("cx", function (plotItem) { return xScale(plotItem.x) + xScale.rangeBand() / 2.0; } )
-            .attr("cy", function (plotItem) { return yScale(plotItem.y) + yScale.rangeBand() / 2.0; } );
+    if (scaleQuestion) {
 
-    if (expectedPlotItems.length) {
-        var expectedDisplayClusters = chartBody.selectAll(".expected")
-                .data(expectedPlotItems)
+        if (maxPlotItemValue === 0) {
+            var xValueMultiplier = 0;
+            var yValueMultiplier = 0;
+        } else {
+            var xValueMultiplier = xScale.rangeBand() / maxPlotItemValue;
+            var yValueMultiplier = yScale.rangeBand() / maxPlotItemValue;
+        }
+    
+        // rectangles
+        var storyDisplayClusters = chartBody.selectAll(".miniHistogram")
+            .data(observedPlotItems)
+        .enter().append("rect")
+            .attr("class", "miniHistogram")
+            .attr("x", function (plotItem) { 
+                var centerPoint = xScale(plotItem.x) + xScale.rangeBand() / 2.0;
+                var barWidth = xValueMultiplier * plotItem.value;
+                var centerToTopLeftCornerDisplacement = barWidth / 2.0;
+                return centerPoint - centerToTopLeftCornerDisplacement;
+            } )
+            .attr("y", function (plotItem) { 
+                var centerPoint = yScale(plotItem.y) + yScale.rangeBand() / 2.0;
+                var centerToTopLeftCornerDisplacement = yValueMultiplier * plotItem.value / 2.0;
+                return centerPoint - centerToTopLeftCornerDisplacement;
+            } )
+            .attr("width", function (plotItem) { return xValueMultiplier * plotItem.value })
+            .attr("height", function (plotItem) { return yValueMultiplier * plotItem.value })
+
+        // std dev rectangle
+        var sdRects = chartBody.selectAll(".miniHistogramStdDev")
+            .data(observedPlotItems)
+        .enter().append("rect")
+            .attr("class", "miniHistogramStdDev")
+            .attr("x", function (plotItem) { 
+                if (plotItem.mean) {
+                    var centerPoint = xScale(plotItem.x) + xScale.rangeBand() / 2.0;
+                    var barWidth = xValueMultiplier * plotItem.value;
+                    var centerToTopLeftCornerDisplacement = barWidth / 2.0;
+                    var meanMinusOneSD = Math.max(0, plotItem.mean - plotItem.sd);
+                    var sdDisplacement = barWidth * meanMinusOneSD / 100.0;
+                    return centerPoint - centerToTopLeftCornerDisplacement + sdDisplacement;
+                } else {
+                    return 0;
+                }
+            } )
+            .attr("y", function (plotItem) { 
+                var centerPoint = yScale(plotItem.y) + yScale.rangeBand() / 2.0;
+                var centerToTopLeftCornerDisplacement = yValueMultiplier * plotItem.value / 2.0;
+                return centerPoint - centerToTopLeftCornerDisplacement;
+            } )
+            .attr("width", function (plotItem) { 
+                if (plotItem.mean) {
+                    var barWidth = xValueMultiplier * plotItem.value;
+                    return barWidth * 2.0 * plotItem.sd / 100;
+                } else {
+                    return 0
+                }; 
+            })
+            .attr("height", function (plotItem) { if (plotItem.mean) {return yValueMultiplier * plotItem.value} else {return 0} })
+
+
+        // mean rectangle
+        var meanRects = chartBody.selectAll(".miniHistogramMean")
+            .data(observedPlotItems)
+        .enter().append("rect")
+            .attr("class", "miniHistogramMean")
+            .attr("x", function (plotItem) { 
+                if (plotItem.mean) {
+                    var centerPoint = xScale(plotItem.x) + xScale.rangeBand() / 2.0;
+                    var centerToTopLeftCornerDisplacement = xValueMultiplier * plotItem.value / 2.0;
+                    var meanDisplacement = xValueMultiplier * plotItem.value * plotItem.mean / 100.0;
+                    return centerPoint - centerToTopLeftCornerDisplacement + meanDisplacement - 1;
+                } else {
+                    return 0;
+                }
+            } )
+            .attr("y", function (plotItem) { 
+                var centerPoint = yScale(plotItem.y) + yScale.rangeBand() / 2.0;
+                var centerToTopLeftCornerDisplacement = yValueMultiplier * plotItem.value / 2.0;
+                return centerPoint - centerToTopLeftCornerDisplacement;
+            } )
+            .attr("width", function (plotItem) { if (plotItem.mean) {return 2} else {return 0}; })
+            .attr("height", function (plotItem) { if (plotItem.mean) {return yValueMultiplier * plotItem.value} else {return 0} })
+
+    } else {
+
+        if (maxPlotItemValue === 0) {
+            var xValueMultiplier = 0;
+            var yValueMultiplier = 0;
+        } else {
+            var xValueMultiplier = xScale.rangeBand() / maxPlotItemValue / 2.0;
+            var yValueMultiplier = yScale.rangeBand() / maxPlotItemValue / 2.0;
+        }
+    
+        var storyDisplayClusters = chartBody.selectAll(".storyCluster")
+                .data(observedPlotItems)
             .enter().append("ellipse")
-                .attr("class", "expected")
-                // TODO: Scale size of plot item
+                .attr("class", "storyCluster observed")
                 .attr("rx", function (plotItem) { return xValueMultiplier * plotItem.value; } )
                 .attr("ry", function (plotItem) { return yValueMultiplier * plotItem.value; } )
                 .attr("cx", function (plotItem) { return xScale(plotItem.x) + xScale.rangeBand() / 2.0; } )
                 .attr("cy", function (plotItem) { return yScale(plotItem.y) + yScale.rangeBand() / 2.0; } );
+
+        if (expectedPlotItems.length) {
+            var expectedDisplayClusters = chartBody.selectAll(".expected")
+                    .data(expectedPlotItems)
+                .enter().append("ellipse")
+                    .attr("class", "expected")
+                    // TODO: Scale size of plot item
+                    .attr("rx", function (plotItem) { return xValueMultiplier * plotItem.value; } )
+                    .attr("ry", function (plotItem) { return yValueMultiplier * plotItem.value; } )
+                    .attr("cx", function (plotItem) { return xScale(plotItem.x) + xScale.rangeBand() / 2.0; } )
+                    .attr("cy", function (plotItem) { return yScale(plotItem.y) + yScale.rangeBand() / 2.0; } );
+        }
+    }
+
+    function tooltipTextForPlotItem(plotItem) {
+        var tooltipText = 
+        "X (" + nameForQuestion(xAxisQuestion) + "): " + plotItem.x +
+        "\nY (" + nameForQuestion(yAxisQuestion) + "): " + plotItem.y;
+        if (plotItem.expectedValue) {
+            //console.log("plotItem.expectedValue ", plotItem.expectedValue);
+            tooltipText += "\nExpected: " + plotItem.expectedValue.toFixed(0) + "\nObserved: " + plotItem.value.toFixed(0);
+        }
+        if (scaleQuestion) {
+            if (plotItem.mean !== undefined) tooltipText += "\nMean: " + plotItem.mean.toFixed(2);
+            if (plotItem.sd !== undefined ) tooltipText += "\nStandard deviation: " + plotItem.sd.toFixed(2);
+            if (plotItem.skewness !== undefined ) tooltipText += "\nSkewness: " + plotItem.skewness.toFixed(2);
+            if (plotItem.kurtosis !== undefined ) tooltipText += "\nKurtosis: " + plotItem.kurtosis.toFixed(2);
+        }
+        if (!plotItem.stories || plotItem.stories.length === 0) {
+            tooltipText += "\n------ No stories ------";
+        } else {
+            tooltipText += "\n------ Stories (" + plotItem.stories.length + ") ------";
+            for (var i = 0; i < plotItem.stories.length; i++) {
+                var story = plotItem.stories[i];
+                tooltipText += "\n" + story.storyName();
+                if (i >= 9) {
+                    tooltipText += "\n(and " + (plotItem.stories.length - 10) + " more)";
+                    break;
+                }
+            }
+        }
+        return tooltipText;
     }
 
     // Add tooltips
     if (!graphBrowserInstance.excludeStoryTooltips) {
-        storyDisplayClusters.append("svg:title")
-            .text(function(plotItem) {
-                var tooltipText = 
-                "X (" + nameForQuestion(xAxisQuestion) + "): " + plotItem.x +
-                "\nY (" + nameForQuestion(yAxisQuestion) + "): " + plotItem.y;
-                if (plotItem.expectedValue) {
-                    //console.log("plotItem.expectedValue ", plotItem.expectedValue);
-                    tooltipText += "\nExpected: " + plotItem.expectedValue.toFixed(0) + "\nObserved: " + plotItem.value.toFixed(0);
-                }
-                if (!plotItem.stories || plotItem.stories.length === 0) {
-                    tooltipText += "\n------ No stories ------";
-                } else {
-                    tooltipText += "\n------ Stories (" + plotItem.stories.length + ") ------";
-                    for (var i = 0; i < plotItem.stories.length; i++) {
-                        var story = plotItem.stories[i];
-                        tooltipText += "\n" + story.storyName();
-                        if (i >= 9) {
-                            tooltipText += "\n(and " + (plotItem.stories.length - 10) + " more)";
-                            break;
-                        }
-                    }
-                }
-                return tooltipText;
-            });
+        storyDisplayClusters.append("svg:title").text(tooltipTextForPlotItem);
+        if (sdRects) sdRects.append("svg:title").text(tooltipTextForPlotItem);
+        if (meanRects) meanRects.append("svg:title").text(tooltipTextForPlotItem);
     }
     
     supportStartingDragOverStoryDisplayItemOrCluster(chartBody, storyDisplayClusters);

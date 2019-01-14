@@ -145,7 +145,7 @@ var graphResultsPaneCSS = `
     .contingencyChart .expected {
       stroke-width: 1px;
       stroke: #8e8789;
-      stroke-dasharray: "5,5";
+      stroke-dasharray: "5, 5";
       fill: none;
     }
     
@@ -157,6 +157,30 @@ var graphResultsPaneCSS = `
       shape-rendering: crispEdges;
       stroke: gray;
     }
+
+    .contingencyChart .miniHistogram {
+        fill: #eff4ff;
+        stroke: black;
+        stroke-width: 1px;
+    }
+    
+    .contingencyChart .miniHistogram.selected {
+        fill: #ffbb84;
+        stroke: black;
+        stroke-width: 1px;
+    }
+    
+    .contingencyChart .miniHistogramMean {
+        fill: blue;
+        stroke: none;
+    }
+    
+    .contingencyChart .miniHistogramStdDev {
+        fill: #b0d4d4; 
+        stroke: black;
+        stroke-width: 1px;
+    }
+    
 `;
 
 // ***************************************************************************************** General 
@@ -674,15 +698,19 @@ function printObservationList(observationList, observationLabel, interpretationN
             ];
         } else {
             var graph = PatternExplorer.makeGraph(pattern, graphHolder, selectionCallback);
-            return [
-                m("div.narrafirma-catalysis-report-observation", [
-                    m("span", {"class": "narrafirma-catalysis-report-observation-label", "id": "observation-" + observationTitleToPrintWithoutSpaces}, observationLabel),
-                    observationTitleToPrint,
-                    m("span", {"class": "narrafirma-catalysis-report-observation-strength", "id": "observation-" + observationTitleToPrintWithoutSpaces + "-strength"}, strengthStringToPrint)]),
-                m("div.narrafirma-catalysis-report-observation-description", printText(observationDescriptionToPrint)),
-                displayForGraphHolder(graphHolder),
-                //printReturnAndBlankLine()
-            ];
+            if (graph) {
+                return [
+                    m("div.narrafirma-catalysis-report-observation", [
+                        m("span", {"class": "narrafirma-catalysis-report-observation-label", "id": "observation-" + observationTitleToPrintWithoutSpaces}, observationLabel),
+                        observationTitleToPrint,
+                        m("span", {"class": "narrafirma-catalysis-report-observation-strength", "id": "observation-" + observationTitleToPrintWithoutSpaces + "-strength"}, strengthStringToPrint)]),
+                    m("div.narrafirma-catalysis-report-observation-description", printText(observationDescriptionToPrint)),
+                    displayForGraphHolder(graphHolder),
+                    //printReturnAndBlankLine()
+                ];
+            } else {
+                return [];
+            }
         }
 
     });

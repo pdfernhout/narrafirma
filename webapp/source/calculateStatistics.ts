@@ -17,6 +17,8 @@ export function calculateStatisticsForPattern(pattern, patternNumber, numPattern
         statistics = calculateStatisticsForBarGraph(pattern.questions[0], stories, minimumStoryCountRequiredForTest);
     } else if (graphType === "table") {
         statistics = calculateStatisticsForTable(pattern.questions[0], pattern.questions[1], stories, minimumStoryCountRequiredForTest);
+    } else if (graphType === "contingency-histogram") {
+        statistics = calculateStatisticsForMiniHistograms(pattern.questions[2], pattern.questions[0], pattern.questions[1], stories, minimumStoryCountRequiredForTest); 
     } else if (graphType === "histogram") {
         statistics = calculateStatisticsForHistogram(pattern.questions[0], stories, minimumStoryCountRequiredForTest);
     } else if (graphType === "multiple histogram") {
@@ -138,19 +140,21 @@ function collectXYDataForFields(stories: surveyCollection.Story[], xFieldName, y
     return {x: xResult, y: yResult, unansweredCount: unansweredCount};
 }
 
-function addValue(arrayHolder, fieldName, value) {
-    var values = arrayHolder[fieldName];
+function addValue(arrayHolder, fieldName, value, secondFieldName = null) {
+    var key = fieldName;
+    if (secondFieldName) key += ", " + secondFieldName;
+    var values = arrayHolder[key];
     if (!values) values = [];
     values.push(value);
-    arrayHolder[fieldName] = values;
+    arrayHolder[key] = values;
 }
 
-function valuesForFieldChoices(stories: surveyCollection.Story[], scaleQuestion, choiceQuestion) {
+function valuesForFieldChoices(stories: surveyCollection.Story[], scaleQuestion, choiceQuestion, secondChoiceQuestion = null) {
     // TODO: Need to add in fields that were not selected with a zero count, using definition from questionnaire
     var values = {};
     for (var i = 0; i < stories.length; i++) {
         var scaleValue = stories[i].fieldValue(scaleQuestion.id);
-        if (scaleValue === null || scaleValue === undefined || scaleValue === "") continue; // value1 = "{N/A}";
+        if (scaleValue === null || scaleValue === undefined || scaleValue === "") continue; 
 
         var choiceValue;
         if (choiceQuestion.id === "storyLength") {
@@ -158,42 +162,22 @@ function valuesForFieldChoices(stories: surveyCollection.Story[], scaleQuestion,
         } else {
             choiceValue = stories[i].fieldValue(choiceQuestion.id);
         }
-        if (choiceValue === null || choiceValue === undefined || scaleValue === "") continue; // value1 = "{N/A}";
+        if (choiceValue === null || choiceValue === undefined || scaleValue === "") continue; 
 
-        addValue(values, choiceValue, scaleValue);
+        if (secondChoiceQuestion) {
+            var secondChoiceValue;
+            if (secondChoiceQuestion.id === "storyLength") {
+                secondChoiceValue = getStoryLengthValue(stories[i], secondChoiceQuestion);
+            } else {
+                secondChoiceValue = stories[i].fieldValue(secondChoiceQuestion.id);
+            }
+            if (secondChoiceValue === null || secondChoiceValue === undefined || scaleValue === "") continue; 
+        }
+
+        addValue(values, choiceValue, scaleValue, secondChoiceValue);
     }
     return values;
 }
-
-/*
-function countsForFieldChoices(stories: surveyCollection.Story[], field1, field2) {
-    // TODO: Need to add in fields that were not selected with a zero count, using definition from questionnaire
-    var counts = {};
-    for (var i = 0; i < stories.length; i++) {
-        var value1 = stories[i].fieldValue(field1);
-        var value2 = stories[i].fieldValue(field2);
-        var value = JSON.stringify([value1, value2]);
-        var count = counts[value];
-        if (!count) count = 0;
-        count++;
-        counts[value] = count;
-    }
-    return counts;
-}
-*/
-
-/*
-function countsForFieldChoice(stories: surveyCollection.Story[], field1) {
-    // TODO: Need to add in fields that were not selected with a zero count, using definition from questionnaire
-    var counts = {};
-    for (var i = 0; i < stories.length; i++) {
-        var value1 = stories[i].fieldValue(field1);
-        if (value1 === null || value1 === undefined) continue; // value1 = "{N/A}";
-        increment(counts, "" + value1);
-    }
-    return counts;
-}
-*/
 
 function increment(countHolder, fieldName) {
     var count = countHolder[fieldName];
@@ -291,18 +275,72 @@ export function calculateStatisticsForHistogramValues(values, unansweredCount) {
     return result;
 }
 
-export function calculateStatisticsForMultipleHistogram(ratioQuestion, nominalQuestion, stories: surveyCollection.Story[], minimumStoryCountRequiredForTest: number): any {
-    // One of each continuous and not
-    // for each option, look for differences of means on a distribution using Student's T test if normal, otherwise Kruskal-Wallis or maybe Mann-Whitney
-    
-    // TODO: use t-test when normal 
+export function calculateStatisticsForMiniHistograms(scaleQuestion, firstChoiceQuestion, secondChoiceQuestion, stories: surveyCollection.Story[], minimumStoryCountRequiredForTest: number): any {
+// Can't calculate a statistic if one or both are mutiple answer checkboxes
+if (firstChoiceQuestion.displayType === "checkboxes" || secondChoiceQuestion.displayType === "checkboxes") {
+    return {significance: "None (choices not mutually exclusive)", calculated: []};
+}
 
+var values = valuesForFieldChoices(stories, scaleQuestion, firstChoiceQuestion, secondChoiceQuestion);
+var options = Object.keys(values);
+
+// For every pair, compute test, and take best p score
+var pLowest = Number.MAX_VALUE;
+var uLowest = NaN;
+var n = 0;
+var allNs = [];
+
+var allResults = {};
+
+for (var i = 0; i < options.length; i++) {
+    var x = values[options[i]];
+    allNs.push(x.length);
+    if (x.length < minimumStoryCountRequiredForTest) continue;
+    n += x.length;
+
+    if (options.length === 1) {
+        return {significance: "None (too few options to compare)", calculated: ["n"], n: n};
+    }
+
+    for (var j = i + 1; j < options.length; j++) {
+        var y = values[options[j]];
+        if (y.length < minimumStoryCountRequiredForTest) continue;
+        try {
+            var statResult = mannWhitneyU(x, y);
+        } catch(err) {
+            toaster.toast('Error in Mann-Whitney U test for questions [' + scaleQuestion.displayName + ", " 
+                + firstChoiceQuestion.displayName + ", " + secondChoiceQuestion.displayName + "]: " + err);
+            return {significance: "None (error)", calculated: []};
+        }
+        allResults[options[i] + " x " + options[j]] = {p: statResult.p, u: statResult.u, n1: statResult.n1, n2: statResult.n2};
+        
+        if (statResult.p <= pLowest) {
+            pLowest = statResult.p;
+            uLowest = statResult.u;
+        }
+    }
+}
+
+if (pLowest === Number.MAX_VALUE) {
+    return {significance: "None (at least one count in [" + allNs.join(", ") + "] below threshold)", calculated: ["n"], n: n};
+}
+
+if (pLowest < 0.001) {
+    var significance = " p<0.001" + " U=" + uLowest + " n=" + n;
+} else {
+    var significance = " p=" + pLowest.toFixed(3) + " U=" + uLowest + " n=" + n;
+}
+return {significance: significance, calculated: ["p", "U", "n"], p: pLowest, U: uLowest, n: n, allResults: allResults};
+}
+
+export function calculateStatisticsForMultipleHistogram(scaleQuestion, choiceQuestion, stories: surveyCollection.Story[], minimumStoryCountRequiredForTest: number): any {
+    
     // Can't calculate a statistic if one or both are mutiple answer checkboxes
-    if (nominalQuestion.displayType === "checkboxes") {
+    if (choiceQuestion.displayType === "checkboxes") {
         return {significance: "None (choices not mutually exclusive)", calculated: []};
     }
     
-    var values = valuesForFieldChoices(stories, ratioQuestion, nominalQuestion);
+    var values = valuesForFieldChoices(stories, scaleQuestion, choiceQuestion);
     var options = Object.keys(values);
 
     // For every pair, compute test, and take best p score
@@ -329,7 +367,7 @@ export function calculateStatisticsForMultipleHistogram(ratioQuestion, nominalQu
             try {
                 var statResult = mannWhitneyU(x, y);
             } catch(err) {
-                toaster.toast('Error in Mann-Whitney U test for questions [' + ratioQuestion.displayName + ", " + nominalQuestion.displayName + "]: " + err);
+                toaster.toast('Error in Mann-Whitney U test for questions [' + scaleQuestion.displayName + ", " + choiceQuestion.displayName + "]: " + err);
                 return {significance: "None (error)", calculated: []};
             }
             allResults[options[i] + " x " + options[j]] = {p: statResult.p, u: statResult.u, n1: statResult.n1, n2: statResult.n2};

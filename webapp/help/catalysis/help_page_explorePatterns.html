@@ -36,24 +36,29 @@ You can use the arrow buttons to move systematically through the list of pattern
 <p>
 As you are looking at a graph, <b>hover the mouse to see the stories</b>, thus:
 <ul>
-<li>In a bar graph (one choice question) or histogram (scale question), hover over any 
+<li>In a <b>bar graph</b> (one choice question) or <b>histogram</b> (scale question), hover over any 
 bar segment to see the story there.</li>
-<li>In a table (two choice questions considered together), hover over an ellipse to see a list of story names.</li>
-<li>In a scatter plot (two scale questions), hover over any dot to see the story it represents.</li>
+<li>In a <b>contingency table</b> (two choice questions considered together), hover over an ellipse to see a list of story names.</li>
+<li>In a <b>contingency-histogram table</b> (two choice questions and a scale question considered together), 
+	hover over an square to see a list of story names. (The line is the mean of the scale-question distribution,
+	and the square around it is one standard deviation to the left and right of the mean.)</li>
+<li>In a <b>scatter plot</b> (two scale questions), hover over any dot to see the story it represents.</li>
 </ul>
 <p>
 When you are looking at any graph, <b>click and drag to select stories</b>. 
 The selected stories will appear in the list under the graph. 
 </p>
 <ul>
-	<li>In a bar graph (one choice question) or histogram (scale question), select one or more bars 
+	<li>In a <b>bar graph</b> (one choice question) or histogram (scale question), select one or more bars 
 		by dragging through their horizontal center points.
 		Where you drag vertically doesn't matter.
 		You can't select parts of a bar, just the whole thing.
 	</li>
-	<li>In a table (two choice questions considered together), select any number of ellipses by dragging through their
-		center points.</li>
-	<li>In a scatter plot (two scale questions), select stories by dragging through their center points.</li>
+	<li>In a <b>contingency table</b> (two choice questions considered together), 
+		select any number of ellipses by dragging through their center points.</li>
+	<li>In a <b>contingency-histogram table</b> (two choice questions and a scale question considered together), 
+		select any number of squares by dragging through their center points.</li>
+	<li>In a <b>scatter plot</b> (two scale questions), select stories by dragging through their center points.</li>
 </ul>
 <p>
 If you think a pattern is worth noting in your report, fill in an observation
@@ -203,6 +208,39 @@ results from the chi-squared test.
 	to be found there and how many were actually found there.
 </p>
 </div>
+
+<div class="question">
+What are the lines and squares on the "contingency-histogram" graphs?
+</div>
+<div class="question-answer">
+<p>
+	The line is the mean of the distribution for the scale question shown.
+	The smaller box around the line shows one standard deviation to the left and right of the mean.
+	The size of the box shows the relative number of stories in that category.
+</p>
+<p>You can hover your mouse over any of the squares to see how many stories are in that
+	combination (of two choice questions and one scale question), and what the exact values are for the
+	mean, standard deviation, skewness, and kurtosis of the distribution.
+</p>
+</div>
+
+<div class="question">
+What's skewness? What's kurtosis?
+</div>
+<div class="question-answer">
+<p>
+	Skewness is a measure of how far the distribution is skewed away from being symmetrical. 
+	Positive skewness means the bulk of the values are on the left (and the right tail is longer). 
+	Negative skewness means the bulk of the values are on the right (and the left tail is longer).
+</p>
+<img src="help_skewness.png" width="200">
+<p>Kurtosis is a measure of how peaked or flat a distribution is.
+	Positive kurtosis means the distribution is strongly peaked.
+	Negative kurtosis means the distribution is flattened. 
+</p>
+<img src="help_kurtosis.png" width="200">
+</div>
+		
 
 <div class="question">
 Why do some of the table rows say "None (choices not mutually exclusive)"?
