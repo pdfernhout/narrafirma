@@ -60,7 +60,7 @@ function displayHTMLForSlider(fieldSpecification, fieldName, value, options) {
         sliderText.push(m("span", {"class": "narrafirma-story-card-slider-bars-no-answer"}, sliderTextAfter));
     }
     return m("tr", [
-        wrap("td", "narrafirma-story-card-slider-name", m("span", {"class": "narrafirma-story-card-field-name " + replaceSpacesWithDashes(fieldName)}, fieldName)),
+        wrap("td", "narrafirma-story-card-slider-name", m("span", {"class": "narrafirma-story-card-field-name-" + replaceSpacesWithDashes(fieldName)}, fieldName)),
         wrap("td", "narrafirma-story-card-slider-label-left", lowLabel),
         wrap("td", "narrafirma-story-card-slider-contents", sliderText),
         wrap("td", "narrafirma-story-card-slider-label-right", highLabel)
@@ -70,14 +70,15 @@ function displayHTMLForSlider(fieldSpecification, fieldName, value, options) {
 function displayHTMLForCheckboxes(fieldSpecification, fieldName, value) {
     var options = [];
     var atLeastOneOptionWasChecked = false;
-    options.push(m("span", {"class": "narrafirma-story-card-field-name " + replaceSpacesWithDashes(fieldName)}, fieldName + ": "));
+    var answerClass = "narrafirma-story-card-answer-for-" + replaceSpacesWithDashes(fieldName);
+    options.push(m("span", {"class": "narrafirma-story-card-field-name-" + replaceSpacesWithDashes(fieldName)}, fieldName + ": "));
     // TODO: What if value is not current available option?
     for (var i = 0; i < fieldSpecification.valueOptions.length; i++) {
         var option = fieldSpecification.valueOptions[i];
         //console.log("checkboxes", option, fieldSpecification, value);
         if (options.length-1) options.push(", ");
         if (value && value[option]) {
-            options.push(wrap("span", "narrafirma-story-card-checkboxes-selected", option));
+            options.push(wrap("span", "narrafirma-story-card-checkboxes-selected " + answerClass, option));
             atLeastOneOptionWasChecked = true;
         } else {
             options.push(wrap("span", "narrafirma-story-card-checkboxes-unselected", option));
@@ -89,14 +90,15 @@ function displayHTMLForCheckboxes(fieldSpecification, fieldName, value) {
 function displayHTMLForRadioButtons(fieldSpecification, fieldName, value) {
     var options = [];
     var atLeastOneOptionWasChecked = false;
-    options.push(m("span", {"class": "narrafirma-story-card-field-name " + replaceSpacesWithDashes(fieldName)}, fieldName + ": "));
+    var answerClass = "narrafirma-story-card-answer-for-" + replaceSpacesWithDashes(fieldName);
+    options.push(m("span", {"class": "narrafirma-story-card-field-name-" + replaceSpacesWithDashes(fieldName)}, fieldName + ": "));
     // TODO: What if value is not current available option?
     for (var i = 0; i < fieldSpecification.valueOptions.length; i++) {
         var option = fieldSpecification.valueOptions[i];
         //console.log("checkboxes", option, fieldSpecification, value);
         if (options.length-1) options.push(", ");
         if (value && value === option) {
-            options.push(wrap("span", "narrafirma-story-card-radiobuttons-selected", option));
+            options.push(wrap("span", "narrafirma-story-card-radiobuttons-selected " + answerClass, option));
             atLeastOneOptionWasChecked = true;
         } else {
             options.push(wrap("span", "narrafirma-story-card-radiobuttons-unselected", option));
@@ -108,13 +110,14 @@ function displayHTMLForRadioButtons(fieldSpecification, fieldName, value) {
 function displayHTMLForSelect(fieldSpecification, fieldName, value) {
     var options = [];
     var atLeastOneOptionWasChecked = false;
-    options.push(m("span", {"class": "narrafirma-story-card-field-name " + replaceSpacesWithDashes(fieldName)}, fieldName + ": "));
+    var answerClass = "narrafirma-story-card-answer-for-" + replaceSpacesWithDashes(fieldName);
+    options.push(m("span", {"class": "narrafirma-story-card-field-name-" + replaceSpacesWithDashes(fieldName)}, fieldName + ": "));
     // TODO: What if value is not current available option?
     for (var i = 0; i < fieldSpecification.valueOptions.length; i++) {
         var option = fieldSpecification.valueOptions[i];
         if (options.length-1) options.push(", ");
         if (value && value === option) {
-            options.push(wrap("span", "narrafirma-story-card-select-selected", option));
+            options.push(wrap("span", "narrafirma-story-card-select-selected " + answerClass, option));
             atLeastOneOptionWasChecked = true;
         } else {
             options.push(wrap("span", "narrafirma-story-card-select-unselected", option));
@@ -130,6 +133,7 @@ function displayHTMLForField(storyModel: surveyCollection.Story, fieldSpecificat
     // TODO: extra checking here for problems with test data -- could probably be changed back to just displayName eventually
     var fieldName = fieldSpecification.displayName || fieldSpecification.displayPrompt;
     var result = [];
+    var answerClass = "narrafirma-story-card-answer-for-" + replaceSpacesWithDashes(fieldName);
     if (fieldSpecification.displayType === "slider") {
         result.push(displayHTMLForSlider(fieldSpecification, fieldName, value, options));
     } else if (fieldSpecification.displayType === "checkboxes") {
@@ -155,20 +159,20 @@ function displayHTMLForField(storyModel: surveyCollection.Story, fieldSpecificat
         }
     } else if (fieldSpecification.displayType === "boolean") {
         var thisBit = [];
-        thisBit.push(m("span", {"class": "narrafirma-story-card-field-name " + replaceSpacesWithDashes(fieldName)}, fieldName + ": "));
+        thisBit.push(m("span", {"class": "narrafirma-story-card-field-name-" + replaceSpacesWithDashes(fieldName)}, fieldName + ": "));
         if (value) {
-            thisBit.push("yes");
+            thisBit.push(m("span", {"class": answerClass}, "yes"));
         } else {
-            thisBit.push("no");
+            thisBit.push(m("span", {"class": answerClass}, "no"));
         }
         result.push(wrap("div", "narrafirma-story-card-question-line-without-selected-item", thisBit));
     } else if (fieldSpecification.displayType === "checkbox") {
         var thisBit = [];
-        thisBit.push(m("span", {"class": "narrafirma-story-card-field-name " + replaceSpacesWithDashes(fieldName)}, fieldName + ": "));
+        thisBit.push(m("span", {"class": "narrafirma-story-card-field-name-" + replaceSpacesWithDashes(fieldName)}, fieldName + ": "));
         if (value) {
-            thisBit.push("true");
+            thisBit.push(m("span", {"class": answerClass}, "true"));
         } else {
-            thisBit.push("false");
+            thisBit.push(m("span", {"class": answerClass}, "false"));
         }
         result.push(wrap("div", "narrafirma-story-card-question-line-without-selected-item", thisBit));
     } else if (fieldSpecification.displayType === "label" || fieldSpecification.displayType === "header") {
@@ -176,13 +180,10 @@ function displayHTMLForField(storyModel: surveyCollection.Story, fieldSpecificat
     } else {
         // TODO: May need more handling here for other cases
         var thisBit = [];
-        thisBit.push(m("span", {"class": "narrafirma-story-card-field-name " + replaceSpacesWithDashes(fieldName)}, fieldName + ": "));
-        thisBit.push(value);
+        thisBit.push(m("span", {"class": "narrafirma-story-card-field-name-" + replaceSpacesWithDashes(fieldName)}, fieldName + ": "));
+        thisBit.push(m("span", {"class": answerClass}, value));
         result.push(wrap("div", "narrafirma-story-card-question-line-without-selected-item", thisBit));
     }
-    //if (!nobreak) {
-    //    result.push(m("br"));
-    //}
 
     if (isAnnotationQuestion) {
         return wrap("div", "narrafirma-story-card-annotation", result);
