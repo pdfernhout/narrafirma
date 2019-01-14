@@ -76,12 +76,12 @@ function displayHTMLForCheckboxes(fieldSpecification, fieldName, value) {
     for (var i = 0; i < fieldSpecification.valueOptions.length; i++) {
         var option = fieldSpecification.valueOptions[i];
         //console.log("checkboxes", option, fieldSpecification, value);
-        if (options.length-1) options.push(", ");
+        if (options.length-1) options.push(wrap("span", answerClass + "-comma", ", "));
         if (value && value[option]) {
-            options.push(wrap("span", "narrafirma-story-card-checkboxes-selected " + answerClass, option));
+            options.push(wrap("span", "narrafirma-story-card-checkboxes-selected " + answerClass + "-selected", option));
             atLeastOneOptionWasChecked = true;
         } else {
-            options.push(wrap("span", "narrafirma-story-card-checkboxes-unselected", option));
+            options.push(wrap("span", "narrafirma-story-card-checkboxes-unselected " + answerClass + "-unselected", option));
         }
     }
     return [options, atLeastOneOptionWasChecked];
@@ -96,12 +96,12 @@ function displayHTMLForRadioButtons(fieldSpecification, fieldName, value) {
     for (var i = 0; i < fieldSpecification.valueOptions.length; i++) {
         var option = fieldSpecification.valueOptions[i];
         //console.log("checkboxes", option, fieldSpecification, value);
-        if (options.length-1) options.push(", ");
+        if (options.length-1) options.push(wrap("span", answerClass + "-comma", ", "));
         if (value && value === option) {
-            options.push(wrap("span", "narrafirma-story-card-radiobuttons-selected " + answerClass, option));
+            options.push(wrap("span", "narrafirma-story-card-radiobuttons-selected " + answerClass + "-selected", option));
             atLeastOneOptionWasChecked = true;
         } else {
-            options.push(wrap("span", "narrafirma-story-card-radiobuttons-unselected", option));
+            options.push(wrap("span", "narrafirma-story-card-radiobuttons-unselected " + answerClass + "-unselected", option));
         }
     }
     return [options, atLeastOneOptionWasChecked];
@@ -115,12 +115,12 @@ function displayHTMLForSelect(fieldSpecification, fieldName, value) {
     // TODO: What if value is not current available option?
     for (var i = 0; i < fieldSpecification.valueOptions.length; i++) {
         var option = fieldSpecification.valueOptions[i];
-        if (options.length-1) options.push(", ");
+        if (options.length-1) options.push(wrap("span", answerClass + "-comma", ", "));
         if (value && value === option) {
-            options.push(wrap("span", "narrafirma-story-card-select-selected " + answerClass, option));
+            options.push(wrap("span", "narrafirma-story-card-select-selected " + answerClass + "-selected", option));
             atLeastOneOptionWasChecked = true;
         } else {
-            options.push(wrap("span", "narrafirma-story-card-select-unselected", option));
+            options.push(wrap("span", "narrafirma-story-card-select-unselected " + answerClass + "-unselected", option));
         }
     }
     return [options, atLeastOneOptionWasChecked];
