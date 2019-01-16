@@ -23,6 +23,7 @@ class Project {
     static defaultMinimumStoryCountRequiredForGraph = 1;
     static defaultNumHistogramBins = 20;
     static defaultShowInterpretationsInGrid = false;
+    static defaultGraphMultiChoiceQuestionsAgainstThemselves = false;
     static defaultNumScatterDotOpacityLevels = 3;
     static defaultScatterDotSize = 8;
     static defaultCorrelationLineChoice = "0.05";
@@ -751,6 +752,18 @@ class Project {
             return showInterpretationsInGrid;
         } else {
             return Project.defaultShowInterpretationsInGrid;
+        }
+    }
+
+    graphMultiChoiceQuestionsAgainstThemselves(catalysisReportIdentifier) {
+        if (!catalysisReportIdentifier) {
+            throw new Error("catalysisReportIdentifier was not supplied");
+        }
+        var graphMultiChoiceQuestionsAgainstThemselves = this.tripleStore.queryLatestC(catalysisReportIdentifier, "graphMultiChoiceQuestionsAgainstThemselves");
+        if (graphMultiChoiceQuestionsAgainstThemselves) {
+            return graphMultiChoiceQuestionsAgainstThemselves;
+        } else {
+            return Project.defaultGraphMultiChoiceQuestionsAgainstThemselves;
         }
     }
 

@@ -124,6 +124,20 @@ var panel: Panel = {
             }
         },
         {
+            id: "configureCatalysisReport_graphMultiChoiceQuestionsAgainstThemselves",
+            valueType: "boolean",
+            valuePath: "/clientState/catalysisReportIdentifier/graphMultiChoiceQuestionsAgainstThemselves",
+            displayType: "checkbox",
+            displayConfiguration: "Yes, graph multi-choice questions against themselves",
+            displayPrompt: `Would you like to graph multi-choice questions against themselves 
+                to show <strong>patterns of coincidence</strong> among answers to the same question? 
+                `,
+            displayVisible: function(panelBuilder, model) {
+                return !!Globals.clientState().catalysisReportIdentifier();
+            }
+        },
+
+        {
             id: "configureCatalysisReport_showInterpretationsInGrid",
             valueType: "boolean",
             valuePath: "/clientState/catalysisReportIdentifier/showInterpretationsInGrid",

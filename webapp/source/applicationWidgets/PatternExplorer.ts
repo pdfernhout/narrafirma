@@ -101,6 +101,7 @@ class PatternExplorer {
     minimumStoryCountRequiredForGraph = Project.defaultMinimumStoryCountRequiredForGraph;
     numHistogramBins = Project.defaultNumHistogramBins;
     showInterpretationsInGrid = Project.defaultShowInterpretationsInGrid;
+    graphMultiChoiceQuestionsAgainstThemselves = Project.defaultGraphMultiChoiceQuestionsAgainstThemselves;
     numScatterDotOpacityLevels = Project.defaultNumScatterDotOpacityLevels;
     scatterDotSize = Project.defaultScatterDotSize;
     correlationLineChoice = Project.defaultCorrelationLineChoice;
@@ -472,6 +473,7 @@ class PatternExplorer {
         this.numHistogramBins = this.project.numberOfHistogramBins(catalysisReportIdentifier);
         this.graphHolder.numHistogramBins = this.numHistogramBins; 
         this.showInterpretationsInGrid = this.project.showInterpretationsInGrid(catalysisReportIdentifier);
+        this.graphMultiChoiceQuestionsAgainstThemselves = this.project.graphMultiChoiceQuestionsAgainstThemselves(catalysisReportIdentifier);
         this.numScatterDotOpacityLevels = this.project.numScatterDotOpacityLevels(catalysisReportIdentifier);
         this.graphHolder.numScatterDotOpacityLevels = this.numScatterDotOpacityLevels;
         this.scatterDotSize = this.project.scatterDotSize(catalysisReportIdentifier);
@@ -553,9 +555,9 @@ class PatternExplorer {
         } else if (questions.length === 1) {
             pattern = {id: id, observation: null, graphType: graphType, patternName: nameForQuestion(questions[0]), questions: questions};
         } else if (questions.length === 2) {
-            pattern = {id: id, observation: null, graphType: graphType, patternName: nameForQuestion(questions[0]) + " vs. " + nameForQuestion(questions[1]), questions: questions};
+            pattern = {id: id, observation: null, graphType: graphType, patternName: nameForQuestion(questions[0]) + " x " + nameForQuestion(questions[1]), questions: questions};
         } else if (questions.length === 3) {
-            pattern = {id: id, observation: null, graphType: graphType, patternName: nameForQuestion(questions[0]) + " vs. " + nameForQuestion(questions[1]) + " + " + nameForQuestion(questions[2]), questions: questions};
+            pattern = {id: id, observation: null, graphType: graphType, patternName: nameForQuestion(questions[0]) + " x " + nameForQuestion(questions[1]) + " + " + nameForQuestion(questions[2]), questions: questions};
         } else {
             console.log("Unexpected number of questions", questions);
             throw new Error("Unexpected number of questions: " + questions.length);
@@ -612,6 +614,7 @@ class PatternExplorer {
             return ("00000" + questionCount++).slice(-5);
         }
 
+        // data integrity graphs
         if (this.graphTypesToCreate["data integrity graphs"]) {
             result.push(this.makePattern(nextID(), "data integrity", scaleQuestions, "All scale values"));
             result.push(this.makePattern(nextID(), "data integrity", scaleQuestions, "Participant means"));
@@ -620,59 +623,45 @@ class PatternExplorer {
             result.push(this.makePattern(nextID(), "data integrity", scaleQuestions, "Unanswered scale questions"));
         }
 
+        // texts
         if (this.graphTypesToCreate["texts"]) {
             textQuestions.forEach((question) => {
                 result.push(this.makePattern(nextID(), "texts", [question], "Text answers"));
             });
         }
      
+        // one choice question 
         if (this.graphTypesToCreate["bar graphs"]) {
             nominalQuestions.forEach((question1) => {
                 result.push(this.makePattern(nextID(), "bar", [question1], null));
             });
         };
 
-        // Prevent mirror duplicates and self-matching questions
-        var usedQuestions;
-        
-        if (this.graphTypesToCreate["tables"]) {
-            usedQuestions = [];
-            nominalQuestions.forEach((question1) => {
-                usedQuestions.push(question1);
-                nominalQuestions.forEach((question2) => {
-                    if (usedQuestions.indexOf(question2) !== -1) return;
-                    result.push(this.makePattern(nextID(), "table", [question1, question2], null));
-                });
-            });
-        };
-
-        if (this.graphTypesToCreate["contingency-histogram tables"]) {
-            usedQuestions = [];
-            nominalQuestions.forEach((question1) => {
-                usedQuestions.push(question1);
-                nominalQuestions.forEach((question2) => {
-                    if (usedQuestions.indexOf(question2) !== -1) return;
-                    scaleQuestions.forEach((question3) => {
-                        result.push(this.makePattern(nextID(), "contingency-histogram", [question1, question2, question3], null));
-                    });
-                });
-            });
-        };
-
+        // one scale question
         if (this.graphTypesToCreate["histograms"]) {
             scaleQuestions.forEach((question1) => {
                 result.push(this.makePattern(nextID(), "histogram", [question1], null));
             });
         };
 
-        if (this.graphTypesToCreate["multiple histograms"]) {
-            scaleQuestions.forEach((question1) => {
+        // when creating question combinations, prevent mirror duplicates (axb, bxa) and self-matching questions (axa)
+        // unless they want axa for multi-choice questions
+        var usedQuestions;
+        
+        // two choice questions
+        if (this.graphTypesToCreate["tables"]) {
+            usedQuestions = [];
+            nominalQuestions.forEach((question1) => {
+                usedQuestions.push(question1);
                 nominalQuestions.forEach((question2) => {
-                    result.push(this.makePattern(nextID(), "multiple histogram", [question1, question2], null));
+                    var okayToGraphQuestionAgainstItself = this.graphMultiChoiceQuestionsAgainstThemselves && question2.displayType === "checkboxes";
+                    if (!okayToGraphQuestionAgainstItself && usedQuestions.indexOf(question2) !== -1) return;
+                    result.push(this.makePattern(nextID(), "table", [question1, question2], null));
                 });
             });
         };
 
+        // two scale questions
         if (this.graphTypesToCreate["scatterplots"]) {
             usedQuestions = [];
             scaleQuestions.forEach((question1) => {
@@ -684,6 +673,31 @@ class PatternExplorer {
             });
         };
 
+        // one scale question, one choice question
+        if (this.graphTypesToCreate["multiple histograms"]) {
+            scaleQuestions.forEach((question1) => {
+                nominalQuestions.forEach((question2) => {
+                    result.push(this.makePattern(nextID(), "multiple histogram", [question1, question2], null));
+                });
+            });
+        };
+
+        // two choice questions, one scale question
+        if (this.graphTypesToCreate["contingency-histogram tables"]) {
+            usedQuestions = [];
+            nominalQuestions.forEach((question1) => {
+                usedQuestions.push(question1);
+                nominalQuestions.forEach((question2) => {
+                    var okayToGraphQuestionAgainstItself = this.graphMultiChoiceQuestionsAgainstThemselves && question2.displayType === "checkboxes";
+                    if (!okayToGraphQuestionAgainstItself && usedQuestions.indexOf(question2) !== -1) return;
+                    scaleQuestions.forEach((question3) => {
+                        result.push(this.makePattern(nextID(), "contingency-histogram", [question1, question2, question3], null));
+                    });
+                });
+            });
+        };
+
+        // two scale questions, one choice question
         if (this.graphTypesToCreate["multiple scatterplots"]) {
             usedQuestions = [];
             scaleQuestions.forEach((question1) => {
