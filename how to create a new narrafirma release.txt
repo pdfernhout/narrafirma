@@ -186,12 +186,15 @@ If (and only if) it says there are any changes to the svn repository, type
 
     svn update
 
-(If any new files have been added, you must do a
+If any new files have been added, you must do a
 
     svn add
 
 for the new file. Any new file added to the project has to be handled
-this way.)
+this way. 
+
+DO NOT LEAVE NEW FILES OUT. If you see a file and it has a question mark to its left,
+it means you need to add that file to the SVN repository. 
 
 I3. In the Finder, go to NarraFirma/wordpress plugin/release zips and unzip the
 generated WordPress zip file
@@ -234,6 +237,9 @@ J. Final check and announcement
 J1. Check that the release has shown up on
 
     https://wordpress.org/plugins/narrafirma/
+
+It will take a few minutes for the uploaded release to show up. Keep checking
+until you see it.
 
 J2. Update the plugin (example installation) on narrafirma.com to test that the
 update notice comes out all right and there are no problems updating.
