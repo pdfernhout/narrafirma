@@ -629,7 +629,7 @@ function displayForGraph(graphNode: HTMLElement, graphHolder: GraphHolder) {
     styleNode.innerHTML = "<![CDATA[" + graphResultsPaneCSS + "]]>";
     graphNode.firstChild.insertBefore(styleNode, graphNode.firstChild.firstChild);
     // remove the statistics panel
-    var statisticsPanel = <HTMLElement>graphNode.childNodes.item(1);
+    var statisticsPanel = <HTMLElement>graphNode.childNodes.item(2); // item(1) is title pane
     if (statisticsPanel) graphNode.removeChild(statisticsPanel);
 
     var svgText = (<HTMLElement>graphNode).innerHTML;
@@ -822,16 +822,29 @@ export function printCatalysisReport() {
 
     if (printWhat.indexOf("observations") >= 0) {
         var observationIDsWithCorrectStrengths = [];
-        var printStrengths = ["1 (weak)", "2 (medium)", "3 (strong)"];
+        var printStrengths = [];
+        var includeObservationsWithoutStrengths = false;
         switch (printWhat) {
-            case "observations (strong)": printStrengths = ["3 (strong)"]; break;
-            case "observations (medium)": printStrengths = ["2 (medium)"]; break;
-            case "observations (weak)": printStrengths = ["1 (weak)"]; break;
-            case "observations (strong and medium)": printStrengths = ["2 (medium)", "3 (strong)"]; break;
+            case "observations (all)": 
+                ["1 (weak)", "2 (medium)", "3 (strong)"];
+                includeObservationsWithoutStrengths = true;
+                break;
+            case "observations (strong)": 
+                printStrengths = ["3 (strong)"]; 
+                break;
+            case "observations (medium)": 
+                printStrengths = ["2 (medium)"]; 
+                break;
+            case "observations (weak)": 
+                printStrengths = ["1 (weak)"]; 
+                break;
+            case "observations (strong and medium)": 
+                printStrengths = ["2 (medium)", "3 (strong)"]; 
+                break;
         }
         observationIDs.forEach((id) => {
             var item = project.tripleStore.makeObject(id, true);
-            if (item.observationStrength && printStrengths.indexOf(item.observationStrength) >= 0) {
+            if (includeObservationsWithoutStrengths || (item.observationStrength && printStrengths.indexOf(item.observationStrength) >= 0)) {
                 observationIDsWithCorrectStrengths.push(id);
             }
         });

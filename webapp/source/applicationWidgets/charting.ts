@@ -582,6 +582,13 @@ function addStatisticsPanelForChart(chartPane: HTMLElement, statistics, chartTit
     chartPane.appendChild(statsPane);
 }
 
+function addTitlePanelForChart(chartPane, chartTitle) {
+    var titlePane = document.createElement("div");
+    titlePane.className = "narrafirma-graph-title";
+    titlePane.innerHTML = chartTitle;
+    chartPane.appendChild(titlePane);
+}
+
 // ---- Charts
 
 export function d3BarChartForQuestion(graphBrowserInstance: GraphHolder, question, storiesSelectedCallback, inGraphBrowser = false) {
@@ -619,6 +626,7 @@ export function d3BarChartForQuestion(graphBrowserInstance: GraphHolder, questio
         allPlotItems.push({name: key, stories: results[key], value: results[key].length});
     }
     var chartTitle = "" + nameForQuestion(question);
+
     var xAxisLabel = nameForQuestion(question);
     return d3BarChartForValues(graphBrowserInstance, allPlotItems, xLabels, chartTitle, xAxisLabel, question, storiesSelectedCallback, inGraphBrowser);
 }
@@ -662,7 +670,9 @@ export function d3BarChartForValues(graphBrowserInstance: GraphHolder, plotItems
     // TODO: Improve the way labels are drawn or ellipsed based on chart size and font size and number of bars
 
     var chartPane = newChartPane(graphBrowserInstance, "singleChartStyle");
-    
+    addTitlePanelForChart(chartPane, chartTitle);
+    //m.render(chartPane, content);
+
     var letterSize = 7;
     var margin = {top: 20, right: 15, bottom: 90 + longestLabelTextLength * letterSize, left: 60};
     
@@ -919,6 +929,8 @@ export function d3HistogramChartForValues(graphBrowserInstance: GraphHolder, plo
         margin.bottom += 30;
     }
     var chartPane = newChartPane(graphBrowserInstance, style);   
+    if (!isSmallFormat) addTitlePanelForChart(chartPane, chartTitle);
+
     var chart = makeChartFramework(chartPane, "histogram", chartSize, margin);
     var chartBody = chart.chartBody;
     
@@ -1127,16 +1139,7 @@ export function multipleHistograms(graphBrowserInstance: GraphHolder, choiceQues
             options.push(choiceQuestion.valueOptions[index]);
         }
     }
-    // TODO: Could push extra options based on actual data choices (in case question changed at some point)
-    
-    /*
-    options.sort(function(a, b) {
-        if (a.toLowerCase() < b.toLowerCase()) return -1;
-        if (a.toLowerCase() > b.toLowerCase()) return 1;
-        return 0;
-    });
-    */
-    
+    // TODO: Could push extra options based on actual data choices (in case question changed at some point
     // TODO: This styling may be wrong
     var chartPane = newChartPane(graphBrowserInstance, "noStyle");
       
@@ -1144,14 +1147,9 @@ export function multipleHistograms(graphBrowserInstance: GraphHolder, choiceQues
     if (scaleQuestion.displayConfiguration && scaleQuestion.displayConfiguration.length > 1) {
         optionsText = " (" + scaleQuestion.displayConfiguration[0] + " - " + scaleQuestion.displayConfiguration[1] + ")";
     }
-    var title = "" + nameForQuestion(scaleQuestion) + optionsText + " x " + nameForQuestion(choiceQuestion) + " ...";
-    
-    var content = m("span", {style: "text-align: center;"}, [m("b", title), m("br")]);
-    m.render(chartPane, content);
+    var chartTitle = "" + nameForQuestion(scaleQuestion) + optionsText + " x " + nameForQuestion(choiceQuestion);
+    addTitlePanelForChart(chartPane, chartTitle);
 
-    // var content = domConstruct.toDom('<span style="text-align: center;"><b>' + title + '</b></span><br>');
-    // chartPane.domNode.appendChild(content);
-    
     var charts = [];
     for (index in options) {
         var option = options[index];
@@ -1167,7 +1165,7 @@ export function multipleHistograms(graphBrowserInstance: GraphHolder, choiceQues
     
     // Add these statistics at the bottom after all other graphs
     var statistics = calculateStatistics.calculateStatisticsForMultipleHistogram(scaleQuestion, choiceQuestion, graphBrowserInstance.allStories, graphBrowserInstance.minimumStoryCountRequiredForTest);
-    addStatisticsPanelForChart(graphBrowserInstance.graphResultsPane, statistics, title, "large");
+    addStatisticsPanelForChart(graphBrowserInstance.graphResultsPane, statistics, chartTitle, "large");
   
     return charts;
 }
@@ -1227,7 +1225,8 @@ export function d3ScatterPlot(graphBrowserInstance: GraphHolder, xAxisQuestion, 
         margin.right = 20;
     }
     
-    var chartTitle = "" + nameForQuestion(xAxisQuestion) + " vs. " + nameForQuestion(yAxisQuestion);
+    var chartTitle = "" + nameForQuestion(xAxisQuestion) + " x " + nameForQuestion(yAxisQuestion);
+    if (!isSmallFormat) addTitlePanelForChart(chartPane, chartTitle);
 
     var chart = makeChartFramework(chartPane, "scatterPlot", chartSize, margin);
     var chartBody = chart.chartBody;
@@ -1379,9 +1378,8 @@ export function multipleScatterPlot(graphBrowserInstance: GraphHolder, xAxisQues
     }
     
     var chartPane = newChartPane(graphBrowserInstance, "noStyle");
-    var title = "" + nameForQuestion(xAxisQuestion) + " vs. " + nameForQuestion(yAxisQuestion) + " + " + nameForQuestion(choiceQuestion) + " ...";
-    var content = m("span", {style: "text-align: center;"}, [m("b", title), m("br")]);
-    m.render(chartPane, content);
+    var chartTitle = "" + nameForQuestion(xAxisQuestion) + " x " + nameForQuestion(yAxisQuestion) + " + " + nameForQuestion(choiceQuestion);
+    addTitlePanelForChart(chartPane, chartTitle);
 
     var charts = [];
     for (index in options) {
@@ -1406,9 +1404,6 @@ export function d3ContingencyTable(graphBrowserInstance: GraphHolder, xAxisQuest
     
     preloadResultsForQuestionOptions(columnLabels, xAxisQuestion);
     preloadResultsForQuestionOptions(rowLabels, yAxisQuestion);
-    
-    //columnLabels["{Total}"] = 0;
-    //rowLabels["{Total}"] = 0;
     
     var xHasCheckboxes = xAxisQuestion.displayType === "checkboxes";
     var yHasCheckboxes = yAxisQuestion.displayType === "checkboxes";
@@ -1484,14 +1479,6 @@ export function d3ContingencyTable(graphBrowserInstance: GraphHolder, xAxisQuest
     }
     var columnCount = columnLabelsArray.length;
     
-    /*
-    columnLabelsArray.sort(function(a, b) {
-        if (a.toLowerCase() < b.toLowerCase()) return -1;
-        if (a.toLowerCase() > b.toLowerCase()) return 1;
-        return 0;
-    });
-    */
-    
     var longestRowText = "";
     for (var rowName in rowLabels) {
         if (rowName.length > longestRowText.length) {
@@ -1506,14 +1493,6 @@ export function d3ContingencyTable(graphBrowserInstance: GraphHolder, xAxisQuest
         rowLabelsArray.push(rowName);
     }
     var rowCount = rowLabelsArray.length;
-    
-    /*
-    rowLabelsArray.sort(function(a, b) {
-        if (a.toLowerCase() < b.toLowerCase()) return -1;
-        if (a.toLowerCase() > b.toLowerCase()) return 1;
-        return 0;
-    });
-    */
     
     var observedPlotItems = [];
     var expectedPlotItems = [];
@@ -1584,8 +1563,7 @@ export function d3ContingencyTable(graphBrowserInstance: GraphHolder, xAxisQuest
             chartTitle += escapeHtml(" (" + scaleQuestion.displayConfiguration[0] + " - " + scaleQuestion.displayConfiguration[1] + ")");
         }
     }
-    var content = m("span", {style: "text-align: center;"}, [m("b", chartTitle), m("br")]);
-    m.render(chartPane, content);
+    addTitlePanelForChart(chartPane, chartTitle);
 
     var letterSize = 6;
     var margin = {top: 20, right: 15, bottom: 90 + longestColumnTextLength * letterSize, left: 90 + longestRowTextLength * letterSize};

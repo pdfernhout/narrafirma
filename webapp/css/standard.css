@@ -1028,6 +1028,12 @@ td.narrafirma-mw-nested-title, td.narrafirma-mw-nested-stats {
 
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ d3 charting ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
+.narrafirma-graph-title {
+    margin: 0.5em;
+    font-size: 1.2em;
+    font-variant-caps: small-caps;
+}
+
 .narrafirma-graph-results-pane {
 	width: 850px;
 	margin: 0.2em auto 0px auto;
@@ -1083,28 +1089,28 @@ td.narrafirma-mw-nested-title, td.narrafirma-mw-nested-stats {
 	fill: black;
 	stroke-width: 0.5px;
 	font-family: sans-serif;
-	font-size: 0.8em;
+	font-size: 0.9em;
 }
 
 .y-axis text {
 	fill: black;
 	stroke-width: 0.5px;
 	font-family: sans-serif;
-	font-size: 0.8em;
+	font-size: 0.9em;
 }
 
 .x-axis-label {
 	fill: black;
 	stroke-width: 0.5px;
 	font-family: sans-serif;
-    font-size: 0.8em;
+    font-size: 1.2em;
 }
 
 .y-axis-label {
 	fill: black;
 	stroke-width: 0.5px;
 	font-family: sans-serif;
-    font-size: 0.8em;
+    font-size: 1.2em;
 }
 
 .story.even {
