@@ -130,7 +130,7 @@ then commit your changes, and do steps G2 and G3 again.)
 H. Create Github release
 ====================================================================
 
-H1. Go to the Github site. THIS MUST BE DONE FROM CHROME, NOT FIREFOX. Click on
+H1. Go to the Github site. THIS MUST BE DONE FROM CHROME, NOT FIREFOX. Login. Click on
 Releases. Then click "Draft a new release".
 
 H2. Choose the version tag you already pushed from the drop-down list (vX.X.X).
@@ -150,8 +150,9 @@ For more installation instructions, go to
 setting-up-narrafirma).
 ----------------------------------------------------------
 (replace X.X.X with the new version number!!!! TWICE!!!)
+(also, take the carriage returns out of the text after you paste it in)
 
-H4. While the release is still a draft, click "Attach binaries by dropping them
+H4. WHILE THE RELEASE IS STILL A DRAFT, click "Attach binaries by dropping them
 here or selecting them". Pick the "narrafirma.zip" file in the distribution
 folder. DO NOT RENAME THE ZIP FILE LOCALLY. Upload it.
 
@@ -223,8 +224,8 @@ I8. Still in the VSC terminal (looking at narrafirma-wp), type:
 
     svn commit --message "Version X.X.X"
 
-I9. If svn asks for the password, look in your emails for (the exact text)
-"Wordpress.org forums: password" to find the right username and password to use.
+I9. If svn asks for the password, look in the place 
+you usually put passwords for "Wordpress.org forums: password".
 
 ====================================================================
 J. Final check and announcement

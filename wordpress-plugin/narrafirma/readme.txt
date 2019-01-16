@@ -142,6 +142,14 @@ and to keep good records for the future.
 
 == Changelog ==
 
+= 1.2.1 = 
+
+Added: Option to graph multi-choice questions against themselves (to explore coincidences between answers)
+Changed: Changed "vs" to "x" in graph names, to read better in languages other than English
+Changed: Increased font size of axis labels (they seem too small now that the graphs are a little bigger)
+Changed: Made sure graphs of every type have a title at the top; gave title a class; styled it
+Fixed: Bug where observations-only report did not include observations without the strength value set
+
 = 1.2.0 =
 
 Added: Many new import options to accommodate/manage/massage CSV data files from a variety of surveying systems
@@ -305,6 +313,11 @@ loading application, getting user information, or retrieving project data.
 change logs, see the [GitHub repository](https://github.com/pdfernhout/narrafirma).
 
 == Upgrade Notice ==
+
+= 1.2.1 =
+This minor upgrade adds the option to graph multi-choice questions against themselves,
+to look for patterns in coincidences of answers. It also improves a few visual details
+and fixes a bug in the observations-only catalysis report.
 
 = 1.2.0 =
 This higly recommended upgrade improves catalysis reports and story cards,
