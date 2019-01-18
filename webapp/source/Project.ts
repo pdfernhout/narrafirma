@@ -277,6 +277,11 @@ class Project {
             default:
                 throw new Error("Unexpected question category: " + questionCategory);
         }
+
+        // sometimes questions are missing ids? not sure why
+        if (!question.id) {
+            question.id = this.questionIDForQuestionShortNameGivenQuestionCategory(question.shortName, questionCategory);
+        }
         
         var setIdentifier = this.getFieldValue(questionListName);
         if (!setIdentifier) {
@@ -440,6 +445,22 @@ class Project {
         }
         // must be an annotation question - these are ID'd differently
         return "A_" + questionShortName;
+    }
+
+    questionIDForQuestionShortNameGivenQuestionCategory(questionShortName, questionCategory) {
+        // to add correct prefix (S_, P_, A_) to question name supplied by user (for catalysis report filter)
+        switch (questionCategory) {
+            case "elicitingQuestion":
+                return "elicitingQuestion";
+            case "storyQuestion":
+                return "S_" + questionShortName;
+            case "participantQuestion":
+                return "P_" + questionShortName;
+            case "annotationQuestion":
+                return "A_" + questionShortName;
+            default:
+                throw new Error("Unexpected question category: " + questionCategory);
+        } 
     }
 
     questionForQuestionIDGivenQuestionnaire(questionID, questionnaire, storyCollectionIdentifier) {
