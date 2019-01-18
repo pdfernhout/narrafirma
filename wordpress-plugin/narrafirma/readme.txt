@@ -9,7 +9,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Requires at least: 4.3.1
 Tested up to: 5.0.3
 Stable tag: trunk
-Version: 1.2.0
+Version: 1.2.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
