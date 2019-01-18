@@ -174,6 +174,21 @@ export function previewQuestionForm(model, fieldSpecification) {
     var w = window.open("survey.html#preview=" + (new Date().toISOString()), "_blank");
 }
 
+export function checkCSVDataFileWhileEditingStoryForm(model, fieldSpecification) {
+    var questionnaire = questionnaireGeneration.buildQuestionnaireFromTemplate(model, "");
+    csvImportExport.checkCSVStoriesWithStoryForm(questionnaire);
+}
+
+export function exportStoryFormWhileEditingIt_NativeFormat(model, fieldSpecification) {
+    var questionnaire = questionnaireGeneration.buildQuestionnaireFromTemplate(model, "");
+    csvImportExport.exportQuestionnaire(questionnaire);
+}
+
+export function exportStoryFormWhileEditingIt_ExternalFormat(model, fieldSpecification) {
+    var questionnaire = questionnaireGeneration.buildQuestionnaireFromTemplate(model, "");
+    csvImportExport.exportQuestionnaireForImport(questionnaire);
+}
+
 export function copyInterpretationsToClusteringDiagram() {
     var shortName = clientState.catalysisReportName();
     if (!shortName) {

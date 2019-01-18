@@ -99,7 +99,7 @@ function processCSVContents(contents, callbackForItem) {
     return {header: header, items: items};
 }
 
-function chooseCSVFileToImport(callback, saveStories: boolean, writeLog: boolean) {
+function chooseCSVFileToImport(callback, saveStories: boolean, writeLog: boolean, questionnaire = null) {
     var cvsFileUploader = <HTMLInputElement>document.getElementById("csvFileLoader");
     cvsFileUploader.onchange = function() {
         var file = cvsFileUploader.files[0];
@@ -112,7 +112,7 @@ function chooseCSVFileToImport(callback, saveStories: boolean, writeLog: boolean
             if (writeLog) {
                 console.log("=================================== START OF LOG reading CSV story file: " + <FileReader>e.target);
             }
-            callback(contents, saveStories, writeLog);
+            callback(contents, saveStories, writeLog, questionnaire);
         };
         reader.readAsText(file);
     };
@@ -123,7 +123,7 @@ function chooseCSVFileToImport(callback, saveStories: boolean, writeLog: boolean
 // reading stories
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-function processCSVContentsForStories(contents, saveStories, writeLog) {
+function processCSVContentsForStories(contents, saveStories, writeLog, questionnaire = null) {
 
     // set up log
     var logItems = [];
@@ -147,12 +147,13 @@ function processCSVContentsForStories(contents, saveStories, writeLog) {
         logQuestionAnswerCounts[questionName][answerName]++;
     }
 
-    // check for story collection
-    var storyCollectionName = Globals.clientState().storyCollectionName();
-    if (!storyCollectionName) alert("No story collection has been selected");
-    
-    // check for story form
-    var questionnaire = surveyCollection.getQuestionnaireForStoryCollection(storyCollectionName, true);
+    if (!questionnaire) {
+        // check for story collection
+        var storyCollectionName = Globals.clientState().storyCollectionName();
+        if (!storyCollectionName) alert("No story collection has been selected");
+        // check for story form
+        var questionnaire = surveyCollection.getQuestionnaireForStoryCollection(storyCollectionName, true);
+    }
     if (!questionnaire) return;
 
     // start log
@@ -776,15 +777,15 @@ function changeValueForCustomScaleValues(value, question, questionnaire) {
     if (question.displayType !== "slider") return null;
     var min = undefined;
     // the "" + is because apparently there are situations in which the scale value is an integer
-    if (question.import_minScaleValue) {
+    if (question.import_minScaleValue !== undefined && question.import_minScaleValue != "") { // could be zero
         min = parseInt("" + question.import_minScaleValue);
-    } else if (questionnaire.import_minScaleValue) {
+    } else if (questionnaire.import_minScaleValue !== undefined && questionnaire.import_minScaleValue !== "") { 
         min = parseInt("" + questionnaire.import_minScaleValue);
     }
     var max = undefined;
-    if (question.import_maxScaleValue) {
+    if (question.import_maxScaleValue !== undefined && question.import_maxScaleValue != "") {
         max = parseInt("" + question.import_maxScaleValue);
-    } else if (questionnaire.import_maxScaleValue) {
+    } else if (questionnaire.import_maxScaleValue != undefined && questionnaire.import_maxScaleValue != "") {
         max = parseInt("" + questionnaire.import_maxScaleValue);
     }
     if (min === undefined || min === NaN || max === undefined || max === NaN || min === max) {
@@ -1426,16 +1427,27 @@ export function autoFillStoryForm() {
 // exporting story form
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-export function exportQuestionnaire() {
-    var storyCollectionName = Globals.clientState().storyCollectionName();
-    if (!storyCollectionName) {
-        alert("Please select a story collection first");
-        return;
-    }
-    
-    var questionnaire = surveyCollection.getQuestionnaireForStoryCollection(storyCollectionName);
+export function exportQuestionnaire(questionnaire = null) {
+
+    var nameToSave = "";
     if (!questionnaire) {
-        alert("The story collection has not been initialized with a story form: " + storyCollectionName);
+        var storyCollectionName = Globals.clientState().storyCollectionName();
+        if (!storyCollectionName) {
+            alert("Please select a story collection first");
+            return;
+        }
+        nameToSave = storyCollectionName;
+        var questionnaire = surveyCollection.getQuestionnaireForStoryCollection(storyCollectionName);
+        if (!questionnaire) {
+            alert("The story collection has not been initialized with a story form: " + storyCollectionName);
+            return;
+        }
+    } else {
+        nameToSave = questionnaire.shortName;
+    }
+
+    if (!questionnaire) {
+        alert("ERROR: No story form was specified.");
         return;
     }
     
@@ -1547,7 +1559,7 @@ export function exportQuestionnaire() {
 
     var questionnaireBlob = new Blob([output], {type: "text/csv;charset=utf-8"});
     // TODO: This seems to clear the console in FireFox 40; why?
-    saveAs(questionnaireBlob, "export_story_form_" + storyCollectionName + ".csv");
+    saveAs(questionnaireBlob, "export_story_form_" + nameToSave + ".csv");
 }
 
 var exportQuestionTypeMap = {
@@ -1582,19 +1594,30 @@ function addCSVOutputLine(output, line) {
     return output;
 }
 
-export function exportQuestionnaireForImport() { // to preserve import options for externally derived data
-    var storyCollectionName = Globals.clientState().storyCollectionName();
-    if (!storyCollectionName) {
-        alert("Please select a story collection first");
-        return;
-    }
-    
-    var questionnaire = surveyCollection.getQuestionnaireForStoryCollection(storyCollectionName);
+export function exportQuestionnaireForImport(questionnaire = null) { // to preserve import options for externally derived data
+
+    var nameToSave;
     if (!questionnaire) {
-        alert("The story collection has not been initialized with a story form: " + storyCollectionName);
-        return;
+        var storyCollectionName = Globals.clientState().storyCollectionName();
+        if (!storyCollectionName) {
+            alert("Please select a story collection first");
+            return;
+        }
+        nameToSave = storyCollectionName;
+        
+        var questionnaire = surveyCollection.getQuestionnaireForStoryCollection(storyCollectionName);
+        if (!questionnaire) {
+            alert("The story collection has not been initialized with a story form: " + storyCollectionName);
+            return;
+        }
+    } else {
+        nameToSave = questionnaire.shortName;
     }
     
+    if (!questionnaire) {
+        alert("ERROR: No story form was specified.");
+        return;
+    }
     var output = "";
     var lineIndex = 1;
     function addOutputLine(line) {
@@ -1747,7 +1770,7 @@ export function exportQuestionnaireForImport() { // to preserve import options f
 
     var questionnaireBlob = new Blob([output], {type: "text/csv;charset=utf-8"});
     // TODO: This seems to clear the console in FireFox 40; why?
-    saveAs(questionnaireBlob, "export_story_form_for_import_" + storyCollectionName + ".csv");
+    saveAs(questionnaireBlob, "export_story_form_for_import_" + nameToSave + ".csv");
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1861,6 +1884,11 @@ export function checkCSVStories() {
     }
     // do not save stories, do write verbose log
     chooseCSVFileToImport(processCSVContentsForStories, false, true);
+}
+
+export function checkCSVStoriesWithStoryForm(questionnaire) {
+    // do not save stories, do write verbose log
+    chooseCSVFileToImport(processCSVContentsForStories, false, true, questionnaire);
 }
 
 export function importCSVQuestionnaire() {

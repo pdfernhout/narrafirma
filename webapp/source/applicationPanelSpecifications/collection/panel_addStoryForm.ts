@@ -494,7 +494,41 @@ var panel: Panel = {
             displayVisible: function(panelBuilder, model) {
                 return panelBuilder.readOnly === false;
             }
-        }        
+        },
+        {
+            id: "questionForm_checkCSVDataFile",
+            valueType: "none",
+            displayType: "button",
+            displayConfiguration: "checkCSVDataFileWhileEditingStoryForm",
+            displayName: "CSV file check",
+            displayPrompt: "Check stories in CSV file (view log in browser console) ...",
+            displayVisible: function(panelBuilder, model) {
+                return panelBuilder.readOnly === false;
+            }
+        },
+        {
+            id: "questionForm_exportForm",
+            valueType: "none",
+            displayType: "button",
+            displayConfiguration: "exportStoryFormWhileEditingIt_NativeFormat",
+            displayName: "Export story form",
+            displayPrompt: "Export story form with options for NarraFirma-native import...",
+            displayVisible: function(panelBuilder, model) {
+                return panelBuilder.readOnly === false;
+            }
+        },
+        {
+            id: "questionForm_exportForm",
+            valueType: "none",
+            displayType: "button",
+            displayConfiguration: "exportStoryFormWhileEditingIt_ExternalFormat",
+            displayName: "Export story form",
+            displayPrompt: "Export story form with options for external import...",
+            displayVisible: function(panelBuilder, model) {
+                return panelBuilder.readOnly === false;
+            }
+        }          
+        
     ]
 };
 
