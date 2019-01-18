@@ -191,9 +191,8 @@ If any new files have been added, you must do a
     svn add
 
 for the new file. Any new file added to the project has to be handled
-this way. 
-
-DO NOT LEAVE NEW FILES OUT. If you see a file and it has a question mark to its left,
+this way. DO NOT LEAVE NEW FILES OUT OF THE RELEASE!!! 
+If you see a file and it has a question mark to its left,
 it means you need to add that file to the SVN repository. 
 
 I3. In the Finder, go to NarraFirma/wordpress plugin/release zips and unzip the
@@ -204,6 +203,20 @@ is temporary. You can delete it later.)
 I4. Copy the unzipped folder's contents (BUT NOT the "assets" folder) to
 Workspace/narrafirma-wp/trunk. Choose "Replace" so all files are
 replaced with new versions.
+
+I4a. Type
+
+    svn update
+
+again. If any new files have been added, you must do a
+
+    svn add
+
+for the new file. Any new file added to the project has to be handled
+this way. DO NOT LEAVE NEW FILES OUT OF THE RELEASE!!! 
+If you see a file and it has a question mark to its left,
+it means you need to add that file to the SVN repository. 
+(YES, DO THIS AGAIN. Check the status before and after you copy the files.)
 
 I5. Go back to the terminal view in VSC (looking at narrafirma-wp) and remove
 all .DS_Store files from the narrafirma-wp folder. Type
