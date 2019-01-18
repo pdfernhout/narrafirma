@@ -142,6 +142,13 @@ M When import story form, hundreds of triples can be generated which take minute
 
 ==== DONE
 
+--- Release 1.2.2 
+
+Added: Can now run pre-import check and export story form from "Design story forms" page (so you no longer have to create a story collection to do these things)
+Fixed: Bug where import scale range value of 0 was being ignored 
+Fixed: Bug where story form name was not being set properly
+Fixed: Bug where newly created question did not have id field set, resulting in an error when you replaced it during import of story form
+
 --- Release 1.2.1 // switching over to writing things in the format needed for the WordPress readme (saves time)
 
 Added: Option to graph multi-choice questions against themselves (to explore coincidences between answers)

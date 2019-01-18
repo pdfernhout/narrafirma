@@ -142,6 +142,13 @@ and to keep good records for the future.
 
 == Changelog ==
 
+= 1.2.2 =
+
+Added: Can now run pre-import check and export story form from "Design story forms" page (so you no longer have to create a story collection to do these things)
+Fixed: Bug where import scale range value of 0 was being ignored 
+Fixed: Bug where story form name was not being set properly
+Fixed: Bug where newly created question did not have id field set, resulting in an error when you replaced it during import of story form
+
 = 1.2.1 = 
 
 Added: Option to graph multi-choice questions against themselves (to explore coincidences between answers)
@@ -313,6 +320,9 @@ loading application, getting user information, or retrieving project data.
 change logs, see the [GitHub repository](https://github.com/pdfernhout/narrafirma).
 
 == Upgrade Notice ==
+
+= 1.2.2 = 
+This minor upgrade copies a few buttons (important to importing data) to some more useful places. It also fixes a few annoying bugs.
 
 = 1.2.1 =
 This minor upgrade adds the option to graph multi-choice questions against themselves,
