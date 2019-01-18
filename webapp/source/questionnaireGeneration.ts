@@ -306,6 +306,7 @@ export function buildQuestionnaireFromTemplate(storyFormTemplate: string, shortN
         errorMessage_noStoryName: ""
     };
 
+    storyForm.shortName = project.tripleStore.queryLatestC(storyFormTemplate, "questionForm_shortName");
     storyForm.title = project.tripleStore.queryLatestC(storyFormTemplate, "questionForm_title");
     storyForm.image = project.tripleStore.queryLatestC(storyFormTemplate, "questionForm_image");
     storyForm.startText = project.tripleStore.queryLatestC(storyFormTemplate, "questionForm_startText");
