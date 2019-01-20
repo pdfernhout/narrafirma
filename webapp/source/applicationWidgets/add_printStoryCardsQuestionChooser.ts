@@ -84,6 +84,22 @@ function add_printStoryCardsQuestionChooser(panelBuilder: PanelBuilder, model, f
         map["storyLength"] = true;
         storageFunction(map);
     }
+
+    function selectAllStoryQuestions() {
+        var map = {};
+        allStoryQuestions.forEach((question) => {
+            map["S_" + question.displayName] = true;
+        });
+        storageFunction(map);
+    }
+    
+    function selectAllParticipantQuestions() {
+        var map = {};
+        allParticipantQuestions.forEach((question) => {
+            map["P_" + question.displayName] = true;
+        });
+        storageFunction(map);
+    }
     
     function clearAll() {
         storageFunction({});
@@ -206,6 +222,8 @@ function add_printStoryCardsQuestionChooser(panelBuilder: PanelBuilder, model, f
         ]),
     m("br"),
     m("button", { onclick: selectAll }, "Select all"),
+    m("button", { onclick: selectAllStoryQuestions }, "Select only story questions"),
+    m("button", { onclick: selectAllParticipantQuestions }, "Select only participant questions"),
     m("button", { onclick: clearAll }, "Clear all"),
     m("br")
     ]);
