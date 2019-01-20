@@ -18,9 +18,17 @@ var currentProjectStateExportFormat = "0.1.1";
 
 export function importProject() {
     var project = Globals.project();
+    var tripleStore = project.tripleStore;
 
     if (!project.currentUserHasAdminAccess) {
         alert("You must have administrative permission to import into the project.");
+        return;
+    }
+
+    // valueOptions: ["project snapshot (with or without stories)", "project history with stories"],
+    const importType = tripleStore.queryLatestC(project.projectIdentifier, "importExport_importType");
+    if (!importType) {
+        alert("Please choose a type of file to import.");
         return;
     }
 
@@ -37,17 +45,22 @@ export function importProject() {
         }
     }
     console.log("foundItemsIn", foundItemsIn);
+    var importWhat;
+    if (importType === "project history with stories") {
+        importWhat = "a project history";
+    } else {
+        importWhat = "a project snapshot";
+    }
     var confirmText = "";
     if (foundItemsIn.length) {
-        confirmText = "Are you ABSOLUTELY sure you want to import a project history?\n\nThis should only be done with an empty project, " +
+        confirmText = "Are you ABSOLUTELY sure you want to import " + importWhat + "?\n\nThis should only be done with an empty project, " +
             "and there are \n\n    " + foundItemsIn.join("\n    ") + "\n\n in this project.";
     } else {
-        confirmText = "Are you sure you want to import a project history? (This should only be done with an empty project.)";
+        confirmText = "Are you sure you want to import " + importWhat + "? (This should only be done with an empty project.)";
     }
     if (!confirm(confirmText)) return;
 
     var tripleStore = project.tripleStore;
-    const importType = tripleStore.queryLatestC(project.projectIdentifier, "importExport_importType");
     if (importType === "project history with stories") {
         importEntireProject();
     } else {
@@ -301,16 +314,23 @@ export function listOfRemovedStoryCollections() {
 export function exportProject() {
     var project = Globals.project();
     var tripleStore = project.tripleStore;
+
+    // valueOptions: ["project snapshot without stories", "project snapshot with stories", "project history with stories"],
     const exportType = tripleStore.queryLatestC(project.projectIdentifier, "importExport_exportType");
+
     if (exportType === "project history with stories") {
         exportEntireProject();
+    } else if (exportType === "project snapshot with stories") {
+        exportProjectCurrentState(true);
+    } else if (exportType === "project snapshot without stories") {
+        exportProjectCurrentState(false);
     } else {
-        exportProjectCurrentState(exportType ===  "project snapshot with stories");
+        alert("Please choose a type of file to export.");
     }
 }
 
 export function exportEntireProject() {
-    if (!confirm("Export project history with stories?\n\n(This may take a while.)")) return;
+    if (!confirm("Are you sure you want to export a project history with stories?")) return;
     
     var project = Globals.project();
     
@@ -331,14 +351,14 @@ export function exportEntireProject() {
     // printHTML(htmlForPage);
     
     var questionnaireBlob = new Blob([json], {type: "application/json;charset=utf-8"});
-    saveAs(questionnaireBlob, exportObject.projectIdentifier + " exported at " + exportObject.timestamp + ".json");
+    saveAs(questionnaireBlob, exportObject.projectIdentifier + " with history exported at " + exportObject.timestamp + ".json");
 }
 
 function exportProjectCurrentState(includeSurveyResults) {
     // TODO: Translate
     var promptMessage = includeSurveyResults ?
         "Are you sure you want to export a project snapshot with stories?" :
-        "Are you sure you want to export a project snapshot without stories?";
+        "Are you sure you want to export a project snapshot WITHOUT stories? No stories will be saved.";
     if (!confirm(promptMessage)) return;
     
     var project = Globals.project();
@@ -371,21 +391,34 @@ function exportProjectCurrentState(includeSurveyResults) {
 
         if (questionnaireMessages.length) activeQuestionnaires = questionnaireMessages[questionnaireMessages.length - 1].change;
     
-        const storyCollectionsInUse = project.getListForField("project_storyCollections");
+        const storyCollectionIDsInUse = project.getListForField("project_storyCollections");
+        let storyCollectionNamesInuse = [];
+        storyCollectionIDsInUse.forEach(function(id) {
+            var aName = tripleStore.queryLatestC(id, "storyCollection_shortName");
+            storyCollectionNamesInuse.push(aName);
+        });
 
         var surveyResultMessages = project.pointrelClient.filterMessages((message) => {
-            return message._topicIdentifier === "surveyResults" && 
-                (storyCollectionsInUse.indexOf(message.change.storyCollectionIdentifier) >= 0);
+            var result = false;
+            if (message._topicIdentifier === "surveyResults") {
+                // message.change.storyCollectionIdentifier is the story collection name
+                if (storyCollectionNamesInuse.indexOf(message.change.storyCollectionIdentifier) >= 0) {
+                    result = true;
+                } else {
+                    result = false;
+                }
+            }
+            return result;
         });
         
         storyCollections = {};
 
         surveyResultMessages.forEach((message) => {
-            var storyCollectionIdentifier = message.change.storyCollectionIdentifier;
-            var storyCollection = storyCollections[storyCollectionIdentifier];
+            var storyCollectionName = message.change.storyCollectionIdentifier;
+            var storyCollection = storyCollections[storyCollectionName];
             if (!storyCollection) {
                 storyCollection = [];
-                storyCollections[storyCollectionIdentifier] = storyCollection;
+                storyCollections[storyCollectionName] = storyCollection;
             }
             storyCollection.push(message.change.surveyResult);
         });
@@ -407,7 +440,8 @@ function exportProjectCurrentState(includeSurveyResults) {
     //console.log("json", json);
     
     var questionnaireBlob = new Blob([json], {type: "application/json;charset=utf-8"});
-    saveAs(questionnaireBlob, exportObject.projectIdentifier + " current state exported at " + exportObject.timestamp + ".json");
+    var withOrWithoutStories = includeSurveyResults ? "with stories" : "without stories";
+    saveAs(questionnaireBlob, exportObject.projectIdentifier + " current state " + withOrWithoutStories + " exported at " + exportObject.timestamp + ".json");
 }
 
 
