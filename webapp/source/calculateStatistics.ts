@@ -9,7 +9,7 @@ import m = require("mithril");
 
 "use strict";
 
-export function calculateStatisticsForPattern(pattern, patternNumber, numPatterns, stories, minimumStoryCountRequiredForTest, progressModel) {
+export function calculateStatisticsForPattern(pattern, patternNumber, numPatterns, howOftenToUpdateProgressMessage, stories, minimumStoryCountRequiredForTest, progressModel) {
     var graphType = pattern.graphType;
     var statistics = null;
 
@@ -43,7 +43,7 @@ export function calculateStatisticsForPattern(pattern, patternNumber, numPattern
         pattern.significance = "ERROR";
     }
 
-    if (progressModel) {
+    if (progressModel && patternNumber % howOftenToUpdateProgressMessage == 0) { // only report progress every total/100 graphs; makes it go faster
         progressModel.progressText = "Calculating statistics for pattern " + patternNumber + " of " + numPatterns;
         progressModel.redraw();
         }

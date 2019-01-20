@@ -32,17 +32,6 @@ function add_catalysisReportQuestionChooser(panelBuilder: PanelBuilder, model, f
         storageFunction(map);
     }
     
-    /*
-    function countResponses(id) {
-        var count = 0;
-        allStories.forEach((story) => {
-            var value = story.fieldValue(id);
-            if (value !== undefined && value !== null && value !== {} && value !== "") count++;
-        });
-        return count;
-    }
-    */
-    
     function increment(theObject, fieldName) {
         var count = theObject[fieldName] || 0;
         count++;
@@ -187,6 +176,31 @@ function add_catalysisReportQuestionChooser(panelBuilder: PanelBuilder, model, f
         map["storyLength"] = true;
         storageFunction(map);
     }
+
+    function numBoxesChecked() {
+        const map = storageFunction();
+        let result = 0;
+        Object.keys(map).forEach( function(item) {
+            if (map[item]) result ++;
+        });
+        return result;
+    }
+
+    function selectAllStoryQuestions() {
+        var map = {};
+        allStoryQuestions.forEach((question) => {
+            map["S_" + question.displayName] = true;
+        });
+        storageFunction(map);
+    }
+    
+    function selectAllParticipantQuestions() {
+        var map = {};
+        allParticipantQuestions.forEach((question) => {
+            map["P_" + question.displayName] = true;
+        });
+        storageFunction(map);
+    }
     
     function clearAll() {
         storageFunction({});
@@ -203,36 +217,35 @@ function add_catalysisReportQuestionChooser(panelBuilder: PanelBuilder, model, f
             buildQuestionCheckboxSpecialForNumStoriesTold(),
             buildQuestionCheckboxSpecialForStoryLength(),
             m("br"),
-            m("b", "Story questions"),
-            m("br"),  
+            m("div[style=margin-left:1em;font-weight:bold]", "Story questions"),
             m("br"),
             allStoryQuestions.map((question) => {
                 return buildQuestionCheckbox(question.displayName, question.displayType, "S_");
             }),
             allStoryQuestions.length ? [] : m("div", "  (none)"),
             m("br"),
-            m("b", "Participant questions"),
-            m("br"),
+            m("div[style=margin-left:1em;font-weight:bold]", "Participant questions"),
             m("br"),
             allParticipantQuestions.map((question) => {
                 return buildQuestionCheckbox(question.displayName, question.displayType, "P_");
             }),
             allParticipantQuestions.length ? [] : m("div", "  (none)"),
-            m("br"),
-            m("b", "Annotation questions"),
-            m("br"),
-            m("br"),
+            allAnnotationQuestions.length ? m("br") : "",
+            allAnnotationQuestions.length ? m("div[style=margin-left:1em;font-weight:bold]", "Annotation questions") : "",
+            allAnnotationQuestions.length ? m("br") : "",
             allAnnotationQuestions.map((question) => {
                 return buildQuestionCheckbox(question.displayName, question.displayType, "A_");
             }),
-            allAnnotationQuestions.length ? [] : m("div", "  (none)")
+            allAnnotationQuestions.length ? [] : m("div", "")
         ]),
     m("br"),
     m("button", { onclick: selectAll }, "Select all"),
+    m("button", { onclick: selectAllStoryQuestions }, "Select only story questions"),
+    m("button", { onclick: selectAllParticipantQuestions }, "Select only participant questions"),
     m("button", { onclick: clearAll }, "Clear all"),
     m("br"),
     m("br"),
-    m("div", ["Number of stories: " + allStories.length]),
+    m("div[style=margin-left:1em]", ["" + numBoxesChecked() + " questions selected; " + allStories.length + " stories"]),
     m("br")
     ]);
 }

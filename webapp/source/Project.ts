@@ -2,6 +2,7 @@ import PointrelClient = require("./pointrel20150417/PointrelClient");
 import surveyCollection = require("./surveyCollection");
 import TripleStore = require("./pointrel20150417/TripleStore");
 import PanelSpecificationCollection = require("./panelBuilder/PanelSpecificationCollection");
+import questionnaireGeneration = require("./questionnaireGeneration");
 
 "use strict";
 
@@ -292,7 +293,27 @@ class Project {
         }
         this.tripleStore.deleteSetItem(setIdentifier, question.id);
     }
-    
+
+    allQuestionsThatCouldBeGraphedForCatalysisReport(catalysisReportIdentifier) {
+        var elicitingQuestions = this.elicitingQuestionsForCatalysisReport(catalysisReportIdentifier);
+        var numStoriesToldQuestions = this.numStoriesToldQuestionsForCatalysisReport(catalysisReportIdentifier);
+        var storyLengthQuestions = this.storyLengthQuestionsForCatalysisReport(catalysisReportIdentifier);
+        var storyQuestions = this.storyQuestionsForCatalysisReport(catalysisReportIdentifier); 
+        var participantQuestions = this.participantQuestionsForCatalysisReport(catalysisReportIdentifier);
+        var annotationQuestions = questionnaireGeneration.convertEditorQuestions(this.collectAllAnnotationQuestions(), "A_");
+        var allQuestions = [];
+        allQuestions = allQuestions.concat(elicitingQuestions, numStoriesToldQuestions, storyLengthQuestions, storyQuestions, participantQuestions, annotationQuestions);
+        
+        var questionIDsToInclude = this.tripleStore.queryLatestC(catalysisReportIdentifier, "questionsToInclude"); 
+        var result = [];
+        allQuestions.forEach( function(question) {
+            if (questionIDsToInclude[question.id]) {
+                result.push(question);
+            }
+        });
+        return result;
+    }
+
     storiesForCatalysisReport(catalysisReportIdentifier, showWarnings = false) {
         // the reason to have showWarnings is that this method gets called twice on the configure report page (once by the filter warning and once by the questions chooser)
         var result = [];

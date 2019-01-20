@@ -569,9 +569,8 @@ class PatternExplorer {
         var strength = () => {
             return this.observationAccessor(pattern, "observationStrength") || "";
         };
-        
-        // Next assignment creates a circular reference
-        pattern.observation = observation;
+       
+        pattern.observation = observation;  // circular reference
         pattern.strength = strength;
 
         if (this.showInterpretationsInGrid) {
@@ -589,15 +588,12 @@ class PatternExplorer {
     }
 
     buildPatternList() {
-        var result = [];
+        if (!this.questionsToInclude) return [];
+
         var nominalQuestions = [];
         var scaleQuestions = [];
         var textQuestions = [];
-
-        if (!this.questionsToInclude) return result;
-
         this.questions.forEach((question) => {
-            // Skip questions that are not included in configuration
             if (this.questionsToInclude[question.id]) {
                 if (question.displayType === "slider") {
                     scaleQuestions.push(question);
@@ -609,38 +605,125 @@ class PatternExplorer {
             }
         });
 
-        var questionCount = 0;
+        // first check how many patterns there will be, and warn user if the number is very high
+        // but only if there are enough questions selected to make it likely that it will matter
+        // all of these limits have been selected by trial and error (and could be different on faster computers) 
+        var goAhead = true;
+
+        if (this.questionsToInclude && Object.keys(this.questionsToInclude).length > 30) { 
+
+            // the [0] is because we want a count, and when it's building, buildOrCountPatternList returns an array of patterns
+            // so the count is just in an array by itself so the function can return an array
+            var numPatterns = this.buildOrCountPatternList(nominalQuestions, scaleQuestions, textQuestions, false)[0];
+            if (numPatterns > 10000) { // these limits were determined by trial and error
+                goAhead = confirm("You are about to generate " + numPatterns + " graphs. " +
+                    "This could take a long time. " +
+                    "You might want to try selecting fewer questions or graph types. " +
+                    "Are you sure you want to do this?");
+            } else if (numPatterns > 50000) { // these limits were determined by trial and error
+                goAhead = confirm("You are about to generate " + numPatterns + " graphs. " +
+                    "This could take a VERY long time, and it could cause your browser to stop responding. " +
+                    "You really should select fewer questions and/or graph types. " +
+                    "If you are SURE you want to do this, click OK. If your browser freezes, you may have to restart it.");
+            }
+            if (!goAhead) return []; // the Explore patterns page will appear in this case with nothing in the table, but that's okay
+        }
+
+        // now actually generate the patterns
+        var result = this.buildOrCountPatternList(nominalQuestions, scaleQuestions, textQuestions, true);
+
+        var patternIndex = 0;
+        // if a lot of patterns, use progress dialog, otherwise just calculate (and avoid having a dialog blip onto the screen and off again)
+        if (result.length > 200) { // this is an arbitrary number, just a guess as to how long it will take to calculate 
+            // first set all stats to "none" in case they cancel partway through
+            result.forEach((pattern) => { pattern.significance = "None (calculation cancelled)"; });
+            var progressModel = dialogSupport.openProgressDialog("Processing statistics for question combinations", "Generating statistical results...", "Cancel", dialogCancelled);
+            // reduce number of times progress message is updated (to speed up process), but show progress at least every 20 graphs so user knows it is working
+            var howOftenToUpdateProgressMessage = Math.min(Math.max(Math.floor(result.length/100.0), 1), 20); 
+            var stories = this.graphHolder.allStories;
+            var minimumStoryCountRequiredForTest = this.minimumStoryCountRequiredForTest;
+            setTimeout(function() { calculateStatsForNextPattern(); }, 0);
+        } else { // just calculate without any progress dialog
+            result.forEach((pattern) => {
+                calculateStatistics.calculateStatisticsForPattern(result[patternIndex], patternIndex, result.length, howOftenToUpdateProgressMessage,
+                    this.graphHolder.allStories, this.minimumStoryCountRequiredForTest, null); // no progress model
+                patternIndex += 1;
+            });
+        }
+
+        function calculateStatsForNextPattern() {
+            if (progressModel.cancelled) {
+                toaster.toast("Cancelled after calculating statistics for " + (patternIndex + 1) + " patterns");
+            } else if (patternIndex >= result.length) {
+                progressModel.hideDialogMethod();
+                progressModel.redraw();
+            } else {
+                calculateStatistics.calculateStatisticsForPattern(result[patternIndex], patternIndex, result.length, howOftenToUpdateProgressMessage,
+                    stories, minimumStoryCountRequiredForTest, progressModel);  
+                patternIndex += 1;
+                setTimeout(function() { calculateStatsForNextPattern(); }, 0);
+            }
+        }
+    
+        function dialogCancelled(dialogConfiguration, hideDialogMethod) {
+            progressModel.cancelled = true;
+            hideDialogMethod();
+        }
+
+        return result;
+    }
+
+    buildOrCountPatternList(nominalQuestions, scaleQuestions, textQuestions, build) {
+        var result = [];
+        var graphCount = 0;
+
         function nextID() {
-            return ("00000" + questionCount++).slice(-5);
+            return ("00000" + graphCount++).slice(-5);
         }
 
         // data integrity graphs
         if (this.graphTypesToCreate["data integrity graphs"]) {
-            result.push(this.makePattern(nextID(), "data integrity", scaleQuestions, "All scale values"));
-            result.push(this.makePattern(nextID(), "data integrity", scaleQuestions, "Participant means"));
-            result.push(this.makePattern(nextID(), "data integrity", scaleQuestions, "Participant standard deviations"));
-            result.push(this.makePattern(nextID(), "data integrity", nominalQuestions, "Unanswered choice questions"));
-            result.push(this.makePattern(nextID(), "data integrity", scaleQuestions, "Unanswered scale questions"));
+            if (build) {
+                result.push(this.makePattern(nextID(), "data integrity", scaleQuestions, "All scale values"));
+                result.push(this.makePattern(nextID(), "data integrity", scaleQuestions, "Participant means"));
+                result.push(this.makePattern(nextID(), "data integrity", scaleQuestions, "Participant standard deviations"));
+                result.push(this.makePattern(nextID(), "data integrity", nominalQuestions, "Unanswered choice questions"));
+                result.push(this.makePattern(nextID(), "data integrity", scaleQuestions, "Unanswered scale questions"));
+            } else {
+                graphCount += 5;
+            }
         }
 
         // texts
         if (this.graphTypesToCreate["texts"]) {
             textQuestions.forEach((question) => {
-                result.push(this.makePattern(nextID(), "texts", [question], "Text answers"));
+                if (build) {
+                    result.push(this.makePattern(nextID(), "texts", [question], "Text answers"));
+                } else {
+                    graphCount++;
+                }
             });
         }
      
         // one choice question 
         if (this.graphTypesToCreate["bar graphs"]) {
             nominalQuestions.forEach((question1) => {
-                result.push(this.makePattern(nextID(), "bar", [question1], null));
+                if (build) {
+                    result.push(this.makePattern(nextID(), "bar", [question1], null));
+                } else {
+                    graphCount++;
+                }
             });
         };
 
         // one scale question
         if (this.graphTypesToCreate["histograms"]) {
             scaleQuestions.forEach((question1) => {
-                result.push(this.makePattern(nextID(), "histogram", [question1], null));
+                if (build) {
+                    result.push(this.makePattern(nextID(), "histogram", [question1], null));
+                } else {
+                    graphCount++;
+                }
             });
         };
 
@@ -656,7 +739,11 @@ class PatternExplorer {
                 nominalQuestions.forEach((question2) => {
                     var okayToGraphQuestionAgainstItself = this.graphMultiChoiceQuestionsAgainstThemselves && question2.displayType === "checkboxes";
                     if (!okayToGraphQuestionAgainstItself && usedQuestions.indexOf(question2) !== -1) return;
-                    result.push(this.makePattern(nextID(), "table", [question1, question2], null));
+                    if (build) {
+                        result.push(this.makePattern(nextID(), "table", [question1, question2], null));
+                    } else {
+                        graphCount++;
+                    }
                 });
             });
         };
@@ -668,7 +755,11 @@ class PatternExplorer {
                 usedQuestions.push(question1);
                 scaleQuestions.forEach((question2) => {
                     if (usedQuestions.indexOf(question2) !== -1) return;
-                    result.push(this.makePattern(nextID(), "scatter", [question1, question2], null));
+                    if (build) {
+                        result.push(this.makePattern(nextID(), "scatter", [question1, question2], null));
+                    } else {
+                        graphCount++;
+                    }
                 });
             });
         };
@@ -677,7 +768,11 @@ class PatternExplorer {
         if (this.graphTypesToCreate["multiple histograms"]) {
             scaleQuestions.forEach((question1) => {
                 nominalQuestions.forEach((question2) => {
-                    result.push(this.makePattern(nextID(), "multiple histogram", [question1, question2], null));
+                    if (build) {
+                        result.push(this.makePattern(nextID(), "multiple histogram", [question1, question2], null));
+                    } else {
+                        graphCount++;
+                    }
                 });
             });
         };
@@ -691,7 +786,11 @@ class PatternExplorer {
                     var okayToGraphQuestionAgainstItself = this.graphMultiChoiceQuestionsAgainstThemselves && question2.displayType === "checkboxes";
                     if (!okayToGraphQuestionAgainstItself && usedQuestions.indexOf(question2) !== -1) return;
                     scaleQuestions.forEach((question3) => {
-                        result.push(this.makePattern(nextID(), "contingency-histogram", [question1, question2, question3], null));
+                        if (build) {
+                            result.push(this.makePattern(nextID(), "contingency-histogram", [question1, question2, question3], null));
+                        } else {
+                            graphCount++;
+                        }
                     });
                 });
             });
@@ -705,50 +804,24 @@ class PatternExplorer {
                 scaleQuestions.forEach((question2) => {
                     if (usedQuestions.indexOf(question2) !== -1) return;
                     nominalQuestions.forEach((question3) => {
-                    result.push(this.makePattern(nextID(), "multiple scatter", [question1, question2, question3], null));
+                        if (build) {
+                            result.push(this.makePattern(nextID(), "multiple scatter", [question1, question2, question3], null));
+                        } else {
+                            graphCount++;
+                        }
                     });
                 });
             });
         };
 
-        // if a lot of patterns, use progress dialog, otherwise just calculate (and avoid having a dialog blip onto the screen and off again)
-        if (result.length > 200) { // this is an arbitrary number, just a guess as to how long it will take to calculate 
-            // first set all stats to "none" in case they cancel partway through
-            result.forEach((pattern) => { pattern.significance = "None (calculation cancelled)"; });
-            var progressModel = dialogSupport.openProgressDialog("Processing statistics for question combinations", "Generating statistical results...", "Cancel", dialogCancelled);
-            var patternIndex = 0;
-            var stories = this.graphHolder.allStories;
-            var minimumStoryCountRequiredForTest = this.minimumStoryCountRequiredForTest;
-            setTimeout(function() { calculateStatsForNextPattern(); }, 0);
-        } else { // just calculate without any progress dialog
-            var patternIndex = 0;
-            result.forEach((pattern) => {
-                calculateStatistics.calculateStatisticsForPattern(result[patternIndex], patternIndex, result.length, 
-                    this.graphHolder.allStories, this.minimumStoryCountRequiredForTest, null); // no progress model
-                patternIndex += 1;
-            });
+        if (build) {
+            return result;
+        } else {
+            return [graphCount]; // so there is not a different return type
         }
+    }
 
-        function calculateStatsForNextPattern() {
-            if (progressModel.cancelled) {
-                toaster.toast("Cancelled after calculating statistics for " + (patternIndex + 1) + " patterns");
-            } else if (patternIndex >= result.length) {
-                progressModel.hideDialogMethod();
-                progressModel.redraw();
-            } else {
-                calculateStatistics.calculateStatisticsForPattern(result[patternIndex], patternIndex, result.length, 
-                    stories, minimumStoryCountRequiredForTest, progressModel);  
-                patternIndex += 1;
-                setTimeout(function() { calculateStatsForNextPattern(); }, 0);
-            }
-        }
-    
-        function dialogCancelled(dialogConfiguration, hideDialogMethod) {
-            progressModel.cancelled = true;
-            hideDialogMethod();
-        }
-        return result;
-        }
+
     
     chooseGraph(pattern) {
         // Remove old graph(s)
@@ -782,7 +855,6 @@ class PatternExplorer {
         var q2 = pattern.questions[1];
         var q3 = pattern.questions[2]
         var newGraph = null;
-        console.log("graphType", graphType);
         switch (graphType) {
             case "bar":
                 newGraph = charting.d3BarChartForQuestion(graphHolder, q1, selectionCallback);
