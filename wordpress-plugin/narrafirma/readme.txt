@@ -9,57 +9,37 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Requires at least: 4.3.1
 Tested up to: 5.0.3
 Stable tag: trunk
-Version: 1.2.2
+Version: 1.2.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Participatory Narrative Inquiry in a box. Gather stories and make sense of challenges and opportunities 
-in your community or organization.
+Participatory Narrative Inquiry in a box. Gather stories and make sense of challenges and opportunities in your community or organization.
 
 == Description ==
 
-NarraFirma is companion software to the textbook [Working with Stories in Your Community Or Organization: 
-Participatory Narrative Inquiry](http://www.workingwithstories.org).
+NarraFirma is companion software to the textbook [Working with Stories in Your Community Or Organization: Participatory Narrative Inquiry](http://www.workingwithstories.org).
 
-Participatory narrative inquiry is an approach in which groups of people participate in gathering and working with 
-raw stories of personal experience in order to make sense of complex patterns for better decision making. PNI focuses on 
-the profound consideration of values, beliefs, feelings, and perspectives through the recounting and interpretation of 
-lived experience.
+Participatory narrative inquiry is an approach in which groups of people participate in gathering and working with raw stories of personal experience in order to make sense of complex patterns for better decision making. PNI focuses on the profound consideration of values, beliefs, feelings, and perspectives through the recounting and interpretation of lived experience.
 
 = What is NarraFirma? =
 
-* It's a checklist. NarraFirma provides practical guidance as you work, with questions for you to answer, 
-recommendations based on the conditions you describe, activities that help you make decisions, and just-in-time advice.
+* It's a checklist. NarraFirma provides practical guidance as you work, with questions for you to answer, recommendations based on the conditions you describe, activities that help you make decisions, and just-in-time advice.
 
-* It's a journal. NarraFirma helps you keep careful records about what happened in your project, and it 
-gives you places to reflect on what happened. This reminds you to keep learning as you work, and it helps you to 
-document your project for future reference.
+* It's a journal. NarraFirma helps you keep careful records about what happened in your project, and it gives you places to reflect on what happened. This reminds you to keep learning as you work, and it helps you to document your project for future reference.
 
-* It's a kiosk. NarraFirma helps you collect stories, on-line and/or off-line, based on question forms you 
-design (with sample questions you can copy). Because story collection is integrated, there is no need to 
-export or import data.
+* It's a kiosk. NarraFirma helps you collect stories, on-line and/or off-line, based on question forms you design (with sample questions you can copy). Because story collection is integrated, there is no need to export or import data.
 
-* It's a workstation. NarraFirma helps you explore and interpret patterns in your data (stories and answers to 
-questions about stories), creating annotated visualizations you can use to make sense of the stories you collected.
+* It's a workstation. NarraFirma helps you explore and interpret patterns in your data (stories and answers to questions about stories), creating annotated visualizations you can use to make sense of the stories you collected.
 
 = Why choose NarraFirma? =
 
-* It's portable. You can install NarraFirma anywhere, as a WordPress plugin or a Node.js web application. Web hosting 
-is inexpensive, popular, and well supported. You can also install NarraFirma on your local computer and use it off-line.
-(Whichever installation method you choose, we strongly suggest that you set up SSL security on your web site before collecting 
-or entering confidential or important information. Many hosting providers can help you with this task.) 
+* It's portable. You can install NarraFirma anywhere, as a WordPress plugin or a Node.js web application. Web hosting is inexpensive, popular, and well supported. You can also install NarraFirma on your local computer and use it off-line. (Whichever installation method you choose, we strongly suggest that you set up SSL security on your web site before collecting or entering confidential or important information. Many hosting providers can help you with this task.) 
 
-* It's a team player. With NarraFirma your team can work on projects together in real time without having to hand 
-files back and forth. You can plan your project, collect stories, discover patterns, and reflect on what you've 
-learned - together.
+* It's a team player. With NarraFirma your team can work on projects together in real time without having to hand files back and forth. You can plan your project, collect stories, discover patterns, and reflect on what you've learned - together.
 
-* It's an open book. NarraFirma is open source software. So if you have a question about how something works, 
-you can just look at the source code to find out. If you need the software to do something it can't do, you can 
-add new functionality yourself or ask someone else to add it.
+* It's an open book. NarraFirma is open source software. So if you have a question about how something works, you can just look at the source code to find out. If you need the software to do something it can't do, you can add new functionality yourself or ask someone else to add it.
 
-* It works in the real world. One NarraFirma installation supports multiple projects, forms, data sets, and reports. 
-Why? Because real-life story projects are rarely simple or predictable. So go ahead and make a mess. NarraFirma 
-is ready for it.
+* It works in the real world. One NarraFirma installation supports multiple projects, forms, data sets, and reports. Why? Because real-life story projects are rarely simple or predictable. So go ahead and make a mess. NarraFirma is ready for it.
 
 == Installation ==
 
@@ -73,13 +53,22 @@ To install NarraFirma:
 6. Click "Activate."
 7. You should see a new "NarraFirma" menu item in your dashboard menu. Click it.
 8. In the screen that appears, create a new project and add some users who can access it.
- 
+
+Or you can install NarraFirma from the WordPress plugins directory:
+
+1. In your WordPress installation, click "Plugins."
+2. Click "Add New."
+3. In the search box, type "narrafirma".
+4. When NarraFirma appears, click "Install."
+5. Click "Activate."
+6. You should see a new "NarraFirma" menu item in your dashboard menu. Click it.
+7. In the screen that appears, create a new project and add some users who can access it.
+
 == Frequently Asked Questions ==
 
 = Where can I found out more about participatory narrative inquiry? =
 
-Take a look at the book behind NarraFirma, [Working with Stories in Your Community Or Organization: 
-Participatory Narrative Inquiry](http://www.workingwithstories.org)
+Take a look at the book behind NarraFirma, [Working with Stories in Your Community Or Organization: Participatory Narrative Inquiry](http://www.workingwithstories.org)
 
 = What should I do if I find a bug? =
 
@@ -87,60 +76,44 @@ Tell us about it on the [GitHub issues list](https://github.com/pdfernhout/narra
 
 = What about web security? =
 
-We strongly suggest that you set up any web site on which you intend to install NarraFirma 
-with SSL (secure sockets). Your hosting provider should be able to help you do that.
+We strongly suggest that you set up any web site on which you intend to install NarraFirma with SSL (secure sockets). Your hosting provider should be able to help you do that.
 
 == Screenshots ==
 
-1. This is the main page of NarraFirma. The sections of the software (and the phases of PNI)
-are shown in the diagram. Clicking on any of these buttons
-leads to that section.
+1. This is the main page of NarraFirma. The sections of the software (and the phases of PNI) are shown in the diagram. Clicking on any of these buttons  leads to that section.
 
-2. This the main page for the NarraFirma planning section. Links to all the pages in that section
-are listed. You can enter reminders for any page; they show up on this page.
+2. This the main page for the NarraFirma planning section. Links to all the pages in that section are listed. You can enter reminders for any page; they show up on this page.
 
-3. Here the NarraFirma user is describing the groups of people who will be participating in their project.
-Describing your groups helps you think about how you should collect stories and what
-you should do with them.
+3. Here the NarraFirma user is describing the groups of people who will be participating in their project. Describing your groups helps you think about how you should collect stories and what you should do with them.
 
-4. Here the NarraFirma user is doing a little sensemaking exercise based on some stories
-they told about what might happen when they do the project. Thinking in stories
-during project planning helps to make better decisions about how to carry out the project.
+4. Here the NarraFirma user is doing a little sensemaking exercise based on some stories they told about what might happen when they do the project. Thinking in stories during project planning helps to make better decisions about how to carry out the project.
 
-5. Here the NarraFirma user is deciding how they will collect stories. They are looking at recommendations
-the software is giving them based on the answers they gave to the questions about their
-participant groups (see screenshot 3). 
+5. Here the NarraFirma user is deciding how they will collect stories. They are looking at recommendations the software is giving them based on the answers they gave to the questions about their participant groups (see screenshot 3). 
 
 6. Here the NarraFirma user is creating questions they will ask people about their stories.
 
-7. Here is the NarraFirma survey form participants see when they tell their stories (or NarraFirma
-users see when they enter the stories they collected off-line).
+7. Here is the NarraFirma survey form participants see when they tell their stories (or NarraFirma users see when they enter the stories they collected off-line).
 
-8. Here the NarraFirma user is looking at stories as they come in to the collection. They are
-looking here only at stories told by older people who said the person in their story
-wanted to be heard.
+8. Here the NarraFirma user is looking at stories as they come in to the collection. They are looking here only at stories told by older people who said the person in their story wanted to be heard.
 
-9. Here the user is looking at patterns in the data (answers to questions) collected.
-The selected row of the table of patterns (at the top) 
-shows that the questions "How do you feel about this story"
-and "What is your age" are being compared, creating a contingency (bubble) graph. The user has written an
-observation about that pattern ("People under 35 more positive") and two interpretations
-of what that pattern might mean ("More weight on older shoulders" versus "Younger people
-have lots of energy"). The user has selected some stories on the graph to read; the stories appear
-in the table at the bottom of the image.
+9. Here the user is looking at patterns in the data (answers to questions) collected. The selected row of the table of patterns (at the top) shows that the questions "How do you feel about this story" and "What is your age" are being compared, creating a contingency (bubble) graph. The user has written an observation about that pattern ("People under 35 more positive") and two interpretations of what that pattern might mean ("More weight on older shoulders" versus "Younger people have lots of energy"). The user has selected some stories on the graph to read; the stories appear in the table at the bottom of the image.
 
-10. Here the NarraFirma user is designing a plan for a sensemaking session,
-where people will work with the collected stories and patterns to make sense of the topic
-being explored.
+10. Here the NarraFirma user is designing a plan for a sensemaking session, where people will work with the collected stories and patterns to make sense of the topic being explored.
 
-11. Here the NarraFirma user is ansewring questions about the outcomes of the project
-for each participant group. Those outcomes will determine recommendations for
-interventions.
+11. Here the NarraFirma user is ansewring questions about the outcomes of the project for each participant group. Those outcomes will determine recommendations for interventions.
 
-12. Here the NarraFirma user is reflecting on the entire project, to learn from it
-and to keep good records for the future.
+12. Here the NarraFirma user is reflecting on the entire project, to learn from it and to keep good records for the future.
 
 == Changelog ==
+
+= 1.2.3 =
+
+Fixed: Critical bug (introduced in v1.2.0) where exporting "project snapshot with stories" was not actually exporting any stories
+Fixed: Bug where some empty values were being mistakenly counted in Mann-Whitney U test (statistics for multiple histograms and contingency-histogram charts)
+Added: Information on "Configure catalysis report" page telling user how many patterns (graphs, statistical calculations) will be generated by their current selections
+Added: Warnings when large numbers of patterns will cause the "Explore patterns" page to load slowly (>10K graphs) or the browser to stop responding (>50K graphs) 
+Added: Buttons on "Configure catalysis report" and "Print story cards" pages to select all story questions or participant questions
+Changed: On "Explore patterns" page, progress bar (shown while calculating statistical results) now updates less frequently, causing the process to run faster 
 
 = 1.2.2 =
 
@@ -321,43 +294,35 @@ change logs, see the [GitHub repository](https://github.com/pdfernhout/narrafirm
 
 == Upgrade Notice ==
 
+= 1.2.3 = 
+This is a critical upgrade. Please apply it right away. It fixes a bug we introduced in version 1.2.0, in which exporting a project snapshot "with stories" did not actually export any stories. We apologize for the mistake. There is also a fix for a bug in the Mann-Whitney U test (some blank values were being erroneously counted). The update also improves error handling for projects with large numbers of questions.
+
 = 1.2.2 = 
 This minor upgrade copies a few buttons (important to importing data) to some more useful places. It also fixes a few annoying bugs.
 
 = 1.2.1 =
-This minor upgrade adds the option to graph multi-choice questions against themselves,
-to look for patterns in coincidences of answers. It also improves a few visual details
-and fixes a bug in the observations-only catalysis report.
+This minor upgrade adds the option to graph multi-choice questions against themselves, to look for patterns in coincidences of answers. It also improves a few visual details and fixes a bug in the observations-only catalysis report.
 
 = 1.2.0 =
-This higly recommended upgrade improves catalysis reports and story cards,
-and provides many more import options. It also includes many usability improvements and small bug fixes. 
+This higly recommended upgrade improves catalysis reports and story cards, and provides many more import options. It also includes many usability improvements and small bug fixes. 
 
 = 1.1.0 = 
-This upgrade adds two new ways to get your data out of NarraFirma: in the survey, a summary of submitted stories participants can copy and keep;
-and in the application, an HTML project report that summarizes everything you typed into NarraFirma (for use in other software).
+This upgrade adds two new ways to get your data out of NarraFirma: in the survey, a summary of submitted stories participants can copy and keep; and in the application, an HTML project report that summarizes everything you typed into NarraFirma (for use in other software).
 
 = 1.0.2 =
-This minor upgrade improves your ability to control messages in the story form (especially useful for non-English surveys).
-It also adds a "notes" fields to each question, so you can keep track of your reasons to use particular questions.
+This minor upgrade improves your ability to control messages in the story form (especially useful for non-English surveys). It also adds a "notes" fields to each question, so you can keep track of your reasons to use particular questions.
 
 = 1.0.1 = 
-This upgrade fixes a small bug in the NarraFirma interface. 
-It also improves the screenshots shown in the WordPress plugins directory.
+This upgrade fixes a small bug in the NarraFirma interface. It also improves the screenshots shown in the WordPress plugins directory.
 
 = 1.0.0 =
-This highly recommended upgrade improves customization of surveys and reports, 
-plus better support for narrative catalysis (finding and exploring patterns).
-It also includes many usability improvements and small bug fixes. 
+This highly recommended upgrade improves customization of surveys and reports, plus better support for narrative catalysis (finding and exploring patterns). It also includes many usability improvements and small bug fixes. 
 
 = 0.9.8 =
-This upgrade improves the clarity and style of the application and some of its reports. 
-This is not a critical release, but it's recommended because it makes the application easier to use.
+This upgrade improves the clarity and style of the application and some of its reports. This is not a critical release, but it's recommended because it makes the application easier to use.
 
 = 0.9.7 =
-WordPress users should upgrade to this version. 
-It contains a fix for a bug that could lose data in checkbox survey questions. A "Does not apply" option
-was added for slider questions. There are also some improvements to graphs and usability.
+WordPress users should upgrade to this version. It contains a fix for a bug that could lose data in checkbox survey questions. A "Does not apply" option was added for slider questions. There are also some improvements to graphs and usability.
 
 = 0.9.6 =
 WordPress users should upgrade to this version as it contains a security fix.
@@ -366,8 +331,7 @@ WordPress users should upgrade to this version as it contains a security fix.
 Improvements for Node.js version and README/SETUP for installation. There is no need to upgrade to this version for WordPress users.
 
 = 0.9.4 =
-This upgrade fixes a bug where the web survey always used the first version of a question form and would never disable it.
-It also uses a NarraFirma namespace in the WordPress plugin PHP file to conform with WordPress guidelines.
+This upgrade fixes a bug where the web survey always used the first version of a question form and would never disable it. It also uses a NarraFirma namespace in the WordPress plugin PHP file to conform with WordPress guidelines.
 
 = 0.9.3 =
 This upgrade fixes a bug (in CSV export) and a few cosmetic issues.
@@ -380,12 +344,9 @@ This upgrade affects performance only.
 
 == Donations ==
 
-We have spent a lot of time developing NarraFirma. We appreciate donations, and will use them to 
-keep working on it. You can donate
-at [PayPal](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=DGVVDT2D49QA8).
+We have spent a lot of time developing NarraFirma. We appreciate donations, and will use them to keep working on it. You can donate at [PayPal](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=DGVVDT2D49QA8).
 
 == Need some help? ==
 
-I offer training in the use of NarraFirma and consulting for PNI projects. If you are interested,
-check out my web site at [cfkurtz.com](cfkurtz.com), or send me a note at cfkurtz at cfkurtz dot com.
+I offer training in the use of NarraFirma and consulting for PNI projects. If you are interested, check out my web site at [cfkurtz.com](cfkurtz.com), or send me a note at cfkurtz at cfkurtz dot com.
 
