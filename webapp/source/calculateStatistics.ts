@@ -162,7 +162,7 @@ function valuesForFieldChoices(stories: surveyCollection.Story[], scaleQuestion,
         } else {
             choiceValue = stories[i].fieldValue(choiceQuestion.id);
         }
-        if (choiceValue === null || choiceValue === undefined || scaleValue === "") continue; 
+        if (choiceValue === null || choiceValue === undefined || choiceValue === "") continue; 
 
         if (secondChoiceQuestion) {
             var secondChoiceValue;
@@ -171,7 +171,7 @@ function valuesForFieldChoices(stories: surveyCollection.Story[], scaleQuestion,
             } else {
                 secondChoiceValue = stories[i].fieldValue(secondChoiceQuestion.id);
             }
-            if (secondChoiceValue === null || secondChoiceValue === undefined || scaleValue === "") continue; 
+            if (secondChoiceValue === null || secondChoiceValue === undefined || secondChoiceValue === "") continue; 
         }
 
         addValue(values, choiceValue, scaleValue, secondChoiceValue);
