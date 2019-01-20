@@ -24,9 +24,8 @@ var panel: Panel = {
             valueOptions: ["project snapshot without stories", "project snapshot with stories", "project history with stories"],
             displayName: "Export type",
             displayPrompt: `In what way would you like to <strong>export the current project</strong>? 
-                (A \"project snapshot\" is a copy of the project in its current state. A project history captures all changes to the project
-                since it was created. Project histories are not being used for anything special right now, but they could be used 
-                to implement an undo system in the future.)
+                (A project snapshot is a copy of the project's current state, leaving out data that is no longer being used. 
+                A project history is a complete backup of everything that was added to the project since its creation. )
                 `
         },
         {
