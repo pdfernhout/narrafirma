@@ -208,7 +208,10 @@ I4a. Type
 
     svn update
 
-again. If any new files have been added, you must do a
+again. Modified files should have an M to the left of their names. 
+New files will have a question mark.
+
+If any new files have been added, you must do a
 
     svn add
 
