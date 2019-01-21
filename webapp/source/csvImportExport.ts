@@ -611,8 +611,6 @@ function processCSVContentsForStories(contents, saveStories, writeLog, questionn
         return;
     }
     
-    var totalSurveyCount = surveyResults.length;
-
     function dialogCancelled(dialogConfiguration, hideDialogMethod) {
         progressModel.cancelled = true;
         hideDialogMethod();
@@ -635,19 +633,22 @@ function processCSVContentsForStories(contents, saveStories, writeLog, questionn
         }
     };
     
+    var totalSurveyCount = surveyResults.length;
     var surveyIndexToSend = 0;
+    let numStoriesSentSoFar = 0;
     
     function sendNextSurveyResult() {
         if (progressModel.cancelled) {
-            alert("Cancelled after sending " + totalStoryCount + " stories from " + surveyIndexToSend + " participants");
+            alert("Cancelled after sending " + numStoriesSentSoFar + " stories from " + surveyIndexToSend + " participants to server.");
         } else if (surveyIndexToSend >= surveyResults.length) {
-            alert("Finished sending " + totalStoryCount + " stories from " + totalSurveyCount + " participants to server.");
+            alert("Finished sending " + numStoriesSentSoFar + " stories from " + surveyIndexToSend + " participants to server.");
             progressModel.hideDialogMethod();
             progressModel.redraw();
         } else {
             var surveyResult = surveyResults[surveyIndexToSend++];
             // TODO: Translate
-            progressModel.progressText = "Sending " + totalStoryCount + " stories from " + surveyIndexToSend + " of " + totalSurveyCount + " participants";
+            numStoriesSentSoFar += surveyResult.stories.length;
+            progressModel.progressText = "Sending " + numStoriesSentSoFar + "/" + totalStoryCount + " stories from " + surveyIndexToSend + "/" + totalSurveyCount + " participants to server";
             progressModel.redraw();
             surveyStorage.storeSurveyResult(project.pointrelClient, project.projectIdentifier, storyCollectionName, surveyResult, wizardPane);
         }
@@ -661,50 +662,52 @@ function processCSVContentsForStories(contents, saveStories, writeLog, questionn
     //////////////////////////////////////// IF WRITING LOG AND NOT SAVING STORIES
 
     // write accumulated log items to console
-    if (logItems.length > 0) {
-        console.clear();
-        logItems.forEach(function(item) {
-            var typeAndText = item.split("||");
-            var type = typeAndText[0];
-            var text = typeAndText[1];
-            if (type === "INFO") {
-                console.info(text);
-            } else if (type === "WARN") {
-                console.warn(text);
-            } else if (type === "LOG") {
-                console.log(text);
-            } else if (type === "ERROR") {
-                console.error(text);
-            }
-        });
-    }
+    if (writeLog) {
 
-    // write answer counts to bottom of console log
-    var questionNames = Object.keys(logQuestionAnswerCounts);
-    if (questionNames.length > 0) {
-        console.info("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< ANSWER COUNTS >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
-        for (var questionIndex = 0; questionIndex < questionNames.length; questionIndex++) {
-            var questionName = questionNames[questionIndex];
-            var answerOutputText = "";
-            var answerInfo = logQuestionAnswerCounts[questionName];
-            var answerNames = Object.keys(answerInfo);
-            for (var answerIndex = 0; answerIndex < answerNames.length; answerIndex++) {
-                var answerName = answerNames[answerIndex];
-                answerOutputText += answerName + ": " + answerInfo[answerName];
-                if (answerIndex < answerNames.length-1) {
-                    answerOutputText += "; "
+        if (logItems.length > 0) {
+            console.clear();
+            logItems.forEach(function(item) {
+                var typeAndText = item.split("||");
+                var type = typeAndText[0];
+                var text = typeAndText[1];
+                if (type === "INFO") {
+                    console.info(text);
+                } else if (type === "WARN") {
+                    console.warn(text);
+                } else if (type === "LOG") {
+                    console.log(text);
+                } else if (type === "ERROR") {
+                    console.error(text);
                 }
-            }
-            console.info(questionName + ": " + answerOutputText);
+            });
         }
-    }
 
-    // tell user log is complete, remove progress bar
-    if (!saveStories) {
+        // write answer counts to bottom of console log
+        var questionNames = Object.keys(logQuestionAnswerCounts);
+        if (questionNames.length > 0) {
+            console.info("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< ANSWER COUNTS >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+            for (var questionIndex = 0; questionIndex < questionNames.length; questionIndex++) {
+                var questionName = questionNames[questionIndex];
+                var answerOutputText = "";
+                var answerInfo = logQuestionAnswerCounts[questionName];
+                var answerNames = Object.keys(answerInfo);
+                for (var answerIndex = 0; answerIndex < answerNames.length; answerIndex++) {
+                    var answerName = answerNames[answerIndex];
+                    answerOutputText += answerName + ": " + answerInfo[answerName];
+                    if (answerIndex < answerNames.length-1) {
+                        answerOutputText += "; "
+                    }
+                }
+                console.info(questionName + ": " + answerOutputText);
+            }
+        }
+
+        // tell user log is complete, remove progress bar
         alert("Finished checking " + totalStoryCount + " stories. " + numRowsSkipped + " rows skipped. Check browser console for LOG, INFO, WARNING, and ERROR entries.");
         progressModel.hideDialogMethod();
         progressModel.redraw();
     }
+
 }
 
 //------------------------------------------------------------------------------------------------------------------------------------------
