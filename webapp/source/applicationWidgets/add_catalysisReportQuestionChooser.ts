@@ -25,6 +25,9 @@ function add_catalysisReportQuestionChooser(panelBuilder: PanelBuilder, model, f
     
     function isChecked(shortName, value = undefined) {
         var map = storageFunction() || {};
+        if (map === undefined) {
+            return false;
+        }
         if (value === undefined) {
             return !!map[shortName];
         }
@@ -180,9 +183,11 @@ function add_catalysisReportQuestionChooser(panelBuilder: PanelBuilder, model, f
     function numBoxesChecked() {
         const map = storageFunction();
         let result = 0;
-        Object.keys(map).forEach( function(item) {
-            if (map[item]) result ++;
-        });
+        if (map) {
+            Object.keys(map).forEach( function(item) {
+                if (map[item]) result ++;
+            });
+        }
         return result;
     }
 
