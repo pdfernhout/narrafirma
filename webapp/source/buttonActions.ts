@@ -219,12 +219,14 @@ export function copyInterpretationsToClusteringDiagram() {
                 var interpretationIdentifier = interpretations[i];
                 var interpretationName = project.tripleStore.queryLatestC(interpretationIdentifier, "interpretation_name");
                 var interpretationText = project.tripleStore.queryLatestC(interpretationIdentifier, "interpretation_text");
-                allInterpretations.push({
-                    "type": "Interpretation",
-                    id: interpretationIdentifier,
-                    name: interpretationName,
-                    text: interpretationText
-                });
+                if (interpretationName) {
+                    allInterpretations.push({
+                        "type": "Interpretation",
+                        id: interpretationIdentifier,
+                        name: interpretationName,
+                        text: interpretationText
+                    });
+                }
             }
         }
     }
