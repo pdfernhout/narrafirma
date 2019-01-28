@@ -307,7 +307,7 @@ class Project {
         var questionIDsToInclude = this.tripleStore.queryLatestC(catalysisReportIdentifier, "questionsToInclude"); 
         var result = [];
         allQuestions.forEach( function(question) {
-            if (questionIDsToInclude[question.id]) {
+            if (questionIDsToInclude && questionIDsToInclude[question.id]) {
                 result.push(question);
             }
         });
