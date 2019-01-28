@@ -112,7 +112,7 @@ export function generateSpecificTypeOfSanitizedHTMLForMithril(html, specifiedHTM
             if (i < l-1) {
                 var pos = html.indexOf(">", i + 1);
                 if (pos < 0) {
-                    throw new Error("No closing angle bracket found after position: " + i);
+                    throw new Error('For the text "' + html + '", no closing angle bracket was found after position: ' + i);
                 }
             }
             var tagName = html.substring(i + 1, pos);
