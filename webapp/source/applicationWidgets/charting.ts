@@ -594,8 +594,8 @@ function addTitlePanelForChart(chartPane, chartTitle) {
 export function d3BarChartForQuestion(graphBrowserInstance: GraphHolder, question, storiesSelectedCallback, inGraphBrowser = false) {
     var allPlotItems = [];
     var xLabels = [];  
-    var key;
     var results = {};
+    var key;
     
     preloadResultsForQuestionOptions(results, question);
     // change 0 to [] for preloaded results
@@ -954,7 +954,7 @@ export function d3HistogramChartForValues(graphBrowserInstance: GraphHolder, plo
     
     var cutoff = 64;
     if (isSmallFormat) {
-        cutoff = 18;
+        cutoff = 32;
     } else {
         cutoff = 64;
     }
@@ -1136,7 +1136,9 @@ export function multipleHistograms(graphBrowserInstance: GraphHolder, choiceQues
         options.push("false");
     } else if (choiceQuestion.valueOptions) {
         for (index in choiceQuestion.valueOptions) {
-            options.push(choiceQuestion.valueOptions[index]);
+            if (options.indexOf(choiceQuestion.valueOptions[index]) < 0) {
+                options.push(choiceQuestion.valueOptions[index]);
+            }
         }
     }
     // TODO: Could push extra options based on actual data choices (in case question changed at some point
@@ -1373,7 +1375,9 @@ export function multipleScatterPlot(graphBrowserInstance: GraphHolder, xAxisQues
         options.push("false");
     } else if (choiceQuestion.valueOptions) {
         for (index in choiceQuestion.valueOptions) {
-            options.push(choiceQuestion.valueOptions[index]);
+            if (options.indexOf(choiceQuestion.valueOptions[index]) < 0) {
+                options.push(choiceQuestion.valueOptions[index]);
+            }
         }
     }
     
