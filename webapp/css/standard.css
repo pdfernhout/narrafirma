@@ -869,14 +869,14 @@ table.filterTable td {
 }
 
 .narrafirma-statistics-panel {
-    background-color: #c5d2eb;
+    background-color: white;
 	padding: 0.5em;
 	margin: 0.5em;
     font-size: 0.9em;
 } 
 
 .narrafirma-statistics-panel-small {
-    background-color: #c5d2eb;
+    background-color: white;
 	padding: 0.5em;
 	margin: 0.5em;
     font-size: 0.9em;
@@ -1103,14 +1103,14 @@ td.narrafirma-mw-nested-title, td.narrafirma-mw-nested-stats {
 	fill: black;
 	stroke-width: 0.5px;
 	font-family: sans-serif;
-    font-size: 1em;
+    font-size: 0.8em;
 }
 
 .y-axis-label {
 	fill: black;
 	stroke-width: 0.5px;
 	font-family: sans-serif;
-    font-size: 1em;
+    font-size: 0.8em;
 }
 
 .story.even {
