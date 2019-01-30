@@ -439,14 +439,26 @@ export function calculateStatisticsForMultipleScatterPlot(ratioQuestion1, ratioQ
     }
     var minSignificanceOptionStats = {significance: "None", calculated: []};
     var minSignificance = 1000;
+    var maxSignificance = 0;
     for (index in options) {
         var option = options[index];
         var optionStats = calculateStatisticsForScatterPlot(ratioQuestion1, ratioQuestion2, choiceQuestion, option, stories, minimumStoryCountRequiredForTest);
+        if (optionStats.p && optionStats.p > maxSignificance) {
+            maxSignificance = optionStats.p;
+        }
         if (optionStats.p && optionStats.p < minSignificance) {
             minSignificance = optionStats.p;
             minSignificanceOptionStats = optionStats;
         }
     }
+    var difference = maxSignificance - minSignificance;
+    var differenceText = "";
+    if (difference == -1000) { // no optionStats (probably because all graphs had too few items in them)
+        differenceText = "(none)";
+    } else {
+        differenceText = "" + difference.toFixed(3);
+    }
+    minSignificanceOptionStats.significance = "p range: " + differenceText + ", p lowest: [" + minSignificanceOptionStats.significance.trim() + "]";
     return minSignificanceOptionStats;
 }
 
