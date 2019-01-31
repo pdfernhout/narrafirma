@@ -100,10 +100,10 @@ function add_functionResult(panelBuilder: PanelBuilder, model, fieldSpecificatio
  */
 function add_grid(panelBuilder, model, fieldSpecification) {
     var prompt = panelBuilder.buildQuestionLabel(fieldSpecification);
-    return [
+    return m("div:narrafirma-question-type-grid-plus-prompt", [
         prompt,
         m.component(<any>GridWithItemPanel, {key: fieldSpecification.id, panelBuilder: panelBuilder, model: model, fieldSpecification: fieldSpecification, readOnly: panelBuilder.readOnly})
-    ];
+    ]);
 }
 
 function addStandardPlugins() {
@@ -182,7 +182,7 @@ class PanelBuilder {
         var displayVisible = fieldSpecification.displayVisible;
         if (displayVisible === undefined) displayVisible = true;
         if (typeof displayVisible === "function") displayVisible = displayVisible(this, model, fieldSpecification);
-        if (!displayVisible) return ""; // m("div");
+        if (!displayVisible) return m("div"); 
 
         var addFunction = buildingFunctions[fieldSpecification.displayType];
         if (!addFunction) {
@@ -208,7 +208,7 @@ class PanelBuilder {
             return addFunction(this, model, fieldSpecification);
         } catch (e) {
             console.log("Exception creating widget", fieldSpecification, e);
-            return m("div", {style: "border: 1px solid red; margin: 10px;"}, ["Problem creating widget type: " + fieldSpecification.displayType + " :: id: " + fieldSpecification.id, m("br"), "Exception: " + e]);
+            return m("div", {style: "border: 1px solid red; margin: 10px; padding: 10px"}, ["Problem creating widget type: " + fieldSpecification.displayType + " :: id: " + fieldSpecification.id, m("br"), "Exception: " + e]);
         }
     }
     
@@ -378,7 +378,7 @@ class PanelBuilder {
     buildQuestionLabel(fieldSpecification) {
         return [
             // TODO: Generalize this css class name
-            m("span", {"class": "questionPrompt"}, this.addAllowedHTMLToPrompt(fieldSpecification.displayPrompt))
+            m("span", {"class": "questionPrompt", "style": fieldSpecification.displayPrompt ? "display: block" : "display: none"}, this.addAllowedHTMLToPrompt(fieldSpecification.displayPrompt))
         ];
     }
 }
