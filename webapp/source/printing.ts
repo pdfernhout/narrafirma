@@ -248,7 +248,12 @@ function repeatTags(count, tags) {
 
 function printText(text) {
     try {
-        var result = sanitizeHTML.generateSanitizedHTMLForMithril(text);
+        if (text) {
+            var textWithCarriageReturns = replaceAll(text, "\n", "\n<br>"); 
+            var result = sanitizeHTML.generateSanitizedHTMLForMithril(textWithCarriageReturns);
+        } else {
+            result = "";
+        }
         return result;
     } catch (error) {
         alert(error);
@@ -628,7 +633,7 @@ function displayForGraph(graphNode: HTMLElement, graphHolder: GraphHolder) {
     
     styleNode.innerHTML = "<![CDATA[" + graphResultsPaneCSS + "]]>";
     graphNode.firstChild.insertBefore(styleNode, graphNode.firstChild.firstChild);
-    // remove the statistics panel
+    
     var statisticsPanel = <HTMLElement>graphNode.childNodes.item(2); // item(1) is title pane
     if (statisticsPanel) graphNode.removeChild(statisticsPanel);
 
@@ -824,10 +829,13 @@ export function printCatalysisReport() {
         var observationIDsWithCorrectStrengths = [];
         var printStrengths = [];
         var includeObservationsWithoutStrengths = false;
+        var sortObservations = false;
+        var numObservationsPerType = {"1 (weak)": 0, "2 (medium)": 0, "3 (strong)": 0};
         switch (printWhat) {
             case "observations (all)": 
                 ["1 (weak)", "2 (medium)", "3 (strong)"];
                 includeObservationsWithoutStrengths = true;
+                sortObservations = true;
                 break;
             case "observations (strong)": 
                 printStrengths = ["3 (strong)"]; 
@@ -840,14 +848,52 @@ export function printCatalysisReport() {
                 break;
             case "observations (strong and medium)": 
                 printStrengths = ["2 (medium)", "3 (strong)"]; 
+                sortObservations = true;
                 break;
+            default:
+                throw new Error("Unexpected print choice: " + printWhat);
         }
         observationIDs.forEach((id) => {
             var item = project.tripleStore.makeObject(id, true);
+            if (!item.observationTitle || !item.observationTitle.trim())
+                return;
             if (includeObservationsWithoutStrengths || (item.observationStrength && printStrengths.indexOf(item.observationStrength) >= 0)) {
+                numObservationsPerType[item.observationStrength] += 1;
                 observationIDsWithCorrectStrengths.push(id);
             }
         });
+        if (sortObservations) {
+            observationIDsWithCorrectStrengths.sort(function(a, b) {
+                var itemA = project.tripleStore.makeObject(a, true);
+                var itemB = project.tripleStore.makeObject(b, true);
+                if (itemA && itemB) {
+                    if (itemA.observationStrength && itemB.observationStrength) {
+                        if (itemA.observationStrength[0] > itemB.observationStrength[0]) {
+                            return -1; // a is stronger
+                        } else {
+                            return 1;
+                        }
+                    } else { // at least one item has no strength value set
+                        return 0;
+                    }
+                } else { // at least one item is missing
+                    return 0;
+                }
+            })
+        }
+        var message = "Are you sure you want to print these observations?\n";
+        if (numObservationsPerType["3 (strong)"] > 0) {
+            message += "\n   - " + numObservationsPerType["3 (strong)"] + " strong ";
+        }
+        if (numObservationsPerType["2 (medium)"] > 0) {
+            message += "\n   - " + numObservationsPerType["2 (medium)"] + " medium ";
+        }
+        if (numObservationsPerType["1 (weak)"] > 0) {
+            message += "\n   - " + numObservationsPerType["1 (weak)"] + " weak ";
+        }
+        if (!confirm(message)) {
+            return;
+        }
         printCatalysisReportWithOnlyObservations(project, catalysisReportIdentifier, catalysisReportName, allStories, observationIDsWithCorrectStrengths, options);
     } else {
         printCatalysisReportWithClusteredInterpretations(project, catalysisReportIdentifier, catalysisReportName, allStories, observationIDs, options);
