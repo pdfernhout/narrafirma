@@ -869,14 +869,14 @@ table.filterTable td {
 }
 
 .narrafirma-statistics-panel {
-    background-color: #c5d2eb;
+    background-color: inherit;
 	padding: 0.5em;
 	margin: 0.5em;
     font-size: 0.9em;
 } 
 
 .narrafirma-statistics-panel-small {
-    background-color: #c5d2eb;
+    background-color: inherit;
 	padding: 0.5em;
 	margin: 0.5em;
     font-size: 0.9em;
