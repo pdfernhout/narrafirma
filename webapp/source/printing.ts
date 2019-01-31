@@ -633,7 +633,7 @@ function displayForGraph(graphNode: HTMLElement, graphHolder: GraphHolder) {
     
     styleNode.innerHTML = "<![CDATA[" + graphResultsPaneCSS + "]]>";
     graphNode.firstChild.insertBefore(styleNode, graphNode.firstChild.firstChild);
-    
+    // remove the statistics panel
     var statisticsPanel = <HTMLElement>graphNode.childNodes.item(2); // item(1) is title pane
     if (statisticsPanel) graphNode.removeChild(statisticsPanel);
 
