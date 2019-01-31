@@ -7,6 +7,7 @@ interface GraphSelection {
     y2?: number;
     subgraphQuestion?: any;
     subgraphChoice?: any;
+    selectedPlotItemNames?: Array<String>;
 }
 
 interface GraphHolder {
@@ -71,6 +72,7 @@ interface PanelField {
     displayTransformValue?: any;
     displayURLValue?: any;
     displayPreventBreak?: any;
+    displayWithoutQuestionDivs?: any;
     displayDataOptionField?: any;
     displayClass?: string;
 }

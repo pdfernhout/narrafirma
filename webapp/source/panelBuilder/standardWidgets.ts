@@ -94,6 +94,8 @@ export function displayQuestion(panelBuilder: PanelBuilder, model, fieldSpecific
 
     var displayType = fieldSpecification.displayType;
     var questionLabel = panelBuilder.buildQuestionLabel(fieldSpecification);
+
+    var useNormalDivs = typeof fieldSpecification.displayWithoutQuestionDivs === "undefined" || !fieldSpecification.displayWithoutQuestionDivs;
     
     function makeLabel() {
         // The for attribute of the label element must refer to a form control.
@@ -265,7 +267,7 @@ export function displayQuestion(panelBuilder: PanelBuilder, model, fieldSpecific
 
         parts = [
             m("select", standardValueOptions, selectOptions),
-            m("br")
+            fieldSpecification.displayWithoutQuestionDivs ? "" : m("br")
         ];
     } else if (displayType === "slider") {
         makeLabel();
@@ -331,7 +333,7 @@ export function displayQuestion(panelBuilder: PanelBuilder, model, fieldSpecific
         ];
     }
 
-    if (parts.length) {
+    if (parts.length && useNormalDivs) {
         parts = m("div", {"class": "questionInternal narrafirma-question-type-" + displayType}, parts);
     }
     
@@ -347,5 +349,9 @@ export function displayQuestion(panelBuilder: PanelBuilder, model, fieldSpecific
     if (fieldSpecification.displayClass) {
         classString += " " + fieldSpecification.displayClass;
     }
-    return m("div", {key: fieldID, "class": classString}, parts);
+    if (useNormalDivs) {
+        return m("div", {key: fieldID, "class": classString}, parts);
+    } else {
+        return parts;
+    }
 }

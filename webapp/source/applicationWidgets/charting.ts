@@ -781,7 +781,14 @@ export function d3BarChartForValues(graphBrowserInstance: GraphHolder, plotItems
     
     function isPlotItemSelected(extent, plotItem) {
         var midPoint = xScale(plotItem.value) + xScale.rangeBand() / 2;
-        return extent[0] <= midPoint && midPoint <= extent[1];
+        var selected = extent[0] <= midPoint && midPoint <= extent[1];
+        if (selected) {
+            const itemName = plotItem.value;
+            if (graphBrowserInstance.currentSelectionExtentPercentages.selectedPlotItemNames.indexOf(itemName) < 0) {
+                graphBrowserInstance.currentSelectionExtentPercentages.selectedPlotItemNames.push(itemName);
+            }
+        }
+        return selected;
     }
     
     function brushend() {
@@ -798,7 +805,7 @@ export function d3BarChartForValues(graphBrowserInstance: GraphHolder, plotItems
 
 // choiceQuestion and choice may be undefined if this is just a simple histogram for all values
 export function d3HistogramChartForQuestion(graphBrowserInstance: GraphHolder, scaleQuestion, choiceQuestion, choice, storiesSelectedCallback) {
-    // Do not include unanswered in  histogram
+    // Do not include unanswered in histogram
     var unanswered = [];
     var values = [];
     var matchingStories = [];
@@ -1092,6 +1099,13 @@ export function d3HistogramChartForValues(graphBrowserInstance: GraphHolder, plo
         // We don't want to compute a midPoint based on plotItem.value which can be anywhere in the bin; we want to use the stored bin.x.
         var midPoint = plotItem.xBinStart + data[0].dx / 2;
         var selected = extent[0] <= midPoint && midPoint <= extent[1];
+        if (selected) {
+            const xBinStop = plotItem.xBinStart + data[0].dx;
+            const itemName = plotItem.xBinStart + "-" + xBinStop;
+            if (graphBrowserInstance.currentSelectionExtentPercentages.selectedPlotItemNames.indexOf(itemName) < 0) {
+                graphBrowserInstance.currentSelectionExtentPercentages.selectedPlotItemNames.push(itemName);
+            }
+        }
         return selected;
     }
     
@@ -1338,7 +1352,15 @@ export function d3ScatterPlot(graphBrowserInstance: GraphHolder, xAxisQuestion, 
     supportStartingDragOverStoryDisplayItemOrCluster(chartBody, storyDisplayItems);
 
     function isPlotItemSelected(extent, plotItem) {
-        return extent[0][0] <= plotItem.x && plotItem.x <= extent[1][0] && extent[0][1] <= plotItem.y && plotItem.y <= extent[1][1];
+        const selected = extent[0][0] <= plotItem.x && plotItem.x <= extent[1][0] && extent[0][1] <= plotItem.y && plotItem.y <= extent[1][1];
+        if (selected) {
+            // x1 = [0][0], y1 = [0][1], x2 = t[1][0], y2 = [1][1]
+            const itemName = "" + extent[0][0].toFixed(0) + "," + extent[0][1].toFixed(0) + " - " + extent[1][0].toFixed(0) + "," + extent[1][1].toFixed(0);
+            if (graphBrowserInstance.currentSelectionExtentPercentages.selectedPlotItemNames.indexOf(itemName) < 0) {
+                graphBrowserInstance.currentSelectionExtentPercentages.selectedPlotItemNames.push(itemName);
+            }
+        }
+        return selected;
     }
     
     function brushend(doNotUpdateStoryList) {
@@ -1780,6 +1802,12 @@ export function d3ContingencyTable(graphBrowserInstance: GraphHolder, xAxisQuest
         var midPointX = xScale(plotItem.x) + xScale.rangeBand() / 2;
         var midPointY = yScale(plotItem.y) + yScale.rangeBand() / 2;
         var selected = extent[0][0] <= midPointX && midPointX <= extent[1][0] && extent[0][1] <= midPointY && midPointY <= extent[1][1];
+        if (selected) {
+            const itemName = plotItem.x + " x " + plotItem.y;
+            if (graphBrowserInstance.currentSelectionExtentPercentages.selectedPlotItemNames.indexOf(itemName) < 0) {
+                graphBrowserInstance.currentSelectionExtentPercentages.selectedPlotItemNames.push(itemName);
+            }
+        }
         return selected;
     }
     
@@ -1855,7 +1883,7 @@ function setCurrentSelection(chart, graphBrowserInstance: GraphHolder, extent) {
             x2: x2
         };
     }
-    
+    selection.selectedPlotItemNames = []; // going to be set in isPlotItemSelected
     graphBrowserInstance.currentSelectionExtentPercentages = selection;
     if (_.isArray(graphBrowserInstance.currentGraph)) {
         selection.subgraphQuestion = encodeBraces(nameForQuestion(chart.subgraphQuestion));
