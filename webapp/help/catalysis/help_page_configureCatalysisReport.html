@@ -98,7 +98,7 @@ can't write any observations about it.
 		This feature is useful when you have an important division in your story collection, such as when your stories were collected in different locations
 		and you need to look at patterns within as well as among locations. (Some people call this "slicing" data.)
 	</p><p>
-		To create a filter, enter the <i>exact</i> short name of a question (one that is in your story form), 
+		To create a filter, enter the <i>exact</i> short name of a question in your story form, 
 		followed by <b>two equals signs</b> (==), 
 		followed by either a list of <i>exact</i> answers (separated by two equals signs), or
 		the low and high values of a numerical range (separated by two equals signs). 
@@ -106,9 +106,23 @@ can't write any observations about it.
 		<p>Some examples:</p>
 		<ul>
 			<li><b>Feel about == happy</b> will include only stories for which the question "Feel about" was answered "happy."</li>
-			<li><b>Location == Northern == Eastern</b> will include stories for which the "Location" question was answered with either "Northern" or "Eastern."</li>
-			<li><b>Story ended == 0 == 20</b> will include stories for which the scale question "Story ended" was answered with a number in the range from zero to twenty, inclusive.
-			</li>
+			<li><b>Location == Northern == Eastern</b> will include stories for which the "Location" question was answered either "Northern" or "Eastern."</li>
+			<li><b>Story ended == 0 == 20</b> will include stories for which the scale question "Story ended" was answered with a number in the range from zero to twenty (inclusive).</li>
+		</ul>
+		<p>To negate a query, write an exclamation point just before the name of the question. For example:</p>
+		<ul>
+			<li><b>!Feel about == happy</b> will include only stories for which the question "Feel about" was answered with any <i>other</i> answer than "happy."</li>
+			<li><b>!Location == Northern == Eastern</b> will include stories for which the "Location" question was anything <i>but</i> "Northern" or "Eastern."</li>
+			<li><b>!Story ended == 0 == 20</b> will include stories for which the scale question "Story ended" was answered with a number <i>outside</i> the range from zero to twenty (inclusive).</li>
+		</ul>
+		<p>You can filter by more than one question. 
+			Separate the two questions with two ampersands (&&). 
+			For example:</p>
+		<ul>
+			<li><b>Feel about == happy && Story ended == 0 == 20</b> will include stories for which the question "Feel about" was answered "happy" 
+				<i>and</i> the scale question "Story ended" was answered with a number in the range from zero to twenty (inclusive).</li>
+			<li><b>Feel about == happy && !Feel about == sad</b> will include stories for which the question "Feel about" was answered "happy" 
+				<i>and</i> the question "Feel about" (yes you can specify the same question twice) was not answered "sad."</li>
 		</ul>
 		<p>Tips on writing filters:</p>
 		<ul>
@@ -119,8 +133,8 @@ can't write any observations about it.
 			<li>For a <b>checkbox</b> question, the answer must be either "true" or "false."</li>
 			<li>For a <b>slider</b>, you <i>must</i> specify both ends of the range. Scale ranges must be inclusive.</li>
 			<li>You can't filter on the number of stories told. It's not a normal question; it's generated.</li>
-			<li>Spaces around the equals signs are optional. They get trimmed off.</li>
-			<li>Why <i>two</i> equals signs? Because you might have one equals sign in a question name or answer.</li>
+			<li>Spaces around the equals signs and ampersands are optional. They get trimmed off.</li>
+			<li>Why <i>two</i> equals signs? Why <i>two</i> ampersands? Because you might have one equals sign or ampersand in a question name or answer.</li>
 			<li>If you have multiple story collections in your catalysis report, all matching stories will be included, as long as the question and answer names match (exactly).</li>
 			<li><b>Don't forget that you set a filter!</b> 
 			At the top of each remaining page in the catalysis section (explore patterns, cluster interpretations, print catalysis report),

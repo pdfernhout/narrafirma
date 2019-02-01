@@ -320,7 +320,6 @@ class Project {
         var storyCollectionsIdentifier = this.tripleStore.queryLatestC(catalysisReportIdentifier, "catalysisReport_storyCollections");
         var storyCollectionItems = this.tripleStore.getListForSetIdentifier(storyCollectionsIdentifier);
         if (storyCollectionItems.length === 0) return [];
-
         var filter = this.tripleStore.queryLatestC(catalysisReportIdentifier, "catalysisReport_filter");
         if (filter) {
             return this.storiesForCatalysisReportWithFilter(catalysisReportIdentifier, storyCollectionItems, filter.trim(), showWarnings);
@@ -347,7 +346,12 @@ class Project {
                 const storyCollectionIdentifier = this.tripleStore.queryLatestC(storyCollectionPointer, "storyCollection");
                 var storiesForThisCollection = surveyCollection.getStoriesForStoryCollection(storyCollectionIdentifier);
                 var questionnaire = surveyCollection.getQuestionnaireForStoryCollection(storyCollectionIdentifier);
-                result = result.concat(this.storiesForStoryCollectionWithFilter(storyCollectionIdentifier, storiesForThisCollection, questionnaire, filter, showWarnings));
+                result = result.concat(storiesForThisCollection);
+                var filterParts = filter.split("&&").map(function(item) {return item.trim()});
+                for (var partIndex = 0; partIndex < filterParts.length; partIndex++) {
+                    var filteredResult = this.storiesForStoryCollectionWithFilter(storyCollectionIdentifier, result, questionnaire, filterParts[partIndex], showWarnings);
+                    result = filteredResult;
+                }
             }
         }); 
         return result;
@@ -358,6 +362,13 @@ class Project {
         var questionAndAnswers = filter.split("==").map(function(item) {return item.trim()});
         var warningShown = false;
         var questionShortName = questionAndAnswers[0];
+
+        var negateFilter = false;
+        if (questionShortName[0] === "!") {
+            negateFilter = true;
+            questionShortName = questionShortName.slice(1);
+        }
+
         var questionID = this.questionIDForQuestionShortNameGivenQuestionnaire(questionShortName, questionnaire);
         var question = this.questionForQuestionIDGivenQuestionnaire(questionID, questionnaire, storyCollectionIdentifier);
         if (question) {
@@ -438,8 +449,14 @@ class Project {
                         }
                     }
                 }
-                if (storyMatches) {
-                    storiesThatMatchFilter.push(story);
+                if (negateFilter) {
+                    if (!storyMatches) {
+                        storiesThatMatchFilter.push(story);
+                    }
+                } else {
+                    if (storyMatches) {
+                        storiesThatMatchFilter.push(story);
+                    }
                 }
             }
             result = result.concat(storiesThatMatchFilter);
