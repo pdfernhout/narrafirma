@@ -85,6 +85,7 @@ class PatternExplorer {
     storyGrid: GridWithItemPanel = null;
     currentPattern = null;
     observationPanelSpecification = null;
+    interpretationsPanelSpecification = null;
     saveGraphSelectionSpecification = null;
     textAnswersPanelSpecification = null;
     minimumStoryCountRequiredForTest = Project.defaultMinimumStoryCountRequiredForTest;
@@ -214,18 +215,20 @@ class PatternExplorer {
                     displayPrompt: "How <strong>strong</strong> is this pattern?",
                     displayType: "select",
                     valueOptions: ["1 (weak)", "2 (medium)", "3 (strong)"]
-                },
+                }
+            ]
+        };
+        this.interpretationsPanelSpecification = {
+            "id": "interpretationsPanel",
+            panelFields: [        
                 {
-                    id: "observationPanel_interpretationsList",
+                    id: "interpretationsPanel_interpretationsList",
                     valuePath: "currentObservationInterpretations",
                     valueType: "array",
                     displayType: "grid",
                     displayConfiguration: "panel_addInterpretation",
                     displayName: "Interpretations",
                     displayPrompt: "Enter at least two <strong>competing interpretations</strong> for the observation here.",
-                    displayVisible: function(panelBuilder, model) {
-                        return model.currentObservationDescription() || model.currentObservationTitle();
-                    }
                 }
             ]
         };
@@ -303,13 +306,15 @@ class PatternExplorer {
                 parts = [
                     this.patternsGrid.calculateView(),
                     m("div.narrafirma-graph-results-panel", {config: this.insertGraphResultsPaneConfig.bind(this)}),
-                    panelBuilder.buildPanel(this.observationPanelSpecification, this)
+                    panelBuilder.buildPanel(this.observationPanelSpecification, this),
+                    this.currentObservationHasTitleOrDescription() ? panelBuilder.buildPanel(this.interpretationsPanelSpecification, this) : "",
                 ];
             } else if (this.currentPattern && this.currentPattern.graphType === "texts") {
                 parts = [
                     this.patternsGrid.calculateView(),
                     panelBuilder.buildPanel(this.textAnswersPanelSpecification, this),
-                    panelBuilder.buildPanel(this.observationPanelSpecification, this)
+                    panelBuilder.buildPanel(this.observationPanelSpecification, this),
+                    this.currentObservationHasTitleOrDescription() ? panelBuilder.buildPanel(this.interpretationsPanelSpecification, this) : "",
                 ];
             } else { 
                 const numStories = this.modelForStoryGrid.storiesSelectedInGraph.length;
@@ -324,7 +329,8 @@ class PatternExplorer {
                                 m("div.narrafirma-pattern-browser-selected-stories-header", selectedStoriesText) : "",
                             (this.modelForStoryGrid.storiesSelectedInGraph.length > 0) ? this.storyGrid.calculateView() : "",
                             panelBuilder.buildPanel(this.saveGraphSelectionSpecification, this),
-                            panelBuilder.buildPanel(this.observationPanelSpecification, this)
+                            panelBuilder.buildPanel(this.observationPanelSpecification, this),
+                            this.currentObservationHasTitleOrDescription() ? panelBuilder.buildPanel(this.interpretationsPanelSpecification, this) : "",
                         ] :
                         // TODO: Translate
                         m("div.narrafirma-choose-pattern", "Please select a pattern to view as a graph.")
@@ -1115,6 +1121,13 @@ observationAccessor(pattern, field: string, newValue = undefined) {
         this.project.tripleStore.addTriple(observationIdentifier, field, newValue);
         return newValue;
     }
+}
+
+currentObservationHasTitleOrDescription() {
+    if (!this.currentPattern) {
+        return false;
+    }
+    return (this.observationAccessor(this.currentPattern, "observationTitle") !== "") || (this.observationAccessor(this.currentPattern, "observationDescription") !== "");
 }
 
 currentObservationDescription(newValue = undefined) {
