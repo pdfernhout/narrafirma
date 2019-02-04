@@ -100,7 +100,7 @@ function add_functionResult(panelBuilder: PanelBuilder, model, fieldSpecificatio
  */
 function add_grid(panelBuilder, model, fieldSpecification) {
     var prompt = panelBuilder.buildQuestionLabel(fieldSpecification);
-    return m("div:narrafirma-question-type-grid-plus-prompt", [
+    return m("div", {"class": "narrafirma-question-type-grid-plus-prompt"}, [
         prompt,
         m.component(<any>GridWithItemPanel, {key: fieldSpecification.id, panelBuilder: panelBuilder, model: model, fieldSpecification: fieldSpecification, readOnly: panelBuilder.readOnly})
     ]);
