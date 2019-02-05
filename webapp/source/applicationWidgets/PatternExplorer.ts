@@ -85,9 +85,8 @@ class PatternExplorer {
     storyGrid: GridWithItemPanel = null;
     currentPattern = null;
     observationPanelSpecification = null;
-    savedGraphReferencesPanelSpecification = null;
     interpretationsPanelSpecification = null;
-    copyStoriesPanelSpecification = null;
+    thingsYouCanDoPanelSpecification = null;
     textAnswersPanelSpecification = null;
     minimumStoryCountRequiredForTest = Project.defaultMinimumStoryCountRequiredForTest;
     minimumStoryCountRequiredForGraph = Project.defaultMinimumStoryCountRequiredForGraph;
@@ -141,28 +140,37 @@ class PatternExplorer {
         };
         this.storyGrid = new GridWithItemPanel({panelBuilder: args.panelBuilder, model: this.modelForStoryGrid, fieldSpecification: this.storyGridFieldSpecification});
 
-        this.copyStoriesPanelSpecification = {
-            "id": "copyStoriesPanel",
+        this.thingsYouCanDoPanelSpecification = {
+            "id": "thingsYouCanDoPanel",
             panelFields: [ 
                 {
-                    id: "copyStoriesPanel_actionRequested",
+                    id: "thingsYouCanDoPanel_actionRequested",
                     valuePath: "selectionActionRequested",
-                    displayPrompt: "These are some <strong>things you can do</strong> with the stories you have selected.",
+                    displayPrompt: "These are some <strong>things you can do</strong> based on the selection you have made in the graph above.",
                     displayType: "select",
                     displayWithoutQuestionDivs: true,
                     valueOptions: [
                         "Show selected stories in separate window for copying", 
                         "Show random sample of 10 selected stories", 
                         "Show random sample of 20 selected stories", 
-                        "Show random sample of 30 selected stories"],
+                        "Show random sample of 30 selected stories",
+                        "Save the current selection (it will appear in the text box below)",
+                        "Restore a saved selection (from the text box below; position your cursor inside it first)"],
                 },
                 {
-                    id: "copyStoriesPanel_doThingsWithSelectedStories",
+                    id: "thingsYouCanDoPanel_doThingsWithSelectedStories",
                     displayPrompt: "Do it",
                     displayType: "button",
                     displayPreventBreak: true,
                     displayConfiguration: this.doThingsWithSelectedStories.bind(this),
                 }, 
+                {
+                    id: "thingsYouCanDoPanel_savedGraphSelections",
+                    valuePath: "currentObservationSavedGraphSelections",
+                    displayName: "Graph selections",
+                    displayPrompt: 'These are <strong>selections you have saved</strong> for this graph.',
+                    displayType: "text",
+                },
                 
             ]};
 
@@ -218,32 +226,6 @@ class PatternExplorer {
                     displayName: "Interpretations",
                     displayPrompt: "Enter at least two <strong>competing interpretations</strong> for the observation here.",
                 }
-            ]
-        };
-        this.savedGraphReferencesPanelSpecification = {
-            "id": "observationPanel",
-            panelFields: [        
-                {
-                    id: "savedGraphReferencesPanel_savedGraphSelections",
-                    valuePath: "currentObservationSavedGraphSelections",
-                    displayName: "Graph selections",
-                    displayPrompt: "Any <strong>graph selections</strong> you have saved will appear here.",
-                    displayType: "text"
-                },
-                {
-                    id: "savedGraphReferencesPanel_saveCurrentGraphSelection",
-                    displayPrompt: "Save current selection",
-                    displayType: "button",
-                    displayPreventBreak: true,
-                    displayConfiguration: this.insertGraphSelection.bind(this),
-                },
-                {
-                    id: "savedGraphReferencesPanel_restoreSavedGraphSelection",
-                    displayPrompt: "Restore saved selection",
-                    displayType: "button",
-                    displayPreventBreak: true,
-                    displayConfiguration: this.resetGraphSelection.bind(this),
-                }, 
             ]
         };
         
@@ -342,10 +324,10 @@ class PatternExplorer {
                             (this.modelForStoryGrid.storiesSelectedInGraph.length > 0) ? 
                                 m("div", {"class": "narrafirma-pattern-browser-selected-stories-header"}, selectedStoriesText) : m("div"),
                             (this.modelForStoryGrid.storiesSelectedInGraph.length > 0) ? this.storyGrid.calculateView() : m("div"),
-                            (this.modelForStoryGrid.storiesSelectedInGraph.length > 0) ? panelBuilder.buildPanel(this.copyStoriesPanelSpecification, this) : m("div"),
+                            panelBuilder.buildPanel(this.thingsYouCanDoPanelSpecification, this),
+                            //panelBuilder.buildPanel(this.savedGraphReferencesPanelSpecification, this),
                             panelBuilder.buildPanel(this.observationPanelSpecification, this),
                             this.currentObservationHasTitleOrDescription() ? panelBuilder.buildPanel(this.interpretationsPanelSpecification, this) : m("div"),
-                            panelBuilder.buildPanel(this.savedGraphReferencesPanelSpecification, this),
                         ] :
                         // TODO: Translate
                         m("div.narrafirma-choose-pattern", "Please select a pattern to view as a graph.")
@@ -837,7 +819,7 @@ class PatternExplorer {
 //------------------------------------------------------------------------------------------------------------------------------------------
     
     doThingsWithSelectedStories() {
-        var actionElement = <HTMLTextAreaElement>document.getElementById("saveGraphSelectionPanel_actionRequested");
+        var actionElement = <HTMLTextAreaElement>document.getElementById("thingsYouCanDoPanel_actionRequested");
         var action = actionElement.value;
         switch (action) {
             case "Show selected stories in separate window for copying":
@@ -852,8 +834,14 @@ class PatternExplorer {
             case "Show random sample of 30 selected stories":
                 this.sampleStoriesSelectedInGraph(30);
                 break;
+            case "Save the current selection (it will appear in the text box below)":
+                this.saveGraphSelection();
+                break;
+            case "Restore a saved selection (from the text box below; position your cursor inside it first)":
+                this.restoreGraphSelection();
+                break;
             default:
-                alert("Please choose an action before you click the button.");
+                alert("Please choose an action from the list before you click the button.");
                 break;
         }
     }
@@ -971,7 +959,7 @@ class PatternExplorer {
 // saving and restoring graph selections
 //------------------------------------------------------------------------------------------------------------------------------------------
     
-insertGraphSelection() {
+saveGraphSelection() {
         if (!this.graphHolder.currentGraph) {
             // TODO: Translated
             alert("Please select a pattern first");
@@ -979,7 +967,7 @@ insertGraphSelection() {
         }
         
         if (!this.graphHolder.currentSelectionExtentPercentages) {
-            alert("Please select something in a graph first.");
+            alert("Please make a selection in the graph first.");
             return;
         }
         
@@ -992,7 +980,7 @@ insertGraphSelection() {
         if (!this.currentPattern) return;
         
         // Find observation textarea and other needed data
-        var textarea = <HTMLTextAreaElement>document.getElementById("savedGraphReferencesPanel_savedGraphSelections");
+        var textarea = <HTMLTextAreaElement>document.getElementById("thingsYouCanDoPanel_savedGraphSelections");
         var selection = this.graphHolder.currentSelectionExtentPercentages;
         var textToInsert = JSON.stringify(selection);
         
@@ -1012,7 +1000,7 @@ insertGraphSelection() {
 
     scanForSelectionJSON(doFocus = false) {
         // TODO: Fix this for Mithril conversion
-        var textarea = <HTMLTextAreaElement>document.getElementById("savedGraphReferencesPanel_savedGraphSelections");
+        var textarea = <HTMLTextAreaElement>document.getElementById("thingsYouCanDoPanel_savedGraphSelections");
         if (!this.currentPattern) return;
         var text = this.currentObservationSavedGraphSelections();
     
@@ -1046,7 +1034,7 @@ insertGraphSelection() {
         return text.substring(start, end + 1);
     }
     
-    resetGraphSelection() {
+    restoreGraphSelection() {
         if (!this.graphHolder.currentGraph) {
             // TODO: Translate
             alert("Please select a pattern first");
