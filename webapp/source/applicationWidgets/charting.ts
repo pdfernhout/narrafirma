@@ -784,8 +784,8 @@ export function d3BarChartForValues(graphBrowserInstance: GraphHolder, plotItems
         var selected = extent[0] <= midPoint && midPoint <= extent[1];
         if (selected) {
             const itemName = plotItem.value;
-            if (graphBrowserInstance.currentSelectionExtentPercentages.selectedPlotItemNames.indexOf(itemName) < 0) {
-                graphBrowserInstance.currentSelectionExtentPercentages.selectedPlotItemNames.push(itemName);
+            if (graphBrowserInstance.currentSelectionExtentPercentages.selectionCategories.indexOf(itemName) < 0) {
+                graphBrowserInstance.currentSelectionExtentPercentages.selectionCategories.push(itemName);
             }
         }
         return selected;
@@ -1102,8 +1102,8 @@ export function d3HistogramChartForValues(graphBrowserInstance: GraphHolder, plo
         if (selected) {
             const xBinStop = plotItem.xBinStart + data[0].dx;
             const itemName = plotItem.xBinStart + "-" + xBinStop;
-            if (graphBrowserInstance.currentSelectionExtentPercentages.selectedPlotItemNames.indexOf(itemName) < 0) {
-                graphBrowserInstance.currentSelectionExtentPercentages.selectedPlotItemNames.push(itemName);
+            if (graphBrowserInstance.currentSelectionExtentPercentages.selectionCategories.indexOf(itemName) < 0) {
+                graphBrowserInstance.currentSelectionExtentPercentages.selectionCategories.push(itemName);
             }
         }
         return selected;
@@ -1356,8 +1356,8 @@ export function d3ScatterPlot(graphBrowserInstance: GraphHolder, xAxisQuestion, 
         if (selected) {
             // x1 = [0][0], y1 = [0][1], x2 = t[1][0], y2 = [1][1]
             const itemName = "" + extent[0][0].toFixed(0) + "," + extent[0][1].toFixed(0) + " - " + extent[1][0].toFixed(0) + "," + extent[1][1].toFixed(0);
-            if (graphBrowserInstance.currentSelectionExtentPercentages.selectedPlotItemNames.indexOf(itemName) < 0) {
-                graphBrowserInstance.currentSelectionExtentPercentages.selectedPlotItemNames.push(itemName);
+            if (graphBrowserInstance.currentSelectionExtentPercentages.selectionCategories.indexOf(itemName) < 0) {
+                graphBrowserInstance.currentSelectionExtentPercentages.selectionCategories.push(itemName);
             }
         }
         return selected;
@@ -1804,8 +1804,8 @@ export function d3ContingencyTable(graphBrowserInstance: GraphHolder, xAxisQuest
         var selected = extent[0][0] <= midPointX && midPointX <= extent[1][0] && extent[0][1] <= midPointY && midPointY <= extent[1][1];
         if (selected) {
             const itemName = plotItem.x + " x " + plotItem.y;
-            if (graphBrowserInstance.currentSelectionExtentPercentages.selectedPlotItemNames.indexOf(itemName) < 0) {
-                graphBrowserInstance.currentSelectionExtentPercentages.selectedPlotItemNames.push(itemName);
+            if (graphBrowserInstance.currentSelectionExtentPercentages.selectionCategories.indexOf(itemName) < 0) {
+                graphBrowserInstance.currentSelectionExtentPercentages.selectionCategories.push(itemName);
             }
         }
         return selected;
@@ -1883,7 +1883,7 @@ function setCurrentSelection(chart, graphBrowserInstance: GraphHolder, extent) {
             x2: x2
         };
     }
-    selection.selectedPlotItemNames = []; // going to be set in isPlotItemSelected
+    selection.selectionCategories = []; // going to be set in isPlotItemSelected
     graphBrowserInstance.currentSelectionExtentPercentages = selection;
     if (_.isArray(graphBrowserInstance.currentGraph)) {
         selection.subgraphQuestion = encodeBraces(nameForQuestion(chart.subgraphQuestion));

@@ -7,7 +7,7 @@ interface GraphSelection {
     y2?: number;
     subgraphQuestion?: any;
     subgraphChoice?: any;
-    selectedPlotItemNames?: Array<String>;
+    selectionCategories?: Array<String>;
 }
 
 interface GraphHolder {

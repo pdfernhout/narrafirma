@@ -738,12 +738,12 @@ class PatternExplorer {
         if (this.showInterpretationsInGrid) {
             const interpretationSetID = this.observationAccessor(pattern, "observationInterpretations");
             const interpretationIDs = this.project.tripleStore.getListForSetIdentifier(interpretationSetID); 
-            const interpretationNames = [];
+            const interpretationselectionCategories = [];
             interpretationIDs.forEach(id => {
                 const itemName = this.project.tripleStore.queryLatestC(id, "interpretation_name");
-                interpretationNames.push(itemName);
+                interpretationselectionCategories.push(itemName);
             });
-            pattern.interpretations = interpretationNames.join("\n");
+            pattern.interpretations = interpretationselectionCategories.join("\n");
         }
         
         return pattern;
@@ -858,25 +858,25 @@ class PatternExplorer {
         
         switch (this.currentPattern.graphType) {
             case "bar":
-                result += ": " + selection.selectedPlotItemNames.join(", ");
+                result += ": " + selection.selectionCategories.join(", ");
                 break;
             case "table":
-                result += ": " + selection.selectedPlotItemNames.join(", ");
+                result += ": " + selection.selectionCategories.join(", ");
                 break;
             case "contingency-histogram":
-                result += ": " + selection.selectedPlotItemNames.join(", ");
+                result += ": " + selection.selectionCategories.join(", ");
                 break;
             case "histogram":
-                result += ": " + selection.selectedPlotItemNames.join(", ");
+                result += ": " + selection.selectionCategories.join(", ");
                 break;
             case "multiple histogram":
-                result += " [" + selection.subgraphChoice + "]: " + selection.selectedPlotItemNames.join(", ");
+                result += " [" + selection.subgraphChoice + "]: " + selection.selectionCategories.join(", ");
                 break;
             case "scatter":
-                result += ": " + selection.selectedPlotItemNames.join(", ");
+                result += ": " + selection.selectionCategories.join(", ");
                 break;        
             case "multiple scatter":
-                result += " [" + selection.subgraphChoice + "]: " + selection.selectedPlotItemNames.join(", ");
+                result += " [" + selection.subgraphChoice + "]: " + selection.selectionCategories.join(", ");
                 break;
             default:
                 alert("NO name for current graph selection");
@@ -892,8 +892,8 @@ class PatternExplorer {
         }
         var text;
         const selectionName = this.nameForCurrentGraphSelection();
-        // story names first
-        text = "Names of stories (" + stories.length + ") in graph selection - " + selectionName + "\n\n";
+        // story selectionCategories first
+        text = "selectionCategories of stories (" + stories.length + ") in graph selection - " + selectionName + "\n\n";
         for (var i = 0; i < stories.length; i++) {
             text += stories[i].model.storyName + "\n";
         }
@@ -939,7 +939,7 @@ class PatternExplorer {
             });
         }
         const selectionName = this.nameForCurrentGraphSelection();
-        var text = "Story names (" + sampledStories.length + ") sampled from graph selection - " + selectionName + "\n\n";
+        var text = "Story selectionCategories (" + sampledStories.length + ") sampled from graph selection - " + selectionName + "\n\n";
         for (var i = 0; i < sampledStories.length; i++) {
             text += sampledStories[i].model.storyName + "\n";
         }
