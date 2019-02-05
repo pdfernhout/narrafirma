@@ -29,7 +29,6 @@ var patternsPanelSpecification = {
     panelFields: [
         {id: "id", displayName: "Index"},
         {id: "patternName", displayName: "Pattern name", valueOptions: []},
-        {id: "patternName", displayName: "Pattern name", valueOptions: []},
         {id: "graphType", displayName: "Graph type", valueOptions: []},
         {id: "significance", displayName: "Significance value", valueOptions: []},
         {id: "observation", displayName: "Observation", valueOptions: []},
@@ -595,7 +594,7 @@ class PatternExplorer {
             nominalQuestions.forEach((question1) => {
                 usedQuestions.push(question1);
                 nominalQuestions.forEach((question2) => {
-                    var okayToGraphQuestionAgainstItself = this.graphMultiChoiceQuestionsAgainstThemselves && question2.displayType === "checkboxes";
+                    var okayToGraphQuestionAgainstItself = this.graphMultiChoiceQuestionsAgainstThemselves && question1.displayName === question2.displayName && question2.displayType === "checkboxes";
                     if (!okayToGraphQuestionAgainstItself && usedQuestions.indexOf(question2) !== -1) return;
                     if (build) {
                         result.push(this.makePattern(nextID(), "table", [question1, question2], null));
@@ -641,7 +640,7 @@ class PatternExplorer {
             nominalQuestions.forEach((question1) => {
                 usedQuestions.push(question1);
                 nominalQuestions.forEach((question2) => {
-                    var okayToGraphQuestionAgainstItself = this.graphMultiChoiceQuestionsAgainstThemselves && question2.displayType === "checkboxes";
+                    var okayToGraphQuestionAgainstItself = this.graphMultiChoiceQuestionsAgainstThemselves && question1.displayName === question2.displayName && question2.displayType === "checkboxes";
                     if (!okayToGraphQuestionAgainstItself && usedQuestions.indexOf(question2) !== -1) return;
                     scaleQuestions.forEach((question3) => {
                         if (build) {

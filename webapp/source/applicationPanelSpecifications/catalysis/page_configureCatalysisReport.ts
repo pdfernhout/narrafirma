@@ -129,8 +129,8 @@ var panel: Panel = {
             valuePath: "/clientState/catalysisReportIdentifier/graphMultiChoiceQuestionsAgainstThemselves",
             displayType: "checkbox",
             displayConfiguration: "Yes, graph multi-choice questions against themselves",
-            displayPrompt: `Would you like to graph multi-choice questions against themselves 
-                to show <strong>patterns of coincidence</strong> among answers to the same question? 
+            displayPrompt: `Would you like to <strong>graph multi-choice questions against themselves</strong> 
+                to show patterns of coincidence among answers to the same question? 
                 `,
             displayVisible: function(panelBuilder, model) {
                 return !!Globals.clientState().catalysisReportIdentifier();
