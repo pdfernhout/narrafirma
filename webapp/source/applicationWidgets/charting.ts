@@ -1193,6 +1193,7 @@ export function d3ScatterPlot(graphBrowserInstance: GraphHolder, xAxisQuestion, 
     // Collect data
     
     var allPlotItems = [];
+    var storiesAtXYPoints = {};
     var unansweredCount = 0;
     var stories = graphBrowserInstance.allStories;
     for (var index in stories) {
@@ -1217,6 +1218,11 @@ export function d3ScatterPlot(graphBrowserInstance: GraphHolder, xAxisQuestion, 
         }
 
         var newPlotItem = makePlotItem(xAxisQuestion, yAxisQuestion, xValue, yValue, story);
+        const key = xValue + "|" + yValue;
+        if (!storiesAtXYPoints[key]) {
+            storiesAtXYPoints[key] = [];
+        }
+        storiesAtXYPoints[key].push(story); 
         allPlotItems.push(newPlotItem);
     }
     if (allPlotItems.length < graphBrowserInstance.minimumStoryCountRequiredForGraph) {
@@ -1316,12 +1322,26 @@ export function d3ScatterPlot(graphBrowserInstance: GraphHolder, xAxisQuestion, 
         storyDisplayItems
             .append("svg:title")
             .text(function(plotItem) {
-                var tooltipText =
-                    "Title: " + plotItem.story.storyName() +
-                    // "\nID: " + plotItem.story.storyID() + 
-                    "\nX (" + nameForQuestion(xAxisQuestion) + "): " + plotItem.x +
-                    "\nY (" + nameForQuestion(yAxisQuestion) + "): " + plotItem.y +
-                    "\nText: " + limitStoryTextLength(plotItem.story.storyText());
+                var tooltipText;
+                const xyKey = plotItem.x + "|" + plotItem.y;
+                if (storiesAtXYPoints[xyKey] && storiesAtXYPoints[xyKey].length > 1) {
+                    tooltipText = "X (" + nameForQuestion(xAxisQuestion) + "): " + plotItem.x + "\nY (" + nameForQuestion(yAxisQuestion) + "): " + plotItem.y;
+                    tooltipText += "\n------ Stories (" + storiesAtXYPoints[xyKey].length + ") ------";
+                    for (var i = 0; i < storiesAtXYPoints[xyKey].length; i++) {
+                        var story = storiesAtXYPoints[xyKey][i];
+                        tooltipText += "\n" + story.storyName();
+                        if (i >= 9) {
+                            tooltipText += "\n(and " + (storiesAtXYPoints[xyKey].length - 10) + " more)";
+                            break;
+                        }
+                    }
+                } else {
+                    tooltipText =
+                        "X (" + nameForQuestion(xAxisQuestion) + "): " + plotItem.x +
+                        "\nY (" + nameForQuestion(yAxisQuestion) + "): " + plotItem.y +
+                        "\nTitle: " + plotItem.story.storyName() +
+                        "\nText: " + limitStoryTextLength(plotItem.story.storyText());
+                }
                 return tooltipText;
             });
     }
