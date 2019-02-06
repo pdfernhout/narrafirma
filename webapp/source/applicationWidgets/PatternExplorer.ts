@@ -296,7 +296,7 @@ class PatternExplorer {
             }
             return true; 
         }
-        
+
         if (!this.catalysisReportIdentifier) {
             parts = [m("div.narrafirma-choose-catalysis-report", "Please select a catalysis report to work with.")];
         } else if (isMissingQuestionsToInclude(this.questionsToInclude)) {
@@ -321,6 +321,7 @@ class PatternExplorer {
                 const storyOrStoriesWord = (numStories > 1) ? "stories" : "story";
                 var selectedStoriesText = "" + numStories + " " + storyOrStoriesWord + " in selection - " + this.nameForCurrentGraphSelection();
                 parts = [
+                    m("div.patterns-grid-header", this.patternsAndStrengthsDisplayText()),
                     this.patternsGrid.calculateView(),
                     this.currentPattern ?
                         [
@@ -340,7 +341,7 @@ class PatternExplorer {
         }
         return m("div.narrafirma-patterns-grid", parts);
     }
-    
+
     currentCatalysisReportChanged(catalysisReportIdentifier) {
         if (!catalysisReportIdentifier) {
             return;
@@ -444,6 +445,37 @@ class PatternExplorer {
             if (i < answerKeys.length - 1) sortedAndFormattedAnswers +=  "\n--------\n";
         }
         return sortedAndFormattedAnswers;
+    }
+    
+    patternsAndStrengthsDisplayText() {
+        var result = "";
+        var strengthCounts = {"3 (strong)": 0, "2 (medium)": 0, "1 (weak)": 0};
+        var numObservationsWithStrengths = 0;
+        var numObservationsWithoutStrengths = 0;
+        this.modelForPatternsGrid.patterns.forEach(function(pattern) {
+            if (pattern.observation()) {
+                var strength = pattern.strength();
+                if (strength !== "") {
+                    strengthCounts[strength] += 1;
+                    numObservationsWithStrengths += 1;
+                } else {
+                    numObservationsWithoutStrengths += 1;
+                }
+            }
+        });
+        result = "Showing " + this.modelForPatternsGrid.patterns.length + (this.modelForPatternsGrid.patterns.length !== 1 ? " patterns" : " pattern");
+        if (Object.keys(strengthCounts).length) {
+            result += " and " + numObservationsWithStrengths + (numObservationsWithStrengths !== 1 ? " observations" : " observation");
+            result += ", with strengths of ";
+            var keyCount = 0;
+            Object.keys(strengthCounts).forEach(function(key) {
+                result +=  key + ": " + strengthCounts[key];
+                if (keyCount < 2) result += ", ";
+                keyCount++;
+            });
+            result += ", no strength set: " + numObservationsWithoutStrengths;
+        }
+        return result;
     }
     
 //------------------------------------------------------------------------------------------------------------------------------------------

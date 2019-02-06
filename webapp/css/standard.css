@@ -1215,6 +1215,11 @@ td.narrafirma-mw-nested-title, td.narrafirma-mw-nested-stats {
   stroke: gray;
 }
 
+.patterns-grid-header {
+    margin-left: 1.4em;
+    margin-top: 1em;
+}
+
 .narrafirma-pattern-browser-selected-stories-header {
     margin-left: 1.4em;
     margin-top: 0.4em;
