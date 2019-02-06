@@ -85,7 +85,7 @@ class GraphBrowser {
                 m("div.narrafirma-graphbrowser-heading", "Selected stories (" + this.selectedStories.length + ")"),
                 this.selectedStories.map((story) => {
                     return m("div", [
-                        m("b", story.storyName()),
+                        m("b", story.indexInStoryCollection() + ". " + story.storyName()),
                         m("br"),
                         m("blockquote", story.storyText())
                     ]);

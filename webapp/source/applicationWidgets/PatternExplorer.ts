@@ -61,6 +61,7 @@ function makeItemPanelSpecificationForQuestions(questions) {
          panelFields: questions,
          buildPanel: buildStoryDisplayPanel
     };
+    storyItemPanelSpecification.panelFields.push({id: "indexInStoryCollection", displayName: "Index", valueOptions: []},);
     return storyItemPanelSpecification;
 }
 
@@ -82,6 +83,7 @@ class PatternExplorer {
     patternsGrid: GridWithItemPanel;
     graphHolder: GraphHolder;
     questions = [];
+    numStoryCollectionsIncludedInReport = 0;
     modelForStoryGrid = {storiesSelectedInGraph: []};
     storyGridFieldSpecification: any = null;
     storyGrid: GridWithItemPanel = null;
@@ -123,7 +125,7 @@ class PatternExplorer {
         var storyItemPanelSpecification = makeItemPanelSpecificationForQuestions(this.questions);
         var storyGridConfiguration = {
             idProperty: "storyID",
-            columnsToDisplay: ["storyName", "storyText"],
+            columnsToDisplay: ["indexInStoryCollection", "storyName", "storyText"],
             viewButton: true,
             navigationButtons: true
         };
@@ -373,6 +375,7 @@ class PatternExplorer {
         this.questions = [];
         this.questions = this.questions.concat(leadingStoryQuestions, elicitingQuestions, numStoriesToldQuestions, storyLengthQuestions, storyQuestions, participantQuestions, annotationQuestions);
         this.questionsToInclude = this.project.tripleStore.queryLatestC(this.catalysisReportIdentifier, "questionsToInclude"); 
+        this.numStoryCollectionsIncludedInReport = this.project.numStoryCollectionsInCatalysisReport(catalysisReportIdentifier);
 
         if (this.showInterpretationsInGrid) {
             let hasColumnAlready = false;
@@ -904,17 +907,27 @@ class PatternExplorer {
             alert("Please select some stories in the graph.");
             return;
         }
+        stories.sort(function(a, b) {
+            if (a.indexInStoryCollection() < b.indexInStoryCollection()) return -1;
+            if (a.indexInStoryCollection() > b.indexInStoryCollection()) return 1;
+            return 0;
+        });
         var text;
         const selectionName = this.nameForCurrentGraphSelection();
+
         // story names first
         text = "Names of stories (" + stories.length + ") in graph selection - " + selectionName + "\n\n";
         for (var i = 0; i < stories.length; i++) {
-            text += stories[i].model.storyName + "\n";
+            text += stories[i].indexInStoryCollection() + ". " + stories[i].model.storyName + "\n";
         }
+
+        // then full story texts
         text += "\nStories (" + stories.length + ") in graph selection - " + selectionName + "\n";
         const header = "\n----------------------------------------------------------------------------------------------------\n";
         for (var i = 0; i < stories.length; i++) {
-            text += "\n" + stories[i].model.storyName + header + stories[i].model.storyText + "\n";
+            text += "\n" + stories[i].indexInStoryCollection() + ". " + stories[i].model.storyName;
+            if (this.numStoryCollectionsIncludedInReport > 1) text += "\nStory collection: " + stories[i].storyCollectionIdentifier();
+            text += header + stories[i].model.storyText + "\n";
         }
         dialogSupport.openTextEditorDialog(text, "Selected stories", "Close", this.closeCopyStoriesDialogClicked.bind(this), false);
     }
@@ -943,7 +956,7 @@ class PatternExplorer {
         } else {   
             var sampledStoryIDs = [];   
             while (sampledStoryIDs.length < sampleSize) { 
-                var randomIndex = Math.floor(Math.random() * stories.length);
+                var randomIndex = Math.max(0, Math.min(stories.length - 1, Math.round(Math.random() * stories.length) - 1));
                 if (sampledStoryIDs.indexOf(randomIndex) < 0) {
                     sampledStoryIDs.push(randomIndex);
                 }
@@ -952,15 +965,22 @@ class PatternExplorer {
                 sampledStories.push(stories[id]);
             });
         }
+        sampledStories.sort(function(a, b) {
+            if (a.indexInStoryCollection() < b.indexInStoryCollection()) return -1;
+            if (a.indexInStoryCollection() > b.indexInStoryCollection()) return 1;
+            return 0;
+        });
         const selectionName = this.nameForCurrentGraphSelection();
         var text = "Story names (" + sampledStories.length + ") sampled from graph selection - " + selectionName + "\n\n";
         for (var i = 0; i < sampledStories.length; i++) {
-            text += sampledStories[i].model.storyName + "\n";
+            text += sampledStories[i].indexInStoryCollection() + ". " + sampledStories[i].model.storyName + "\n";
         }
         text += "\nStories (" + sampledStories.length + ") sampled from graph selection - " + selectionName + "\n";
         const header = "\n----------------------------------------------------------------------------------------------------\n";
         for (var i = 0; i < sampledStories.length; i++) {
-            text += "\n" + sampledStories[i].model.storyName + header + sampledStories[i].model.storyText + "\n";
+            text += "\n" + sampledStories[i].indexInStoryCollection() + ". " + sampledStories[i].model.storyName;
+            if (this.numStoryCollectionsIncludedInReport > 1) text += "\nStory collection: " + sampledStories[i].storyCollectionIdentifier();
+            text += header + sampledStories[i].model.storyText + "\n";
         }
         dialogSupport.openTextEditorDialog(text, "Sampled stories", "Close", this.closeCopyStoriesDialogClicked.bind(this), false);        
     }

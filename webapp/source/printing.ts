@@ -467,6 +467,7 @@ export function printStoryCards() {
     var order = project.tripleStore.queryLatestC(storyCollectionName, "printStoryCards_order"); 
     var cutoff = project.tripleStore.queryLatestC(storyCollectionName, "printStoryCards_storyTextCutoff"); 
     var cutoffMessage = project.tripleStore.queryLatestC(storyCollectionName, "printStoryCards_storyTextCutoffMessage"); 
+    var includeIndex = project.tripleStore.queryLatestC(storyCollectionName, "printStoryCards_includeIndexInStoryCollection");
     
     var storyDivs = [];
     if (filter) storyDivs.push(m(".storyCardFilterWarning", "Stories that match filter: " + filter));
@@ -481,7 +482,8 @@ export function printStoryCards() {
             noAnswerSliderCharacter: noAnswerSliderCharacter,
             order: order,
             cutoff: cutoff,
-            cutoffMessage: cutoffMessage
+            cutoffMessage: cutoffMessage,
+            includeIndex: includeIndex
         }
         var storyContent = storyCardDisplay.generateStoryCardContent(storyModel, questionsToInclude, options);
         

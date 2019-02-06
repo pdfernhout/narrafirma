@@ -314,6 +314,12 @@ class Project {
         return result;
     }
 
+    numStoryCollectionsInCatalysisReport(catalysisReportIdentifier) {
+        var storyCollectionsIdentifier = this.tripleStore.queryLatestC(catalysisReportIdentifier, "catalysisReport_storyCollections");
+        var storyCollectionItems = this.tripleStore.getListForSetIdentifier(storyCollectionsIdentifier);
+        return storyCollectionItems.length;
+    }
+
     storiesForCatalysisReport(catalysisReportIdentifier, showWarnings = false) {
         // the reason to have showWarnings is that this method gets called twice on the configure report page (once by the filter warning and once by the questions chooser)
         var result = [];

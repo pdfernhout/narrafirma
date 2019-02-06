@@ -212,7 +212,8 @@ interface Options {
     noAnswerSliderCharacter?: string;
     order?: string;
     cutoff?: string,
-    cutoffMessage?: string
+    cutoffMessage?: string,
+    includeIndex?: string,
 }
 
 export function generateStoryCardContent(storyModel, questionsToInclude, options: Options = {}) {
@@ -221,6 +222,9 @@ export function generateStoryCardContent(storyModel, questionsToInclude, options
     var numStoriesTold = storyModel.numStoriesTold();
     var storyLength = storyModel.storyLength();
     var storyName = storyModel.storyName();
+    if (options.includeIndex) {
+        storyName = storyModel.indexInStoryCollection() + ". " + storyName;
+    }
 
     var storyText = storyModel.storyText();
     if (options.cutoff && options.cutoff !== "no limit") {

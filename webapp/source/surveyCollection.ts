@@ -66,6 +66,14 @@ export class Story {
             return 0;
         }
     }
+
+    indexInStoryCollection(newValue = undefined) {
+        return this.fieldValue("indexInStoryCollection", newValue);
+    }
+
+    storyCollectionIdentifier(newValue = undefined) {
+        return this.fieldValue("storyCollectionIdentifier", newValue);
+    }
     
     fieldValue(fieldName, newValue = undefined) {
         if (newValue === undefined) {
@@ -86,6 +94,7 @@ export function getStoriesForStoryCollection(storyCollectionIdentifier, includeI
         return match;
     });
     
+    var numStoriesAddedForCollection = 0;
     surveyMessages.forEach(function (message) {
         // Now add stories in survey to results, with extra participant information
         try {
@@ -106,8 +115,10 @@ export function getStoriesForStoryCollection(storyCollectionIdentifier, includeI
                     }
                 }
 
-                // Add questionnaire for display
+                // Add some fields for displaying information
                 story.questionnaire = surveyResult.questionnaire;
+                story.indexInStoryCollection = ++numStoriesAddedForCollection;
+                story.storyCollectionIdentifier = storyCollectionIdentifier;
                 var wrappedStory = new Story(story);
                 if (includeIgnored || !wrappedStory.isIgnored()) { 
                     result.push(wrappedStory);

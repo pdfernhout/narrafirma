@@ -87,6 +87,15 @@ var panel: Panel = {
             displayPrompt: `What should the story card say <strong>after a story that has been truncated</strong>? (If this field is left blank, it will say "... (truncated)".)`
         },
         {
+            id: "printStoryCards_includeIndexInStoryCollection",
+            valueType: "boolean",
+            valuePath: "/clientState/storyCollectionName/printStoryCards_includeIndexInStoryCollection",
+            displayType: "checkbox",
+            displayName: "Include index in story collection?",
+            displayConfiguration: "Yes, include the story index",
+            displayPrompt: "Do you want to <strong>print each story's index</strong> in the story collection before its title?"
+        },
+        {
             id: "printStoryCards_beforeSliderCharacter",
             valueType: "string",
             valuePath: "/clientState/storyCollectionName/printStoryCards_beforeSliderCharacter",

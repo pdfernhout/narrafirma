@@ -763,15 +763,15 @@ export function d3BarChartForValues(graphBrowserInstance: GraphHolder, plotItems
                 var questionText = "";
                 if (question) {
                     if (question.id === "storyLength") {
-                        questionText = "\n" + xAxisLabel + ": " + story.storyLength();
+                        questionText = xAxisLabel + ": " + story.storyLength();
                     } else {
-                        questionText = "\n" + xAxisLabel + ": " + displayTextForAnswer(story.fieldValue(question.id));
+                        questionText = xAxisLabel + ": " + displayTextForAnswer(story.fieldValue(question.id));
                     }
                 }
                 var tooltipText =
                     "Title: " + story.storyName() +
-                    // "\nID: " + story.storyID() + 
-                    questionText +
+                    "\nIndex: " + story.indexInStoryCollection() + 
+                    "\n" + questionText +
                     "\nText: " + limitStoryTextLength(story.storyText());
                 return tooltipText;
             });
@@ -1055,6 +1055,7 @@ export function d3HistogramChartForValues(graphBrowserInstance: GraphHolder, plo
                 }
                 var tooltipText =
                     "Title: " + story.storyName() +
+                    "\nIndex: " + story.indexInStoryCollection() +
                     "\n" + questionName + ": " + plotItem.value +
                     "\nText: " + limitStoryTextLength(story.storyText());
                 return tooltipText;
@@ -1329,7 +1330,7 @@ export function d3ScatterPlot(graphBrowserInstance: GraphHolder, xAxisQuestion, 
                     tooltipText += "\n------ Stories (" + storiesAtXYPoints[xyKey].length + ") ------";
                     for (var i = 0; i < storiesAtXYPoints[xyKey].length; i++) {
                         var story = storiesAtXYPoints[xyKey][i];
-                        tooltipText += "\n" + story.storyName();
+                        tooltipText += "\n" + story.indexInStoryCollection() + ". " + story.storyName();
                         if (i >= 9) {
                             tooltipText += "\n(and " + (storiesAtXYPoints[xyKey].length - 10) + " more)";
                             break;
@@ -1340,6 +1341,7 @@ export function d3ScatterPlot(graphBrowserInstance: GraphHolder, xAxisQuestion, 
                         "X (" + nameForQuestion(xAxisQuestion) + "): " + plotItem.x +
                         "\nY (" + nameForQuestion(yAxisQuestion) + "): " + plotItem.y +
                         "\nTitle: " + plotItem.story.storyName() +
+                        "\nIndex: " + plotItem.story.indexInStoryCollection() +
                         "\nText: " + limitStoryTextLength(plotItem.story.storyText());
                 }
                 return tooltipText;
@@ -1799,7 +1801,7 @@ export function d3ContingencyTable(graphBrowserInstance: GraphHolder, xAxisQuest
             tooltipText += "\n------ Stories (" + plotItem.stories.length + ") ------";
             for (var i = 0; i < plotItem.stories.length; i++) {
                 var story = plotItem.stories[i];
-                tooltipText += "\n" + story.storyName();
+                tooltipText += "\n" + story.indexInStoryCollection() + ". " + story.storyName();
                 if (i >= 9) {
                     tooltipText += "\n(and " + (plotItem.stories.length - 10) + " more)";
                     break;

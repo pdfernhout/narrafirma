@@ -259,7 +259,7 @@ export class StoryBrowser {
                 itemPanelSpecification: this.itemPanelSpecification,
                 gridConfiguration: {
                     idProperty: "storyID",
-                    columnsToDisplay: ["storyName", "storyText", "ignore"],
+                    columnsToDisplay: ["indexInStoryCollection", "storyName", "storyText", "ignore"],
                     viewButton: true,
                     editButton: true,
                     navigationButtons: true
@@ -367,6 +367,14 @@ export class StoryBrowser {
             displayPrompt: "Reason to ignore story (enter any text here to leave this story out of all graphs and reports)",
             displayClass: "narrafirma-ignore-story"
         });
+        this.itemPanelSpecification.panelFields.push({
+            id: "indexInStoryCollection",
+            valueType: "string",
+            displayType: "text",
+            displayName: "Index",
+            displayPrompt: "Index in story collection",
+            displayClass: "narrafirma-index-in-story-collection"
+        });
         
         /*
         // TODO: What to do about current selection in filter widgets?
@@ -401,7 +409,6 @@ export class StoryBrowser {
             panelFields: questions,
             buildPanel: this.buildStoryDisplayPanel.bind(this)
         };
-        
         return itemPanelSpecification;
     }
     
