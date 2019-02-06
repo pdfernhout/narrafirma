@@ -16,7 +16,7 @@ import GridWithItemPanel = require("../panelBuilder/GridWithItemPanel");
 // TODO: Need to update answer counts in filters if change value in story that affectes selected filter question
 
 // TODO: Translate
-var unansweredIndicator = "{Unanswered}";
+var unansweredIndicator = "No answer";
 
 function isMatch(story: surveyCollection.Story, questionChoice, selectedAnswerChoices) {
     if (!questionChoice) return true;
@@ -37,7 +37,6 @@ function isMatch(story: surveyCollection.Story, questionChoice, selectedAnswerCh
 function optionsFromQuestion(question, stories) {
     // TODO: Translate text for options, at least booleans?
     var options = [];
-    
     if (!question) return options;
     
     // Compute how many of each answer -- assumes typically less than 200-1000 stories
@@ -68,106 +67,74 @@ function optionsFromQuestion(question, stories) {
         question.valueOptions.forEach(function(each) {
             count = totals[each];
             if (!count) count = 0;
-            options.push({label: each + " (" +  count + ")", value: each});
+            options.push({label: each + " - " +  count, value: each});
         });
     } else if (question.displayType === "radiobuttons") {
         question.valueOptions.forEach(function(each) {
             count = totals[each];
             if (!count) count = 0;
-            options.push({label: each + " (" +  count + ")", value: each});
+            options.push({label: each + " - " +  count, value: each});
         });
     } else if (question.displayType === "checkboxes") {
         question.valueOptions.forEach(function(each) {
             count = totals[each];
             if (!count) count = 0;
-            options.push({label: each + " (" +  count + ")", value: each});
+            options.push({label: each + " - " +  count, value: each});
         });
     } else if (question.displayType === "slider") {
         for (var sliderTick = 0; sliderTick <= 100; sliderTick++) {
             count = totals[sliderTick];
             if (!count) count = 0;
             var sliderTickText = "" + sliderTick;
-            /*
-            if (sliderTickText.length < 2) {
-                sliderTickText = "0" + sliderTickText;
-            }
-            if (sliderTickText.length < 3) {
-                sliderTickText = "0" + sliderTickText;
-            }
-            */
-            options.push({label: sliderTickText + " (" +  count + ")", value: sliderTick});
+            options.push({label: sliderTickText + " - " +  count, value: sliderTick});
         }
     } else if (question.displayType === "boolean") {
-        // TODO; Not sure this will really be right with true/false as booleans instead of strings
-        ["true", "false"].forEach(function(each) {
-            count = totals[each];
-            if (!count) count = 0;
-            options.push({label: each + " (" +  count + ")", value: each});
-        });
-    } else if (question.displayType === "checkbox") {
-        // TODO; Not sure this will really be right with true/false as checkbox instead of strings
         [true, false].forEach(function(each) {
             count = totals["" + each];
             if (!count) count = 0;
-            options.push({label: each + " (" +  count + ")", value: each});
+            options.push({label: each + " - " +  count, value: each});
+        });
+    } else if (question.displayType === "checkbox") {
+        [true, false].forEach(function(each) {
+            count = totals["" + each];
+            if (!count) count = 0;
+            options.push({label: each + " - " +  count, value: each});
         });
     } else if (question.displayType === "text") {
         for (var eachTotal in totals) {
             if (totals.hasOwnProperty(eachTotal)) {
                 count = totals[eachTotal];
                 if (!count) count = 0;
-                options.push({label: eachTotal + " (" +  count + ")", value: eachTotal});                    
+                if (eachTotal !== unansweredIndicator) options.push({label: eachTotal + " - " +  count, value: eachTotal});                    
             }
         }
     } else {
         console.log("ERROR: question type not supported: ", question.displayType, question);
-        options.push({label: "*ALL*" + " (" +  stories.length + ")", value: "*ALL*"});
+        options.push({label: "*ALL*" + " - " +  stories.length, value: "*ALL*"});
     }
     
-    // TODO: Maybe should not add the unanswered indicator if zero?
-    // Always add the unanswered indicator if not checkboxes or checkbox
-    if (question.displayType !== "checkbox" && question.displayType !== "checkboxes") {
-        count = totals[unansweredIndicator];
-        if (!count) count = 0;
-        options.push({label: unansweredIndicator + " (" +  count + ")", value: unansweredIndicator});
-    }
-    
-    /*
-    // Sort options by their name -- only if not slider numbers which are already ordered
-    if (question.displayType !== "slider") {
-        options.sort(function(a, b) {
-            if (a.label.toLowerCase() < b.label.toLowerCase()) return -1;
-            if (a.label.toLowerCase() > b.label.toLowerCase()) return 1;
-            return 0;
-        });
-    }
-    */
+    count = totals[unansweredIndicator];
+    if (!count) count = 0;
+    options.push({label: unansweredIndicator + " - " +  count, value: unansweredIndicator});
     
     return options;
 }
 
 function getSelectedOptions(select) {
-    
     var selectedOptions = {};
-    
     // select.selectedOptions is probably not implemented widely enough, so use this looping code instead over all options
     for (var i = 0; i < select.options.length; i++) {
         var option = select.options[i];
-        
         if (option.selected) {
             selectedOptions[option.value] = option;
         }
     }
-    
     return selectedOptions;
 }
 
 function getQuestionDataForSelection(questions, event) {
-    
     var newValue = event.target.value;
-     
     var question = null;
-    
     for (var index = 0; index < questions.length; index++) {
         var questionToCheck = questions[index];
         if (questionToCheck.id === newValue) {
@@ -175,17 +142,10 @@ function getQuestionDataForSelection(questions, event) {
             break;
         }
     }
-    
-    //console.log("filterPaneQuestionChoiceChanged", question);
-    
-    if (!question && newValue) console.log("could not find question for id", newValue);
-    
+    if (!question && newValue) console.log("Could not find question for id", newValue);
     return question; 
 }
 
-
-
-    
 class Filter {
     name: string = null;
     storyBrowser: StoryBrowser = null;
@@ -210,11 +170,17 @@ class Filter {
         return this.selectedQuestion && Object.keys(this.selectedAnswers).length;
     }
 
+    hasQuestion() {
+        return this.selectedQuestion;
+    }
+
     displayInformation() {
         var result = "";
         if (this.hasQuestionAndAnswers()) {
-            result += this.selectedQuestion.displayName + ": ";
-            result += Object.keys(this.selectedAnswers).join(", ");
+            result += "[ " + this.selectedQuestion.displayName + ": ";
+            result += Object.keys(this.selectedAnswers).join(", ") + " ]";
+        } else if (this.hasQuestion()) {
+            result += "[ " + this.selectedQuestion.displayName + " (no choice) " + " ]";
         }
     return result;
     }
@@ -355,17 +321,17 @@ export class StoryBrowser {
                 m("td", this.filter2.calculateView())
             ]));
 
-            var filterInfoString = "Stories ";
-            var filter1HasSelections = this.filter1.hasQuestionAndAnswers();
-            var filter2HasSelections = this.filter2.hasQuestionAndAnswers();
+            var filterInfoString = "Stories (" + this.filteredStories.length + ")";
+            var filter1HasSelectedQuestion = this.filter1.hasQuestion();
+            var filter2HasSelectedQuestion = this.filter2.hasQuestion();
 
-            if (filter1HasSelections || filter2HasSelections) filterInfoString += " filtered by ";
-            if (filter1HasSelections) filterInfoString += this.filter1.displayInformation();
-            if (filter1HasSelections && filter2HasSelections) filterInfoString += " and ";
-            if (filter2HasSelections) filterInfoString += this.filter2.displayInformation();
+            if (filter1HasSelectedQuestion || filter2HasSelectedQuestion) filterInfoString += " filtered by ";
+            if (filter1HasSelectedQuestion) filterInfoString += this.filter1.displayInformation();
+            if (filter1HasSelectedQuestion && filter2HasSelectedQuestion) filterInfoString += " and ";
+            if (filter2HasSelectedQuestion) filterInfoString += this.filter2.displayInformation();
 
             // TODO: Translation
-            var filteredCountText = m("div.narrafirma-story-browser-filtered-stories-count", filterInfoString + " (" + this.filteredStories.length + ")");
+            var filteredCountText = m("div.narrafirma-story-browser-filtered-stories-count", filterInfoString);
 
             parts = [prompt, filter, filteredCountText, this.grid.calculateView()];
         }

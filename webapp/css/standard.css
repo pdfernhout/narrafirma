@@ -46,7 +46,7 @@ select[multiple] {
 }
 
 select[multiple] { /* only used in story browser */
-    width: 280px;
+    width: auto;
     height: 140px;
 }
 
