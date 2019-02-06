@@ -63,24 +63,16 @@ function optionsFromQuestion(question, stories) {
     
     var count;
     
-    if (question.displayType === "select") {
-        question.valueOptions.forEach(function(each) {
-            count = totals[each];
+    if (["select", "radiobuttons", "checkboxes"].indexOf(question.displayType) >= 0) {
+        var answersAlreadyConsidered = [];
+        for (var i = 0; i < question.valueOptions.length; i++) {
+            var answer = question.valueOptions[i];
+            if (answersAlreadyConsidered.indexOf(answer) >= 0) continue; // hide duplicate options, if any, due to lumping during import
+            answersAlreadyConsidered.push(answer);
+            count = totals[answer];
             if (!count) count = 0;
-            options.push({label: each + " - " +  count, value: each});
-        });
-    } else if (question.displayType === "radiobuttons") {
-        question.valueOptions.forEach(function(each) {
-            count = totals[each];
-            if (!count) count = 0;
-            options.push({label: each + " - " +  count, value: each});
-        });
-    } else if (question.displayType === "checkboxes") {
-        question.valueOptions.forEach(function(each) {
-            count = totals[each];
-            if (!count) count = 0;
-            options.push({label: each + " - " +  count, value: each});
-        });
+            options.push({label: answer + " - " +  count, value: answer});
+        }
     } else if (question.displayType === "slider") {
         for (var sliderTick = 0; sliderTick <= 100; sliderTick++) {
             count = totals[sliderTick];

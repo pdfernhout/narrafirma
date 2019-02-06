@@ -73,9 +73,12 @@ function displayHTMLForCheckboxes(fieldSpecification, fieldName, value) {
     var atLeastOneOptionWasChecked = false;
     var answerClass = "narrafirma-story-card-answer-for-" + replaceSpacesWithDashes(fieldName);
     options.push(m("span", {"class": "narrafirma-story-card-field-name-" + replaceSpacesWithDashes(fieldName)}, fieldName + ": "));
-    // TODO: What if value is not current available option?
+    // TODO: What if value is not currently available option?
+    var optionsAlreadyConsidered = [];
     for (var i = 0; i < fieldSpecification.valueOptions.length; i++) {
         var option = fieldSpecification.valueOptions[i];
+        if (optionsAlreadyConsidered.indexOf(option) >= 0) continue; // hide duplicate options, if any, due to lumping during import
+        optionsAlreadyConsidered.push(option);
         //console.log("checkboxes", option, fieldSpecification, value);
         if (options.length-1) options.push(wrap("span", answerClass + "-comma", ", "));
         if (value && value[option]) {
@@ -93,9 +96,12 @@ function displayHTMLForRadioButtons(fieldSpecification, fieldName, value) {
     var atLeastOneOptionWasChecked = false;
     var answerClass = "narrafirma-story-card-answer-for-" + replaceSpacesWithDashes(fieldName);
     options.push(m("span", {"class": "narrafirma-story-card-field-name-" + replaceSpacesWithDashes(fieldName)}, fieldName + ": "));
-    // TODO: What if value is not current available option?
+    // TODO: What if value is not currently available option?
+    var optionsAlreadyConsidered = [];
     for (var i = 0; i < fieldSpecification.valueOptions.length; i++) {
         var option = fieldSpecification.valueOptions[i];
+        if (optionsAlreadyConsidered.indexOf(option) >= 0) continue; // hide duplicate options, if any, due to lumping during import
+        optionsAlreadyConsidered.push(option);
         //console.log("checkboxes", option, fieldSpecification, value);
         if (options.length-1) options.push(wrap("span", answerClass + "-comma", ", "));
         if (value && value === option) {
@@ -113,9 +119,12 @@ function displayHTMLForSelect(fieldSpecification, fieldName, value) {
     var atLeastOneOptionWasChecked = false;
     var answerClass = "narrafirma-story-card-answer-for-" + replaceSpacesWithDashes(fieldName);
     options.push(m("span", {"class": "narrafirma-story-card-field-name-" + replaceSpacesWithDashes(fieldName)}, fieldName + ": "));
-    // TODO: What if value is not current available option?
+    // TODO: What if value is not currently available option?
+    var optionsAlreadyConsidered = [];
     for (var i = 0; i < fieldSpecification.valueOptions.length; i++) {
         var option = fieldSpecification.valueOptions[i];
+        if (optionsAlreadyConsidered.indexOf(option) >= 0) continue; // hide duplicate options, if any, due to lumping during import
+        optionsAlreadyConsidered.push(option);
         if (options.length-1) options.push(wrap("span", answerClass + "-comma", ", "));
         if (value && value === option) {
             options.push(wrap("span", "narrafirma-story-card-select-selected " + answerClass + "-selected", option));
