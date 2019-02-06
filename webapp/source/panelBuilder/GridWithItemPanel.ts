@@ -792,6 +792,12 @@ class DataStore {
             var bValue: string = this.valueForField(b, fieldIdentifier);
             if (bValue === null || bValue === undefined) bValue = "";
             if (typeof bValue === "string") bValue = bValue.toLowerCase();
+
+            // always sort empty values at the end, even if reversing the sort order
+            if (sortDirection !== "descending") {
+                if (aValue === "" && bValue !== "") return 1;
+                if (aValue !== "" && bValue === "") return -1;
+            }
             return aValue > bValue ? 1 : aValue < bValue ? -1 : 0;
         });
         
