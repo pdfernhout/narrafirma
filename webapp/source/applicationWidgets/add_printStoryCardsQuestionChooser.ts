@@ -218,7 +218,6 @@ function add_printStoryCardsQuestionChooser(panelBuilder: PanelBuilder, model, f
             }),
             buildQuestionCheckboxSpecialForNumStoriesTold(),
             buildQuestionCheckboxSpecialForStoryLength(),
-            m("br"),
         ]),
     m("br"),
     m("button", { onclick: selectAll }, "Select all"),

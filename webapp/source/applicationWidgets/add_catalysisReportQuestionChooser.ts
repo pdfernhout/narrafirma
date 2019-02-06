@@ -22,6 +22,35 @@ function add_catalysisReportQuestionChooser(panelBuilder: PanelBuilder, model, f
     // because annotation questions are global, they are not in the form the other questions are in (which are in the questionnaire)
     // so they must be converted
     var allAnnotationQuestions = questionnaireGeneration.convertEditorQuestions(project.collectAllAnnotationQuestions(), "A_");
+
+    // show questions by type
+    var nominalQuestionTypes = ["select", "boolean", "checkbox", "checkboxes", "radiobuttons"];
+
+    var storyRatioQuestions = [];
+    var storyTextQuestions = [];
+    var storyNominalQuestions = [];
+    allStoryQuestions.forEach((question) => {
+        if (question.displayType === "slider") {
+            storyRatioQuestions.push(question);
+        } else if (question.displayType === "text" || question.displayType === "textarea") {
+            storyTextQuestions.push(question);
+        } else if (nominalQuestionTypes.indexOf(question.displayType) !== -1)  {
+            storyNominalQuestions.push(question);
+        }
+    });
+
+    var participantRatioQuestions = [];
+    var participantTextQuestions = [];
+    var participantNominalQuestions = [];
+    allParticipantQuestions.forEach((question) => {
+        if (question.displayType === "slider") {
+            participantRatioQuestions.push(question);
+        } else if (question.displayType === "text" || question.displayType === "textarea") {
+            participantTextQuestions.push(question);
+        } else if (nominalQuestionTypes.indexOf(question.displayType) !== -1)  {
+            participantNominalQuestions.push(question);
+        }
+    });
     
     function isChecked(shortName, value = undefined) {
         var map = storageFunction() || {};
@@ -215,33 +244,85 @@ function add_catalysisReportQuestionChooser(panelBuilder: PanelBuilder, model, f
     return m("div.questionExternal", [
         prompt,
         m("div", [
+            m("br"),  
+            m("b", "Story questions"),
+            m("br"),  
+            m("br"),
+
+            m("i", "Scales"),
+            m("br"),
+            m("br"),
+            storyRatioQuestions.map((question) => {
+                return buildQuestionCheckbox(question.displayName, question.displayType, "S_");
+            }),
+            storyRatioQuestions.length ? [] : m("div", "  (none)"),
+
+            m("br"),
+            m("i", "Choices"),
+            m("br"),
+            m("br"),
+            storyNominalQuestions.map((question) => {
+                return buildQuestionCheckbox(question.displayName, question.displayType, "S_");
+            }),
+            storyNominalQuestions.length ? [] : m("div", "  (none)"),
+
+            m("br"),
+            m("i", "Texts"),
+            m("br"),
+            m("br"),
+            storyTextQuestions.map((question) => {
+                return buildQuestionCheckbox(question.displayName, question.displayType, "S_");
+            }),
+            storyTextQuestions.length ? [] : m("div", "  (none)"),
+
+            m("br"),
+            m("b", "Participant questions"),
+            m("br"),
+            m("br"),
+
+            m("i", "Scales"),
+            m("br"),
+            m("br"),
+            participantRatioQuestions.map((question) => {
+                return buildQuestionCheckbox(question.displayName, question.displayType, "P_");
+            }),
+            participantRatioQuestions.length ? [] : m("div", "  (none)"),
+
+            m("br"),
+            m("i", "Choices"),
+            m("br"),
+            m("br"),
+            participantNominalQuestions.map((question) => {
+                return buildQuestionCheckbox(question.displayName, question.displayType, "P_");
+            }),
+            participantNominalQuestions.length ? [] : m("div", "  (none)"),
+
+            m("br"),
+            m("i", "Texts"),
+            m("br"),
+            m("br"),
+            participantTextQuestions.map((question) => {
+                return buildQuestionCheckbox(question.displayName, question.displayType, "P_");
+            }),
+            participantTextQuestions.length ? [] : m("div", "  (none)"),
+
+            m("br"),
+            m("b", "Annotation questions"), 
+            m("br"),
+            m("br"),
+            allAnnotationQuestions.map((question) => {
+                return buildQuestionCheckbox(question.displayName, question.displayType, "A_");
+            }),
+            allAnnotationQuestions.length ? [] : m("div", "  (none)"),
+            m("br"),
+            m("b", "Additional information"),
+            m("br"),
             m("br"),
             elicitingQuestions.map((question) => {
                 return buildQuestionCheckboxSpecialForElicitingQuestion();
             }),
             buildQuestionCheckboxSpecialForNumStoriesTold(),
             buildQuestionCheckboxSpecialForStoryLength(),
-            m("br"),
-            m("div[style=margin-left:1em;font-weight:bold]", "Story questions"),
-            m("br"),
-            allStoryQuestions.map((question) => {
-                return buildQuestionCheckbox(question.displayName, question.displayType, "S_");
-            }),
-            allStoryQuestions.length ? [] : m("div", "  (none)"),
-            m("br"),
-            m("div[style=margin-left:1em;font-weight:bold]", "Participant questions"),
-            m("br"),
-            allParticipantQuestions.map((question) => {
-                return buildQuestionCheckbox(question.displayName, question.displayType, "P_");
-            }),
-            allParticipantQuestions.length ? [] : m("div", "  (none)"),
-            allAnnotationQuestions.length ? m("br") : "",
-            allAnnotationQuestions.length ? m("div[style=margin-left:1em;font-weight:bold]", "Annotation questions") : "",
-            allAnnotationQuestions.length ? m("br") : "",
-            allAnnotationQuestions.map((question) => {
-                return buildQuestionCheckbox(question.displayName, question.displayType, "A_");
-            }),
-            allAnnotationQuestions.length ? [] : m("div", "")
         ]),
     m("br"),
     m("button", { onclick: selectAll }, "Select all"),
