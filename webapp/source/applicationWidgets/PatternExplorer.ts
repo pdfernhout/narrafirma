@@ -752,12 +752,12 @@ class PatternExplorer {
         if (this.showInterpretationsInGrid) {
             const interpretationSetID = this.observationAccessor(pattern, "observationInterpretations");
             const interpretationIDs = this.project.tripleStore.getListForSetIdentifier(interpretationSetID); 
-            const interpretationselectionCategories = [];
+            const interpretationNames = [];
             interpretationIDs.forEach(id => {
                 const itemName = this.project.tripleStore.queryLatestC(id, "interpretation_name");
-                interpretationselectionCategories.push(itemName);
+                interpretationNames.push(itemName);
             });
-            pattern.interpretations = interpretationselectionCategories.join("\n");
+            pattern.interpretations = interpretationNames.join("\n");
         }
         
         return pattern;
@@ -901,13 +901,13 @@ class PatternExplorer {
     showAllStoriesSelectedInGraph() {
         var stories = this.modelForStoryGrid.storiesSelectedInGraph;
         if (!stories.length) {
-            alert("Please select some stories to show.");
+            alert("Please select some stories in the graph.");
             return;
         }
         var text;
         const selectionName = this.nameForCurrentGraphSelection();
-        // story selectionCategories first
-        text = "selectionCategories of stories (" + stories.length + ") in graph selection - " + selectionName + "\n\n";
+        // story names first
+        text = "Names of stories (" + stories.length + ") in graph selection - " + selectionName + "\n\n";
         for (var i = 0; i < stories.length; i++) {
             text += stories[i].model.storyName + "\n";
         }
@@ -953,7 +953,7 @@ class PatternExplorer {
             });
         }
         const selectionName = this.nameForCurrentGraphSelection();
-        var text = "Story selectionCategories (" + sampledStories.length + ") sampled from graph selection - " + selectionName + "\n\n";
+        var text = "Story names (" + sampledStories.length + ") sampled from graph selection - " + selectionName + "\n\n";
         for (var i = 0; i < sampledStories.length; i++) {
             text += sampledStories[i].model.storyName + "\n";
         }
