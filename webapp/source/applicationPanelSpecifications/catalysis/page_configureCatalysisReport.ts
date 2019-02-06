@@ -206,8 +206,19 @@ var panel: Panel = {
             displayVisible: function(panelBuilder, model) {
                 return !!Globals.clientState().catalysisReportIdentifier();
             }
-
-        },      
+        },   
+        {
+            id: "configureCatalysisReport_numStoryLengthBins",
+            valuePath: "/clientState/catalysisReportIdentifier/numStoryLengthBins",
+            valueType: "string",
+            valueOptions: ["2", "3", "4", "5", "6", "7", "8", "9", "10"],
+            displayType: "select",
+            displayName: "Number of story length bins",
+            displayPrompt: `How many <strong>story length categories</strong> do you want to graph?`,
+            displayVisible: function(panelBuilder, model) {
+                return !!Globals.clientState().catalysisReportIdentifier();
+            }
+        },    
         {
             id: "configureCatalysisReport_numHistogramBins",
             valuePath: "/clientState/catalysisReportIdentifier/numHistogramBins",

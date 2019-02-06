@@ -667,10 +667,10 @@ class Project {
         return result;
     }
 
-    storyLengthQuestion(maxStoryLength) {
+    storyLengthQuestion(maxStoryLength, numStoryLengthBins) {
         var choices = [];
-        var increment = Math.round(maxStoryLength / 10);
-        for (var i = 1; i <= 10; i++) {
+        var increment = Math.round(maxStoryLength / numStoryLengthBins);
+        for (var i = 1; i <= numStoryLengthBins; i++) {
             choices.push("" + i * increment);
         }
         var storyLengthQuestion = {
@@ -694,7 +694,9 @@ class Project {
         if (maxStoryLength > 5000) {
             maxStoryLength = 5000;
         }
-        return this.storyLengthQuestion(maxStoryLength);
+        // outside of catalysis report, use hard-coded number of bins
+        const numStoryLengthBins = 4;
+        return this.storyLengthQuestion(maxStoryLength, numStoryLengthBins);
     }
 
     storyLengthQuestionsForCatalysisReport(catalysisReportIdentifier) {
@@ -718,7 +720,12 @@ class Project {
             const maxStoryLengthToShowAsNumber = parseInt(maxStoryLengthToShow);
             maxStoryLength = Math.min(maxStoryLengthToShowAsNumber, maxStoryLength);
         }
-        return this.storyLengthQuestion(maxStoryLength);
+        var numStoryLengthBinsAsNumber = 4; // default in case choice is missing or garbled
+        const numStoryLengthBins = this.tripleStore.queryLatestC(catalysisReportIdentifier, "numStoryLengthBins");
+        if (numStoryLengthBins) {
+            numStoryLengthBinsAsNumber = parseInt(numStoryLengthBins);
+        } 
+        return this.storyLengthQuestion(maxStoryLength, numStoryLengthBinsAsNumber);
     }
 
     numStoriesToldQuestion(maxNumQuestions) {
