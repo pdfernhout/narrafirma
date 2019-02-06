@@ -29,6 +29,9 @@ var patternsPanelSpecification = {
     panelFields: [
         {id: "id", displayName: "Index"},
         {id: "patternName", displayName: "Pattern name", valueOptions: []},
+        {id: "question1", displayName: "Question 1", valueOptions: []},
+        {id: "question2", displayName: "Question 2", valueOptions: []},
+        {id: "question3", displayName: "Question 3", valueOptions: []},
         {id: "graphType", displayName: "Graph type", valueOptions: []},
         {id: "significance", displayName: "Significance value", valueOptions: []},
         {id: "observation", displayName: "Observation", valueOptions: []},
@@ -712,13 +715,25 @@ class PatternExplorer {
         var pattern; 
 
         if (graphType == "data integrity") {
-            pattern = {id: id, observation: null, graphType: graphType, patternName: patternNameIfDataIntegrity, questions: questions};           
+            pattern = {id: id, observation: null, graphType: graphType, patternName: patternNameIfDataIntegrity, questions: questions};    
+            pattern.question1 = "Data integrity";
+            pattern.question2 = "";
+            pattern.question3 = "";
         } else if (questions.length === 1) {
             pattern = {id: id, observation: null, graphType: graphType, patternName: nameForQuestion(questions[0]), questions: questions};
+            pattern.question1 = questions[0].displayName;
+            pattern.question2 = "";
+            pattern.question3 = "";
         } else if (questions.length === 2) {
             pattern = {id: id, observation: null, graphType: graphType, patternName: nameForQuestion(questions[0]) + " x " + nameForQuestion(questions[1]), questions: questions};
+            pattern.question1 = questions[0].displayName;
+            pattern.question2 = questions[1].displayName;
+            pattern.question3 = "";
         } else if (questions.length === 3) {
             pattern = {id: id, observation: null, graphType: graphType, patternName: nameForQuestion(questions[0]) + " x " + nameForQuestion(questions[1]) + " + " + nameForQuestion(questions[2]), questions: questions};
+            pattern.question1 = questions[0].displayName;
+            pattern.question2 = questions[1].displayName;
+            pattern.question3 = questions[2].displayName;
         } else {
             console.log("Unexpected number of questions", questions);
             throw new Error("Unexpected number of questions: " + questions.length);
