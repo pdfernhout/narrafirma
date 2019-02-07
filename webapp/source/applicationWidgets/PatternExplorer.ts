@@ -740,12 +740,14 @@ class PatternExplorer {
         if (pattern === null) {
             return;
         }
+        // tell grid to check to see if row is out of view - was causing problems if user scrolled with scroll bar then clicked in row
+        this.patternsGrid.isNavigationalScrollingNeeded = "scrolled";
 
         this.graphHolder.currentGraph = PatternExplorer.makeGraph(pattern, this.graphHolder, this.updateStoriesPane.bind(this));
         this.graphHolder.currentSelectionExtentPercentages = null;
         // TODO: Is this obsolete? this.graphHolder.currentSelectionSubgraph = null;
     }
-    
+
     makePattern(id, graphType, questions, patternNameIfDataIntegrity) {
         var pattern; 
 
