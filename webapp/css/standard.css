@@ -863,6 +863,18 @@ table.filterTable td {
 
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Catalysis report ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
+.narrafirma-choose-catalysis-report {
+    margin: 0.5em 0 0.5em 0.5em;
+}
+
+.narrafirma-choose-questions-to-include {
+    margin: 0.5em 0 0.5em 0.5em;
+}
+
+.narrafirma-choose-graph-types-to-include {
+    margin: 0.5em 0 0.5em 0.5em;
+}
+
 .narrafirma-statistics-panel-header {
 	margin: 0.5em 0 0.5em 0;
 	font-weight: bold;
