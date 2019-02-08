@@ -294,7 +294,7 @@ class Project {
         this.tripleStore.deleteSetItem(setIdentifier, question.id);
     }
 
-    allQuestionsThatCouldBeGraphedForCatalysisReport(catalysisReportIdentifier) {
+    allQuestionsThatCouldBeGraphedForCatalysisReport(catalysisReportIdentifier, considerExclusions = true) {
         var elicitingQuestions = this.elicitingQuestionsForCatalysisReport(catalysisReportIdentifier);
         var numStoriesToldQuestions = this.numStoriesToldQuestionsForCatalysisReport(catalysisReportIdentifier);
         var storyLengthQuestions = this.storyLengthQuestionsForCatalysisReport(catalysisReportIdentifier);
@@ -304,14 +304,18 @@ class Project {
         var allQuestions = [];
         allQuestions = allQuestions.concat(elicitingQuestions, numStoriesToldQuestions, storyLengthQuestions, storyQuestions, participantQuestions, annotationQuestions);
         
-        var questionIDsToInclude = this.tripleStore.queryLatestC(catalysisReportIdentifier, "questionsToInclude"); 
-        var result = [];
-        allQuestions.forEach( function(question) {
-            if (questionIDsToInclude && questionIDsToInclude[question.id]) {
-                result.push(question);
-            }
-        });
-        return result;
+        if (considerExclusions) {
+            var questionIDsToInclude = this.tripleStore.queryLatestC(catalysisReportIdentifier, "questionsToInclude"); 
+            var result = [];
+            allQuestions.forEach( function(question) {
+                if (questionIDsToInclude && questionIDsToInclude[question.id]) {
+                    result.push(question);
+                }
+            });
+            return result;
+        } else {
+            return allQuestions;
+        }
     }
 
     numStoryCollectionsInCatalysisReport(catalysisReportIdentifier) {

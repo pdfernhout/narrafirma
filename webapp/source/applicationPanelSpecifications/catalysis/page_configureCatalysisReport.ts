@@ -430,6 +430,44 @@ var panel: Panel = {
                 return !!Globals.clientState().catalysisReportIdentifier();
             }
         },
+        {
+            id: "configureCatalysisReport_exportImportLabel",
+            valueType: "none",
+            displayType: "label",
+            displayPrompt: `You can copy observations, interpretations, and perspectives from one catalysis report to another (new, empty) report,
+            as long as the question short names are the same. For more information, see the help system.`,
+        },
+        {
+            id: "catalysisReport_exportElements",
+            valueType: "none",
+            displayType: "button",
+            displayConfiguration: "exportCatalysisReportElements",
+            displayName: "Export elements",
+            displayPrompt: "Export report elements to CSV",
+            displayPreventBreak: true,
+            displayVisible: function(panelBuilder, model) {
+                return !!Globals.clientState().catalysisReportIdentifier();
+            }
+        },
+        {
+            id: "catalysisReport_importElements",
+            valueType: "none",
+            displayType: "button",
+            displayConfiguration: "importCatalysisReportElements",
+            displayName: "Import elements",
+            displayPrompt: "Import report elements from CSV",
+            displayVisible: function(panelBuilder, model) {
+                return !!Globals.clientState().catalysisReportIdentifier();
+            }
+        },
+        {
+            id: "project_csvFileUploader",
+            valueType: "none",
+            displayType: "html",
+            displayPrompt: '<input type="file" id="csvFileLoader" name="files" title="Import Data from CSV File" style="display:none"/>',
+            displayVisible: function(panelBuilder, model) {
+                return !!Globals.clientState().catalysisReportIdentifier();}
+        },
     ]
 };
 

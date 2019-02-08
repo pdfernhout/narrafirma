@@ -92,7 +92,7 @@ function add_catalysisReportGraphTypesChooser(panelBuilder: PanelBuilder, model,
 
     var allGraphTypesAsArray = Object.keys(allGraphTypes);
 
-    var questions = project.allQuestionsThatCouldBeGraphedForCatalysisReport(catalysisReportIdentifier);
+    var questions = project.allQuestionsThatCouldBeGraphedForCatalysisReport(catalysisReportIdentifier, true);
     var graphTypesToCreate = project.graphTypesToCreate(catalysisReportIdentifier);
     var graphMultiChoiceQuestionsAgainstThemselves = project.tripleStore.queryLatestC(catalysisReportIdentifier, "graphMultiChoiceQuestionsAgainstThemselves");
     var totalGraphCount = 0;

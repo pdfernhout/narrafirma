@@ -5,6 +5,7 @@ import questionnaireGeneration = require("./questionnaireGeneration");
 import surveyCollection = require("./surveyCollection");
 import surveyStorage = require("./surveyStorage");
 import dialogSupport = require("./panelBuilder/dialogSupport");
+import ClusteringDiagram = require("./applicationWidgets/ClusteringDiagram");
 import Globals = require("./Globals");
 import m = require("mithril");
 import toaster = require("./panelBuilder/toaster");
@@ -1591,6 +1592,10 @@ function addCSVOutputLine(output, line) {
             item = item.replace(/"/g, '""');
             item = '"' + item + '"';
         }
+        if (item && item.indexOf("\n") !== -1) {
+            item = item.replace(/"/g, '""');
+            item = '"' + item + '"';
+        }
         output += item;
     });
     output += "\n";
@@ -1868,6 +1873,287 @@ export function exportStoryCollection() {
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// exporting and importing catalysis elements
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+export function exportCatalysisReportElementsToCSV() {
+    var output = "";
+    function addOutputLine(line) {
+        output = addCSVOutputLine(output, line);
+    }
+
+    var catalysisReportName = Globals.clientState().catalysisReportName();
+    var catalysisReportIdentifier = project.findCatalysisReport(catalysisReportName);  
+    var catalysisReportObservationSetIdentifier = project.tripleStore.queryLatestC(catalysisReportIdentifier, "catalysisReport_observations");
+    if (!catalysisReportObservationSetIdentifier) {
+        console.log("catalysisReportObservationSetIdentifier not defined");
+        return;
+    }  
+    var observationIDs = project.tripleStore.getListForSetIdentifier(catalysisReportObservationSetIdentifier);
+
+    addOutputLine(["; Export of catalysis elements for catalysis report " + catalysisReportName + " in project " + project.projectIdentifier]);
+    addOutputLine([""]);
+    addOutputLine(["; Observation", "Name", "Description", "Strength", "Pattern", "Graph type", "Question 1", "Question 2", "Question 3", "Interpretation name|description|idea|x|y", "(repeat for each interpretation)"]);
+
+    var clusteredItems = [];
+    var perspectives = [];
+    var clusteringDiagram = project.tripleStore.queryLatestC(catalysisReportIdentifier, "interpretationsClusteringDiagram");
+    if (clusteringDiagram) [perspectives, clusteredItems] = ClusteringDiagram.calculateClusteringForDiagram(clusteringDiagram);
+
+    for (var observationIndex = 0; observationIndex < observationIDs.length ; observationIndex++) {
+
+        var observationID = observationIDs[observationIndex];
+        var observation = project.tripleStore.makeObject(observationID, true);
+
+        if (observation.observationTitle || observation.observationDescription) {
+
+            var observationLine = [];
+            observationLine.push("Observation");
+            observationLine.push(observation.observationTitle || "");
+            observationLine.push(observation.observationDescription || "");
+            observationLine.push(observation.observationStrength || "");
+            observationLine.push(observation.pattern.patternName || "");
+            observationLine.push(observation.pattern.graphType || "");
+
+            if (observation.pattern.graphType === "data integrity") {
+                observationLine.push(observation.pattern.patternName || "");
+                observationLine.push("");
+                observationLine.push("");
+            } else {
+                if (observation.pattern.questions.length === 1) {
+                    observationLine.push(observation.pattern.questions[0].id);
+                    observationLine.push("");
+                    observationLine.push("");
+                } else if (observation.pattern.questions.length === 2) {
+                    observationLine.push(observation.pattern.questions[0].id);
+                    observationLine.push(observation.pattern.questions[1].id);
+                    observationLine.push("");
+                } else if (observation.pattern.questions.length === 3) {
+                    observationLine.push(observation.pattern.questions[0].id);
+                    observationLine.push(observation.pattern.questions[1].id);
+                    observationLine.push(observation.pattern.questions[2].id);
+                }
+            }
+
+            var interpretationsListIdentifier = project.tripleStore.queryLatestC(observationID, "observationInterpretations");
+            var interpretationsList = project.tripleStore.getListForSetIdentifier(interpretationsListIdentifier);
+
+            interpretationsList.forEach((interpretationID) => {
+
+                var interpretation = project.tripleStore.makeObject(interpretationID, true);
+
+                if (interpretation.interpretation_name || interpretation.interpretation_text || interpretation.interpretation_idea) {
+
+                    var interpretationCell = [];
+                    interpretationCell.push(interpretation.interpretation_name || "");
+                    interpretationCell.push(interpretation.interpretation_text || "");
+                    interpretationCell.push(interpretation.interpretation_idea || "");
+
+                    if (clusteredItems.length) {
+                        var foundClusteredItem = null;
+                        for (var itemIndex = 0; itemIndex < clusteredItems.length; itemIndex++) {
+                            if (clusteredItems[itemIndex].referenceUUID === interpretationID) {
+                                foundClusteredItem = clusteredItems[itemIndex];
+                                break;
+                            }
+                        }
+                        if (foundClusteredItem) {
+                            interpretationCell.push(foundClusteredItem.x);
+                            interpretationCell.push(foundClusteredItem.y);
+                        }
+                    }
+                    observationLine.push(interpretationCell.join("|"));
+                }
+            });
+            addOutputLine(observationLine);
+        }
+    }
+
+    if (perspectives.length) {
+
+        addOutputLine([""]);
+        addOutputLine(["; Perspective", "Name", "Notes", "x", "Y"]);
+
+        for (var perspectiveIndex = 0; perspectiveIndex < perspectives.length; perspectiveIndex++) {
+            var perspective = perspectives[perspectiveIndex];
+            addOutputLine(["Perspective", perspective.name, perspective.notes, perspective.x, perspective.y]);
+        }
+    }
+
+    var exportBlob = new Blob([output], {type: "text/csv;charset=utf-8"});
+    saveAs(exportBlob, "Catalysis_report_elements_" + catalysisReportName + ".csv");
+} 
+
+export function processCSVContentsForCatalysisElements(contents) {
+
+    var numObservationsCreated = 0;
+    var numInterpretationsCreated = 0;
+    var numClusterItemsCreated = 0;
+    var numPerspectivesCreated = 0;
+
+    const catalysisReportIdentifier = Globals.clientState().catalysisReportIdentifier();
+    var observationSetIdentifier = project.tripleStore.queryLatestC(catalysisReportIdentifier, "catalysisReport_observations");
+    if (!observationSetIdentifier) {
+        observationSetIdentifier = generateRandomUuid("ObservationSet");
+        project.tripleStore.addTriple(catalysisReportIdentifier, "catalysisReport_observations", observationSetIdentifier);
+    }
+
+    var allQuestions = project.allQuestionsThatCouldBeGraphedForCatalysisReport(catalysisReportIdentifier, false);
+
+    var clusteringDiagram: ClusteringDiagramModel = project.tripleStore.queryLatestC(catalysisReportIdentifier, "interpretationsClusteringDiagram");
+    if (!clusteringDiagram) {
+        clusteringDiagram = ClusteringDiagram.newDiagramModel();
+    }
+    var clusteringDiagramChanged = false;
+
+    var rows = d3.csv.parseRows(contents);
+
+    for (var rowIndex = 0; rowIndex < rows.length; rowIndex++) {
+
+        var row = rows[rowIndex];
+        if (row.length < 2) continue;
+        if (row[0][0] === ";") continue;
+        if (row[0] === "") continue;
+
+        if (row[0] === "Observation") {
+
+            // addOutputLine(["; Observation", "Name", "Description", "Strength", "Pattern", "Graph type", "Question 1", "Question 2", "Question 3", "Interpretation name|description|idea|x|y", "(repeat for each interpretation)"]);
+            
+            const observationName = row[1];
+            const observationDescription = row[2];
+            const observationStrength = row[3];
+            const patternName = row[4];
+            const graphType = row[5];
+
+            var patternQuestionIDs = [];
+            if (graphType === "data integrity") {
+                patternQuestionIDs = [patternName];
+            } else {
+                if (row[6]) patternQuestionIDs.push(row[6]);
+                if (row[7]) patternQuestionIDs.push(row[7]);
+                if (row[8]) patternQuestionIDs.push(row[8]);
+            }
+            
+            var interpretationSpecs = [];
+            if (row.length > 9) {
+                for (var colIndex = 9; colIndex < row.length; colIndex++) {
+                    interpretationSpecs.push(row[colIndex]);
+                }
+            }
+
+            var patternQuestions = [];
+            patternQuestionIDs.forEach(function(id) {
+                for (var questionIndex = 0; questionIndex < allQuestions.length; questionIndex++) {
+                    if (allQuestions[questionIndex].id === id) {
+                        patternQuestions.push(allQuestions[questionIndex]);
+                    }
+                }
+            });
+
+            const observationIdentifier = generateRandomUuid("Observation");
+            project.tripleStore.addTriple(observationSetIdentifier, {setItem: patternQuestionIDs}, observationIdentifier);
+            var patternCopyWithoutAccessorFunction = {
+                graphType: graphType,
+                patternName: patternName,
+                questions: patternQuestions
+            };
+            project.tripleStore.addTriple(observationIdentifier, "pattern", patternCopyWithoutAccessorFunction);
+            project.tripleStore.addTriple(observationIdentifier, "observationTitle", observationName); 
+            project.tripleStore.addTriple(observationIdentifier, "observationDescription", observationDescription); 
+            project.tripleStore.addTriple(observationIdentifier, "observationStrength", observationStrength); 
+            numObservationsCreated++;
+
+            if (interpretationSpecs.length) {
+
+                var interpretationSetID = project.tripleStore.queryLatestC(observationIdentifier, "observationInterpretations");
+                if (!interpretationSetID) {
+                    interpretationSetID = generateRandomUuid("InterpretationSet");
+                    project.tripleStore.addTriple(observationIdentifier, "observationInterpretations", interpretationSetID);
+                }
+
+                interpretationSpecs.forEach(function(spec) {
+                    const partsOfSpec = spec.split("|");
+
+                    // "Interpretation name|description|idea|x|y"
+
+                    var interp_Name = partsOfSpec[0] || "";
+                    var interp_Text = partsOfSpec[1] || "";
+                    var interp_Idea = partsOfSpec[2] || "";
+                    
+                    var interp_X = 100;
+                    if (partsOfSpec.length > 3) {
+                        interp_X = parseInt(partsOfSpec[3] || "");
+                        if (isNaN(interp_X)) interp_X = 100;
+                    }
+                    var interp_Y = 100;
+                    if (partsOfSpec.length > 4) {
+                        interp_Y = parseInt(partsOfSpec[4] || "");
+                        if (isNaN(interp_Y)) interp_Y = 100;
+                    }
+
+                    if (interp_Name && interp_Text) {
+
+                        var template = {
+                            id: generateRandomUuid("Interpretation"),
+                            interpretation_name: interp_Name, 
+                            interpretation_text: interp_Text,  
+                            interpretation_idea: interp_Idea
+                        };
+                        project.tripleStore.makeNewSetItem(interpretationSetID, "Interpretation", template);
+                        numInterpretationsCreated++;
+
+                        var newItem = ClusteringDiagram.addNewItemToDiagram(clusteringDiagram, "item", interp_Name, interp_Text);
+                        newItem.x = interp_X;
+                        newItem.y = interp_Y;
+                        clusteringDiagramChanged = true;
+                        numClusterItemsCreated++;
+                    }
+
+                });
+            }
+
+        } else if (row[0] === "Perspective") {
+
+            // addOutputLine(["; Perspective", "Name", "Notes", "x", "Y"]);
+
+            const persp_Name = row[1];
+            const persp_Notes = row[2];
+
+            var persp_X = 100;
+            if (row.length > 3) {
+                persp_X = parseInt(row[3] || "");
+                if (isNaN(persp_X)) persp_X = 100;
+            }
+            var persp_Y = 100;
+            if (row.length > 4) {
+                persp_Y = parseInt(row[4] || "");
+                if (isNaN(persp_Y)) persp_Y = 100;
+            }
+
+            var newItem = ClusteringDiagram.addNewItemToDiagram(clusteringDiagram, "cluster", persp_Name, persp_Notes);
+            newItem.x = persp_X;
+            newItem.y = persp_Y;
+            clusteringDiagramChanged = true;
+            numPerspectivesCreated++;
+
+        } else {
+            alert('Unrecognized first cell in CSV row: "' + row[0] + '". The first cell in each row must be either "Observation" or "Perspective." If this is a comment row, make sure the first character in the first cell is a semicolon.');
+        }
+    }
+
+    if (clusteringDiagramChanged) {
+        project.tripleStore.addTriple(catalysisReportIdentifier, "interpretationsClusteringDiagram", clusteringDiagram);
+    }
+
+    alert("Successfully imported " 
+        + numObservationsCreated + (numObservationsCreated === 1 ? " observation, " : " observations, ")
+        + numInterpretationsCreated + (numInterpretationsCreated === 1 ? " interpretation, " : " interpretations, ")
+        + numClusterItemsCreated + (numClusterItemsCreated === 1 ? " cluster diagram item, and " : " cluster diagram items, and ")
+        + numPerspectivesCreated + (numPerspectivesCreated === 1 ? " perspective." : " perspectives.")
+        );
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // exported functions
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -1896,4 +2182,24 @@ export function checkCSVStoriesWithStoryForm(questionnaire) {
 
 export function importCSVQuestionnaire() {
     chooseCSVFileToImport(processCSVContentsForQuestionnaire, true, false);
+}
+
+export function importCSVCatalysisElements() {
+    if (!Globals.clientState().catalysisReportIdentifier()) {
+        // TODO: Translate
+        return alert("You need to select a catalysis report before you can import elements to it.");
+    }
+    const catalysisReportName = Globals.clientState().catalysisReportName();
+    const message = 'You are about to import observations, interpretations, and perspectives into the current catalysis report, ' + 
+        catalysisReportName + '. You should only do this with an empty report. Are you sure you want to do this?';
+    if (!confirm(message)) return;
+    chooseCSVFileToImport(processCSVContentsForCatalysisElements, false, false);
+}
+
+export function exportCatalysisReportElements() {
+    if (!Globals.clientState().catalysisReportIdentifier()) {
+        // TODO: Translate
+        return alert("You need to select a catalysis report before you can export elements from it.");
+    }
+    exportCatalysisReportElementsToCSV();
 }

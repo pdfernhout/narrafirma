@@ -160,16 +160,79 @@ still appear in the printed report.
 </div>
 
 <div class="question">
-What's this about an opaque dot?
-</div>
-<div class="question-answer">
-<p>
-If you have a lot of data points, or if you imported data collected with a different slider scale, you may
-end up in a situation where one dot on a scatterplot represents not one but several (or many) stories. In that situation,
-you can make scatter-plot dots semi-transparent, so a dark dot represents more stories than a pale dot.  
-</p>
-</div>
-		
+		What's this about an opaque dot?
+		</div>
+		<div class="question-answer">
+		<p>
+		If you have a lot of data points, or if you imported data collected with a different slider scale, you may
+		end up in a situation where one dot on a scatterplot represents not one but several (or many) stories. In that situation,
+		you can make scatter-plot dots semi-transparent, so a dark dot represents more stories than a pale dot.  
+		</p>
+		</div>
+				
+<div class="question">
+	Please explain exporting and importing report elements. 
+	</div>
+	<div class="question-answer">
+	<p>
+	A catalysis report contains observations, interpretations, and perspectives that refer to patterns (graphs or sets of graphs) in the story collection(s) connected to that report.
+	Sometimes it happens that you need to change a story form or story collection <i>after</i> you have started working on a catalysis report.
+	To avoid having to start the report all over again, you can <b>copy its observations, interpretations, and perspectives to a new report</b>.</p>
+	<p>To do this:
+	</p>
+	<ol>
+		<li>At the bottom of the "Configure catalysis report" page, with your catalysis report selected, click <b>Export report elements to CSV</b>.</li>
+		<li>Create one or more new story collections (maybe with new story forms).</li>
+		<li>Create a new catalysis report using those story collections.</li>
+		<li>At the bottom of the "Configure catalysis report" page, with your new, empty catalysis report selected, click <b>Import report elements from CSV</b>.</li>
+		<li>Choose the CSV file you saved.</li>
+		<li>Check over your observations. If you think the patterns might have changed, check over your imported observations to see if they still make sense.</li>
+	</ol>
+	<p>Two important warnings:</p>
+	<ul>
+			<li>
+					<b>Always import report elements into a new, empty catalysis report</b>. NarraFirma does not check for collisions with existing
+					observations, interpretations, or perspectives. 
+				</li>
+				<li>NarraFirma has no idea (and does not care) if your imported report elements make any sense with the new data you are connecting them to. 
+						If your data is different in the new story collection,
+						<b>it is up to you to go over each observation and see whether it still makes sense</b>.
+					</li>
+					
+	</ul>
+	<p>Notes:</p>
+	<ul>
+		<li>Observations are identified by their connections to patterns. Patterns are combinations of questions. Questions are identified by their short names.
+			Interpretations depend on observations. Perspectives depend on interpretations.
+			Thus the critical connection between two catalysis reports lies in the short names of the questions their patterns refer to.
+			So you can transfer elements from one catalysis report to another 
+			<i>as long as the question short names are identical</i>. 
+		</li>
+		<li>
+			The question <i>types</i> must also be identical, 
+			because different patterns would be generated if you changed, for example, a choice question to a scale question.
+			(Though it won't matter if a question changes from a single-choice to a multiple-choice answer; as long as the same graph types will be generated, the mapping will work.)
+		</li>
+		<li>
+			It does not matter if question texts or answer lists are different in the two situations. 
+			Those things are not involved in the connections between observations and patterns.
+		It also does not matter if you are working in a new project when you import report elements. The only thing that matters is that the
+				question short names (and types) match up.
+			</li>
+		<li>If the question short names are <i>not</i> identical in the two reports,
+			you can carefully edit the question short names in your exported CSV file to match those in the new situation. 
+			Be sure to change the question short names in the "Pattern" column as well as the "Question #" columns.
+			And make sure you preserve the prefixes in front of question names:
+			<ul>
+				<li>S_ for story questions</li>
+				<li>P_ for participant questions</li>
+				<li>A_ for annotation questions</li>
+			</ul> 
+			Remember to save the CSV file using the UTF-8 encoding format.
+		</li>
+	</ul>
+	</div>
+
 <div class="question">
 		How can I format my report sections?
 		</div>
