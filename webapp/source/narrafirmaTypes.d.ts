@@ -24,6 +24,7 @@ interface GraphHolder {
     scatterDotSize: number;
     correlationLineChoice: string;
     outputGraphFormat: string;
+    showStatsPanelsInReport: boolean;
     graphTypesToCreate: {};
 }
 

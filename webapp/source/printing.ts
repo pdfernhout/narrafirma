@@ -611,8 +611,10 @@ function displayForGraphHolder(graphHolder: GraphHolder) {
         result.push(m("table", {"class": "narrafirma-print-multiple-histograms"}, rows));
         
         // Add the statistics
-        var statisticsPanel = <HTMLElement>graphHolder.graphResultsPane.lastChild;
-        result.push(m.trust(statisticsPanel.outerHTML));
+        if (graphHolder.showStatsPanelsInReport) {
+            var statisticsPanel = <HTMLElement>graphHolder.graphResultsPane.lastChild;
+            result.push(m.trust(statisticsPanel.outerHTML));
+        }
         
         return result;
     } else {
@@ -635,9 +637,13 @@ function displayForGraph(graphNode: HTMLElement, graphHolder: GraphHolder) {
     
     styleNode.innerHTML = "<![CDATA[" + graphResultsPaneCSS + "]]>";
     graphNode.firstChild.insertBefore(styleNode, graphNode.firstChild.firstChild);
+
     // remove the statistics panel
-    var statisticsPanel = <HTMLElement>graphNode.childNodes.item(2); // item(1) is title pane
-    if (statisticsPanel) graphNode.removeChild(statisticsPanel);
+    // don't try to do this if showStatsPanelsInReport is turned off, because there will be no statistics panel
+    if (graphHolder.showStatsPanelsInReport) {
+        var statisticsPanel = <HTMLElement>graphNode.childNodes.item(2); // item(1) is title pane
+        if (statisticsPanel) graphNode.removeChild(statisticsPanel);
+    }
 
     var svgText = (<HTMLElement>graphNode).innerHTML;
     if (graphHolder.outputGraphFormat === "PNG") {
@@ -652,19 +658,19 @@ function displayForGraph(graphNode: HTMLElement, graphHolder: GraphHolder) {
         return [
             m("div:narrafirma-graph-image", 
                 imageForGraph || []),
-                m.trust(statisticsPanel ? statisticsPanel.outerHTML : ""),
+                graphHolder.showStatsPanelsInReport ? m.trust(statisticsPanel ? statisticsPanel.outerHTML : "") : m("div"),
         ];
     } else if (graphHolder.outputGraphFormat === "SVG") {
         return [
             m("div:narrafirma-graph-image", m.trust(svgText)),
-            m.trust(statisticsPanel ? statisticsPanel.outerHTML : ""),
+            graphHolder.showStatsPanelsInReport ? m.trust(statisticsPanel ? statisticsPanel.outerHTML : "") : m("div"),
         ];
     } else {
         throw Error("Unsupported graph type: " + graphHolder.outputGraphFormat);
     }
 }
 
-function printObservationList(observationList, observationLabel, interpretationNotes, allStories, minimumStoryCountRequiredForTest: number, minimumStoryCountRequiredForGraph: number, numHistogramBins: number, numScatterDotOpacityLevels: number, scatterDotSize: number, correlationLineChoice, outputGraphFormat) {
+function printObservationList(observationList, observationLabel, interpretationNotes, allStories, options) {
     // For now, just print all observations
     return printList(observationList, {}, function (item) {
         var project = Globals.project();
@@ -679,13 +685,14 @@ function printObservationList(observationList, observationLabel, interpretationN
             currentGraph: null,
             currentSelectionExtentPercentages: null,
             excludeStoryTooltips: true,
-            minimumStoryCountRequiredForTest: minimumStoryCountRequiredForTest,
-            minimumStoryCountRequiredForGraph: minimumStoryCountRequiredForGraph,
-            numHistogramBins: numHistogramBins,
-            numScatterDotOpacityLevels: numScatterDotOpacityLevels,
-            scatterDotSize: scatterDotSize,
-            correlationLineChoice: correlationLineChoice,
-            outputGraphFormat: outputGraphFormat,
+            minimumStoryCountRequiredForTest: options.minimumStoryCountRequiredForTest,
+            minimumStoryCountRequiredForGraph: options.minimumStoryCountRequiredForGraph,
+            numHistogramBins: options.numHistogramBins,
+            numScatterDotOpacityLevels: options.numScatterDotOpacityLevels,
+            scatterDotSize: options.scatterDotSize,
+            correlationLineChoice: options.correlationLineChoice,
+            outputGraphFormat: options.outputGraphFormat,
+            showStatsPanelsInReport: options.showStatsPanelsInReport,
             graphTypesToCreate: {}
         };
 
@@ -704,7 +711,7 @@ function printObservationList(observationList, observationLabel, interpretationN
                 printReturnAndBlankLine()
             ];
         } else {
-            var graph = PatternExplorer.makeGraph(pattern, graphHolder, selectionCallback);
+            var graph = PatternExplorer.makeGraph(pattern, graphHolder, selectionCallback, !options.showStatsPanelsInReport);
             if (graph) {
                 return [
                     m("div.narrafirma-catalysis-report-observation", [
@@ -825,6 +832,8 @@ export function printCatalysisReport() {
     options["scatterDotSize"] = project.scatterDotSize(catalysisReportIdentifier);
     options["correlationLineChoice"] = project.correlationLineChoice(catalysisReportIdentifier);
     options["outputGraphFormat"] = project.outputGraphFormat(catalysisReportIdentifier);
+    options["showStatsPanelsInReport"] = project.showStatsPanelsInReport(catalysisReportIdentifier);
+
     var observationIDs = project.tripleStore.getListForSetIdentifier(catalysisReportObservationSetIdentifier);
 
     if (printWhat.indexOf("observations") >= 0) {
@@ -949,11 +958,8 @@ function printCatalysisReportWithOnlyObservations(project, catalysisReportIdenti
             });
             finishModel.redraw();
         } else {
-            printItems.push(<any>printObservationList([observationIDs[observationIndex]], 
-                options["observationLabel"], "", allStories, 
-                options["minimumStoryCountRequiredForTest"], options["minimumStoryCountRequiredForGraph"], 
-                options["numHistogramBins"], options["numScatterDotOpacityLevels"], 
-                options["scatterDotSize"], options["correlationLineChoice"], options["outputGraphFormat"]));
+            // observationList, observationLabel, interpretationNotes, allStories, options
+            printItems.push(<any>printObservationList([observationIDs[observationIndex]], options["observationLabel"], "", allStories, options));
             printItems.push(m(".narrafirma-catalysis-report-observations-only-page-break", ""));
             progressModel.progressText = progressText(observationIndex);
             progressModel.redraw();
@@ -1034,14 +1040,6 @@ function printCatalysisReportWithClusteredInterpretations(project, catalysisRepo
         printItems.push(m("div.narrafirma-catalysis-report-perspective-link", m("a", {href: "#perspective-" + replaceSpacesWithDashes(perspective.name)}, perspective.name)));
     }
     printItems.push(m("br"));
-    
-    var minimumStoryCountRequiredForTest = project.minimumStoryCountRequiredForTest(catalysisReportIdentifier);
-    var minimumStoryCountRequiredForGraph = project.minimumStoryCountRequiredForGraph(catalysisReportIdentifier);
-    var numHistogramBins = project.numberOfHistogramBins(catalysisReportIdentifier);
-    var numScatterDotOpacityLevels = project.numScatterDotOpacityLevels(catalysisReportIdentifier);
-    var scatterDotSize = project.scatterDotSize(catalysisReportIdentifier);
-    var correlationLineChoice = project.correlationLineChoice(catalysisReportIdentifier);
-    var outputGraphFormat = project.outputGraphFormat(catalysisReportIdentifier);
     
     function progressText(perspectiveIndex: number, interpretationIndex: number) {
         return "Perspective " + (perspectiveIndex + 1) + " of " + perspectives.length + ", interpretation " + (interpretationIndex + 1) + " of " + perspectives[perspectiveIndex].items.length;
@@ -1157,9 +1155,7 @@ function printCatalysisReportWithClusteredInterpretations(project, catalysisRepo
                 }
 
                 printItems.push(<any>printObservationList(observationsIDsForInterpretation[interpretation.uuid], 
-                    options["observationLabel"], interpretation.notes, allStories, 
-                    minimumStoryCountRequiredForTest, minimumStoryCountRequiredForGraph, 
-                    numHistogramBins, numScatterDotOpacityLevels, scatterDotSize, correlationLineChoice, outputGraphFormat));
+                    options["observationLabel"], interpretation.notes, allStories, options));
                 
                 progressModel.progressText = progressText(perspectiveIndex, interpretationIndex);
                 progressModel.redraw();

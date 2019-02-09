@@ -29,6 +29,7 @@ class Project {
     static defaultScatterDotSize = 8;
     static defaultCorrelationLineChoice = "0.05";
     static defaultOutputGraphFormat = "SVG";
+    static defaultShowStatsPanelsInReport = true;
     static defaultGraphTypesToCreate = {
         "data integrity graphs": false,
         "texts": false,
@@ -888,6 +889,18 @@ class Project {
             return outputGraphFormat;
         } else {
             return Project.defaultOutputGraphFormat;
+        }
+    }
+
+    showStatsPanelsInReport(catalysisReportIdentifier) {
+        if (!catalysisReportIdentifier) {
+            throw new Error("catalysisReportIdentifier was not supplied");
+        }
+        var showStatsPanelsInReport = this.tripleStore.queryLatestC(catalysisReportIdentifier, "showStatsPanelsInReport");
+        if (showStatsPanelsInReport !== undefined) {
+            return showStatsPanelsInReport;
+        } else {
+            return Project.defaultShowStatsPanelsInReport;
         }
     }
 

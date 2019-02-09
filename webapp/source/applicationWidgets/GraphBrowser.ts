@@ -45,6 +45,7 @@ class GraphBrowser {
             scatterDotSize: Project.defaultScatterDotSize,
             correlationLineChoice: null,
             outputGraphFormat: Project.defaultOutputGraphFormat,
+            showStatsPanelsInReport: Project.defaultShowStatsPanelsInReport,
             graphTypesToCreate: {}
         }; 
     }
@@ -205,15 +206,15 @@ class GraphBrowser {
         if (xType === "choice" && yType === null) {
             charting.d3BarChartForQuestion(this.graphHolder, xAxisQuestion, this.storiesSelected.bind(this), true);
         } else if (xType === "choice" && yType === "choice") {
-            charting.d3ContingencyTable(this.graphHolder, xAxisQuestion, yAxisQuestion, null, this.storiesSelected.bind(this));
+            charting.d3ContingencyTable(this.graphHolder, xAxisQuestion, yAxisQuestion, null, this.storiesSelected.bind(this), true);
         } else if (xType === "choice" && yType === "scale") {
-            charting.multipleHistograms(this.graphHolder, xAxisQuestion, yAxisQuestion, this.storiesSelected.bind(this));
+            charting.multipleHistograms(this.graphHolder, xAxisQuestion, yAxisQuestion, this.storiesSelected.bind(this), true);
         } else if (xType === "scale" && yType === null) {
-            charting.d3HistogramChartForQuestion(this.graphHolder, xAxisQuestion, null, null, this.storiesSelected.bind(this));
+            charting.d3HistogramChartForQuestion(this.graphHolder, xAxisQuestion, null, null, this.storiesSelected.bind(this), true);
         } else if (xType === "scale" && yType === "choice") {
-            charting.multipleHistograms(this.graphHolder, yAxisQuestion, xAxisQuestion, this.storiesSelected.bind(this));
+            charting.multipleHistograms(this.graphHolder, yAxisQuestion, xAxisQuestion, this.storiesSelected.bind(this), true);
         } else if (xType === "scale" && yType === "scale") {
-            charting.d3ScatterPlot(this.graphHolder, xAxisQuestion, yAxisQuestion, null, null, this.storiesSelected.bind(this));
+            charting.d3ScatterPlot(this.graphHolder, xAxisQuestion, yAxisQuestion, null, null, this.storiesSelected.bind(this), true);
         } else {
             console.log("ERROR: Unexpected graph type");
             alert("ERROR: Unexpected graph type");

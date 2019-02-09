@@ -591,7 +591,7 @@ function addTitlePanelForChart(chartPane, chartTitle) {
 
 // ---- Charts
 
-export function d3BarChartForQuestion(graphBrowserInstance: GraphHolder, question, storiesSelectedCallback, inGraphBrowser = false) {
+export function d3BarChartForQuestion(graphBrowserInstance: GraphHolder, question, storiesSelectedCallback, hideStatsPanel = false) {
     var allPlotItems = [];
     var xLabels = [];  
     var results = {};
@@ -628,7 +628,7 @@ export function d3BarChartForQuestion(graphBrowserInstance: GraphHolder, questio
     var chartTitle = "" + nameForQuestion(question);
 
     var xAxisLabel = nameForQuestion(question);
-    return d3BarChartForValues(graphBrowserInstance, allPlotItems, xLabels, chartTitle, xAxisLabel, question, storiesSelectedCallback, inGraphBrowser);
+    return d3BarChartForValues(graphBrowserInstance, allPlotItems, xLabels, chartTitle, xAxisLabel, question, storiesSelectedCallback, hideStatsPanel);
 }
 
 export function d3BarChartForDataIntegrity(graphBrowserInstance: GraphHolder, questions, dataIntegrityType) {
@@ -654,7 +654,7 @@ export function d3BarChartForDataIntegrity(graphBrowserInstance: GraphHolder, qu
     return d3BarChartForValues(graphBrowserInstance, allPlotItems, xLabels, dataIntegrityType, dataIntegrityType, null, null);
 }
 
-export function d3BarChartForValues(graphBrowserInstance: GraphHolder, plotItems, xLabels, chartTitle, xAxisLabel, question, storiesSelectedCallback, inGraphBrowser = false) {
+export function d3BarChartForValues(graphBrowserInstance: GraphHolder, plotItems, xLabels, chartTitle, xAxisLabel, question, storiesSelectedCallback, hideStatsPanel = false) {
     
     var labelLengthLimit = 30;
     var longestLabelText = "";
@@ -680,10 +680,7 @@ export function d3BarChartForValues(graphBrowserInstance: GraphHolder, plotItems
     var chartBody = chart.chartBody;
     
     var statistics = calculateStatistics.calculateStatisticsForBarGraphValues(function(plotItem) { return plotItem.value; });
-    // don't want to show "Statistics: none" thing when in graph browser
-    if (!inGraphBrowser) {
-        addStatisticsPanelForChart(chartPane, statistics, chartTitle, "large"); 
-    }
+    if (!hideStatsPanel) addStatisticsPanelForChart(chartPane, statistics, chartTitle, "large"); 
     
     // draw the x axis
 
@@ -804,7 +801,7 @@ export function d3BarChartForValues(graphBrowserInstance: GraphHolder, plotItems
 // Histogram reference for d3: http://bl.ocks.org/mbostock/3048450
 
 // choiceQuestion and choice may be undefined if this is just a simple histogram for all values
-export function d3HistogramChartForQuestion(graphBrowserInstance: GraphHolder, scaleQuestion, choiceQuestion, choice, storiesSelectedCallback) {
+export function d3HistogramChartForQuestion(graphBrowserInstance: GraphHolder, scaleQuestion, choiceQuestion, choice, storiesSelectedCallback, hideStatsPanel = false) {
     // Do not include unanswered in histogram
     var unanswered = [];
     var values = [];
@@ -860,7 +857,7 @@ export function d3HistogramChartForQuestion(graphBrowserInstance: GraphHolder, s
             }
         }
     }
-    return d3HistogramChartForValues(graphBrowserInstance, values, choiceQuestion, choice, unanswered.length, matchingStories, style, chartSize, chartTitle, xAxisLabel, xAxisStart, xAxisEnd, storiesSelectedCallback);
+    return d3HistogramChartForValues(graphBrowserInstance, values, choiceQuestion, choice, unanswered.length, matchingStories, style, chartSize, chartTitle, xAxisLabel, xAxisStart, xAxisEnd, storiesSelectedCallback, hideStatsPanel);
 }
 
 export function d3HistogramChartForDataIntegrity(graphBrowserInstance: GraphHolder, scaleQuestions, dataIntegrityType) {
@@ -925,7 +922,7 @@ export function d3HistogramChartForDataIntegrity(graphBrowserInstance: GraphHold
     return d3HistogramChartForValues(graphBrowserInstance, values, null, null, unansweredCount, [], "singleChartStyle", "large", dataIntegrityType, dataIntegrityType, "", "", null);
 }
 
-export function d3HistogramChartForValues(graphBrowserInstance: GraphHolder, plotItems, choiceQuestion, choice, unansweredCount, matchingStories, style, chartSize, chartTitle, xAxisLabel, xAxisStart, xAxisEnd, storiesSelectedCallback) {
+export function d3HistogramChartForValues(graphBrowserInstance: GraphHolder, plotItems, choiceQuestion, choice, unansweredCount, matchingStories, style, chartSize, chartTitle, xAxisLabel, xAxisStart, xAxisEnd, storiesSelectedCallback, hideStatsPanel = false) {
     
     var margin = {top: 20, right: 15, bottom: 60, left: 80};
     var isSmallFormat = style == "smallChartStyle";
@@ -943,7 +940,7 @@ export function d3HistogramChartForValues(graphBrowserInstance: GraphHolder, plo
     
     var values = plotItems.map(function(item) { return parseFloat(item.value); });
     var statistics = calculateStatistics.calculateStatisticsForHistogramValues(values, unansweredCount);
-    addStatisticsPanelForChart(chartPane, statistics, chartTitle, isSmallFormat ? "small" : "large");
+    if (!hideStatsPanel) addStatisticsPanelForChart(chartPane, statistics, chartTitle, isSmallFormat ? "small" : "large");
     
     var mean = statistics.mean;
     var standardDeviation = statistics.sd;
@@ -1137,7 +1134,7 @@ export function d3HistogramChartForValues(graphBrowserInstance: GraphHolder, plo
 
 // TODO: Need to update this to pass instance for self into histograms so they can clear the selections in other histograms
 // TODO: Also need to track the most recent histogram with an actual selection so can save and restore that from patterns browser
-export function multipleHistograms(graphBrowserInstance: GraphHolder, choiceQuestion, scaleQuestion, storiesSelectedCallback) {
+export function multipleHistograms(graphBrowserInstance: GraphHolder, choiceQuestion, scaleQuestion, storiesSelectedCallback, hideStatsPanel = false) {
     var options = [];
     var index;
     if (choiceQuestion.displayType !== "checkbox") {
@@ -1171,7 +1168,7 @@ export function multipleHistograms(graphBrowserInstance: GraphHolder, choiceQues
     for (index in options) {
         var option = options[index];
         // TODO: Maybe need to pass which chart to the storiesSelectedCallback
-        var subchart = d3HistogramChartForQuestion(graphBrowserInstance, scaleQuestion, choiceQuestion, option, storiesSelectedCallback);
+        var subchart = d3HistogramChartForQuestion(graphBrowserInstance, scaleQuestion, choiceQuestion, option, storiesSelectedCallback, hideStatsPanel);
         if (subchart) charts.push(subchart);
     }
     
@@ -1182,7 +1179,7 @@ export function multipleHistograms(graphBrowserInstance: GraphHolder, choiceQues
     
     // Add these statistics at the bottom after all other graphs
     var statistics = calculateStatistics.calculateStatisticsForMultipleHistogram(scaleQuestion, choiceQuestion, graphBrowserInstance.allStories, graphBrowserInstance.minimumStoryCountRequiredForTest);
-    addStatisticsPanelForChart(graphBrowserInstance.graphResultsPane, statistics, chartTitle, "large");
+    if (!hideStatsPanel) addStatisticsPanelForChart(graphBrowserInstance.graphResultsPane, statistics, chartTitle, "large");
   
     return charts;
 }
@@ -1190,7 +1187,7 @@ export function multipleHistograms(graphBrowserInstance: GraphHolder, choiceQues
 // Reference for initial scatter chart: http://bl.ocks.org/bunkat/2595950
 // Reference for brushing: http://bl.ocks.org/mbostock/4560481
 // Reference for brush and tooltip: http://wrobstory.github.io/2013/11/D3-brush-and-tooltip.html
-export function d3ScatterPlot(graphBrowserInstance: GraphHolder, xAxisQuestion, yAxisQuestion, choiceQuestion, option, storiesSelectedCallback) {
+export function d3ScatterPlot(graphBrowserInstance: GraphHolder, xAxisQuestion, yAxisQuestion, choiceQuestion, option, storiesSelectedCallback, hideStatsPanel = false) {
     // Collect data
     
     var allPlotItems = [];
@@ -1258,7 +1255,7 @@ export function d3ScatterPlot(graphBrowserInstance: GraphHolder, xAxisQuestion, 
     chart.subgraphChoice = option;
 
     var statistics = calculateStatistics.calculateStatisticsForScatterPlot(xAxisQuestion, yAxisQuestion, choiceQuestion, option, stories, graphBrowserInstance.minimumStoryCountRequiredForTest);
-    addStatisticsPanelForChart(chartPane, statistics, chartTitle, isSmallFormat ? "small" : "large");
+    if (!hideStatsPanel) addStatisticsPanelForChart(chartPane, statistics, chartTitle, isSmallFormat ? "small" : "large");
     
     // draw the x axis
     
@@ -1405,7 +1402,7 @@ export function d3ScatterPlot(graphBrowserInstance: GraphHolder, xAxisQuestion, 
     return chart;
 }
 
-export function multipleScatterPlot(graphBrowserInstance: GraphHolder, xAxisQuestion, yAxisQuestion, choiceQuestion, storiesSelectedCallback) {
+export function multipleScatterPlot(graphBrowserInstance: GraphHolder, xAxisQuestion, yAxisQuestion, choiceQuestion, storiesSelectedCallback, hideStatsPanel = false) {
     var options = [];
     var index;
     if (choiceQuestion.displayType !== "checkbox" && choiceQuestion.displayType !== "checkboxes") {
@@ -1432,7 +1429,7 @@ export function multipleScatterPlot(graphBrowserInstance: GraphHolder, xAxisQues
     var charts = [];
     for (index in options) {
         var option = options[index];
-        var subchart = d3ScatterPlot(graphBrowserInstance, xAxisQuestion, yAxisQuestion, choiceQuestion, option, storiesSelectedCallback)
+        var subchart = d3ScatterPlot(graphBrowserInstance, xAxisQuestion, yAxisQuestion, choiceQuestion, option, storiesSelectedCallback, hideStatsPanel)
         if (subchart) charts.push(subchart);
     }
     
@@ -1444,7 +1441,7 @@ export function multipleScatterPlot(graphBrowserInstance: GraphHolder, xAxisQues
     return charts;
 }
 
-export function d3ContingencyTable(graphBrowserInstance: GraphHolder, xAxisQuestion, yAxisQuestion, scaleQuestion, storiesSelectedCallback) {
+export function d3ContingencyTable(graphBrowserInstance: GraphHolder, xAxisQuestion, yAxisQuestion, scaleQuestion, storiesSelectedCallback, hideStatsPanel = false) {
     // Collect data
     
     var columnLabels = {};
@@ -1630,7 +1627,7 @@ export function d3ContingencyTable(graphBrowserInstance: GraphHolder, xAxisQuest
     } else {
         statistics = calculateStatistics.calculateStatisticsForTable(xAxisQuestion, yAxisQuestion, stories, graphBrowserInstance.minimumStoryCountRequiredForTest);
     }
-    addStatisticsPanelForChart(chartPane, statistics, chartTitle, "large");
+    if (!hideStatsPanel) addStatisticsPanelForChart(chartPane, statistics, chartTitle, "large");
   
     // X axis and label
     

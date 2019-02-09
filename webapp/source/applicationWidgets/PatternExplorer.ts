@@ -101,6 +101,7 @@ class PatternExplorer {
     scatterDotSize = Project.defaultScatterDotSize;
     correlationLineChoice = Project.defaultCorrelationLineChoice;
     outputGraphFormat = Project.defaultOutputGraphFormat;
+    showStatsPanelsInReport = Project.defaultShowStatsPanelsInReport;
     graphTypesToCreate = Project.defaultGraphTypesToCreate;
     
     constructor(args) {
@@ -119,7 +120,8 @@ class PatternExplorer {
             scatterDotSize: Project.defaultScatterDotSize,
             correlationLineChoice: Project.defaultCorrelationLineChoice,
             outputGraphFormat: Project.defaultOutputGraphFormat,
-            graphTypesToCreate: Project.defaultGraphTypesToCreate
+            graphTypesToCreate: Project.defaultGraphTypesToCreate,
+            showStatsPanelsInReport: Project.defaultShowStatsPanelsInReport
         };
         
         var storyItemPanelSpecification = makeItemPanelSpecificationForQuestions(this.questions);
@@ -374,6 +376,7 @@ class PatternExplorer {
         this.correlationLineChoice = this.project.correlationLineChoice(catalysisReportIdentifier);
         this.graphHolder.correlationLineChoice = this.correlationLineChoice; 
         this.graphHolder.outputGraphFormat = this.project.outputGraphFormat(catalysisReportIdentifier);
+        this.graphHolder.showStatsPanelsInReport = this.project.showStatsPanelsInReport(catalysisReportIdentifier);
         this.graphTypesToCreate = this.project.graphTypesToCreate(catalysisReportIdentifier);
         
         this.catalysisReportObservationSetIdentifier = this.getObservationSetIdentifier(catalysisReportIdentifier);
@@ -813,7 +816,7 @@ class PatternExplorer {
         return pattern;
     }
 
-    static makeGraph(pattern, graphHolder, selectionCallback) {
+    static makeGraph(pattern, graphHolder, selectionCallback, hideStatsPanel = false) {
         var graphType = pattern.graphType;
         var q1 = pattern.questions[0];
         var q2 = pattern.questions[1];
@@ -821,26 +824,26 @@ class PatternExplorer {
         var newGraph = null;
         switch (graphType) {
             case "bar":
-                newGraph = charting.d3BarChartForQuestion(graphHolder, q1, selectionCallback);
+                newGraph = charting.d3BarChartForQuestion(graphHolder, q1, selectionCallback, hideStatsPanel);
                 break;
             case "table":
-                newGraph = charting.d3ContingencyTable(graphHolder, q1, q2, null, selectionCallback);
+                newGraph = charting.d3ContingencyTable(graphHolder, q1, q2, null, selectionCallback, hideStatsPanel);
                 break;
             case "contingency-histogram":
-                newGraph = charting.d3ContingencyTable(graphHolder, q1, q2, q3, selectionCallback);
+                newGraph = charting.d3ContingencyTable(graphHolder, q1, q2, q3, selectionCallback, hideStatsPanel);
                 break;
             case "histogram":
-                newGraph = charting.d3HistogramChartForQuestion(graphHolder, q1, null, null, selectionCallback);
+                newGraph = charting.d3HistogramChartForQuestion(graphHolder, q1, null, null, selectionCallback, hideStatsPanel);
                 break;
             case "multiple histogram":
                 // Choice question needs to come before scale question in args
-                newGraph = charting.multipleHistograms(graphHolder, q2, q1, selectionCallback);
+                newGraph = charting.multipleHistograms(graphHolder, q2, q1, selectionCallback, hideStatsPanel);
                 break;
             case "scatter":
-                newGraph = charting.d3ScatterPlot(graphHolder, q1, q2, null, null, selectionCallback);
+                newGraph = charting.d3ScatterPlot(graphHolder, q1, q2, null, null, selectionCallback, hideStatsPanel);
                 break;        
             case "multiple scatter":
-                newGraph = charting.multipleScatterPlot(graphHolder, q1, q2, q3, selectionCallback);
+                newGraph = charting.multipleScatterPlot(graphHolder, q1, q2, q3, selectionCallback, hideStatsPanel);
                 break;
             case "data integrity":
                 if (pattern.patternName === "Unanswered choice questions" || pattern.patternName === "Unanswered scale questions") {

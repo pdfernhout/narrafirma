@@ -160,24 +160,7 @@ var panel: Panel = {
                 return !!Globals.clientState().catalysisReportIdentifier();
             }
         },
-
         
-        {
-            id: "configureCatalysisReport_outputGraphFormat",
-            valuePath: "/clientState/catalysisReportIdentifier/outputGraphFormat",
-            valueType: "string",
-            valueOptions: ["SVG", "PNG"],
-            displayType: "select",
-            displayName: "Output graph format",
-            displayPrompt: `What <strong>output format</strong> should be used to draw the graphs in the printed report? 
-                SVG graphs have good resolution and can be styled with CSS classes, but cannot be copied or saved. (You can take screenshots of them, though.)
-                PNG graphs can be easily saved and copied, but have lower resolution and can't be changed. 
-                `,
-            displayVisible: function(panelBuilder, model) {
-                return !!Globals.clientState().catalysisReportIdentifier();
-            }
-        },
-
         {
             id: "configureCatalysisReport_minimumStoryCountRequiredForGraph",
             valuePath: "/clientState/catalysisReportIdentifier/minimumStoryCountRequiredForGraph",
@@ -304,6 +287,33 @@ var panel: Panel = {
             valueType: "none",
             displayType: "header",
             displayPrompt: "How the report looks",
+            displayVisible: function(panelBuilder, model) {
+                return !!Globals.clientState().catalysisReportIdentifier();
+            }
+        },
+
+        {
+            id: "configureCatalysisReport_outputGraphFormat",
+            valuePath: "/clientState/catalysisReportIdentifier/outputGraphFormat",
+            valueType: "string",
+            valueOptions: ["SVG", "PNG"],
+            displayType: "select",
+            displayName: "Output graph format",
+            displayPrompt: `What <strong>output format</strong> should be used to draw the graphs in the printed report? 
+                SVG graphs have good resolution and can be styled with CSS classes, but cannot be copied or saved. (You can take screenshots of them, though.)
+                PNG graphs can be easily saved and copied, but have lower resolution and can't be changed. 
+                `,
+            displayVisible: function(panelBuilder, model) {
+                return !!Globals.clientState().catalysisReportIdentifier();
+            }
+        },
+        {
+            id: "configureCatalysisReport_showStatsPanelsInReport",
+            valueType: "boolean",
+            valuePath: "/clientState/catalysisReportIdentifier/showStatsPanelsInReport",
+            displayType: "checkbox",
+            displayConfiguration: "Yes, include statistics in the report",
+            displayPrompt: `Would you like to <strong>include statistical results</strong> in the catalysis report?`,
             displayVisible: function(panelBuilder, model) {
                 return !!Globals.clientState().catalysisReportIdentifier();
             }
