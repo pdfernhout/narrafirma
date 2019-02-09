@@ -913,44 +913,6 @@ class PatternExplorer {
         }
     }
 
-    nameForCurrentGraphSelection() {
-        var result = "";
-
-        if (!this.currentPattern) return result;
-        result += this.currentPattern.patternName;
-
-        if (!this.graphHolder) return result;
-        const selection = this.graphHolder.currentSelectionExtentPercentages;
-        if (!selection) return result;
-        
-        switch (this.currentPattern.graphType) {
-            case "bar":
-                result += ": " + selection.selectionCategories.join(", ");
-                break;
-            case "table":
-                result += ": " + selection.selectionCategories.join(", ");
-                break;
-            case "contingency-histogram":
-                result += ": " + selection.selectionCategories.join(", ");
-                break;
-            case "histogram":
-                result += ": " + selection.selectionCategories.join(", ");
-                break;
-            case "multiple histogram":
-                result += " [" + selection.subgraphChoice + "]: " + selection.selectionCategories.join(", ");
-                break;
-            case "scatter":
-                result += ": " + selection.selectionCategories.join(", ");
-                break;        
-            case "multiple scatter":
-                result += " [" + selection.subgraphChoice + "]: " + selection.selectionCategories.join(", ");
-                break;
-            default:
-                alert("NO name for current graph selection");
-        }
-        return result;
-    }
-
     showAllStoriesSelectedInGraph() {
         var stories = this.modelForStoryGrid.storiesSelectedInGraph;
         if (!stories.length) {
@@ -962,24 +924,7 @@ class PatternExplorer {
             if (a.indexInStoryCollection() > b.indexInStoryCollection()) return 1;
             return 0;
         });
-        var text;
-        const selectionName = this.nameForCurrentGraphSelection();
-
-        // story names first
-        text = "Names of stories (" + stories.length + ") in graph selection - " + selectionName + "\n\n";
-        for (var i = 0; i < stories.length; i++) {
-            text += stories[i].indexInStoryCollection() + ". " + stories[i].model.storyName + "\n";
-        }
-
-        // then full story texts
-        text += "\nStories (" + stories.length + ") in graph selection - " + selectionName + "\n";
-        const header = "\n----------------------------------------------------------------------------------------------------\n";
-        for (var i = 0; i < stories.length; i++) {
-            text += "\n" + stories[i].indexInStoryCollection() + ". " + stories[i].model.storyName;
-            if (this.numStoryCollectionsIncludedInReport > 1) text += "\nStory collection: " + stories[i].storyCollectionIdentifier();
-            text += header + stories[i].model.storyText + "\n";
-        }
-        dialogSupport.openTextEditorDialog(text, "Selected stories", "Close", this.closeCopyStoriesDialogClicked.bind(this), false);
+        this.showStoriesInSeparateWindow(stories, "in graph selection", "Selected stories");
     }
 
     sample10StoriesSelectedInGraph() {
@@ -1020,25 +965,118 @@ class PatternExplorer {
             if (a.indexInStoryCollection() > b.indexInStoryCollection()) return 1;
             return 0;
         });
+
+        this.showStoriesInSeparateWindow(sampledStories, "sampled from graph selection", "Sampled stories");
+    }
+
+    showStoriesInSeparateWindow(stories, sayAboutSelection, windowTitle) {
+        var i;
+        var text;
         const selectionName = this.nameForCurrentGraphSelection();
-        var text = "Story names (" + sampledStories.length + ") sampled from graph selection - " + selectionName + "\n\n";
-        for (var i = 0; i < sampledStories.length; i++) {
-            text += sampledStories[i].indexInStoryCollection() + ". " + sampledStories[i].model.storyName + "\n";
+
+        var questionShortNamesToShowForSelectedStories = this.project.tripleStore.queryLatestC(this.catalysisReportIdentifier, "questionShortNamesToShowForSelectedStories").split("\n"); 
+
+        // have to add the right prefix to connect to fields in stories 
+        // this assumes that question short names will be unique across all questions - though we do say that in the interface, so...
+        var storyQuestions = this.project.storyQuestionsForCatalysisReport(this.catalysisReportIdentifier); 
+        var participantQuestions = this.project.participantQuestionsForCatalysisReport(this.catalysisReportIdentifier);
+        var annotationQuestions = questionnaireGeneration.convertEditorQuestions(this.project.collectAllAnnotationQuestions(), "A_");
+        
+        var questionIDsToShowForSelectedStories = [];
+        questionShortNamesToShowForSelectedStories.forEach(function(shortName) {
+            for (i = 0; i < storyQuestions.length; i++) {
+                if (storyQuestions[i].id === "S_" + shortName) {
+                    questionIDsToShowForSelectedStories.push("S_" + shortName);
+                    break;
+                }
+            }
+            for (i = 0; i < participantQuestions.length; i++) {
+                if (participantQuestions[i].id === "P_" + shortName) {
+                    questionIDsToShowForSelectedStories.push("P_" + shortName);
+                    break;
+                }
+            }
+            for (i = 0; i < annotationQuestions.length; i++) {
+                if (annotationQuestions[i].id === "A_" + shortName) {
+                    questionIDsToShowForSelectedStories.push("A_" + shortName);
+                    break;
+                }
+            }
+        });
+
+        function textWithAnswersToSelectedQuestions(story) {
+            var questionAnswersToShow = [];
+            questionIDsToShowForSelectedStories.forEach(function(fieldName) {
+                var answer = story.fieldValue(fieldName);
+                if (answer) questionAnswersToShow.push(answer);
+            });
+            if (questionAnswersToShow.length) {
+                return " (" + questionAnswersToShow.join(", ") + ")";
+            }
+            return "";
         }
-        text += "\nStories (" + sampledStories.length + ") sampled from graph selection - " + selectionName + "\n";
+
+        // story names first
+        text = "Names of stories (" + stories.length + ") " + sayAboutSelection + " - " + selectionName + "\n\n";
+        for (i = 0; i < stories.length; i++) {
+            text += stories[i].indexInStoryCollection() + ". " + stories[i].model.storyName + textWithAnswersToSelectedQuestions(stories[i]) + "\n";
+        }
+
+        // then full story texts
+        text += "\nStories (" + stories.length + ") " + sayAboutSelection + " - " + selectionName + "\n";
         const header = "\n----------------------------------------------------------------------------------------------------\n";
-        for (var i = 0; i < sampledStories.length; i++) {
-            text += "\n" + sampledStories[i].indexInStoryCollection() + ". " + sampledStories[i].model.storyName;
-            if (this.numStoryCollectionsIncludedInReport > 1) text += "\nStory collection: " + sampledStories[i].storyCollectionIdentifier();
-            text += header + sampledStories[i].model.storyText + "\n";
+        for (i = 0; i < stories.length; i++) {
+            text += "\n" + stories[i].indexInStoryCollection() + ". " + stories[i].model.storyName + textWithAnswersToSelectedQuestions(stories[i]) + "\n";
+            if (this.numStoryCollectionsIncludedInReport > 1) text += "\nStory collection: " + stories[i].storyCollectionIdentifier();
+            text += header + stories[i].model.storyText + "\n";
         }
-        dialogSupport.openTextEditorDialog(text, "Sampled stories", "Close", this.closeCopyStoriesDialogClicked.bind(this), false);        
+
+        dialogSupport.openTextEditorDialog(text, windowTitle, "Close", this.closeCopyStoriesDialogClicked.bind(this), false);
     }
 
     closeCopyStoriesDialogClicked(text, hideDialogMethod) {     
         hideDialogMethod();
     }
-    
+
+    nameForCurrentGraphSelection() {
+        var result = "";
+
+        if (!this.currentPattern) return result;
+        result += this.currentPattern.patternName;
+
+        if (!this.graphHolder) return result;
+        const selection = this.graphHolder.currentSelectionExtentPercentages;
+        if (!selection) return result;
+        
+        switch (this.currentPattern.graphType) {
+            case "bar":
+                result += ": " + selection.selectionCategories.join(", ");
+                break;
+            case "table":
+                result += ": " + selection.selectionCategories.join(", ");
+                break;
+            case "contingency-histogram":
+                result += ": " + selection.selectionCategories.join(", ");
+                break;
+            case "histogram":
+                result += ": " + selection.selectionCategories.join(", ");
+                break;
+            case "multiple histogram":
+                result += " [" + selection.subgraphChoice + "]: " + selection.selectionCategories.join(", ");
+                break;
+            case "scatter":
+                result += ": " + selection.selectionCategories.join(", ");
+                break;        
+            case "multiple scatter":
+                result += " [" + selection.subgraphChoice + "]: " + selection.selectionCategories.join(", ");
+                break;
+            default:
+                alert("NO name for current graph selection");
+        }
+        return result;
+    }
+
+
 //------------------------------------------------------------------------------------------------------------------------------------------
 // saving and restoring graph selections
 //------------------------------------------------------------------------------------------------------------------------------------------

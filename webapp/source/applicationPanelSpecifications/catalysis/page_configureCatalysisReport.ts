@@ -148,7 +148,21 @@ var panel: Panel = {
                 return !!Globals.clientState().catalysisReportIdentifier();
             }
         },
-
+        {
+            id: "configureCatalysisReport_questionShortNamesToShowForSelectedStories",
+            valuePath: "/clientState/catalysisReportIdentifier/questionShortNamesToShowForSelectedStories",
+            valueType: "string",
+            displayType: "textarea",
+            displayName: "Fields to show on selections",
+            displayPrompt: `
+                On the Explore patterns page, when you select stories on a graph, you can view them in a separate window for copying (maybe into an observation).
+                When you look at subsets of stories in that way, you might also want to <strong>see the answers to a few important questions</strong> about each story.
+                Enter the short names of those questions here, one per line. 
+                `,
+            displayVisible: function(panelBuilder, model) {
+                return !!Globals.clientState().catalysisReportIdentifier();
+            }
+        },
 
 
         {
