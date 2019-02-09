@@ -479,17 +479,17 @@ class PatternExplorer {
                 }
             }
         });
-        result = "Showing " + this.modelForPatternsGrid.patterns.length + (this.modelForPatternsGrid.patterns.length !== 1 ? " patterns" : " pattern");
+        result = "" + this.modelForPatternsGrid.patterns.length + (this.modelForPatternsGrid.patterns.length !== 1 ? " patterns" : " pattern");
         if (Object.keys(strengthCounts).length) {
-            result += " and " + numObservationsWithStrengths + (numObservationsWithStrengths !== 1 ? " observations" : " observation");
-            result += ", with strengths of ";
+            result += ", " + numObservationsWithStrengths + (numObservationsWithStrengths !== 1 ? " observations" : " observation");
+            result += " - by strength: ";
             var keyCount = 0;
             Object.keys(strengthCounts).forEach(function(key) {
-                result +=  key + ": " + strengthCounts[key];
-                if (keyCount < 2) result += ", ";
+                result += key.slice(0,1) + ": " + strengthCounts[key];
+                if (keyCount < 2) result += " | ";
                 keyCount++;
             });
-            result += ", no strength set: " + numObservationsWithoutStrengths;
+            result += " | none: " + numObservationsWithoutStrengths;
         }
         return result;
     }
