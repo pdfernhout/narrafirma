@@ -74,28 +74,60 @@ var graphResultsPaneCSS = `
         fill: #231f20;
         stroke-width: 0.5px;
         font-family: sans-serif;
-        font-size: 1.2em;
+        font-size: 1em;
     }
     
     .y-axis text {
         fill: #231f20;
         stroke-width: 0.5px;
         font-family: sans-serif;
-        font-size: 1.2em;
+        font-size: 1em;
     }
     
     .x-axis-label {
         fill: #231f20;
         stroke-width: 0.5px;
         font-family: sans-serif;
-        font-size: 1.2em;
+        font-size: 1em;
     }
     
     .y-axis-label {
         fill: #231f20;
         stroke-width: 0.5px;
         font-family: sans-serif;
+        font-size: 1em;
+    }
+
+    .barChart.x-axis-label {
         font-size: 1.2em;
+    }
+    
+    .histogram.x-axis-label.middle, .histogram.y-axis-label.middle {
+        font-size: 1.1em;
+    }
+    
+    .histogram.x-axis-label.small.middle {
+        font-size: 0.9em;
+    }
+    
+    .histogram.x-axis-label.start, .histogram.x-axis-label.end {
+        font-size: 0.9em;
+    }
+    
+    .table.x-axis-label.middle, .table.y-axis-label.middle {
+        font-size: 1.1em;
+    }
+    
+    .scatterplot.x-axis-label.middle, .scatterplot.y-axis-label.middle {
+        font-size: 1.1em;
+    }
+    
+    .scatterplot.x-axis-label.small.middle, .scatterplot.y-axis-label.small.middle {
+        font-size: 0.9em;
+    }
+    
+    .scatterplot.x-axis-label.start, .scatterplot.y-axis-label.start, .scatterplot.x-axis-label.end, .scatterplot.y-axis-label.end {
+        font-size: 0.9em;
     }
     
     .story.even {

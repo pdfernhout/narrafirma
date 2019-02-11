@@ -1125,6 +1125,38 @@ td.narrafirma-mw-nested-title, td.narrafirma-mw-nested-stats {
     font-size: 0.8em;
 }
 
+.barChart.x-axis-label {
+    font-size: 1.2em;
+}
+
+.histogram.x-axis-label.middle, .histogram.y-axis-label.middle {
+    font-size: 1.1em;
+}
+
+.histogram.x-axis-label.small.middle {
+    font-size: 0.9em;
+}
+
+.histogram.x-axis-label.start, .histogram.x-axis-label.end {
+    font-size: 0.9em;
+}
+
+.table.x-axis-label.middle, .table.y-axis-label.middle {
+    font-size: 1.1em;
+}
+
+.scatterplot.x-axis-label.middle, .scatterplot.y-axis-label.middle {
+    font-size: 1.1em;
+}
+
+.scatterplot.x-axis-label.small.middle, .scatterplot.y-axis-label.small.middle {
+    font-size: 0.9em;
+}
+
+.scatterplot.x-axis-label.start, .scatterplot.y-axis-label.start, .scatterplot.x-axis-label.end, .scatterplot.y-axis-label.end {
+    font-size: 0.9em;
+}
+
 .story.even {
   fill: #2e4a85;
 }

@@ -161,6 +161,8 @@ function preloadResultsForQuestionOptions(results, question) {
 }
 
 function limitLabelLength(label, maximumCharacters): string {
+    if (!maximumCharacters) return label;
+    if (typeof label !== "string") return label;
     if (label.length <= maximumCharacters) return label;
     return label.substring(0, maximumCharacters - 3) + "..."; 
 }
@@ -292,45 +294,60 @@ function makeChartFramework(chartPane: HTMLElement, chartType, size, margin) {
     };
 }
 
+interface AxisOptions {
+    labelLengthLimit?: number;
+    isSmallFormat?: boolean;
+    drawLongAxisLines?: boolean;
+    rotateAxisLabels?: boolean;
+    graphType?: string;
+    textAnchor?: string;
+}
+
 // addXAxis(chart, xScale, {labelLengthLimit: 64, isSmallFormat: false, drawLongAxisLines: false, rotateAxisLabels: false});
-function addXAxis(chart, xScale, configure = null) {
-    if (!configure) configure = {};
+function addXAxis(chart, xScale, options: AxisOptions) {
+    if (!options) options = {};
+    if (!options.labelLengthLimit) options.labelLengthLimit = 64;
+    if (!options.textAnchor) options.textAnchor = "middle";
+
+    var axisClassName = 'x-axis' 
+        + (options.graphType ? " " + options.graphType : "") 
+        + (options.isSmallFormat ? " small" : "") 
+        + (options.rotateAxisLabels ? " rotated" : "") 
+        + (options.textAnchor ? " " + options.textAnchor : "");
     
     var xAxis = d3.svg.axis()
         .scale(xScale)
         .tickPadding(6)
         .orient('bottom');
     
-    if (configure.isSmallFormat) xAxis.tickValues(xScale.domain());
+    if (options.isSmallFormat) xAxis.tickValues(xScale.domain());
     
-    if (configure.drawLongAxisLines) xAxis.tickSize(-(chart.height));
+    if (options.drawLongAxisLines) xAxis.tickSize(-(chart.height));
 
-    if (!configure.rotateAxisLabels) {
+    if (!options.rotateAxisLabels) {
         var labels = chart.chartBody.append('g')
             .attr('transform', 'translate(0,' + chart.height + ')')
-            .attr('class', 'x-axis')
+            .attr('class', axisClassName)
             .call(xAxis).selectAll("text");
         
-        if (configure.labelLengthLimit) {
+        if (options.labelLengthLimit) {
             labels.text(function(d, i) {
-                return limitLabelLength(d, configure.labelLengthLimit);
+                return limitLabelLength(d, options.labelLengthLimit);
             });
        }
-        
        labels.append("svg:title").text(function(d, i) {
             return d;
         }); 
     } else {
-        if (configure.labelLengthLimit) {
+        if (options.labelLengthLimit) {
             xAxis.tickFormat(function (label) {
-                return limitLabelLength(label, configure.labelLengthLimit); 
+                return limitLabelLength(label, options.labelLengthLimit); 
             });
         }
-    
         // TODO: These do not have hovers
         chart.chartBody.append('g')
             .attr('transform', 'translate(0,' + chart.height + ')')
-            .attr('class', 'x-axis')
+            .attr('class', axisClassName)
             .call(xAxis).selectAll("text")
                 .style("text-anchor", "end")
                 .attr("dx", "-0.8em")
@@ -343,37 +360,40 @@ function addXAxis(chart, xScale, configure = null) {
     return xAxis;
 }
 
-// This function is very similar to the one for addXAxis, except for transform, tickFormat, CSS classes, and not needing rotate
+// This function is very similar to the one for the x axis, except for transform, tickFormat, CSS classes, and not needing rotate
 // yAxis = addYAxis(chart, yScale, {labelLengthLimit: 64, isSmallFormat: false, drawLongAxisLines: false});
-function addYAxis(chart, yScale, configure = null) {
-    if (!configure) configure = {};
+function addYAxis(chart, yScale, options: AxisOptions) {
+    if (!options) options = {};
+    if (!options.labelLengthLimit) options.labelLengthLimit = 64;
+    if (!options.textAnchor) options.textAnchor = "middle";
+
+    const axisClassName = 'y-axis ' + (options.graphType || "") + (options.isSmallFormat ? "-small" : "");
     
     var yAxis = d3.svg.axis()
         .scale(yScale)
         .tickPadding(6)
         .orient('left');
     
-    if (configure.labelLengthLimit) {
+    if (options.labelLengthLimit) {
         yAxis.tickFormat(function (label) {
-            return limitLabelLength(label, configure.labelLengthLimit); 
+            return limitLabelLength(label, options.labelLengthLimit); 
         });
     } else {
         // This seems needed to ensure small numbers for labels don't get ".0" appended to them
         yAxis.tickFormat(d3.format("d"));
     }
     
-    if (configure.isSmallFormat) yAxis.tickValues(yScale.domain());
+    if (options.isSmallFormat) yAxis.tickValues(yScale.domain());
     
-    if (configure.drawLongAxisLines) yAxis.tickSize(-(chart.width));
-
+    if (options.drawLongAxisLines) yAxis.tickSize(-(chart.width));
+    
     var labels = chart.chartBody.append('g')
-        // .attr('transform', 'translate(0,0)')
-        .attr('class', 'y-axis')
+        .attr('class', axisClassName)
         .call(yAxis).selectAll("text");
 
-    if (configure.labelLengthLimit) {
+    if (options.labelLengthLimit) {
         labels.text(function(d, i) {
-            return limitLabelLength(d, configure.labelLengthLimit);
+            return limitLabelLength(d, options.labelLengthLimit);
         });
     }
         
@@ -383,60 +403,70 @@ function addYAxis(chart, yScale, configure = null) {
     return yAxis;
 }
 
-function addXAxisLabel(chart, label, labelLengthLimit = 64, textAnchor = "middle") {
-    var shortenedLabel = limitLabelLength(label, labelLengthLimit);
+function addXAxisLabel(chart, label, options: AxisOptions) {
+    if (!options) options = {};
+    if (!options.labelLengthLimit) options.labelLengthLimit = 64;
+    if (!options.textAnchor) options.textAnchor = "middle";
+    
+    var shortenedLabel = limitLabelLength(label, options.labelLengthLimit);
     var xPosition;
     var yPosition = chart.fullHeight - 16;
+    const className = 'x-axis-label ' + (options.graphType || "") + (options.isSmallFormat ? " small" : "") + (options.textAnchor ? " " + options.textAnchor : "");
      
-    if (textAnchor === "middle") {
+    if (options.textAnchor === "middle") {
         xPosition = chart.margin.left + chart.width / 2;
-    } else if (textAnchor === "start") {
+    } else if (options.textAnchor === "start") {
         xPosition = chart.margin.left;
         yPosition -= 25;
-    } else if (textAnchor === "end") {
+    } else if (options.textAnchor === "end") {
         xPosition = chart.margin.left + chart.width;
         yPosition -= 25;
     }
     
     var shortenedLabelSVG = chart.chart.append("text")
-        .attr("class", "x-axis-label")
-        .attr("text-anchor", textAnchor) 
+        .attr("class", className)
+        .attr("text-anchor", options.textAnchor) 
         .attr("x", xPosition)
         .attr("y", yPosition)
         .text(shortenedLabel);
     
-    if (label.length > labelLengthLimit) {
+    if (label.length > options.labelLengthLimit) {
         shortenedLabelSVG.append("svg:title")
             .text(label);
     }
 }
 
-function addYAxisLabel(chart, label, labelLengthLimit = 64, textAnchor = "middle") {
-    var shortenedLabel = limitLabelLength(label, labelLengthLimit); 
+function addYAxisLabel(chart, label, options: AxisOptions) {
+    if (!options) options = {};
+    if (!options.labelLengthLimit) options.labelLengthLimit = 64;
+    if (!options.textAnchor) options.textAnchor = "middle";
+
+    var shortenedLabel = limitLabelLength(label, options.labelLengthLimit); 
+    const className = 'y-axis-label ' + (options.graphType || "") + (options.isSmallFormat ? " small" : "") + (options.textAnchor ? " " + options.textAnchor : "");
     
     var xPosition;
     var yPosition = 16;
     
-    if (textAnchor === "middle") {
+    if (options.textAnchor === "middle") {
         xPosition = -(chart.margin.top + chart.height / 2);
-    } else if (textAnchor === "start") {
+    } else if (options.textAnchor === "start") {
         xPosition = -(chart.margin.top + chart.height);
         yPosition += 25;
-    } else if (textAnchor === "end") {
+    } else if (options.textAnchor === "end") {
         xPosition = -chart.margin.top;
         yPosition += 25;
     }
     
     var shortenedLabelSVG = chart.chart.append("text")
-        .attr("class", "y-axis-label")
-        .attr("text-anchor", textAnchor)
+        .attr("class", className)
+        .attr("text-anchor", options.textAnchor)
         // Y and X are flipped because of the rotate
         .attr("y", yPosition)
         .attr("x", xPosition)
         .attr("transform", "rotate(-90)")
         .text(shortenedLabel);
     
-    if (label.length > labelLengthLimit) {
+    if (label.length > options.labelLengthLimit) {
         shortenedLabelSVG.append("svg:title")
             .text(label);
     }
@@ -691,9 +721,9 @@ export function d3BarChartForValues(graphBrowserInstance: GraphHolder, plotItems
     chart.xScale = xScale;
     chart.xQuestion = question;
 
-    var xAxis = addXAxis(chart, xScale, {labelLengthLimit: labelLengthLimit, rotateAxisLabels: true});
+    var xAxis = addXAxis(chart, xScale, {labelLengthLimit: labelLengthLimit, rotateAxisLabels: true, graphType: "barChart"});
     
-    addXAxisLabel(chart, xAxisLabel);
+    addXAxisLabel(chart, xAxisLabel, {graphType: "barChart"});
     
     // draw the y axis
     
@@ -710,9 +740,9 @@ export function d3BarChartForValues(graphBrowserInstance: GraphHolder, plotItems
         .domain([0, maxItemsPerBar])
         .range([0, chart.height]);
     
-    var yAxis = addYAxis(chart, yScale);
+    var yAxis = addYAxis(chart, yScale, {graphType: "barChart"});
     
-    addYAxisLabel(chart, "Count");
+    addYAxisLabel(chart, "Count", {graphType: "barChart"});
     
     // Append brush before data to ensure titles are drown
     if (storiesSelectedCallback) chart.brush = createBrush(chartBody, xScale, null, brushend);
@@ -954,7 +984,7 @@ export function d3HistogramChartForValues(graphBrowserInstance: GraphHolder, plo
     chart.xScale = xScale;
     chart.xQuestion = xAxisLabel;
     
-    var xAxis = addXAxis(chart, xScale, {isSmallFormat: isSmallFormat});
+    var xAxis = addXAxis(chart, xScale, {isSmallFormat: isSmallFormat, graphType: "histogram"});
     
     var cutoff = 64;
     if (isSmallFormat) {
@@ -962,10 +992,10 @@ export function d3HistogramChartForValues(graphBrowserInstance: GraphHolder, plo
     } else {
         cutoff = 64;
     }
-    addXAxisLabel(chart, xAxisLabel, cutoff); 
+    addXAxisLabel(chart, xAxisLabel, {labelLengthLimit: cutoff, isSmallFormat: isSmallFormat, graphType: "histogram"}); 
     if (xAxisStart) {
-        addXAxisLabel(chart, xAxisStart, maxRangeLabelLength, "start");
-        addXAxisLabel(chart, xAxisEnd, maxRangeLabelLength, "end");
+        addXAxisLabel(chart, xAxisStart, {labelLengthLimit: maxRangeLabelLength, isSmallFormat: isSmallFormat, textAnchor: "start", graphType: "histogram"});
+        addXAxisLabel(chart, xAxisEnd, {labelLengthLimit: maxRangeLabelLength, isSmallFormat: isSmallFormat, textAnchor:  "end", graphType: "histogram"});
     }
     
     // draw the y axis
@@ -997,10 +1027,10 @@ export function d3HistogramChartForValues(graphBrowserInstance: GraphHolder, plo
         .domain([0, maxValue])
         .range([0, chart.height]);
     
-    var yAxis = addYAxis(chart, yScale, {isSmallFormat: isSmallFormat});
+    var yAxis = addYAxis(chart, yScale, {isSmallFormat: isSmallFormat, graphType: "histogram"});
     
     if (!isSmallFormat) {
-        addYAxisLabel(chart, "Frequency");
+        addYAxisLabel(chart, "Frequency", {isSmallFormat: isSmallFormat, graphType: "histogram"});
     }
     
     if (isSmallFormat) {
@@ -1266,16 +1296,16 @@ export function d3ScatterPlot(graphBrowserInstance: GraphHolder, xAxisQuestion, 
     chart.xScale = xScale;
     chart.xQuestion = xAxisQuestion;
     
-    var xAxis = addXAxis(chart, xScale);
+    var xAxis = addXAxis(chart, xScale, {isSmallFormat: isSmallFormat, graphType: "scatterplot"});
 
     if (xAxisQuestion.displayConfiguration) {
-        addXAxisLabel(chart, xAxisQuestion.displayConfiguration[0], maxRangeLabelLength, "start");
-        addXAxisLabel(chart, xAxisQuestion.displayConfiguration[1], maxRangeLabelLength, "end");
+        addXAxisLabel(chart, xAxisQuestion.displayConfiguration[0], {labelLengthLimit: maxRangeLabelLength, isSmallFormat: isSmallFormat, textAnchor: "start", graphType: "scatterplot"});
+        addXAxisLabel(chart, xAxisQuestion.displayConfiguration[1], {labelLengthLimit: maxRangeLabelLength, isSmallFormat: isSmallFormat, textAnchor: "end", graphType: "scatterplot"});
     }
     if (choiceQuestion) {
-        addXAxisLabel(chart, nameForQuestion(xAxisQuestion) + " (" + option + ")");
+        addXAxisLabel(chart, nameForQuestion(xAxisQuestion) + " (" + option + ")", {isSmallFormat: isSmallFormat, graphType: "scatterplot"});
     } else {
-        addXAxisLabel(chart, nameForQuestion(xAxisQuestion));
+        addXAxisLabel(chart, nameForQuestion(xAxisQuestion), {isSmallFormat: isSmallFormat, graphType: "scatterplot"});
     }
 
     // draw the y axis
@@ -1287,17 +1317,17 @@ export function d3ScatterPlot(graphBrowserInstance: GraphHolder, xAxisQuestion, 
     chart.yScale = yScale;
     chart.yQuestion = yAxisQuestion;
     
-    var yAxis = addYAxis(chart, yScale);
+    var yAxis = addYAxis(chart, yScale, {isSmallFormat: isSmallFormat, graphType: "scatterplot"});
     
     if (choiceQuestion) {
-        addYAxisLabel(chart, nameForQuestion(yAxisQuestion) + " (" + option + ")");
+        addYAxisLabel(chart, nameForQuestion(yAxisQuestion) + " (" + option + ")", {isSmallFormat: isSmallFormat, graphType: "scatterplot"});
     } else {
-        addYAxisLabel(chart, nameForQuestion(yAxisQuestion));
+        addYAxisLabel(chart, nameForQuestion(yAxisQuestion), {isSmallFormat: isSmallFormat, graphType: "scatterplot"});
     }
 
     if (yAxisQuestion.displayConfiguration) {
-        addYAxisLabel(chart, yAxisQuestion.displayConfiguration[0], maxRangeLabelLength, "start");
-        addYAxisLabel(chart, yAxisQuestion.displayConfiguration[1], maxRangeLabelLength, "end");
+        addYAxisLabel(chart, yAxisQuestion.displayConfiguration[0], {labelLengthLimit: maxRangeLabelLength, isSmallFormat: isSmallFormat, textAnchor: "start", graphType: "scatterplot"});
+        addYAxisLabel(chart, yAxisQuestion.displayConfiguration[1], {labelLengthLimit: maxRangeLabelLength, isSmallFormat: isSmallFormat, textAnchor: "end", graphType: "scatterplot"});
     }
     
     // Append brush before data to ensure titles are drown
@@ -1638,9 +1668,9 @@ export function d3ContingencyTable(graphBrowserInstance: GraphHolder, xAxisQuest
     chart.xScale = xScale;
     chart.xQuestion = xAxisQuestion;
     
-    var xAxis = addXAxis(chart, xScale, {labelLengthLimit: labelLengthLimit, drawLongAxisLines: true, rotateAxisLabels: true});
+    var xAxis = addXAxis(chart, xScale, {labelLengthLimit: labelLengthLimit, drawLongAxisLines: true, rotateAxisLabels: true, graphType: "table"});
     
-    addXAxisLabel(chart, nameForQuestion(xAxisQuestion));
+    addXAxisLabel(chart, nameForQuestion(xAxisQuestion), {graphType: "table"});
     
     // Y axis and label
     
@@ -1651,9 +1681,9 @@ export function d3ContingencyTable(graphBrowserInstance: GraphHolder, xAxisQuest
     chart.yScale = yScale;
     chart.yQuestion = yAxisQuestion;
     
-    var yAxis = addYAxis(chart, yScale, {labelLengthLimit: labelLengthLimit, drawLongAxisLines: true});
+    var yAxis = addYAxis(chart, yScale, {labelLengthLimit: labelLengthLimit, drawLongAxisLines: true, graphType: "table"});
     
-    addYAxisLabel(chart, nameForQuestion(yAxisQuestion));
+    addYAxisLabel(chart, nameForQuestion(yAxisQuestion), {graphType: "table"});
     
     // Append brush before data to ensure titles are drown
     chart.brush = createBrush(chartBody, xScale, yScale, brushend);
