@@ -460,6 +460,9 @@ var panel: Panel = {
             displayType: "label",
             displayPrompt: `You can copy observations, interpretations, and perspectives from one catalysis report to another (new, empty) report,
             as long as the question short names are the same. For more information, see the help system.`,
+            displayVisible: function(panelBuilder, model) {
+                return !!Globals.clientState().catalysisReportIdentifier();
+            }
         },
         {
             id: "catalysisReport_exportElements",
