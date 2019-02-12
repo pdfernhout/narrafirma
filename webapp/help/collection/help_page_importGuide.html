@@ -2229,19 +2229,20 @@ To do this:</p>
         <li><b>Check the import log</b>. Now look at the developer console. You should see four categories of messages from NarraFirma.
             (Your developer console will probably have buttons to show or hide the different types of messages.)
             <ul>
-                <li><b>INFO messages</b> tell you about normal imports: answers to questions NarraFirma knows about. 
+                <li><b>LOG messages</b> tell you about normal imports: answers to questions NarraFirma knows about. 
                     To save you having to look though many thousands of lines, cell values are only reported the <i>first</i> time they are encountered.
                     For example, if one available answer to the "Feel about" question is "happy," the console will tell you about the first time
                     it finds "happy" in your data file. It's a good idea to look through the first few stories in your data file
                     and verify that all of their data fields are being read in correctly.
                     </li>
+                <li><b>INFO messages</b> are used for the summary of answer counts at the end of the data check.</li>
                 <li><b>WARN messages</b> tell you that something was skipped - usually a story with too few words in it or a testing story.</li>
                 <li><b>ERROR messages</b> tell you when something is wrong with the import process. Usually what goes wrong is that NarraFirma encounters a question
                     or answer name it doesn't recognize. Look carefully at these error messages. Change the options in your story form and keep checking your data
                     until you get no more ERROR messages.  (Remember that if you make any non-trivial changes to your story form, you must create a new story collection to pick them up.)
                 </li>
-                <li><b>LOG messages</b> tell you which rows of the data file, and which story texts and participant IDs, NarraFirma is reading when the other messages appear. 
-                You won't need to pay attention to LOG messages unless you want to know what line an error or warning appears on.</li>
+                <li><b>DEBUG messages</b> tell you which rows of the data file, and which story texts and participant IDs, NarraFirma is reading when the other messages appear. 
+                You won't need to pay attention to DEBUG messages unless you want to know what line an error or warning appears on.</li>
             </ul>
     </li>
     <li><b>Compare answer counts</b>. At the bottom of the console are a series of INFO messages marked "<b>ANSWER COUNTS</b>." 

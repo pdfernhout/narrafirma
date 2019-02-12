@@ -110,9 +110,6 @@ function chooseCSVFileToImport(callback, saveStories: boolean, writeLog: boolean
         var reader = new FileReader();
         reader.onload = function(e: Event) {
             var contents = (<FileReader>e.target).result;
-            if (writeLog) {
-                console.log("=================================== START OF LOG reading CSV story file: " + <FileReader>e.target);
-            }
             callback(contents, saveStories, writeLog, questionnaire);
         };
         reader.readAsText(file);
@@ -158,8 +155,8 @@ function processCSVContentsForStories(contents, saveStories, writeLog, questionn
     if (!questionnaire) return;
 
     // start log
-    log("LOG||Data check for story collection: " + storyCollectionName);
-    log("LOG||Data column headers and cell values are only logged the FIRST time their unique value is encountered. Subsequent identical messages are suppressed. Text answers are not reported.");
+    if (storyCollectionName) log("INFO||Data check for story collection: " + storyCollectionName);
+    log("INFO||Data column headers and cell values are only logged the FIRST time their unique value is encountered. Subsequent identical messages are suppressed. Text answers are not reported.");
     
     // set up progress bar
     var messageText = "";
@@ -188,7 +185,7 @@ function processCSVContentsForStories(contents, saveStories, writeLog, questionn
     var headerAndItems = processCSVContents(contents, function (header, row) {
 
         rowNumber++;
-        log("LOG||<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< PROCESSING ROW " + rowNumber + " >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+        log("DEBUG||<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< PROCESSING ROW " + rowNumber + " >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
         var newItem = {};
         var saveStory = true;
 
@@ -201,7 +198,11 @@ function processCSVContentsForStories(contents, saveStories, writeLog, questionn
         // get list of things to write before appended texts
         var textsToWriteBeforeAppendedColumns = [];
         if (questionnaire.import_textsToWriteBeforeAppendedColumns) {
-            textsToWriteBeforeAppendedColumns = questionnaire.import_textsToWriteBeforeAppendedColumns.split("\n")
+            if (typeof questionnaire.import_textsToWriteBeforeAppendedColumns === "string") {
+                textsToWriteBeforeAppendedColumns = questionnaire.import_textsToWriteBeforeAppendedColumns.split("\n");
+            } else {
+                textsToWriteBeforeAppendedColumns = questionnaire.import_textsToWriteBeforeAppendedColumns;
+            }
         }
 
         // get list of columns to ignore completely
@@ -255,7 +256,7 @@ function processCSVContentsForStories(contents, saveStories, writeLog, questionn
                     numRowsSkipped++;
                 } else {
                     newItem["Story title"] = value;
-                    log("INFO||Story title: " + value);
+                    log("DEBUG||Story title: " + value);
                 }
 
             // column is story text - check length if desired, and if too short, do not save story
@@ -285,7 +286,7 @@ function processCSVContentsForStories(contents, saveStories, writeLog, questionn
                 }
                 if (saveStory && saveStoryText) {
                     newItem["Story text"] = value;
-                    log("LOG||Story text (no word length check): " + shortenTextIfNecessary(value) + "...");
+                    log("DEBUG||Story text (no word length check): " + shortenTextIfNecessary(value) + "...");
                 }
 
             // column is one of additional text columns to be appended to story text (must be to the right of story text in data file)
@@ -296,14 +297,14 @@ function processCSVContentsForStories(contents, saveStories, writeLog, questionn
                     textBefore = textsToWriteBeforeAppendedColumns[indexOfColumnInList];
                 }
                 newItem["Story text"] = newItem["Story text"] + " " + textBefore + " " + value;
-                log('LOG||Text for column [' + headerName + '] (' + shortenTextIfNecessary(value) + ') added to story text, with "' + textBefore + '" before it.');
+                log('DEBUG||Text for column [' + headerName + '] (' + shortenTextIfNecessary(value) + ') added to story text, with "' + textBefore + '" before it.');
 
             // column is eliciting question chosen
             } else if (headerName === questionnaire.import_elicitingQuestionColumnName) {
                 var questionShortName = getElicitingQuestionDisplayNameForColumnName(value, questionnaire);
                 if (questionShortName) {
                     newItem["Eliciting question"] = questionShortName;
-                    log("INFO||Eliciting question: " + questionShortName);
+                    log("LOG||Eliciting question: " + questionShortName);
                 } else {
                     var importNames = [];
                     questionnaire.elicitingQuestions.forEach(function(question) {
@@ -315,7 +316,7 @@ function processCSVContentsForStories(contents, saveStories, writeLog, questionn
             // column is participant ID
             } else if (headerName === questionnaire.import_participantIDColumnName) {
                 newItem["Participant ID"] = value;
-                log("LOG||Participant id: " + value);
+                log("DEBUG||Participant id: " + value);
             } else {
 
                 // column is answer to question - get question name, and possibly answer name, from column header
@@ -326,7 +327,7 @@ function processCSVContentsForStories(contents, saveStories, writeLog, questionn
                     if (separator.toLowerCase() === "space") {
                         separator = " ";
                     }
-                    fieldName = stringUpTo(headerName, separator);
+                    fieldName = stringUpTo(headerName, separator).trim();
                     answerName = stringBeyond(headerName, separator).trim();
                     answerName = stringUpTo(answerName, questionnaire.import_multiChoiceYesQAEnding);
                 } else {
@@ -341,7 +342,7 @@ function processCSVContentsForStories(contents, saveStories, writeLog, questionn
 
                     var questionName = question.displayName;
                     var importValueType = question.import_valueType;
-                    log("INFO||Data column name: " + fieldName + " matched with question: " + questionName);
+                    log("LOG||Data column name: " + fieldName + " matched with question: " + questionName);
 
                     // simple data types, text is answer
                     if (["Single choice", "Radiobuttons", "Boolean", "Checkbox", "Text", "Textarea"].indexOf(importValueType) >= 0) {
@@ -356,7 +357,7 @@ function processCSVContentsForStories(contents, saveStories, writeLog, questionn
                                 // the count must be incremented BEFORE the value is assigned, so you can tell if it has already been assigned
                                 if (!newItem[questionName]) count(questionName, answerNameToUse);
                                 newItem[questionName] = answerNameToUse;
-                                log("INFO||Answer for " + questionName + " (" + importValueType + "): " + answerNameToUse);
+                                log("LOG||Answer for " + questionName + " (" + importValueType + "): " + answerNameToUse);
                             }
                         } else { // no match, log error
                             if (["Text", "Textarea"].indexOf(importValueType) < 0) { 
@@ -377,7 +378,7 @@ function processCSVContentsForStories(contents, saveStories, writeLog, questionn
                                     if (!newItem[questionName]) count(questionName, question.valueOptions[index]);
                                     newItem[questionName] = question.valueOptions[index];
                                     valueAssigned = true;
-                                    log("INFO||Answer for " + questionName + " (" + importValueType + "): " + question.valueOptions[index] + "(" + valueAsInt + ")");
+                                    log("LOG||Answer for " + questionName + " (" + importValueType + "): " + question.valueOptions[index] + "(" + valueAsInt + ")");
                                     break;
                                 }
                             }
@@ -391,7 +392,7 @@ function processCSVContentsForStories(contents, saveStories, writeLog, questionn
                         var valueAsInt = parseInt(value);
                         var adjustedValue = changeValueForCustomScaleValues(valueAsInt, question, questionnaire);
                         newItem[questionName] = adjustedValue;
-                        var infoString = "INFO||Answer for " + questionName + " (" + importValueType + "): " + adjustedValue;
+                        var infoString = "LOG||Answer for " + questionName + " (" + importValueType + "): " + adjustedValue;
                         if (adjustedValue != valueAsInt) {
                             infoString += " (adjusted from " + valueAsInt + ")";
                         }
@@ -406,7 +407,7 @@ function processCSVContentsForStories(contents, saveStories, writeLog, questionn
                             if (!newItem[questionName]) newItem[questionName] = {};
                             if (!newItem[questionName][answerNameToUse]) count(questionName, answerNameToUse);
                             newItem[questionName][answerNameToUse] = true;
-                            log("INFO||Answer for " + questionName + " (" + importValueType + "): " + answerNameToUse);
+                            log("LOG||Answer for " + questionName + " (" + importValueType + "): " + answerNameToUse);
                             
                         } else { // no match, log error
                             var listToShow = question.import_answerNames;
@@ -424,7 +425,7 @@ function processCSVContentsForStories(contents, saveStories, writeLog, questionn
                             if (answerNameToUse) {
                                 if (!newItem[questionName][answerNameToUse]) count(questionName, answerNameToUse);
                                 newItem[questionName][answerNameToUse] = true;
-                                log("INFO||Answer for " + questionName + " (" + importValueType + "): " + answerNameToUse);
+                                log("LOG||Answer for " + questionName + " (" + importValueType + "): " + answerNameToUse);
                             } else { // no match, log error
                                 var listToShow = question.import_answerNames;
                                 if (!listToShow) listToShow = question.valueOptions;
@@ -447,7 +448,7 @@ function processCSVContentsForStories(contents, saveStories, writeLog, questionn
                                 if (answerNameToUse) {
                                     if (!newItem[questionName][answerNameToUse]) count(questionName, answerNameToUse);
                                     newItem[questionName][answerNameToUse] = true;
-                                    log("INFO||Answer for " + questionName + " (" + importValueType + "): " + answerNameToUse);
+                                    log("LOG||Answer for " + questionName + " (" + importValueType + "): " + answerNameToUse);
                                 } else { // no match, log error
                                     var listToShow = question.import_answerNames;
                                     if (!listToShow) listToShow = question.valueOptions;
@@ -474,7 +475,7 @@ function processCSVContentsForStories(contents, saveStories, writeLog, questionn
                                         if (!newItem[questionName][answerNameToUse]) count(questionName, answerNameToUse);
                                         newItem[questionName][answerNameToUse] = true;
                                         valueAssigned = true;
-                                        log("INFO||Answer for " + questionName + " (" + importValueType + "): " + answerNameToUse);
+                                        log("LOG||Answer for " + questionName + " (" + importValueType + "): " + answerNameToUse);
                                         break;
                                     }
                                 }
@@ -487,7 +488,7 @@ function processCSVContentsForStories(contents, saveStories, writeLog, questionn
                     
                 } else { // no question found
                     if (columnsToIgnore.indexOf(headerName) >= 0) {
-                        log("INFO||Ignoring data column: " + fieldName);
+                        log("LOG||Ignoring data column: " + fieldName);
                     } else {
                         log("ERROR||NO MATCHING QUESTION FOUND for data column name: " + fieldName);
                     }
@@ -677,6 +678,8 @@ function processCSVContentsForStories(contents, saveStories, writeLog, questionn
                     console.warn(text);
                 } else if (type === "LOG") {
                     console.log(text);
+                } else if (type === "DEBUG") {
+                    console.debug(text);
                 } else if (type === "ERROR") {
                     console.error(text);
                 }
@@ -704,7 +707,7 @@ function processCSVContentsForStories(contents, saveStories, writeLog, questionn
         }
 
         // tell user log is complete, remove progress bar
-        alert("Finished checking " + totalStoryCount + " stories. " + numRowsSkipped + " rows skipped. Check browser console for LOG, INFO, WARNING, and ERROR entries.");
+        alert("Finished checking " + totalStoryCount + " stories. " + numRowsSkipped + " rows skipped. Check browser console for DEBUG, LOG, INFO, WARNING, and ERROR entries.");
         progressModel.hideDialogMethod();
         progressModel.redraw();
     }
@@ -1171,11 +1174,9 @@ function processCSVContentsForQuestionnaire(contents) {
                     var columnsAsLines = columnsToAppend.join("\n");
                     template.import_columnsToAppendToStoryText = columnsAsLines;
                     project.tripleStore.addTriple(template.id, "questionForm_import_columnsToAppendToStoryText", columnsAsLines);
-                    if (textsBeforeColumns) {
-                        var textsAsLines = textsBeforeColumns.join("\n");
-                        template.import_textsToWriteBeforeAppendedColumns = textsAsLines;
-                        project.tripleStore.addTriple(template.id, "questionForm_import_textsToWriteBeforeAppendedColumns", textsBeforeColumns);
-                    }
+                    var textsAsLines = textsBeforeColumns.join("\n");
+                    template.import_textsToWriteBeforeAppendedColumns = textsAsLines;
+                    project.tripleStore.addTriple(template.id, "questionForm_import_textsToWriteBeforeAppendedColumns", textsBeforeColumns);
                 } else if (type === "Minimum words to include story") {
                     var minWords = parseInt(text);
                     if (isNaN(minWords)) {
@@ -1762,8 +1763,12 @@ export function exportQuestionnaireForImport(questionnaire = null) { // to prese
         var columnsToAppend = questionnaire.import_columnsToAppendToStoryText.split("\n");
         if (columnsToAppend) {
             var textsBeforeColumns = [];
-            if (questionnaire.import_textsToWriteBeforeColumns) {
-                textsBeforeColumns = questionnaire.import_textsToWriteBeforeAppendedColumns.split("\n");
+            if (questionnaire.import_textsToWriteBeforeAppendedColumns) {
+                if (typeof questionnaire.import_textsToWriteBeforeAppendedColumns === "string") {
+                    textsBeforeColumns = questionnaire.import_textsToWriteBeforeAppendedColumns.split("\n");
+                } else {
+                    textsBeforeColumns = questionnaire.import_textsToWriteBeforeAppendedColumns;
+                }
             }
             for (var i = 0; i < columnsToAppend.length; i++) {
                 var textToWrite = columnsToAppend[i];
