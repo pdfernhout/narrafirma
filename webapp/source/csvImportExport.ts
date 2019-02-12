@@ -872,7 +872,6 @@ function processCSVContentsForQuestionnaire(contents) {
     }
  
     // TODO: Generalize random uuid function to take class name
-    // TODO: Maybe rename questionForm_ to storyForm_ ?
 
     var template = {
         id: generateRandomUuid("StoryForm"),
@@ -928,8 +927,97 @@ function processCSVContentsForQuestionnaire(contents) {
         import_elicitingQuestionColumnName: "Eliciting question",
         import_elicitingQuestionGraphName: "Eliciting question",
         questionForm_chooseQuestionText: "What question would you like to answer?",
-};
+    };
     
+    var overrideOption = project.tripleStore.queryLatestC(project.projectIdentifier, "project_csvQuestionOverwriteOption");
+
+    // TODO: translate
+    if (overrideOption === "always replace existing questions with matching questions from the CSV file") {
+        overrideOption = "always";
+    } else if (overrideOption === "always keep existing questions; ignore any matching questions in the CSV file") {
+        overrideOption = "never";
+    } else if (overrideOption === "show me the list of existing questions and ask if I still want to import the file") {
+        overrideOption = "ask all";
+    } else if (overrideOption === "ask me whether to replace each existing question") {
+        overrideOption = "ask each";
+    } else if (overrideOption === "stop the import if any existing questions are found") {
+        overrideOption = "stop";
+    }
+
+    var storyQuestionsThatAlreadyExist = [];
+    var participantQuestionsThatAlreadyExist = [];
+    var items = headerAndItems.items;
+    var itemIndex;
+
+    for (itemIndex = 0; itemIndex < items.length; itemIndex++) {
+        var item = items[itemIndex];
+        var about = item.About;
+        var question;
+        var existingQuestion = null;
+        if (about === "story") {
+            question = questionForItem(item, "storyQuestion");
+            existingQuestion = existingQuestionThatMatchesNewQuestion(question, "storyQuestion");
+            if (existingQuestion) storyQuestionsThatAlreadyExist.push(existingQuestion);
+        } else if (about === "participant") {
+            question = questionForItem(item, "participantQuestion");
+            existingQuestion = existingQuestionThatMatchesNewQuestion(question, "participantQuestion");
+            if (existingQuestion) participantQuestionsThatAlreadyExist.push(existingQuestion);
+        }
+    }
+
+    if (storyQuestionsThatAlreadyExist.length || participantQuestionsThatAlreadyExist.length) {
+        var message = 'These questions already exist';
+
+        switch (overrideOption) {
+            case "always":
+                message += " and are being overwritten.\n\n";
+                break;
+            case "never":
+                message += " and are being preserved. The questions with the same name in the CSV file are being ignored.\n\n";
+                break;
+            case "ask all": 
+                message += ":\n\n";
+                break;
+            case "ask each":
+                message += ":\n\n";
+                break;
+            case "stop":
+                message += ":\n\n";
+                break;
+            default: 
+                throw Error("ERROR: No override option chosen.");
+        }
+
+        storyQuestionsThatAlreadyExist.forEach(function(question) { message += "    " + question["storyQuestion_shortName"] + "\n"; });
+        participantQuestionsThatAlreadyExist.forEach(function(question) { message += "    " + question["participantQuestion_shortName"] + "\n"; });
+
+        switch (overrideOption) {
+            case "always":
+                alert(message);
+                break;
+            case "never":
+                alert(message);
+                break;
+            case "ask all":
+                message += "\nDo you want to overwrite them?";
+                if (confirm(message)) {
+                    alert("Okay. The story form has been created, and the existing questions have been overwritten.");
+                } else {
+                    alert("Okay. No story form has been created. No questions have been imported.");
+                    return;
+                }
+                break;
+            case "ask each":
+                break;
+            case "stop":
+                message += "\nNo story form will be created.";
+                alert(message);
+                return;
+            default: 
+                throw Error("ERROR: No override option chosen.");
+        }
+    }
+
     project.tripleStore.makeNewSetItem(storyFormListIdentifier, "StoryForm", template);
     
     // For all items:
@@ -946,19 +1034,18 @@ function processCSVContentsForQuestionnaire(contents) {
     project.tripleStore.addTriple(template.id, "questionForm_import_storyTextColumnName", "Story text");
     project.tripleStore.addTriple(template.id, "questionForm_import_participantIDColumnName", "Participant ID");
 
-    var items = headerAndItems.items;
-    for (var itemIndex = 0; itemIndex < items.length; itemIndex++) {
+    for (itemIndex = 0; itemIndex < items.length; itemIndex++) {
         var item = items[itemIndex];
         var about = item.About;
         var reference;
         var question;
         if (about === "story") {
             question = questionForItem(item, "storyQuestion");
-            reference = ensureQuestionExists(question, "storyQuestion");
+            reference = ensureQuestionExists(question, "storyQuestion", overrideOption);
             addReferenceToList(template.questionForm_storyQuestions, reference, "storyQuestion", "StoryQuestionChoice");
         } else if (about === "participant") {
             question = questionForItem(item, "participantQuestion");
-            reference = ensureQuestionExists(question, "participantQuestion");
+            reference = ensureQuestionExists(question, "participantQuestion", overrideOption);
             addReferenceToList(template.questionForm_participantQuestions, reference, "participantQuestion", "ParticipantQuestionChoice");
         } else if (about === "eliciting") {
             template.import_elicitingQuestionColumnName = item["Data column name"] || "Eliciting question";
@@ -997,7 +1084,7 @@ function processCSVContentsForQuestionnaire(contents) {
                     elicitingQuestion_text: longName.trim(),
                     elicitingQuestion_type: {}
                 };
-                reference = ensureQuestionExists(elicitingQuestion, "elicitingQuestion");
+                reference = ensureQuestionExists(elicitingQuestion, "elicitingQuestion", "always");
                 addReferenceToList(template.questionForm_elicitingQuestions, reference, "elicitingQuestion", "ElicitingQuestionChoice");
             });
         } else if (about === "form") {
@@ -1226,26 +1313,48 @@ function processCSVContentsForQuestionnaire(contents) {
 // support functions for reading story form
 //------------------------------------------------------------------------------------------------------------------------------------------
 
-function ensureQuestionExists(question, questionCategory: string) {
-    var idAccessor = questionCategory + "_shortName";
-    var existingQuestionsInCategory = project.questionsForCategory(questionCategory);
-    var matchingQuestion = null;
-    existingQuestionsInCategory.forEach((existingQuestion) => {
-        if (existingQuestion[idAccessor] === question[idAccessor]) matchingQuestion = existingQuestion;
-    });
+function ensureQuestionExists(question, questionCategory: string, overrideOption: string) {
+    var matchingQuestion = existingQuestionThatMatchesNewQuestion(question, questionCategory);
     if (!matchingQuestion) {
         project.addQuestionForCategory(question, questionCategory);
+        return question[questionCategory + "_shortName"];
     } else {
-        var storyOrParticipant = "story";
-        if (questionCategory === "participantQuestion") {
-            storyOrParticipant = "participant";
+        switch (overrideOption) {
+            case "always": // will fall through to next
+            case "ask all": // if ask all, would not be here if they didn't say to override
+                project.deleteQuestionInCategory(matchingQuestion, questionCategory);
+                project.addQuestionForCategory(question, questionCategory);
+                return question[questionCategory + "_shortName"];
+            case "ask each":
+                var message = 'A question with the name "' + matchingQuestion[questionCategory + "_shortName"] 
+                    + '" already exists. Do you want to overwrite it? Click OK to ovewrite the existing question. Click Cancel to keep the existing question.';
+                if (confirm(message)) {
+                    project.deleteQuestionInCategory(matchingQuestion, questionCategory);
+                    project.addQuestionForCategory(question, questionCategory);
+                    return question[questionCategory + "_shortName"];
+                } else {
+                    return matchingQuestion[questionCategory + "_shortName"];
+                }
+            case "never":
+                return matchingQuestion[questionCategory + "_shortName"];
+            case "stop":
+                throw Error("ERROR: Should not be checking questions if user asked to stop importing.")
+            default: 
+                throw Error("ERROR: No override option chosen.");
         }
-        if (confirm('A ' + storyOrParticipant + ' question with the name "' + matchingQuestion[questionCategory + "_shortName"] + '" already exists.\n\nDo you want to overwrite it?')) {
-            project.deleteQuestionInCategory(matchingQuestion, questionCategory);
-            project.addQuestionForCategory(question, questionCategory);
+    }
+}
+
+function existingQuestionThatMatchesNewQuestion(question, questionCategory: string) {
+    var idAccessor = questionCategory + "_shortName";
+    var existingQuestionsInCategory = project.questionsForCategory(questionCategory);
+    for (var i = 0; i < existingQuestionsInCategory.length; i++) {
+        var existingQuestion = existingQuestionsInCategory[i];
+        if (existingQuestion[idAccessor] === question[idAccessor]) {
+            return existingQuestion;
         }
-    } 
-    return question[idAccessor];
+    }
+    return null;
 }
 
 function questionForItem(item, questionCategory) {
@@ -2186,6 +2295,11 @@ export function checkCSVStoriesWithStoryForm(questionnaire) {
 }
 
 export function importCSVQuestionnaire() {
+    var overrideOption = project.tripleStore.queryLatestC(project.projectIdentifier, "project_csvQuestionOverwriteOption");
+    if (!overrideOption) {
+        alert("Please choose how you want to deal with existing questions while importing your CSV file.");
+        return;
+    }
     chooseCSVFileToImport(processCSVContentsForQuestionnaire, true, false);
 }
 
