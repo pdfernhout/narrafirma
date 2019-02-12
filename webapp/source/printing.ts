@@ -98,8 +98,12 @@ var graphResultsPaneCSS = `
         font-size: 1em;
     }
 
-    .barChart.x-axis-label, .barChart.y-axis-label {
+    .barChart.x-axis-label {
         font-size: 1.2em;
+    }
+    
+    .barChart.y-axis-label {
+        font-size: 1em;
     }
     
     .histogram.x-axis-label.middle, .histogram.y-axis-label.middle {
