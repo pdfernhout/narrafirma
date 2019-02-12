@@ -10,14 +10,14 @@ var panel: Panel = {
             valueType: "string",
             displayType: "textarea",
             displayName: "Description",
-            displayPrompt: "Please <strong>describe</strong> this interpretation. What does the pattern mean, from this perspective?"
+            displayPrompt: "<strong>Describe</strong> this interpretation. What does the pattern mean, from this perspective?"
         },
         {
             id: "interpretation_name",
             valueType: "string",
             displayType: "text",
             displayName: "Name",
-            displayPrompt: "Please give this interpretation a <strong>name</strong>."
+            displayPrompt: 'Give the interpretation a short <strong>name</strong>. This name will represent it on the "Cluster interpretations" page and in the printed report.'
         },
         {
             id: "interpretation_idea",
