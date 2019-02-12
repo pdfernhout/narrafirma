@@ -29,6 +29,7 @@ var panel: Panel = {
             displayType: "button",
             displayConfiguration: "enterSurveyResult",
             displayPrompt: "Add Story...",
+            displayPreventBreak: true,
             displayVisible: function(panelBuilder, model) {
                 return !!Globals.clientState().storyCollectionIdentifier();}
         },
@@ -37,6 +38,7 @@ var panel: Panel = {
             valueType: "none",
             displayType: "button",
             displayConfiguration: "checkCSVStories",
+            displayPreventBreak: true,
             displayPrompt: "Check stories in CSV file (view log in browser console) ...",
             displayVisible: function(panelBuilder, model) {
                 return !!Globals.clientState().storyCollectionIdentifier();}

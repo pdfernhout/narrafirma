@@ -28,6 +28,7 @@ var panel: Panel = {
             valueType: "none",
             displayType: "button",
             displayConfiguration: "exportQuestionnaire",
+            displayPreventBreak: true,
             displayPrompt: "Export story form with options for NarraFirma-native import...",
             displayVisible: function(panelBuilder, model) {
                 return !!Globals.clientState().storyCollectionIdentifier();}
