@@ -98,7 +98,7 @@ var graphResultsPaneCSS = `
         font-size: 1em;
     }
 
-    .barChart.x-axis-label {
+    .barChart.x-axis-label, .barChart.y-axis-label {
         font-size: 1.2em;
     }
     
