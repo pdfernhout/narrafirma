@@ -273,24 +273,29 @@ export function copyInterpretationsToClusteringDiagram() {
         existingReferenceUUIDs[item.referenceUUID] = true;
     });
 
-    var updatedItemCount = 0;
     // Update name and notes on existing items
+
+    var updatedItemCount = 0;
     clusteringDiagram.items.forEach((item) => {
         if (item.type === "item") {
             if (item.referenceUUID) {
-                const newName = project.tripleStore.queryLatestC(item.referenceUUID, "interpretation_name") || "Deleted interpretation";
+                var newName = project.tripleStore.queryLatestC(item.referenceUUID, "interpretation_name") || "";
+                var newNotes = project.tripleStore.queryLatestC(item.referenceUUID, "interpretation_text") || "";
+
+                // if they filled only one in, use it for both
+                if (newName === "" || newName === "Deleted interpretation") {
+                    newName = newNotes; 
+                } else if (newNotes === ""|| newNotes === "Deleted interpretation") {
+                    newNotes = newName;
+                }
+
+                // update clustering item for change to interpretation
                 if (newName !== item.name) {
                     item.name = newName;
                     updatedItemCount++;
                 }
-                item.notes = project.tripleStore.queryLatestC(item.referenceUUID, "interpretation_text") || "";
-            } else {
-                if (item.name && item.name.indexOf("Deleted interpretation") !== 0) {
-                    const newName =  "Deleted interpretation: " + (item.name || "Missing name");
-                    if (newName !== item.name) {
-                        item.name = newName;
-                        updatedItemCount++;
-                    }
+                if (newNotes !== item.notes) {
+                    item.notes = newNotes;
                 }
             }
         }
