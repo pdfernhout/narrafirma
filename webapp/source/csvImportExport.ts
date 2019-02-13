@@ -666,6 +666,7 @@ function processCSVContentsForStories(contents, saveStories, writeLog, questionn
     // write accumulated log items to console
     if (writeLog) {
 
+        var consoleMessageCounts = {"INFO": 0, "WARN": 0, "LOG": 0, "DEBUG": 0, "ERROR": 0};
         if (logItems.length > 0) {
             console.clear();
             logItems.forEach(function(item) {
@@ -674,14 +675,19 @@ function processCSVContentsForStories(contents, saveStories, writeLog, questionn
                 var text = typeAndText[1];
                 if (type === "INFO") {
                     console.info(text);
+                    consoleMessageCounts["INFO"]++;
                 } else if (type === "WARN") {
                     console.warn(text);
+                    consoleMessageCounts["WARN"]++;
                 } else if (type === "LOG") {
                     console.log(text);
+                    consoleMessageCounts["LOG"]++;
                 } else if (type === "DEBUG") {
                     console.debug(text);
+                    consoleMessageCounts["DEBUG"]++;
                 } else if (type === "ERROR") {
                     console.error(text);
+                    consoleMessageCounts["ERROR"]++;
                 }
             });
         }
@@ -707,7 +713,13 @@ function processCSVContentsForStories(contents, saveStories, writeLog, questionn
         }
 
         // tell user log is complete, remove progress bar
-        alert("Finished checking " + totalStoryCount + " stories. " + numRowsSkipped + " rows skipped. Check browser console for DEBUG, LOG, INFO, WARNING, and ERROR entries.");
+        alert("Finished checking " + totalStoryCount + " stories. " 
+            + numRowsSkipped + " rows skipped. Check browser console for these messages: "
+            + consoleMessageCounts["DEBUG"] + " debug, "
+            + consoleMessageCounts["LOG"] + " log, "
+            + consoleMessageCounts["INFO"] + " info, "
+            + consoleMessageCounts["WARN"] + " warning, "
+            + consoleMessageCounts["ERROR"] + " error. ");
         progressModel.hideDialogMethod();
         progressModel.redraw();
     }
