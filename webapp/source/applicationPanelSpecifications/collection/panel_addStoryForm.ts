@@ -491,6 +491,7 @@ var panel: Panel = {
             displayConfiguration: "previewQuestionForm",
             displayName: "Question form preview",
             displayPrompt: "Preview Story Form",
+            displayPreventBreak: true,
             displayVisible: function(panelBuilder, model) {
                 return panelBuilder.readOnly === false;
             }
@@ -513,6 +514,7 @@ var panel: Panel = {
             displayConfiguration: "exportStoryFormWhileEditingIt_NativeFormat",
             displayName: "Export story form",
             displayPrompt: "Export story form with options for NarraFirma-native import...",
+            displayPreventBreak: true,
             displayVisible: function(panelBuilder, model) {
                 return panelBuilder.readOnly === false;
             }
