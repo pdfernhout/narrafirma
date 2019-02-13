@@ -9,7 +9,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Requires at least: 4.3.1
 Tested up to: 5.0.3
 Stable tag: trunk
-Version: 1.2.3
+Version: 1.2.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -105,6 +105,39 @@ We strongly suggest that you set up any web site on which you intend to install 
 12. Here the NarraFirma user is reflecting on the entire project, to learn from it and to keep good records for the future.
 
 == Changelog ==
+
+= 1.2.4 =
+
+Added: Better options for replacing or keeping existing questions when importing CSV story form
+Added: Way to export observations, intepretations, perspectives from catalysis report to CSV and import them into new report on different story collection (as long as question names match)
+Added: Way to view/copy names and texts of random sample of stories (10, 20, or 30) drawn from stories selected on graph
+Added: Option to see answers to selected (important) questions while viewing/copying stories in graph selection 
+Added: Separate columns in catalysis patterns table for (up to 3) questions referred to by each pattern (so you can sort by each question individually)
+Added: Option to hide statistical results in printed catalysis report 
+Added: Option to set number of bins for Story length question
+Added: CSS Class names for graph axis labels depending on graph type (bar, histogram, etc)
+Added: Summary above catalysis patterns table showing counts of patterns and observations (by strength)
+Added: Story index (number in story collection) is now displayed in all places where story names are given (lists, story cards), to distinguish between stories with the same name
+
+Changed: Filter (for catalysis reports and story cards) can now have negated queries (e.g., include every answer but one)
+Changed: Filter (for catalysis reports and story cards) can now have multiple questions, creating more complex queries
+Changed: Better pre-import check messages
+Changed: Improved handling of clustering in situation where interpretations have texts but no names
+Changed: Better interface for making and doing things with graph selections 
+Changed: Moved saved graph selection reference from observation text to its own field (that does not appear in printed catalysis report)
+Changed: Better question groupings on "Configure catalysis report" page
+Changed: Now if you hover over a dot on a scatterplot and there is more than one story there, it will show you (the first ten of) the story names, instead of just one name/text
+Changed: In the catalysis pattern table, for side-by-side scatterplots, instead of showing the lowest p value, it now shows the range of p values (which is more relevant)
+Changed: Statistics panel is now transparent (no longer blue), so it doesn't stick out so much
+Changed: Better font sizes for various graph axis labels
+Changed: Better error messages for malformed HTML
+Changed: Small interface improvements here and there
+
+Fixed: Bug where selected pattern in catalyis pattern table would scroll out of view
+Fixed: Bug where allowing AxA question combinations would also include both AXB and BXA question combinations
+Fixed: Bug where portion of pre-import check log was being written to browser console when actually importing data
+Fixed: Bug where answers lumped during import were printing multiple times in story cards
+Fixed: Various little bugs here and there...
 
 = 1.2.3 =
 
@@ -293,6 +326,9 @@ loading application, getting user information, or retrieving project data.
 change logs, see the [GitHub repository](https://github.com/pdfernhout/narrafirma).
 
 == Upgrade Notice ==
+
+= 1.2.4 =
+This upgrade improves support for narrative catalysis. It adds several features that help you go through the process more easily.
 
 = 1.2.3 = 
 This is a critical upgrade. Please apply it right away. It fixes a bug we introduced in version 1.2.0, in which exporting a project snapshot "with stories" did not actually export any stories. We apologize for the mistake. There is also a fix for a bug in the Mann-Whitney U test (some blank values were being erroneously counted). The update also improves error handling for projects with large numbers of questions.
