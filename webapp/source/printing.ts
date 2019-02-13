@@ -800,15 +800,14 @@ function findMarkedReferenceInText(text) {
     } else return null;
 }
 
-export function makeObservationIDsListForInterpretation(project: Project, observations, interpretationName) {
+export function makeObservationIDsListForInterpretation(project: Project, observations, interpretationName, interpretationText) {
     var result = [];
     observations.forEach((observation) => {
         var interpretationsListIdentifier = project.tripleStore.queryLatestC(observation, "observationInterpretations");
         var interpretationsList = project.tripleStore.getListForSetIdentifier(interpretationsListIdentifier);
         interpretationsList.forEach((interpretationIdentifier) => {
             var interpretation = project.tripleStore.makeObject(interpretationIdentifier, true);
-            var name = interpretation.interpretation_name;
-            if (name === interpretationName) {
+            if (interpretation.interpretation_name === interpretationName || interpretation.interpretation_text === interpretationText) {
                 result.push(observation);
             }
         });
@@ -1087,7 +1086,7 @@ function printCatalysisReportWithClusteredInterpretations(project, catalysisRepo
     }
     
     var perspectiveIndex = 0;
-    let interpretationIndex = 0;
+    let clusteredItemIndex = 0;
     var observationsIDsForInterpretation = {};
 
     function printNextInterpretation() {
@@ -1109,7 +1108,7 @@ function printCatalysisReportWithClusteredInterpretations(project, catalysisRepo
             finishModel.redraw();
         } else {
             var perspective = perspectives[perspectiveIndex];
-            if (interpretationIndex === 0) {
+            if (clusteredItemIndex === 0) {
                 var perspectiveNameToPrintWithoutSpaces = replaceSpacesWithDashes(perspective.name);
                 printItems.push(m("div.narrafirma-catalysis-report-perspective", 
                     [m("span", {"class": "narrafirma-catalysis-report-perspective-label " + perspectiveNameToPrintWithoutSpaces, "id": "perspective-" + perspectiveNameToPrintWithoutSpaces}, options["perspectiveLabel"]),
@@ -1131,71 +1130,79 @@ function printCatalysisReportWithClusteredInterpretations(project, catalysisRepo
             
                 var printItemsForThisPerspective = [];
                 for (var i = 0; i < perspective.items.length ; i++) {
-                    const interpretation = perspective.items[i];
-                    var observationIDsForThisInterpretation = makeObservationIDsListForInterpretation(project, observationIDs, interpretation.name);
-                    observationsIDsForInterpretation[interpretation.uuid] = observationIDsForThisInterpretation; // save to use later
+                    const clusteredItem = perspective.items[i];
+                    var observationIDsForThisInterpretation = makeObservationIDsListForInterpretation(project, observationIDs, clusteredItem.name, clusteredItem.notes);
+                    observationsIDsForInterpretation[clusteredItem.uuid] = observationIDsForThisInterpretation; // save to use later
 
-                    var printItemsForThisInterpretation = [];
-                    printItemsForThisInterpretation.push(m("td", {"class": "narrafirma-catalysis-report-interpretation-links-table-td"}, m("a", {href: "#" + replaceSpacesWithDashes(interpretation.name)}, interpretation.name)));
                     for (var observationIndex = 0; observationIndex < observationIDsForThisInterpretation.length; observationIndex++) {
                         var observation = project.tripleStore.makeObject(observationIDsForThisInterpretation[observationIndex], true);
-                        var observationTitleToPrint = portionOfTextMatchingReference(observation.observationTitle, interpretation.notes);
                         if (observation) {
-                            printItemsForThisInterpretation.push(m("td", {"class": "narrafirma-catalysis-report-interpretation-links-table-td"}, m("a", {href: "#observation-" + replaceSpacesWithDashes(observationTitleToPrint)}, observationTitleToPrint)));
-                            printItemsForThisInterpretation.push(m("td", {"class": "narrafirma-catalysis-report-interpretation-links-table-td"}, observation.observationStrength || ""));
+                            var printItemsForThisObservationInterpretationPairing = [];
+                            printItemsForThisObservationInterpretationPairing.push(m("td", {"class": "narrafirma-catalysis-report-interpretation-links-table-td"}, 
+                                m("a", {href: "#" + replaceSpacesWithDashes(clusteredItem.name || clusteredItem.notes)}, clusteredItem.name || clusteredItem.notes)));
+                            var observationTitleToPrint = portionOfTextMatchingReference(observation.observationTitle || observation.observationDescription, clusteredItem.notes);
+                            printItemsForThisObservationInterpretationPairing.push(m("td", {"class": "narrafirma-catalysis-report-interpretation-links-table-td"}, 
+                                m("a", {href: "#observation-" + replaceSpacesWithDashes(observationTitleToPrint)}, observationTitleToPrint)));
+                            printItemsForThisObservationInterpretationPairing.push(m("td", {"class": "narrafirma-catalysis-report-interpretation-links-table-td"}, observation.observationStrength || ""));
+                            printItemsForThisPerspective.push(m("tr", {"class": "narrafirma-catalysis-report-interpretation-links-table-tr"}, printItemsForThisObservationInterpretationPairing)); 
                         }
                     }
-                    printItemsForThisPerspective.push(m("tr", {"class": "narrafirma-catalysis-report-interpretation-links-table-tr"}, printItemsForThisInterpretation));         
                 }
                 printItemsForThisPerspective.sort(compareRowsInPerspectiveLinksTable);
                 printItems.push(m("table", {"class": "narrafirma-catalysis-report-interpretation-links-table"}, printItemsForThisPerspective));
                 printItems.push(m("br"));
             }
             const interpretationsInThisPerspective = perspective.items;
-            if (interpretationIndex >= interpretationsInThisPerspective.length) {
+            if (clusteredItemIndex >= interpretationsInThisPerspective.length) {
                 perspectiveIndex++;
-                interpretationIndex = 0;
+                clusteredItemIndex = 0;
             } else {
-                const interpretation = interpretationsInThisPerspective[interpretationIndex];
-                // update item for changed name or text of intepretation
-                if (interpretation.referenceUUID) {
-                    interpretation.name = project.tripleStore.queryLatestC(interpretation.referenceUUID, "interpretation_name") || interpretation.name;
-                    interpretation.notes = project.tripleStore.queryLatestC(interpretation.referenceUUID, "interpretation_text") || interpretation.notes;
-                    // also pick up item idea at this point (ideas are not shown in the clustering diagram but are printed in the report)
-                    // putting this here means that if a catalysis report was created before version 1.0.0, ideas will not get printed
-                    // (since it will have no referenceUUIDs).
-                    // they will have to click the update button to create reference UUIDs.
-                    // however this situation will probably be very rare. i would rather leave it like this
-                    // than have to change the entire clustering diagram to deal with it.
-                    interpretation.idea = project.tripleStore.queryLatestC(interpretation.referenceUUID, "interpretation_idea") || "";
-                }
-                var interpretationNameWithoutSpaces = replaceSpacesWithDashes(interpretation.name);
-                printItems.push(m("div.narrafirma-catalysis-report-interpretation", 
-                    [m("span", {"class": "narrafirma-catalysis-report-interpretation-label " + interpretationNameWithoutSpaces, "id": interpretationNameWithoutSpaces}, options["interpretationLabel"]), interpretation.name]));
+                const clusteredItem = interpretationsInThisPerspective[clusteredItemIndex];
 
-                if (interpretation.notes) {
-                    var notesToPrint = interpretation.notes;
-                    // if interpretation has tag to mark part of observation to print, don't print tag
-                    var reference = findMarkedReferenceInText(interpretation.notes);
-                    if (reference) {
-                        var referenceTag = referenceMarker + reference + referenceMarker;
-                        var refIndexInNotes = interpretation.notes.indexOf(referenceTag);
-                        if (refIndexInNotes >= 0) 
-                            notesToPrint = interpretation.notes.substring(refIndexInNotes + referenceTag.length + 1);
+                // if no name OR notes, don't print anything at all
+                if (clusteredItem.name || clusteredItem.notes) {
+
+                    // update clustered item for changed name or text of intepretation
+                    if (clusteredItem.referenceUUID) {
+                        clusteredItem.name = project.tripleStore.queryLatestC(clusteredItem.referenceUUID, "interpretation_name") || clusteredItem.name;
+                        clusteredItem.notes = project.tripleStore.queryLatestC(clusteredItem.referenceUUID, "interpretation_text") || clusteredItem.notes;
+                        // also pick up item idea at this point (ideas are not shown in the clustering diagram but are printed in the report)
+                        // putting this here means that if a catalysis report was created before version 1.0.0, ideas will not get printed
+                        // (since it will have no referenceUUIDs).
+                        // they will have to click the update button to create reference UUIDs.
+                        // however this situation will probably be very rare. i would rather leave it like this
+                        // than have to change the entire clustering diagram to deal with it.
+                        clusteredItem.idea = project.tripleStore.queryLatestC(clusteredItem.referenceUUID, "interpretation_idea") || "";
                     }
-                    printItems.push(m("div.narrafirma-catalysis-report-interpretation-notes", printText(notesToPrint)));
-                }
+                    var interpretationNameWithoutSpaces = replaceSpacesWithDashes(clusteredItem.name || clusteredItem.notes);
+                    printItems.push(m("div.narrafirma-catalysis-report-interpretation", 
+                        [m("span", {"class": "narrafirma-catalysis-report-interpretation-label " + interpretationNameWithoutSpaces, "id": interpretationNameWithoutSpaces}, 
+                        options["interpretationLabel"]), clusteredItem.name || clusteredItem.notes]));
 
-                if (interpretation.idea) {
-                    printItems.push(m("div.narrafirma-catalysis-report-interpretation-idea", printText(interpretation.idea)));
-                }
+                    if (clusteredItem.notes) {
+                        var notesToPrint = clusteredItem.notes;
+                        // if interpretation has tag to mark part of observation to print, don't print tag
+                        var reference = findMarkedReferenceInText(clusteredItem.notes);
+                        if (reference) {
+                            var referenceTag = referenceMarker + reference + referenceMarker;
+                            var refIndexInNotes = clusteredItem.notes.indexOf(referenceTag);
+                            if (refIndexInNotes >= 0) 
+                                notesToPrint = clusteredItem.notes.substring(refIndexInNotes + referenceTag.length + 1);
+                        }
+                        printItems.push(m("div.narrafirma-catalysis-report-interpretation-notes", printText(notesToPrint)));
+                    }
 
-                printItems.push(<any>printObservationList(observationsIDsForInterpretation[interpretation.uuid], 
-                    options["observationLabel"], interpretation.notes, allStories, options));
-                
-                progressModel.progressText = progressText(perspectiveIndex, interpretationIndex);
-                progressModel.redraw();
-                interpretationIndex++;
+                    if (clusteredItem.idea) {
+                        printItems.push(m("div.narrafirma-catalysis-report-interpretation-idea", printText(clusteredItem.idea)));
+                    }
+
+                    printItems.push(<any>printObservationList(observationsIDsForInterpretation[clusteredItem.uuid], 
+                        options["observationLabel"], clusteredItem.notes, allStories, options));
+                    
+                    progressModel.progressText = progressText(perspectiveIndex, clusteredItemIndex);
+                    progressModel.redraw();
+                }
+                clusteredItemIndex++;
             }
    
             setTimeout(function() { printNextInterpretation(); }, 0);
