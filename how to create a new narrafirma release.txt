@@ -37,7 +37,7 @@ C3. Update the Version number at the top of the file.
 
 C4. Update the "Tested up to" (WordPress version) if needed.
 
-Check in these changes to Github.
+Check in all of these changes (made in A, B, and C) to Github.
 
 ====================================================================
 D. Remove .DS_Store files
@@ -139,7 +139,7 @@ Then give the release the title "NarraFirma vX.X.X"
 H3. Describe the version. At the end of the text field, paste this text:
 ----------------------------------------------------------
 **To use the WordPress version of NarraFirma**, first download the zip file
-(narrafirma-wordpress-plugin-vX.X.X.zip) from the link you see above. Then
+(narrafirma-wordpress-plugin-vX.X.X.zip) from the link you see on this page. Then
 upload the zip file into the plugins section of a running WordPress
 installation. _Caution! Don't mix up the WordPress zip file
 (narrafirma-wordpress-plugin-vX.X.X.zip) with the source code file
