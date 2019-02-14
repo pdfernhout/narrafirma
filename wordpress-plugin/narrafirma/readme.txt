@@ -9,7 +9,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Requires at least: 4.3.1
 Tested up to: 5.0.3
 Stable tag: trunk
-Version: 1.2.4
+Version: 1.2.5
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -105,6 +105,14 @@ We strongly suggest that you set up any web site on which you intend to install 
 12. Here the NarraFirma user is reflecting on the entire project, to learn from it and to keep good records for the future.
 
 == Changelog ==
+
+= 1.2.5 =
+
+Added: Option to hide statistical panels on Explore patterns page (useful when there are long lists of results to scroll through)
+Added: Way to view/copy statistical results in pop-up window while looking at graph on Explore patterns page
+Added: Interpretation count to summary above patterns table on Explore patterns page
+Changed: Bar graph Y axis label now allocates more space when graph counts need more digits to display
+Fixed: Bug where showing selected stories was not working correctly in new catalysis report
 
 = 1.2.4 =
 
@@ -326,6 +334,9 @@ loading application, getting user information, or retrieving project data.
 change logs, see the [GitHub repository](https://github.com/pdfernhout/narrafirma).
 
 == Upgrade Notice ==
+
+= 1.2.5 =
+This minor upgrade adds a few more options for narrative catalysis.
 
 = 1.2.4 =
 This upgrade improves support for narrative catalysis. It adds several features that help you go through the process more easily.

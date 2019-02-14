@@ -142,6 +142,14 @@ M When import story form, hundreds of triples can be generated which take minute
 
 ==== DONE
 
+--- Release 1.2.5
+
+Added: Option to hide statistical panels on Explore patterns page (useful when there are long lists of results to scroll through)
+Added: Way to view/copy statistical results in pop-up window while looking at graph on Explore patterns page
+Added: Interpretation count to summary above patterns table on Explore patterns page
+Changed: Bar graph Y axis label now allocates more space when graph counts need more digits to display
+Fixed: Bug where showing selected stories was not working correctly in new catalysis report
+
 --- Release 1.2.4
 
 Added: Better options for replacing or keeping existing questions when importing CSV story form
