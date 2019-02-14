@@ -467,10 +467,12 @@ class PatternExplorer {
     }
     
     patternsAndStrengthsDisplayText() {
+        if (!this) return "";
         var result = "";
         var strengthCounts = {"3 (strong)": 0, "2 (medium)": 0, "1 (weak)": 0};
         var numObservationsWithStrengths = 0;
         var numObservationsWithoutStrengths = 0;
+        var numInterpretations = 0;
         this.modelForPatternsGrid.patterns.forEach(function(pattern) {
             if (pattern.observation()) {
                 var strength = pattern.strength();
@@ -480,20 +482,24 @@ class PatternExplorer {
                 } else {
                     numObservationsWithoutStrengths += 1;
                 }
+                const interpretationSetID = this.observationAccessor(pattern, "observationInterpretations");
+                const interpretationIDs = this.project.tripleStore.getListForSetIdentifier(interpretationSetID); 
+                numInterpretations += interpretationIDs.length;
             }
-        });
+        }, this);
         result = "" + this.modelForPatternsGrid.patterns.length + (this.modelForPatternsGrid.patterns.length !== 1 ? " patterns" : " pattern");
         if (Object.keys(strengthCounts).length) {
             result += ", " + numObservationsWithStrengths + (numObservationsWithStrengths !== 1 ? " observations" : " observation");
-            result += " - by strength: ";
+            result += " (by strength, ";
             var keyCount = 0;
             Object.keys(strengthCounts).forEach(function(key) {
                 result += key.slice(0,1) + ": " + strengthCounts[key];
-                if (keyCount < 2) result += " | ";
+                if (keyCount < 2) result += "; ";
                 keyCount++;
             });
-            result += " | none: " + numObservationsWithoutStrengths;
+            result += "; none: " + numObservationsWithoutStrengths + "), ";
         }
+        result += numInterpretations + (numInterpretations !== 1 ? " interpretations" : " interpretation");
         return result;
     }
     
@@ -995,7 +1001,14 @@ class PatternExplorer {
         var text;
         const selectionName = this.nameForCurrentGraphSelection();
 
-        var questionShortNamesToShowForSelectedStories = this.project.tripleStore.queryLatestC(this.catalysisReportIdentifier, "questionShortNamesToShowForSelectedStories").split("\n"); 
+        var questionShortNames = this.project.tripleStore.queryLatestC(this.catalysisReportIdentifier, "questionShortNamesToShowForSelectedStories");
+        if (questionShortNames === undefined) {
+            questionShortNames = [];
+        } else {
+            if (typeof questionShortNames === "string") {
+                questionShortNames = questionShortNames.split("\n"); 
+            }
+        } 
 
         // have to add the right prefix to connect to fields in stories 
         // this assumes that question short names will be unique across all questions - though we do say that in the interface, so...
@@ -1004,7 +1017,7 @@ class PatternExplorer {
         var annotationQuestions = questionnaireGeneration.convertEditorQuestions(this.project.collectAllAnnotationQuestions(), "A_");
         
         var questionIDsToShowForSelectedStories = [];
-        questionShortNamesToShowForSelectedStories.forEach(function(shortName) {
+        questionShortNames.forEach(function(shortName) {
             for (i = 0; i < storyQuestions.length; i++) {
                 if (storyQuestions[i].id === "S_" + shortName) {
                     questionIDsToShowForSelectedStories.push("S_" + shortName);
