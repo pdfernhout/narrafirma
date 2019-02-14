@@ -199,7 +199,8 @@ var panel: Panel = {
             valueOptions: ["500", "600", "700", "800", "900", "1000", "1100", "1200", "1300", "1400", "1500", "1600", "1700", "1800", "1900", "2000", "2500", "3000", "3500", "4000", "4500", "5000", "6000", "7000", "8000", "9000", "10000"],
             displayType: "select",
             displayName: "Maximum story length to show",
-            displayPrompt: `In the <strong>story length graph</strong>, above what character length do you want to lump all remaining stories into the last bin?`,
+            displayPrompt: `In the <strong>story length graph</strong>, above what character length do you want to lump all remaining stories into the last bin? 
+                (If no answer is selected, the maximum story length will be drawn from the stories themselves.)`,
             displayVisible: function(panelBuilder, model) {
                 return !!Globals.clientState().catalysisReportIdentifier();
             }
@@ -236,7 +237,8 @@ var panel: Panel = {
             valueOptions: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20"],
             displayType: "select",
             displayName: "Number of scatter plot dot opacity levels",
-            displayPrompt: "For <strong>scatter plots</strong>, how many stories should it take to draw a completely <strong>opaque dot</strong>? (Set this number high if you have a lot of identical scale values.)",
+            displayPrompt: `For <strong>scatter plots</strong>, how many stories should it take to draw a completely <strong>opaque dot</strong>? 
+                (Set this number high if you have a lot of identical scale values.)`,
             displayVisible: function(panelBuilder, model) {
                 return !!Globals.clientState().catalysisReportIdentifier();
             }

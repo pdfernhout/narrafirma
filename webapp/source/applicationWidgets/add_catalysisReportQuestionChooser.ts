@@ -18,6 +18,11 @@ function add_catalysisReportQuestionChooser(panelBuilder: PanelBuilder, model, f
     var elicitingQuestions = project.elicitingQuestionsForCatalysisReport(catalysisReportIdentifier);
     var allParticipantQuestions = project.participantQuestionsForCatalysisReport(catalysisReportIdentifier);
 
+    // if catalysis report has no values for options, initialize it now 
+    // I put this here because we assume they will come to this page first after creating the report
+    // and I don't know where else to put it
+    project.initializeCatalysisReportIfNecessary(catalysisReportIdentifier);
+
     // annotation questions are not per questionnaire but global to the project (which is maybe not good?)
     // because annotation questions are global, they are not in the form the other questions are in (which are in the questionnaire)
     // so they must be converted

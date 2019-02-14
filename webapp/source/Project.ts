@@ -20,9 +20,11 @@ class Project {
     pointrelClient: PointrelClient;
     tripleStore: TripleStore;
     redrawCallback: Function;
+    defaultOptionValues: {};
     static defaultMinimumStoryCountRequiredForTest = 20;
     static defaultMinimumStoryCountRequiredForGraph = 1;
     static defaultNumHistogramBins = 20;
+    static defaultNumStoryLengthBins = 4;
     static defaultShowInterpretationsInGrid = false;
     static defaultGraphMultiChoiceQuestionsAgainstThemselves = false;
     static defaultShowStatsPanelsOnExplorePatternsPage = true;
@@ -51,6 +53,21 @@ class Project {
         this.projectIdentifier = projectIdentifier;
         this.userIdentifier = userIdentifier;
         this.redrawCallback = redrawCallback;
+    
+        this.defaultOptionValues =  {
+            "minimumSubsetSize": Project.defaultMinimumStoryCountRequiredForTest,
+            "minimumStoryCountRequiredForGraph": Project.defaultMinimumStoryCountRequiredForGraph,
+            "numHistogramBins": Project.defaultNumHistogramBins,
+            "numStoryLengthBins": Project.defaultNumStoryLengthBins,
+            "showInterpretationsInGrid": Project.defaultShowInterpretationsInGrid,
+            "graphMultiChoiceQuestionsAgainstThemselves": Project.defaultGraphMultiChoiceQuestionsAgainstThemselves,
+            "showStatsPanelsOnExplorePatternsPage": Project.defaultShowStatsPanelsOnExplorePatternsPage,
+            "numScatterDotOpacityLevels": Project.defaultNumScatterDotOpacityLevels,
+            "scatterDotSize": Project.defaultScatterDotSize,
+            "correlationLineChoice": Project.defaultCorrelationLineChoice,
+            "outputGraphFormat": Project.defaultOutputGraphFormat,
+            "showStatsPanelsInReport": Project.defaultShowStatsPanelsInReport,
+        }
     
         this.pointrelClient = new PointrelClient(serverURL, this.journalIdentifier, this.userIdentifier, this.receivedMessage.bind(this), updateServerStatus);
         
@@ -143,6 +160,15 @@ class Project {
             }
         }
         return null;
+    }
+
+    initializeCatalysisReportIfNecessary(catalysisReportIdentifier) {
+        var keys = Object.keys(this.defaultOptionValues);
+        for (var i = 0; i < keys.length; i++) {
+            if (this.tripleStore.queryLatestC(catalysisReportIdentifier, keys[i]) === undefined) {
+                this.tripleStore.addTriple(catalysisReportIdentifier, keys[i], this.defaultOptionValues[keys[i]]);
+            }
+        }
     }
     
     findQuestionnaireTemplate(shortName): string {
@@ -726,7 +752,7 @@ class Project {
             const maxStoryLengthToShowAsNumber = parseInt(maxStoryLengthToShow);
             maxStoryLength = Math.min(maxStoryLengthToShowAsNumber, maxStoryLength);
         }
-        var numStoryLengthBinsAsNumber = 4; // default in case choice is missing or garbled
+        var numStoryLengthBinsAsNumber = Project.defaultNumStoryLengthBins; 
         const numStoryLengthBins = this.tripleStore.queryLatestC(catalysisReportIdentifier, "numStoryLengthBins");
         if (numStoryLengthBins) {
             numStoryLengthBinsAsNumber = parseInt(numStoryLengthBins);
