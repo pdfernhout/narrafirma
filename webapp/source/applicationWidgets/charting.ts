@@ -703,8 +703,12 @@ export function d3BarChartForValues(graphBrowserInstance: GraphHolder, plotItems
     addTitlePanelForChart(chartPane, chartTitle);
     //m.render(chartPane, content);
 
-    var letterSize = 7;
-    var margin = {top: 20, right: 15, bottom: 90 + longestLabelTextLength * letterSize, left: 60};
+    var maxItemsPerBar = d3.max(plotItems, function(plotItem: PlotItem) { return plotItem.value; });
+
+    var letterSize = 8;
+    var margin = {top: 20, right: 15, bottom: 90 + longestLabelTextLength * letterSize, left: 70};
+    if (maxItemsPerBar >= 100) margin.left += letterSize;
+    if (maxItemsPerBar >= 1000) margin.left += letterSize;
     
     var chart = makeChartFramework(chartPane, "barChart", "large", margin);
     var chartBody = chart.chartBody;
@@ -727,14 +731,12 @@ export function d3BarChartForValues(graphBrowserInstance: GraphHolder, plotItems
     
     // draw the y axis
     
-    var maxItemsPerBar = d3.max(plotItems, function(plotItem: PlotItem) { return plotItem.value; });
-
     var yScale = d3.scale.linear()
         .domain([0, maxItemsPerBar])
         .range([chart.height, 0]);
     
     chart.yScale = yScale;
-    
+
     // Extra version of scale for calculating heights without subtracting as in height - yScale(value)
     var yHeightScale = d3.scale.linear()
         .domain([0, maxItemsPerBar])
@@ -954,14 +956,16 @@ export function d3HistogramChartForDataIntegrity(graphBrowserInstance: GraphHold
 
 export function d3HistogramChartForValues(graphBrowserInstance: GraphHolder, plotItems, choiceQuestion, choice, unansweredCount, matchingStories, style, chartSize, chartTitle, xAxisLabel, xAxisStart, xAxisEnd, storiesSelectedCallback, hideStatsPanel = false) {
     
-    var margin = {top: 20, right: 15, bottom: 60, left: 80};
-    var isSmallFormat = style == "smallChartStyle";
+    var margin = {top: 20, right: 15, bottom: 60, left: 70};
+    if (plotItems.length > 1000) margin.left += 20;
 
+    var isSmallFormat = style == "smallChartStyle";
     if (isSmallFormat) {
         margin.left = 35;
     } else {
         margin.bottom += 30;
     }
+
     var chartPane = newChartPane(graphBrowserInstance, style);   
     if (!isSmallFormat) addTitlePanelForChart(chartPane, chartTitle);
 
