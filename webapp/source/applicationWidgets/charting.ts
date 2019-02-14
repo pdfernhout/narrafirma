@@ -492,7 +492,7 @@ function escapeHtml(str) {
     return div.innerHTML;
 };
 
-function htmlForLabelAndValue(key, object) {
+function htmlForLabelAndValue(key, object, html = true) {
     var value = object[key];
     if (value === undefined) {
         console.log("value is undefined");
@@ -550,35 +550,53 @@ function htmlForLabelAndValue(key, object) {
             break;
         }
     }
-    return '<span class="statistics-name">' + keyToReport + '</span>: <span class="statistics-value">' + value + "</span>";
+    if (html) {
+        return '<span class="statistics-name">' + keyToReport + '</span>: <span class="statistics-value">' + value + "</span>";
+    } else {
+        return keyToReport + ": " + value;
+    }
 }
 
-function addStatisticsPanelForChart(chartPane: HTMLElement, statistics, chartTitle, chartSize) {
+function addStatisticsPanelForChart(chartPane: HTMLElement, statistics, chartTitle, chartSize, hide = false) {
     var statsPane = document.createElement("div");
     var html = "";
+    var text = "";
+    if (hide) statsPane.style.cssText = "display:none";
     if (statistics.significance.substring("None") === 0 || statistics.calculated.length !== 0) {
         if (statistics.calculated.length === 0) {
             html += "Statistics: " + statistics.significance;
+            text += "Statistics: " + statistics.significance;
         } 
         if (statistics.allResults) {
             html += '<span class="narrafirma-mann-whitney-title">Mann-Whitney U test results for multiple histograms, sorted by significance value (p) ' +
                 '<br>' + chartTitle + '</span><br>\n';
-        }
-        let delimiter;
-        if (chartPane.classList.contains("smallChartStyle")) {
-            delimiter = "<br>\n";
+            text += "\n\nMann-Whitney U test results for multiple histograms, sorted by significance value (p) for: " + chartTitle + "\n\n"; 
         } else {
-            delimiter = "; ";
+            if (chartSize === "small") {
+                text += "\n\nSub-graph: " + chartTitle + "\n";
+            } 
+        }
+        let htmlDelimiter;
+        let textDelimiter;
+        if (chartPane.classList.contains("smallChartStyle")) {
+            htmlDelimiter = "<br>\n";
+            textDelimiter = "\n";
+        } else {
+            htmlDelimiter = "; ";
+            textDelimiter = "; ";
         }
         for (var i = 0; i < statistics.calculated.length; i++) {
             html += htmlForLabelAndValue(statistics.calculated[i], statistics);
+            text += htmlForLabelAndValue(statistics.calculated[i], statistics, false);
             if (i < statistics.calculated.length-1) {
-                html += delimiter;
+                html += htmlDelimiter;
+                text += textDelimiter;
             }
         }
         if (statistics.allResults) {
             html += "<br>\n";
             html += '<table class="narrafirma-mw-all-results">\n';
+            text += "\n\n";
 
             var sortedResultKeys = Object.keys(statistics.allResults).sort(function(a,b){return statistics.allResults[a].p - statistics.allResults[b].p})
 
@@ -586,18 +604,23 @@ function addStatisticsPanelForChart(chartPane: HTMLElement, statistics, chartTit
                 var resultKey = sortedResultKeys[resultKeyIndex];
                 var result = statistics.allResults[resultKey];
                 html += '<tr><td class="narrafirma-mw-nested-title">' + escapeHtml(resultKey) + '</td><td class="narrafirma-mw-nested-stats">';
+                text += resultKey + " - ";
                 var first = true;
                 for (var key in result) {
                     if (!first) {
                         html += "; ";
+                        text += "; ";
                     } else {
                         first = false;
                     }
                     html += htmlForLabelAndValue(key, result);
+                    text += htmlForLabelAndValue(key, result, false);
             }
             html += "</td></tr>\n";
+            text += "\n";
             }
             html += "</table>\n";
+            text += "\n";
         }
         if (chartSize === "small") {
             statsPane.className = "narrafirma-statistics-panel-small";
@@ -610,6 +633,7 @@ function addStatisticsPanelForChart(chartPane: HTMLElement, statistics, chartTit
     } 
     statsPane.innerHTML = html;
     chartPane.appendChild(statsPane);
+    return text;
 }
 
 function addTitlePanelForChart(chartPane, chartTitle) {
@@ -714,7 +738,7 @@ export function d3BarChartForValues(graphBrowserInstance: GraphHolder, plotItems
     var chartBody = chart.chartBody;
     
     var statistics = calculateStatistics.calculateStatisticsForBarGraphValues(function(plotItem) { return plotItem.value; });
-    if (!hideStatsPanel) addStatisticsPanelForChart(chartPane, statistics, chartTitle, "large"); 
+    graphBrowserInstance.statisticalInfo += addStatisticsPanelForChart(chartPane, statistics, chartTitle, "large", hideStatsPanel); 
     
     // draw the x axis
 
@@ -974,7 +998,7 @@ export function d3HistogramChartForValues(graphBrowserInstance: GraphHolder, plo
     
     var values = plotItems.map(function(item) { return parseFloat(item.value); });
     var statistics = calculateStatistics.calculateStatisticsForHistogramValues(values, unansweredCount);
-    if (!hideStatsPanel) addStatisticsPanelForChart(chartPane, statistics, chartTitle, isSmallFormat ? "small" : "large");
+    graphBrowserInstance.statisticalInfo += addStatisticsPanelForChart(chartPane, statistics, chartTitle, isSmallFormat ? "small" : "large", hideStatsPanel);
     
     var mean = statistics.mean;
     var standardDeviation = statistics.sd;
@@ -1213,7 +1237,7 @@ export function multipleHistograms(graphBrowserInstance: GraphHolder, choiceQues
     
     // Add these statistics at the bottom after all other graphs
     var statistics = calculateStatistics.calculateStatisticsForMultipleHistogram(scaleQuestion, choiceQuestion, graphBrowserInstance.allStories, graphBrowserInstance.minimumStoryCountRequiredForTest);
-    if (!hideStatsPanel) addStatisticsPanelForChart(graphBrowserInstance.graphResultsPane, statistics, chartTitle, "large");
+    graphBrowserInstance.statisticalInfo += addStatisticsPanelForChart(graphBrowserInstance.graphResultsPane, statistics, chartTitle, "large", hideStatsPanel);
   
     return charts;
 }
@@ -1289,7 +1313,7 @@ export function d3ScatterPlot(graphBrowserInstance: GraphHolder, xAxisQuestion, 
     chart.subgraphChoice = option;
 
     var statistics = calculateStatistics.calculateStatisticsForScatterPlot(xAxisQuestion, yAxisQuestion, choiceQuestion, option, stories, graphBrowserInstance.minimumStoryCountRequiredForTest);
-    if (!hideStatsPanel) addStatisticsPanelForChart(chartPane, statistics, chartTitle, isSmallFormat ? "small" : "large");
+    graphBrowserInstance.statisticalInfo += addStatisticsPanelForChart(chartPane, statistics, chartTitle, isSmallFormat ? "small" : "large", hideStatsPanel);
     
     // draw the x axis
     
@@ -1661,7 +1685,7 @@ export function d3ContingencyTable(graphBrowserInstance: GraphHolder, xAxisQuest
     } else {
         statistics = calculateStatistics.calculateStatisticsForTable(xAxisQuestion, yAxisQuestion, stories, graphBrowserInstance.minimumStoryCountRequiredForTest);
     }
-    if (!hideStatsPanel) addStatisticsPanelForChart(chartPane, statistics, chartTitle, "large");
+    graphBrowserInstance.statisticalInfo += addStatisticsPanelForChart(chartPane, statistics, chartTitle, "large", hideStatsPanel);
   
     // X axis and label
     

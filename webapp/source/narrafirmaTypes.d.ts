@@ -26,6 +26,7 @@ interface GraphHolder {
     outputGraphFormat: string;
     showStatsPanelsInReport: boolean;
     graphTypesToCreate: {};
+    statisticalInfo?: string;
 }
 
 // Possible Grid configuration options

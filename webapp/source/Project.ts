@@ -25,6 +25,7 @@ class Project {
     static defaultNumHistogramBins = 20;
     static defaultShowInterpretationsInGrid = false;
     static defaultGraphMultiChoiceQuestionsAgainstThemselves = false;
+    static defaultShowStatsPanelsOnExplorePatternsPage = true;
     static defaultNumScatterDotOpacityLevels = 3;
     static defaultScatterDotSize = 8;
     static defaultCorrelationLineChoice = "0.05";
@@ -825,7 +826,7 @@ class Project {
             throw new Error("catalysisReportIdentifier was not supplied");
         }
         var showInterpretationsInGrid = this.tripleStore.queryLatestC(catalysisReportIdentifier, "showInterpretationsInGrid");
-        if (showInterpretationsInGrid) {
+        if (showInterpretationsInGrid !== undefined) {
             return showInterpretationsInGrid;
         } else {
             return Project.defaultShowInterpretationsInGrid;
@@ -837,10 +838,22 @@ class Project {
             throw new Error("catalysisReportIdentifier was not supplied");
         }
         var graphMultiChoiceQuestionsAgainstThemselves = this.tripleStore.queryLatestC(catalysisReportIdentifier, "graphMultiChoiceQuestionsAgainstThemselves");
-        if (graphMultiChoiceQuestionsAgainstThemselves) {
+        if (graphMultiChoiceQuestionsAgainstThemselves !== undefined) {
             return graphMultiChoiceQuestionsAgainstThemselves;
         } else {
             return Project.defaultGraphMultiChoiceQuestionsAgainstThemselves;
+        }
+    }
+
+    showStatsPanelsOnExplorePatternsPage(catalysisReportIdentifier) {
+        if (!catalysisReportIdentifier) {
+            throw new Error("catalysisReportIdentifier was not supplied");
+        }
+        var showStatsPanelsOnExplorePatternsPage = this.tripleStore.queryLatestC(catalysisReportIdentifier, "showStatsPanelsOnExplorePatternsPage");
+        if (showStatsPanelsOnExplorePatternsPage !== undefined) {
+            return showStatsPanelsOnExplorePatternsPage;
+        } else {
+            return Project.defaultShowStatsPanelsOnExplorePatternsPage;
         }
     }
 

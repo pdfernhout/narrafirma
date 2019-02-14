@@ -277,7 +277,7 @@ var panel: Panel = {
             id: "configureCatalysisReport_StatisticalTestsHeader",
             valueType: "none",
             displayType: "header",
-            displayPrompt: "How statistical tests are run",
+            displayPrompt: "How statistical tests are run and displayed",
             displayVisible: function(panelBuilder, model) {
                 return !!Globals.clientState().catalysisReportIdentifier();
             }
@@ -291,6 +291,19 @@ var panel: Panel = {
             displayType: "select",
             displayName: "Minimum subset size",
             displayPrompt: "How large should <strong>subsets</strong> of stories be to be considered for statistical tests? (Test results based on low sample sizes - usually less than 30 - should be regarded as suggestive rather than conclusive.)",
+            displayVisible: function(panelBuilder, model) {
+                return !!Globals.clientState().catalysisReportIdentifier();
+            }
+        },
+        {
+            id: "configureCatalysisReport_showStatsPanelsOnExplorePatternsPage",
+            valueType: "boolean",
+            valuePath: "/clientState/catalysisReportIdentifier/showStatsPanelsOnExplorePatternsPage",
+            displayType: "checkbox",
+            displayConfiguration: "Yes, show statistical results directly on Explore patterns page",
+            displayPrompt: `Would you prefer to <strong>see statistical results directly on the Explore patterns page</strong>?
+                Or would you prefer to see them in a pop-up window when you choose "Show statistical results" from the "things you can do" list under the graph?
+                (We are asking because for some graphs in some projects, tables of statistical results can be very long.) `,
             displayVisible: function(panelBuilder, model) {
                 return !!Globals.clientState().catalysisReportIdentifier();
             }

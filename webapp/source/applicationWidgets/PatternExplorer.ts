@@ -96,6 +96,7 @@ class PatternExplorer {
     minimumStoryCountRequiredForGraph = Project.defaultMinimumStoryCountRequiredForGraph;
     numHistogramBins = Project.defaultNumHistogramBins;
     showInterpretationsInGrid = Project.defaultShowInterpretationsInGrid;
+    showStatsPanelsOnExplorePatternsPage = Project.defaultShowStatsPanelsOnExplorePatternsPage;
     graphMultiChoiceQuestionsAgainstThemselves = Project.defaultGraphMultiChoiceQuestionsAgainstThemselves;
     numScatterDotOpacityLevels = Project.defaultNumScatterDotOpacityLevels;
     scatterDotSize = Project.defaultScatterDotSize;
@@ -152,10 +153,11 @@ class PatternExplorer {
                 {
                     id: "thingsYouCanDoPanel_actionRequested",
                     valuePath: "selectionActionRequested",
-                    displayPrompt: "These are some <strong>things you can do</strong> based on the selection you have made in the graph above.",
+                    displayPrompt: "These are some <strong>things you can do</strong> based on the graph above and the selection you have made in it.",
                     displayType: "select",
                     displayWithoutQuestionDivs: true,
                     valueOptions: [
+                        "Show statistical results",
                         "Show selected stories in separate window for copying", 
                         "Show random sample of 10 selected stories", 
                         "Show random sample of 20 selected stories", 
@@ -369,6 +371,7 @@ class PatternExplorer {
         this.graphHolder.numHistogramBins = this.numHistogramBins; 
         this.showInterpretationsInGrid = this.project.showInterpretationsInGrid(catalysisReportIdentifier);
         this.graphMultiChoiceQuestionsAgainstThemselves = this.project.graphMultiChoiceQuestionsAgainstThemselves(catalysisReportIdentifier);
+        this.showStatsPanelsOnExplorePatternsPage = this.project.showStatsPanelsOnExplorePatternsPage(catalysisReportIdentifier);
         this.numScatterDotOpacityLevels = this.project.numScatterDotOpacityLevels(catalysisReportIdentifier);
         this.graphHolder.numScatterDotOpacityLevels = this.numScatterDotOpacityLevels;
         this.scatterDotSize = this.project.scatterDotSize(catalysisReportIdentifier);
@@ -759,7 +762,8 @@ class PatternExplorer {
         // tell grid to check to see if row is out of view - was causing problems if user scrolled with scroll bar then clicked in row
         this.patternsGrid.isNavigationalScrollingNeeded = "scrolled";
 
-        this.graphHolder.currentGraph = PatternExplorer.makeGraph(pattern, this.graphHolder, this.updateStoriesPane.bind(this));
+        this.graphHolder.statisticalInfo = "";
+        this.graphHolder.currentGraph = PatternExplorer.makeGraph(pattern, this.graphHolder, this.updateStoriesPane.bind(this), !this.showStatsPanelsOnExplorePatternsPage);
         this.graphHolder.currentSelectionExtentPercentages = null;
         // TODO: Is this obsolete? this.graphHolder.currentSelectionSubgraph = null;
     }
@@ -889,6 +893,9 @@ class PatternExplorer {
         var actionElement = <HTMLTextAreaElement>document.getElementById("thingsYouCanDoPanel_actionRequested");
         var action = actionElement.value;
         switch (action) {
+            case "Show statistical results":
+                this.showStatisticalResultsForGraph();
+                break;
             case "Show selected stories in separate window for copying":
                 this.showAllStoriesSelectedInGraph();
                 break;
@@ -911,6 +918,20 @@ class PatternExplorer {
                 alert("Please choose an action from the list before you click the button.");
                 break;
         }
+    }
+
+    showStatisticalResultsForGraph() {
+        if (!this.currentPattern) {
+            alert("Please choose a graph.");
+            return;
+        }
+        if (!this.graphHolder.statisticalInfo) {
+            alert("No statistical information is available for the current graph.");
+            return;
+        }
+        var titleText = "Statistics for pattern: " +  this.currentPattern.patternName;
+        var text = titleText + (this.graphHolder.statisticalInfo.indexOf("\n\n") !== 0 ? "\n\n" : "") + this.graphHolder.statisticalInfo;
+        dialogSupport.openTextEditorDialog(text, titleText, "Close", this.closeCopyStoriesDialogClicked.bind(this), false);
     }
 
     showAllStoriesSelectedInGraph() {
