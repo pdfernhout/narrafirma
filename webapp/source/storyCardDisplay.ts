@@ -37,7 +37,7 @@ function displayHTMLForSlider(fieldSpecification, fieldName, value, options) {
     var bucketSize = 100.0 / bucketCount;
     var placed = false;
     var answerClass = "narrafirma-story-card-answer-for-" + replaceSpacesWithDashes(fieldName);
-    if (value) {
+    if (value !== undefined && value !== "") {
         for (var i = 0; i < bucketCount; i++) {
             var bucketLow = i * bucketSize;
             var bucketHigh = i * bucketSize + bucketSize;
@@ -268,8 +268,8 @@ export function generateStoryCardContent(storyModel, questionsToInclude, options
     //    "alphabetical order, scales mixed in"
     //],
 
-    var sortAlphabetically = options.order && options.order.indexOf("alphabetical") >= 0;
-    var sortScalesSeparately = options.order && options.order.indexOf("scales separate") >= 0;
+    var sortAlphabetically = options.order != undefined && options.order.indexOf("alphabetical") >= 0;
+    var sortScalesSeparately = options.order != undefined && options.order.indexOf("scales separate") >= 0;
 
     if (sortAlphabetically) {
         questions.sort(function(a, b) {
