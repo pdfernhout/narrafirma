@@ -867,6 +867,9 @@ export function d3HistogramChartForQuestion(graphBrowserInstance: GraphHolder, s
     for (var storyIndex in stories) {
         var story = stories[storyIndex];
         var xValue = getScaleValueForQuestion(scaleQuestion, story);
+        if (typeof xValue === "string" && xValue !== unansweredKey) {
+            xValue = parseInt(xValue);
+        }
         if (choiceQuestion) {
             // Only count results where the choice matches
             var choiceValue = getChoiceValueForQuestion(choiceQuestion, story);
