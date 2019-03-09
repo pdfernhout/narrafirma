@@ -1048,8 +1048,9 @@ function printCatalysisReportWithClusteredInterpretations(project, catalysisRepo
     ]
     var filter = project.tripleStore.queryLatestC(catalysisReportIdentifier, "catalysisReport_filter");  
     if (filter) printItems.push(filterWarningForCatalysisReport(filter, allStories));
+    printItems.push(m("div.narrafirma-catalysis-report-intro-note", options["reportNotes"]));
     printItems.push(m("div.narrafirma-catalysis-report-about", options["aboutReport"]));
-    
+
     var clusteredItems = [];
     var perspectives = [];
     [perspectives, clusteredItems] = ClusteringDiagram.calculateClusteringForDiagram(clusteringDiagram);
