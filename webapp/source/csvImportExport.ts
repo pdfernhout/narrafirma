@@ -256,7 +256,7 @@ function processCSVContentsForStories(contents, saveStories, writeLog, questionn
                     numRowsSkipped++;
                 } else {
                     newItem["Story title"] = value;
-                    log("DEBUG||Story title: " + value);
+                    //log("DEBUG||Story title: " + value);
                 }
 
             // column is story text - check length if desired, and if too short, do not save story
@@ -286,7 +286,7 @@ function processCSVContentsForStories(contents, saveStories, writeLog, questionn
                 }
                 if (saveStory && saveStoryText) {
                     newItem["Story text"] = value;
-                    log("DEBUG||Story text (no word length check): " + shortenTextIfNecessary(value) + "...");
+                    //log("DEBUG||Story text (no word length check): " + shortenTextIfNecessary(value) + "...");
                 }
 
             // column is one of additional text columns to be appended to story text (must be to the right of story text in data file)
@@ -297,7 +297,7 @@ function processCSVContentsForStories(contents, saveStories, writeLog, questionn
                     textBefore = textsToWriteBeforeAppendedColumns[indexOfColumnInList];
                 }
                 newItem["Story text"] = newItem["Story text"] + " " + textBefore + " " + value;
-                log('DEBUG||Text for column [' + headerName + '] (' + shortenTextIfNecessary(value) + ') added to story text, with "' + textBefore + '" before it.');
+                //log('DEBUG||Text for column [' + headerName + '] (' + shortenTextIfNecessary(value) + ') added to story text, with "' + textBefore + '" before it.');
 
             // column is eliciting question chosen
             } else if (headerName === questionnaire.import_elicitingQuestionColumnName) {
@@ -316,7 +316,7 @@ function processCSVContentsForStories(contents, saveStories, writeLog, questionn
             // column is participant ID
             } else if (headerName === questionnaire.import_participantIDColumnName) {
                 newItem["Participant ID"] = value;
-                log("DEBUG||Participant id: " + value);
+                //log("DEBUG||Participant id: " + value);
             } else {
 
                 // column is answer to question - get question name, and possibly answer name, from column header
