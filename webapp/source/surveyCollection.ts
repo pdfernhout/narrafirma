@@ -77,7 +77,8 @@ export class Story {
     
     fieldValue(fieldName, newValue = undefined) {
         if (newValue === undefined) {
-            return getStoryField(this.model.storyID, fieldName, this.model[fieldName] !== undefined ? this.model[fieldName] : ""); // was || "" but when the actual number was zero, it was returning a blank string instead, which was messing up scale graphs
+            let defaultValue = (this.model[fieldName] !== undefined && this.model[fieldName] !== null) ? this.model[fieldName] : "";
+            return getStoryField(this.model.storyID, fieldName, defaultValue); 
         } else {
             return setStoryField(this.model.storyID, fieldName, newValue);
         }
