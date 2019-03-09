@@ -9,7 +9,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Requires at least: 4.3.1
 Tested up to: 5.0.3
 Stable tag: trunk
-Version: 1.2.5
+Version: 1.2.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -105,6 +105,12 @@ We strongly suggest that you set up any web site on which you intend to install 
 12. Here the NarraFirma user is reflecting on the entire project, to learn from it and to keep good records for the future.
 
 == Changelog ==
+
+= 1.2.6 =
+
+Changed: Perspectives in catalysis report are now sorted by their vertical position in the clustering space
+Changed: Reduced number of debug messages in CSV pre-import check, to prevent error messages from being pushed out by sheer volume of messages on large data sets 
+Fixed: Bug where zero scale values were not being displayed on histograms (we apologize for never having noticed this before)
 
 = 1.2.5 =
 
@@ -334,6 +340,9 @@ loading application, getting user information, or retrieving project data.
 change logs, see the [GitHub repository](https://github.com/pdfernhout/narrafirma).
 
 == Upgrade Notice ==
+
+= 1.2.6 =
+This critical upgrade fixes a longstanding bug we just noticed in how histograms are drawn. We apologize for never having noticed this before.
 
 = 1.2.5 =
 This minor upgrade adds a few more options for narrative catalysis.

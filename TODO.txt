@@ -5,6 +5,23 @@ M - medium priority
 L - low priority
 W - wish list
 
+NEW BUGS/ISSUES
+
+H Bug - PNGs empty in printed catalysis report, only affects single graphs - something to do with removal/re-insertion of stats panel, I think
+H Try to replicate apparent error reading CSV file with WP - timing issue again? probably - need way to show that server is still busy
+M When increase size of clustering diagram, frame (box) does not increase in size - but can still move items and clusters
+M Change catalysis report printing to look up interpretations by uuid from clustering item, instead of name or text (duplicate names/texts get merged)
+M Patterns table in explore patterns page does not update when you change an interpretation name or text. you have to reload the page to do that
+
+NEW FEATURE IDEAS
+
+H Consider adding separate SVG/PNG file output - html index, SVG/PNG files saved to disk with links instead of inline - choose folder
+M See if you can show the observation name/text on the clustering diagram
+M Consider supporting mass annotation - export stories with uuids, create new annotation question, import story uuids with new data in CSV file
+M Consider adding support for semicolon instead of comma (and comma instead of dot for decimals) for CSV import/export
+L Consider adding support for floating point scale values in CSV import
+L Add observation and interp index in printing of catalysis report (clustered and unclustered)
+
 ------------- Infrastructure -------------
 
 BUILD
@@ -141,6 +158,12 @@ M Improve reporting on startup for loading project data with some kind of progre
 M When import story form, hundreds of triples can be generated which take minutes to send to the server (with no progress feedback, even though done in background) -- may be related to console logging
 
 ==== DONE
+
+--- Release 1.2.6
+
+Changed: Perspectives in catalysis report are now sorted by their vertical position in the clustering space
+Changed: Reduced number of debug messages in CSV pre-import check, to prevent error messages from being pushed out by sheer volume of messages on large data sets 
+Fixed: Bug where zero scale values were not being displayed on histograms (we apologize for never having noticed this before)
 
 --- Release 1.2.5
 
