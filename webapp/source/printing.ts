@@ -654,7 +654,10 @@ function displayForGraphHolder(graphHolder: GraphHolder) {
         
         return result;
     } else {
-        return displayForGraph(<HTMLElement>graphHolder.graphResultsPane.firstChild, graphHolder);
+        var result = [];
+        var graph = displayForGraph(<HTMLElement>graphHolder.graphResultsPane.firstChild, graphHolder);
+        result.push(graph);
+        return result;
     }
 }
     
@@ -662,17 +665,10 @@ function displayForGraph(graphNode: HTMLElement, graphHolder: GraphHolder) {
     var styleNode = document.createElement("style");
     styleNode.type = 'text/css';
     
-    /*
-    if (styleNode.styleSheet) {
-        // IE support; cast to silence TypeScript warning
-        (<any>styleNode.styleSheet).cssText = css;
-    } else {
-        styleNode.appendChild(document.createTextNode(css));
-    }
-    */
-    
     styleNode.innerHTML = "<![CDATA[" + graphResultsPaneCSS + "]]>";
     graphNode.firstChild.insertBefore(styleNode, graphNode.firstChild.firstChild);
+
+    var imageForGraph = null;
 
     // remove the statistics panel
     // don't try to do this if showStatsPanelsInReport is turned off, because there will be no statistics panel
@@ -686,7 +682,7 @@ function displayForGraph(graphNode: HTMLElement, graphHolder: GraphHolder) {
         var canvas = document.createElement("canvas");
         canvg(canvas, svgText);
         var imgData = canvas.toDataURL("image/png");
-        var imageForGraph = m("img", {
+        imageForGraph = m("img", {
             src: imgData,
             class: "narrafirma-catalysis-report-graph",
             alt: "observation graph"
@@ -1057,6 +1053,12 @@ function printCatalysisReportWithClusteredInterpretations(project, catalysisRepo
     var clusteredItems = [];
     var perspectives = [];
     [perspectives, clusteredItems] = ClusteringDiagram.calculateClusteringForDiagram(clusteringDiagram);
+
+    perspectives.sort(function(a,b) {
+        if (a.y < b.y) return -1;
+        if (a.y > b.y) return 1;
+        return 0;
+    });
 
     var tocHeaderRaw = project.tripleStore.queryLatestC(catalysisReportIdentifier, "catalysisReport_tocHeaderFirstLevel");
     if (!tocHeaderRaw) tocHeaderRaw = "Perspectives in this report (#):";
