@@ -623,7 +623,7 @@ function addStatisticsPanelForChart(chartPane: HTMLElement, statistics, chartTit
             text += "\n";
         }
         if (chartSize === "small") {
-            statsPane.className = "narrafirma-statistics-panel-small";
+            statsPane.className = "narrafirma-statistics-panel-small narrafirma-statistics-panel";
         } else if (chartSize === "large") {
             statsPane.className = "narrafirma-statistics-panel";
         } else {

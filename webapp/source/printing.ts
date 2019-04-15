@@ -33,7 +33,7 @@ function replaceSpacesWithDashes(text) {
 // when this never appears in the code? might be a canvg thing?
 
 // TODO: Rules should be read from loaded stylesheet
-var graphResultsPaneCSS = `
+export var graphResultsPaneCSS = `
     .narrafirma-graph-results-pane {
         width: 850px;
         margin: 5px auto 0px auto;
@@ -50,6 +50,7 @@ var graphResultsPaneCSS = `
     
     .chart {
         background-color: white;
+        fill: white;
     }
     
     .bar {
@@ -646,7 +647,7 @@ function displayForGraphHolder(graphHolder: GraphHolder) {
         } 
         result.push(m("table", {"class": "narrafirma-print-multiple-histograms"}, rows));
         
-        // Add the statistics
+        // Add the overall statistics (for all panes)
         if (graphHolder.showStatsPanelsInReport) {
             var statisticsPanel = <HTMLElement>graphHolder.graphResultsPane.lastChild;
             result.push(m.trust(statisticsPanel.outerHTML));
@@ -656,50 +657,51 @@ function displayForGraphHolder(graphHolder: GraphHolder) {
     } else {
         var result = [];
         var graph = displayForGraph(<HTMLElement>graphHolder.graphResultsPane.firstChild, graphHolder);
+        // console.log("graph", graph);
         result.push(graph);
         return result;
     }
 }
     
 function displayForGraph(graphNode: HTMLElement, graphHolder: GraphHolder) {
-    var styleNode = document.createElement("style");
+
+    const svgNode = graphNode.querySelector("svg");
+    const titleNode = graphNode.querySelector(".narrafirma-graph-title");
+    const statisticsNode = graphNode.querySelector(".narrafirma-statistics-panel");
+
+    const styleNode = document.createElement("style");
     styleNode.type = 'text/css';
-    
     styleNode.innerHTML = "<![CDATA[" + graphResultsPaneCSS + "]]>";
-    graphNode.firstChild.insertBefore(styleNode, graphNode.firstChild.firstChild);
+    svgNode.insertBefore(styleNode, svgNode.firstChild);
+    
+    const svgOuterHTML = svgNode.outerHTML;
 
-    var imageForGraph = null;
-
-    // remove the statistics panel
-    // don't try to do this if showStatsPanelsInReport is turned off, because there will be no statistics panel
-    if (graphHolder.showStatsPanelsInReport) {
-        var statisticsPanel = <HTMLElement>graphNode.childNodes.item(2); // item(1) is title pane
-        if (statisticsPanel) graphNode.removeChild(statisticsPanel);
-    }
-
-    var svgText = (<HTMLElement>graphNode).innerHTML;
+    const result = [];
+    if (titleNode) result.push(m.trust(titleNode.outerHTML));
+    
     if (graphHolder.outputGraphFormat === "PNG") {
-        var canvas = document.createElement("canvas");
-        canvg(canvas, svgText);
-        var imgData = canvas.toDataURL("image/png");
-        imageForGraph = m("img", {
-            src: imgData,
+
+        const canvas = document.createElement("canvas");
+        canvg(canvas, svgOuterHTML);
+        const imgData = canvas.toDataURL("image/png");
+        const imageForGraph = m("img", {
             class: "narrafirma-catalysis-report-graph",
-            alt: "observation graph"
+            alt: "observation graph",
+            src: imgData
         });
-        return [
-            m("div:narrafirma-graph-image", 
-                imageForGraph || []),
-                graphHolder.showStatsPanelsInReport ? m.trust(statisticsPanel ? statisticsPanel.outerHTML : "") : m("div"),
-        ];
+        result.push(m("div.narrafirma-graph-image", imageForGraph || []));
+
     } else if (graphHolder.outputGraphFormat === "SVG") {
-        return [
-            m("div:narrafirma-graph-image", m.trust(svgText)),
-            graphHolder.showStatsPanelsInReport ? m.trust(statisticsPanel ? statisticsPanel.outerHTML : "") : m("div"),
-        ];
+        result.push(m("div.narrafirma-graph-image", m.trust(svgOuterHTML)));
     } else {
         throw Error("Unsupported graph type: " + graphHolder.outputGraphFormat);
     }
+
+    if (graphHolder.showStatsPanelsInReport && statisticsNode) {
+        result.push(m.trust(statisticsNode.outerHTML));
+    }
+    return result;
+   
 }
 
 function printObservationList(observationList, observationLabel, interpretationNotes, allStories, options) {
@@ -736,7 +738,7 @@ function printObservationList(observationList, observationLabel, interpretationN
         if (item.pattern.graphType === "texts") {
             return [
                 m("div.narrafirma-catalysis-report-observation", [
-                    m("span", {"class": "narrafirma-catalysis-report-observation-label", "id": "observation-" + observationTitleToPrintWithoutSpaces}, observationLabel),
+                    observationLabel ? m("span", {"class": "narrafirma-catalysis-report-observation-label", "id": "observation-" + observationTitleToPrintWithoutSpaces}, observationLabel) : "",
                     observationTitleToPrint,
                     m("span", {"class": "narrafirma-catalysis-report-observation-strength", "id": "observation-" + observationTitleToPrintWithoutSpaces + "-strength"}, strengthStringToPrint)]),
                 m("div.narrafirma-catalysis-report-observation-description", printText(observationDescriptionToPrint)),
@@ -747,7 +749,7 @@ function printObservationList(observationList, observationLabel, interpretationN
             if (graph) {
                 return [
                     m("div.narrafirma-catalysis-report-observation", [
-                        m("span", {"class": "narrafirma-catalysis-report-observation-label", "id": "observation-" + observationTitleToPrintWithoutSpaces}, observationLabel),
+                        observationLabel ? m("span", {"class": "narrafirma-catalysis-report-observation-label", "id": "observation-" + observationTitleToPrintWithoutSpaces}, observationLabel) : "",
                         observationTitleToPrint,
                         m("span", {"class": "narrafirma-catalysis-report-observation-strength", "id": "observation-" + observationTitleToPrintWithoutSpaces + "-strength"}, strengthStringToPrint)]),
                     m("div.narrafirma-catalysis-report-observation-description", printText(observationDescriptionToPrint)),
@@ -1177,11 +1179,15 @@ function printCatalysisReportWithClusteredInterpretations(project, catalysisRepo
                         // than have to change the entire clustering diagram to deal with it.
                         clusteredItem.idea = project.tripleStore.queryLatestC(clusteredItem.referenceUUID, "interpretation_idea") || "";
                     }
-                    var interpretationNameWithoutSpaces = replaceSpacesWithDashes(clusteredItem.name || clusteredItem.notes);
-                    printItems.push(m("div.narrafirma-catalysis-report-interpretation", 
-                        [m("span", {"class": "narrafirma-catalysis-report-interpretation-label " + interpretationNameWithoutSpaces, "id": interpretationNameWithoutSpaces}, 
-                        options["interpretationLabel"]), clusteredItem.name || clusteredItem.notes]));
-
+                    if (options["interpretationLabel"]) {
+                        var interpretationNameWithoutSpaces = replaceSpacesWithDashes(clusteredItem.name || clusteredItem.notes);
+                        printItems.push(m("div.narrafirma-catalysis-report-interpretation", 
+                            [m("span", {"class": "narrafirma-catalysis-report-interpretation-label " + interpretationNameWithoutSpaces, "id": interpretationNameWithoutSpaces}, options["interpretationLabel"]), 
+                            clusteredItem.name || clusteredItem.notes]));
+                    } else {
+                        printItems.push(m("div.narrafirma-catalysis-report-interpretation", clusteredItem.name || clusteredItem.notes));
+                    }
+                    
                     if (clusteredItem.notes) {
                         var notesToPrint = clusteredItem.notes;
                         // if interpretation has tag to mark part of observation to print, don't print tag
