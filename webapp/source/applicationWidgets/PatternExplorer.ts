@@ -14,6 +14,7 @@ import generateRandomUuid = require("../pointrel20150417/generateRandomUuid");
 import Globals = require("../Globals");
 import _ = require("lodash");
 import toaster = require("../panelBuilder/toaster");
+import canvg = require("canvgModule");
 import jszip = require("jszip");
 import saveAs = require("FileSaver");
 
@@ -167,7 +168,8 @@ class PatternExplorer {
                         "Show random sample of 30 selected stories",
                         "Save the current selection (it will appear in the text box below)",
                         "Restore a saved selection (from the text box below; position your cursor inside it first)",
-                        "Save graph(s) as SVG file(s)"],
+                        "Save graph(s) as SVG file(s)",
+                        "Save graph(s) as PNG file(s)"],
                 },
                 {
                     id: "thingsYouCanDoPanel_doThingsWithSelectedStories",
@@ -896,7 +898,7 @@ class PatternExplorer {
     }
 
 //------------------------------------------------------------------------------------------------------------------------------------------
-// showing selected stories in current graph 
+// showing/doing things with selected stories in current graph (or just whole graph)
 //------------------------------------------------------------------------------------------------------------------------------------------
     
     doThingsWithSelectedStories() {
@@ -925,7 +927,10 @@ class PatternExplorer {
                 this.restoreGraphSelection();
                 break;
             case "Save graph(s) as SVG file(s)":
-                this.saveGraphAsSVGFile();
+                this.saveGraphAsSVGFile("SVG");
+                break;
+            case "Save graph(s) as PNG file(s)":
+                this.saveGraphAsSVGFile("PNG");
                 break;
             default:
                 alert("Please choose an action from the list before you click the button.");
@@ -933,7 +938,7 @@ class PatternExplorer {
         }
     }
 
-    saveGraphAsSVGFile() {
+    saveGraphAsSVGFile(fileTypeToSave) {
         if (!this.graphHolder || !this.graphHolder.graphResultsPane) return;
 
         const svgNodes = this.graphHolder.graphResultsPane.querySelectorAll("svg"); 
@@ -945,20 +950,46 @@ class PatternExplorer {
 
         if (svgNodes.length == 1) {
 
-            const svgFileText = this.prepareSVGToSaveToFile(svgNodes[0]);
-            const svgFileBlob = new Blob([svgFileText], {type: "text/svg+xml;charset=utf-8"});
-            saveAs(svgFileBlob, patternTitle + ".svg", true); // true is to turn off 3-byte BOM (byte order mark) in UTF-8 encoding
+            if (fileTypeToSave === "SVG") {
+                
+                const svgFileText = this.prepareSVGToSaveToFile(svgNodes[0]);
+                const svgFileBlob = new Blob([svgFileText], {type: "text/svg+xml;charset=utf-8"});
+                saveAs(svgFileBlob, patternTitle + ".svg", true); // true is to turn off 3-byte BOM (byte order mark) in UTF-8 encoding
+
+            } else if (fileTypeToSave === "PNG") {
+
+                const canvas = this.preparePNGToSaveToFile(svgNodes[0]);
+                canvas.toBlob(function(blob) {
+                    saveAs(blob, patternTitle + ".png");
+                })
+            }
 
         } else {
 
             const zipFile = new jszip();
+
             for (var i = 0; i < svgNodes.length; i++) {
-                const svgFileText = this.prepareSVGToSaveToFile(svgNodes[i]);
+
                 let graphTitle = this.graphHolder.currentGraph[i].subgraphChoice;
-                graphTitle = graphTitle.replace("/", " "); // a forward slash is taken as a folder designation within the zip file
-                zipFile.file(patternTitle + " " + graphTitle + ".svg", svgFileText);
+                graphTitle = graphTitle.replace("/", " "); // jszip interprets a forward slash as a folder designation 
+
+                if (fileTypeToSave === "SVG") {
+
+                    const svgFileText = this.prepareSVGToSaveToFile(svgNodes[i]);
+                    zipFile.file(patternTitle + " " + graphTitle + ".svg", svgFileText);
+
+                } else if (fileTypeToSave === "PNG") {
+
+                    // when using canvas.toBlob either the ZIP file or the PNG files come out corrupted
+                    // found this method to fix it online and it works
+                    const canvas = this.preparePNGToSaveToFile(svgNodes[i]);
+                    const dataURI = canvas.toDataURL("image/png");
+                    const imageData = this.dataURItoBlob(dataURI);
+                    zipFile.file(patternTitle + " " + graphTitle + ".png", imageData, {binary: true});
+
+                }
             }
-            zipFile.generateAsync({type:"blob"})
+            zipFile.generateAsync({type: "blob", platform: "UNIX", compression: "DEFLATE"})
                 .then(function (blob) {
                     saveAs(blob, patternTitle + ".zip");
             });
@@ -973,6 +1004,38 @@ class PatternExplorer {
         return head + "\n" + styleText + "\n" + svgText + "\n" + foot;
     }
 
+    preparePNGToSaveToFile(svgNode) {
+        const styleNode = document.createElement("style");
+        styleNode.type = 'text/css';
+        styleNode.innerHTML = "<![CDATA[" + printing.graphResultsPaneCSS + "]]>";
+        svgNode.insertBefore(styleNode, svgNode.firstChild);
+        const canvas = document.createElement("canvas");
+        canvg(canvas, svgNode.outerHTML);
+        return canvas;
+    }
+
+    dataURItoBlob( dataURI ) {
+        // copied from https://stackoverflow.com/questions/55385369/jszip-creating-corrupt-jpg-image
+        // Convert Base64 to raw binary data held in a string.
+    
+        var byteString = atob(dataURI.split(',')[1]);
+    
+        // Separate the MIME component.
+        var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0]
+    
+        // Write the bytes of the string to an ArrayBuffer.
+        var arrayBuffer = new ArrayBuffer(byteString.length);
+        var uint8Array = new Uint8Array(arrayBuffer);
+        for (var i = 0; i < byteString.length; i++) {
+            uint8Array[i] = byteString.charCodeAt(i);
+        }
+    
+        // Write the ArrayBuffer to a BLOB and you're done.
+        var blob = new Blob([arrayBuffer]);
+    
+        return blob;
+    }
+    
     showStatisticalResultsForGraph() {
         if (!this.currentPattern) {
             alert("Please choose a graph.");
