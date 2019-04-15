@@ -1,4 +1,5 @@
 import charting = require("./charting");
+import printing = require("../printing");
 import calculateStatistics = require("../calculateStatistics");
 import storyCardDisplay = require("../storyCardDisplay");
 import questionnaireGeneration = require("../questionnaireGeneration");
@@ -163,7 +164,8 @@ class PatternExplorer {
                         "Show random sample of 20 selected stories", 
                         "Show random sample of 30 selected stories",
                         "Save the current selection (it will appear in the text box below)",
-                        "Restore a saved selection (from the text box below; position your cursor inside it first)"],
+                        "Restore a saved selection (from the text box below; position your cursor inside it first)",
+                        "Save graph as SVG file"],
                 },
                 {
                     id: "thingsYouCanDoPanel_doThingsWithSelectedStories",
@@ -920,10 +922,39 @@ class PatternExplorer {
             case "Restore a saved selection (from the text box below; position your cursor inside it first)":
                 this.restoreGraphSelection();
                 break;
+            case "Save graph as SVG file":
+                this.saveGraphAsSVGFile();
+                break;
             default:
                 alert("Please choose an action from the list before you click the button.");
                 break;
         }
+    }
+
+    saveGraphAsSVGFile() {
+        // CFK working here
+
+        // an svg file needs a single root element (svg) with the namespace (xmlns) but you can have svg elements nested inside it
+        // so if there are multiple svgs, i am putting another wrapper around them
+        // however, inkscape doesn't like this very much - it has problems with selecting the svgs etc.
+        // so it may be better to save them as separate files within a ZIP archive
+        // and have the user unzip them
+
+        const svgNodes = this.graphHolder.graphResultsPane.querySelectorAll("svg"); // if multiple graphs, this only gets the first one
+        const svgTexts = [];
+        for (var i = 0; i < svgNodes.length; i++) {
+            svgTexts.push(svgNodes[i].outerHTML.replace("<svg", '<svg x="' + i*400 + '"'));
+        }
+
+        const styleText = "<style>" + printing.graphResultsPaneCSS + "</style>";
+        const head = '<svg title="graph" version="1.1" xmlns="http://www.w3.org/2000/svg">';
+        const foot = "</svg>";
+
+        const fileText = head + styleText + svgTexts.join("\n") + foot;
+        
+        // save to file later, for now just show text and copy/paste
+        // also need to add PNG saving
+        dialogSupport.openTextEditorDialog(fileText, "SVG", "Close", this.closeCopyStoriesDialogClicked.bind(this), false);
     }
 
     showStatisticalResultsForGraph() {
