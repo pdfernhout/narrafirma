@@ -50,7 +50,7 @@ export var graphResultsPaneCSS = `
     
     .chart {
         background-color: white;
-        fill: white;
+        fill: none;
     }
     
     .bar {

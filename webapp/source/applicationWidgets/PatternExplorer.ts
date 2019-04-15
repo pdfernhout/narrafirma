@@ -14,6 +14,8 @@ import generateRandomUuid = require("../pointrel20150417/generateRandomUuid");
 import Globals = require("../Globals");
 import _ = require("lodash");
 import toaster = require("../panelBuilder/toaster");
+import jszip = require("jszip");
+import saveAs = require("FileSaver");
 
 "use strict";
 
@@ -165,7 +167,7 @@ class PatternExplorer {
                         "Show random sample of 30 selected stories",
                         "Save the current selection (it will appear in the text box below)",
                         "Restore a saved selection (from the text box below; position your cursor inside it first)",
-                        "Save graph as SVG file"],
+                        "Save graph(s) as SVG file(s)"],
                 },
                 {
                     id: "thingsYouCanDoPanel_doThingsWithSelectedStories",
@@ -922,7 +924,7 @@ class PatternExplorer {
             case "Restore a saved selection (from the text box below; position your cursor inside it first)":
                 this.restoreGraphSelection();
                 break;
-            case "Save graph as SVG file":
+            case "Save graph(s) as SVG file(s)":
                 this.saveGraphAsSVGFile();
                 break;
             default:
@@ -932,29 +934,43 @@ class PatternExplorer {
     }
 
     saveGraphAsSVGFile() {
-        // CFK working here
+        if (!this.graphHolder || !this.graphHolder.graphResultsPane) return;
 
-        // an svg file needs a single root element (svg) with the namespace (xmlns) but you can have svg elements nested inside it
-        // so if there are multiple svgs, i am putting another wrapper around them
-        // however, inkscape doesn't like this very much - it has problems with selecting the svgs etc.
-        // so it may be better to save them as separate files within a ZIP archive
-        // and have the user unzip them
+        const svgNodes = this.graphHolder.graphResultsPane.querySelectorAll("svg"); 
+        const titleNode = this.graphHolder.graphResultsPane.querySelector(".narrafirma-graph-title");
 
-        const svgNodes = this.graphHolder.graphResultsPane.querySelectorAll("svg"); // if multiple graphs, this only gets the first one
-        const svgTexts = [];
-        for (var i = 0; i < svgNodes.length; i++) {
-            svgTexts.push(svgNodes[i].outerHTML.replace("<svg", '<svg x="' + i*400 + '"'));
+        if (svgNodes.length == 0 || !titleNode) return;
+
+        const patternTitle = titleNode.innerHTML;
+
+        if (svgNodes.length == 1) {
+
+            const svgFileText = this.prepareSVGToSaveToFile(svgNodes[0]);
+            const svgFileBlob = new Blob([svgFileText], {type: "text/svg+xml;charset=utf-8"});
+            saveAs(svgFileBlob, patternTitle + ".svg", true); // true is to turn off 3-byte BOM (byte order mark) in UTF-8 encoding
+
+        } else {
+
+            const zipFile = new jszip();
+            for (var i = 0; i < svgNodes.length; i++) {
+                const svgFileText = this.prepareSVGToSaveToFile(svgNodes[i]);
+                let graphTitle = this.graphHolder.currentGraph[i].subgraphChoice;
+                graphTitle = graphTitle.replace("/", " "); // a forward slash is taken as a folder designation within the zip file
+                zipFile.file(patternTitle + " " + graphTitle + ".svg", svgFileText);
+            }
+            zipFile.generateAsync({type:"blob"})
+                .then(function (blob) {
+                    saveAs(blob, patternTitle + ".zip");
+            });
         }
+    }
 
+    prepareSVGToSaveToFile(svgNode) {
+        const svgText = svgNode.outerHTML;
         const styleText = "<style>" + printing.graphResultsPaneCSS + "</style>";
         const head = '<svg title="graph" version="1.1" xmlns="http://www.w3.org/2000/svg">';
         const foot = "</svg>";
-
-        const fileText = head + styleText + svgTexts.join("\n") + foot;
-        
-        // save to file later, for now just show text and copy/paste
-        // also need to add PNG saving
-        dialogSupport.openTextEditorDialog(fileText, "SVG", "Close", this.closeCopyStoriesDialogClicked.bind(this), false);
+        return head + "\n" + styleText + "\n" + svgText + "\n" + foot;
     }
 
     showStatisticalResultsForGraph() {
