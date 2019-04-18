@@ -915,6 +915,7 @@ td.narrafirma-mw-nested-title, td.narrafirma-mw-nested-stats {
 	font-weight: 700;
     padding: 0.5em;
     background: #b0d4d4;
+    margin: 0;
 }
 
 .narrafirma-catalysis-report-project-name-and-date {
@@ -962,6 +963,7 @@ td.narrafirma-mw-nested-title, td.narrafirma-mw-nested-stats {
 	font-weight: 700;
     padding: 0.5em;
     background: #b0d4d4;
+    margin: 0;
 }
 
 .narrafirma-catalysis-report-perspective-label {
@@ -982,6 +984,7 @@ td.narrafirma-mw-nested-title, td.narrafirma-mw-nested-stats {
 	font-size: 1.5em;
 	font-weight: 700;
     background: #ffe1aa;
+    margin: 0;
 }
 
 .narrafirma-catalysis-report-interpretation-label {
@@ -1004,6 +1007,7 @@ td.narrafirma-mw-nested-title, td.narrafirma-mw-nested-stats {
     padding: 0.5em;
     background: #c5d2eb;
     margin-top: 0.5em;
+    margin-bottom: 0;
 }
 
 .narrafirma-catalysis-report-graph {

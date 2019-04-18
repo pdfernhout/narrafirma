@@ -558,7 +558,7 @@ function htmlForLabelAndValue(key, object, html = true) {
 }
 
 function addStatisticsPanelForChart(chartPane: HTMLElement, statistics, chartTitle, chartSize, hide = false) {
-    var statsPane = document.createElement("div");
+    var statsPane = document.createElement("h6");
     var html = "";
     var text = "";
     if (hide) statsPane.style.cssText = "display:none";
@@ -637,7 +637,7 @@ function addStatisticsPanelForChart(chartPane: HTMLElement, statistics, chartTit
 }
 
 function addTitlePanelForChart(chartPane, chartTitle) {
-    var titlePane = document.createElement("div");
+    var titlePane = document.createElement("h5");
     titlePane.className = "narrafirma-graph-title";
     titlePane.innerHTML = chartTitle;
     chartPane.appendChild(titlePane);

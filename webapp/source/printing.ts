@@ -26,6 +26,10 @@ function replaceSpacesWithDashes(text) {
     }
 }
 
+function replaceSpacesWithDashesAndCutOffAt40Chars(text) {
+    return replaceSpacesWithDashes(text).substring(0, 39);
+}
+
 // TODO: Translate
 
 
@@ -549,9 +553,9 @@ function printItem(item, fieldsToIgnore = {}) {
 function printList(list, fieldsToIgnore = {}, printItemFunction: Function = printItem) {
     var result = [];
     var project = Globals.project();
-    list.forEach((id) => {
+    list.forEach((id, index) => {
         var item = project.tripleStore.makeObject(id, true);
-        result.push(printItemFunction(item, fieldsToIgnore));
+        result.push(printItemFunction(item, index, fieldsToIgnore));
         result.push([
             printReturn()
         ]);
@@ -704,9 +708,9 @@ function displayForGraph(graphNode: HTMLElement, graphHolder: GraphHolder) {
    
 }
 
-function printObservationList(observationList, observationLabel, interpretationNotes, allStories, options) {
-    // For now, just print all observations
-    return printList(observationList, {}, function (item) {
+function printObservationList(observationList, observationLabel, idTagStart, interpretationNotes, allStories, options) {
+
+    return printList(observationList, {}, function (item, index) {
         var project = Globals.project();
         
         // TODO: pattern
@@ -730,37 +734,28 @@ function printObservationList(observationList, observationLabel, interpretationN
             graphTypesToCreate: {}
         };
 
-        var observationDescriptionToPrint = portionOfTextMatchingReference(item.observationDescription, interpretationNotes);
         var observationTitleToPrint = portionOfTextMatchingReference(item.observationTitle, interpretationNotes);
-        var observationTitleToPrintWithoutSpaces = replaceSpacesWithDashes(observationTitleToPrint);
         var strengthStringToPrint = item.observationStrength ? " Strength: " + item.observationStrength : ""; 
+        var observationDescriptionToPrint = portionOfTextMatchingReference(item.observationDescription, interpretationNotes);
+
+        const headerItems = [];
+        headerItems.push(m("span", {"class": "narrafirma-catalysis-report-observation-label"}, observationLabel));
+        headerItems.push(m("span", {"class": "narrafirma-catalysis-report-observation-title"}, observationTitleToPrint));
+        headerItems.push(m("span", {"class": "narrafirma-catalysis-report-observation-strength"}, strengthStringToPrint));
+
+        const resultItems = [];
+        resultItems.push(m("h3.narrafirma-catalysis-report-observation", {"id": idTagStart + "_o_" + index}, headerItems));
+        resultItems.push(m("div.narrafirma-catalysis-report-observation-description", printText(observationDescriptionToPrint)));
 
         if (item.pattern.graphType === "texts") {
-            return [
-                m("div.narrafirma-catalysis-report-observation", [
-                    observationLabel ? m("span", {"class": "narrafirma-catalysis-report-observation-label", "id": "observation-" + observationTitleToPrintWithoutSpaces}, observationLabel) : "",
-                    observationTitleToPrint,
-                    m("span", {"class": "narrafirma-catalysis-report-observation-strength", "id": "observation-" + observationTitleToPrintWithoutSpaces + "-strength"}, strengthStringToPrint)]),
-                m("div.narrafirma-catalysis-report-observation-description", printText(observationDescriptionToPrint)),
-                printReturnAndBlankLine()
-            ];
+            resultItems.push(printReturnAndBlankLine());
         } else {
             var graph = PatternExplorer.makeGraph(pattern, graphHolder, selectionCallback, !options.showStatsPanelsInReport);
-            if (graph) {
-                return [
-                    m("div.narrafirma-catalysis-report-observation", [
-                        observationLabel ? m("span", {"class": "narrafirma-catalysis-report-observation-label", "id": "observation-" + observationTitleToPrintWithoutSpaces}, observationLabel) : "",
-                        observationTitleToPrint,
-                        m("span", {"class": "narrafirma-catalysis-report-observation-strength", "id": "observation-" + observationTitleToPrintWithoutSpaces + "-strength"}, strengthStringToPrint)]),
-                    m("div.narrafirma-catalysis-report-observation-description", printText(observationDescriptionToPrint)),
-                    displayForGraphHolder(graphHolder),
-                    //printReturnAndBlankLine()
-                ];
-            } else {
-                return [];
+            if (graph) { 
+                resultItems.push(displayForGraphHolder(graphHolder));
             }
         }
-
+        return resultItems;
     });
 }
 
@@ -956,7 +951,7 @@ function printCatalysisReportWithOnlyObservations(project, catalysisReportIdenti
     var progressModel = dialogSupport.openProgressDialog("Starting up...", "Generating catalysis report (observations only)", "Cancel", dialogCancelled);
 
     var printItems = [
-        m("div.narrafirma-catalysis-report-title", catalysisReportName),
+        m("h1.narrafirma-catalysis-report-title", catalysisReportName),
         m("div.narrafirma-catalysis-report-project-name-and-date", "This report for project " + project.projectIdentifier + " was generated by NarraFirma " + versions.narrafirmaApplication + " on "  + new Date().toString()),
     ]
     var filter = project.tripleStore.queryLatestC(catalysisReportIdentifier, "catalysisReport_filter");  
@@ -991,8 +986,8 @@ function printCatalysisReportWithOnlyObservations(project, catalysisReportIdenti
             });
             finishModel.redraw();
         } else {
-            // observationList, observationLabel, interpretationNotes, allStories, options
-            printItems.push(<any>printObservationList([observationIDs[observationIndex]], options["observationLabel"], "", allStories, options));
+            // observationList, observationLabel, idTagStart, interpretationNotes, allStories, options
+            printItems.push(<any>printObservationList([observationIDs[observationIndex]], options["observationLabel"], "", "", allStories, options));
             printItems.push(m(".narrafirma-catalysis-report-observations-only-page-break", ""));
             progressModel.progressText = progressText(observationIndex);
             progressModel.redraw();
@@ -1036,6 +1031,14 @@ function compareRowsInPerspectiveLinksTable (a, b) {
 }
 
 function printCatalysisReportWithClusteredInterpretations(project, catalysisReportIdentifier, catalysisReportName, allStories, observationIDs, options) {
+
+    // H1 - Report title
+    // H2 - Perspective title
+    // H3 - Observation title
+    // H4 - Interpretation title
+    // H5 - Graph title
+    // H6 - Statistics? TOC headers?
+
     var clusteringDiagram = project.tripleStore.queryLatestC(catalysisReportIdentifier, "interpretationsClusteringDiagram");
     if (!clusteringDiagram) {
         alert("Please cluster interpretations before printing.");
@@ -1045,7 +1048,7 @@ function printCatalysisReportWithClusteredInterpretations(project, catalysisRepo
     var progressModel = dialogSupport.openProgressDialog("Starting up...", "Generating catalysis report", "Cancel", dialogCancelled);
 
     var printItems = [
-        m("div.narrafirma-catalysis-report-title", catalysisReportName),
+        m("h1.narrafirma-catalysis-report-title", catalysisReportName),
         m("div.narrafirma-catalysis-report-project-name-and-date", "This report for project " + project.projectIdentifier + " was generated by NarraFirma " + versions.narrafirmaApplication + " on "  + new Date().toString()),
     ]
     var filter = project.tripleStore.queryLatestC(catalysisReportIdentifier, "catalysisReport_filter");  
@@ -1074,10 +1077,11 @@ function printCatalysisReportWithClusteredInterpretations(project, catalysisRepo
     } catch (error) {
         alert("Problem in catalysis report contents header (first level): " + error);
     }
+    printItems.push(m("br"));
     printItems.push(m("div.narrafirma-catalysis-report-perspective-link-header", tocHeader));
     for (var i = 0; i < perspectives.length ; i++) {
         var perspective = perspectives[i];
-        printItems.push(m("div.narrafirma-catalysis-report-perspective-link", m("a", {href: "#perspective-" + replaceSpacesWithDashes(perspective.name)}, perspective.name)));
+        printItems.push(m("div.narrafirma-catalysis-report-perspective-link", m("a", {href: "#p_" + i}, perspective.name)));
     }
     printItems.push(m("br"));
     
@@ -1114,9 +1118,9 @@ function printCatalysisReportWithClusteredInterpretations(project, catalysisRepo
         } else {
             var perspective = perspectives[perspectiveIndex];
             if (clusteredItemIndex === 0) {
-                var perspectiveNameToPrintWithoutSpaces = replaceSpacesWithDashes(perspective.name);
-                printItems.push(m("div.narrafirma-catalysis-report-perspective", 
-                    [m("span", {"class": "narrafirma-catalysis-report-perspective-label " + perspectiveNameToPrintWithoutSpaces, "id": "perspective-" + perspectiveNameToPrintWithoutSpaces}, options["perspectiveLabel"]),
+                var perspectiveNameToPrintWithoutSpaces = replaceSpacesWithDashesAndCutOffAt40Chars(perspective.name);
+                printItems.push(m("h2.narrafirma-catalysis-report-perspective", 
+                    [m("span", {"class": "narrafirma-catalysis-report-perspective-label " + perspectiveNameToPrintWithoutSpaces, "id": "p_" + perspectiveIndex}, options["perspectiveLabel"]),
                     perspective.name]));
                 if (perspective.notes) printItems.push(m("div.narrafirma-catalysis-report-perspective-notes", printText(perspective.notes)));
 
@@ -1131,6 +1135,7 @@ function printCatalysisReportWithClusteredInterpretations(project, catalysisRepo
                 } catch (error) {
                     alert("Problem in catalysis report contents header (second level): " + error);
                 }
+                printItems.push(m("br"));
                 printItems.push(m("div.narrafirma-catalysis-report-interp-link-header", tocHeaderLevelTwo));
             
                 var printItemsForThisPerspective = [];
@@ -1142,14 +1147,14 @@ function printCatalysisReportWithClusteredInterpretations(project, catalysisRepo
                     for (var observationIndex = 0; observationIndex < observationIDsForThisInterpretation.length; observationIndex++) {
                         var observation = project.tripleStore.makeObject(observationIDsForThisInterpretation[observationIndex], true);
                         if (observation) {
-                            var printItemsForThisObservationInterpretationPairing = [];
-                            printItemsForThisObservationInterpretationPairing.push(m("td", {"class": "narrafirma-catalysis-report-interpretation-links-table-td"}, 
-                                m("a", {href: "#" + replaceSpacesWithDashes(clusteredItem.name || clusteredItem.notes)}, clusteredItem.name || clusteredItem.notes)));
+                            var printItemsForThisOIPair = [];
+                            printItemsForThisOIPair.push(m("td", {"class": "narrafirma-catalysis-report-interpretation-links-table-td"}, 
+                                m("a", {href: "#p_" + perspectiveIndex + "_i_" + i}, clusteredItem.name || clusteredItem.notes)));
                             var observationTitleToPrint = portionOfTextMatchingReference(observation.observationTitle || observation.observationDescription, clusteredItem.notes);
-                            printItemsForThisObservationInterpretationPairing.push(m("td", {"class": "narrafirma-catalysis-report-interpretation-links-table-td"}, 
-                                m("a", {href: "#observation-" + replaceSpacesWithDashes(observationTitleToPrint)}, observationTitleToPrint)));
-                            printItemsForThisObservationInterpretationPairing.push(m("td", {"class": "narrafirma-catalysis-report-interpretation-links-table-td"}, observation.observationStrength || ""));
-                            printItemsForThisPerspective.push(m("tr", {"class": "narrafirma-catalysis-report-interpretation-links-table-tr"}, printItemsForThisObservationInterpretationPairing)); 
+                            printItemsForThisOIPair.push(m("td", {"class": "narrafirma-catalysis-report-interpretation-links-table-td"}, 
+                                m("a", {href: "#p_" + perspectiveIndex + "_i_" + i + "_o_" + observationIndex}, observationTitleToPrint)));
+                                printItemsForThisOIPair.push(m("td", {"class": "narrafirma-catalysis-report-interpretation-links-table-td"}, observation.observationStrength || ""));
+                            printItemsForThisPerspective.push(m("tr", {"class": "narrafirma-catalysis-report-interpretation-links-table-tr"}, printItemsForThisOIPair)); 
                         }
                     }
                 }
@@ -1179,14 +1184,16 @@ function printCatalysisReportWithClusteredInterpretations(project, catalysisRepo
                         // than have to change the entire clustering diagram to deal with it.
                         clusteredItem.idea = project.tripleStore.queryLatestC(clusteredItem.referenceUUID, "interpretation_idea") || "";
                     }
+
+                    const interpretationNameWithoutSpaces = replaceSpacesWithDashesAndCutOffAt40Chars(clusteredItem.name || clusteredItem.notes);
+                    const idTag = "p_" + perspectiveIndex + "_i_" + clusteredItemIndex;
+
+                    const printItemsForHeader = [];
                     if (options["interpretationLabel"]) {
-                        var interpretationNameWithoutSpaces = replaceSpacesWithDashes(clusteredItem.name || clusteredItem.notes);
-                        printItems.push(m("div.narrafirma-catalysis-report-interpretation", 
-                            [m("span", {"class": "narrafirma-catalysis-report-interpretation-label " + interpretationNameWithoutSpaces, "id": interpretationNameWithoutSpaces}, options["interpretationLabel"]), 
-                            clusteredItem.name || clusteredItem.notes]));
-                    } else {
-                        printItems.push(m("div.narrafirma-catalysis-report-interpretation", clusteredItem.name || clusteredItem.notes));
+                        printItemsForHeader.push(m("span", {"class": "narrafirma-catalysis-report-interpretation-label " + interpretationNameWithoutSpaces}, options["interpretationLabel"]));
                     }
+                    printItemsForHeader.push(clusteredItem.name || clusteredItem.notes);
+                    printItems.push(m("h4.narrafirma-catalysis-report-interpretation", {"id": idTag}, printItemsForHeader));
                     
                     if (clusteredItem.notes) {
                         var notesToPrint = clusteredItem.notes;
@@ -1206,7 +1213,7 @@ function printCatalysisReportWithClusteredInterpretations(project, catalysisRepo
                     }
 
                     printItems.push(<any>printObservationList(observationsIDsForInterpretation[clusteredItem.uuid], 
-                        options["observationLabel"], clusteredItem.notes, allStories, options));
+                        options["observationLabel"], idTag, clusteredItem.notes, allStories, options));
                     
                     progressModel.progressText = progressText(perspectiveIndex, clusteredItemIndex);
                     progressModel.redraw();
