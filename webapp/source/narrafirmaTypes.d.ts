@@ -101,6 +101,8 @@ interface ClusteringDiagramItem {
     borderWidth?;
     radius?: number;
     textStyle?;
+    hidden?: boolean;
+    print?: boolean;
 }
 
 interface ClusteringDiagramModel {

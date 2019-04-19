@@ -975,6 +975,31 @@ td.narrafirma-mw-nested-title, td.narrafirma-mw-nested-stats {
     margin-bottom: 0.5em;
 }
 
+.narrafirma-catalysis-report-theme-link-header {
+	margin: 0.5em;
+}
+
+.narrafirma-catalysis-report-theme-link {
+	margin: 0 0 0 1em;
+}
+
+.narrafirma-catalysis-report-theme {
+	font-size: 2em;
+	font-weight: 700;
+    padding: 0.5em;
+    background: #b0d4d4;
+    margin: 0;
+}
+
+.narrafirma-catalysis-report-theme-label {
+}
+
+.narrafirma-catalysis-report-theme-notes {
+    padding: 0.5em;
+    background: #d6ebeb;
+    margin-bottom: 0.5em;
+}
+
 .narrafirma-catalysis-report-interp-link-header {
 	margin-bottom: 0.5em;
 }

@@ -350,6 +350,82 @@ export function copyInterpretationsToClusteringDiagram() {
     }
 }
 
+export function copyObservationsToClusteringDiagram() {
+    var shortName = clientState.catalysisReportName();
+    if (!shortName) {
+        alert("Please pick a catalysis report to work with.");
+        return;
+    }
+    
+    var catalysisReportIdentifier = project.findCatalysisReport(shortName);
+    if (!catalysisReportIdentifier) {
+        alert("Problem finding catalysis report identifier.");
+        return;
+    }
+    
+    var observationSetIdentifier = project.tripleStore.queryLatestC(catalysisReportIdentifier, "catalysisReport_observations");
+    if (!observationSetIdentifier) {
+        alert("No observations have been made on the Explore Patterns page.");
+        return;
+    }
+    var observationIDs = project.tripleStore.getListForSetIdentifier(observationSetIdentifier);
+    
+    var clusteringDiagram: ClusteringDiagramModel = project.tripleStore.queryLatestC(catalysisReportIdentifier, "observationsClusteringDiagram");
+    if (!clusteringDiagram) {
+        clusteringDiagram = ClusteringDiagram.newDiagramModel();
+    }
+ 
+    // Update name and description on existing items
+    let existingReferenceUUIDs = {};
+    let updatedItemCount = 0;
+    clusteringDiagram.items.forEach((item) => {
+        if (item.type === "item") {
+            if (item.referenceUUID) {
+                existingReferenceUUIDs[item.referenceUUID] = item;
+                var newName = project.tripleStore.queryLatestC(item.referenceUUID, "observationTitle") || "";
+                var newNotes = project.tripleStore.queryLatestC(item.referenceUUID, "observationDescription") || "";
+
+                // if they filled only one in, use it for both
+                if (newName === "" || newName === "Deleted observation") {
+                    newName = newNotes; 
+                } else if (newNotes === ""|| newNotes === "Deleted observation") {
+                    newNotes = newName;
+                }
+
+                // update clustering item for change to observation
+                if (newName !== item.name) {
+                    item.name = newName;
+                    updatedItemCount++;
+                }
+                if (newNotes !== item.notes) {
+                    item.notes = newNotes;
+                }
+            }
+        }
+    });
+
+    // add items for observations not represented in the space
+    var addedItemCount = 0;
+    observationIDs.forEach((id) => {
+        if (!existingReferenceUUIDs[id]) {
+                var observationName = project.tripleStore.queryLatestC(id, "observationTitle");
+                var observationDescription = project.tripleStore.queryLatestC(id, "observationDescription");
+                if (observationName || observationDescription) {
+                    addedItemCount++;
+                    const item = ClusteringDiagram.addNewItemToDiagram(clusteringDiagram, "item", observationName, observationDescription);
+                    item.referenceUUID = id;
+                }
+            }
+        });
+    
+    if (addedItemCount === 0 && updatedItemCount === 0) {
+        toaster.toast("The observations clustering diagram is up to date.");
+    } else {
+        project.tripleStore.addTriple(catalysisReportIdentifier, "observationsClusteringDiagram", clusteringDiagram);
+        toaster.toast("Added " + addedItemCount + " observations and updated " + updatedItemCount +  " observations in the clustering diagram.");
+    }
+}
+
 export function setQuestionnaireForStoryCollection(storyCollectionIdentifier): boolean {
     if (!storyCollectionIdentifier) return false;
     var questionnaireName = project.tripleStore.queryLatestC(storyCollectionIdentifier, "storyCollection_questionnaireIdentifier");

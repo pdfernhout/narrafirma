@@ -13,9 +13,11 @@ var panel: Panel = {
             valueType: "none",
             displayType: "label",
             displayPrompt: `
-                On this page you can print a <strong>catalysis report</strong>, which will include
-                your observations, interpretations, and perspectives, as well as
-                the introduction (and other sections) you wrote on the "Start catalysis report" page.
+                On this page you can print a <strong>catalysis report</strong>.
+                You can organize the report by the
+                <strong>perspectives</strong> (clusters of interpretations) or <strong>themes</strong> (clusters of observations)
+                you created on the previous page.
+                The report can also include an introduction and various other elements you can specify here.
                 `
         },
         {
@@ -39,16 +41,40 @@ var panel: Panel = {
             }
         },     
         {
-            id: "catalysisReportPrint_printObservationsOrClusteredInterpretations",
-            valuePath: "/clientState/catalysisReportIdentifier/catalysisReportPrint_printObservationsOrClusteredInterpretations",
+            id: "catalysisReportPrint_reportType",
+            valuePath: "/clientState/catalysisReportIdentifier/catalysisReportPrint_reportType",
             valueType: "string",
-            valueOptions: ["clustered interpretations", "observations (all)", "observations (strong)", "observations (medium)", "observations (weak)", "observations (strong and medium)"],
+            valueOptions: ["perspectives (clustered interpretations)", "themes (clustered observations)", "observations (disregarding any clustering)"],
             displayType: "select",
-            displayPrompt: "Would you like to print a <strong>complete</strong> report with clustered interpretations? Or a <strong>preliminary</strong> report with only observations?",
+            displayPrompt: `Would you like to print the report organized by <strong>perspectives</strong> (clustered interpretations)
+                or <strong>themes</strong> (clustered observations)? You can also print unclustered observations.`,
             displayVisible: function(panelBuilder, model) {
                 return !!Globals.clientState().catalysisReportIdentifier();
             }
-        },    
+        },  
+        {
+            id: "catalysisReportPrint_observationStrengths",
+            valuePath: "/clientState/catalysisReportIdentifier/catalysisReportPrint_observationStrengths",
+            valueType: "dictionary",
+            valueOptions: ["strong", "medium", "weak", "no strength value set"],
+            displayType: "checkboxes",
+            displayPrompt: "Which observation <strong>strengths</strong> do you want to include in the report?",
+            displayVisible: function(panelBuilder, model) {
+                return !!Globals.clientState().catalysisReportIdentifier();
+            }
+        },   
+        {
+            id: "catalysisReportPrint_includeObservationsWithNoInterpretations",
+            valuePath: "/clientState/catalysisReportIdentifier/catalysisReportPrint_includeObservationsWithNoInterpretations",
+            valueType: "boolean",
+            displayType: "checkbox",
+            displayConfiguration: "Yes, include observations with no interpretations",
+            displayPrompt: "Do you want to include observations that have <strong>no interpretations</strong> associated with them?",
+            displayVisible: function(panelBuilder, model) {
+                return !!Globals.clientState().catalysisReportIdentifier();
+            }
+        }, 
+
         {
             id: "catalysisReportPrint_printButton",
             valuePath: "/clientState/catalysisReportName",
@@ -125,13 +151,29 @@ var panel: Panel = {
             displayName: "Contents header (top level)",
             displayPrompt: `
             This header precedes the <strong>top-level table of contents</strong> (list of perspectives) at the start
-            of your report. If you leave this field blank, the header will read "Perspectives in this report (#)."
+            of your clustered-interpretations report. If you leave this field blank, the header will read "Perspectives in this report (#)."
             To change the header, enter some text here. A number sign (#) will be replaced
             with the number of perspectives in the report.`,
             displayVisible: function(panelBuilder, model) {
                 return !!Globals.clientState().catalysisReportIdentifier();
             }
         },
+        {
+            id: "catalysisReport_tocHeaderFirstLevel_themes",
+            valuePath: "/clientState/catalysisReportIdentifier/catalysisReport_tocHeaderFirstLevel_observations",
+            valueType: "string",
+            displayType: "textarea",
+            displayName: "Contents header (top level)",
+            displayPrompt: `
+            This header precedes the <strong>top-level table of contents</strong> (list of themes) at the start
+            of your clustered-observations report. If you leave this field blank, the header will read "Themes in this report (#)."
+            To change the header, enter some text here. A number sign (#) will be replaced
+            with the number of themes in the report.`,
+            displayVisible: function(panelBuilder, model) {
+                return !!Globals.clientState().catalysisReportIdentifier();
+            }
+        },
+
         {
             id: "catalysisReport_tocHeaderSecondLevel",
             valuePath: "/clientState/catalysisReportIdentifier/catalysisReport_tocHeaderSecondLevel",
@@ -140,7 +182,7 @@ var panel: Panel = {
             displayName: "Contents header (second level)",
             displayPrompt: `
             This header precedes the <strong>second-level table of contents</strong> (list of interpretations) 
-            within each perspective section. If you leave this field blank, the header will read 
+            within each perspective section of a clustered-interpretations report. If you leave this field blank, the header will read 
             "Interpretations and observations in this perspective (#)."
             To change the header, enter some text here. A number sign (#) will be replaced
             with the number of interpretations in the perspective.`,
@@ -149,6 +191,23 @@ var panel: Panel = {
             }
         },
         {
+            id: "catalysisReport_tocHeaderSecondLevel_observations",
+            valuePath: "/clientState/catalysisReportIdentifier/catalysisReport_tocHeaderSecondLevel_observations",
+            valueType: "string",
+            displayType: "textarea",
+            displayName: "Contents header (second level)",
+            displayPrompt: `
+            This header precedes the <strong>second-level table of contents</strong> (list of observations) 
+            within each theme section of a clustered-observations report. If you leave this field blank, the header will read 
+            "Observations and interpretations in this theme (#)."
+            To change the header, enter some text here. A number sign (#) will be replaced
+            with the number of observations in the theme.`,
+            displayVisible: function(panelBuilder, model) {
+                return !!Globals.clientState().catalysisReportIdentifier();
+            }
+        },
+
+        {
             id: "catalysisReport_perspectiveLabel",
             valuePath: "/clientState/catalysisReportIdentifier/catalysisReport_perspectiveLabel",
             valueType: "string",
@@ -156,6 +215,18 @@ var panel: Panel = {
             displayName: "Perspective label",
             displayPrompt: `
             This optional label (e.g., "Perspective: ") will appear <strong>before each perspective name</strong> in the report.`,
+            displayVisible: function(panelBuilder, model) {
+                return !!Globals.clientState().catalysisReportIdentifier();
+            }
+        },
+        {
+            id: "catalysisReport_themeLabel",
+            valuePath: "/clientState/catalysisReportIdentifier/catalysisReport_themeLabel",
+            valueType: "string",
+            displayType: "text",
+            displayName: "Theme label",
+            displayPrompt: `
+            This optional label (e.g., "Theme: ") will appear <strong>before each theme name</strong> in the report.`,
             displayVisible: function(panelBuilder, model) {
                 return !!Globals.clientState().catalysisReportIdentifier();
             }

@@ -354,9 +354,9 @@ class ClusteringDiagram {
             });
         }
         
-        if (this.configuration !== "interpretations") {
-            // cannot allow users to do this if interpretations, because they could cause the
-            // items to become unmoored from the interpretations they represent
+        if (this.configuration !== "interpretations" && this.configuration !== "observations") {
+            // cannot allow users to do this if interpretations or observations, because they could cause the
+            // items to become unmoored from the interpretations or observations they represent
             this.newButton("sourceButton", "Diagram Source", () => {
                 this.openSourceDialog(JSON.stringify(this.model, null, 2));
             });
