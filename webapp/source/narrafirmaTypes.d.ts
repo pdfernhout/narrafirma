@@ -98,11 +98,14 @@ interface ClusteringDiagramItem {
     y: number;
     bodyColor?;
     borderColor?;
+    textColor?;
     borderWidth?;
     radius?: number;
     textStyle?;
     hidden?: boolean;
     print?: boolean;
+    strength?: string;
+    notesExtra?: string;
 }
 
 interface ClusteringDiagramModel {

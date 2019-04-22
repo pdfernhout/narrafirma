@@ -48,7 +48,7 @@ function getTextWidth(text, textStyle) {
     return result;
 }
 
-function myWrap(text, itemText, textStyle, maxWidth) {
+function myWrap(text, itemText, textStyle, textColor, maxWidth) {
     var lineHeight_em = 1.1;
     var words = itemText.split(/\s+/);
     var lines = [];
@@ -68,16 +68,14 @@ function myWrap(text, itemText, textStyle, maxWidth) {
         }
     });
     if (line !== "") lines.push(line);
-    // var startY = -((lines.length - 1) / 2) * lineHeight;
     var lineNumber = (Math.round(-lines.length / 2 + 0.5));
-    // if (lines.length === 6) startY += lineHeight;
     forEach(lines, function (index, line) {
         var tspan = text.append("tspan")
             .attr("x", 0)
             .attr("y", 0)
             .attr("dy", (lineNumber++) * lineHeight_em  + "em")
             .text(line)
-            .style("fill", "black");
+            .style("fill", textColor);
     }); 
 }
 
@@ -104,10 +102,12 @@ class ClusteringDiagram {
     itemBeingEditedCopy: ClusteringDiagramItem = null;
     isEditedItemNew = false;
 
-    static defaultBodyColor = "#abb6ce"; 
+    static defaultItemBodyColor = "#abb6ce"; 
+    static defaultClusterBodyColor = "#c5d2eb";
     static defaultBorderColor = "#2e4a85";
     static defaultBorderWidth = 1;
     static defaultTextStyle = {family: "Arial", size: "9pt", weight: "normal"};
+    static defaultTextColor = "black";
     static defaultRadius = 44;
     
     // This is static so other code can create and store diagram contents directly as source
@@ -297,7 +297,7 @@ class ClusteringDiagram {
     setupMainButtons() {
         var mainButtons = [];
         
-        if (this.configuration !== "interpretations") {
+        if (this.configuration !== "interpretations" && this.configuration !== "observations") {
             this.newButton("newItemButton", "New item", () => {
                 var aNewItem = this.newItem("item");
                 this.openEntryDialog(aNewItem, false);
@@ -309,7 +309,7 @@ class ClusteringDiagram {
             this.openEntryDialog(aNewItem, false);
         });
         
-        if (this.configuration !== "interpretations") {
+        if (this.configuration !== "interpretations" && this.configuration !== "observations") {
             this.newButton("editItemButton", "Edit", () => {
                 if (this.lastSelectedItem) {
                     this.openEntryDialog(this.lastSelectedItem, true);
@@ -318,7 +318,7 @@ class ClusteringDiagram {
                     alert("Please select an item to edit.");
                 }
             });
-        } else { // in clustering interpretations, can only edit clusters, not items
+        } else { // in clustering interpretations/observations, can only edit clusters, not items
             this.newButton("editItemButton", "Edit cluster", () => {
                 if (this.lastSelectedItem && this.lastSelectedItem.type === "cluster") {
                     this.openEntryDialog(this.lastSelectedItem, true);
@@ -329,7 +329,7 @@ class ClusteringDiagram {
             });
         }
     
-        // allow user to delete items even if they are interpretations
+        // allow user to delete items even if they are interpretations/observations
         this.newButton("deleteButton", "Delete", () => {
             if (!this.lastSelectedItem) {
                 // TODO: Translate
@@ -383,12 +383,12 @@ class ClusteringDiagram {
      openCanvasSizeDialog() {
         // TODO: Make a single dialog
         // TODO: Translate
-        var newWidthString = prompt("How wide (in pixels) would you like this clustering diagram to be?", "" + this.model.surfaceWidthInPixels);
+        var newWidthString = prompt("How wide (in pixels) would you like this clustering surface to be?", "" + this.model.surfaceWidthInPixels);
         if (!newWidthString) return;
         var newWidth = parseInt(newWidthString.trim(), 10);
         if (!newWidth) return;
          
-        var newHeightString = prompt("How high (in pixels) would you like this clustering diagram to be?", "" + this.model.surfaceHeightInPixels);
+        var newHeightString = prompt("How high (in pixels) would you like this clustering surface to be?", "" + this.model.surfaceHeightInPixels);
         if (!newHeightString) return;
         var newHeight = parseInt(newHeightString.trim(), 10);
         if (!newHeight) return;
@@ -536,7 +536,7 @@ class ClusteringDiagram {
         ClusteringDiagram.bumpXYOfItem(newItem);
         return newItem;
     }
-    
+
     // TODO: Clean up duplication here and elsewhere with calculating border color and width
     selectItem(item) {
         if (item === this.lastSelectedItem) {
@@ -562,11 +562,20 @@ class ClusteringDiagram {
     
     addDisplayObjectForItem(surface, item: ClusteringDiagramItem) {
         var bodyColor = item.bodyColor;
-        if (!bodyColor) bodyColor = ClusteringDiagram.defaultBodyColor;
+        if (!bodyColor) {
+            if (item.type === "cluster") {
+                bodyColor = ClusteringDiagram.defaultClusterBodyColor;
+            } else {
+                bodyColor = ClusteringDiagram.defaultItemBodyColor;
+            }
+        }
+
+        var textColor = item.textColor;
+        if (!textColor) textColor = ClusteringDiagram.defaultTextColor;
         
         var borderColor = item.borderColor;
         if (!borderColor) borderColor = ClusteringDiagram.defaultBorderColor;
-        
+
         var borderWidth = item.borderWidth;
         if (!borderWidth) borderWidth = ClusteringDiagram.defaultBorderWidth;
         // if (item.type === "cluster") borderWidth = borderWidth * 2;
@@ -596,42 +605,27 @@ class ClusteringDiagram {
                 .attr("r", radius * 3)
                 .attr("cx", 0)
                 .attr("cy", 0)
-                .style("fill", bodyColor) // d3.rgb(bodyColor).brighter())
-                // Make translucent
+                .style("fill", d3.rgb(bodyColor))
                 .style("opacity", 0.25)
                 .style("stroke", d3.rgb(borderColor))
                 .style("stroke-width", borderWidth * 2);
-            
-            /*
-            var clusterRectangleInner = group.append("circle")
-                .attr("r", radius)
-                .attr("cx", 0)
-                .attr("cy", 0)
-                .style("fill", d3.rgb(bodyColor))
-                // Make translucent
-                .style("opacity", 0.75)
-                .style("stroke", d3.rgb(borderColor))
-                .style("stroke-width", borderWidth);
-            */
-            
             group.circle = clusterRectangleOuter;
-            
         } else {
             var itemCircle = group.append("circle")
                 .attr("r", radius)
                 .attr("cx", 0)
                 .attr("cy", 0)
                 .style("fill", d3.rgb(bodyColor))
-                // Make translucent
-                .style("opacity", 0.5)
+                .style("opacity", 0.75)
                 .style("stroke", d3.rgb(borderColor))
                 .style("stroke-width", borderWidth);
-            
             group.circle = itemCircle;
         }
         
         var hoverText = item.name;
-        if (item.notes) hoverText += "\n----------\n" + item.notes;
+        if (item.notes) hoverText += " -- " + item.notes;
+        if (item.notesExtra) hoverText += "\n----------\n" + item.notesExtra;
+        if (item.strength) hoverText += " [Strength: " + item.strength + "]"; 
 
         group.append("title")
             .text(hoverText);
@@ -639,7 +633,7 @@ class ClusteringDiagram {
         group.borderColor = borderColor;
         group.borderWidth = borderWidth;
         
-        this.addText(group, item.name, radius * 1.5, textStyle);
+        this.addText(group, item.name, radius * 1.5, textStyle, textColor);
     
         group.on("mousedown", () => {
             this.selectItem(item);
@@ -682,17 +676,15 @@ class ClusteringDiagram {
         return group;
     }
     
-    addText(group, itemText, maxWidth, textStyle) {
+    addText(group, itemText, maxWidth, textStyle, textColor) {
         if (itemText === undefined) itemText = "[missing text]";
         var text = group.append("text")
-            // .text(itemText)
             .style("font-family", textStyle.family)
             .style("font-size", textStyle.size)
             .style("font-weight", textStyle.weight)
             .style("text-anchor", "middle");
         
-        myWrap(text, itemText, textStyle, maxWidth);
-        // wrap(text, maxWidth, textStyle);
+        myWrap(text, itemText, textStyle, textColor, maxWidth);
     }
     
     static calculateClusteringForDiagram(clusteringDiagram: any) {

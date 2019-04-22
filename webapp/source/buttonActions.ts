@@ -208,6 +208,7 @@ export function copyInterpretationsToClusteringDiagram() {
         alert("No observations have been made on the Explore Patterns page.");
         return;
     }
+    var observationIDs = project.tripleStore.getListForSetIdentifier(observationSetIdentifier);
     var observations = project.tripleStore.queryAllLatestBCForA(observationSetIdentifier);
     
     for (var key in observations) {
@@ -250,6 +251,23 @@ export function copyInterpretationsToClusteringDiagram() {
         return null;
     }
 
+    function findObservationForInterpretation(observationIDs, interpretationName) {
+        for (var i = 0; i < observationIDs.length; i++) {
+            const observationID = observationIDs[i];
+            var interpretationsListIdentifier = project.tripleStore.queryLatestC(observationID, "observationInterpretations");
+            var interpretationsList = project.tripleStore.getListForSetIdentifier(interpretationsListIdentifier);
+            for (var j = 0; j < interpretationsList.length; j++) {
+                const interpretationID = interpretationsList[j];
+                var interpretation = project.tripleStore.makeObject(interpretationID, true);
+                var name = interpretation.interpretation_name;
+                if (name === interpretationName) {
+                    return observationID;
+                }
+            }
+        }
+        return null;
+    }
+    
     // Make sure every item has a referenceUUID linking it to an interpretation
     const existingReferenceUUIDs = {};
     clusteringDiagram.items.forEach((item) => {
@@ -279,48 +297,54 @@ export function copyInterpretationsToClusteringDiagram() {
     clusteringDiagram.items.forEach((item) => {
         if (item.type === "item") {
             if (item.referenceUUID) {
-                var newName = project.tripleStore.queryLatestC(item.referenceUUID, "interpretation_name") || "";
-                var newNotes = project.tripleStore.queryLatestC(item.referenceUUID, "interpretation_text") || "";
+                let itemChanged = false;
+                let newName = project.tripleStore.queryLatestC(item.referenceUUID, "interpretation_name") || "";
+                let newNotes = project.tripleStore.queryLatestC(item.referenceUUID, "interpretation_text") || "";
+                const observationID = findObservationForInterpretation(observationIDs, newName);
+                let newStrength = null;
+                let newNotesExtra = null;
+                if (observationID) {
+                    newStrength = project.tripleStore.queryLatestC(observationID, "observationStrength") || "";
+                    const observationTitle = project.tripleStore.queryLatestC(observationID, "observationTitle");
+                    const observationDescription = project.tripleStore.queryLatestC(observationID, "observationDescription");
+                    let shortenedDescription = observationDescription.slice(0, 200);
+                    if (shortenedDescription.length < observationDescription.length) shortenedDescription += " ...";
+                    newNotesExtra = observationTitle + " -- " + shortenedDescription;
+                }
 
-                // if they filled only one in, use it for both
+                // if they filled in only name or text, use it for both
                 if (newName === "" || newName === "Deleted interpretation") {
                     newName = newNotes; 
                 } else if (newNotes === ""|| newNotes === "Deleted interpretation") {
                     newNotes = newName;
+                    itemChanged = true;
                 }
 
-                // update clustering item for change to interpretation
+                // update clustering item for change to interpretation and/or observation
                 if (newName !== item.name) {
                     item.name = newName;
-                    updatedItemCount++;
+                    itemChanged = true;
                 }
                 if (newNotes !== item.notes) {
                     item.notes = newNotes;
                 }
+                if (item.strength === undefined || newStrength != item.strength) {
+                    item.strength = newStrength;
+                    setItemColorBasedOnStrength(item, newStrength);
+                    itemChanged = true;
+                }
+                if (item.notesExtra === undefined || newNotesExtra === null || newNotesExtra != item.notesExtra) {
+                    item.notesExtra = newNotesExtra;
+                    itemChanged = true;
+                }
+                
+                if (itemChanged) updatedItemCount++;
             }
         }
     });
 
-    function findObservationForInterpretation(observationIDs, interpretationName) {
-        for (var i = 0; i < observationIDs.length; i++) {
-            const observationID = observationIDs[i];
-            var interpretationsListIdentifier = project.tripleStore.queryLatestC(observationID, "observationInterpretations");
-            var interpretationsList = project.tripleStore.getListForSetIdentifier(interpretationsListIdentifier);
-            for (var j = 0; j < interpretationsList.length; j++) {
-                const interpretationID = interpretationsList[j];
-                var interpretation = project.tripleStore.makeObject(interpretationID, true);
-                var name = interpretation.interpretation_name;
-                if (name === interpretationName) {
-                    return observationID;
-                }
-            }
-        }
-        return null;
-    }
-    
     // add items for interpretations not represented in the space
     var addedItemCount = 0;
-    var observationIDs = project.tripleStore.getListForSetIdentifier(observationSetIdentifier);
     allInterpretations.forEach((interpretation) => {
         if (!existingReferenceUUIDs[interpretation.id]) {
             // check that this interpretation is attached to an observation; if not, it should not be added to the diagram
@@ -333,10 +357,13 @@ export function copyInterpretationsToClusteringDiagram() {
                 // but they should be hidden from the clustering diagram and the report.
                 var observationName = project.tripleStore.queryLatestC(observationID, "observationTitle");
                 var observationDescription = project.tripleStore.queryLatestC(observationID, "observationDescription");
+                var observationStrength = project.tripleStore.queryLatestC(observationID, "observationStrength");
                 if (observationName || observationDescription) {
                     addedItemCount++;
                     const item = ClusteringDiagram.addNewItemToDiagram(clusteringDiagram, "item", interpretation.name, interpretation.text);
                     item.referenceUUID = interpretation.id;
+                    item.strength = observationStrength;
+                    setItemColorBasedOnStrength(item, observationStrength);
                 }
             }
         }
@@ -375,15 +402,17 @@ export function copyObservationsToClusteringDiagram() {
         clusteringDiagram = ClusteringDiagram.newDiagramModel();
     }
  
-    // Update name and description on existing items
+    // Update name and description and strength on existing items
     let existingReferenceUUIDs = {};
     let updatedItemCount = 0;
     clusteringDiagram.items.forEach((item) => {
         if (item.type === "item") {
             if (item.referenceUUID) {
+                let itemChanged = false;
                 existingReferenceUUIDs[item.referenceUUID] = item;
                 var newName = project.tripleStore.queryLatestC(item.referenceUUID, "observationTitle") || "";
                 var newNotes = project.tripleStore.queryLatestC(item.referenceUUID, "observationDescription") || "";
+                var newStrength = project.tripleStore.queryLatestC(item.referenceUUID, "observationStrength") || "";
 
                 // if they filled only one in, use it for both
                 if (newName === "" || newName === "Deleted observation") {
@@ -395,11 +424,18 @@ export function copyObservationsToClusteringDiagram() {
                 // update clustering item for change to observation
                 if (newName !== item.name) {
                     item.name = newName;
-                    updatedItemCount++;
+                    itemChanged = true;
                 }
                 if (newNotes !== item.notes) {
                     item.notes = newNotes;
+                    itemChanged = true;
                 }
+                if (item.strength === undefined || item.strength != newStrength) {
+                    item.strength = newStrength;
+                    setItemColorBasedOnStrength(item, newStrength);
+                    itemChanged = true;
+                }
+                if (itemChanged) updatedItemCount++;
             }
         }
     });
@@ -410,19 +446,39 @@ export function copyObservationsToClusteringDiagram() {
         if (!existingReferenceUUIDs[id]) {
                 var observationName = project.tripleStore.queryLatestC(id, "observationTitle");
                 var observationDescription = project.tripleStore.queryLatestC(id, "observationDescription");
+                var observationStrength = project.tripleStore.queryLatestC(id, "observationStrength") || "";
                 if (observationName || observationDescription) {
                     addedItemCount++;
                     const item = ClusteringDiagram.addNewItemToDiagram(clusteringDiagram, "item", observationName, observationDescription);
                     item.referenceUUID = id;
+                    item.strength = observationStrength;
+                    setItemColorBasedOnStrength(item, observationStrength);
                 }
             }
         });
     
+    project.tripleStore.addTriple(catalysisReportIdentifier, "observationsClusteringDiagram", clusteringDiagram);
     if (addedItemCount === 0 && updatedItemCount === 0) {
         toaster.toast("The observations clustering diagram is up to date.");
     } else {
         project.tripleStore.addTriple(catalysisReportIdentifier, "observationsClusteringDiagram", clusteringDiagram);
         toaster.toast("Added " + addedItemCount + " observations and updated " + updatedItemCount +  " observations in the clustering diagram.");
+    }
+}
+
+function setItemColorBasedOnStrength(item, strength) {
+    switch (strength) {
+        case "3 (strong)":
+            item.bodyColor = "#ffbb84";
+            break;
+        case "2 (medium)":
+            item.bodyColor = "#b0d4d4";
+            break;
+        case "1 (weak)":  
+            item.bodyColor = "#c5d2eb";
+            break;
+        default:
+            item.bodyColor = "#979696";
     }
 }
 
