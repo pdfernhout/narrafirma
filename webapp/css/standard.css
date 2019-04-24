@@ -1026,6 +1026,11 @@ td.narrafirma-mw-nested-title, td.narrafirma-mw-nested-stats {
     background: #fff7ea;
 }
 
+.narrafirma-catalysis-report-interpretation-questions {
+    padding: 0.5em;
+    background: #eafff7;
+}
+
 .narrafirma-catalysis-report-observation {
 	font-size: 1.0em;
     font-weight: 700;

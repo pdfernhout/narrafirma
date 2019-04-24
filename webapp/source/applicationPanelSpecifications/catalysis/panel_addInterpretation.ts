@@ -25,6 +25,13 @@ var panel: Panel = {
             displayType: "textarea",
             displayName: "Idea",
             displayPrompt: "If you like, you can record an <strong>idea</strong> that follows from this interpretation."
+        },
+        {
+            id: "interpretation_questions",
+            valueType: "string",
+            displayType: "textarea",
+            displayName: "Questions",
+            displayPrompt: "If you like, you can record some <strong>questions</strong> that arise from this interpretation."
         }
     ]
 };

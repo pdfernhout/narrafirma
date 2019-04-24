@@ -457,7 +457,7 @@ function printCatalysisReportWithClusteredObservations(project, catalysisReportI
                     const item = cluster.items[itemIndex];
                     if (item.print) {
 
-                        const idTag = "c_" + clusterIndex + "_o_" + itemIndex;
+                        const idTag = "c_" + clusterIndex;
                         printItems.push(<any>printListOfObservations([item.referenceUUID], options["observationLabel"], idTag, "", allStories, options));
 
                         const branchingQuestion = project.tripleStore.queryLatestC(item.referenceUUID, "observationBranchingQuestion");
@@ -597,6 +597,14 @@ function printCatalysisReportWithClusteredInterpretations(project, catalysisRepo
                     // if interpretation has no name OR notes, don't print anything at all
                     if (item.name || item.notes) {
 
+                        var interpretation = project.tripleStore.makeObject(item.referenceUUID, true);
+                        if (interpretation) {
+                            item.name = interpretation.interpretation_name;
+                            item.notes = interpretation.interpretation_text;
+                            item.idea = interpretation.interpretation_idea;
+                            item.questions = interpretation.interpretation_questions;
+                        }
+
                         // interpretation name and description
                         const interpretationNameWithoutSpaces = replaceSpacesWithDashes(item.name || item.notes);
                         const idTag = "c_" + clusterIndex + "_i_" + itemIndex;
@@ -625,6 +633,10 @@ function printCatalysisReportWithClusteredInterpretations(project, catalysisRepo
                         if (item.idea) {
                             printItems.push(m("div.narrafirma-catalysis-report-interpretation-idea", printText(item.idea)));
                         }
+                        // interpretation questions
+                        if (item.questions) {
+                            printItems.push(m("div.narrafirma-catalysis-report-interpretation-questions", printText(item.questions)));
+                        }
 
                         printItems.push(<any>printListOfObservations(observationsIDsForInterpretation[item.uuid], 
                             options["observationLabel"], idTag, item.notes, allStories, options));
@@ -642,7 +654,7 @@ function printCatalysisReportWithClusteredInterpretations(project, catalysisRepo
     setTimeout(function() { printNextInterpretation(); }, 0);
 }
 
-function printListOfObservations(observationList, observationLabel, idTag, interpretationNotes, allStories, options) {
+function printListOfObservations(observationList, observationLabel, idTagStart, interpretationNotes, allStories, options) {
 
     return printList(observationList, {}, false, function (item, index) {
         var project = Globals.project();
@@ -676,7 +688,7 @@ function printListOfObservations(observationList, observationLabel, idTag, inter
         headerItems.push(m("span", {"class": "narrafirma-catalysis-report-observation-strength"}, strengthStringToPrint));
 
         const resultItems = [];
-        resultItems.push(m("h3.narrafirma-catalysis-report-observation", {"id": idTag}, headerItems));
+        resultItems.push(m("h3.narrafirma-catalysis-report-observation", {"id": idTagStart + "_o_" + index}, headerItems));
         resultItems.push(m("div.narrafirma-catalysis-report-observation-description", printText(observationDescriptionToPrint)));
 
         if (item.pattern.graphType === "texts") {
@@ -722,9 +734,8 @@ function printListOfInterpretations(interpretationList, interpretationLabel, idT
         const resultItems = [];
         resultItems.push(m("h3.narrafirma-catalysis-report-interpretation", {"id": idTagStart + "_i_" + index}, headerItems));
         resultItems.push(m("div.narrafirma-catalysis-report-interpretation-notes", printText(item.interpretation_text)));
-        if (item.interpretation_idea) {
-            resultItems.push(m("div.narrafirma-catalysis-report-interpretation-idea", printText(item.interpretation_idea)));
-        }
+        if (item.interpretation_idea) resultItems.push(m("div.narrafirma-catalysis-report-interpretation-idea", printText(item.interpretation_idea)));
+        if (item.interpretation_questions) resultItems.push(m("div.narrafirma-catalysis-report-interpretation-questions", printText(item.interpretation_questions)));
 
         return resultItems;
     });
@@ -994,6 +1005,7 @@ function portionOfTextMatchingReference(textToDrawPortionFrom, textWithReference
 }
 
 function findMarkedReferenceInText(text) {
+    if (!text) return null;
     var startIndex = text.indexOf(referenceMarker);
     if (startIndex >= 0) { 
         var stopIndex = text.indexOf(referenceMarker, startIndex+1);
@@ -1010,12 +1022,12 @@ export function makeObservationIDsListForInterpretation(project: Project, observ
         interpretationsList.forEach((interpretationIdentifier) => {
             var interpretation = project.tripleStore.makeObject(interpretationIdentifier, true);
             if (item.referenceUUID !== undefined) {
-                if (interpretation.id === item.referenceUUID) {
+                if (interpretationIdentifier === item.referenceUUID) {
                     result.push(observationID);
                 }
             } else { // this is to deal with legacy (pre version 1.0) data that has no referenceUUID field
                 if (interpretation.interpretation_name === item.name || interpretation.interpretation_text === item.text) {
-                    item.referenceUUID = interpretation.id;
+                    item.referenceUUID = interpretationIdentifier;
                     result.push(observationID);
                 }
             }
@@ -1577,6 +1589,7 @@ function printObservations(page, project, tripleStore, catalysisReportIdentifier
                         var interpretation = tripleStore.makeObject(interpretationIdentifier);
                         let printText = "<li><b>" + interpretation.interpretation_name + "</b> " + interpretation.interpretation_text
                         if (interpretation.interpretation_idea) printText += " <i>" + interpretation.interpretation_idea + "</i>";
+                        if (interpretation.interpretation_questions) printText += interpretation.interpretation_questions;
                         parts.push(printText + "</li>");
                         observationsHaveUserContent = true;
                     }
