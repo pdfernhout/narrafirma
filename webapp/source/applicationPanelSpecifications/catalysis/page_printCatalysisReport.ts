@@ -63,17 +63,7 @@ var panel: Panel = {
                 return !!Globals.clientState().catalysisReportIdentifier();
             }
         },   
-        {
-            id: "catalysisReportPrint_includeObservationsWithNoInterpretations",
-            valuePath: "/clientState/catalysisReportIdentifier/catalysisReportPrint_includeObservationsWithNoInterpretations",
-            valueType: "boolean",
-            displayType: "checkbox",
-            displayConfiguration: "Yes, include observations with no interpretations",
-            displayPrompt: "Do you want to include observations that have <strong>no interpretations</strong> associated with them?",
-            displayVisible: function(panelBuilder, model) {
-                return !!Globals.clientState().catalysisReportIdentifier();
-            }
-        }, 
+
 
         {
             id: "catalysisReportPrint_printButton",
@@ -86,6 +76,39 @@ var panel: Panel = {
                 return !!Globals.clientState().catalysisReportIdentifier();
             }
         },
+
+
+        {
+            id: "catalysisReportPrint_moreOptionsHeader",
+            valueType: "none",
+            displayType: "header",
+            displayPrompt: "More printing options",
+            displayVisible: function(panelBuilder, model) {
+                return !!Globals.clientState().catalysisReportIdentifier();
+            }
+        },        
+        {
+            id: "catalysisReportPrint_includeObservationsWithNoInterpretations",
+            valuePath: "/clientState/catalysisReportIdentifier/catalysisReportPrint_includeObservationsWithNoInterpretations",
+            valueType: "boolean",
+            displayType: "checkbox",
+            displayConfiguration: "Yes, include observations with no interpretations",
+            displayPrompt: "Do you want to include observations that have <strong>no interpretations</strong> associated with them?",
+            displayVisible: function(panelBuilder, model) {
+                return !!Globals.clientState().catalysisReportIdentifier();
+            }
+        }, 
+        {
+            id: "catalysisReportPrint_useTableForInterpretationsFollowingObservation",
+            valuePath: "/clientState/catalysisReportIdentifier/useTableForInterpretationsFollowingObservation",
+            valueType: "boolean",
+            displayType: "checkbox",
+            displayConfiguration: "Yes, show interpretations side by side",
+            displayPrompt: "For a clustered-observations report, do you want to show the interpretations that follow an observation <strong>in a table</strong> side by side, or just one after another?",
+            displayVisible: function(panelBuilder, model) {
+                return !!Globals.clientState().catalysisReportIdentifier();
+            }
+        }, 
 
         {
             id: "configureCatalysisReport_outputGraphFormat",

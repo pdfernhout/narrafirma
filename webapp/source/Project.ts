@@ -943,6 +943,18 @@ class Project {
         }
     }
 
+    useTableForInterpretationsFollowingObservation(catalysisReportIdentifier) {
+        if (!catalysisReportIdentifier) {
+            throw new Error("catalysisReportIdentifier was not supplied");
+        }
+        var useTableForInterpretationsFollowingObservation = this.tripleStore.queryLatestC(catalysisReportIdentifier, "useTableForInterpretationsFollowingObservation");
+        if (useTableForInterpretationsFollowingObservation !== undefined) {
+            return useTableForInterpretationsFollowingObservation;
+        } else {
+            return false;
+        }
+    }
+
     graphTypesToCreate(catalysisReportIdentifier) {
         if (!catalysisReportIdentifier) {
             throw new Error("catalysisReportIdentifier was not supplied");

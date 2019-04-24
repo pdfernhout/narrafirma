@@ -289,6 +289,7 @@ export function printCatalysisReport() {
     options["correlationLineChoice"] = project.correlationLineChoice(catalysisReportIdentifier);
     options["outputGraphFormat"] = project.outputGraphFormat(catalysisReportIdentifier);
     options["showStatsPanelsInReport"] = project.showStatsPanelsInReport(catalysisReportIdentifier);
+    options["printInterpretationsAsTable"] = project.useTableForInterpretationsFollowingObservation(catalysisReportIdentifier);
     
     let printStrengthsToInclude = [];
     if (printStrengthsChoice["strong"] != undefined && printStrengthsChoice["strong"] === true) printStrengthsToInclude.push("3 (strong)");
@@ -458,6 +459,9 @@ function printCatalysisReportWithClusteredObservations(project, catalysisReportI
 
                         const idTag = "c_" + clusterIndex + "_o_" + itemIndex;
                         printItems.push(<any>printListOfObservations([item.referenceUUID], options["observationLabel"], idTag, "", allStories, options));
+
+                        const branchingQuestion = project.tripleStore.queryLatestC(item.referenceUUID, "observationBranchingQuestion");
+                        if (branchingQuestion) printItems.push(m("div.narrafirma-catalysis-report-observation-branching-question", branchingQuestion));
                         
                         const interpretationsListIdentifier = project.tripleStore.queryLatestC(item.referenceUUID, "observationInterpretations");
                         const interpretationIDsForThisObservation = project.tripleStore.getListForSetIdentifier(interpretationsListIdentifier);
@@ -640,7 +644,7 @@ function printCatalysisReportWithClusteredInterpretations(project, catalysisRepo
 
 function printListOfObservations(observationList, observationLabel, idTag, interpretationNotes, allStories, options) {
 
-    return printList(observationList, {}, function (item, index) {
+    return printList(observationList, {}, false, function (item, index) {
         var project = Globals.project();
         var pattern = item.pattern;
         var selectionCallback = function() { return this; };
@@ -689,7 +693,7 @@ function printListOfObservations(observationList, observationLabel, idTag, inter
 
 function printListOfInterpretations(interpretationList, interpretationLabel, idTagStart, observationDescription, allStories, options) {
 
-    return printList(interpretationList, {}, function (item, index) {
+    return printList(interpretationList, {}, options["printInterpretationsAsTable"], function (item, index) {
         var project = Globals.project();
         var pattern = item.pattern;
         var selectionCallback = function() { return this; };
@@ -718,6 +722,9 @@ function printListOfInterpretations(interpretationList, interpretationLabel, idT
         const resultItems = [];
         resultItems.push(m("h3.narrafirma-catalysis-report-interpretation", {"id": idTagStart + "_i_" + index}, headerItems));
         resultItems.push(m("div.narrafirma-catalysis-report-interpretation-notes", printText(item.interpretation_text)));
+        if (item.interpretation_idea) {
+            resultItems.push(m("div.narrafirma-catalysis-report-interpretation-idea", printText(item.interpretation_idea)));
+        }
 
         return resultItems;
     });
@@ -1326,16 +1333,20 @@ function printItem(item, fieldsToIgnore = {}) {
     return result;
 }
 
-function printList(list, fieldsToIgnore = {}, printItemFunction: Function = printItem) {
-    var result = [];
-    var project = Globals.project();
+function printList(list, fieldsToIgnore = {}, printAsTable = false, printItemFunction: Function = printItem) {
+    let result = [];
+    let row = [];
+    let project = Globals.project();
     list.forEach((id, index) => {
         var item = project.tripleStore.makeObject(id, true);
-        result.push(printItemFunction(item, index, fieldsToIgnore));
-        result.push([
-            printReturn()
-        ]);
+        if (printAsTable) {
+            row.push(m("td", m("div", {"class": "narrafirma-catalysis-report-list-table-td-div"}, printItemFunction(item, index, fieldsToIgnore))));
+        } else {
+            result.push(printItemFunction(item, index, fieldsToIgnore));
+            result.push([printReturn()]);
+        }
     });
+    if (printAsTable) result.push(m("table", {"class": "narrafirma-catalysis-report-list-table"}, m("tr", row)));
     return result;
 }
 

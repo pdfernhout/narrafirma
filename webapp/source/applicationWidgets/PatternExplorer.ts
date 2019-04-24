@@ -207,24 +207,32 @@ class PatternExplorer {
                 {
                     id: "observationPanel_description",
                     valuePath: "currentObservationDescription",
-                    displayName: "Observation",
+                    displayName: "Observation description",
                     displayPrompt: "If this pattern is noteworthy, enter an <strong>observation</strong> about the pattern here.",
                     displayType: "textarea"
                 },
                 {
                     id: "observationPanel_title",
                     valuePath: "currentObservationTitle",
-                    displayName: "Observation",
+                    displayName: "Observation title",
                     displayPrompt: "Please give this observation a short <strong>name</strong>. This name will represent it during clustering and in the printed report.",
                     displayType: "text"
                 },
                 {
                     id: "observationPanel_strength",
                     valuePath: "currentObservationStrength",
-                    displayName: "Observation",
+                    displayName: "Observation strength",
                     displayPrompt: "How <strong>strong</strong> is this pattern?",
                     displayType: "select",
                     valueOptions: ["1 (weak)", "2 (medium)", "3 (strong)"]
+                },
+                {
+                    id: "observationPanel_branchingQuestion",
+                    valuePath: "currentObservationBranchingQuestion",
+                    displayName: "Observation branching question",
+                    displayPrompt: `If you want to print a catalysis report in which interpretations follow observations, enter a <strong>branching question</strong>,
+                        that is, a question that will be printed after the observation and to which the interpretations will represent answers.`,
+                    displayType: "text"
                 },
             ]
         };
@@ -1407,13 +1415,6 @@ currentObservationDescription(newValue = undefined) {
     return this.observationAccessor(this.currentPattern, "observationDescription", newValue);
 }
 
-currentObservationSimplerDescription(newValue = undefined) {
-    if (!this.currentPattern) {
-        return "";
-    }
-    return this.observationAccessor(this.currentPattern, "observationSimplerDescription", newValue);
-}
-
 currentObservationTitle(newValue = undefined) {
     if (!this.currentPattern) {
         return "";
@@ -1426,6 +1427,13 @@ currentObservationStrength(newValue = undefined) {
         return "";
     }
     return this.observationAccessor(this.currentPattern, "observationStrength", newValue);
+}
+
+currentObservationBranchingQuestion(newValue = undefined) {
+    if (!this.currentPattern) {
+        return "";
+    }
+    return this.observationAccessor(this.currentPattern, "observationBranchingQuestion", newValue);
 }
 
 currentObservationSavedGraphSelections(newValue = undefined) {

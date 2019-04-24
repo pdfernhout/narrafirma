@@ -1063,6 +1063,28 @@ td.narrafirma-mw-nested-title, td.narrafirma-mw-nested-stats {
     background: rgb(238, 242, 250);
 }
 
+.narrafirma-catalysis-report-observation-branching-question {
+    padding: 0.5em;
+    margin-bottom: 0.5em;
+    text-align: center;
+    font-style: italic;
+    background: #c5d2eb;
+}
+
+.narrafirma-catalysis-report-list-table {
+    width: 100%;
+    height: 100%;
+}
+
+.narrafirma-catalysis-report-list-table td {
+    height: 100%;
+}
+
+.narrafirma-catalysis-report-list-table-td-div {
+    height: 100%;
+    overflow: auto;
+}
+
 .narrafirma-catalysis-report-observations-only-page-break {
     page-break-after: always;
 }
