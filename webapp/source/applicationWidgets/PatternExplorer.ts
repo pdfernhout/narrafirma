@@ -215,7 +215,7 @@ class PatternExplorer {
                     id: "observationPanel_title",
                     valuePath: "currentObservationTitle",
                     displayName: "Observation",
-                    displayPrompt: "Please give this observation a short <strong>name</strong>.",
+                    displayPrompt: "Please give this observation a short <strong>name</strong>. This name will represent it during clustering and in the printed report.",
                     displayType: "text"
                 },
                 {
@@ -1405,6 +1405,13 @@ currentObservationDescription(newValue = undefined) {
         return "";
     }
     return this.observationAccessor(this.currentPattern, "observationDescription", newValue);
+}
+
+currentObservationSimplerDescription(newValue = undefined) {
+    if (!this.currentPattern) {
+        return "";
+    }
+    return this.observationAccessor(this.currentPattern, "observationSimplerDescription", newValue);
 }
 
 currentObservationTitle(newValue = undefined) {
