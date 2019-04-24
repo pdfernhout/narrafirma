@@ -11,12 +11,12 @@ var panel: Panel = {
             valueType: "none",
             displayType: "label",
             displayPrompt: `
-                On this page you will <strong>cluster</strong> your interpretations and/or observations into groups.
-                Creating groups helps you make sense of larger patterns, and it also divides your catalysis report into sections.
+                On this page you will <strong>cluster</strong> your interpretations and/or observations into groups that will divide your catalysis report into sections.
+                (For help deciding which of these to cluster, click Help.)
                 <br><br>
-                <i><strong>Note</strong>: The interpretations and observations shown here do not automatically update when you
+                The interpretations and observations shown here do not automatically update when you
                 create or change interpretations or observations on the previous page. 
-                After you make changes there, press the appropriate "Start or update clustering diagram" button to see your changes reflected here.</i>
+                After you make changes there, press the appropriate "Copy or Update" button to see your changes reflected here.
                 `
         },
         {
@@ -38,15 +38,17 @@ var panel: Panel = {
             displayVisible: function(panelBuilder, model) {
                 return !!Globals.clientState().catalysisReportIdentifier();
             }
-        },        {
+        },        
+        {
             id: "promptToSelectCatalysisReportForInterpretations",
             valueType: "none",
             displayType: "label",
-            displayPrompt: "<strong>Please select a catalysis report above to get a clustering diagram here.</strong>",
+            displayPrompt: "<strong>Please select a catalysis report above to see clustering surfaces here.</strong>",
             displayVisible: function(panelBuilder, model) {
                 return !Globals.clientState().catalysisReportIdentifier();
             }
         },
+
 
         {
             id: "cluster_interpretationsHeader",
@@ -57,34 +59,41 @@ var panel: Panel = {
                 return !!Globals.clientState().catalysisReportIdentifier();
             }
         },
-
         {
             id: "copyInterpretationsButton",
             valueType: "none",
             displayType: "button",
             displayConfiguration: "copyInterpretationsToClusteringDiagram",
-            displayPrompt: "Start or update interpretations clustering diagram",
+            displayPrompt: "Copy or Update Interpretations",
             displayVisible: function(panelBuilder, model) {
                 return !!Globals.clientState().catalysisReportIdentifier();
             }
         },
-
         {
             id: "interpretationsClusteringDiagram",
             valueType: "object",
             valuePath: "/clientState/catalysisReportIdentifier/interpretationsClusteringDiagram",
             displayType: "clusteringDiagram",
-            displayPrompt: `
-                Place similar interpretations together. 
-                (Shift-click to select multiple items.)
-                Then name and describe each cluster of interpretations. 
-                These clusters, or <strong>perspectives</strong>, will become the headings of your clustered-interpretations catalysis report.
-                `,
+            displayPrompt: "",
             displayConfiguration: "interpretations",
             displayVisible: function(panelBuilder, model) {
                 return !!Globals.clientState().catalysisReportIdentifier();
             }
         },
+        {
+            id: "cluster_interpretationsLabel",
+            valueType: "none",
+            displayType: "label",
+            displayPrompt: `Instructions: 
+            Drag similar interpretations close to each other. 
+            (Shift-click to select multiple interpretations.)
+            Then create clusters to name and describe each group of interpretations. 
+            These clusters, or <strong>perspectives</strong>, will become the headings of your clustered-interpretations catalysis report.`,
+            displayVisible: function(panelBuilder, model) {
+                return !!Globals.clientState().catalysisReportIdentifier();
+            }
+        },
+
 
         {
             id: "cluster_observationsHeader",
@@ -94,29 +103,38 @@ var panel: Panel = {
             displayVisible: function(panelBuilder, model) {
                 return !!Globals.clientState().catalysisReportIdentifier();
             }
-        },        {
+        },        
+        {
             id: "copyObservationsButton",
             valueType: "none",
             displayType: "button",
             displayConfiguration: "copyObservationsToClusteringDiagram",
-            displayPrompt: "Start or update observations clustering diagram",
+            displayPrompt: "Copy or Update Observations",
             displayVisible: function(panelBuilder, model) {
                 return !!Globals.clientState().catalysisReportIdentifier();
             }
         },
-
         {
             id: "observationsClusteringDiagram",
             valueType: "object",
             valuePath: "/clientState/catalysisReportIdentifier/observationsClusteringDiagram",
             displayType: "clusteringDiagram",
-            displayPrompt: `
-                Place similar observations together. 
-                (Shift-click to select multiple items.)
-                Then name and describe each cluster of observations. 
-                These clusters, or <strong>themes</strong>, will become the headings of your clustered-observations catalysis report.
-                `,
+            displayPrompt: "",
             displayConfiguration: "observations",
+            displayVisible: function(panelBuilder, model) {
+                return !!Globals.clientState().catalysisReportIdentifier();
+            }
+        },
+        {
+            id: "cluster_observationsLabel",
+            valueType: "none",
+            displayType: "label",
+            displayPrompt: `
+                Instructions: 
+                Drag similar observations close to each other. 
+                (Shift-click to select multiple observations.)
+                Then create clusters to name and describe each group of observations. 
+                These clusters, or <strong>themes</strong>, will become the headings of your clustered-observations catalysis report.`,
             displayVisible: function(panelBuilder, model) {
                 return !!Globals.clientState().catalysisReportIdentifier();
             }

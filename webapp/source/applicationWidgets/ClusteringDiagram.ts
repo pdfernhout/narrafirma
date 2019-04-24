@@ -10,8 +10,8 @@ import Globals = require("../Globals");
 
 // TODO: Make a systemic communications fix to PointrelClient so can stop using Math.round to ensure x and y are integers to avoid JSON conversion errors and sha256 error in WordPress plugin due to PHP and numeric precision (2015-10-08)
 
-var defaultSurfaceWidthInPixels = 800;
-var defaultSurfaceHeightInPixels = 500;
+const defaultSurfaceWidthInPixels = 800;
+const defaultSurfaceHeightInPixels = 500;
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // support functions
@@ -102,10 +102,13 @@ class ClusteringDiagram {
     rubberBandingStartY = 0;
     
     showEntryDialog = false;
-    
     itemBeingEdited: ClusteringDiagramItem = null;
     itemBeingEditedCopy: ClusteringDiagramItem = null;
     isEditedItemNew = false;
+
+    showSurfaceSizeDialog = false;
+    surfaceWidthBeingEdited = 0;
+    surfaceHeightBeingEdited = 0;
 
     static defaultItemBodyColor = "#abb6ce"; 
     static defaultClusterBodyColor = "#84c8ff";
@@ -373,10 +376,10 @@ class ClusteringDiagram {
         }
     
         // allow user to delete items even if they are interpretations/observations
-        this.newButton("deleteButton", "Delete", () => {
+        this.newButton("deleteButton", "Delete item or cluster", () => {
             if (!this.lastSelectedItem) {
                 // TODO: Translate
-                alert("Please select an item to delete.");
+                alert("Please select an item or cluster to delete.");
                 return;
             }
             const itemOrCluster = this.lastSelectedItem.type === "cluster" ? "cluster" : "item";
@@ -391,8 +394,8 @@ class ClusteringDiagram {
             });
         });
         
-        this.newButton("canvasSizeButton", "Diagram size", () => {
-            this.openCanvasSizeDialog();
+        this.newButton("surfaceSizeButton", "Change surface size", () => {
+            this.openSurfaceSizeDialog();
         });
         
         if (!this.autosave) {
@@ -408,6 +411,12 @@ class ClusteringDiagram {
                 this.openSourceDialog(JSON.stringify(this.model, null, 2));
             });
         }
+    }
+
+    newButton(name, label, callback) {
+        var button = m("button", {onclick: callback, "class": name}, label);
+        this.mainButtons.push(button);
+        return button;
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -437,6 +446,10 @@ class ClusteringDiagram {
         if (this.showEntryDialog) {
             entryDialog.push(this.buildEntryDialog());
         }
+        let surfaceSizeDialog = [];
+        if (this.showSurfaceSizeDialog) {
+            surfaceSizeDialog.push(this.buildSurfaceSizeDialog());
+        }
         
         this.model.items.forEach(function(item) {
             var displayObject = this.itemToDisplayObjectMap[item.uuid];
@@ -447,9 +460,10 @@ class ClusteringDiagram {
         }, this);
         
         return m("div", [
-            this.mainButtons,
             m("div", {config: this.configSurface.bind(this)}),
-            entryDialog 
+            this.mainButtons,
+            entryDialog,
+            surfaceSizeDialog
         ]);
     }
     
@@ -674,6 +688,19 @@ class ClusteringDiagram {
         this.incrementChangesCount();
         this.selectItem(this.itemBeingEdited);
     }
+
+    acceptChangesToSurfaceSize() {
+        this.showSurfaceSizeDialog = false;
+        if (this.surfaceWidthBeingEdited !== this.model.surfaceWidthInPixels || this.surfaceHeightBeingEdited !== this.model.surfaceHeightInPixels) {
+            this.model.surfaceWidthInPixels = this.surfaceWidthBeingEdited;
+            this.model.surfaceHeightInPixels = this.surfaceHeightBeingEdited;
+            this._mainSurface
+                .attr('width', this.surfaceWidthBeingEdited)
+                .attr('height', this.surfaceHeightBeingEdited);
+            this.incrementChangesCount();
+            m.redraw();
+        }
+    }
     
     // typeOfChange should be either "delete" or "update"
     updateDisplayForChangedItem(item, typeOfChange) {
@@ -711,7 +738,7 @@ class ClusteringDiagram {
         this.recreateDisplayObjectsForAllItems();
         
         this.clearSelection();
-        this.updateSizeOfCanvasFromModel();
+        this.updateSizeOfSurfaceFromModel();
     }
     
     recreateDisplayObjectsForAllItems() {
@@ -724,63 +751,46 @@ class ClusteringDiagram {
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    // resizing 
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        
-    updateSizeOfCanvasFromResizeHandle() {
-        var newWidth = this.divForResizing.clientWidth;
-        var newHeight = this.divForResizing.clientHeight;
-        
-        this._mainSurface.attr("width", newWidth).attr("height", newHeight);
-        this.background.attr('width', newWidth).attr('height', newHeight);
-        
-        this.model.surfaceWidthInPixels = newWidth;
-        this.model.surfaceHeightInPixels = newHeight;
-        
-        this.incrementChangesCount();
-    }
-
-    updateSizeOfCanvasFromModel() {
-        var newWidth = this.model.surfaceWidthInPixels;
-        var newHeight = this.model.surfaceHeightInPixels;
-        
-        this.divForResizing.setAttribute("style", "width: " + this.model.surfaceWidthInPixels + "px; height: " + this.model.surfaceHeightInPixels + "px; border: solid 1px; position: relative");
-        this._mainSurface.attr("width", newWidth).attr("height", newHeight);
-        this.background.attr('width', newWidth).attr('height', newHeight);
-    }
-
-    newButton(name, label, callback) {
-        var button = m("button", {onclick: callback, "class": name}, label);
-        this.mainButtons.push(button);
-        return button;
-    }
-
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // pop-up dialogs
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     
-    openCanvasSizeDialog() {
-        // TODO: Make a single dialog
-        // TODO: Translate
-        var newWidthString = prompt("How wide (in pixels) would you like this clustering surface to be?", "" + this.model.surfaceWidthInPixels);
-        if (!newWidthString) return;
-        var newWidth = parseInt(newWidthString.trim(), 10);
-        if (!newWidth) return;
-         
-        var newHeightString = prompt("How high (in pixels) would you like this clustering surface to be?", "" + this.model.surfaceHeightInPixels);
-        if (!newHeightString) return;
-        var newHeight = parseInt(newHeightString.trim(), 10);
-        if (!newHeight) return;
-         
-        if (newWidth !== this.model.surfaceWidthInPixels || newHeight !== this.model.surfaceHeightInPixels) {
-            this.model.surfaceWidthInPixels = newWidth;
-            this.model.surfaceHeightInPixels = newHeight;
-            this._mainSurface
-                .attr('width', newWidth)
-                .attr('height', newHeight);
-            this.incrementChangesCount();
-        }
+    openSurfaceSizeDialog() {
+        this.surfaceWidthBeingEdited = this.model.surfaceWidthInPixels;
+        this.surfaceHeightBeingEdited = this.model.surfaceHeightInPixels;
+        this.showSurfaceSizeDialog = true;
     }
+
+    buildSurfaceSizeDialog() {
+        return m("div.overlay", m("div.modal-content", {"style": "width: 30%"}, [
+             "This is the current size of the clustering surface, in pixels. Enter one or two new numbers to change it.",
+             m("br"),
+             m("br"),
+             m('label', {"for": "sizeDialog_width"}, "Width:"),
+             m('input[type=text]', {
+                 id: "sizeDialog_width",
+                 value: this.model.surfaceWidthInPixels,
+                 onchange: (event) => { 
+                    let newWidth = parseInt(event.target.value.trim(), 10);
+                    if (newWidth) this.surfaceWidthBeingEdited = newWidth; 
+                    }
+             }),
+             m('br'),
+             m('br'),
+             m('label', {"for": "sizeDialog_height"}, "Height:"),
+             m('input[type=text]', {
+                 id: "sizeDialog_height",
+                 value: this.model.surfaceHeightInPixels,
+                 onchange: (event) => { 
+                    let newHeight = parseInt(event.target.value.trim(), 10);
+                    if (newHeight) this.surfaceHeightBeingEdited = newHeight; 
+                    }
+             }),
+             m("br"),
+             m("br"),
+             m("button", {onclick: () => {this.showSurfaceSizeDialog = false;}}, "Cancel"),
+             m("button", {onclick: () => {this.acceptChangesToSurfaceSize();}}, "OK")
+         ]));
+     }
     
     openEntryDialog(item, isExistingItem) {
         this.itemBeingEdited = item;
@@ -790,8 +800,9 @@ class ClusteringDiagram {
     }
 
     buildEntryDialog() {
-       return m("div.overlay", m("div.modal-content", [
-            "Edit " + this.itemBeingEditedCopy.type,
+        let createOrEdit = (this.isEditedItemNew) ? "New" : "Edit";
+        return m("div.overlay", m("div.modal-content", {"style": "width: 40%"}, [
+            createOrEdit + " " + this.itemBeingEditedCopy.type,
             m("br"),
             m("br"),
             m('label', {"for": "itemDialog_name"}, "Name:"),
@@ -803,6 +814,7 @@ class ClusteringDiagram {
             m('br'),
             m('br'),
             m('label', {"for": "itemDialog_notes"}, "Notes:"),
+            m("br"),
             m('textarea[class=narrafirma-textbox]', {
                 id: "itemDialog_notes",
                 value: this.itemBeingEditedCopy.notes || "",
@@ -837,6 +849,32 @@ class ClusteringDiagram {
     
     openSourceDialog(text) {
         dialogSupport.openTextEditorDialog(text, "#clusterDiagramSource_titleID|Clustering Diagram", "#clusterDiagramSource_okButtonID|OK", this.updateSourceClicked.bind(this));
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // resizing 
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        
+    updateSizeOfSurfaceFromResizeHandle() {
+        var newWidth = this.divForResizing.clientWidth;
+        var newHeight = this.divForResizing.clientHeight;
+        
+        this._mainSurface.attr("width", newWidth).attr("height", newHeight);
+        this.background.attr('width', newWidth).attr('height', newHeight);
+        
+        this.model.surfaceWidthInPixels = newWidth;
+        this.model.surfaceHeightInPixels = newHeight;
+        
+        this.incrementChangesCount();
+    }
+
+    updateSizeOfSurfaceFromModel() {
+        var newWidth = this.model.surfaceWidthInPixels;
+        var newHeight = this.model.surfaceHeightInPixels;
+        
+        this.divForResizing.setAttribute("style", "width: " + this.model.surfaceWidthInPixels + "px; height: " + this.model.surfaceHeightInPixels + "px; border: solid 1px; position: relative");
+        this._mainSurface.attr("width", newWidth).attr("height", newHeight);
+        this.background.attr('width', newWidth).attr('height', newHeight);
     }
 
 } // end of the ClusteringDiagram class

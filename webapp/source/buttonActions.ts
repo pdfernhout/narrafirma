@@ -39,6 +39,164 @@ export function helpButtonClicked() {
     browser.launchApplication(helpURL, 'help');
 }
 
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// overall - links
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+export function logoutButtonClicked() {
+    // TODO: Warn if have any read-only changes that would be lost
+    if (confirm("Are you sure you want to log out?")) {
+        var isWordPressAJAX = !!window["ajaxurl"];
+        if (isWordPressAJAX) {
+            window.location.href = window.location.href.split("wp-content")[0] + "wp-login.php?action=logout";
+        } else {
+            window.location.href = "/logout";
+        }
+    }
+}
+
+export function loginButtonClicked() {
+// TODO: Warn if have any read-only changes that would be lost
+    var isWordPressAJAX = !!window["ajaxurl"];
+    if (isWordPressAJAX) {
+        window.location.href = window.location.href.split("wp-content")[0] + "wp-login.php?action=login";
+    } else {
+        window.location.href = "/login";
+    }
+}
+
+export function guiOpenSection(model, fieldSpecification, value) {
+    var section = fieldSpecification.displayConfiguration.section;
+    
+    // Don't queue an extra redraw as one is already queued since this code get called by a button press
+    var isRedrawAlreadyQueued = true;
+    pageDisplayer.showPage(section, false, isRedrawAlreadyQueued);
+    // document.body.scrollTop = 0;
+    // document.documentElement.scrollTop = 0;
+    window.scrollTo(0, 0);
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// overall - clustering diagram
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+function copyClusteringDiagramElements(fromDiagramField: string, fromType: string, toDiagramField: string, toType: string) {
+    var fromDiagram: ClusteringDiagramModel = project.getFieldValue(fromDiagramField);
+    if (!fromDiagram || !fromDiagram.items.length) return;
+    var toDiagram: ClusteringDiagramModel = project.getFieldValue(toDiagramField) || ClusteringDiagram.newDiagramModel();
+    var addedItemCount = 0;
+    
+    fromDiagram.items.forEach((item) => {
+        if (item.type === fromType) {
+            if (!isNamedItemInDiagram(toDiagram, item.name, toType)) {
+                ClusteringDiagram.addNewItemToDiagram(toDiagram, toType, item.name, item.notes);
+                addedItemCount++;
+            }
+        }
+    });
+    
+    if (addedItemCount) {
+        toaster.toast("Updating clustering surface");
+        project.setFieldValue(toDiagramField, toDiagram);
+    } else {
+        toaster.toast("No changes were needed to clustering surface");
+    }
+}
+
+export function copyPlanningStoriesToClusteringDiagram(model) {
+    var list = project.getListForField("project_projectStoriesList");
+    var toDiagramField = "project_storyElements_answersClusteringDiagram";
+    var toDiagram: ClusteringDiagramModel = project.getFieldValue(toDiagramField) || ClusteringDiagram.newDiagramModel();
+    var addedItemCount = 0;
+        
+    list.forEach((projectStoryIdentifier) => {
+        var projectStory = project.tripleStore.makeObject(projectStoryIdentifier);
+        
+        var storyName = projectStory.projectStory_name;
+        var storyText = projectStory.projectStory_text;
+        
+        if (!isNamedItemInDiagram(toDiagram, storyName, "cluster")) {
+            ClusteringDiagram.addNewItemToDiagram(toDiagram, "cluster", storyName, storyText);
+            addedItemCount++;
+        }    
+    });
+    
+    if (addedItemCount) {
+        toaster.toast("Updating clustering surface");
+        project.setFieldValue(toDiagramField, toDiagram);
+    } else {
+        toaster.toast("No changes were needed to clustering surface");
+    }
+
+}
+
+function isNamedItemInDiagram(diagram: ClusteringDiagramModel, name: string, itemType: string = null) {
+    // Array.some returns true or false depending on whether there is soem item that tests true 
+    return diagram.items.some((item) => {
+        if (!itemType || item.type === itemType) {
+            if (item.name === name) {
+                return true;
+            }
+        }
+        return false;
+    });
+}
+
+export function copyAnswersToClusteringDiagram(model) {
+    copyClusteringDiagramElements("project_storyElements_answersClusteringDiagram", "item", "project_storyElements_answerClustersClusteringDiagram", "item");
+}
+
+export function copyAnswerClustersToClusteringDiagram(model) {
+    copyClusteringDiagramElements("project_storyElements_answerClustersClusteringDiagram", "cluster", "project_storyElements_attributesClusteringDiagram", "cluster");
+}
+
+export function copyAttributesToClusteringDiagram(model) {
+    copyClusteringDiagramElements("project_storyElements_attributesClusteringDiagram", "item", "project_storyElements_attributeClustersClusteringDiagram", "item");
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// planning
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+function copyDraftPNIQuestionVersionsIntoAnswers_Basic() {
+    var finalQuestionIDs = [
+        "project_pniQuestions_goal_final",
+        "project_pniQuestions_relationships_final",
+        "project_pniQuestions_focus_final",
+        "project_pniQuestions_range_final",
+        "project_pniQuestions_scope_final",
+        "project_pniQuestions_emphasis_final"
+    ];
+
+    var copiedAnswersCount = 0;
+
+    for (var index in finalQuestionIDs) {
+        var finalQuestionID = finalQuestionIDs[index];
+        var draftQuestionID = finalQuestionID.replace("_final", "_draft");
+        var finalValue = project.tripleStore.queryLatestC(project.projectIdentifier, finalQuestionID);
+        if (!finalValue) {
+            var draftValue = project.tripleStore.queryLatestC(project.projectIdentifier, draftQuestionID);
+            if (draftValue) {
+                project.tripleStore.addTriple(project.projectIdentifier, finalQuestionID, draftValue);
+                copiedAnswersCount++;
+            }
+        }
+    }
+
+    return copiedAnswersCount;
+}
+
+export function copyDraftPNIQuestionVersionsIntoAnswers() {
+    var copiedAnswersCount = copyDraftPNIQuestionVersionsIntoAnswers_Basic();
+    var template = translate("#copyDraftPNIQuestion_template", "Copied {{copiedAnswersCount}} answers.\n\n(Note that blank draft answers are not copied, and non-blank final answers are not replaced.)");
+    var message = template.replace("{{copiedAnswersCount}}", copiedAnswersCount);
+    alert(message);
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// collection
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 // Caller should call wizard.forward() on successful save to see the last page, and provide a retry message otherwise
 // Caller may also want to call (the returned) surveyDialog.hide() to close the window, or let the user do it.
 function openMithrilSurveyDialog(questionnaire, callback, previewModeTitleText = null) {  
@@ -79,78 +237,8 @@ function openSurveyDialog() {
     }
 }
 
-///////// Button functions
-
 export function copyStoryFormURL() {
     alert("Story form URL is: " + "http://localhost:8080/survey.html");
-}
-
-export function guiOpenSection(model, fieldSpecification, value) {
-    var section = fieldSpecification.displayConfiguration.section;
-    
-    // Don't queue an extra redraw as one is already queued since this code get called by a button press
-    var isRedrawAlreadyQueued = true;
-    pageDisplayer.showPage(section, false, isRedrawAlreadyQueued);
-    // document.body.scrollTop = 0;
-    // document.documentElement.scrollTop = 0;
-    window.scrollTo(0, 0);
-}
-
-function copyDraftPNIQuestionVersionsIntoAnswers_Basic() {
-    var finalQuestionIDs = [
-        "project_pniQuestions_goal_final",
-        "project_pniQuestions_relationships_final",
-        "project_pniQuestions_focus_final",
-        "project_pniQuestions_range_final",
-        "project_pniQuestions_scope_final",
-        "project_pniQuestions_emphasis_final"
-    ];
-
-    var copiedAnswersCount = 0;
-
-    for (var index in finalQuestionIDs) {
-        var finalQuestionID = finalQuestionIDs[index];
-        var draftQuestionID = finalQuestionID.replace("_final", "_draft");
-        var finalValue = project.tripleStore.queryLatestC(project.projectIdentifier, finalQuestionID);
-        if (!finalValue) {
-            var draftValue = project.tripleStore.queryLatestC(project.projectIdentifier, draftQuestionID);
-            if (draftValue) {
-                project.tripleStore.addTriple(project.projectIdentifier, finalQuestionID, draftValue);
-                copiedAnswersCount++;
-            }
-        }
-    }
-
-    return copiedAnswersCount;
-}
-
-export function copyDraftPNIQuestionVersionsIntoAnswers() {
-    var copiedAnswersCount = copyDraftPNIQuestionVersionsIntoAnswers_Basic();
-    var template = translate("#copyDraftPNIQuestion_template", "Copied {{copiedAnswersCount}} answers.\n\n(Note that blank draft answers are not copied, and non-blank final answers are not replaced.)");
-    var message = template.replace("{{copiedAnswersCount}}", copiedAnswersCount);
-    alert(message);
-}
-
-export function logoutButtonClicked() {
-    // TODO: Warn if have any read-only changes that would be lost
-    if (confirm("Are you sure you want to log out?")) {
-        var isWordPressAJAX = !!window["ajaxurl"];
-        if (isWordPressAJAX) {
-            window.location.href = window.location.href.split("wp-content")[0] + "wp-login.php?action=logout";
-        } else {
-            window.location.href = "/logout";
-        }
-    }
-}
-
-export function loginButtonClicked() {
-// TODO: Warn if have any read-only changes that would be lost
-    var isWordPressAJAX = !!window["ajaxurl"];
-    if (isWordPressAJAX) {
-        window.location.href = window.location.href.split("wp-content")[0] + "wp-login.php?action=login";
-    } else {
-        window.location.href = "/login";
-    }
 }
 
 /*
@@ -188,6 +276,47 @@ export function exportStoryFormWhileEditingIt_ExternalFormat(model, fieldSpecifi
     var questionnaire = questionnaireGeneration.buildQuestionnaireFromTemplate(model, "");
     csvImportExport.exportQuestionnaireForImport(questionnaire);
 }
+
+export function setQuestionnaireForStoryCollection(storyCollectionIdentifier): boolean {
+    if (!storyCollectionIdentifier) return false;
+    var questionnaireName = project.tripleStore.queryLatestC(storyCollectionIdentifier, "storyCollection_questionnaireIdentifier");
+    var questionnaire = questionnaireGeneration.buildQuestionnaire(questionnaireName);
+    if (!questionnaire) return false;
+    project.tripleStore.addTriple(storyCollectionIdentifier, "questionnaire", questionnaire);
+    return true;
+}
+
+export function updateQuestionnaireForStoryCollection(storyCollectionIdentifier) {
+    if (!storyCollectionIdentifier) {
+        alert("Problem: No storyCollectionIdentifier");
+        return;
+    }
+    
+    var storyCollectionName = project.tripleStore.queryLatestC(storyCollectionIdentifier, "storyCollection_shortName");
+    if (!storyCollectionName) {
+        alert("Problem: No storyCollectionName");
+        return;
+    }
+    
+    // TODO: Translate
+    var confirmResult = confirm('Update story form for story collection "' + storyCollectionName + '"?"\n(Updating is not recommended once data collection has begun.)');
+    if (!confirmResult) return;
+    
+    var updateResult = setQuestionnaireForStoryCollection(storyCollectionIdentifier);
+
+    if (!updateResult) {
+        alert("Problem: No questionnaire could be created");
+        return;
+    }
+    
+    toaster.toast("Updated story form");
+    
+    return;
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// catalysis
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 export function copyInterpretationsToClusteringDiagram() {
     var shortName = clientState.catalysisReportName();
@@ -328,7 +457,7 @@ export function copyInterpretationsToClusteringDiagram() {
                 if (newNotes !== item.notes) {
                     item.notes = newNotes;
                 }
-                if (item.strength === undefined || newStrength != item.strength) {
+                if (item.strength === undefined || item.bodyColor === undefined || newStrength != item.strength) {
                     item.strength = newStrength;
                     setItemColorBasedOnStrength(item, newStrength);
                     itemChanged = true;
@@ -371,9 +500,9 @@ export function copyInterpretationsToClusteringDiagram() {
 
     project.tripleStore.addTriple(catalysisReportIdentifier, "interpretationsClusteringDiagram", clusteringDiagram);
     if (addedItemCount === 0 && updatedItemCount === 0) {
-        toaster.toast("The clustering diagram is up to date.");
+        toaster.toast("The clustering surface is up to date.");
     } else {
-        toaster.toast("Added " + addedItemCount + " interpretations and updated " + updatedItemCount +  " interpretations in the clustering diagram.");
+        toaster.toast("Added " + addedItemCount + " interpretations and updated " + updatedItemCount +  " interpretations in the clustering surface.");
     }
 }
 
@@ -430,7 +559,7 @@ export function copyObservationsToClusteringDiagram() {
                     item.notes = newNotes;
                     itemChanged = true;
                 }
-                if (item.strength === undefined || item.strength != newStrength) {
+                if (item.strength === undefined || item.bodyColor === undefined || newStrength != item.strength) {
                     item.strength = newStrength;
                     setItemColorBasedOnStrength(item, newStrength);
                     itemChanged = true;
@@ -462,136 +591,34 @@ export function copyObservationsToClusteringDiagram() {
         toaster.toast("The observations clustering diagram is up to date.");
     } else {
         project.tripleStore.addTriple(catalysisReportIdentifier, "observationsClusteringDiagram", clusteringDiagram);
-        toaster.toast("Added " + addedItemCount + " observations and updated " + updatedItemCount +  " observations in the clustering diagram.");
+        toaster.toast("Added " + addedItemCount + " observations and updated " + updatedItemCount +  " observations in the clustering surface.");
     }
 }
+
+const itemColor_strong = "#ff9138";
+const itemColor_medium = "#ffbb84";
+const itemColor_weak = "#ffe5d1";
+const itemColor_unassigned = "#979696";
 
 function setItemColorBasedOnStrength(item, strength) {
     switch (strength) {
         case "3 (strong)":
-            item.bodyColor = "#ff9138";
+            item.bodyColor = itemColor_strong;
             break;
         case "2 (medium)":
-            item.bodyColor = "#ffbb84";
+            item.bodyColor = itemColor_medium;
             break;
         case "1 (weak)":  
-            item.bodyColor = "#ffe5d1";
+            item.bodyColor = itemColor_weak;
             break;
         default:
-            item.bodyColor = "#979696";
+            item.bodyColor = itemColor_unassigned;
     }
 }
 
-export function setQuestionnaireForStoryCollection(storyCollectionIdentifier): boolean {
-    if (!storyCollectionIdentifier) return false;
-    var questionnaireName = project.tripleStore.queryLatestC(storyCollectionIdentifier, "storyCollection_questionnaireIdentifier");
-    var questionnaire = questionnaireGeneration.buildQuestionnaire(questionnaireName);
-    if (!questionnaire) return false;
-    project.tripleStore.addTriple(storyCollectionIdentifier, "questionnaire", questionnaire);
-    return true;
-}
-
-export function updateQuestionnaireForStoryCollection(storyCollectionIdentifier) {
-    if (!storyCollectionIdentifier) {
-        alert("Problem: No storyCollectionIdentifier");
-        return;
-    }
-    
-    var storyCollectionName = project.tripleStore.queryLatestC(storyCollectionIdentifier, "storyCollection_shortName");
-    if (!storyCollectionName) {
-        alert("Problem: No storyCollectionName");
-        return;
-    }
-    
-    // TODO: Translate
-    var confirmResult = confirm('Update story form for story collection "' + storyCollectionName + '"?"\n(Updating is not recommended once data collection has begun.)');
-    if (!confirmResult) return;
-    
-    var updateResult = setQuestionnaireForStoryCollection(storyCollectionIdentifier);
-
-    if (!updateResult) {
-        alert("Problem: No questionnaire could be created");
-        return;
-    }
-    
-    toaster.toast("Updated story form");
-    
-    return;
-}
-
-function isNamedItemInDiagram(diagram: ClusteringDiagramModel, name: string, itemType: string = null) {
-    // Array.some returns true or false depending on whether there is soem item that tests true 
-    return diagram.items.some((item) => {
-        if (!itemType || item.type === itemType) {
-            if (item.name === name) {
-                return true;
-            }
-        }
-        return false;
-    });
-}
-
-function copyClusteringDiagramElements(fromDiagramField: string, fromType: string, toDiagramField: string, toType: string) {
-    var fromDiagram: ClusteringDiagramModel = project.getFieldValue(fromDiagramField);
-    if (!fromDiagram || !fromDiagram.items.length) return;
-    var toDiagram: ClusteringDiagramModel = project.getFieldValue(toDiagramField) || ClusteringDiagram.newDiagramModel();
-    var addedItemCount = 0;
-    
-    fromDiagram.items.forEach((item) => {
-        if (item.type === fromType) {
-            if (!isNamedItemInDiagram(toDiagram, item.name, toType)) {
-                ClusteringDiagram.addNewItemToDiagram(toDiagram, toType, item.name, item.notes);
-                addedItemCount++;
-            }
-        }
-    });
-    
-    if (addedItemCount) {
-        toaster.toast("Updating diagram");
-        project.setFieldValue(toDiagramField, toDiagram);
-    } else {
-        toaster.toast("No changes were needed to diagram");
-    }
-}
-
-export function copyPlanningStoriesToClusteringDiagram(model) {
-    var list = project.getListForField("project_projectStoriesList");
-    var toDiagramField = "project_storyElements_answersClusteringDiagram";
-    var toDiagram: ClusteringDiagramModel = project.getFieldValue(toDiagramField) || ClusteringDiagram.newDiagramModel();
-    var addedItemCount = 0;
-        
-    list.forEach((projectStoryIdentifier) => {
-        var projectStory = project.tripleStore.makeObject(projectStoryIdentifier);
-        
-        var storyName = projectStory.projectStory_name;
-        var storyText = projectStory.projectStory_text;
-        
-        if (!isNamedItemInDiagram(toDiagram, storyName, "cluster")) {
-            ClusteringDiagram.addNewItemToDiagram(toDiagram, "cluster", storyName, storyText);
-            addedItemCount++;
-        }    
-    });
-    
-    if (addedItemCount) {
-        toaster.toast("Updating diagram");
-        project.setFieldValue(toDiagramField, toDiagram);
-    } else {
-        toaster.toast("No changes were needed to diagram");
-    }
-
-}
-
-export function copyAnswersToClusteringDiagram(model) {
-    copyClusteringDiagramElements("project_storyElements_answersClusteringDiagram", "item", "project_storyElements_answerClustersClusteringDiagram", "item");
-}
-
-export function copyAnswerClustersToClusteringDiagram(model) {
-    copyClusteringDiagramElements("project_storyElements_answerClustersClusteringDiagram", "cluster", "project_storyElements_attributesClusteringDiagram", "cluster");
-}
-
-export function copyAttributesToClusteringDiagram(model) {
-    copyClusteringDiagramElements("project_storyElements_attributesClusteringDiagram", "item", "project_storyElements_attributeClustersClusteringDiagram", "item");
-}
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// project administration
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 export function showListOfRemovedStoryCollections() {
     const removedCollections = projectImportExport.listOfRemovedStoryCollections();
@@ -609,6 +636,10 @@ export function showListOfRemovedStoryCollections() {
     }
     alert(message);
 }
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// button actions in other places
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 export var enterSurveyResult = openSurveyDialog;
 export var toggleWebActivationOfSurvey = surveyCollection.toggleWebActivationOfSurvey;
