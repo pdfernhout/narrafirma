@@ -562,7 +562,7 @@ function printCatalysisReportWithClusteredInterpretations(project, catalysisRepo
                 for (var i = 0; i < cluster.items.length ; i++) {
                     const item = cluster.items[i];
                     if (item.print) {
-                        var observationIDsForThisInterpretation = makeObservationIDsListForInterpretation(project, observationIDs, item.name, item.notes);
+                        var observationIDsForThisInterpretation = makeObservationIDsListForInterpretation(project, observationIDs, item);
                         observationsIDsForInterpretation[item.uuid] = observationIDsForThisInterpretation; // save to use later
 
                         for (var observationIndex = 0; observationIndex < observationIDsForThisInterpretation.length; observationIndex++) {
@@ -846,7 +846,7 @@ function clustersThatMatchObservationIDList(project, clusteringDiagram, perspect
                     item.print = false;
                 } else {
                     // the item is an interpretation; find out if any of these observations are connected to it
-                    const includedObservationIDsLinkedToThisInterpretation = makeObservationIDsListForInterpretation(project, observationIDs, item.name, item.notes);
+                    const includedObservationIDsLinkedToThisInterpretation = makeObservationIDsListForInterpretation(project, observationIDs, item);
                     if (includedObservationIDsLinkedToThisInterpretation.length > 0) {
                         if (clustersToPrint.indexOf(cluster) < 0) clustersToPrint.push(cluster);
                         item.print = true;
@@ -995,15 +995,22 @@ function findMarkedReferenceInText(text) {
     } else return null;
 }
 
-export function makeObservationIDsListForInterpretation(project: Project, observations, interpretationName, interpretationText) {
+export function makeObservationIDsListForInterpretation(project: Project, observationIDs, item) {
     var result = [];
-    observations.forEach((observation) => {
-        var interpretationsListIdentifier = project.tripleStore.queryLatestC(observation, "observationInterpretations");
+    observationIDs.forEach((observationID) => {
+        var interpretationsListIdentifier = project.tripleStore.queryLatestC(observationID, "observationInterpretations");
         var interpretationsList = project.tripleStore.getListForSetIdentifier(interpretationsListIdentifier);
         interpretationsList.forEach((interpretationIdentifier) => {
             var interpretation = project.tripleStore.makeObject(interpretationIdentifier, true);
-            if (interpretation.interpretation_name === interpretationName || interpretation.interpretation_text === interpretationText) {
-                result.push(observation);
+            if (item.referenceUUID !== undefined) {
+                if (interpretation.id === item.referenceUUID) {
+                    result.push(observationID);
+                }
+            } else { // this is to deal with legacy (pre version 1.0) data that has no referenceUUID field
+                if (interpretation.interpretation_name === item.name || interpretation.interpretation_text === item.text) {
+                    item.referenceUUID = interpretation.id;
+                    result.push(observationID);
+                }
             }
         });
     });
