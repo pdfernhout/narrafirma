@@ -76,6 +76,7 @@ var panel: Panel = {
             displayType: "clusteringDiagram",
             displayPrompt: `
                 Place similar interpretations together. 
+                (Shift-click to select multiple items.)
                 Then name and describe each cluster of interpretations. 
                 These clusters, or <strong>perspectives</strong>, will become the headings of your clustered-interpretations catalysis report.
                 `,
@@ -111,6 +112,7 @@ var panel: Panel = {
             displayType: "clusteringDiagram",
             displayPrompt: `
                 Place similar observations together. 
+                (Shift-click to select multiple items.)
                 Then name and describe each cluster of observations. 
                 These clusters, or <strong>themes</strong>, will become the headings of your clustered-observations catalysis report.
                 `,
@@ -119,7 +121,6 @@ var panel: Panel = {
                 return !!Globals.clientState().catalysisReportIdentifier();
             }
         },
-
     ]
 };
 

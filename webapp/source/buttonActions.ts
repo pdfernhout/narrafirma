@@ -240,7 +240,7 @@ export function copyInterpretationsToClusteringDiagram() {
     if (!clusteringDiagram) {
         clusteringDiagram = ClusteringDiagram.newDiagramModel();
     }
- 
+
     function findUUIDForInterpretationName(name: string) {
         for (var index = 0; index < allInterpretations.length; index++) {
             const interpretation = allInterpretations[index];
@@ -469,13 +469,13 @@ export function copyObservationsToClusteringDiagram() {
 function setItemColorBasedOnStrength(item, strength) {
     switch (strength) {
         case "3 (strong)":
-            item.bodyColor = "#ffbb84";
+            item.bodyColor = "#ff9138";
             break;
         case "2 (medium)":
-            item.bodyColor = "#b0d4d4";
+            item.bodyColor = "#ffbb84";
             break;
         case "1 (weak)":  
-            item.bodyColor = "#c5d2eb";
+            item.bodyColor = "#ffe5d1";
             break;
         default:
             item.bodyColor = "#979696";

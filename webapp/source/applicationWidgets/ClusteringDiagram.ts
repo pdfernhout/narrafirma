@@ -8,30 +8,14 @@ import Globals = require("../Globals");
 
 "use strict";
 
-// TODO: Select and move groups of items
 // TODO: Make a systemic communications fix to PointrelClient so can stop using Math.round to ensure x and y are integers to avoid JSON conversion errors and sha256 error in WordPress plugin due to PHP and numeric precision (2015-10-08)
 
 var defaultSurfaceWidthInPixels = 800;
 var defaultSurfaceHeightInPixels = 500;
 
-// Caution: "this" may be undefined for functions called by this unless "bind" or "hitch" is used
-function forEach(theArray, theFunction) {
-    if (!theArray) {
-        console.log("theArray is invalid", theArray);
-    }
-    for (var index = 0, length = theArray.length; index < length; ++index) {
-        theFunction(index, theArray[index], theArray);
-    }
-}
-
-function removeItemFromArray(item, anArray) {
-    var index = anArray.indexOf(item);
-    if (index > -1) {
-        anArray.splice(index, 1);
-        return item;
-    }
-    return null;
-}
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// support functions
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // TODO: Unfortunate mix of canvas into an SVG app
 // Only straightforward way (without Dojo gfx) to get the text width, given the page may be hidden while making this, which causes text width to return 0 for SVG
@@ -79,6 +63,20 @@ function myWrap(text, itemText, textStyle, textColor, maxWidth) {
     }); 
 }
 
+// Caution: "this" may be undefined for functions called by this unless "bind" or "hitch" is used
+function forEach(theArray, theFunction) {
+    if (!theArray) {
+        console.log("theArray is invalid", theArray);
+    }
+    for (var index = 0, length = theArray.length; index < length; ++index) {
+        theFunction(index, theArray[index], theArray);
+    }
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// clustering diagram
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 class ClusteringDiagram {
     model: ClusteringDiagramModel = null;
     
@@ -95,6 +93,13 @@ class ClusteringDiagram {
     
     d3DivForResizing: d3.Selection<any> = null;
     background = null;
+
+    selectionRect = null;
+    selectedItems = [];
+    rubberBanding = false;
+    shiftKeyIsBeingHeldDownWhileRubberBanding = false;
+    rubberBandingStartX = 0;
+    rubberBandingStartY = 0;
     
     showEntryDialog = false;
     
@@ -103,14 +108,17 @@ class ClusteringDiagram {
     isEditedItemNew = false;
 
     static defaultItemBodyColor = "#abb6ce"; 
-    static defaultClusterBodyColor = "#c5d2eb";
-    static defaultBorderColor = "#2e4a85";
+    static defaultClusterBodyColor = "#84c8ff";
+    static defaultBorderColor = "black";
     static defaultBorderWidth = 1;
     static defaultTextStyle = {family: "Arial", size: "9pt", weight: "normal"};
     static defaultTextColor = "black";
     static defaultRadius = 44;
-    
-    // This is static so other code can create and store diagram contents directly as source
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // static functions - These functions are static so other code can create and store diagram contents directly as source
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
     static newDiagramModel(): ClusteringDiagramModel {
         return {
             surfaceWidthInPixels: defaultSurfaceWidthInPixels,
@@ -152,6 +160,55 @@ class ClusteringDiagram {
         diagram.changesCount++;
         return item;
     }
+
+    static controller(args) {
+        return new ClusteringDiagram(args.configuration, args.storageFunction, args.autosave);
+    }
+    
+    static view(controller, args) {
+        return controller.calculateView(args);
+    }
+    
+    static calculateClusteringForDiagram(clusteringDiagram: any) {
+        var result = [];
+        
+        if (!clusteringDiagram) return result;
+        
+        var clusters = clusteringDiagram.items.filter(function (item) {
+            return item.type === "cluster";
+        });
+        
+        var items = clusteringDiagram.items.filter(function (item) {
+            return item.type === "item";
+        });
+        
+        items.forEach((item) => {
+            item.clusterDistance = Number.MAX_VALUE;
+            item.cluster = null;
+            clusters.forEach((cluster) => {
+                var dx = item.x - cluster.x;
+                var dy = item.y - cluster.y;
+                var distance = Math.sqrt(dx * dx + dy * dy);
+                if (distance < item.clusterDistance) {
+                    item.clusterDistance = distance;
+                    item.cluster = cluster;
+                }
+            });
+        });
+        
+        clusters.forEach((cluster) => {
+            cluster.items = [];
+            items.forEach((item) => {
+                if (item.cluster === cluster) cluster.items.push(item);
+            });
+        });
+        
+        return [clusters, items];
+    }    
+    
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // constructor
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     
     constructor(configuration: string, storageFunction: Function, autosave) {
         this.configuration = configuration;
@@ -165,63 +222,24 @@ class ClusteringDiagram {
         this.setupMainSurface();
     }
     
-    static controller(args) {
-        return new ClusteringDiagram(args.configuration, args.storageFunction, args.autosave);
-    }
-    
-    static view(controller, args) {
-        return controller.calculateView(args);
-    }
-    
-    calculateView(args) {
-        // Make sure the model is up to date
-        // this seems wasteful but there is no other way to be sure you have the latest data
-        this.updateDiagram(this.storageFunction());
-
-        var entryDialog = [];
-        if (this.showEntryDialog) {
-            entryDialog.push(this.buildEntryDialog());
-        }
-        
-        var textForItemName = "";
-        var textForItemNotes = "";
-        if (this.lastSelectedItem) {
-            // TODO: Translate labels
-            textForItemName = "Name: " + (this.lastSelectedItem.name || "");
-            textForItemNotes = "Notes: " + (this.lastSelectedItem.notes || "");
-        }
-        
-        return m("div", [
-            this.mainButtons,
-            m("div", {config: this.configSurface.bind(this)}),
-            // m("div", {style: "text-overflow: ellipsis;"}, textForItemName),
-            // m("div", {style: "text-overflow: ellipsis;"}, textForItemUrl),
-            entryDialog 
-        ]);
-    }
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // starting up
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     
     configSurface(element: HTMLElement, isInitialized: boolean, context: any) {
         if (!isInitialized) {
             element.appendChild(this.divForResizing);
         }
     }
-    
-    incrementChangesCount() {
-        this.model.changesCount++;
-        if (this.autosave) {
-            this.saveChanges();
-        }
-    }
-    
-    setupMainSurface() {
 
+    setupMainSurface() {
         var divForResizing = document.createElement("div");
         this.divForResizing = divForResizing;
         var divUUID = generateRandomUuid("ResizeableCanvasHolder"); 
         divForResizing.setAttribute("id", divUUID);
         //divForResizing.setAttribute("style", "width: " + this.diagram.surfaceWidthInPixels + "px; height: " + this.diagram.surfaceHeightInPixels + "px; border: solid 1px; position: relative");
         //divForResizing.setAttribute("style", "resize: auto; border: solid 1px");
-       
+    
         var width = this.model.surfaceWidthInPixels;
         var height = this.model.surfaceHeightInPixels;
         
@@ -242,14 +260,67 @@ class ClusteringDiagram {
             .on("mousedown", () => {
                 this.selectItem(null);
             });
+
+        var drag = d3.behavior.drag();
+        var self = this;
+        
+        drag.on("dragstart", function () {
+            let position = d3.mouse(this);
+            self.rubberBanding = true;
+            self.rubberBandingStartX = position[0];
+            self.rubberBandingStartY = position[1];
+            d3.select(".selectionRectangle")
+                .attr('rx', 6) // this makes a rounded rectangle
+                .attr('ry', 6)
+                .transition()
+                .duration(1)
+                .style('stroke', "black")
+                .style('fill', 'none')
+                .style('stroke-width', 2);
+        });
+
+        drag.on("drag", function() {
+            if (self.rubberBanding) {
+                let position = d3.mouse(this);
+                d3.select(".selectionRectangle")
+                    .transition()
+                    .duration(1)
+                    .attr('rx', 6)
+                    .attr('ry', 6)
+                    .attr('transform', 'translate (' + Math.min(self.rubberBandingStartX, position[0]) + ", " + Math.min(self.rubberBandingStartY, position[1]) + ")")
+                    .attr('width', Math.abs(position[0] - self.rubberBandingStartX))
+                    .attr('height', Math.abs(position[1] - self.rubberBandingStartY))
+                    .style('stroke', "black")
+                    .style('fill', 'none')
+                    .style('stroke-width', 2);
+            }
+        });
+        
+        drag.on("dragend", function() {
+            let position = d3.mouse(this);
+            self.selectItemsInRectangle(self.rubberBandingStartX, self.rubberBandingStartY, position[0], position[1], self.shiftKeyIsBeingHeldDownWhileRubberBanding);
+            self.rubberBanding = false;
+            self.shiftKeyIsBeingHeldDownWhileRubberBanding = false;
+            d3.select(".selectionRectangle")
+                .style('stroke', "none")
+                .attr('transform', 'translate (0, 0)')
+                .attr('width', 0)
+                .attr('height', 0);
+        });
+        
+        this.background.call(drag);
+        this.background.on("mousedown", () => {
+            this.shiftKeyIsBeingHeldDownWhileRubberBanding = d3.event.shiftKey;
+        });
         
         this.mainSurface = this._mainSurface.append('g')
-            //.attr('width', width)
-            //.attr('height', height)
             .attr('class', 'mainSurface');
         
+        this.selectionRect = this.mainSurface.append('rect')
+            .attr('class', 'selectionRectangle');
+
         this.recreateDisplayObjectsForAllItems();
-    
+
         /* TODO: What to do about handle?
         var handle = new ResizeHandle({
             targetId: divUUID,
@@ -265,35 +336,7 @@ class ClusteringDiagram {
         handle.startup();
         */
     }
-    
-    updateSizeOfCanvasFromResizeHandle() {
-        var newWidth = this.divForResizing.clientWidth;
-        var newHeight = this.divForResizing.clientHeight;
-        
-        this._mainSurface.attr("width", newWidth).attr("height", newHeight);
-        this.background.attr('width', newWidth).attr('height', newHeight);
-        
-        this.model.surfaceWidthInPixels = newWidth;
-        this.model.surfaceHeightInPixels = newHeight;
-        
-        this.incrementChangesCount();
-    }
-    
-    updateSizeOfCanvasFromModel() {
-        var newWidth = this.model.surfaceWidthInPixels;
-        var newHeight = this.model.surfaceHeightInPixels;
-        
-        this.divForResizing.setAttribute("style", "width: " + this.model.surfaceWidthInPixels + "px; height: " + this.model.surfaceHeightInPixels + "px; border: solid 1px; position: relative");
-        this._mainSurface.attr("width", newWidth).attr("height", newHeight);
-        this.background.attr('width', newWidth).attr('height', newHeight);
-    }
-    
-    newButton(name, label, callback) {
-        var button = m("button", {onclick: callback, "class": name}, label);
-        this.mainButtons.push(button);
-        return button;
-    }
-    
+
     setupMainButtons() {
         var mainButtons = [];
         
@@ -336,9 +379,13 @@ class ClusteringDiagram {
                 alert("Please select an item to delete.");
                 return;
             }
-            dialogSupport.confirm("Are you sure you want to delete the item or cluster called '" + this.lastSelectedItem.name + "'?", () => {
+            const itemOrCluster = this.lastSelectedItem.type === "cluster" ? "cluster" : "item";
+            dialogSupport.confirm("Are you sure you want to delete the " + itemOrCluster + " called '" + this.lastSelectedItem.name + "'?", () => {
                 this.updateDisplayForChangedItem(this.lastSelectedItem, "delete");
-                removeItemFromArray(this.lastSelectedItem, this.model.items);
+                const itemIndex = this.model.items.indexOf(this.lastSelectedItem);
+                if (itemIndex >= 0) {
+                    this.model.items.splice(itemIndex, 1);
+                }
                 this.clearSelection();
                 this.incrementChangesCount();
             });
@@ -362,174 +409,10 @@ class ClusteringDiagram {
             });
         }
     }
-    
-    // typeOfChange should be either "delete" or "update"
-    updateDisplayForChangedItem(item, typeOfChange) {
-        if (item === null) {
-            console.log("updateDisplayForChangedItem item is null", typeOfChange);
-            return;
-        }
-        var displayObject = this.itemToDisplayObjectMap[item.uuid];
-        if (typeOfChange === "delete") {
-            delete this.itemToDisplayObjectMap[item.uuid];
-            displayObject.remove();
-            return;
-        }
-        displayObject.remove();
-        var newDisplayObject = this.addDisplayObjectForItem(this.mainSurface, item);
-        this.itemToDisplayObjectMap[item.uuid] = newDisplayObject;
-    }
-    
-     openCanvasSizeDialog() {
-        // TODO: Make a single dialog
-        // TODO: Translate
-        var newWidthString = prompt("How wide (in pixels) would you like this clustering surface to be?", "" + this.model.surfaceWidthInPixels);
-        if (!newWidthString) return;
-        var newWidth = parseInt(newWidthString.trim(), 10);
-        if (!newWidth) return;
-         
-        var newHeightString = prompt("How high (in pixels) would you like this clustering surface to be?", "" + this.model.surfaceHeightInPixels);
-        if (!newHeightString) return;
-        var newHeight = parseInt(newHeightString.trim(), 10);
-        if (!newHeight) return;
-         
-        if (newWidth !== this.model.surfaceWidthInPixels || newHeight !== this.model.surfaceHeightInPixels) {
-            this.model.surfaceWidthInPixels = newWidth;
-            this.model.surfaceHeightInPixels = newHeight;
-            this._mainSurface
-                .attr('width', newWidth)
-                .attr('height', newHeight);
-            this.incrementChangesCount();
-        }
-    }
-    
-    openEntryDialog(item, isExistingItem) {
-        this.itemBeingEdited = item;
-        this.itemBeingEditedCopy = JSON.parse(JSON.stringify(item));
-        this.isEditedItemNew = !isExistingItem;
-        this.showEntryDialog = true;
-    }
-    
-    acceptChangesForItemBeingEdited() {
-        this.showEntryDialog = false;
-        
-        this.itemBeingEdited.name = this.itemBeingEditedCopy.name;
-        
-        // Ensure the item has a name
-        // TODO: This allows duplicate names if items have been deleted
-        if (!this.itemBeingEdited.name) {
-            this.itemBeingEdited.name = "Untitled " + this.itemBeingEdited.type + " #" + (this.model.items.length + 1);
-        }
-        
-        this.itemBeingEdited.notes = this.itemBeingEditedCopy.notes;
-        
-        if (this.isEditedItemNew) {
-            this.model.items.push(this.itemBeingEdited);
-            this.addDisplayObjectForItem(this.mainSurface, this.itemBeingEdited);
-        } else {
-            this.updateDisplayForChangedItem(this.itemBeingEdited, "update");
-        }
-        
-        this.incrementChangesCount();
-        this.selectItem(this.itemBeingEdited);
-    }
-    
-    buildEntryDialog() {
-        /*
-        return m("div", [
-            "Entry dialog 2",
-            m("br"),
-            m("button", {onclick: () => { this.showEntryDialog = false; }}, "Close")
-        ]);
-        */
 
-       return m("div.overlay", m("div.modal-content", [
-            "Edit " + this.itemBeingEditedCopy.type,
-            m("br"),
-            m("br"),
-            m('label', {"for": "itemDialog_name"}, "Name:"),
-            m('input[type=text]', {
-                id: "itemDialog_name",
-                value: this.itemBeingEditedCopy.name || "",
-                onchange: (event) => { this.itemBeingEditedCopy.name = event.target.value; }
-            }),
-            m('br'),
-            m('br'),
-            m('label', {"for": "itemDialog_notes"}, "Notes:"),
-            m('textarea[class=narrafirma-textbox]', {
-                id: "itemDialog_notes",
-                value: this.itemBeingEditedCopy.notes || "",
-                onchange: (event) => { this.itemBeingEditedCopy.notes = event.target.value; }
-            }),
-            m("br"),
-            m("button", {
-                onclick: () => {
-                    this.showEntryDialog = false;
-                }
-            }, "Cancel"),
-            m("button", {
-                onclick: () => {
-                    this.acceptChangesForItemBeingEdited();
-                }
-            }, "OK")
-        ]));
-    }
-    
-    updateSourceClicked(text, hideDialogMethod) {     
-        var newDiagram;
-        try {
-            newDiagram = JSON.parse(text);
-        } catch (e) {
-            alert("Problem parsing source\n" + e);
-            return;
-        }
-        hideDialogMethod();
-        this.updateDiagram(newDiagram);
-        this.incrementChangesCount();
-    }
-    
-    updateDiagram(newDiagram) {
-        if (!newDiagram) return;
-        
-        if (this.model.changesCount === newDiagram.changesCount) {
-            // Optimize out reflections of our changes back to us if the diagrams are the same
-            // Extra cautious to compare JSON; otherwise probably could just return
-            if (JSON.stringify(this.model) === JSON.stringify(newDiagram)) {
-                // console.log("updateDiagram: new diagram seems identical to the old; not updating");
-                return;
-            }
-        } // else {
-            // console.log("updateDiagram: changes counts do not match", this.diagram.changesCount, newDiagram.changesCount);
-        // }
-        
-        this.model = newDiagram;
-        
-        this.recreateDisplayObjectsForAllItems();
-        
-        this.clearSelection();
-        this.updateSizeOfCanvasFromModel();
-    }
-    
-    clearSelection() {
-        this.selectItem(null);
-    }
-    
-    openSourceDialog(text) {
-        dialogSupport.openTextEditorDialog(text, "#clusterDiagramSource_titleID|Clustering Diagram", "#clusterDiagramSource_okButtonID|OK", this.updateSourceClicked.bind(this));
-    }
-    
-    recreateDisplayObjectsForAllItems() {
-        this.itemToDisplayObjectMap = <any>{};
-        this.mainSurface.selectAll("*").remove();
-        var thisObject = this;
-        forEach(this.model.items, function (index, item) {
-            var displayObject = thisObject.addDisplayObjectForItem(thisObject.mainSurface, item);
-        });
-    }
-
-    saveChanges() {
-        this.storageFunction(this.model);
-    }
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // data handling
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     
     newItem(itemType = "item", name = "", notes = "") {
         var newItem = ClusteringDiagram.newItem(itemType, name, notes);
@@ -537,27 +420,37 @@ class ClusteringDiagram {
         return newItem;
     }
 
-    // TODO: Clean up duplication here and elsewhere with calculating border color and width
-    selectItem(item) {
-        if (item === this.lastSelectedItem) {
-            return;
+    saveChanges() {
+        this.storageFunction(this.model);
+    }
+    
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // drawing
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    
+    calculateView(args) {
+        // Make sure the model is up to date
+        // this seems wasteful but there is no other way to be sure you have the latest data
+        this.updateDiagram(this.storageFunction());
+
+        var entryDialog = [];
+        if (this.showEntryDialog) {
+            entryDialog.push(this.buildEntryDialog());
         }
-        if (this.lastSelectedItem) {
-            var lastSelectedDisplayObject = this.itemToDisplayObjectMap[this.lastSelectedItem.uuid];
-            if (lastSelectedDisplayObject) {
-                lastSelectedDisplayObject.circle
-                    .style("stroke-width", lastSelectedDisplayObject.borderWidth);
-            }
-        }
-        if (item) {
-            var displayObject = this.itemToDisplayObjectMap[item.uuid];
-            displayObject.circle
-                .style("stroke-width", displayObject.borderWidth * 5);
-        }
-        this.lastSelectedItem = item;
         
-        // Queue redrawing as this was selected via D3 not Mithril
-        m.redraw();
+        this.model.items.forEach(function(item) {
+            var displayObject = this.itemToDisplayObjectMap[item.uuid];
+            if (displayObject) {
+                const borderWidth =  (this.selectedItems.indexOf(item) >= 0) ? displayObject.borderWidth * 5 : displayObject.borderWidth;
+                displayObject.circle.style("stroke-width", borderWidth);
+            }
+        }, this);
+        
+        return m("div", [
+            this.mainButtons,
+            m("div", {config: this.configSurface.bind(this)}),
+            entryDialog 
+        ]);
     }
     
     addDisplayObjectForItem(surface, item: ClusteringDiagramItem) {
@@ -636,31 +529,46 @@ class ClusteringDiagram {
         this.addText(group, item.name, radius * 1.5, textStyle, textColor);
     
         group.on("mousedown", () => {
-            this.selectItem(item);
+            this.selectItem(item, d3.event.shiftKey);
         });
-        
+
         var self = this;
         var drag = d3.behavior.drag();
-        
-        // drag.origin({x: item.x, y: item.y});
-        
         var moved = false;
         
         drag.on("dragstart", function () {
-            self.selectItem(item);
+            if (item) {
+                self.selectItem(item);
+            } else {
+                self.rubberBanding = true;
+                self.rubberBandingStartX = d3.event.x;
+                self.rubberBandingStartY = d3.event.y;
+            }
             moved = false;
         });
         
         drag.on("drag", function () {
             // TODO: Casting to any as workaround to silence TypeScript error for maybe incomplete d3 typing file
-            item.x = Math.round(item.x + (<any>d3.event).dx);
-            item.y = Math.round(item.y + (<any>d3.event).dy);
-            group.attr('transform', 'translate(' + item.x + ',' + item.y + ')');
+            //item.x = Math.round(item.x + (<any>d3.event).dx);
+            //item.y = Math.round(item.y + (<any>d3.event).dy);
+            //group.attr('transform', 'translate(' + item.x + ',' + item.y + ')');
+            self.selectedItems.forEach(function(item) {
+                item.x = Math.round(item.x + (<any>d3.event).dx);
+                item.y = Math.round(item.y + (<any>d3.event).dy);
+                var displayObject = self.itemToDisplayObjectMap[item.uuid];
+                if (displayObject) {
+                    displayObject.attr('transform', 'translate(' + item.x + ',' + item.y + ')');
+                }
+            });
             moved = true;
         });
         
         drag.on("dragend", function() {
-            if (moved) self.incrementChangesCount();
+            if (moved) {
+                if (item) {
+                    self.incrementChangesCount();
+                } 
+            }
         });
         
         group.call(drag);
@@ -675,7 +583,7 @@ class ClusteringDiagram {
         this.itemToDisplayObjectMap[item.uuid] = group;
         return group;
     }
-    
+
     addText(group, itemText, maxWidth, textStyle, textColor) {
         if (itemText === undefined) itemText = "[missing text]";
         var text = group.append("text")
@@ -687,42 +595,250 @@ class ClusteringDiagram {
         myWrap(text, itemText, textStyle, textColor, maxWidth);
     }
     
-    static calculateClusteringForDiagram(clusteringDiagram: any) {
-        var result = [];
-        
-        if (!clusteringDiagram) return result;
-        
-        var clusters = clusteringDiagram.items.filter(function (item) {
-            return item.type === "cluster";
-        });
-        
-        var items = clusteringDiagram.items.filter(function (item) {
-            return item.type === "item";
-        });
-        
-        items.forEach((item) => {
-            item.clusterDistance = Number.MAX_VALUE;
-            item.cluster = null;
-            clusters.forEach((cluster) => {
-                var dx = item.x - cluster.x;
-                var dy = item.y - cluster.y;
-                var distance = Math.sqrt(dx * dx + dy * dy);
-                if (distance < item.clusterDistance) {
-                    item.clusterDistance = distance;
-                    item.cluster = cluster;
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // selecting and deselecting items 
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    selectItem(item, shift = false) {
+        if (shift) {
+            if (item) {
+                this.lastSelectedItem = item;
+                const itemIndex = this.selectedItems.indexOf(item);
+                if (itemIndex < 0) {
+                    this.selectedItems.push(item);
+                } else {
+                    this.selectedItems.splice(itemIndex, 1);
                 }
-            });
-        });
-        
-        clusters.forEach((cluster) => {
-            cluster.items = [];
-            items.forEach((item) => {
-                if (item.cluster === cluster) cluster.items.push(item);
-            });
-        });
-        
-        return [clusters, items];
+            } else {
+                this.lastSelectedItem = item;
+                this.selectedItems = [];
+            }
+        } else {
+            if (item) {
+                if (this.selectedItems.length <= 1) {
+                    this.lastSelectedItem = item;
+                    this.selectedItems = [];
+                    this.selectedItems.push(item);
+                }
+            } else {
+                this.lastSelectedItem = item;
+                this.selectedItems = [];
+            }
+        }
+        // Queue redrawing as this was selected via D3 not Mithril
+        m.redraw();
     }
-}
+    
+    clearSelection() {
+        this.selectItem(null);
+    }    
+
+    selectItemsInRectangle(x1, y1, x2, y2, shift) {
+        if (!shift) this.selectedItems = [];
+        this.model.items.forEach(function(item) {
+            if (item.x >= Math.min(x1, x2) && item.x < Math.max(x1, x2) && item.y >= Math.min(y1, y2) && item.y < Math.max(y1, y2)) {
+                if (this.selectedItems.indexOf(item) < 0) {
+                    this.selectedItems.push(item);
+                }
+            }
+        }, this);
+        m.redraw();
+    }
+    
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // updating the diagram for changes
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    
+    incrementChangesCount() {
+        this.model.changesCount++;
+        if (this.autosave) {
+            this.saveChanges();
+        }
+    }
+
+    acceptChangesForItemBeingEdited() {
+        this.showEntryDialog = false;
+        this.itemBeingEdited.name = this.itemBeingEditedCopy.name;
+        // Ensure the item has a name
+        // TODO: This allows duplicate names if items have been deleted
+        if (!this.itemBeingEdited.name) {
+            this.itemBeingEdited.name = "Untitled " + this.itemBeingEdited.type + " #" + (this.model.items.length + 1);
+        }
+        this.itemBeingEdited.notes = this.itemBeingEditedCopy.notes;
+        if (this.isEditedItemNew) {
+            this.model.items.push(this.itemBeingEdited);
+            this.addDisplayObjectForItem(this.mainSurface, this.itemBeingEdited);
+        } else {
+            this.updateDisplayForChangedItem(this.itemBeingEdited, "update");
+        }
+        this.incrementChangesCount();
+        this.selectItem(this.itemBeingEdited);
+    }
+    
+    // typeOfChange should be either "delete" or "update"
+    updateDisplayForChangedItem(item, typeOfChange) {
+        if (item === null) {
+            console.log("updateDisplayForChangedItem item is null", typeOfChange);
+            return;
+        }
+        var displayObject = this.itemToDisplayObjectMap[item.uuid];
+        if (typeOfChange === "delete") {
+            delete this.itemToDisplayObjectMap[item.uuid];
+            displayObject.remove();
+            return;
+        }
+        displayObject.remove();
+        var newDisplayObject = this.addDisplayObjectForItem(this.mainSurface, item);
+        this.itemToDisplayObjectMap[item.uuid] = newDisplayObject;
+    }
+    
+    updateDiagram(newDiagram) {
+        if (!newDiagram) return;
+        
+        if (this.model.changesCount === newDiagram.changesCount) {
+            // Optimize out reflections of our changes back to us if the diagrams are the same
+            // Extra cautious to compare JSON; otherwise probably could just return
+            if (JSON.stringify(this.model) === JSON.stringify(newDiagram)) {
+                // console.log("updateDiagram: new diagram seems identical to the old; not updating");
+                return;
+            }
+        } // else {
+            // console.log("updateDiagram: changes counts do not match", this.diagram.changesCount, newDiagram.changesCount);
+        // }
+        
+        this.model = newDiagram;
+        
+        this.recreateDisplayObjectsForAllItems();
+        
+        this.clearSelection();
+        this.updateSizeOfCanvasFromModel();
+    }
+    
+    recreateDisplayObjectsForAllItems() {
+        this.itemToDisplayObjectMap = <any>{};
+        this.mainSurface.selectAll("*").remove();
+        this.selectionRect = this.mainSurface.append('rect').attr('class', 'selectionRectangle');
+        this.model.items.forEach(function (item) {
+            this.addDisplayObjectForItem(this.mainSurface, item);
+        }, this);
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // resizing 
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        
+    updateSizeOfCanvasFromResizeHandle() {
+        var newWidth = this.divForResizing.clientWidth;
+        var newHeight = this.divForResizing.clientHeight;
+        
+        this._mainSurface.attr("width", newWidth).attr("height", newHeight);
+        this.background.attr('width', newWidth).attr('height', newHeight);
+        
+        this.model.surfaceWidthInPixels = newWidth;
+        this.model.surfaceHeightInPixels = newHeight;
+        
+        this.incrementChangesCount();
+    }
+
+    updateSizeOfCanvasFromModel() {
+        var newWidth = this.model.surfaceWidthInPixels;
+        var newHeight = this.model.surfaceHeightInPixels;
+        
+        this.divForResizing.setAttribute("style", "width: " + this.model.surfaceWidthInPixels + "px; height: " + this.model.surfaceHeightInPixels + "px; border: solid 1px; position: relative");
+        this._mainSurface.attr("width", newWidth).attr("height", newHeight);
+        this.background.attr('width', newWidth).attr('height', newHeight);
+    }
+
+    newButton(name, label, callback) {
+        var button = m("button", {onclick: callback, "class": name}, label);
+        this.mainButtons.push(button);
+        return button;
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // pop-up dialogs
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    
+    openCanvasSizeDialog() {
+        // TODO: Make a single dialog
+        // TODO: Translate
+        var newWidthString = prompt("How wide (in pixels) would you like this clustering surface to be?", "" + this.model.surfaceWidthInPixels);
+        if (!newWidthString) return;
+        var newWidth = parseInt(newWidthString.trim(), 10);
+        if (!newWidth) return;
+         
+        var newHeightString = prompt("How high (in pixels) would you like this clustering surface to be?", "" + this.model.surfaceHeightInPixels);
+        if (!newHeightString) return;
+        var newHeight = parseInt(newHeightString.trim(), 10);
+        if (!newHeight) return;
+         
+        if (newWidth !== this.model.surfaceWidthInPixels || newHeight !== this.model.surfaceHeightInPixels) {
+            this.model.surfaceWidthInPixels = newWidth;
+            this.model.surfaceHeightInPixels = newHeight;
+            this._mainSurface
+                .attr('width', newWidth)
+                .attr('height', newHeight);
+            this.incrementChangesCount();
+        }
+    }
+    
+    openEntryDialog(item, isExistingItem) {
+        this.itemBeingEdited = item;
+        this.itemBeingEditedCopy = JSON.parse(JSON.stringify(item));
+        this.isEditedItemNew = !isExistingItem;
+        this.showEntryDialog = true;
+    }
+
+    buildEntryDialog() {
+       return m("div.overlay", m("div.modal-content", [
+            "Edit " + this.itemBeingEditedCopy.type,
+            m("br"),
+            m("br"),
+            m('label', {"for": "itemDialog_name"}, "Name:"),
+            m('input[type=text]', {
+                id: "itemDialog_name",
+                value: this.itemBeingEditedCopy.name || "",
+                onchange: (event) => { this.itemBeingEditedCopy.name = event.target.value; }
+            }),
+            m('br'),
+            m('br'),
+            m('label', {"for": "itemDialog_notes"}, "Notes:"),
+            m('textarea[class=narrafirma-textbox]', {
+                id: "itemDialog_notes",
+                value: this.itemBeingEditedCopy.notes || "",
+                onchange: (event) => { this.itemBeingEditedCopy.notes = event.target.value; }
+            }),
+            m("br"),
+            m("button", {
+                onclick: () => {
+                    this.showEntryDialog = false;
+                }
+            }, "Cancel"),
+            m("button", {
+                onclick: () => {
+                    this.acceptChangesForItemBeingEdited();
+                }
+            }, "OK")
+        ]));
+    }
+    
+    updateSourceClicked(text, hideDialogMethod) {     
+        var newDiagram;
+        try {
+            newDiagram = JSON.parse(text);
+        } catch (e) {
+            alert("Problem parsing source\n" + e);
+            return;
+        }
+        hideDialogMethod();
+        this.updateDiagram(newDiagram);
+        this.incrementChangesCount();
+    }
+    
+    openSourceDialog(text) {
+        dialogSupport.openTextEditorDialog(text, "#clusterDiagramSource_titleID|Clustering Diagram", "#clusterDiagramSource_okButtonID|OK", this.updateSourceClicked.bind(this));
+    }
+
+} // end of the ClusteringDiagram class
 
 export = ClusteringDiagram;
