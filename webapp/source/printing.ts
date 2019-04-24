@@ -839,23 +839,32 @@ function clustersThatMatchObservationIDList(project, clusteringDiagram, perspect
     let [clusters, items] = ClusteringDiagram.calculateClusteringForDiagram(clusteringDiagram);
     let clustersToPrint = [];
     clusters.forEach( function(cluster) {
+        if (cluster.hidden) return;
         cluster.items.forEach( function(item) {
             if (perspectivesOrThemes === "perspectives") {
-                // the item is an interpretation; find out if any of these observations are connected to it
-                const includedObservationIDsLinkedToThisInterpretation = makeObservationIDsListForInterpretation(project, observationIDs, item.name, item.notes);
-                if (includedObservationIDsLinkedToThisInterpretation.length > 0) {
-                    if (clustersToPrint.indexOf(cluster) < 0) clustersToPrint.push(cluster);
-                    item.print = true;
-                } else {
+                if (item.hidden) {
                     item.print = false;
+                } else {
+                    // the item is an interpretation; find out if any of these observations are connected to it
+                    const includedObservationIDsLinkedToThisInterpretation = makeObservationIDsListForInterpretation(project, observationIDs, item.name, item.notes);
+                    if (includedObservationIDsLinkedToThisInterpretation.length > 0) {
+                        if (clustersToPrint.indexOf(cluster) < 0) clustersToPrint.push(cluster);
+                        item.print = true;
+                    } else {
+                        item.print = false;
+                    }
                 }
             } else if (perspectivesOrThemes === "themes") {
-                // the item is an observation; just check the id 
-                if (observationIDs.indexOf(item.referenceUUID) >= 0) {
-                    if (clustersToPrint.indexOf(cluster) < 0) clustersToPrint.push(cluster);
-                    item.print = true;
-                } else {
+                if (item.hidden) {
                     item.print = false;
+                } else {
+                    // the item is an observation; just check the id 
+                    if (observationIDs.indexOf(item.referenceUUID) >= 0) {
+                        if (clustersToPrint.indexOf(cluster) < 0) clustersToPrint.push(cluster);
+                        item.print = true;
+                    } else {
+                        item.print = false;
+                    }
                 }
             }
         });

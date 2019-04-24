@@ -262,6 +262,7 @@ class ClusteringDiagram {
             .style('stroke', '#a7a5a5')
             .on("mousedown", () => {
                 this.selectItem(null);
+                this.shiftKeyIsBeingHeldDownWhileRubberBanding = d3.event.shiftKey;
             });
 
         var drag = d3.behavior.drag();
@@ -312,9 +313,6 @@ class ClusteringDiagram {
         });
         
         this.background.call(drag);
-        this.background.on("mousedown", () => {
-            this.shiftKeyIsBeingHeldDownWhileRubberBanding = d3.event.shiftKey;
-        });
         
         this.mainSurface = this._mainSurface.append('g')
             .attr('class', 'mainSurface');
@@ -376,7 +374,7 @@ class ClusteringDiagram {
         }
     
         // allow user to delete items even if they are interpretations/observations
-        this.newButton("deleteButton", "Delete item or cluster", () => {
+        this.newButton("deleteButton", "Delete", () => {
             if (!this.lastSelectedItem) {
                 // TODO: Translate
                 alert("Please select an item or cluster to delete.");
@@ -393,6 +391,20 @@ class ClusteringDiagram {
                 this.incrementChangesCount();
             });
         });
+
+        if (this.configuration === "interpretations" || this.configuration === "observations") {
+            this.newButton("showHideItem", "Show or hide in report", () => {
+                if (this.lastSelectedItem) {
+                    if (this.lastSelectedItem.hidden === undefined) this.lastSelectedItem.hidden = false;
+                    this.lastSelectedItem.hidden = !this.lastSelectedItem.hidden;
+                    this.updateDisplayForChangedItem(this.lastSelectedItem, "update");
+                    this.incrementChangesCount();
+                } else {
+                // TODO: Translate
+                    alert("Please select an item to show or hide.");
+                }
+            });
+        }
         
         this.newButton("surfaceSizeButton", "Change surface size", () => {
             this.openSurfaceSizeDialog();
@@ -476,6 +488,9 @@ class ClusteringDiagram {
                 bodyColor = ClusteringDiagram.defaultItemBodyColor;
             }
         }
+        if (item.hidden) {
+            bodyColor = "white";
+        }
 
         var textColor = item.textColor;
         if (!textColor) textColor = ClusteringDiagram.defaultTextColor;
@@ -533,6 +548,7 @@ class ClusteringDiagram {
         if (item.notes) hoverText += " -- " + item.notes;
         if (item.notesExtra) hoverText += "\n----------\n" + item.notesExtra;
         if (item.strength) hoverText += " [Strength: " + item.strength + "]"; 
+        if (item.hidden) hoverText += ' (hidden)';
 
         group.append("title")
             .text(hoverText);
