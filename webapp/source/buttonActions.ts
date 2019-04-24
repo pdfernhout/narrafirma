@@ -380,17 +380,21 @@ export function copyInterpretationsToClusteringDiagram() {
         return null;
     }
 
-    function findObservationForInterpretation(observationIDs, interpretationName) {
+    function findObservationForInterpretation(observationIDs, id, name) {
         for (var i = 0; i < observationIDs.length; i++) {
             const observationID = observationIDs[i];
             var interpretationsListIdentifier = project.tripleStore.queryLatestC(observationID, "observationInterpretations");
             var interpretationsList = project.tripleStore.getListForSetIdentifier(interpretationsListIdentifier);
             for (var j = 0; j < interpretationsList.length; j++) {
-                const interpretationID = interpretationsList[j];
-                var interpretation = project.tripleStore.makeObject(interpretationID, true);
-                var name = interpretation.interpretation_name;
-                if (name === interpretationName) {
-                    return observationID;
+                if (id) {
+                    if (interpretationsList[j] === id) {
+                        return observationID;
+                    }
+                } else {
+                    var interpretation = project.tripleStore.makeObject(interpretationsList[j], true);
+                    if (name === interpretation.interpretation_name) {
+                        return observationID;
+                    }
                 }
             }
         }
@@ -429,7 +433,7 @@ export function copyInterpretationsToClusteringDiagram() {
                 let itemChanged = false;
                 let newName = project.tripleStore.queryLatestC(item.referenceUUID, "interpretation_name") || "";
                 let newNotes = project.tripleStore.queryLatestC(item.referenceUUID, "interpretation_text") || "";
-                const observationID = findObservationForInterpretation(observationIDs, newName);
+                const observationID = findObservationForInterpretation(observationIDs, item.referenceUUID, item.name);
                 let newStrength = null;
                 let newNotesExtra = null;
                 if (observationID) {
@@ -477,16 +481,16 @@ export function copyInterpretationsToClusteringDiagram() {
     allInterpretations.forEach((interpretation) => {
         if (!existingReferenceUUIDs[interpretation.id]) {
             // check that this interpretation is attached to an observation; if not, it should not be added to the diagram
-            const observationID = findObservationForInterpretation(observationIDs, interpretation.name);
+            const observationID = findObservationForInterpretation(observationIDs, interpretation.id, interpretation.name);
             if (observationID) {
                 // if the user creates an observation and adds interpretations to it,
                 // and then deletes the name and text of the observation, 
                 // the observation will still exist in the system,
                 // and the interpretations will still exist, and they will still link to the observation,
                 // but they should be hidden from the clustering diagram and the report.
-                var observationName = project.tripleStore.queryLatestC(observationID, "observationTitle");
-                var observationDescription = project.tripleStore.queryLatestC(observationID, "observationDescription");
-                var observationStrength = project.tripleStore.queryLatestC(observationID, "observationStrength");
+                const observationName = project.tripleStore.queryLatestC(observationID, "observationTitle");
+                const observationDescription = project.tripleStore.queryLatestC(observationID, "observationDescription");
+                const observationStrength = project.tripleStore.queryLatestC(observationID, "observationStrength");
                 if (observationName || observationDescription) {
                     addedItemCount++;
                     const item = ClusteringDiagram.addNewItemToDiagram(clusteringDiagram, "item", interpretation.name, interpretation.text);
