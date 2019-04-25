@@ -31,7 +31,7 @@ var panel: Panel = {
             valueType: "string",
             displayType: "textarea",
             displayName: "Questions",
-            displayPrompt: "If you like, you can record some <strong>questions</strong> that arise from this interpretation."
+            displayPrompt: "You might want to record some <strong>questions</strong> that arise from this interpretation."
         }
     ]
 };

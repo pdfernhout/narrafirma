@@ -227,11 +227,10 @@ class PatternExplorer {
                     valueOptions: ["1 (weak)", "2 (medium)", "3 (strong)"]
                 },
                 {
-                    id: "observationPanel_branchingQuestion",
-                    valuePath: "currentObservationBranchingQuestion",
-                    displayName: "Observation branching question",
-                    displayPrompt: `If you want to print a catalysis report in which interpretations follow observations, enter a <strong>branching question</strong>,
-                        that is, a question that will be printed after the observation and to which the interpretations will represent answers.`,
+                    id: "observationPanel_linkingQuestion",
+                    valuePath: "currentObservationLinkingQuestion",
+                    displayName: "Observation linking question",
+                    displayPrompt: `You might want to enter a <strong>linking question</strong> that will connect this observation to its interpretations (e.g., "Why did people say ___?").`,
                     displayType: "text"
                 },
             ]
@@ -1429,11 +1428,11 @@ currentObservationStrength(newValue = undefined) {
     return this.observationAccessor(this.currentPattern, "observationStrength", newValue);
 }
 
-currentObservationBranchingQuestion(newValue = undefined) {
+currentObservationLinkingQuestion(newValue = undefined) {
     if (!this.currentPattern) {
         return "";
     }
-    return this.observationAccessor(this.currentPattern, "observationBranchingQuestion", newValue);
+    return this.observationAccessor(this.currentPattern, "observationLinkingQuestion", newValue);
 }
 
 currentObservationSavedGraphSelections(newValue = undefined) {

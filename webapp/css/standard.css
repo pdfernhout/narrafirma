@@ -1068,10 +1068,17 @@ td.narrafirma-mw-nested-title, td.narrafirma-mw-nested-stats {
     background: rgb(238, 242, 250);
 }
 
-.narrafirma-catalysis-report-observation-branching-question {
+.narrafirma-catalysis-report-observation-linking-question-by-theme {
     padding: 0.5em;
     margin-bottom: 0.5em;
     text-align: center;
+    font-style: italic;
+    background: #c5d2eb;
+}
+
+.narrafirma-catalysis-report-observation-linking-question-by-perspective {
+    padding: 0.5em;
+    margin-bottom: 0.5em;
     font-style: italic;
     background: #c5d2eb;
 }

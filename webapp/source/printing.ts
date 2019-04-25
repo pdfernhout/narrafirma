@@ -457,11 +457,11 @@ function printCatalysisReportWithClusteredObservations(project, catalysisReportI
                     const item = cluster.items[itemIndex];
                     if (item.print) {
 
-                        const idTag = "c_" + clusterIndex;
+                        const idTag = "c_" + clusterIndex + "_o_" + itemIndex;
                         printItems.push(<any>printListOfObservations([item.referenceUUID], options["observationLabel"], idTag, "", allStories, options));
 
-                        const branchingQuestion = project.tripleStore.queryLatestC(item.referenceUUID, "observationBranchingQuestion");
-                        if (branchingQuestion) printItems.push(m("div.narrafirma-catalysis-report-observation-branching-question", branchingQuestion));
+                        const linkingQuestion = project.tripleStore.queryLatestC(item.referenceUUID, "observationLinkingQuestion");
+                        if (linkingQuestion) printItems.push(m("div.narrafirma-catalysis-report-observation-linking-question-by-theme", linkingQuestion));
                         
                         const interpretationsListIdentifier = project.tripleStore.queryLatestC(item.referenceUUID, "observationInterpretations");
                         const interpretationIDsForThisObservation = project.tripleStore.getListForSetIdentifier(interpretationsListIdentifier);
@@ -605,6 +605,9 @@ function printCatalysisReportWithClusteredInterpretations(project, catalysisRepo
                             item.questions = interpretation.interpretation_questions;
                         }
 
+                        const linkingQuestion = project.tripleStore.queryLatestC(observationsIDsForInterpretation[item.uuid][0], "observationLinkingQuestion");
+                        if (linkingQuestion) printItems.push(m("div.narrafirma-catalysis-report-observation-linking-question-by-perspective", linkingQuestion));
+
                         // interpretation name and description
                         const interpretationNameWithoutSpaces = replaceSpacesWithDashes(item.name || item.notes);
                         const idTag = "c_" + clusterIndex + "_i_" + itemIndex;
@@ -688,7 +691,9 @@ function printListOfObservations(observationList, observationLabel, idTagStart, 
         headerItems.push(m("span", {"class": "narrafirma-catalysis-report-observation-strength"}, strengthStringToPrint));
 
         const resultItems = [];
-        resultItems.push(m("h3.narrafirma-catalysis-report-observation", {"id": idTagStart + "_o_" + index}, headerItems));
+        let idTagTouse = idTagStart;
+        if (idTagTouse.indexOf("_o_") < 0) idTagTouse += "_o_" + index;
+        resultItems.push(m("h3.narrafirma-catalysis-report-observation", {"id": idTagTouse}, headerItems));
         resultItems.push(m("div.narrafirma-catalysis-report-observation-description", printText(observationDescriptionToPrint)));
 
         if (item.pattern.graphType === "texts") {
