@@ -80,6 +80,8 @@ var panel: Panel = {
             }
         },
 
+
+        ////////////////////////////////////////////////////// show or hide
         {
             id: "configureCatalysisReport_ShowOrHideHeader",
             valueType: "none",
@@ -88,9 +90,7 @@ var panel: Panel = {
             displayVisible: function(panelBuilder, model) {
                 return !!Globals.clientState().catalysisReportIdentifier();
             }
-       },
-
-
+        },
         {
             id: "configureCatalysisReport_chooseGraphTypes",
             valueType: "object",
@@ -102,23 +102,22 @@ var panel: Panel = {
             }
         },
         {
-            id: "catalysisReport_filter",
-            valuePath: "/clientState/catalysisReportIdentifier/catalysisReport_filter",
-            valueType: "string",
-            displayType: "text",
-            displayPrompt: `
-            If you want to <strong>filter</strong> the stories used in this report, enter your filter here.
-            (For details on how to use this function, click Help.)`,
-            displayVisible: function(panelBuilder, model) {
-                return !!Globals.clientState().catalysisReportIdentifier();
-            }
-        },
-        {
             id: "configureCatalysisReport_chooseQuestions",
             valueType: "object",
             valuePath: "/clientState/catalysisReportIdentifier/questionsToInclude",
             displayType: "catalysisReportQuestionChooser",
             displayPrompt: "Which <strong>questions</strong> should appear on the \"Explore Patterns\" page? (Note: Only questions checked here will be considered in data integrity graphs.)",
+            displayVisible: function(panelBuilder, model) {
+                return !!Globals.clientState().catalysisReportIdentifier();
+            }
+        },
+        {
+            id: "configureCatalysisReport_showInterpretationsInGrid",
+            valueType: "boolean",
+            valuePath: "/clientState/catalysisReportIdentifier/showInterpretationsInGrid",
+            displayType: "checkbox",
+            displayConfiguration: "Yes, show interpretations in the table",
+            displayPrompt: "Should <strong>interpretations</strong> be shown in the table of patterns? (Tip: Turn this on to find or review interpretations; turn it off to shrink the table height.)",
             displayVisible: function(panelBuilder, model) {
                 return !!Globals.clientState().catalysisReportIdentifier();
             }
@@ -136,35 +135,20 @@ var panel: Panel = {
                 return !!Globals.clientState().catalysisReportIdentifier();
             }
         },
-
         {
-            id: "configureCatalysisReport_showInterpretationsInGrid",
-            valueType: "boolean",
-            valuePath: "/clientState/catalysisReportIdentifier/showInterpretationsInGrid",
-            displayType: "checkbox",
-            displayConfiguration: "Yes, show interpretations in the table",
-            displayPrompt: "Should <strong>interpretations</strong> be shown in the table of patterns? (Tip: Turn this on to find or review interpretations; turn it off to shrink the table height.)",
-            displayVisible: function(panelBuilder, model) {
-                return !!Globals.clientState().catalysisReportIdentifier();
-            }
-        },
-        {
-            id: "configureCatalysisReport_questionShortNamesToShowForSelectedStories",
-            valuePath: "/clientState/catalysisReportIdentifier/questionShortNamesToShowForSelectedStories",
+            id: "catalysisReport_filter",
+            valuePath: "/clientState/catalysisReportIdentifier/catalysisReport_filter",
             valueType: "string",
-            displayType: "textarea",
-            displayName: "Fields to show on selections",
+            displayType: "text",
             displayPrompt: `
-                On the Explore patterns page, when you select stories on a graph, you can view them in a separate window for copying (maybe into an observation).
-                When you look at subsets of stories in that way, you might also want to <strong>see the answers to a few important questions</strong> about each story.
-                Enter the short names of those questions here, one per line. 
-                `,
+            If you want to <strong>filter</strong> the stories used in this report, enter your filter here.
+            (For details on how to use this function, click Help.)`,
             displayVisible: function(panelBuilder, model) {
                 return !!Globals.clientState().catalysisReportIdentifier();
             }
         },
 
-
+        ////////////////////////////////////////////////////// drawing graphs
         {
             id: "configureCatalysisReport_DrawingGraphsHeader",
             valueType: "none",
@@ -275,6 +259,7 @@ var panel: Panel = {
         },
 
 
+        ////////////////////////////////////////////////////// statistics
         {
             id: "configureCatalysisReport_StatisticalTestsHeader",
             valueType: "none",
@@ -310,7 +295,35 @@ var panel: Panel = {
                 return !!Globals.clientState().catalysisReportIdentifier();
             }
         },
+
+        ////////////////////////////////////////////////////// other options
+        {
+            id: "configureCatalysisReport_moreOptionsHeader",
+            valueType: "none",
+            displayType: "header",
+            displayPrompt: "Miscellaneous options",
+            displayVisible: function(panelBuilder, model) {
+                return !!Globals.clientState().catalysisReportIdentifier();
+            }
+        },
+        {
+            id: "configureCatalysisReport_questionShortNamesToShowForSelectedStories",
+            valuePath: "/clientState/catalysisReportIdentifier/questionShortNamesToShowForSelectedStories",
+            valueType: "string",
+            displayType: "textarea",
+            displayName: "Fields to show on selections",
+            displayPrompt: `
+                On the Explore patterns page, when you select stories on a graph, you can view them in a separate window for copying (maybe into an observation).
+                When you look at subsets of stories in that way, you might also want to <strong>see the answers to a few important questions</strong> about each story.
+                Enter the short names of those questions here, one per line. 
+                `,
+            displayVisible: function(panelBuilder, model) {
+                return !!Globals.clientState().catalysisReportIdentifier();
+            }
+        },
         
+        ////////////////////////////////////////////////////// export import
+
         {
             id: "configureCatalysisReport_exportImportLabel",
             valueType: "none",

@@ -255,30 +255,30 @@ function add_catalysisReportQuestionChooser(panelBuilder: PanelBuilder, model, f
             m("br"),
 
             m("i", "Scales"),
-            m("br"),
-            m("br"),
+            storyRatioQuestions.length ? m("br") : "",
+            storyRatioQuestions.length ? m("br") : "",
             storyRatioQuestions.map((question) => {
                 return buildQuestionCheckbox(question.displayName, question.displayType, "S_");
             }),
-            storyRatioQuestions.length ? [] : m("div", "  (none)"),
+            storyRatioQuestions.length ? [] : [m("i", " - none"), m("br")],
 
             m("br"),
             m("i", "Choices"),
-            m("br"),
-            m("br"),
+            storyNominalQuestions.length ? m("br") : "",
+            storyNominalQuestions.length ? m("br") : "",
             storyNominalQuestions.map((question) => {
                 return buildQuestionCheckbox(question.displayName, question.displayType, "S_");
             }),
-            storyNominalQuestions.length ? [] : m("div", "  (none)"),
+            storyNominalQuestions.length ? [] : [m("i", " - none"), m("br")],
 
             m("br"),
             m("i", "Texts"),
-            m("br"),
-            m("br"),
+            storyTextQuestions.length ? m("br") : "",
+            storyTextQuestions.length ? m("br") : "",
             storyTextQuestions.map((question) => {
                 return buildQuestionCheckbox(question.displayName, question.displayType, "S_");
             }),
-            storyTextQuestions.length ? [] : m("div", "  (none)"),
+            storyTextQuestions.length ? [] : [m("i", " - none"), m("br")],
 
             m("br"),
             m("b", "Participant questions"),
@@ -286,39 +286,39 @@ function add_catalysisReportQuestionChooser(panelBuilder: PanelBuilder, model, f
             m("br"),
 
             m("i", "Scales"),
-            m("br"),
-            m("br"),
+            participantRatioQuestions.length ? m("br") : "",
+            participantRatioQuestions.length ? m("br") : "",
             participantRatioQuestions.map((question) => {
                 return buildQuestionCheckbox(question.displayName, question.displayType, "P_");
             }),
-            participantRatioQuestions.length ? [] : m("div", "  (none)"),
+            participantRatioQuestions.length ? [] : [m("i", " - none"), m("br")],
 
             m("br"),
             m("i", "Choices"),
-            m("br"),
-            m("br"),
+            participantNominalQuestions.length ? m("br") : "",
+            participantNominalQuestions.length ? m("br") : "",
             participantNominalQuestions.map((question) => {
                 return buildQuestionCheckbox(question.displayName, question.displayType, "P_");
             }),
-            participantNominalQuestions.length ? [] : m("div", "  (none)"),
+            participantNominalQuestions.length ? [] : [m("i", " - none"), m("br")],
 
             m("br"),
             m("i", "Texts"),
-            m("br"),
-            m("br"),
+            participantTextQuestions.length ? m("br") : "",
+            participantTextQuestions.length ? m("br") : "",
             participantTextQuestions.map((question) => {
                 return buildQuestionCheckbox(question.displayName, question.displayType, "P_");
             }),
-            participantTextQuestions.length ? [] : m("div", "  (none)"),
+            participantTextQuestions.length ? [] : [m("i", " - none"), m("br")],
 
             m("br"),
             m("b", "Annotation questions"), 
-            m("br"),
-            m("br"),
+            allAnnotationQuestions.length ? m("br") : "",
+            allAnnotationQuestions.length ? m("br") : "",
             allAnnotationQuestions.map((question) => {
                 return buildQuestionCheckbox(question.displayName, question.displayType, "A_");
             }),
-            allAnnotationQuestions.length ? [] : m("div", "  (none)"),
+            allAnnotationQuestions.length ? [] : [m("i", " - none"), m("br")],
             m("br"),
             m("b", "Additional information"),
             m("br"),
