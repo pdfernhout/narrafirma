@@ -390,11 +390,7 @@ function printCatalysisReportWithClusteredObservations(project, catalysisReportI
         addPrintItemsForReportStart(printItems, project, catalysisReportName, catalysisReportIdentifier, allStories, options);
         
         let clustersToPrint = clustersThatMatchObservationIDList(project, clusteringDiagram, "themes", observationIDs);
-        clustersToPrint.sort(function(a,b) {
-            if (a.y < b.y) return -1;
-            if (a.y > b.y) return 1;
-            return 0;
-        });
+        clustersToPrint.sort(function(a, b) { return (a.order && b.order && a.order > b.order) ? 1 : -1 });
 
         var tocHeaderRaw = project.tripleStore.queryLatestC(catalysisReportIdentifier, "catalysisReport_tocHeaderFirstLevel_observations");
         addPrintItemsForTOCLevelOne(printItems, tocHeaderRaw, clustersToPrint, "Themes");
@@ -509,11 +505,7 @@ function printCatalysisReportWithClusteredInterpretations(project, catalysisRepo
     addPrintItemsForReportStart(printItems, project, catalysisReportName, catalysisReportIdentifier, allStories, options);
     
     let clustersToPrint = clustersThatMatchObservationIDList(project, clusteringDiagram, "perspectives", observationIDs);
-    clustersToPrint.sort(function(a,b) {
-        if (a.y < b.y) return -1;
-        if (a.y > b.y) return 1;
-        return 0;
-    });
+    clustersToPrint.sort(function(a, b) { return (a.order && b.order && a.order > b.order) ? 1 : -1 });
 
     var tocHeaderRaw = project.tripleStore.queryLatestC(catalysisReportIdentifier, "catalysisReport_tocHeaderFirstLevel");
     addPrintItemsForTOCLevelOne(printItems, tocHeaderRaw, clustersToPrint, "Perspectives");

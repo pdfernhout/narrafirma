@@ -556,7 +556,9 @@ class ClusteringDiagram {
         group.borderColor = borderColor;
         group.borderWidth = borderWidth;
         
-        this.addText(group, item.name, radius * 1.5, textStyle, textColor);
+        let textToShow = item.name;
+        if (item.order) textToShow = item.order + ". " + item.name;
+        this.addText(group, textToShow, radius * 1.5, textStyle, textColor);
     
         group.on("mousedown", () => {
             this.selectItem(item, d3.event.shiftKey);
@@ -695,6 +697,7 @@ class ClusteringDiagram {
             this.itemBeingEdited.name = "Untitled " + this.itemBeingEdited.type + " #" + (this.model.items.length + 1);
         }
         this.itemBeingEdited.notes = this.itemBeingEditedCopy.notes;
+        this.itemBeingEdited.order = this.itemBeingEditedCopy.order;
         if (this.isEditedItemNew) {
             this.model.items.push(this.itemBeingEdited);
             this.addDisplayObjectForItem(this.mainSurface, this.itemBeingEdited);
@@ -816,38 +819,47 @@ class ClusteringDiagram {
     }
 
     buildEntryDialog() {
+        let result = [];
         let createOrEdit = (this.isEditedItemNew) ? "New" : "Edit";
-        return m("div.overlay", m("div.modal-content", {"style": "width: 40%"}, [
-            createOrEdit + " " + this.itemBeingEditedCopy.type,
-            m("br"),
-            m("br"),
-            m('label', {"for": "itemDialog_name"}, "Name:"),
-            m('input[type=text]', {
+        result.push(createOrEdit + " " + this.itemBeingEditedCopy.type);
+        result.push(m("br"));
+        result.push(m("br"));
+        result.push(m('label', {"for": "itemDialog_name"}, "Name:"));
+        result.push(m('input[type=text]', {
                 id: "itemDialog_name",
                 value: this.itemBeingEditedCopy.name || "",
                 onchange: (event) => { this.itemBeingEditedCopy.name = event.target.value; }
-            }),
-            m('br'),
-            m('br'),
-            m('label', {"for": "itemDialog_notes"}, "Notes:"),
-            m("br"),
-            m('textarea[class=narrafirma-textbox]', {
+            }));
+        result.push(m('br'));
+        result.push(m('br'));
+        result.push(m('label', {"for": "itemDialog_notes"}, "Notes:"));
+        result.push(m("br"));
+        result.push(m('textarea[class=narrafirma-textbox]', {
                 id: "itemDialog_notes",
                 value: this.itemBeingEditedCopy.notes || "",
                 onchange: (event) => { this.itemBeingEditedCopy.notes = event.target.value; }
-            }),
-            m("br"),
-            m("button", {
-                onclick: () => {
-                    this.showEntryDialog = false;
+            }));
+        result.push(m("br"));
+
+        if (this.configuration === "interpretations" || this.configuration === "observations") {
+            result.push(m("br"));
+            result.push(m('label', {"for": "itemDialog_order"}, "Order:"));
+            result.push(m('input[type=text]', {
+                id: "itemDialog_order",
+                value: this.itemBeingEditedCopy.order || "",
+                onchange: (event) => { 
+                    let newOrderAsNumber = parseInt(event.target.value.trim(), 10);
+                    if (newOrderAsNumber) this.itemBeingEditedCopy.order = newOrderAsNumber; 
                 }
-            }, "Cancel"),
-            m("button", {
-                onclick: () => {
-                    this.acceptChangesForItemBeingEdited();
-                }
-            }, "OK")
-        ]));
+            }));
+            result.push(m("br"));
+        }
+        
+        result.push(m("br"));
+        result.push(m("button", {onclick: () => {this.showEntryDialog = false;}}, "Cancel"));
+        result.push(m("button", {onclick: () => {this.acceptChangesForItemBeingEdited();}}, "OK"));
+
+        return m("div.overlay", m("div.modal-content", {"style": "width: 40%"}, result));
     }
     
     updateSourceClicked(text, hideDialogMethod) {     

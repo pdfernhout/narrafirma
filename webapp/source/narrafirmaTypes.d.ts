@@ -106,6 +106,7 @@ interface ClusteringDiagramItem {
     print?: boolean;
     strength?: string;
     notesExtra?: string;
+    order?: number;
 }
 
 interface ClusteringDiagramModel {
