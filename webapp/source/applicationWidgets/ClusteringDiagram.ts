@@ -93,6 +93,7 @@ class ClusteringDiagram {
     
     d3DivForResizing: d3.Selection<any> = null;
     background = null;
+    showStrengthColors = true;
 
     selectionRect = null;
     selectedItems = [];
@@ -405,10 +406,20 @@ class ClusteringDiagram {
                 }
             });
         }
+
+        // spacer to show that the two sets of buttons have different scopes of action
+        this.mainButtons.push(m("span", {"style": "display: inline-block; width: 2em;"}, " "));
         
         this.newButton("surfaceSizeButton", "Change surface size", () => {
             this.openSurfaceSizeDialog();
         });
+
+        if (this.configuration === "interpretations" || this.configuration === "observations") {
+            this.newButton("showHideColors", "Toggle strength colors", () => {
+                this.showStrengthColors = !this.showStrengthColors;
+                this.recreateDisplayObjectsForAllItems();
+            });
+        }
         
         if (!this.autosave) {
             this.newButton("saveChangesButton", "Save Changes", () => {
@@ -481,7 +492,7 @@ class ClusteringDiagram {
     
     addDisplayObjectForItem(surface, item: ClusteringDiagramItem) {
         var bodyColor = item.bodyColor;
-        if (!bodyColor) {
+        if (!bodyColor || !this.showStrengthColors) {
             if (item.type === "cluster") {
                 bodyColor = ClusteringDiagram.defaultClusterBodyColor;
             } else {
