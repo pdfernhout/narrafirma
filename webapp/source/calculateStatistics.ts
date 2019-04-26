@@ -305,7 +305,7 @@ for (var i = 0; i < options.length; i++) {
         try {
             var statResult = mannWhitneyU(x, y);
         } catch(err) {
-            toaster.toast('Error in Mann-Whitney U test for questions [' + scaleQuestion.displayName + ", " 
+            console.log('Error in Mann-Whitney U test for questions [' + scaleQuestion.displayName + ", " 
                 + firstChoiceQuestion.displayName + ", " + secondChoiceQuestion.displayName + "]: " + err);
             return {statsSummary: "None (error)", statsDetailed: []};
         }
@@ -364,7 +364,7 @@ export function calculateStatisticsForMultipleHistogram(scaleQuestion, choiceQue
             try {
                 var statResult = mannWhitneyU(x, y);
             } catch(err) {
-                toaster.toast('Error in Mann-Whitney U test for questions [' + scaleQuestion.displayName + ", " + choiceQuestion.displayName + "]: " + err);
+                console.log('Error in Mann-Whitney U test for questions [' + scaleQuestion.displayName + ", " + choiceQuestion.displayName + "]: " + err);
                 return {statsSummary: "None (error)", statsDetailed: []};
             }
             allResults[options[i] + " x " + options[j]] = {p: statResult.p, U: statResult.u, n1: statResult.n1, n2: statResult.n2};
@@ -559,14 +559,14 @@ export function calculateStatisticsForTable(nominalQuestion1, nominalQuestion2, 
     } catch(err) {
         var errorMessage = 'Error in chi-squared test for questions [' + nominalQuestion1.displayName + ", " + nominalQuestion2.displayName + "]: " + err + ". See console for details."
         console.log(errorMessage, n1, n2, statResult, observed, expected);
-        toaster.toast(errorMessage);
+        // toaster.toast(errorMessage);
         return {statsSummary: "None (error)", statsDetailed: []};        
     }
     
     if (statResult.n !== n1 * n2) {
         var errorMessage = 'Error in chi-squared test for questions [' + nominalQuestion1.displayName + ", " + nominalQuestion2.displayName + "]: Unexpected n1 * n2. See console for details."
         console.log(errorMessage, n1, n2, statResult, observed, expected);
-        toaster.toast(errorMessage);
+        // toaster.toast(errorMessage);
         return {statsSummary: "None (error)", statsDetailed: []};
         //throw new Error("unexpected n1 * n2");
     }
@@ -574,7 +574,7 @@ export function calculateStatisticsForTable(nominalQuestion1, nominalQuestion2, 
     if (statResult.n === degreesOfFreedom) {
         var errorMessage = 'Error in chi-squared test for questions [' + nominalQuestion1.displayName + ", " + nominalQuestion2.displayName + "]: Unexpected n. See console for details."
         console.log(errorMessage, n1, n2, statResult, observed, expected);
-        toaster.toast(errorMessage);
+        // toaster.toast(errorMessage);
         return {statsSummary: "None (error)", statsDetailed: []};
         //throw new Error("unexpected statResult.n");
     }
