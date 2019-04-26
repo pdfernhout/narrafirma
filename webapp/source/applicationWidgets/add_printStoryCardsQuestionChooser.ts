@@ -136,96 +136,69 @@ function add_printStoryCardsQuestionChooser(panelBuilder: PanelBuilder, model, f
         }
     });
 
-    return m("div.questionExternal", [
-        prompt,
-        m("div", [
-            m("br"),  
-            m("b", "Story questions"),
-            m("br"),  
-            m("br"),
+    let firstColumn = [];
+    firstColumn.push(m("b", "Story questions"));
+    firstColumn.push(m("br"));
+    firstColumn.push(m("br"));
+    firstColumn.push(m("i", "Scales"));
+    firstColumn.push(storyRatioQuestions.map((question) => {return buildQuestionCheckbox(question.displayName, question.displayType, "S_");}));
+    firstColumn.push(storyRatioQuestions.length ? [] : [m("i", " - none"), m("br")]);
+    firstColumn.push(m("br"));
+    firstColumn.push(m("i", "Choices"));
+    firstColumn.push(storyNominalQuestions.map((question) => {return buildQuestionCheckbox(question.displayName, question.displayType, "S_");}));
+    firstColumn.push(storyNominalQuestions.length ? [] : [m("i", " - none"), m("br")]);
+    firstColumn.push(m("br"));
+    firstColumn.push(m("i", "Texts"));
+    firstColumn.push(storyTextQuestions.map((question) => {return buildQuestionCheckbox(question.displayName, question.displayType, "S_");}));
+    firstColumn.push(storyTextQuestions.length ? [] : [m("i", " - none"), m("br")]);
+    let firstColumnTD = m("td", {"class": "narrafirma-questions-chooser-table-td"}, firstColumn);
 
-            m("i", "Scales"),
-            m("br"),
-            m("br"),
-            storyRatioQuestions.map((question) => {
-                return buildQuestionCheckbox(question.displayName, question.displayType, "S_");
-            }),
-            storyRatioQuestions.length ? [] : m("div", "  (none)"),
+    let secondColumn = [];
+    secondColumn.push(m("b", "Participant questions"));
+    secondColumn.push(m("br"));
+    secondColumn.push(m("br"));
+    secondColumn.push(m("i", "Scales"));
+    secondColumn.push(participantRatioQuestions.map((question) => {return buildQuestionCheckbox(question.displayName, question.displayType, "P_");}));
+    secondColumn.push(participantRatioQuestions.length ? [] : [m("i", " - none"), m("br")]);
+    secondColumn.push(m("br"));
+    secondColumn.push(m("i", "Choices"));
+    secondColumn.push(participantNominalQuestions.map((question) => {return buildQuestionCheckbox(question.displayName, question.displayType, "P_");}));
+    secondColumn.push(participantNominalQuestions.length ? [] : [m("i", " - none"), m("br")]);
+    secondColumn.push(m("br"));
+    secondColumn.push(m("i", "Texts"));
+    secondColumn.push(participantTextQuestions.map((question) => {return buildQuestionCheckbox(question.displayName, question.displayType, "P_");}));
+    secondColumn.push(participantTextQuestions.length ? [] : [m("i", " - none"), m("br")]);
+    let secondColumnTD = m("td", {"class": "narrafirma-questions-chooser-table-td"}, secondColumn);
 
-            m("br"),
-            m("i", "Choices"),
-            m("br"),
-            m("br"),
-            storyNominalQuestions.map((question) => {
-                return buildQuestionCheckbox(question.displayName, question.displayType, "S_");
-            }),
-            storyNominalQuestions.length ? [] : m("div", "  (none)"),
+    let thirdColumn = [];
+    thirdColumn.push(m("b", "Annotation questions")); 
+    thirdColumn.push(m("br"));
+    thirdColumn.push(m("br"));
+    thirdColumn.push(allAnnotationQuestions.map((question) => {return buildQuestionCheckbox(question.displayName, question.displayType, "A_");}));
+    thirdColumn.push(allAnnotationQuestions.length ? [] : [m("i", " - none"), m("br")]);
+    thirdColumn.push(m("br"));
+    thirdColumn.push(m("b", "Additional information"));
+    thirdColumn.push(m("br"));
+    thirdColumn.push(m("br"));
+    thirdColumn.push(elicitingQuestions.map((question) => {return buildQuestionCheckboxSpecialForElicitingQuestion();}));
+    thirdColumn.push(buildQuestionCheckboxSpecialForNumStoriesTold());
+    thirdColumn.push(buildQuestionCheckboxSpecialForStoryLength());
+    let thirdColumnTD = m("td", {"class": "narrafirma-questions-chooser-table-td"}, thirdColumn);
 
-            m("br"),
-            m("i", "Texts"),
-            m("br"),
-            m("br"),
-            storyTextQuestions.map((question) => {
-                return buildQuestionCheckbox(question.displayName, question.displayType, "S_");
-            }),
-            storyTextQuestions.length ? [] : m("div", "  (none)"),
+    let table = m("table", {"class": "narrafirma-questions-chooser-table"}, m("tr", [firstColumnTD, secondColumnTD, thirdColumnTD]));
 
-            m("br"),
-            m("b", "Participant questions"),
-            m("br"),
-            m("br"),
+    return m("div.questionExternal", 
+        [prompt, 
+        m("div", table),
+        m("br"),
+        m("button", { onclick: selectAll }, "Select all"),
+        m("button", { onclick: selectAllStoryQuestions }, "Select only story questions"),
+        m("button", { onclick: selectAllParticipantQuestions }, "Select only participant questions"),
+        m("button", { onclick: clearAll }, "Clear all"),
+        m("br"),
+        m("br"),
+        ]);
 
-            m("i", "Scales"),
-            m("br"),
-            m("br"),
-            participantRatioQuestions.map((question) => {
-                return buildQuestionCheckbox(question.displayName, question.displayType, "P_");
-            }),
-            participantRatioQuestions.length ? [] : m("div", "  (none)"),
-
-            m("br"),
-            m("i", "Choices"),
-            m("br"),
-            m("br"),
-            participantNominalQuestions.map((question) => {
-                return buildQuestionCheckbox(question.displayName, question.displayType, "P_");
-            }),
-            participantNominalQuestions.length ? [] : m("div", "  (none)"),
-
-            m("br"),
-            m("i", "Texts"),
-            m("br"),
-            m("br"),
-            participantTextQuestions.map((question) => {
-                return buildQuestionCheckbox(question.displayName, question.displayType, "P_");
-            }),
-            participantTextQuestions.length ? [] : m("div", "  (none)"),
-
-            m("br"),
-            m("b", "Annotation questions"), 
-            m("br"),
-            m("br"),
-            allAnnotationQuestions.map((question) => {
-                return buildQuestionCheckbox(question.displayName, question.displayType, "A_");
-            }),
-            allAnnotationQuestions.length ? [] : m("div", "  (none)"),
-            m("br"),
-            m("b", "Additional information"),
-            m("br"),
-            m("br"),
-            elicitingQuestions.map((question) => {
-                return buildQuestionCheckboxSpecialForElicitingQuestion();
-            }),
-            buildQuestionCheckboxSpecialForNumStoriesTold(),
-            buildQuestionCheckboxSpecialForStoryLength(),
-        ]),
-    m("br"),
-    m("button", { onclick: selectAll }, "Select all"),
-    m("button", { onclick: selectAllStoryQuestions }, "Select only story questions"),
-    m("button", { onclick: selectAllParticipantQuestions }, "Select only participant questions"),
-    m("button", { onclick: clearAll }, "Clear all"),
-    m("br")
-    ]);
 }
 
 export = add_printStoryCardsQuestionChooser;
