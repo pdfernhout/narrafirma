@@ -53,6 +53,13 @@ var panel: Panel = {
                 return !!Globals.clientState().storyCollectionIdentifier();}
         },
         {
+            id: "project_importStoriesLabel",
+            valueType: "none",
+            displayType: "label",
+            displayPrompt: `Note: It may take some time to finish importing your stories. If it looks like nothing has been imported, wait a little while.`
+        },
+
+        {
             id: "project_csvFileUploader",
             valueType: "none",
             displayType: "html",
