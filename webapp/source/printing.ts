@@ -292,6 +292,14 @@ export function printCatalysisReport() {
     options["printInterpretationsAsTable"] = project.useTableForInterpretationsFollowingObservation(catalysisReportIdentifier);
     options["customCSS"] = project.tripleStore.queryLatestC(catalysisReportIdentifier, "catalysisReport_customCSS");
 
+    let customGraphWidthAsString = project.tripleStore.queryLatestC(catalysisReportIdentifier, "customReportGraphWidth");
+    if (customGraphWidthAsString) {
+        let customGraphWidth = parseInt(customGraphWidthAsString);
+        if (!isNaN(customGraphWidth)) {
+            options["customGraphWidth"] = customGraphWidth;
+        }
+    }
+
     let statsTextReplacementsAsString = project.customStatsTextReplacements(catalysisReportIdentifier);
     let statsTextReplacements = {};
     if (statsTextReplacementsAsString) {
@@ -685,6 +693,7 @@ function printListOfObservations(observationList, observationLabel, idTagStart, 
             outputGraphFormat: options.outputGraphFormat,
             showStatsPanelsInReport: options.showStatsPanelsInReport,
             customStatsTextReplacements: options["customStatsTextReplacements"],
+            customGraphWidth: options["customGraphWidth"],
             graphTypesToCreate: {}
         };
 
@@ -737,6 +746,7 @@ function printListOfInterpretations(interpretationList, interpretationLabel, idT
             outputGraphFormat: options.outputGraphFormat,
             showStatsPanelsInReport: options.showStatsPanelsInReport,
             customStatsTextReplacements: options["customStatsTextReplacements"],
+            customGraphWidth: options["customGraphWidth"],
             graphTypesToCreate: {}
         };
 

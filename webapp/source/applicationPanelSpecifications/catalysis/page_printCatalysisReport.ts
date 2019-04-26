@@ -132,6 +132,18 @@ var panel: Panel = {
             }
         },
         {
+            id: "configureCatalysisReport_customReportGraphWidth",
+            valuePath: "/clientState/catalysisReportIdentifier/customReportGraphWidth",
+            valueType: "string",
+            displayType: "text",
+            displayName: "Custom graph width",
+            displayPrompt: `The default width of large graphs in a printed catalysis report is 800 pixels. 
+                You can enter a <strong>custom graph width</strong> here.`,
+            displayVisible: function(panelBuilder, model) {
+                return !!Globals.clientState().catalysisReportIdentifier();
+            }
+        },
+        {
             id: "catalysisReportPrint_useTableForInterpretationsFollowingObservation",
             valuePath: "/clientState/catalysisReportIdentifier/useTableForInterpretationsFollowingObservation",
             valueType: "boolean",
@@ -153,6 +165,17 @@ var panel: Panel = {
                 return !!Globals.clientState().catalysisReportIdentifier();
             }
         },        
+        {
+            id: "catalysisReport_customCSS",
+            valuePath: "/clientState/catalysisReportIdentifier/catalysisReport_customCSS",
+            valueType: "string",
+            displayType: "textarea",
+            displayName: "Custom CSS",
+            displayPrompt: "You can enter <strong>custom CSS</strong> that modifies elements of the catalysis report here. (For more information on how this works, see the help system.)",
+            displayVisible: function(panelBuilder, model) {
+                return !!Globals.clientState().catalysisReportIdentifier();
+            }
+        },
         {
             id: "catalysisReport_notes",
             valuePath: "/clientState/catalysisReportIdentifier/catalysisReport_notes",

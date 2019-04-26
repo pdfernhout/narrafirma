@@ -28,6 +28,7 @@ interface GraphHolder {
     graphTypesToCreate: {};
     statisticalInfo?: string;
     customStatsTextReplacements?: string;
+    customGraphWidth?: number;
 }
 
 // Possible Grid configuration options

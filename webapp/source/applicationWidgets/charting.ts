@@ -258,15 +258,16 @@ function createBrush(chartBody, xScale, yScale, brushendCallback) {
     return {brush: brush, brushGroup: brushGroup};
 }
 
-const largeGraphWidth = 800;
-const largeGraphHeight = 600;
+const defaultLargeGraphWidth = 800;
 
-function makeChartFramework(chartPane: HTMLElement, chartType, size, margin) {
+function makeChartFramework(chartPane: HTMLElement, chartType, size, margin, customGraphWidth) {
+
+    let largeGraphWidth = customGraphWidth || defaultLargeGraphWidth;
     var fullWidth = 0;
     var fullHeight = 0;
     if (size == "large") {
         fullWidth = largeGraphWidth;
-        fullHeight = largeGraphHeight;
+        fullHeight = Math.round(largeGraphWidth * 0.75);;
     } else if (size === "tall") {
         fullWidth = largeGraphWidth;
         fullHeight = largeGraphWidth;       
@@ -754,7 +755,7 @@ export function d3BarChartForValues(graphBrowserInstance: GraphHolder, plotItems
     if (maxItemsPerBar >= 100) margin.left += letterSize;
     if (maxItemsPerBar >= 1000) margin.left += letterSize;
     
-    var chart = makeChartFramework(chartPane, "barChart", "large", margin);
+    var chart = makeChartFramework(chartPane, "barChart", "large", margin, graphBrowserInstance.customGraphWidth);
     var chartBody = chart.chartBody;
     
     var statistics = calculateStatistics.calculateStatisticsForBarGraphValues(function(plotItem) { return plotItem.value; });
@@ -1021,7 +1022,7 @@ export function d3HistogramChartForValues(graphBrowserInstance: GraphHolder, plo
     var chartPane = newChartPane(graphBrowserInstance, style);   
     if (!isSmallFormat) addTitlePanelForChart(chartPane, chartTitle);
 
-    var chart = makeChartFramework(chartPane, "histogram", chartSize, margin);
+    var chart = makeChartFramework(chartPane, "histogram", chartSize, margin, graphBrowserInstance.customGraphWidth);
     var chartBody = chart.chartBody;
     
     var values = plotItems.map(function(item) { return parseFloat(item.value); });
@@ -1331,6 +1332,7 @@ export function d3ScatterPlot(graphBrowserInstance: GraphHolder, xAxisQuestion, 
 
     var chartPane = newChartPane(graphBrowserInstance, style);
     
+    let largeGraphWidth = graphBrowserInstance.customGraphWidth || defaultLargeGraphWidth;
     var margin = {top: 20, right: 15 + largeGraphWidth / 4, bottom: 90, left: 90};
     if (isSmallFormat) {
         margin.right = 20;
@@ -1339,7 +1341,7 @@ export function d3ScatterPlot(graphBrowserInstance: GraphHolder, xAxisQuestion, 
     var chartTitle = "" + nameForQuestion(xAxisQuestion) + " x " + nameForQuestion(yAxisQuestion);
     if (!isSmallFormat) addTitlePanelForChart(chartPane, chartTitle);
 
-    var chart = makeChartFramework(chartPane, "scatterPlot", chartSize, margin);
+    var chart = makeChartFramework(chartPane, "scatterPlot", chartSize, margin, graphBrowserInstance.customGraphWidth);
     var chartBody = chart.chartBody;
     
     chart.subgraphQuestion = choiceQuestion;
@@ -1711,7 +1713,7 @@ export function d3ContingencyTable(graphBrowserInstance: GraphHolder, xAxisQuest
     if (rowCount > 10) { 
         graphSize = "tall";
     }
-    var chart = makeChartFramework(chartPane, "contingencyChart", graphSize, margin);
+    var chart = makeChartFramework(chartPane, "contingencyChart", graphSize, margin, graphBrowserInstance.customGraphWidth);
     var chartBody = chart.chartBody;
 
     var statistics;
