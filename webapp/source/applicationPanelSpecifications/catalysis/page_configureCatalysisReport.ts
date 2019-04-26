@@ -158,7 +158,18 @@ var panel: Panel = {
                 return !!Globals.clientState().catalysisReportIdentifier();
             }
         },
-        
+        {
+            id: "configureCatalysisReport_customDisplayGraphWidth",
+            valuePath: "/clientState/catalysisReportIdentifier/customDisplayGraphWidth",
+            valueType: "string",
+            displayType: "text",
+            displayName: "Custom graph width",
+            displayPrompt: `The default width of large graphs on the "Explore patterns" page is 800 pixels. 
+                You can enter a <strong>custom graph width</strong> here.`,
+            displayVisible: function(panelBuilder, model) {
+                return !!Globals.clientState().catalysisReportIdentifier();
+            }
+        },
         {
             id: "configureCatalysisReport_minimumStoryCountRequiredForGraph",
             valuePath: "/clientState/catalysisReportIdentifier/minimumStoryCountRequiredForGraph",

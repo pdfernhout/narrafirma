@@ -394,6 +394,7 @@ class PatternExplorer {
         this.graphHolder.outputGraphFormat = this.project.outputGraphFormat(catalysisReportIdentifier);
         this.graphHolder.showStatsPanelsInReport = this.project.showStatsPanelsInReport(catalysisReportIdentifier);
         this.graphTypesToCreate = this.project.graphTypesToCreate(catalysisReportIdentifier);
+        this.graphHolder.customGraphWidth = this.project.customDisplayGraphWidth(catalysisReportIdentifier);
         
         this.catalysisReportObservationSetIdentifier = this.getObservationSetIdentifier(catalysisReportIdentifier);
         this.graphHolder.allStories = this.project.storiesForCatalysisReport(catalysisReportIdentifier);

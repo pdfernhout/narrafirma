@@ -883,6 +883,18 @@ class Project {
         }
     }
 
+    customDisplayGraphWidth(catalysisReportIdentifier) {
+        if (!catalysisReportIdentifier) {
+            throw new Error("catalysisReportIdentifier was not supplied");
+        }
+        var customDisplayGraphWidth = this.tripleStore.queryLatestC(catalysisReportIdentifier, "customDisplayGraphWidth");
+        if (customDisplayGraphWidth !== undefined) {
+            return customDisplayGraphWidth;
+        } else {
+            return "";
+        }
+    }
+
     numScatterDotOpacityLevels(catalysisReportIdentifier) {
         if (!catalysisReportIdentifier) {
             throw new Error("catalysisReportIdentifier was not supplied");
