@@ -37,7 +37,7 @@ var patternsPanelSpecification = {
         {id: "displayNameForQuestion2", displayName: "Question 2", valueOptions: []},
         {id: "displayNameForQuestion3", displayName: "Question 3", valueOptions: []},
         {id: "graphType", displayName: "Graph type", valueOptions: []},
-        {id: "significance", displayName: "Significance value", valueOptions: []},
+        {id: "statsSummary", displayName: "Significance value", valueOptions: []},
         {id: "observation", displayName: "Observation", valueOptions: []},
         {id: "strength", displayName: "Strength", valueOptions: []},
     ]
@@ -569,7 +569,7 @@ class PatternExplorer {
         // if a lot of patterns, use progress dialog, otherwise just calculate (and avoid having a dialog blip onto the screen and off again)
         if (result.length > 200) { // this is an arbitrary number, just a guess as to how long it will take to calculate 
             // first set all stats to "none" in case they cancel partway through
-            result.forEach((pattern) => { pattern.significance = "None (calculation cancelled)"; });
+            result.forEach((pattern) => { pattern.statsSummary = "None (calculation cancelled)"; });
             var progressModel = dialogSupport.openProgressDialog("Processing statistics for question combinations", "Generating statistical results...", "Cancel", dialogCancelled);
             // reduce number of times progress message is updated (to speed up process), but show progress at least every 20 graphs so user knows it is working
             var howOftenToUpdateProgressMessage = Math.min(Math.max(Math.floor(result.length/100.0), 1), 20); 

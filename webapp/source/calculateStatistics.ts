@@ -28,18 +28,18 @@ export function calculateStatisticsForPattern(pattern, patternNumber, numPattern
     } else if (graphType ===  "multiple scatter") {
         statistics = calculateStatisticsForMultipleScatterPlot(pattern.questions[0], pattern.questions[1], pattern.questions[2], stories, minimumStoryCountRequiredForTest, unansweredText);
     } else if (graphType == "data integrity") {
-        statistics = {significance: "None", calculated: []};
+        statistics = {statsSummary: "None", statsDetailed: []};
     } else if (graphType == "texts") {
-        statistics = {significance: "None", calculated: []};            
+        statistics = {statsSummary: "None", statsDetailed: []};            
     } else {
         console.log("ERROR: Unexpected graphType: " + graphType);
         throw new Error("ERROR: Not suported graphType: " + graphType);
     }
     
     if (statistics) {
-        pattern.significance = statistics.significance;
+        pattern.statsSummary = statistics.statsSummary;
     } else {
-        pattern.significance = "ERROR";
+        pattern.statsSummary = "ERROR";
     }
 
     if (progressModel && patternNumber % howOftenToUpdateProgressMessage == 0) { // only report progress every total/100 graphs; makes it go faster
@@ -238,7 +238,7 @@ export function calculateStatisticsForBarGraph(nominalQuestion, stories: surveyC
 
 export function calculateStatisticsForBarGraphValues(values) {
     var n = values.length;
-    return {significance: "None", calculated: []};
+    return {statsSummary: "None", statsDetailed: []};
 }
 
 export function calculateStatisticsForHistogram(ratioQuestion, stories: surveyCollection.Story[], minimumStoryCountRequiredForTest: number, unansweredText) {
@@ -255,7 +255,7 @@ export function calculateStatisticsForHistogramValues(values, unansweredCount, u
     var n = values.length;
     var result;
     if (n <= 0) {
-        result = {significance: "None", calculated: [ "n"], n: n};
+        result = {statsSummary: "None", statsDetailed: [ "n"], n: n};
     } else {
         var mean = jStat.mean(values);
         var median = jStat.median(values);
@@ -263,9 +263,9 @@ export function calculateStatisticsForHistogramValues(values, unansweredCount, u
         var sd = jStat.stdev(values, true);
         var skewness = jStat.skewness(values);
         var kurtosis = jStat.kurtosis(values);
-        result = {significance: "None", calculated: ["mean", "median", "mode", "sd", "skewness", "kurtosis", "n"], mean: mean, median: median, mode: mode, sd: sd, skewness: skewness, kurtosis: kurtosis, n: n};
+        result = {statsSummary: "None", statsDetailed: ["mean", "median", "mode", "sd", "skewness", "kurtosis", "n"], mean: mean, median: median, mode: mode, sd: sd, skewness: skewness, kurtosis: kurtosis, n: n};
         if (unansweredCount >= 0) {
-            result["calculated"].push(unansweredText);
+            result["statsDetailed"].push(unansweredText);
             result[unansweredText] = unansweredCount;
         }
     }
@@ -275,7 +275,7 @@ export function calculateStatisticsForHistogramValues(values, unansweredCount, u
 export function calculateStatisticsForMiniHistograms(scaleQuestion, firstChoiceQuestion, secondChoiceQuestion, stories: surveyCollection.Story[], minimumStoryCountRequiredForTest: number, unansweredText): any {
 // Can't calculate a statistic if one or both are mutiple answer checkboxes
 if (firstChoiceQuestion.displayType === "checkboxes" || secondChoiceQuestion.displayType === "checkboxes") {
-    return {significance: "None (choices not mutually exclusive)", calculated: []};
+    return {statsSummary: "None (choices not mutually exclusive)", statsDetailed: []};
 }
 
 var values = valuesForFieldChoices(stories, unansweredText, scaleQuestion, firstChoiceQuestion, secondChoiceQuestion);
@@ -296,7 +296,7 @@ for (var i = 0; i < options.length; i++) {
     n += x.length;
 
     if (options.length === 1) {
-        return {significance: "None (too few options to compare)", calculated: ["n"], n: n};
+        return {statsSummary: "None (too few options to compare)", statsDetailed: ["n"], n: n};
     }
 
     for (var j = i + 1; j < options.length; j++) {
@@ -307,7 +307,7 @@ for (var i = 0; i < options.length; i++) {
         } catch(err) {
             toaster.toast('Error in Mann-Whitney U test for questions [' + scaleQuestion.displayName + ", " 
                 + firstChoiceQuestion.displayName + ", " + secondChoiceQuestion.displayName + "]: " + err);
-            return {significance: "None (error)", calculated: []};
+            return {statsSummary: "None (error)", statsDetailed: []};
         }
         allResults[options[i] + " x " + options[j]] = {p: statResult.p, U: statResult.u, n1: statResult.n1, n2: statResult.n2};
         
@@ -319,7 +319,7 @@ for (var i = 0; i < options.length; i++) {
 }
 
 if (pLowest === Number.MAX_VALUE) {
-    return {significance: "None (at least one count in [" + allNs.join(", ") + "] below threshold)", calculated: ["n"], n: n};
+    return {statsSummary: "None (at least one count in [" + allNs.join(", ") + "] below threshold)", statsDetailed: ["n"], n: n};
 }
 
 if (pLowest < 0.001) {
@@ -327,14 +327,14 @@ if (pLowest < 0.001) {
 } else {
     var significance = " p=" + pLowest.toFixed(3) + " U=" + uLowest + " n=" + n;
 }
-return {significance: significance, calculated: ["p", "U", "n"], p: pLowest, U: uLowest, n: n, allResults: allResults};
+return {statsSummary: significance, statsDetailed: ["p", "U", "n"], p: pLowest, U: uLowest, n: n, allResults: allResults};
 }
 
 export function calculateStatisticsForMultipleHistogram(scaleQuestion, choiceQuestion, stories: surveyCollection.Story[], minimumStoryCountRequiredForTest: number, unansweredText): any {
     
     // Can't calculate a statistic if one or both are mutiple answer checkboxes
     if (choiceQuestion.displayType === "checkboxes") {
-        return {significance: "None (choices not mutually exclusive)", calculated: []};
+        return {statsSummary: "None (choices not mutually exclusive)", statsDetailed: []};
     }
     
     var values = valuesForFieldChoices(stories, unansweredText, scaleQuestion, choiceQuestion);
@@ -355,7 +355,7 @@ export function calculateStatisticsForMultipleHistogram(scaleQuestion, choiceQue
         n += x.length;
 
         if (options.length === 1) {
-            return {significance: "None (too few options to compare)", calculated: ["n"], n: n};
+            return {statsSummary: "None (too few options to compare)", statsDetailed: ["n"], n: n};
         }
 
         for (var j = i + 1; j < options.length; j++) {
@@ -365,7 +365,7 @@ export function calculateStatisticsForMultipleHistogram(scaleQuestion, choiceQue
                 var statResult = mannWhitneyU(x, y);
             } catch(err) {
                 toaster.toast('Error in Mann-Whitney U test for questions [' + scaleQuestion.displayName + ", " + choiceQuestion.displayName + "]: " + err);
-                return {significance: "None (error)", calculated: []};
+                return {statsSummary: "None (error)", statsDetailed: []};
             }
             allResults[options[i] + " x " + options[j]] = {p: statResult.p, U: statResult.u, n1: statResult.n1, n2: statResult.n2};
             
@@ -377,7 +377,7 @@ export function calculateStatisticsForMultipleHistogram(scaleQuestion, choiceQue
     }
     
     if (pLowest === Number.MAX_VALUE) {
-        return {significance: "None (at least one count in [" + allNs.join(", ") + "] below threshold)", calculated: ["n"], n: n};
+        return {statsSummary: "None (at least one count in [" + allNs.join(", ") + "] below threshold)", statsDetailed: ["n"], n: n};
     }
 
     if (pLowest < 0.001) {
@@ -385,7 +385,7 @@ export function calculateStatisticsForMultipleHistogram(scaleQuestion, choiceQue
     } else {
         var significance = " p=" + pLowest.toFixed(3) + " U=" + uLowest + " n=" + n;
     }
-    return {significance: significance, calculated: ["p", "U", "n"], p: pLowest, U: uLowest, n: n, allResults: allResults};
+    return {statsSummary: significance, statsDetailed: ["p", "U", "n"], p: pLowest, U: uLowest, n: n, allResults: allResults};
 }
 
 export function calculateStatisticsForScatterPlot(ratioQuestion1, ratioQuestion2, choiceQuestion, option, stories: surveyCollection.Story[], minimumStoryCountRequiredForTest: number, unansweredText): any {
@@ -393,7 +393,7 @@ export function calculateStatisticsForScatterPlot(ratioQuestion1, ratioQuestion2
     var data = collectXYDataForFields(stories, ratioQuestion1.id, ratioQuestion2.id, choiceQuestion, option, unansweredText);
     
     if (data.x.length < minimumStoryCountRequiredForTest) {
-        return {significance: "None (count of " + data.x.length + " below threshold)", calculated: ["n", unansweredText], n: data.x.length, "No answer": data.unansweredCount};
+        return {statsSummary: "None (count of " + data.x.length + " below threshold)", statsDetailed: ["n", unansweredText], n: data.x.length, "No answer": data.unansweredCount};
     }
     
     // TODO: Add a flag somewhere to use Kendall's Tau instead of Pearson/Spearman's R
@@ -417,7 +417,7 @@ export function calculateStatisticsForScatterPlot(ratioQuestion1, ratioQuestion2
         var significance = " p=" + p.toFixed(3) + " rho=" + r.toFixed(3) + " n=" + n;
     }
     //  + " tt=" + statResult.test.toFixed(3) + " tz=" + statResult.z.toFixed(3) + " tp=" + statResult.prob.toFixed(3) ;
-    return {significance: significance, calculated: ["p", "rho", "n", "No answer"], p: p, rho: r, n: n, "No answer": data.unansweredCount};
+    return {statsSummary: significance, statsDetailed: ["p", "rho", "n", "No answer"], p: p, rho: r, n: n, "No answer": data.unansweredCount};
 }
 
 export function calculateStatisticsForMultipleScatterPlot(ratioQuestion1, ratioQuestion2, choiceQuestion, stories: surveyCollection.Story[], minimumStoryCountRequiredForTest: number, unansweredText): any {
@@ -434,7 +434,7 @@ export function calculateStatisticsForMultipleScatterPlot(ratioQuestion1, ratioQ
             options.push(choiceQuestion.valueOptions[index]);
         }
     }
-    var minSignificanceOptionStats = {significance: "None", calculated: []};
+    var minSignificanceOptionStats = {statsSummary: "None", statsDetailed: []};
     var minSignificance = 1000;
     var maxSignificance = 0;
     for (index in options) {
@@ -455,7 +455,7 @@ export function calculateStatisticsForMultipleScatterPlot(ratioQuestion1, ratioQ
     } else {
         differenceText = "" + difference.toFixed(3);
     }
-    minSignificanceOptionStats.significance = "p range: " + differenceText + ", p lowest: [" + minSignificanceOptionStats.significance.trim() + "]";
+    minSignificanceOptionStats.statsSummary = "p range: " + differenceText + ", p lowest: [" + minSignificanceOptionStats.statsSummary.trim() + "]";
     return minSignificanceOptionStats;
 }
 
@@ -464,7 +464,7 @@ export function calculateStatisticsForTable(nominalQuestion1, nominalQuestion2, 
     // Can't calculate a statistic if one or both are mutiple answer checkboxes
     
     if (nominalQuestion1.displayType === "checkboxes" || nominalQuestion2.displayType === "checkboxes") {
-        return {significance: "None (choices not mutually exclusive)", calculated: []};
+        return {statsSummary: "None (choices not mutually exclusive)", statsDetailed: []};
     }
     
     var counts = countsForTableChoices(stories, nominalQuestion1.id, nominalQuestion2.id, unansweredText);
@@ -529,7 +529,7 @@ export function calculateStatisticsForTable(nominalQuestion1, nominalQuestion2, 
     var n2 = Object.keys(field2OptionsUsed).length;
     
     if (n1 <= 1 || n2 <= 1) {
-        return {significance: "None (count below threshold)", calculated: []};
+        return {statsSummary: "None (count below threshold)", statsDetailed: []};
     }
     
     var degreesOfFreedom = (n1 - 1) * (n2 - 1);        
@@ -543,15 +543,15 @@ export function calculateStatisticsForTable(nominalQuestion1, nominalQuestion2, 
     }
     
     if (zeroInCell) {
-        return {significance: "None (zero in expected cell)", calculated: []};
+        return {statsSummary: "None (zero in expected cell)", statsDetailed: []};
     }
     
     if (n1 <= 2 && n2 <= 2 && tooLowCount > 0) {
-        return {significance: "None (2X2 with expected cell < 5)", calculated: []};
+        return {statsSummary: "None (2X2 with expected cell < 5)", statsDetailed: []};
     }
     
     if (tooLowCount / observed.length > 0.2) {
-        return {significance: "None (less than 80% of expected cells >= 5)", calculated: []};
+        return {statsSummary: "None (less than 80% of expected cells >= 5)", statsDetailed: []};
     }
 
     try {
@@ -560,14 +560,14 @@ export function calculateStatisticsForTable(nominalQuestion1, nominalQuestion2, 
         var errorMessage = 'Error in chi-squared test for questions [' + nominalQuestion1.displayName + ", " + nominalQuestion2.displayName + "]: " + err + ". See console for details."
         console.log(errorMessage, n1, n2, statResult, observed, expected);
         toaster.toast(errorMessage);
-        return {significance: "None (error)", calculated: []};        
+        return {statsSummary: "None (error)", statsDetailed: []};        
     }
     
     if (statResult.n !== n1 * n2) {
         var errorMessage = 'Error in chi-squared test for questions [' + nominalQuestion1.displayName + ", " + nominalQuestion2.displayName + "]: Unexpected n1 * n2. See console for details."
         console.log(errorMessage, n1, n2, statResult, observed, expected);
         toaster.toast(errorMessage);
-        return {significance: "None (error)", calculated: []};
+        return {statsSummary: "None (error)", statsDetailed: []};
         //throw new Error("unexpected n1 * n2");
     }
     
@@ -575,7 +575,7 @@ export function calculateStatisticsForTable(nominalQuestion1, nominalQuestion2, 
         var errorMessage = 'Error in chi-squared test for questions [' + nominalQuestion1.displayName + ", " + nominalQuestion2.displayName + "]: Unexpected n. See console for details."
         console.log(errorMessage, n1, n2, statResult, observed, expected);
         toaster.toast(errorMessage);
-        return {significance: "None (error)", calculated: []};
+        return {statsSummary: "None (error)", statsDetailed: []};
         //throw new Error("unexpected statResult.n");
     }
     
@@ -584,5 +584,5 @@ export function calculateStatisticsForTable(nominalQuestion1, nominalQuestion2, 
     } else {
         var significance = " p=" + statResult.p.toFixed(3) + " x2=" + statResult.x2.toFixed(3) + " k=" + statResult.k + " n=" + statResult.n;
     }
-    return {significance: significance, calculated: ["p", "x2", "k", "n"], p: statResult.p, x2: statResult.x2, k: statResult.k, n: statResult.n};
+    return {statsSummary: significance, statsDetailed: ["p", "x2", "k", "n"], p: statResult.p, x2: statResult.x2, k: statResult.k, n: statResult.n};
 }

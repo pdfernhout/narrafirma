@@ -582,8 +582,8 @@ function addStatisticsPanelForChart(chartPane: HTMLElement, graphBrowserInstance
     var html = "";
     var text = "";
     if (hide) statsPane.style.cssText = "display:none";
-    if (statistics.significance.substring("None") === 0 || statistics.calculated.length !== 0) {
-        if (statistics.calculated.length === 0) {
+    if (statistics.statsSummary.substring("None") === 0 || statistics.statsDetailed.length !== 0) {
+        if (statistics.statsDetailed.length === 0) {
             html += text_stats + ": " + text_none;
             text += text_stats + ": " + text_none;
         } 
@@ -604,10 +604,10 @@ function addStatisticsPanelForChart(chartPane: HTMLElement, graphBrowserInstance
             htmlDelimiter = "; ";
             textDelimiter = "; ";
         }
-        for (var i = 0; i < statistics.calculated.length; i++) {
-            html += htmlForLabelAndValue(statistics.calculated[i], statistics, graphBrowserInstance);
-            text += htmlForLabelAndValue(statistics.calculated[i], statistics, graphBrowserInstance, false);
-            if (i < statistics.calculated.length-1) {
+        for (var i = 0; i < statistics.statsDetailed.length; i++) {
+            html += htmlForLabelAndValue(statistics.statsDetailed[i], statistics, graphBrowserInstance);
+            text += htmlForLabelAndValue(statistics.statsDetailed[i], statistics, graphBrowserInstance, false);
+            if (i < statistics.statsDetailed.length-1) {
                 html += htmlDelimiter;
                 text += textDelimiter;
             }
