@@ -863,6 +863,19 @@ table.filterTable td {
 
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Catalysis report ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
+.narrafirma-questions-chooser-table {
+    width: 95%;
+    margin-left: 0.5em;
+    margin-top: 0.5em;
+    border-collapse: collapse;
+}
+
+.narrafirma-questions-chooser-table-td {
+    vertical-align: top;
+    border: 1px dashed gray;
+    padding: 8px;
+}
+
 .narrafirma-choose-catalysis-report {
     margin: 0.5em 0 0.5em 0.5em;
 }

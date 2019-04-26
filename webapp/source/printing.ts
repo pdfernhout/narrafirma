@@ -274,6 +274,9 @@ export function printCatalysisReport() {
     var allStories = project.storiesForCatalysisReport(catalysisReportIdentifier);
 
     var options = {};
+
+    // user supplied texts
+
     options["reportNotes"] = getAndCleanUserText(project, catalysisReportIdentifier, "catalysisReport_notes", "introduction", false);
     options["aboutReport"] = getAndCleanUserText(project, catalysisReportIdentifier, "catalysisReport_about", "about text", false);
     options["conclusion"] = getAndCleanUserText(project, catalysisReportIdentifier, "catalysisReport_conclusion", "conclusion", false);
@@ -281,26 +284,9 @@ export function printCatalysisReport() {
     options["themeLabel"] = getAndCleanUserText(project, catalysisReportIdentifier, "catalysisReport_themeLabel", "theme label", false);
     options["interpretationLabel"] = getAndCleanUserText(project, catalysisReportIdentifier, "catalysisReport_interpretationLabel", "interpretation label", false);
     options["observationLabel"] = getAndCleanUserText(project, catalysisReportIdentifier, "catalysisReport_observationLabel", "observation label", false);
-    options["minimumStoryCountRequiredForTest"] = project.minimumStoryCountRequiredForTest(catalysisReportIdentifier);
-    options["minimumStoryCountRequiredForGraph"] = project.minimumStoryCountRequiredForGraph(catalysisReportIdentifier);
-    options["numHistogramBins"] = project.numberOfHistogramBins(catalysisReportIdentifier);
-    options["numScatterDotOpacityLevels"] = project.numScatterDotOpacityLevels(catalysisReportIdentifier);
-    options["scatterDotSize"] = project.scatterDotSize(catalysisReportIdentifier);
-    options["correlationLineChoice"] = project.correlationLineChoice(catalysisReportIdentifier);
-    options["outputGraphFormat"] = project.outputGraphFormat(catalysisReportIdentifier);
-    options["showStatsPanelsInReport"] = project.showStatsPanelsInReport(catalysisReportIdentifier);
-    options["printInterpretationsAsTable"] = project.useTableForInterpretationsFollowingObservation(catalysisReportIdentifier);
     options["customCSS"] = project.tripleStore.queryLatestC(catalysisReportIdentifier, "catalysisReport_customCSS");
-
-    let customGraphWidthAsString = project.tripleStore.queryLatestC(catalysisReportIdentifier, "customReportGraphWidth");
-    if (customGraphWidthAsString) {
-        let customGraphWidth = parseInt(customGraphWidthAsString);
-        if (!isNaN(customGraphWidth)) {
-            options["customGraphWidth"] = customGraphWidth;
-        }
-    }
-
-    let statsTextReplacementsAsString = project.customStatsTextReplacements(catalysisReportIdentifier);
+    
+    let statsTextReplacementsAsString = project.tripleStore.queryLatestC(catalysisReportIdentifier, "customStatsTextReplacements");
     let statsTextReplacements = {};
     if (statsTextReplacementsAsString) {
         let textReplacementLines = statsTextReplacementsAsString.split("\n");
@@ -313,6 +299,31 @@ export function printCatalysisReport() {
     }
     options["customStatsTextReplacements"] = statsTextReplacements;
     
+    // graphing options
+
+    options["minimumStoryCountRequiredForTest"] = project.tripleStore.queryLatestC(catalysisReportIdentifier, "minimumStoryCountRequiredForTest") || Project.default_minimumStoryCountRequiredForTest;
+    options["minimumStoryCountRequiredForGraph"] = this.project.tripleStore.queryLatestC(this.catalysisReportIdentifier, "minimumStoryCountRequiredForGraph") || Project.default_minimumStoryCountRequiredForGraph; 
+    options["numHistogramBins"] = this.project.tripleStore.queryLatestC(this.catalysisReportIdentifier, "numHistogramBins") || Project.default_numHistogramBins; 
+    options["numScatterDotOpacityLevels"] = this.project.tripleStore.queryLatestC(this.catalysisReportIdentifier, "numScatterDotOpacityLevels") || Project.default_numScatterDotOpacityLevels; 
+    options["scatterDotSize"] = this.project.tripleStore.queryLatestC(this.catalysisReportIdentifier, "scatterDotSize") || Project.default_scatterDotSize; 
+    options["correlationLineChoice"] = this.project.tripleStore.queryLatestC(this.catalysisReportIdentifier, "correlationLineChoice") || Project.default_correlationLineChoice; 
+
+    // other report options
+
+    options["outputGraphFormat"] = this.project.tripleStore.queryLatestC(this.catalysisReportIdentifier, "outputGraphFormat") || "SVG";
+    options["showStatsPanelsInReport"] = this.project.tripleStore.queryLatestC(this.catalysisReportIdentifier, "showStatsPanelsInReport") || false;
+    options["printInterpretationsAsTable"] = this.project.tripleStore.queryLatestC(this.catalysisReportIdentifier, "printInterpretationsAsTable") || false;
+
+    let customGraphWidthAsString = project.tripleStore.queryLatestC(catalysisReportIdentifier, "customReportGraphWidth");
+    if (customGraphWidthAsString) {
+        let customGraphWidth = parseInt(customGraphWidthAsString);
+        if (!isNaN(customGraphWidth)) {
+            options["customGraphWidth"] = customGraphWidth;
+        }
+    }
+
+    // observation strengths
+
     let printStrengthsToInclude = [];
     if (printStrengthsChoice["strong"] != undefined && printStrengthsChoice["strong"] === true) printStrengthsToInclude.push("3 (strong)");
     if (printStrengthsChoice["medium"] != undefined && printStrengthsChoice["medium"] === true) printStrengthsToInclude.push("2 (medium)");
@@ -336,7 +347,6 @@ export function printCatalysisReport() {
         }
         observationIDsToInclude.push(id);
     });
-
     if (observationIDsToInclude.length === 0) {
         alert("No observations in this report match your choice of observation strengths to include.")
         return;

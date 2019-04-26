@@ -96,18 +96,10 @@ class PatternExplorer {
     interpretationsPanelSpecification = null;
     thingsYouCanDoPanelSpecification = null;
     textAnswersPanelSpecification = null;
-    minimumStoryCountRequiredForTest = Project.defaultMinimumStoryCountRequiredForTest;
-    minimumStoryCountRequiredForGraph = Project.defaultMinimumStoryCountRequiredForGraph;
-    numHistogramBins = Project.defaultNumHistogramBins;
-    showInterpretationsInGrid = Project.defaultShowInterpretationsInGrid;
-    showStatsPanelsOnExplorePatternsPage = Project.defaultShowStatsPanelsOnExplorePatternsPage;
-    graphMultiChoiceQuestionsAgainstThemselves = Project.defaultGraphMultiChoiceQuestionsAgainstThemselves;
-    numScatterDotOpacityLevels = Project.defaultNumScatterDotOpacityLevels;
-    scatterDotSize = Project.defaultScatterDotSize;
-    correlationLineChoice = Project.defaultCorrelationLineChoice;
-    outputGraphFormat = Project.defaultOutputGraphFormat;
-    showStatsPanelsInReport = Project.defaultShowStatsPanelsInReport;
-    graphTypesToCreate = Project.defaultGraphTypesToCreate;
+    graphTypesToCreate = Project.default_graphTypesToCreate;
+    showInterpretationsInGrid = false;
+    graphMultiChoiceQuestionsAgainstThemselves = false;
+    hideStatsPanels = false;
     
     constructor(args) {
         this.project = Globals.project();
@@ -118,15 +110,13 @@ class PatternExplorer {
             allStories: [],
             currentGraph: null,
             currentSelectionExtentPercentages: null,
-            minimumStoryCountRequiredForTest: Project.defaultMinimumStoryCountRequiredForTest,
-            minimumStoryCountRequiredForGraph: Project.defaultMinimumStoryCountRequiredForGraph,
-            numHistogramBins: Project.defaultNumHistogramBins,
-            numScatterDotOpacityLevels: Project.defaultNumScatterDotOpacityLevels,
-            scatterDotSize: Project.defaultScatterDotSize,
-            correlationLineChoice: Project.defaultCorrelationLineChoice,
-            outputGraphFormat: Project.defaultOutputGraphFormat,
-            graphTypesToCreate: Project.defaultGraphTypesToCreate,
-            showStatsPanelsInReport: Project.defaultShowStatsPanelsInReport
+            minimumStoryCountRequiredForTest: Project.default_minimumStoryCountRequiredForTest,
+            minimumStoryCountRequiredForGraph: Project.default_minimumStoryCountRequiredForGraph,
+            numHistogramBins: Project.default_numHistogramBins,
+            numScatterDotOpacityLevels: Project.default_numScatterDotOpacityLevels,
+            scatterDotSize: Project.default_scatterDotSize,
+            correlationLineChoice: Project.default_correlationLineChoice,
+            graphTypesToCreate: Project.default_graphTypesToCreate,
         };
         
         var storyItemPanelSpecification = makeItemPanelSpecificationForQuestions(this.questions);
@@ -376,29 +366,28 @@ class PatternExplorer {
         if (!catalysisReportIdentifier) {
             return;
         }
-        this.minimumStoryCountRequiredForTest = this.project.minimumStoryCountRequiredForTest(catalysisReportIdentifier);
-        this.minimumStoryCountRequiredForGraph = this.project.minimumStoryCountRequiredForGraph(catalysisReportIdentifier);
-        this.graphHolder.minimumStoryCountRequiredForTest = this.minimumStoryCountRequiredForTest; 
-        this.graphHolder.minimumStoryCountRequiredForGraph = this.minimumStoryCountRequiredForGraph;
-        this.numHistogramBins = this.project.numberOfHistogramBins(catalysisReportIdentifier);
-        this.graphHolder.numHistogramBins = this.numHistogramBins; 
-        this.showInterpretationsInGrid = this.project.showInterpretationsInGrid(catalysisReportIdentifier);
-        this.graphMultiChoiceQuestionsAgainstThemselves = this.project.graphMultiChoiceQuestionsAgainstThemselves(catalysisReportIdentifier);
-        this.showStatsPanelsOnExplorePatternsPage = this.project.showStatsPanelsOnExplorePatternsPage(catalysisReportIdentifier);
-        this.numScatterDotOpacityLevels = this.project.numScatterDotOpacityLevels(catalysisReportIdentifier);
-        this.graphHolder.numScatterDotOpacityLevels = this.numScatterDotOpacityLevels;
-        this.scatterDotSize = this.project.scatterDotSize(catalysisReportIdentifier);
-        this.graphHolder.scatterDotSize = this.scatterDotSize;
-        this.correlationLineChoice = this.project.correlationLineChoice(catalysisReportIdentifier);
-        this.graphHolder.correlationLineChoice = this.correlationLineChoice; 
-        this.graphHolder.outputGraphFormat = this.project.outputGraphFormat(catalysisReportIdentifier);
-        this.graphHolder.showStatsPanelsInReport = this.project.showStatsPanelsInReport(catalysisReportIdentifier);
-        this.graphTypesToCreate = this.project.graphTypesToCreate(catalysisReportIdentifier);
-        this.graphHolder.customGraphWidth = this.project.customDisplayGraphWidth(catalysisReportIdentifier);
-        
-        this.catalysisReportObservationSetIdentifier = this.getObservationSetIdentifier(catalysisReportIdentifier);
-        this.graphHolder.allStories = this.project.storiesForCatalysisReport(catalysisReportIdentifier);
 
+        // update options kept in this object
+        this.graphTypesToCreate = this.project.tripleStore.queryLatestC(catalysisReportIdentifier, "graphTypesToCreate") || Project.default_graphTypesToCreate;
+        this.showInterpretationsInGrid = this.project.tripleStore.queryLatestC(this.catalysisReportIdentifier, "showInterpretationsInGrid"); 
+        this.graphMultiChoiceQuestionsAgainstThemselves = this.project.tripleStore.queryLatestC(this.catalysisReportIdentifier, "graphMultiChoiceQuestionsAgainstThemselves"); 
+        this.hideStatsPanels = this.project.tripleStore.queryLatestC(this.catalysisReportIdentifier, "hideStatsPanelsOnExplorePatternsPage"); 
+        this.catalysisReportObservationSetIdentifier = this.getObservationSetIdentifier(catalysisReportIdentifier);
+
+        // update options kept in graph holder
+        this.graphHolder.minimumStoryCountRequiredForTest = this.project.tripleStore.queryLatestC(this.catalysisReportIdentifier, "minimumSubsetSize") || Project.default_minimumStoryCountRequiredForTest; 
+        this.graphHolder.minimumStoryCountRequiredForGraph = this.project.tripleStore.queryLatestC(this.catalysisReportIdentifier, "minimumStoryCountRequiredForGraph") || Project.default_minimumStoryCountRequiredForGraph; 
+        this.graphHolder.numHistogramBins = this.project.tripleStore.queryLatestC(this.catalysisReportIdentifier, "numHistogramBins") || Project.default_numHistogramBins; 
+        this.graphHolder.numScatterDotOpacityLevels = this.project.tripleStore.queryLatestC(this.catalysisReportIdentifier, "numScatterDotOpacityLevels") || Project.default_numScatterDotOpacityLevels; 
+        this.graphHolder.scatterDotSize = this.project.tripleStore.queryLatestC(this.catalysisReportIdentifier, "scatterDotSize") || Project.default_scatterDotSize; 
+        this.graphHolder.correlationLineChoice = this.project.tripleStore.queryLatestC(this.catalysisReportIdentifier, "correlationLineChoice") || Project.default_correlationLineChoice; 
+        this.graphHolder.customGraphWidth = this.project.tripleStore.queryLatestC(this.catalysisReportIdentifier, "customGraphWidth"); 
+
+        // get stories
+        this.graphHolder.allStories = this.project.storiesForCatalysisReport(catalysisReportIdentifier);
+        this.numStoryCollectionsIncludedInReport = this.project.numStoryCollectionsInCatalysisReport(catalysisReportIdentifier);
+
+        // gather questions for patterns table
         var leadingStoryQuestions = questionnaireGeneration.getStoryNameAndTextQuestions();
         var elicitingQuestions = this.project.elicitingQuestionsForCatalysisReport(catalysisReportIdentifier);
         var numStoriesToldQuestions = this.project.numStoriesToldQuestionsForCatalysisReport(catalysisReportIdentifier);
@@ -409,8 +398,8 @@ class PatternExplorer {
         this.questions = [];
         this.questions = this.questions.concat(leadingStoryQuestions, elicitingQuestions, numStoriesToldQuestions, storyLengthQuestions, storyQuestions, participantQuestions, annotationQuestions);
         this.questionsToInclude = this.project.tripleStore.queryLatestC(this.catalysisReportIdentifier, "questionsToInclude"); 
-        this.numStoryCollectionsIncludedInReport = this.project.numStoryCollectionsInCatalysisReport(catalysisReportIdentifier);
 
+        // adjust patterns grid for showing or hiding interpretations
         if (this.showInterpretationsInGrid) {
             let hasColumnAlready = false;
             for (var index = 0; index < patternsPanelSpecification.panelFields.length; index++) {
@@ -575,12 +564,12 @@ class PatternExplorer {
             // reduce number of times progress message is updated (to speed up process), but show progress at least every 20 graphs so user knows it is working
             var howOftenToUpdateProgressMessage = Math.min(Math.max(Math.floor(result.length/100.0), 1), 20); 
             var stories = this.graphHolder.allStories;
-            var minimumStoryCountRequiredForTest = this.minimumStoryCountRequiredForTest;
+            var minimumStoryCountRequiredForTest = this.graphHolder.minimumStoryCountRequiredForTest;
             setTimeout(function() { calculateStatsForNextPattern(); }, 0);
         } else { // just calculate without any progress dialog
             result.forEach((pattern) => {
                 calculateStatistics.calculateStatisticsForPattern(result[patternIndex], patternIndex, result.length, howOftenToUpdateProgressMessage,
-                    this.graphHolder.allStories, this.minimumStoryCountRequiredForTest, null, "No answer"); // no progress model, no custom unansweredText
+                    this.graphHolder.allStories, this.graphHolder.minimumStoryCountRequiredForTest, null, "No answer"); // no progress model, no custom unansweredText
                 patternIndex += 1;
             });
         }
@@ -783,7 +772,7 @@ class PatternExplorer {
         this.patternsGrid.isNavigationalScrollingNeeded = "scrolled";
 
         this.graphHolder.statisticalInfo = "";
-        this.graphHolder.currentGraph = PatternExplorer.makeGraph(pattern, this.graphHolder, this.updateStoriesPane.bind(this), !this.showStatsPanelsOnExplorePatternsPage);
+        this.graphHolder.currentGraph = PatternExplorer.makeGraph(pattern, this.graphHolder, this.updateStoriesPane.bind(this), this.hideStatsPanels);
         this.graphHolder.currentSelectionExtentPercentages = null;
         // TODO: Is this obsolete? this.graphHolder.currentSelectionSubgraph = null;
     }

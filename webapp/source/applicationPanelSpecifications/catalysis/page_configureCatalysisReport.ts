@@ -44,8 +44,9 @@ var panel: Panel = {
             valueType: "none",
             displayType: "label",
             displayPrompt: `
-                On this page you can choose the <strong>questions</strong> you want to explore in your catalysis report.
-                You can also specify a threshold for statistical tests.
+                On this page you can set various options that affect your catalysis report.
+                Most of these options affect only the "Explore patterns" page, but
+                some also influence the printed report.
             `
         },
         {
@@ -116,8 +117,9 @@ var panel: Panel = {
             valueType: "boolean",
             valuePath: "/clientState/catalysisReportIdentifier/showInterpretationsInGrid",
             displayType: "checkbox",
-            displayConfiguration: "Yes, show interpretations in the table",
-            displayPrompt: "Should <strong>interpretations</strong> be shown in the table of patterns? (Tip: Turn this on to find or review interpretations; turn it off to shrink the table height.)",
+            displayConfiguration: "Show interpretations in the patterns table",
+            displayPrompt: `Should <strong>interpretations</strong> be shown in the table of patterns on the "Explore Patterns" page? 
+                (Tip: Turn this on to find or review interpretations; turn it off to shrink the table height.)`,
             displayVisible: function(panelBuilder, model) {
                 return !!Globals.clientState().catalysisReportIdentifier();
             }
@@ -127,10 +129,22 @@ var panel: Panel = {
             valueType: "boolean",
             valuePath: "/clientState/catalysisReportIdentifier/graphMultiChoiceQuestionsAgainstThemselves",
             displayType: "checkbox",
-            displayConfiguration: "Yes, graph multi-choice questions against themselves",
+            displayConfiguration: "Show graphs of multi-choice questions against themselves",
             displayPrompt: `Would you like to <strong>graph multi-choice questions against themselves</strong> 
                 to show patterns of coincidence among answers to the same question? 
                 `,
+            displayVisible: function(panelBuilder, model) {
+                return !!Globals.clientState().catalysisReportIdentifier();
+            }
+        },
+        {
+            id: "configureCatalysisReport_hideStatsPanelsOnExplorePatternsPage",
+            valueType: "boolean",
+            valuePath: "/clientState/catalysisReportIdentifier/hideStatsPanelsOnExplorePatternsPage",
+            displayType: "checkbox",
+            displayConfiguration: "Hide statistical results on Explore patterns page",
+            displayPrompt: `Would you prefer to <strong>hide statistical results on the Explore patterns page</strong>?
+                (You can still see the results in a pop-up window when you choose "Show statistical results" from the "things you can do" list under the graph.)`,
             displayVisible: function(panelBuilder, model) {
                 return !!Globals.clientState().catalysisReportIdentifier();
             }
@@ -165,7 +179,7 @@ var panel: Panel = {
             displayType: "text",
             displayName: "Custom graph width",
             displayPrompt: `The default width of large graphs on the "Explore patterns" page is 800 pixels. 
-                You can enter a <strong>custom graph width</strong> here.`,
+                You can enter a <strong>custom graph width</strong> here. (There is a separate place to specify a custom graph width for the printed report.)`,
             displayVisible: function(panelBuilder, model) {
                 return !!Globals.clientState().catalysisReportIdentifier();
             }
@@ -178,10 +192,10 @@ var panel: Panel = {
             displayType: "select",
             displayName: "Minimum story count for graph",
             displayPrompt: `How many stories should a subset have to <strong>draw a graph</strong>? 
-                (This choice affects multiple histograms and multiple scatterplots 
-                    on the Explore patterns page and the printed catalysis report.
+                This choice affects multiple histograms and multiple scatterplots 
+                    on the "Explore Patterns" page and the printed catalysis report.
                     Note that higher numbers could create graph sets with one or even zero graphs in them.
-                    )`,
+                    If no selection is made, graphs will be drawn if at there is least one story in the subset.`,
             displayVisible: function(panelBuilder, model) {
                 return !!Globals.clientState().catalysisReportIdentifier();
             }
@@ -195,7 +209,8 @@ var panel: Panel = {
             displayType: "select",
             displayName: "Maximum story length to show",
             displayPrompt: `In the <strong>story length graph</strong>, above what character length do you want to lump all remaining stories into the last bin? 
-                (If no answer is selected, the maximum story length will be drawn from the stories themselves.)`,
+                This choice affects both the the "Explore Patterns" page and the printed catalysis report.
+                If no selection is made, the maximum story length will be drawn from the stories themselves.`,
             displayVisible: function(panelBuilder, model) {
                 return !!Globals.clientState().catalysisReportIdentifier();
             }
@@ -207,7 +222,9 @@ var panel: Panel = {
             valueOptions: ["2", "3", "4", "5", "6", "7", "8", "9", "10"],
             displayType: "select",
             displayName: "Number of story length bins",
-            displayPrompt: `How many <strong>story length categories</strong> do you want to graph?`,
+            displayPrompt: `How many <strong>story length categories</strong> do you want to graph? 
+                This choice affects both the the "Explore Patterns" page and the printed catalysis report.
+                If no selection is made, four categories will be used.`,
             displayVisible: function(panelBuilder, model) {
                 return !!Globals.clientState().catalysisReportIdentifier();
             }
@@ -219,7 +236,9 @@ var panel: Panel = {
             valueOptions: ["5", "10", "15", "20", "25", "30"],
             displayType: "select",
             displayName: "Number of histogram bins",
-            displayPrompt: "For <strong>histograms</strong>, how many <strong>bins</strong> (bars) should the data be sorted into?",
+            displayPrompt: `For <strong>histograms</strong>, how many <strong>bins</strong> (bars) should the data be sorted into?
+                This choice affects both the the "Explore Patterns" page and the printed catalysis report.
+                If no selection is made, 20 bins will be used.`,
             displayVisible: function(panelBuilder, model) {
                 return !!Globals.clientState().catalysisReportIdentifier();
             }
@@ -233,7 +252,7 @@ var panel: Panel = {
             displayType: "select",
             displayName: "Number of scatter plot dot opacity levels",
             displayPrompt: `For <strong>scatter plots</strong>, how many stories should it take to draw a completely <strong>opaque dot</strong>? 
-                (Set this number high if you have a lot of identical scale values.)`,
+                Set this number high if you have a lot of identical scale values. If no selection is made, 3 levels will be used.`,
             displayVisible: function(panelBuilder, model) {
                 return !!Globals.clientState().catalysisReportIdentifier();
             }
@@ -246,7 +265,10 @@ var panel: Panel = {
             valueOptions: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20"],
             displayType: "select",
             displayName: "Scatter dot size",
-            displayPrompt: "For <strong>scatter plots</strong>, what <strong>dot size</strong> (in pixels) would you like? (Set this number low if you have a large number of data points.)",
+            displayPrompt: `For <strong>scatter plots</strong>, what <strong>dot size</strong> (in pixels) would you like? 
+                Set this number low if you have a large number of data points.
+                This choice affects both the the "Explore Patterns" page and the printed catalysis report.
+                If no selection is made, a size of 8 will be used.`,
             displayVisible: function(panelBuilder, model) {
                 return !!Globals.clientState().catalysisReportIdentifier();
             }
@@ -263,45 +285,9 @@ var panel: Panel = {
             ],
             displayType: "select",
             displayName: "Mark correlation lines",
-            displayPrompt: "For <strong>scatter plots</strong>, at what significance level should <strong>correlations</strong> be marked?",
-            displayVisible: function(panelBuilder, model) {
-                return !!Globals.clientState().catalysisReportIdentifier();
-            }
-        },
-
-
-        ////////////////////////////////////////////////////// statistics
-        {
-            id: "configureCatalysisReport_StatisticalTestsHeader",
-            valueType: "none",
-            displayType: "header",
-            displayPrompt: "How statistical tests are run and displayed",
-            displayVisible: function(panelBuilder, model) {
-                return !!Globals.clientState().catalysisReportIdentifier();
-            }
-        },
-
-        {
-            id: "configureCatalysisReport_minimumSubsetSize",
-            valuePath: "/clientState/catalysisReportIdentifier/minimumSubsetSize",
-            valueType: "string",
-            valueOptions: ["1", "5", "10", "15", "20", "25", "30", "35", "40", "45", "50", "60", "70", "80", "90", "100", "120", "140", "160", "180", "200", "250", "300"],
-            displayType: "select",
-            displayName: "Minimum subset size",
-            displayPrompt: "How large should <strong>subsets</strong> of stories be to be considered for statistical tests? (Test results based on low sample sizes - usually less than 30 - should be regarded as suggestive rather than conclusive.)",
-            displayVisible: function(panelBuilder, model) {
-                return !!Globals.clientState().catalysisReportIdentifier();
-            }
-        },
-        {
-            id: "configureCatalysisReport_showStatsPanelsOnExplorePatternsPage",
-            valueType: "boolean",
-            valuePath: "/clientState/catalysisReportIdentifier/showStatsPanelsOnExplorePatternsPage",
-            displayType: "checkbox",
-            displayConfiguration: "Yes, show statistical results directly on Explore patterns page",
-            displayPrompt: `Would you prefer to <strong>see statistical results directly on the Explore patterns page</strong>?
-                Or would you prefer to see them in a pop-up window when you choose "Show statistical results" from the "things you can do" list under the graph?
-                (We are asking because for some graphs in some projects, tables of statistical results can be very long.) `,
+            displayPrompt: `For <strong>scatter plots</strong>, at what significance level should <strong>correlations</strong> be marked?
+                This choice affects both the the "Explore Patterns" page and the printed catalysis report.
+                If no selection is made, a limit of 0.05 will be used.`,
             displayVisible: function(panelBuilder, model) {
                 return !!Globals.clientState().catalysisReportIdentifier();
             }
@@ -312,7 +298,22 @@ var panel: Panel = {
             id: "configureCatalysisReport_moreOptionsHeader",
             valueType: "none",
             displayType: "header",
-            displayPrompt: "Miscellaneous options",
+            displayPrompt: "Other options",
+            displayVisible: function(panelBuilder, model) {
+                return !!Globals.clientState().catalysisReportIdentifier();
+            }
+        },
+        {
+            id: "configureCatalysisReport_minimumSubsetSize",
+            valuePath: "/clientState/catalysisReportIdentifier/minimumSubsetSize",
+            valueType: "string",
+            valueOptions: ["1", "5", "10", "15", "20", "25", "30", "35", "40", "45", "50", "60", "70", "80", "90", "100", "120", "140", "160", "180", "200", "250", "300"],
+            displayType: "select",
+            displayName: "Minimum subset size",
+            displayPrompt: `How large should <strong>subsets</strong> of stories be to be considered for statistical tests? 
+                Test results based on low sample sizes - usually less than 30 - should be regarded as suggestive rather than conclusive.
+                This choice affects both the the "Explore Patterns" page and the printed catalysis report.
+                If no selection is made, a 20-story minimum will be used.`,
             displayVisible: function(panelBuilder, model) {
                 return !!Globals.clientState().catalysisReportIdentifier();
             }

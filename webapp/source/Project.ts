@@ -11,29 +11,26 @@ var serverURL = "/api/pointrel20150417";
 // TODO: Rethink this as a more general way to watch models within the project (so, with arbitrary object IDs, not just the project ID)
 
 class Project {
+
     journalIdentifier: string;
     projectIdentifier: string;
+    pointrelClient: PointrelClient;
+    tripleStore: TripleStore;
+    redrawCallback: Function;
+
     userIdentifier: any;
     readOnly: boolean = false;
     currentUserHasAdminAccess: boolean = false;
     currentUserIsSuperUser: boolean = false;
-    pointrelClient: PointrelClient;
-    tripleStore: TripleStore;
-    redrawCallback: Function;
-    defaultOptionValues: {};
-    static defaultMinimumStoryCountRequiredForTest = 20;
-    static defaultMinimumStoryCountRequiredForGraph = 1;
-    static defaultNumHistogramBins = 20;
-    static defaultNumStoryLengthBins = 4;
-    static defaultShowInterpretationsInGrid = false;
-    static defaultGraphMultiChoiceQuestionsAgainstThemselves = false;
-    static defaultShowStatsPanelsOnExplorePatternsPage = true;
-    static defaultNumScatterDotOpacityLevels = 3;
-    static defaultScatterDotSize = 8;
-    static defaultCorrelationLineChoice = "0.05";
-    static defaultOutputGraphFormat = "SVG";
-    static defaultShowStatsPanelsInReport = true;
-    static defaultGraphTypesToCreate = {
+
+    static default_minimumStoryCountRequiredForTest = 20;
+    static default_minimumStoryCountRequiredForGraph = 1;
+    static default_numHistogramBins = 20;
+    static default_numScatterDotOpacityLevels = 3;
+    static default_scatterDotSize = 8;
+    static default_correlationLineChoice = "0.05";
+    static default_numStoryLengthCategories = 4;
+    static default_graphTypesToCreate = {
         "data integrity graphs": false,
         "texts": false,
         "bar graphs": false,
@@ -53,21 +50,6 @@ class Project {
         this.projectIdentifier = projectIdentifier;
         this.userIdentifier = userIdentifier;
         this.redrawCallback = redrawCallback;
-    
-        this.defaultOptionValues =  {
-            "minimumSubsetSize": Project.defaultMinimumStoryCountRequiredForTest,
-            "minimumStoryCountRequiredForGraph": Project.defaultMinimumStoryCountRequiredForGraph,
-            "numHistogramBins": Project.defaultNumHistogramBins,
-            "numStoryLengthBins": Project.defaultNumStoryLengthBins,
-            "showInterpretationsInGrid": Project.defaultShowInterpretationsInGrid,
-            "graphMultiChoiceQuestionsAgainstThemselves": Project.defaultGraphMultiChoiceQuestionsAgainstThemselves,
-            "showStatsPanelsOnExplorePatternsPage": Project.defaultShowStatsPanelsOnExplorePatternsPage,
-            "numScatterDotOpacityLevels": Project.defaultNumScatterDotOpacityLevels,
-            "scatterDotSize": Project.defaultScatterDotSize,
-            "correlationLineChoice": Project.defaultCorrelationLineChoice,
-            "outputGraphFormat": Project.defaultOutputGraphFormat,
-            "showStatsPanelsInReport": Project.defaultShowStatsPanelsInReport,
-        }
     
         this.pointrelClient = new PointrelClient(serverURL, this.journalIdentifier, this.userIdentifier, this.receivedMessage.bind(this), updateServerStatus);
         
@@ -162,15 +144,6 @@ class Project {
         return null;
     }
 
-    initializeCatalysisReportIfNecessary(catalysisReportIdentifier) {
-        var keys = Object.keys(this.defaultOptionValues);
-        for (var i = 0; i < keys.length; i++) {
-            if (this.tripleStore.queryLatestC(catalysisReportIdentifier, keys[i]) === undefined) {
-                this.tripleStore.addTriple(catalysisReportIdentifier, keys[i], this.defaultOptionValues[keys[i]]);
-            }
-        }
-    }
-    
     findQuestionnaireTemplate(shortName): string {
         var questionnaires: Array<string> = this.getListForField("project_storyForms");
         for (var i = 0; i < questionnaires.length; i++) {
@@ -180,17 +153,6 @@ class Project {
         }
         return null;
     }
-    
-    /*
-    allStoryFormShortNames(): string[] {
-        var result = [];
-        var questionnaires: Array<string> = this.getListForField("project_storyForms");
-        for (var i = 0; i < questionnaires.length; i++) {
-            result.push(this.tripleStore.queryLatestC(questionnaires[i], "questionForm_shortName"));
-        }
-        return result;
-    }
-    */
     
     findStoryCollection(shortName): string {
         var storyCollections: Array<string> = this.getListForField("project_storyCollections");
@@ -752,7 +714,7 @@ class Project {
             const maxStoryLengthToShowAsNumber = parseInt(maxStoryLengthToShow);
             maxStoryLength = Math.min(maxStoryLengthToShowAsNumber, maxStoryLength);
         }
-        var numStoryLengthBinsAsNumber = Project.defaultNumStoryLengthBins; 
+        var numStoryLengthBinsAsNumber = Project.default_numStoryLengthCategories; 
         const numStoryLengthBins = this.tripleStore.queryLatestC(catalysisReportIdentifier, "numStoryLengthBins");
         if (numStoryLengthBins) {
             numStoryLengthBinsAsNumber = parseInt(numStoryLengthBins);
@@ -811,197 +773,6 @@ class Project {
         return this.numStoriesToldQuestion(maxNumStoriesTold);
     }
 
-    minimumStoryCountRequiredForTest(catalysisReportIdentifier) {
-        if (!catalysisReportIdentifier) {
-            throw new Error("catalysisReportIdentifier was not supplied");
-        }
-        var minimumStoryCountRequiredForTest = this.tripleStore.queryLatestC(catalysisReportIdentifier, "minimumSubsetSize");
-        if (minimumStoryCountRequiredForTest) {
-            return parseInt(minimumStoryCountRequiredForTest, 10);
-        } else {
-            return Project.defaultMinimumStoryCountRequiredForTest;
-        }
-    }
-
-    minimumStoryCountRequiredForGraph(catalysisReportIdentifier) {
-        if (!catalysisReportIdentifier) {
-            throw new Error("catalysisReportIdentifier was not supplied");
-        }
-        var minimumStoryCountRequiredForGraph = this.tripleStore.queryLatestC(catalysisReportIdentifier, "minimumStoryCountRequiredForGraph");
-        if (minimumStoryCountRequiredForGraph) {
-            return parseInt(minimumStoryCountRequiredForGraph, 10);
-        } else {
-            return Project.defaultMinimumStoryCountRequiredForGraph;
-        }
-    }
-
-    numberOfHistogramBins(catalysisReportIdentifier) {
-        if (!catalysisReportIdentifier) {
-            throw new Error("catalysisReportIdentifier was not supplied");
-        }
-        var numHistogramBins = this.tripleStore.queryLatestC(catalysisReportIdentifier, "numHistogramBins");
-        if (numHistogramBins) {
-            return parseInt(numHistogramBins, 10);
-        } else {
-            return Project.defaultNumHistogramBins;
-        }
-    }
-
-    showInterpretationsInGrid(catalysisReportIdentifier) {
-        if (!catalysisReportIdentifier) {
-            throw new Error("catalysisReportIdentifier was not supplied");
-        }
-        var showInterpretationsInGrid = this.tripleStore.queryLatestC(catalysisReportIdentifier, "showInterpretationsInGrid");
-        if (showInterpretationsInGrid !== undefined) {
-            return showInterpretationsInGrid;
-        } else {
-            return Project.defaultShowInterpretationsInGrid;
-        }
-    }
-
-    graphMultiChoiceQuestionsAgainstThemselves(catalysisReportIdentifier) {
-        if (!catalysisReportIdentifier) {
-            throw new Error("catalysisReportIdentifier was not supplied");
-        }
-        var graphMultiChoiceQuestionsAgainstThemselves = this.tripleStore.queryLatestC(catalysisReportIdentifier, "graphMultiChoiceQuestionsAgainstThemselves");
-        if (graphMultiChoiceQuestionsAgainstThemselves !== undefined) {
-            return graphMultiChoiceQuestionsAgainstThemselves;
-        } else {
-            return Project.defaultGraphMultiChoiceQuestionsAgainstThemselves;
-        }
-    }
-
-    showStatsPanelsOnExplorePatternsPage(catalysisReportIdentifier) {
-        if (!catalysisReportIdentifier) {
-            throw new Error("catalysisReportIdentifier was not supplied");
-        }
-        var showStatsPanelsOnExplorePatternsPage = this.tripleStore.queryLatestC(catalysisReportIdentifier, "showStatsPanelsOnExplorePatternsPage");
-        if (showStatsPanelsOnExplorePatternsPage !== undefined) {
-            return showStatsPanelsOnExplorePatternsPage;
-        } else {
-            return Project.defaultShowStatsPanelsOnExplorePatternsPage;
-        }
-    }
-
-    customDisplayGraphWidth(catalysisReportIdentifier) {
-        if (!catalysisReportIdentifier) {
-            throw new Error("catalysisReportIdentifier was not supplied");
-        }
-        var customDisplayGraphWidth = this.tripleStore.queryLatestC(catalysisReportIdentifier, "customDisplayGraphWidth");
-        if (customDisplayGraphWidth !== undefined) {
-            return customDisplayGraphWidth;
-        } else {
-            return "";
-        }
-    }
-
-    numScatterDotOpacityLevels(catalysisReportIdentifier) {
-        if (!catalysisReportIdentifier) {
-            throw new Error("catalysisReportIdentifier was not supplied");
-        }
-        var numScatterDotOpacityLevels = this.tripleStore.queryLatestC(catalysisReportIdentifier, "numScatterDotOpacityLevels");
-        if (numScatterDotOpacityLevels) {
-            return parseInt(numScatterDotOpacityLevels, 10);
-        } else {
-            return Project.defaultNumScatterDotOpacityLevels;
-        }
-    }
-    
-    scatterDotSize(catalysisReportIdentifier) {
-        if (!catalysisReportIdentifier) {
-            throw new Error("catalysisReportIdentifier was not supplied");
-        }
-        var scatterDotSize = this.tripleStore.queryLatestC(catalysisReportIdentifier, "scatterDotSize");
-        if (scatterDotSize) {
-            return parseInt(scatterDotSize, 10);
-        } else {
-            return Project.defaultScatterDotSize;
-        }
-    }
-
-    correlationLineChoice(catalysisReportIdentifier) {
-        if (!catalysisReportIdentifier) {
-            throw new Error("catalysisReportIdentifier was not supplied");
-        }
-        var correlationLineChoice = this.tripleStore.queryLatestC(catalysisReportIdentifier, "correlationLineChoice");
-        if (correlationLineChoice) {
-            return correlationLineChoice;
-        } else {
-            return Project.defaultCorrelationLineChoice;
-        }
-    }
-
-    outputGraphFormat(catalysisReportIdentifier) {
-        if (!catalysisReportIdentifier) {
-            throw new Error("catalysisReportIdentifier was not supplied");
-        }
-        var outputGraphFormat = this.tripleStore.queryLatestC(catalysisReportIdentifier, "outputGraphFormat");
-        if (outputGraphFormat) {
-            return outputGraphFormat;
-        } else {
-            return Project.defaultOutputGraphFormat;
-        }
-    }
-
-    showStatsPanelsInReport(catalysisReportIdentifier) {
-        if (!catalysisReportIdentifier) {
-            throw new Error("catalysisReportIdentifier was not supplied");
-        }
-        var showStatsPanelsInReport = this.tripleStore.queryLatestC(catalysisReportIdentifier, "showStatsPanelsInReport");
-        if (showStatsPanelsInReport !== undefined) {
-            return showStatsPanelsInReport;
-        } else {
-            return Project.defaultShowStatsPanelsInReport;
-        }
-    }
-
-    useTableForInterpretationsFollowingObservation(catalysisReportIdentifier) {
-        if (!catalysisReportIdentifier) {
-            throw new Error("catalysisReportIdentifier was not supplied");
-        }
-        var useTableForInterpretationsFollowingObservation = this.tripleStore.queryLatestC(catalysisReportIdentifier, "useTableForInterpretationsFollowingObservation");
-        if (useTableForInterpretationsFollowingObservation !== undefined) {
-            return useTableForInterpretationsFollowingObservation;
-        } else {
-            return false;
-        }
-    }
-
-    customCountText(catalysisReportIdentifier) {
-        if (!catalysisReportIdentifier) {
-            throw new Error("catalysisReportIdentifier was not supplied");
-        }
-        var customCountText = this.tripleStore.queryLatestC(catalysisReportIdentifier, "customCountText");
-        if (customCountText !== undefined) {
-            return customCountText;
-        } else {
-            return "";
-        }
-    }
-
-    customStatsTextReplacements(catalysisReportIdentifier) {
-        if (!catalysisReportIdentifier) {
-            throw new Error("catalysisReportIdentifier was not supplied");
-        }
-        var customStatsTextReplacements = this.tripleStore.queryLatestC(catalysisReportIdentifier, "customStatsTextReplacements");
-        if (customStatsTextReplacements !== undefined) {
-            return customStatsTextReplacements;
-        } else {
-            return "";
-        }
-    }
-
-    graphTypesToCreate(catalysisReportIdentifier) {
-        if (!catalysisReportIdentifier) {
-            throw new Error("catalysisReportIdentifier was not supplied");
-        }
-        var graphTypesToCreate = this.tripleStore.queryLatestC(catalysisReportIdentifier, "graphTypesToCreate");
-        if (graphTypesToCreate) {
-            return graphTypesToCreate;
-        } else {
-            return Project.defaultGraphTypesToCreate;
-        }
-    }
 }
 
 export = Project;

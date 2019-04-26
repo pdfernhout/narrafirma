@@ -11,25 +11,34 @@ interface GraphSelection {
 }
 
 interface GraphHolder {
+
+    // graphical elements
     graphResultsPane: HTMLElement;
     chartPanes: Array<HTMLElement>;
-    allStories: Array<any>;
     currentGraph: any;
     currentSelectionExtentPercentages: GraphSelection;
-    excludeStoryTooltips?: boolean;
+
+    // data elements
+    allStories: Array<any>;
+
+    // display options
+    graphTypesToCreate: {};
     minimumStoryCountRequiredForTest: number;
     minimumStoryCountRequiredForGraph: number;
     numHistogramBins: number;
     numScatterDotOpacityLevels: number;
     scatterDotSize: number;
     correlationLineChoice: string;
-    outputGraphFormat: string;
-    showStatsPanelsInReport: boolean;
-    graphTypesToCreate: {};
+    excludeStoryTooltips?: boolean; // this is used to suppress story tooltips in "data integrity" graphs where stories are not the things being represented
+
+    // printed report options
+    outputGraphFormat?: string;
+    showStatsPanelsInReport?: boolean;
     statisticalInfo?: string;
     customStatsTextReplacements?: string;
     customGraphWidth?: number;
 }
+
 
 // Possible Grid configuration options
 interface GridConfiguration {

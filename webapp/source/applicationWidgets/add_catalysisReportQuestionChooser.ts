@@ -18,11 +18,6 @@ function add_catalysisReportQuestionChooser(panelBuilder: PanelBuilder, model, f
     var elicitingQuestions = project.elicitingQuestionsForCatalysisReport(catalysisReportIdentifier);
     var allParticipantQuestions = project.participantQuestionsForCatalysisReport(catalysisReportIdentifier);
 
-    // if catalysis report has no values for options, initialize it now 
-    // I put this here because we assume they will come to this page first after creating the report
-    // and I don't know where else to put it
-    project.initializeCatalysisReportIfNecessary(catalysisReportIdentifier);
-
     // annotation questions are not per questionnaire but global to the project (which is maybe not good?)
     // because annotation questions are global, they are not in the form the other questions are in (which are in the questionnaire)
     // so they must be converted
@@ -246,99 +241,72 @@ function add_catalysisReportQuestionChooser(panelBuilder: PanelBuilder, model, f
     }
     
     // TODO: Translate
-    return m("div.questionExternal", [
-        prompt,
-        m("div", [
-            m("br"),  
-            m("b", "Story questions"),
-            m("br"),  
-            m("br"),
 
-            m("i", "Scales"),
-            storyRatioQuestions.length ? m("br") : "",
-            storyRatioQuestions.length ? m("br") : "",
-            storyRatioQuestions.map((question) => {
-                return buildQuestionCheckbox(question.displayName, question.displayType, "S_");
-            }),
-            storyRatioQuestions.length ? [] : [m("i", " - none"), m("br")],
+    let firstColumn = [];
+    firstColumn.push(m("b", "Story questions"));
+    firstColumn.push(m("br"));
+    firstColumn.push(m("br"));
+    firstColumn.push(m("i", "Scales"));
+    firstColumn.push(storyRatioQuestions.map((question) => {return buildQuestionCheckbox(question.displayName, question.displayType, "S_");}));
+    firstColumn.push(storyRatioQuestions.length ? [] : [m("i", " - none"), m("br")]);
+    firstColumn.push(m("br"));
+    firstColumn.push(m("i", "Choices"));
+    firstColumn.push(storyNominalQuestions.map((question) => {return buildQuestionCheckbox(question.displayName, question.displayType, "S_");}));
+    firstColumn.push(storyNominalQuestions.length ? [] : [m("i", " - none"), m("br")]);
+    firstColumn.push(m("br"));
+    firstColumn.push(m("i", "Texts"));
+    firstColumn.push(storyTextQuestions.map((question) => {return buildQuestionCheckbox(question.displayName, question.displayType, "S_");}));
+    firstColumn.push(storyTextQuestions.length ? [] : [m("i", " - none"), m("br")]);
+    let firstColumnTD = m("td", {"class": "narrafirma-questions-chooser-table-td"}, firstColumn);
 
-            m("br"),
-            m("i", "Choices"),
-            storyNominalQuestions.length ? m("br") : "",
-            storyNominalQuestions.length ? m("br") : "",
-            storyNominalQuestions.map((question) => {
-                return buildQuestionCheckbox(question.displayName, question.displayType, "S_");
-            }),
-            storyNominalQuestions.length ? [] : [m("i", " - none"), m("br")],
+    let secondColumn = [];
+    secondColumn.push(m("b", "Participant questions"));
+    secondColumn.push(m("br"));
+    secondColumn.push(m("br"));
+    secondColumn.push(m("i", "Scales"));
+    secondColumn.push(participantRatioQuestions.map((question) => {return buildQuestionCheckbox(question.displayName, question.displayType, "P_");}));
+    secondColumn.push(participantRatioQuestions.length ? [] : [m("i", " - none"), m("br")]);
+    secondColumn.push(m("br"));
+    secondColumn.push(m("i", "Choices"));
+    secondColumn.push(participantNominalQuestions.map((question) => {return buildQuestionCheckbox(question.displayName, question.displayType, "P_");}));
+    secondColumn.push(participantNominalQuestions.length ? [] : [m("i", " - none"), m("br")]);
+    secondColumn.push(m("br"));
+    secondColumn.push(m("i", "Texts"));
+    secondColumn.push(participantTextQuestions.map((question) => {return buildQuestionCheckbox(question.displayName, question.displayType, "P_");}));
+    secondColumn.push(participantTextQuestions.length ? [] : [m("i", " - none"), m("br")]);
+    let secondColumnTD = m("td", {"class": "narrafirma-questions-chooser-table-td"}, secondColumn);
 
-            m("br"),
-            m("i", "Texts"),
-            storyTextQuestions.length ? m("br") : "",
-            storyTextQuestions.length ? m("br") : "",
-            storyTextQuestions.map((question) => {
-                return buildQuestionCheckbox(question.displayName, question.displayType, "S_");
-            }),
-            storyTextQuestions.length ? [] : [m("i", " - none"), m("br")],
+    let thirdColumn = [];
+    thirdColumn.push(m("b", "Annotation questions")); 
+    thirdColumn.push(m("br"));
+    thirdColumn.push(m("br"));
+    thirdColumn.push(allAnnotationQuestions.map((question) => {return buildQuestionCheckbox(question.displayName, question.displayType, "A_");}));
+    thirdColumn.push(allAnnotationQuestions.length ? [] : [m("i", " - none"), m("br")]);
+    thirdColumn.push(m("br"));
+    thirdColumn.push(m("b", "Additional information"));
+    thirdColumn.push(m("br"));
+    thirdColumn.push(m("br"));
+    thirdColumn.push(elicitingQuestions.map((question) => {return buildQuestionCheckboxSpecialForElicitingQuestion();}));
+    thirdColumn.push(buildQuestionCheckboxSpecialForNumStoriesTold());
+    thirdColumn.push(buildQuestionCheckboxSpecialForStoryLength());
+    let thirdColumnTD = m("td", {"class": "narrafirma-questions-chooser-table-td"}, thirdColumn);
 
-            m("br"),
-            m("b", "Participant questions"),
-            m("br"),
-            m("br"),
+    let table = m("table", {"class": "narrafirma-questions-chooser-table"}, m("tr", [firstColumnTD, secondColumnTD, thirdColumnTD]));
 
-            m("i", "Scales"),
-            participantRatioQuestions.length ? m("br") : "",
-            participantRatioQuestions.length ? m("br") : "",
-            participantRatioQuestions.map((question) => {
-                return buildQuestionCheckbox(question.displayName, question.displayType, "P_");
-            }),
-            participantRatioQuestions.length ? [] : [m("i", " - none"), m("br")],
+    return m("div.questionExternal", 
+        [prompt, 
+        m("div", table),
+        m("br"),
+        m("button", { onclick: selectAll }, "Select all"),
+        m("button", { onclick: selectAllStoryQuestions }, "Select only story questions"),
+        m("button", { onclick: selectAllParticipantQuestions }, "Select only participant questions"),
+        m("button", { onclick: clearAll }, "Clear all"),
+        m("br"),
+        m("br"),
+        m("div[style=margin-left:1em]", ["" + numBoxesChecked() + " questions selected; " + allStories.length + " stories"]),
+        m("br")
+        ]);
 
-            m("br"),
-            m("i", "Choices"),
-            participantNominalQuestions.length ? m("br") : "",
-            participantNominalQuestions.length ? m("br") : "",
-            participantNominalQuestions.map((question) => {
-                return buildQuestionCheckbox(question.displayName, question.displayType, "P_");
-            }),
-            participantNominalQuestions.length ? [] : [m("i", " - none"), m("br")],
-
-            m("br"),
-            m("i", "Texts"),
-            participantTextQuestions.length ? m("br") : "",
-            participantTextQuestions.length ? m("br") : "",
-            participantTextQuestions.map((question) => {
-                return buildQuestionCheckbox(question.displayName, question.displayType, "P_");
-            }),
-            participantTextQuestions.length ? [] : [m("i", " - none"), m("br")],
-
-            m("br"),
-            m("b", "Annotation questions"), 
-            allAnnotationQuestions.length ? m("br") : "",
-            allAnnotationQuestions.length ? m("br") : "",
-            allAnnotationQuestions.map((question) => {
-                return buildQuestionCheckbox(question.displayName, question.displayType, "A_");
-            }),
-            allAnnotationQuestions.length ? [] : [m("i", " - none"), m("br")],
-            m("br"),
-            m("b", "Additional information"),
-            m("br"),
-            m("br"),
-            elicitingQuestions.map((question) => {
-                return buildQuestionCheckboxSpecialForElicitingQuestion();
-            }),
-            buildQuestionCheckboxSpecialForNumStoriesTold(),
-            buildQuestionCheckboxSpecialForStoryLength(),
-        ]),
-    m("br"),
-    m("button", { onclick: selectAll }, "Select all"),
-    m("button", { onclick: selectAllStoryQuestions }, "Select only story questions"),
-    m("button", { onclick: selectAllParticipantQuestions }, "Select only participant questions"),
-    m("button", { onclick: clearAll }, "Clear all"),
-    m("br"),
-    m("br"),
-    m("div[style=margin-left:1em]", ["" + numBoxesChecked() + " questions selected; " + allStories.length + " stories"]),
-    m("br")
-    ]);
 }
 
 export = add_catalysisReportQuestionChooser;

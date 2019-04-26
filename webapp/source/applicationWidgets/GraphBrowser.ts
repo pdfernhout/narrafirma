@@ -38,14 +38,12 @@ class GraphBrowser {
             allStories: [],
             currentGraph: null,
             currentSelectionExtentPercentages: null,
-            minimumStoryCountRequiredForTest: Project.defaultMinimumStoryCountRequiredForTest,
-            minimumStoryCountRequiredForGraph: Project.defaultMinimumStoryCountRequiredForGraph,
-            numHistogramBins: Project.defaultNumHistogramBins,
-            numScatterDotOpacityLevels: Project.defaultNumScatterDotOpacityLevels,
-            scatterDotSize: Project.defaultScatterDotSize,
-            correlationLineChoice: null,
-            outputGraphFormat: Project.defaultOutputGraphFormat,
-            showStatsPanelsInReport: Project.defaultShowStatsPanelsInReport,
+            minimumStoryCountRequiredForTest: Project.default_minimumStoryCountRequiredForTest,
+            minimumStoryCountRequiredForGraph: Project.default_minimumStoryCountRequiredForGraph,
+            numHistogramBins: Project.default_numHistogramBins,
+            numScatterDotOpacityLevels: Project.default_numScatterDotOpacityLevels,
+            scatterDotSize: Project.default_scatterDotSize,
+            correlationLineChoice: Project.default_correlationLineChoice,
             graphTypesToCreate: {}
         }; 
     }
