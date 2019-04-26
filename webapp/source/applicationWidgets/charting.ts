@@ -337,6 +337,7 @@ interface AxisOptions {
     rotateAxisLabels?: boolean;
     graphType?: string;
     textAnchor?: string;
+    namesAndTotals?: {};
 }
 
 // addXAxis(chart, xScale, {labelLengthLimit: 64, isSmallFormat: false, drawLongAxisLines: false, rotateAxisLabels: false});
@@ -371,13 +372,17 @@ function addXAxis(chart, xScale, options: AxisOptions) {
                 return limitLabelLength(d, options.labelLengthLimit);
             });
        }
-       labels.append("svg:title").text(function(d, i) {
-            return d;
+       labels.append("svg:title").text(function(label, i) {
+            return label;
         }); 
     } else {
         if (options.labelLengthLimit) {
             xAxis.tickFormat(function (label) {
-                return limitLabelLength(label, options.labelLengthLimit); 
+                let result = label;
+                if (options.namesAndTotals[label]) {
+                    result = label + " (" + options.namesAndTotals[label] + ")";
+                }
+                return limitLabelLength(result, options.labelLengthLimit); 
             });
         }
         // TODO: These do not have hovers
@@ -392,7 +397,7 @@ function addXAxis(chart, xScale, options: AxisOptions) {
                     return "rotate(-65)";
                 });
     }
-    
+
     return xAxis;
 }
 
@@ -412,7 +417,11 @@ function addYAxis(chart, yScale, options: AxisOptions) {
     
     if (options.labelLengthLimit) {
         yAxis.tickFormat(function (label) {
-            return limitLabelLength(label, options.labelLengthLimit); 
+            let result = label;
+            if (options.namesAndTotals[label]) {
+                result = label + " (" + options.namesAndTotals[label] + ")";
+            }
+            return limitLabelLength(result, options.labelLengthLimit); 
         });
     } else {
         // This seems needed to ensure small numbers for labels don't get ".0" appended to them
@@ -428,13 +437,17 @@ function addYAxis(chart, yScale, options: AxisOptions) {
         .call(yAxis).selectAll("text");
 
     if (options.labelLengthLimit) {
-        labels.text(function(d, i) {
-            return limitLabelLength(d, options.labelLengthLimit);
+        labels.text(function(label, i) {
+            let result = label;
+            if (options.namesAndTotals[label]) {
+                result = label + " (" + options.namesAndTotals[label] + ")";
+            }
+            return limitLabelLength(result, options.labelLengthLimit);
         });
     }
         
-    labels.append("svg:title").text(function(d, i) {
-        return d;
+    labels.append("svg:title").text(function(label, i) {
+        return label;
     }); 
     return yAxis;
 }
@@ -1592,10 +1605,10 @@ export function d3ContingencyTable(graphBrowserInstance: GraphHolder, xAxisQuest
                 yValues.push(yValue);  
             }
             for (var xIndex in xValues) {
+                incrementMapSlot(results, JSON.stringify({x: xValues[xIndex]}));
                 for (var yIndex in yValues) {
                     // TODO: Need to include stories...
                     incrementMapSlot(results, JSON.stringify({x: xValues[xIndex], y: yValues[yIndex]}));
-                    incrementMapSlot(results, JSON.stringify({x: xValues[xIndex]}));
                     incrementMapSlot(results, JSON.stringify({y: yValues[yIndex]}));
                     pushToMapSlot(plotItemStories, JSON.stringify({x: xValues[xIndex], y: yValues[yIndex]}), story);
                     grandTotal++;
@@ -1637,29 +1650,29 @@ export function d3ContingencyTable(graphBrowserInstance: GraphHolder, xAxisQuest
     
     var observedPlotItems = [];
     var expectedPlotItems = [];
-    for (var ci in columnLabelsArray) {
-        var c = columnLabelsArray[ci];
-        for (var ri in rowLabelsArray) {
-            var r = rowLabelsArray[ri];
-            var xySelector = JSON.stringify({x: c, y: r});
+    for (var columnIndex in columnLabelsArray) {
+        var column = columnLabelsArray[columnIndex];
+        for (var rowIndex in rowLabelsArray) {
+            var row = rowLabelsArray[rowIndex];
+            var xySelector = JSON.stringify({x: column, y: row});
             
             var expectedValue = null;
             if (!xHasCheckboxes && !yHasCheckboxes) {
                 // Can only calculate expected and do chi-square if choices are exclusive
-                var columnSelector = JSON.stringify({x: c});
+                var columnSelector = JSON.stringify({x: column});
                 var columnTotal = results[columnSelector] || 0;
                 
-                var rowSelector = JSON.stringify({y: r});
+                var rowSelector = JSON.stringify({y: row});
                 var rowTotal = results[rowSelector] || 0; 
             
                 expectedValue = (columnTotal * rowTotal) / stories.length;
-                var expectedPlotItem = {x: c, y: r, value: expectedValue};
+                var expectedPlotItem = {x: column, y: row, value: expectedValue};
                 expectedPlotItems.push(expectedPlotItem);
             }
 
             var observedValue = results[xySelector] || 0;
             var storiesForNewPlotItem = plotItemStories[xySelector] || [];
-            var observedPlotItem = {x: c, y: r, value: observedValue, stories: storiesForNewPlotItem, expectedValue: expectedValue};
+            var observedPlotItem = {x: column, y: row, value: observedValue, stories: storiesForNewPlotItem, expectedValue: expectedValue};
             if (scaleQuestion) {
                 var scaleValues = [];
                 for (var i = 0; i < storiesForNewPlotItem.length; i++) {
@@ -1727,6 +1740,14 @@ export function d3ContingencyTable(graphBrowserInstance: GraphHolder, xAxisQuest
   
     // X axis and label
 
+    let columnNamesAndTotals = {};
+    if (!graphBrowserInstance.hideNumbersOnContingencyGraphs) {
+        columnLabelsArray.forEach(function(label) {
+            var columnSelector = JSON.stringify({x: label});
+            columnNamesAndTotals[label] = results[columnSelector] || 0;
+        });
+    }
+
     var xScale = d3.scale.ordinal()
         .domain(columnLabelsArray)
         .rangeRoundBands([0, chart.width], 0.1);
@@ -1734,11 +1755,19 @@ export function d3ContingencyTable(graphBrowserInstance: GraphHolder, xAxisQuest
     chart.xScale = xScale;
     chart.xQuestion = xAxisQuestion;
     
-    var xAxis = addXAxis(chart, xScale, {labelLengthLimit: labelLengthLimit, drawLongAxisLines: true, rotateAxisLabels: true, graphType: "table"});
+    var xAxis = addXAxis(chart, xScale, {labelLengthLimit: labelLengthLimit, drawLongAxisLines: true, rotateAxisLabels: true, graphType: "table", namesAndTotals: columnNamesAndTotals});
     
     addXAxisLabel(chart, nameForQuestion(xAxisQuestion), {graphType: "table"});
     
     // Y axis and label
+
+    let rowNamesAndTotals = {};
+    if (!graphBrowserInstance.hideNumbersOnContingencyGraphs) {
+        rowLabelsArray.forEach(function(label) {
+            var rowSelector = JSON.stringify({y: label});
+            rowNamesAndTotals[label] = results[rowSelector] || 0;
+        });
+    }
 
     var yScale = d3.scale.ordinal()
         .domain(rowLabelsArray)
@@ -1747,7 +1776,7 @@ export function d3ContingencyTable(graphBrowserInstance: GraphHolder, xAxisQuest
     chart.yScale = yScale;
     chart.yQuestion = yAxisQuestion;
     
-    var yAxis = addYAxis(chart, yScale, {labelLengthLimit: labelLengthLimit, drawLongAxisLines: true, graphType: "table"});
+    var yAxis = addYAxis(chart, yScale, {labelLengthLimit: labelLengthLimit, drawLongAxisLines: true, graphType: "table", namesAndTotals: rowNamesAndTotals});
     
     addYAxisLabel(chart, nameForQuestion(yAxisQuestion), {graphType: "table"});
     
