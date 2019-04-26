@@ -312,6 +312,7 @@ export function printCatalysisReport() {
 
     options["outputGraphFormat"] = this.project.tripleStore.queryLatestC(this.catalysisReportIdentifier, "outputGraphFormat") || "SVG";
     options["showStatsPanelsInReport"] = this.project.tripleStore.queryLatestC(this.catalysisReportIdentifier, "showStatsPanelsInReport") || false;
+    options["hideNumbersOnContingencyGraphs"] = this.project.tripleStore.queryLatestC(this.catalysisReportIdentifier, "hideNumbersOnContingencyGraphs") || false;
     options["printInterpretationsAsTable"] = this.project.tripleStore.queryLatestC(this.catalysisReportIdentifier, "printInterpretationsAsTable") || false;
 
     let customGraphWidthAsString = project.tripleStore.queryLatestC(catalysisReportIdentifier, "customReportGraphWidth");
@@ -700,6 +701,7 @@ function printListOfObservations(observationList, observationLabel, idTagStart, 
             numScatterDotOpacityLevels: options.numScatterDotOpacityLevels,
             scatterDotSize: options.scatterDotSize,
             correlationLineChoice: options.correlationLineChoice,
+            hideNumbersOnContingencyGraphs: options.hideNumbersOnContingencyGraphs,
             outputGraphFormat: options.outputGraphFormat,
             showStatsPanelsInReport: options.showStatsPanelsInReport,
             customStatsTextReplacements: options["customStatsTextReplacements"],
@@ -752,6 +754,7 @@ function printListOfInterpretations(interpretationList, interpretationLabel, idT
             numHistogramBins: options.numHistogramBins,
             numScatterDotOpacityLevels: options.numScatterDotOpacityLevels,
             scatterDotSize: options.scatterDotSize,
+            hideNumbersOnContingencyGraphs: options.hideNumbersOnContingencyGraphs,
             correlationLineChoice: options.correlationLineChoice,
             outputGraphFormat: options.outputGraphFormat,
             showStatsPanelsInReport: options.showStatsPanelsInReport,
@@ -1216,10 +1219,15 @@ export var graphResultsPaneCSS = `
       stroke: #2e4a85;
       fill: #d5dae6;
     }
-    
+
+    .contingencyChart .storyClusterLabel.observed {
+        font-size: 0.8em;
+        fill: #2e4a85;
+    }
+
     .contingencyChart .expected {
       stroke-width: 1px;
-      stroke: #8e8789;
+      stroke: red;
       stroke-dasharray: "5, 5";
       fill: none;
     }

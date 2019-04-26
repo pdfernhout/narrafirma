@@ -1294,6 +1294,11 @@ td.narrafirma-mw-nested-title, td.narrafirma-mw-nested-stats {
   fill: #d5dae6;
 }
 
+.contingencyChart .storyClusterLabel {
+    font-size: 0.8em;
+    fill: #2e4a85;
+}
+
 .contingencyChart .storyCluster.observed.selected {
   stroke-width: 2px;
   stroke: #cc6400;
@@ -1302,7 +1307,7 @@ td.narrafirma-mw-nested-title, td.narrafirma-mw-nested-stats {
 
 .contingencyChart .expected {
   stroke-width: 1px;
-  stroke: black;
+  stroke: red;
   stroke-dasharray: "5, 5";
   fill: none;
 }

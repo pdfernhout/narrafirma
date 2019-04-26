@@ -44,6 +44,7 @@ class GraphBrowser {
             numScatterDotOpacityLevels: Project.default_numScatterDotOpacityLevels,
             scatterDotSize: Project.default_scatterDotSize,
             correlationLineChoice: Project.default_correlationLineChoice,
+            hideNumbersOnContingencyGraphs: false,
             graphTypesToCreate: {}
         }; 
     }

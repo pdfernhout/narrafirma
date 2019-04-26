@@ -243,6 +243,17 @@ var panel: Panel = {
                 return !!Globals.clientState().catalysisReportIdentifier();
             }
         },
+        {
+            id: "configureCatalysisReport_hideNumbersOnContingencyGraphs",
+            valueType: "boolean",
+            valuePath: "/clientState/catalysisReportIdentifier/hideNumbersOnContingencyGraphs",
+            displayType: "checkbox",
+            displayConfiguration: "Hide numbers on contingency graphs",
+            displayPrompt: `For <strong>contingency graphs</strong>, if you want to hide the observed/expected numbers of stories, check this box. This choice affects both the "Explore Patterns" page and the printed report.`,
+            displayVisible: function(panelBuilder, model) {
+                return !!Globals.clientState().catalysisReportIdentifier();
+            }
+        },
 
         {
             id: "configureCatalysisReport_numScatterDotOpacityLevels",

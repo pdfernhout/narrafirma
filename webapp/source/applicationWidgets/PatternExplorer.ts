@@ -116,6 +116,7 @@ class PatternExplorer {
             numScatterDotOpacityLevels: Project.default_numScatterDotOpacityLevels,
             scatterDotSize: Project.default_scatterDotSize,
             correlationLineChoice: Project.default_correlationLineChoice,
+            hideNumbersOnContingencyGraphs: false,
             graphTypesToCreate: Project.default_graphTypesToCreate,
         };
         
@@ -382,6 +383,7 @@ class PatternExplorer {
         this.graphHolder.scatterDotSize = this.project.tripleStore.queryLatestC(this.catalysisReportIdentifier, "scatterDotSize") || Project.default_scatterDotSize; 
         this.graphHolder.correlationLineChoice = this.project.tripleStore.queryLatestC(this.catalysisReportIdentifier, "correlationLineChoice") || Project.default_correlationLineChoice; 
         this.graphHolder.customGraphWidth = this.project.tripleStore.queryLatestC(this.catalysisReportIdentifier, "customGraphWidth"); 
+        this.graphHolder.hideNumbersOnContingencyGraphs = this.project.tripleStore.queryLatestC(this.catalysisReportIdentifier, "hideNumbersOnContingencyGraphs"); 
 
         // get stories
         this.graphHolder.allStories = this.project.storiesForCatalysisReport(catalysisReportIdentifier);

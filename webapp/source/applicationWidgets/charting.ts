@@ -15,6 +15,7 @@ interface StoryPlotItem {
     name: string;
     stories: any[];
     value: number;
+    expectedValue?: number;
 }
 
 const maxRangeLabelLength = 26;
@@ -1850,7 +1851,7 @@ export function d3ContingencyTable(graphBrowserInstance: GraphHolder, xAxisQuest
             var xValueMultiplier = xScale.rangeBand() / maxPlotItemValue / 2.0;
             var yValueMultiplier = yScale.rangeBand() / maxPlotItemValue / 2.0;
         }
-    
+
         var storyDisplayClusters = chartBody.selectAll(".storyCluster")
                 .data(observedPlotItems)
             .enter().append("ellipse")
@@ -1871,6 +1872,29 @@ export function d3ContingencyTable(graphBrowserInstance: GraphHolder, xAxisQuest
                     .attr("cx", function (plotItem) { return xScale(plotItem.x) + xScale.rangeBand() / 2.0; } )
                     .attr("cy", function (plotItem) { return yScale(plotItem.y) + yScale.rangeBand() / 2.0; } );
         }
+
+        if (!graphBrowserInstance.hideNumbersOnContingencyGraphs) {
+            var storyClusterLabels = chartBody.selectAll(".storyClusterLabel")
+                .data(observedPlotItems)
+                .enter().append("text")
+                    .text(function(plotItem: StoryPlotItem) { 
+                        if (xValueMultiplier * plotItem.value >= 20) { // don't write text if bubble is tiny
+                            if (plotItem.expectedValue) {
+                                return "" + plotItem.value + "/" + Math.round(plotItem.expectedValue); 
+                            } else {
+                                return "" + plotItem.value;
+                            }
+                        } else { 
+                            return ""
+                        }; 
+                    })
+                    .attr("class", "storyClusterLabel")
+                    .attr("x", function (plotItem) { return xScale(plotItem.x) + xScale.rangeBand() / 2.0; } )
+                    .attr("y", function (plotItem) { return yScale(plotItem.y) + yScale.rangeBand() / 2.0; } )
+                    .attr("dx", 0) // padding-right
+                    .attr("dy", ".35em") // vertical-align: middle
+                    .attr("text-anchor", "middle") // text-align: middle
+            }
     }
 
     function tooltipTextForPlotItem(plotItem) {
