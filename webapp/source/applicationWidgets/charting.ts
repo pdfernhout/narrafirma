@@ -1604,12 +1604,12 @@ export function d3ContingencyTable(graphBrowserInstance: GraphHolder, xAxisQuest
             } else {
                 yValues.push(yValue);  
             }
+            for (var xIndex in xValues) {incrementMapSlot(results, JSON.stringify({x: xValues[xIndex]}));}
+            for (var yIndex in yValues) {incrementMapSlot(results, JSON.stringify({y: yValues[yIndex]}));}
+            
             for (var xIndex in xValues) {
-                incrementMapSlot(results, JSON.stringify({x: xValues[xIndex]}));
                 for (var yIndex in yValues) {
-                    // TODO: Need to include stories...
                     incrementMapSlot(results, JSON.stringify({x: xValues[xIndex], y: yValues[yIndex]}));
-                    incrementMapSlot(results, JSON.stringify({y: yValues[yIndex]}));
                     pushToMapSlot(plotItemStories, JSON.stringify({x: xValues[xIndex], y: yValues[yIndex]}), story);
                     grandTotal++;
                 }
@@ -1647,6 +1647,9 @@ export function d3ContingencyTable(graphBrowserInstance: GraphHolder, xAxisQuest
         rowLabelsArray.push(rowName);
     }
     var rowCount = rowLabelsArray.length;
+
+    let rowStoryCounts = {};
+    let columnStoryCounts = {};
     
     var observedPlotItems = [];
     var expectedPlotItems = [];
@@ -1701,7 +1704,10 @@ export function d3ContingencyTable(graphBrowserInstance: GraphHolder, xAxisQuest
                 //console.log("mean", observedPlotItem["mean"], "sd", observedPlotItem["sd"], "scaleValues", scaleValues);
             }
             observedPlotItems.push(observedPlotItem);
-            
+            if (!rowStoryCounts[row]) rowStoryCounts[row] = 0;
+            rowStoryCounts[row] += storiesForNewPlotItem.length;
+            if (!columnStoryCounts[column]) columnStoryCounts[column] = 0;
+            columnStoryCounts[column] += storiesForNewPlotItem.length;
         }
     }
     
@@ -1743,8 +1749,7 @@ export function d3ContingencyTable(graphBrowserInstance: GraphHolder, xAxisQuest
     let columnNamesAndTotals = {};
     if (!graphBrowserInstance.hideNumbersOnContingencyGraphs) {
         columnLabelsArray.forEach(function(label) {
-            var columnSelector = JSON.stringify({x: label});
-            columnNamesAndTotals[label] = results[columnSelector] || 0;
+            columnNamesAndTotals[label] = columnStoryCounts[label] || 0;
         });
     }
 
@@ -1764,8 +1769,7 @@ export function d3ContingencyTable(graphBrowserInstance: GraphHolder, xAxisQuest
     let rowNamesAndTotals = {};
     if (!graphBrowserInstance.hideNumbersOnContingencyGraphs) {
         rowLabelsArray.forEach(function(label) {
-            var rowSelector = JSON.stringify({y: label});
-            rowNamesAndTotals[label] = results[rowSelector] || 0;
+            rowNamesAndTotals[label] = rowStoryCounts[label] || 0;
         });
     }
 
