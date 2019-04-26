@@ -579,7 +579,7 @@ class PatternExplorer {
         } else { // just calculate without any progress dialog
             result.forEach((pattern) => {
                 calculateStatistics.calculateStatisticsForPattern(result[patternIndex], patternIndex, result.length, howOftenToUpdateProgressMessage,
-                    this.graphHolder.allStories, this.minimumStoryCountRequiredForTest, null); // no progress model
+                    this.graphHolder.allStories, this.minimumStoryCountRequiredForTest, null, "No answer"); // no progress model, no custom unansweredText
                 patternIndex += 1;
             });
         }
@@ -592,7 +592,7 @@ class PatternExplorer {
                 progressModel.redraw();
             } else {
                 calculateStatistics.calculateStatisticsForPattern(result[patternIndex], patternIndex, result.length, howOftenToUpdateProgressMessage,
-                    stories, minimumStoryCountRequiredForTest, progressModel);  
+                    stories, minimumStoryCountRequiredForTest, progressModel, "No answer");  // no progress model, no custom unansweredText
                 patternIndex += 1;
                 setTimeout(function() { calculateStatsForNextPattern(); }, 0);
             }

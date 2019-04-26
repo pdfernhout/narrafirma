@@ -17,13 +17,47 @@ interface StoryPlotItem {
     value: number;
 }
 
-const unansweredKey = "No answer";
 const maxRangeLabelLength = 26;
 
-function getStoryLengthValue(story, question) {
+// Count; Frequency; No answer; Statistics; None; p; n; n1; n2; mean; median; mode; standard deviation; skewness; kurtosis; chi squared (x2); degrees of freedom (k);
+// Spearman's rho; Sub-graph; Mann-Whitney U; and (the table label) "Mann-Whitney U test results for multiple histograms, sorted by significance value"
+const defaultStatsTexts = {
+    "count": "Count",
+    "frequency": "Frequency",
+    "unanswered": "No answer",
+    "stats": "Statistics",
+    "none": "None",
+    "p": "p",
+    "n": "n",
+    "n1": "n1",
+    "n2": "n2",
+    "mean": "mean",
+    "median": "median",
+    "mode": "mode",
+    "sd": "standard deviation",
+    "skewness": "skewness",
+    "kurtosis": "kurtosis",
+    "x2": "chi squared (x2)",
+    "k": "degrees of freedom (k)",
+    "U": "Mann-Whitney U",
+    "rho": "Spearman's rho",
+    "subgraph": "Sub-graph",
+    "U table": "Mann-Whitney U test results for multiple histograms, sorted by significance value (p)",
+}
+
+function customStatLabel(key, graphBrowserInstance) {
+    if (graphBrowserInstance.customStatsTextReplacements) {
+        return graphBrowserInstance.customStatsTextReplacements[defaultStatsTexts[key]] || defaultStatsTexts[key];
+    } else {
+        return defaultStatsTexts[key];
+    }
+}
+
+
+function getStoryLengthValue(story, question, unansweredText) {
     var value = story.storyLength();
     if (value == 0) {
-        return unansweredKey;
+        return unansweredText;
     } else {
         var result = null;
         for (var i = 0; i < question.valueOptions.length; i++) {
@@ -38,9 +72,9 @@ function getStoryLengthValue(story, question) {
     }
 }
 
-function getChoiceValueForQuestion(question, story) {
+function getChoiceValueForQuestion(question, story, unansweredText) {
     if (question.id === "storyLength") {
-        return getStoryLengthValue(story, question);
+        return getStoryLengthValue(story, question, unansweredText);
     } else {
         var value = story.fieldValue(question.id);
         if (question.displayType === "boolean") {
@@ -51,14 +85,14 @@ function getChoiceValueForQuestion(question, story) {
             }
         }
         if (question.displayType === "checkbox" && !value) return "no";
-        if (value === undefined || value === null || value === "") return unansweredKey;
+        if (value === undefined || value === null || value === "") return unansweredText;
         return value;
     }
 }
 
-function getScaleValueForQuestion(question, story) {
+function getScaleValueForQuestion(question, story, unansweredText) {
     var value = story.fieldValue(question.id);
-    if (value === undefined || value === null || value === "") return unansweredKey;
+    if (value === undefined || value === null || value === "") return unansweredText;
     return value;
 }
 
@@ -83,7 +117,7 @@ function nameForQuestion(question) {
     return escapeHtml(question.id);
 }
 
-function positionForQuestionAnswer(question, answer) {
+function positionForQuestionAnswer(question, answer, unansweredText) {
     // TODO: Confirm checkbox values are also yes/no...
     if (question.displayType === "boolean" || question.displayType === "checkbox") {
         if (answer === false) return 0;
@@ -94,7 +128,7 @@ function positionForQuestionAnswer(question, answer) {
     // TODO: How to display sliders when unanswered? Add one here?
     // TODO: Check that answer is numerical
     if (question.displayType === "slider") {
-        if (answer === unansweredKey) return -10;
+        if (answer === unansweredText) return -10;
         return answer;
     }
     
@@ -114,7 +148,7 @@ function positionForQuestionAnswer(question, answer) {
     // Adjust for unanswered items
     // if (question.displayType !== "checkboxes") answerCount += 1;
     
-    if (answer === unansweredKey) {
+    if (answer === unansweredText) {
         return -100 * 1 / (options.length - 1);
     }
     
@@ -123,10 +157,10 @@ function positionForQuestionAnswer(question, answer) {
     return position;  
 }
 
-function makePlotItem(xAxisQuestion, yAxisQuestion, xValue, yValue, story) {
+function makePlotItem(xAxisQuestion, yAxisQuestion, xValue, yValue, story, unansweredText) {
     // Plot onto a 100 x 100 value to work with sliders
-    var x = positionForQuestionAnswer(xAxisQuestion, xValue);
-    var y = positionForQuestionAnswer(yAxisQuestion, yValue);
+    var x = positionForQuestionAnswer(xAxisQuestion, xValue, unansweredText);
+    var y = positionForQuestionAnswer(yAxisQuestion, yValue, unansweredText);
     return {x: x, y: y, story: story};
 }
 
@@ -143,10 +177,10 @@ function pushToMapSlot(map, key, value) {
     map[key] = values;
 }
 
-function preloadResultsForQuestionOptions(results, question) {
+function preloadResultsForQuestionOptions(results, question, unansweredText) {
     /*jshint -W069 */
     var type = question.displayType;
-    results[unansweredKey] = 0;
+    results[unansweredText] = 0;
     if (type === "boolean") {
         results["yes"] = 0;
         results["no"] = 0;
@@ -492,11 +526,12 @@ function escapeHtml(str) {
     return div.innerHTML;
 };
 
-function htmlForLabelAndValue(key, object, html = true) {
+function htmlForLabelAndValue(key, object, graphBrowserInstance: GraphHolder, html = true) {
     var value = object[key];
     if (value === undefined) {
         console.log("value is undefined");
     }
+    const unansweredText = customStatLabel("unanswered", graphBrowserInstance);
 
     if (key === "mode") { // mode can be more than one number
         if (typeof value === "object") {
@@ -508,7 +543,7 @@ function htmlForLabelAndValue(key, object, html = true) {
         } else {
             value = value.toFixed(0);
         }
-    } else if (["n", "n1", "n2", "k", unansweredKey].indexOf(key) >= 0) { // these are all integers
+    } else if (["n", "n1", "n2", "k", unansweredText].indexOf(key) >= 0) { // these are all integers
         value = value.toFixed(0); 
     } else if (key === "p") { // significance
         if (value < 0.0001) {
@@ -527,29 +562,8 @@ function htmlForLabelAndValue(key, object, html = true) {
             value = value.toFixed(4);
         }
     }
-    var keyToReport = key;
-    switch (key) {
-        case "x2": {
-            keyToReport = "chi squared (x2)";
-            break;
-        }
-        case "k": {
-            keyToReport = "degrees of freedom (k)"; 
-            break;
-        }
-        case "sd": {
-            keyToReport = "standard deviation";
-            break;
-        }
-        case "U": {
-            keyToReport = "Mann-Whitney U";
-            break;
-        }
-        case "rho": {
-            keyToReport = "Spearman's rho";
-            break;
-        }
-    }
+    var keyToReport = customStatLabel(key, graphBrowserInstance) || key;
+
     if (html) {
         return '<span class="statistics-name">' + keyToReport + '</span>: <span class="statistics-value">' + value + "</span>";
     } else {
@@ -557,23 +571,28 @@ function htmlForLabelAndValue(key, object, html = true) {
     }
 }
 
-function addStatisticsPanelForChart(chartPane: HTMLElement, statistics, chartTitle, chartSize, hide = false) {
+function addStatisticsPanelForChart(chartPane: HTMLElement, graphBrowserInstance: GraphHolder, statistics, chartTitle, chartSize, hide = false) {
+
+    const text_stats = customStatLabel("stats", graphBrowserInstance);
+    const text_none = customStatLabel("none", graphBrowserInstance);
+    const text_mann_whitney = customStatLabel("U table", graphBrowserInstance);
+    const text_subgraph = customStatLabel("subgraph", graphBrowserInstance);
+
     var statsPane = document.createElement("h6");
     var html = "";
     var text = "";
     if (hide) statsPane.style.cssText = "display:none";
     if (statistics.significance.substring("None") === 0 || statistics.calculated.length !== 0) {
         if (statistics.calculated.length === 0) {
-            html += "Statistics: " + statistics.significance;
-            text += "Statistics: " + statistics.significance;
+            html += text_stats + ": " + text_none;
+            text += text_stats + ": " + text_none;
         } 
         if (statistics.allResults) {
-            html += '<span class="narrafirma-mann-whitney-title">Mann-Whitney U test results for multiple histograms, sorted by significance value (p) ' +
-                '<br>' + chartTitle + '</span><br>\n';
-            text += "\n\nMann-Whitney U test results for multiple histograms, sorted by significance value (p) for: " + chartTitle + "\n\n"; 
+            html += '<span class="narrafirma-mann-whitney-title">' + text_mann_whitney + " " + '<br>' + chartTitle + '</span><br>\n';
+            text += "\n\n" + text_mann_whitney + ": " + chartTitle + "\n\n"; 
         } else {
             if (chartSize === "small") {
-                text += "\n\nSub-graph: " + chartTitle + "\n";
+                text += "\n\n" + text_subgraph + ": " + chartTitle + "\n";
             } 
         }
         let htmlDelimiter;
@@ -586,8 +605,8 @@ function addStatisticsPanelForChart(chartPane: HTMLElement, statistics, chartTit
             textDelimiter = "; ";
         }
         for (var i = 0; i < statistics.calculated.length; i++) {
-            html += htmlForLabelAndValue(statistics.calculated[i], statistics);
-            text += htmlForLabelAndValue(statistics.calculated[i], statistics, false);
+            html += htmlForLabelAndValue(statistics.calculated[i], statistics, graphBrowserInstance);
+            text += htmlForLabelAndValue(statistics.calculated[i], statistics, graphBrowserInstance, false);
             if (i < statistics.calculated.length-1) {
                 html += htmlDelimiter;
                 text += textDelimiter;
@@ -613,8 +632,8 @@ function addStatisticsPanelForChart(chartPane: HTMLElement, statistics, chartTit
                     } else {
                         first = false;
                     }
-                    html += htmlForLabelAndValue(key, result);
-                    text += htmlForLabelAndValue(key, result, false);
+                    html += htmlForLabelAndValue(key, result, graphBrowserInstance);
+                    text += htmlForLabelAndValue(key, result, graphBrowserInstance, false);
             }
             html += "</td></tr>\n";
             text += "\n";
@@ -651,7 +670,8 @@ export function d3BarChartForQuestion(graphBrowserInstance: GraphHolder, questio
     var results = {};
     var key;
     
-    preloadResultsForQuestionOptions(results, question);
+    const unansweredText = customStatLabel("unanswered", graphBrowserInstance);
+    preloadResultsForQuestionOptions(results, question, unansweredText);
     // change 0 to [] for preloaded results
     for (key in results) {
         results[key] = [];
@@ -661,14 +681,14 @@ export function d3BarChartForQuestion(graphBrowserInstance: GraphHolder, questio
     for (var storyIndex in stories) {
         var story = stories[storyIndex];
 
-        var xValue = getChoiceValueForQuestion(question, story);
+        var xValue = getChoiceValueForQuestion(question, story, unansweredText);
         
         var xHasCheckboxes = _.isObject(xValue);
         // fast path
         if (!xHasCheckboxes) {
             pushToMapSlot(results, xValue, {story: story, value: xValue});
         } else if (Object.keys(xValue).length === 0) {
-            pushToMapSlot(results, unansweredKey, {story: story, value: unansweredKey});
+            pushToMapSlot(results, unansweredText, {story: story, value: unansweredText});
         } else {
             for (var xIndex in xValue) {
                 if (xValue[xIndex]) pushToMapSlot(results, xIndex, {story: story, value: xIndex});
@@ -738,7 +758,7 @@ export function d3BarChartForValues(graphBrowserInstance: GraphHolder, plotItems
     var chartBody = chart.chartBody;
     
     var statistics = calculateStatistics.calculateStatisticsForBarGraphValues(function(plotItem) { return plotItem.value; });
-    graphBrowserInstance.statisticalInfo += addStatisticsPanelForChart(chartPane, statistics, chartTitle, "large", hideStatsPanel); 
+    graphBrowserInstance.statisticalInfo += addStatisticsPanelForChart(chartPane, graphBrowserInstance, statistics, chartTitle, "large", hideStatsPanel); 
     
     // draw the x axis
 
@@ -768,7 +788,8 @@ export function d3BarChartForValues(graphBrowserInstance: GraphHolder, plotItems
     
     var yAxis = addYAxis(chart, yScale, {graphType: "barChart"});
     
-    addYAxisLabel(chart, "Count", {graphType: "barChart"});
+    const countLabel = customStatLabel("count", graphBrowserInstance);
+    addYAxisLabel(chart, countLabel, {graphType: "barChart"});
     
     // Append brush before data to ensure titles are drown
     if (storiesSelectedCallback) chart.brush = createBrush(chartBody, xScale, null, brushend);
@@ -862,17 +883,19 @@ export function d3HistogramChartForQuestion(graphBrowserInstance: GraphHolder, s
     var unanswered = [];
     var values = [];
     var matchingStories = [];
+
+    const unansweredText = customStatLabel("unanswered", graphBrowserInstance);
     
     var stories = graphBrowserInstance.allStories;
     for (var storyIndex in stories) {
         var story = stories[storyIndex];
-        var xValue = getScaleValueForQuestion(scaleQuestion, story);
-        if (typeof xValue === "string" && xValue !== unansweredKey) {
+        var xValue = getScaleValueForQuestion(scaleQuestion, story, unansweredText);
+        if (typeof xValue === "string" && xValue !== unansweredText) {
             xValue = parseInt(xValue);
         }
         if (choiceQuestion) {
             // Only count results where the choice matches
-            var choiceValue = getChoiceValueForQuestion(choiceQuestion, story);
+            var choiceValue = getChoiceValueForQuestion(choiceQuestion, story, unansweredText);
             var skip = false;
             if (choiceQuestion.displayType === "checkboxes") {
                 if (!choiceValue[choice]) skip = true;
@@ -882,7 +905,7 @@ export function d3HistogramChartForQuestion(graphBrowserInstance: GraphHolder, s
             if (skip) continue;
         }
         var newPlotItem = {story: story, value: xValue};
-        if (xValue === unansweredKey) {
+        if (xValue === unansweredText) {
             unanswered.push(newPlotItem);
         } else {
             values.push(newPlotItem);
@@ -926,14 +949,16 @@ export function d3HistogramChartForDataIntegrity(graphBrowserInstance: GraphHold
     var stories = graphBrowserInstance.allStories;
     var unansweredCount = -1;
 
+    const unansweredText = customStatLabel("unanswered", graphBrowserInstance);
+
     if (dataIntegrityType == "All scale values") {
         for (var storyIndex in stories) {
             var story = stories[storyIndex];
             for (var questionIndex in scaleQuestions) {
                 var aScaleQuestion = scaleQuestions[questionIndex];
-                var xValue = getScaleValueForQuestion(aScaleQuestion, story);
+                var xValue = getScaleValueForQuestion(aScaleQuestion, story, unansweredText);
                 var newPlotItem = {story: story, value: xValue, questionName: nameForQuestion(aScaleQuestion)};
-                if (xValue === unansweredKey) {
+                if (xValue === unansweredText) {
                     unanswered.push(newPlotItem);
                 } else {
                     values.push(newPlotItem);
@@ -957,8 +982,8 @@ export function d3HistogramChartForDataIntegrity(graphBrowserInstance: GraphHold
                 var story = storiesByParticipant[participantID][storyIndex];
                 for (var questionIndex in scaleQuestions) {
                     var aScaleQuestion = scaleQuestions[questionIndex];
-                    var xValue = getScaleValueForQuestion(aScaleQuestion, story);
-                    if (!(xValue === unansweredKey)) {
+                    var xValue = getScaleValueForQuestion(aScaleQuestion, story, unansweredText);
+                    if (!(xValue === unansweredText)) {
                         valuesForParticipant.push(parseFloat(xValue));        
                     }
                 }
@@ -1000,8 +1025,9 @@ export function d3HistogramChartForValues(graphBrowserInstance: GraphHolder, plo
     var chartBody = chart.chartBody;
     
     var values = plotItems.map(function(item) { return parseFloat(item.value); });
-    var statistics = calculateStatistics.calculateStatisticsForHistogramValues(values, unansweredCount);
-    graphBrowserInstance.statisticalInfo += addStatisticsPanelForChart(chartPane, statistics, chartTitle, isSmallFormat ? "small" : "large", hideStatsPanel);
+    const unansweredText = customStatLabel("unanswered", graphBrowserInstance);
+    var statistics = calculateStatistics.calculateStatisticsForHistogramValues(values, unansweredCount, unansweredText);
+    graphBrowserInstance.statisticalInfo += addStatisticsPanelForChart(chartPane, graphBrowserInstance, statistics, chartTitle, isSmallFormat ? "small" : "large", hideStatsPanel);
     
     var mean = statistics.mean;
     var standardDeviation = statistics.sd;
@@ -1061,7 +1087,8 @@ export function d3HistogramChartForValues(graphBrowserInstance: GraphHolder, plo
     var yAxis = addYAxis(chart, yScale, {isSmallFormat: isSmallFormat, graphType: "histogram"});
     
     if (!isSmallFormat) {
-        addYAxisLabel(chart, "Frequency", {isSmallFormat: isSmallFormat, graphType: "histogram"});
+        const frequencyLabel = customStatLabel("frequency", graphBrowserInstance);
+        addYAxisLabel(chart, frequencyLabel, {isSmallFormat: isSmallFormat, graphType: "histogram"});
     }
     
     if (isSmallFormat) {
@@ -1198,8 +1225,11 @@ export function d3HistogramChartForValues(graphBrowserInstance: GraphHolder, plo
 export function multipleHistograms(graphBrowserInstance: GraphHolder, choiceQuestion, scaleQuestion, storiesSelectedCallback, hideStatsPanel = false) {
     var options = [];
     var index;
+
+    const unansweredText = customStatLabel("unanswered", graphBrowserInstance);
+
     if (choiceQuestion.displayType !== "checkbox") {
-        options.push(unansweredKey);
+        options.push(unansweredText);
     }
     if (choiceQuestion.displayType === "boolean") {
         options.push("yes");
@@ -1239,8 +1269,8 @@ export function multipleHistograms(graphBrowserInstance: GraphHolder, choiceQues
     graphBrowserInstance.graphResultsPane.appendChild(clearFloat);
     
     // Add these statistics at the bottom after all other graphs
-    var statistics = calculateStatistics.calculateStatisticsForMultipleHistogram(scaleQuestion, choiceQuestion, graphBrowserInstance.allStories, graphBrowserInstance.minimumStoryCountRequiredForTest);
-    graphBrowserInstance.statisticalInfo += addStatisticsPanelForChart(graphBrowserInstance.graphResultsPane, statistics, chartTitle, "large", hideStatsPanel);
+    var statistics = calculateStatistics.calculateStatisticsForMultipleHistogram(scaleQuestion, choiceQuestion, graphBrowserInstance.allStories, graphBrowserInstance.minimumStoryCountRequiredForTest, unansweredText);
+    graphBrowserInstance.statisticalInfo += addStatisticsPanelForChart(graphBrowserInstance.graphResultsPane, graphBrowserInstance, statistics, chartTitle, "large", hideStatsPanel);
   
     return charts;
 }
@@ -1253,20 +1283,20 @@ export function d3ScatterPlot(graphBrowserInstance: GraphHolder, xAxisQuestion, 
     
     var allPlotItems = [];
     var storiesAtXYPoints = {};
-    var unansweredCount = 0;
     var stories = graphBrowserInstance.allStories;
+    const unansweredText = customStatLabel("unanswered", graphBrowserInstance);
     for (var index in stories) {
         var story = stories[index];
-        var xValue = getScaleValueForQuestion(xAxisQuestion, story);
-        var yValue = getScaleValueForQuestion(yAxisQuestion, story);
+        var xValue = getScaleValueForQuestion(xAxisQuestion, story, unansweredText);
+        var yValue = getScaleValueForQuestion(yAxisQuestion, story, unansweredText);
         
         // TODO: What do do about unanswered?
-        if (xValue === unansweredKey || yValue === unansweredKey) continue;
+        if (xValue === unansweredText || yValue === unansweredText) continue;
 
         // For plotting subsets by choice 
         if (choiceQuestion) {
             // Only count results where the choice matches
-            var choiceValue = getChoiceValueForQuestion(choiceQuestion, story);
+            var choiceValue = getChoiceValueForQuestion(choiceQuestion, story, unansweredText);
             var skip = false;
             if (choiceQuestion.displayType === "checkboxes") {
                 if (!choiceValue[option]) skip = true;
@@ -1276,7 +1306,7 @@ export function d3ScatterPlot(graphBrowserInstance: GraphHolder, xAxisQuestion, 
             if (skip) continue;
         }
 
-        var newPlotItem = makePlotItem(xAxisQuestion, yAxisQuestion, xValue, yValue, story);
+        var newPlotItem = makePlotItem(xAxisQuestion, yAxisQuestion, xValue, yValue, story, unansweredText);
         const key = xValue + "|" + yValue;
         if (!storiesAtXYPoints[key]) {
             storiesAtXYPoints[key] = [];
@@ -1315,8 +1345,8 @@ export function d3ScatterPlot(graphBrowserInstance: GraphHolder, xAxisQuestion, 
     chart.subgraphQuestion = choiceQuestion;
     chart.subgraphChoice = option;
 
-    var statistics = calculateStatistics.calculateStatisticsForScatterPlot(xAxisQuestion, yAxisQuestion, choiceQuestion, option, stories, graphBrowserInstance.minimumStoryCountRequiredForTest);
-    graphBrowserInstance.statisticalInfo += addStatisticsPanelForChart(chartPane, statistics, chartTitle, isSmallFormat ? "small" : "large", hideStatsPanel);
+    var statistics = calculateStatistics.calculateStatisticsForScatterPlot(xAxisQuestion, yAxisQuestion, choiceQuestion, option, stories, graphBrowserInstance.minimumStoryCountRequiredForTest, unansweredText);
+    graphBrowserInstance.statisticalInfo += addStatisticsPanelForChart(chartPane, graphBrowserInstance, statistics, chartTitle, isSmallFormat ? "small" : "large", hideStatsPanel);
     
     // draw the x axis
     
@@ -1466,8 +1496,9 @@ export function d3ScatterPlot(graphBrowserInstance: GraphHolder, xAxisQuestion, 
 export function multipleScatterPlot(graphBrowserInstance: GraphHolder, xAxisQuestion, yAxisQuestion, choiceQuestion, storiesSelectedCallback, hideStatsPanel = false) {
     var options = [];
     var index;
+    const unansweredText = customStatLabel("unanswered", graphBrowserInstance);
     if (choiceQuestion.displayType !== "checkbox" && choiceQuestion.displayType !== "checkboxes") {
-        options.push(unansweredKey);
+        options.push(unansweredText);
     }
     if (choiceQuestion.displayType === "boolean") {
         options.push("yes");
@@ -1507,9 +1538,10 @@ export function d3ContingencyTable(graphBrowserInstance: GraphHolder, xAxisQuest
     
     var columnLabels = {};
     var rowLabels = {};
+    const unansweredText = customStatLabel("unanswered", graphBrowserInstance);
     
-    preloadResultsForQuestionOptions(columnLabels, xAxisQuestion);
-    preloadResultsForQuestionOptions(rowLabels, yAxisQuestion);
+    preloadResultsForQuestionOptions(columnLabels, xAxisQuestion, unansweredText);
+    preloadResultsForQuestionOptions(rowLabels, yAxisQuestion, unansweredText);
     
     var xHasCheckboxes = xAxisQuestion.displayType === "checkboxes";
     var yHasCheckboxes = yAxisQuestion.displayType === "checkboxes";
@@ -1521,8 +1553,8 @@ export function d3ContingencyTable(graphBrowserInstance: GraphHolder, xAxisQuest
     var stories = graphBrowserInstance.allStories;
     for (var index in stories) {
         var story = stories[index];
-        var xValue = getChoiceValueForQuestion(xAxisQuestion, story);
-        var yValue = getChoiceValueForQuestion(yAxisQuestion, story);
+        var xValue = getChoiceValueForQuestion(xAxisQuestion, story, unansweredText);
+        var yValue = getChoiceValueForQuestion(yAxisQuestion, story, unansweredText);
         
         // fast path
         if (!xHasCheckboxes && !yHasCheckboxes) {
@@ -1684,14 +1716,14 @@ export function d3ContingencyTable(graphBrowserInstance: GraphHolder, xAxisQuest
 
     var statistics;
     if (scaleQuestion) {
-        statistics = calculateStatistics.calculateStatisticsForMiniHistograms(scaleQuestion, xAxisQuestion, yAxisQuestion, stories, graphBrowserInstance.minimumStoryCountRequiredForTest);
+        statistics = calculateStatistics.calculateStatisticsForMiniHistograms(scaleQuestion, xAxisQuestion, yAxisQuestion, stories, graphBrowserInstance.minimumStoryCountRequiredForTest, unansweredText);
     } else {
-        statistics = calculateStatistics.calculateStatisticsForTable(xAxisQuestion, yAxisQuestion, stories, graphBrowserInstance.minimumStoryCountRequiredForTest);
+        statistics = calculateStatistics.calculateStatisticsForTable(xAxisQuestion, yAxisQuestion, stories, graphBrowserInstance.minimumStoryCountRequiredForTest, unansweredText);
     }
-    graphBrowserInstance.statisticalInfo += addStatisticsPanelForChart(chartPane, statistics, chartTitle, "large", hideStatsPanel);
+    graphBrowserInstance.statisticalInfo += addStatisticsPanelForChart(chartPane, graphBrowserInstance, statistics, chartTitle, "large", hideStatsPanel);
   
     // X axis and label
-    
+
     var xScale = d3.scale.ordinal()
         .domain(columnLabelsArray)
         .rangeRoundBands([0, chart.width], 0.1);
@@ -1704,7 +1736,7 @@ export function d3ContingencyTable(graphBrowserInstance: GraphHolder, xAxisQuest
     addXAxisLabel(chart, nameForQuestion(xAxisQuestion), {graphType: "table"});
     
     // Y axis and label
-    
+
     var yScale = d3.scale.ordinal()
         .domain(rowLabelsArray)
         .rangeRoundBands([chart.height, 0], 0.1); 

@@ -955,6 +955,30 @@ class Project {
         }
     }
 
+    customCountText(catalysisReportIdentifier) {
+        if (!catalysisReportIdentifier) {
+            throw new Error("catalysisReportIdentifier was not supplied");
+        }
+        var customCountText = this.tripleStore.queryLatestC(catalysisReportIdentifier, "customCountText");
+        if (customCountText !== undefined) {
+            return customCountText;
+        } else {
+            return "";
+        }
+    }
+
+    customStatsTextReplacements(catalysisReportIdentifier) {
+        if (!catalysisReportIdentifier) {
+            throw new Error("catalysisReportIdentifier was not supplied");
+        }
+        var customStatsTextReplacements = this.tripleStore.queryLatestC(catalysisReportIdentifier, "customStatsTextReplacements");
+        if (customStatsTextReplacements !== undefined) {
+            return customStatsTextReplacements;
+        } else {
+            return "";
+        }
+    }
+
     graphTypesToCreate(catalysisReportIdentifier) {
         if (!catalysisReportIdentifier) {
             throw new Error("catalysisReportIdentifier was not supplied");

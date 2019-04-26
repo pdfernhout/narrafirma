@@ -290,6 +290,20 @@ export function printCatalysisReport() {
     options["outputGraphFormat"] = project.outputGraphFormat(catalysisReportIdentifier);
     options["showStatsPanelsInReport"] = project.showStatsPanelsInReport(catalysisReportIdentifier);
     options["printInterpretationsAsTable"] = project.useTableForInterpretationsFollowingObservation(catalysisReportIdentifier);
+    options["customCSS"] = project.tripleStore.queryLatestC(catalysisReportIdentifier, "catalysisReport_customCSS");
+
+    let statsTextReplacementsAsString = project.customStatsTextReplacements(catalysisReportIdentifier);
+    let statsTextReplacements = {};
+    if (statsTextReplacementsAsString) {
+        let textReplacementLines = statsTextReplacementsAsString.split("\n");
+        textReplacementLines.forEach(function (line) {
+            let originalAndReplacement = line.split("=");
+            if (originalAndReplacement.length > 1) {
+                statsTextReplacements[originalAndReplacement[0].trim()] = originalAndReplacement[1].trim();
+            }
+        });
+    }
+    options["customStatsTextReplacements"] = statsTextReplacements;
     
     let printStrengthsToInclude = [];
     if (printStrengthsChoice["strong"] != undefined && printStrengthsChoice["strong"] === true) printStrengthsToInclude.push("3 (strong)");
@@ -670,6 +684,7 @@ function printListOfObservations(observationList, observationLabel, idTagStart, 
             correlationLineChoice: options.correlationLineChoice,
             outputGraphFormat: options.outputGraphFormat,
             showStatsPanelsInReport: options.showStatsPanelsInReport,
+            customStatsTextReplacements: options["customStatsTextReplacements"],
             graphTypesToCreate: {}
         };
 
@@ -693,7 +708,7 @@ function printListOfObservations(observationList, observationLabel, idTagStart, 
         } else {
             var graph = PatternExplorer.makeGraph(pattern, graphHolder, selectionCallback, !options.showStatsPanelsInReport);
             if (graph) { 
-                resultItems.push(printGraphWithGraphHolder(graphHolder));
+                resultItems.push(printGraphWithGraphHolder(graphHolder, options["customCSS"]));
             }
         }
         return resultItems;
@@ -721,6 +736,7 @@ function printListOfInterpretations(interpretationList, interpretationLabel, idT
             correlationLineChoice: options.correlationLineChoice,
             outputGraphFormat: options.outputGraphFormat,
             showStatsPanelsInReport: options.showStatsPanelsInReport,
+            customStatsTextReplacements: options["customStatsTextReplacements"],
             graphTypesToCreate: {}
         };
 
@@ -743,7 +759,7 @@ function printListOfInterpretations(interpretationList, interpretationLabel, idT
 // Catalysis report - printing graphs
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-function printGraphWithGraphHolder(graphHolder: GraphHolder) {
+function printGraphWithGraphHolder(graphHolder: GraphHolder, customCSS) {
     // TODO: why are bar graphs and histograms drawn with a left axis color of #C26E00 when this never appears in the code? canvg thing?
     if (graphHolder.chartPanes.length > 1) {
         // multiple histograms
@@ -762,7 +778,7 @@ function printGraphWithGraphHolder(graphHolder: GraphHolder) {
                 var graphIndex = rowIndex * 3 + colIndex + 1;
                 if (graphIndex >= graphHolder.chartPanes.length) break;
                 var graphPane = graphHolder.chartPanes[graphIndex];
-                columnsForThisRow.push(m("td", printGraphWithGraphNode(graphPane, graphHolder)));
+                columnsForThisRow.push(m("td", printGraphWithGraphNode(graphPane, graphHolder, customCSS)));
             }
             rows.push(m("tr", columnsForThisRow));
         } 
@@ -777,13 +793,13 @@ function printGraphWithGraphHolder(graphHolder: GraphHolder) {
         return result;
     } else {
         var result = [];
-        var graph = printGraphWithGraphNode(<HTMLElement>graphHolder.graphResultsPane.firstChild, graphHolder);
+        var graph = printGraphWithGraphNode(<HTMLElement>graphHolder.graphResultsPane.firstChild, graphHolder, customCSS);
         result.push(graph);
         return result;
     }
 }
     
-function printGraphWithGraphNode(graphNode: HTMLElement, graphHolder: GraphHolder) {
+function printGraphWithGraphNode(graphNode: HTMLElement, graphHolder: GraphHolder, customCSS) {
 
     const svgNode = graphNode.querySelector("svg");
     const titleNode = graphNode.querySelector(".narrafirma-graph-title");
@@ -791,7 +807,8 @@ function printGraphWithGraphNode(graphNode: HTMLElement, graphHolder: GraphHolde
 
     const styleNode = document.createElement("style");
     styleNode.type = 'text/css';
-    styleNode.innerHTML = "<![CDATA[" + graphResultsPaneCSS + "]]>";
+    // custom CSS must come AFTER other CSS, because the second declaration of the same class will override the earlier setting
+    styleNode.innerHTML = "<![CDATA[" + graphResultsPaneCSS + customCSS + "]]>";
     svgNode.insertBefore(styleNode, svgNode.firstChild);
     
     const svgOuterHTML = svgNode.outerHTML;

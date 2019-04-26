@@ -53,19 +53,6 @@ var panel: Panel = {
             }
         },  
         {
-            id: "catalysisReportPrint_observationStrengths",
-            valuePath: "/clientState/catalysisReportIdentifier/catalysisReportPrint_observationStrengths",
-            valueType: "dictionary",
-            valueOptions: ["strong", "medium", "weak", "no strength value set"],
-            displayType: "checkboxes",
-            displayPrompt: "Which observation <strong>strengths</strong> do you want to include in the report?",
-            displayVisible: function(panelBuilder, model) {
-                return !!Globals.clientState().catalysisReportIdentifier();
-            }
-        },   
-
-
-        {
             id: "catalysisReportPrint_printButton",
             valuePath: "/clientState/catalysisReportName",
             valueType: "none",
@@ -78,38 +65,60 @@ var panel: Panel = {
         },
 
 
+        ///////////////////////////////////////////////////// things to show and hide
         {
-            id: "catalysisReportPrint_moreOptionsHeader",
+            id: "catalysisReportPrint_showAndHideHeader",
             valueType: "none",
             displayType: "header",
-            displayPrompt: "More printing options",
+            displayPrompt: "Things to show and hide",
             displayVisible: function(panelBuilder, model) {
                 return !!Globals.clientState().catalysisReportIdentifier();
             }
         },        
         {
+            id: "catalysisReportPrint_observationStrengths",
+            valuePath: "/clientState/catalysisReportIdentifier/catalysisReportPrint_observationStrengths",
+            valueType: "dictionary",
+            valueOptions: ["strong", "medium", "weak", "no strength value set"],
+            displayType: "checkboxes",
+            displayPrompt: "Which observation <strong>strengths</strong> do you want to include in the report?",
+            displayVisible: function(panelBuilder, model) {
+                return !!Globals.clientState().catalysisReportIdentifier();
+            }
+        },   
+        {
             id: "catalysisReportPrint_includeObservationsWithNoInterpretations",
             valuePath: "/clientState/catalysisReportIdentifier/catalysisReportPrint_includeObservationsWithNoInterpretations",
             valueType: "boolean",
             displayType: "checkbox",
-            displayConfiguration: "Yes, include observations with no interpretations",
+            displayConfiguration: "Include observations with no interpretations",
             displayPrompt: "Do you want to include observations that have <strong>no interpretations</strong> associated with them?",
             displayVisible: function(panelBuilder, model) {
                 return !!Globals.clientState().catalysisReportIdentifier();
             }
         }, 
         {
-            id: "catalysisReportPrint_useTableForInterpretationsFollowingObservation",
-            valuePath: "/clientState/catalysisReportIdentifier/useTableForInterpretationsFollowingObservation",
+            id: "configureCatalysisReport_showStatsPanelsInReport",
             valueType: "boolean",
+            valuePath: "/clientState/catalysisReportIdentifier/showStatsPanelsInReport",
             displayType: "checkbox",
-            displayConfiguration: "Yes, show interpretations side by side",
-            displayPrompt: "For a clustered-observations report, do you want to show the interpretations that follow an observation <strong>in a table</strong> side by side, or just one after another?",
+            displayConfiguration: "Include statistics",
+            displayPrompt: `Would you like to <strong>include statistical results</strong> in the catalysis report?`,
             displayVisible: function(panelBuilder, model) {
                 return !!Globals.clientState().catalysisReportIdentifier();
             }
-        }, 
+        },
 
+        ///////////////////////////////////////////////////// print options
+        {
+            id: "catalysisReportPrint_printOptionsHeader",
+            valueType: "none",
+            displayType: "header",
+            displayPrompt: "Other printing options",
+            displayVisible: function(panelBuilder, model) {
+                return !!Globals.clientState().catalysisReportIdentifier();
+            }
+        },        
         {
             id: "configureCatalysisReport_outputGraphFormat",
             valuePath: "/clientState/catalysisReportIdentifier/outputGraphFormat",
@@ -117,26 +126,33 @@ var panel: Panel = {
             valueOptions: ["SVG", "PNG"],
             displayType: "select",
             displayName: "Output graph format",
-            displayPrompt: `What <strong>output format</strong> should be used to draw the graphs in the printed report? 
-                SVG graphs have good resolution and can be styled with CSS classes, but cannot be copied or saved. (You can take screenshots of them, though.)
-                PNG graphs can be easily saved and copied, but have lower resolution and can't be changed. 
-                `,
+            displayPrompt: `What <strong>output format</strong> should be used to draw the graphs in the printed report?`,
             displayVisible: function(panelBuilder, model) {
                 return !!Globals.clientState().catalysisReportIdentifier();
             }
         },
         {
-            id: "configureCatalysisReport_showStatsPanelsInReport",
+            id: "catalysisReportPrint_useTableForInterpretationsFollowingObservation",
+            valuePath: "/clientState/catalysisReportIdentifier/useTableForInterpretationsFollowingObservation",
             valueType: "boolean",
-            valuePath: "/clientState/catalysisReportIdentifier/showStatsPanelsInReport",
             displayType: "checkbox",
-            displayConfiguration: "Yes, include statistics in the report",
-            displayPrompt: `Would you like to <strong>include statistical results</strong> in the catalysis report?`,
+            displayConfiguration: "Show interpretations in a table side by side",
+            displayPrompt: "For a clustered-observations report, do you want to show the interpretations that follow an observation <strong>in a table</strong> side by side, or just one after another?",
             displayVisible: function(panelBuilder, model) {
                 return !!Globals.clientState().catalysisReportIdentifier();
             }
-        },
+        }, 
 
+        ///////////////////////////////////////////////////// custom texts
+        {
+            id: "catalysisReportPrint_customTextsHeader",
+            valueType: "none",
+            displayType: "header",
+            displayPrompt: "Custom texts",
+            displayVisible: function(panelBuilder, model) {
+                return !!Globals.clientState().catalysisReportIdentifier();
+            }
+        },        
         {
             id: "catalysisReport_notes",
             valuePath: "/clientState/catalysisReportIdentifier/catalysisReport_notes",
@@ -170,10 +186,10 @@ var panel: Panel = {
             id: "catalysisReport_tocHeaderFirstLevel",
             valuePath: "/clientState/catalysisReportIdentifier/catalysisReport_tocHeaderFirstLevel",
             valueType: "string",
-            displayType: "textarea",
+            displayType: "text",
             displayName: "Contents header (top level)",
             displayPrompt: `
-            This header precedes the <strong>top-level table of contents</strong> (list of perspectives) at the start
+            You can enter a custom <strong>header for the list of perspectives</strong> (the top-level table of contents) at the start
             of your clustered-interpretations report. If you leave this field blank, the header will read "Perspectives in this report (#)."
             To change the header, enter some text here. A number sign (#) will be replaced
             with the number of perspectives in the report.`,
@@ -185,10 +201,10 @@ var panel: Panel = {
             id: "catalysisReport_tocHeaderFirstLevel_themes",
             valuePath: "/clientState/catalysisReportIdentifier/catalysisReport_tocHeaderFirstLevel_observations",
             valueType: "string",
-            displayType: "textarea",
+            displayType: "text",
             displayName: "Contents header (top level)",
             displayPrompt: `
-            This header precedes the <strong>top-level table of contents</strong> (list of themes) at the start
+            You can enter a custom <strong>header for the list of themes</strong> (the top-level table of contents) at the start
             of your clustered-observations report. If you leave this field blank, the header will read "Themes in this report (#)."
             To change the header, enter some text here. A number sign (#) will be replaced
             with the number of themes in the report.`,
@@ -201,11 +217,11 @@ var panel: Panel = {
             id: "catalysisReport_tocHeaderSecondLevel",
             valuePath: "/clientState/catalysisReportIdentifier/catalysisReport_tocHeaderSecondLevel",
             valueType: "string",
-            displayType: "textarea",
+            displayType: "text",
             displayName: "Contents header (second level)",
             displayPrompt: `
-            This header precedes the <strong>second-level table of contents</strong> (list of interpretations) 
-            within each perspective section of a clustered-interpretations report. If you leave this field blank, the header will read 
+            You can enter a custom <strong>header for the table of interpretations and observations in each perspective</strong> (the second-level table of contents) 
+            in a clustered-interpretations report. If you leave this field blank, the header will read 
             "Interpretations and observations in this perspective (#)."
             To change the header, enter some text here. A number sign (#) will be replaced
             with the number of interpretations in the perspective.`,
@@ -217,11 +233,11 @@ var panel: Panel = {
             id: "catalysisReport_tocHeaderSecondLevel_observations",
             valuePath: "/clientState/catalysisReportIdentifier/catalysisReport_tocHeaderSecondLevel_observations",
             valueType: "string",
-            displayType: "textarea",
+            displayType: "text",
             displayName: "Contents header (second level)",
             displayPrompt: `
-            This header precedes the <strong>second-level table of contents</strong> (list of observations) 
-            within each theme section of a clustered-observations report. If you leave this field blank, the header will read 
+            You can enter a custom <strong>header for the list of observations in each theme</strong> (the second-level table of contents) 
+            in a clustered-observations report. If you leave this field blank, the header will read 
             "Observations and interpretations in this theme (#)."
             To change the header, enter some text here. A number sign (#) will be replaced
             with the number of observations in the theme.`,
@@ -285,20 +301,48 @@ var panel: Panel = {
             displayType: "textarea",
             displayName: "Conclusion",
             displayPrompt: `
-            You can enter a report <strong>conclusion</strong> here (for example, making suggestions
-                for use of the report or summarizing major points). 
-            It will appear at the end of the report, after all of the perspectives (and their interpretations and observations) have been listed.`,
+            You can enter a  <strong>report conclusion</strong> here (for example, making suggestions for use of the report or summarizing major points).`,
             displayVisible: function(panelBuilder, model) {
                 return !!Globals.clientState().catalysisReportIdentifier();
             }
         },
         {
-            id: "catalysisReport_customCSS",
-            valuePath: "/clientState/catalysisReportIdentifier/catalysisReport_customCSS",
+            id: "catalysisReport_customStatsTextReplacements",
+            valuePath: "/clientState/catalysisReportIdentifier/customStatsTextReplacements",
             valueType: "string",
             displayType: "textarea",
-            displayName: "Custom CSS",
-            displayPrompt: "You can enter <strong>custom CSS</strong> that modifies elements of the catalysis report here. (For more information on how this works, see the help system.)",
+            displayName: "Text replacements",
+            displayPrompt: `
+                You can <strong>replace graphing and statistical texts</strong> in your report with simpler or translated versions. 
+                Enter one text replacement per line. 
+                Each line should have the standard text you want to replace, followed by an equals sign, followed by the text you want to replace it with.
+                For example, "median = médiane" will write "médiane" in every place where "median" would have been written.
+                <br><br>
+                The texts you can replace are (and must <em>exactly</em> match, to the left of the equals sign):
+                <ul>
+                <li>Count</li>
+                <li>Frequency</li>
+                <li>No answer</li>
+                <li>Statistics</li>
+                <li>p</li>
+                <li>n</li>
+                <li>n1</li>
+                <li>n2</li>
+                <li>mean</li>
+                <li>median</li>
+                <li>mode</li>
+                <li>standard deviation</li>
+                <li>skewness</li>
+                <li>kurtosis</li>
+                <li>chi squared (x2)</li>
+                <li>degrees of freedom (k)</li>
+                <li>Spearman's rho</li>
+                <li>Sub-graph</li>
+                <li>Mann-Whitney U</li>
+                <li>Mann-Whitney U test results for multiple histograms, sorted by significance value (p)</li>
+                </ul>
+                These replacements apply <em>only</em> to printed catalysis reports.
+                `,
             displayVisible: function(panelBuilder, model) {
                 return !!Globals.clientState().catalysisReportIdentifier();
             }

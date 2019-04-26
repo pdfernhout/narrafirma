@@ -9,25 +9,24 @@ import m = require("mithril");
 
 "use strict";
 
-export function calculateStatisticsForPattern(pattern, patternNumber, numPatterns, howOftenToUpdateProgressMessage, stories, minimumStoryCountRequiredForTest, progressModel) {
+export function calculateStatisticsForPattern(pattern, patternNumber, numPatterns, howOftenToUpdateProgressMessage, stories, minimumStoryCountRequiredForTest, progressModel, unansweredText) {
     var graphType = pattern.graphType;
     var statistics = null;
 
     if (graphType === "bar") {
         statistics = calculateStatisticsForBarGraph(pattern.questions[0], stories, minimumStoryCountRequiredForTest);
     } else if (graphType === "table") {
-        statistics = calculateStatisticsForTable(pattern.questions[0], pattern.questions[1], stories, minimumStoryCountRequiredForTest);
+        statistics = calculateStatisticsForTable(pattern.questions[0], pattern.questions[1], stories, minimumStoryCountRequiredForTest, unansweredText);
     } else if (graphType === "contingency-histogram") {
-        statistics = calculateStatisticsForMiniHistograms(pattern.questions[2], pattern.questions[0], pattern.questions[1], stories, minimumStoryCountRequiredForTest); 
+        statistics = calculateStatisticsForMiniHistograms(pattern.questions[2], pattern.questions[0], pattern.questions[1], stories, minimumStoryCountRequiredForTest, unansweredText); 
     } else if (graphType === "histogram") {
-        statistics = calculateStatisticsForHistogram(pattern.questions[0], stories, minimumStoryCountRequiredForTest);
+        statistics = calculateStatisticsForHistogram(pattern.questions[0], stories, minimumStoryCountRequiredForTest, unansweredText);
     } else if (graphType === "multiple histogram") {
-        statistics = calculateStatisticsForMultipleHistogram(pattern.questions[0], pattern.questions[1], stories, minimumStoryCountRequiredForTest);
+        statistics = calculateStatisticsForMultipleHistogram(pattern.questions[0], pattern.questions[1], stories, minimumStoryCountRequiredForTest, unansweredText);
     } else if (graphType === "scatter") {
-        statistics = calculateStatisticsForScatterPlot(pattern.questions[0], pattern.questions[1], null, null, stories, minimumStoryCountRequiredForTest);
+        statistics = calculateStatisticsForScatterPlot(pattern.questions[0], pattern.questions[1], null, null, stories, minimumStoryCountRequiredForTest, unansweredText);
     } else if (graphType ===  "multiple scatter") {
-        //statistics = {significance: "None", calculated: []};   
-        statistics = calculateStatisticsForMultipleScatterPlot(pattern.questions[0], pattern.questions[1], pattern.questions[2], stories, minimumStoryCountRequiredForTest);
+        statistics = calculateStatisticsForMultipleScatterPlot(pattern.questions[0], pattern.questions[1], pattern.questions[2], stories, minimumStoryCountRequiredForTest, unansweredText);
     } else if (graphType == "data integrity") {
         statistics = {significance: "None", calculated: []};
     } else if (graphType == "texts") {
@@ -60,10 +59,10 @@ function collectDataForField(stories: surveyCollection.Story[], fieldName, conve
     return result;
 }
 
-function getStoryLengthValue(story, question) {
+function getStoryLengthValue(story, question, unansweredText) {
     var value = story.storyLength();
     if (value == 0) {
-        return unansweredKey;
+        return unansweredText;
     } else {
         var result = null;
         for (var i = 0; i < question.valueOptions.length; i++) {
@@ -82,20 +81,18 @@ function isValidNumber(value) {
     return value !== "" && !isNaN(value);
 }
 
-function getChoiceValueForQuestion(question, story) {
+function getChoiceValueForQuestion(question, story, unansweredText) {
     var value;
     if (question.id === "storyLength") {
-        value = getStoryLengthValue(story, question);
+        value = getStoryLengthValue(story, question, unansweredText);
     } else {
         value = story.fieldValue(question.id);
         if (question.displayType === "checkbox" && !value) return "no";
-        if (value === undefined || value === null || value === "") return unansweredKey;
+        if (value === undefined || value === null || value === "") return unansweredText;
     }
     return value;
 }
-var unansweredKey = "No answer";
-
-function collectXYDataForFields(stories: surveyCollection.Story[], xFieldName, yFieldName, choiceQuestion, option) {
+function collectXYDataForFields(stories: surveyCollection.Story[], xFieldName, yFieldName, choiceQuestion, option, unansweredText) {
     var xResult = [];
     var yResult = [];
     var unansweredCount = 0;
@@ -107,7 +104,7 @@ function collectXYDataForFields(stories: surveyCollection.Story[], xFieldName, y
 
         if (!isValidNumber(xValue) || !isValidNumber(yValue)) {
             if (choiceQuestion) {
-                var choiceValue = getChoiceValueForQuestion(choiceQuestion, stories[i]);
+                var choiceValue = getChoiceValueForQuestion(choiceQuestion, stories[i], unansweredText);
                 skip = false;
                 if (choiceQuestion.displayType === "checkboxes") {
                     if (!choiceValue[option]) skip = true;
@@ -125,7 +122,7 @@ function collectXYDataForFields(stories: surveyCollection.Story[], xFieldName, y
 
         if (choiceQuestion) {
             // Only count results where the choice matches
-            var choiceValue = getChoiceValueForQuestion(choiceQuestion, stories[i]);
+            var choiceValue = getChoiceValueForQuestion(choiceQuestion, stories[i], unansweredText);
             skip = false;
             if (choiceQuestion.displayType === "checkboxes") {
                 if (!choiceValue[option]) skip = true;
@@ -149,7 +146,7 @@ function addValue(arrayHolder, fieldName, value, secondFieldName = null) {
     arrayHolder[key] = values;
 }
 
-function valuesForFieldChoices(stories: surveyCollection.Story[], scaleQuestion, choiceQuestion, secondChoiceQuestion = null) {
+function valuesForFieldChoices(stories: surveyCollection.Story[], unansweredText, scaleQuestion, choiceQuestion, secondChoiceQuestion = null) {
     // TODO: Need to add in fields that were not selected with a zero count, using definition from questionnaire
     var values = {};
     for (var i = 0; i < stories.length; i++) {
@@ -158,7 +155,7 @@ function valuesForFieldChoices(stories: surveyCollection.Story[], scaleQuestion,
 
         var choiceValue;
         if (choiceQuestion.id === "storyLength") {
-            choiceValue = getStoryLengthValue(stories[i], choiceQuestion);
+            choiceValue = getStoryLengthValue(stories[i], choiceQuestion, unansweredText);
         } else {
             choiceValue = stories[i].fieldValue(choiceQuestion.id);
         }
@@ -167,7 +164,7 @@ function valuesForFieldChoices(stories: surveyCollection.Story[], scaleQuestion,
         if (secondChoiceQuestion) {
             var secondChoiceValue;
             if (secondChoiceQuestion.id === "storyLength") {
-                secondChoiceValue = getStoryLengthValue(stories[i], secondChoiceQuestion);
+                secondChoiceValue = getStoryLengthValue(stories[i], secondChoiceQuestion, unansweredText);
             } else {
                 secondChoiceValue = stories[i].fieldValue(secondChoiceQuestion.id);
             }
@@ -193,7 +190,7 @@ function valueTag(field1, field2) {
     return result;
 }
 
-function countsForTableChoices(stories: surveyCollection.Story[], field1, field2) {
+function countsForTableChoices(stories: surveyCollection.Story[], field1, field2, unansweredText) {
     // TODO: Maybe need to add in fields that were not selected with a zero count, using definition from questionnaire?
     var counts = {};
     var field1Options = {};
@@ -202,14 +199,14 @@ function countsForTableChoices(stories: surveyCollection.Story[], field1, field2
     for (var i = 0; i < stories.length; i++) {
         var value1;
         if (field1.id === "storyLength") {
-            value1 = getStoryLengthValue(stories[i], field1);
+            value1 = getStoryLengthValue(stories[i], field1, unansweredText);
         } else {
             value1 = stories[i].fieldValue(field1);
         }
         if (value1 === null || value1 === undefined || value1 === "") continue; // value1 = "{N/A}";
         var value2;
         if (field2.id === "storyLength") {
-            value2 = getStoryLengthValue(stories[i], field2);
+            value2 = getStoryLengthValue(stories[i], field2, unansweredText);
         } else {
             value2 = stories[i].fieldValue(field2);
         }
@@ -244,17 +241,17 @@ export function calculateStatisticsForBarGraphValues(values) {
     return {significance: "None", calculated: []};
 }
 
-export function calculateStatisticsForHistogram(ratioQuestion, stories: surveyCollection.Story[], minimumStoryCountRequiredForTest: number) {
+export function calculateStatisticsForHistogram(ratioQuestion, stories: surveyCollection.Story[], minimumStoryCountRequiredForTest: number, unansweredText) {
     // TODO: ? look for differences of means on a distribution using Student's T test if normal, otherwise Kruskal-Wallis or maybe Mann-Whitney
     // TODO: Fix this - could report on normality
     
     // var counts = collectDataForField(stories, ratioQuestion.id);
     
     var values = collectDataForField(stories, ratioQuestion.id, parseFloat);
-    return calculateStatisticsForHistogramValues(values, -1); // unanswered count not needed for this use
+    return calculateStatisticsForHistogramValues(values, -1, unansweredText); // unanswered count not needed for this use
 }
 
-export function calculateStatisticsForHistogramValues(values, unansweredCount) {
+export function calculateStatisticsForHistogramValues(values, unansweredCount, unansweredText) {
     var n = values.length;
     var result;
     if (n <= 0) {
@@ -268,20 +265,20 @@ export function calculateStatisticsForHistogramValues(values, unansweredCount) {
         var kurtosis = jStat.kurtosis(values);
         result = {significance: "None", calculated: ["mean", "median", "mode", "sd", "skewness", "kurtosis", "n"], mean: mean, median: median, mode: mode, sd: sd, skewness: skewness, kurtosis: kurtosis, n: n};
         if (unansweredCount >= 0) {
-            result["calculated"].push(unansweredKey);
-            result[unansweredKey] = unansweredCount;
+            result["calculated"].push(unansweredText);
+            result[unansweredText] = unansweredCount;
         }
     }
     return result;
 }
 
-export function calculateStatisticsForMiniHistograms(scaleQuestion, firstChoiceQuestion, secondChoiceQuestion, stories: surveyCollection.Story[], minimumStoryCountRequiredForTest: number): any {
+export function calculateStatisticsForMiniHistograms(scaleQuestion, firstChoiceQuestion, secondChoiceQuestion, stories: surveyCollection.Story[], minimumStoryCountRequiredForTest: number, unansweredText): any {
 // Can't calculate a statistic if one or both are mutiple answer checkboxes
 if (firstChoiceQuestion.displayType === "checkboxes" || secondChoiceQuestion.displayType === "checkboxes") {
     return {significance: "None (choices not mutually exclusive)", calculated: []};
 }
 
-var values = valuesForFieldChoices(stories, scaleQuestion, firstChoiceQuestion, secondChoiceQuestion);
+var values = valuesForFieldChoices(stories, unansweredText, scaleQuestion, firstChoiceQuestion, secondChoiceQuestion);
 var options = Object.keys(values);
 
 // For every pair, compute test, and take best p score
@@ -312,7 +309,7 @@ for (var i = 0; i < options.length; i++) {
                 + firstChoiceQuestion.displayName + ", " + secondChoiceQuestion.displayName + "]: " + err);
             return {significance: "None (error)", calculated: []};
         }
-        allResults[options[i] + " x " + options[j]] = {p: statResult.p, u: statResult.u, n1: statResult.n1, n2: statResult.n2};
+        allResults[options[i] + " x " + options[j]] = {p: statResult.p, U: statResult.u, n1: statResult.n1, n2: statResult.n2};
         
         if (statResult.p <= pLowest) {
             pLowest = statResult.p;
@@ -333,14 +330,14 @@ if (pLowest < 0.001) {
 return {significance: significance, calculated: ["p", "U", "n"], p: pLowest, U: uLowest, n: n, allResults: allResults};
 }
 
-export function calculateStatisticsForMultipleHistogram(scaleQuestion, choiceQuestion, stories: surveyCollection.Story[], minimumStoryCountRequiredForTest: number): any {
+export function calculateStatisticsForMultipleHistogram(scaleQuestion, choiceQuestion, stories: surveyCollection.Story[], minimumStoryCountRequiredForTest: number, unansweredText): any {
     
     // Can't calculate a statistic if one or both are mutiple answer checkboxes
     if (choiceQuestion.displayType === "checkboxes") {
         return {significance: "None (choices not mutually exclusive)", calculated: []};
     }
     
-    var values = valuesForFieldChoices(stories, scaleQuestion, choiceQuestion);
+    var values = valuesForFieldChoices(stories, unansweredText, scaleQuestion, choiceQuestion);
     var options = Object.keys(values);
 
     // For every pair, compute test, and take best p score
@@ -370,7 +367,7 @@ export function calculateStatisticsForMultipleHistogram(scaleQuestion, choiceQue
                 toaster.toast('Error in Mann-Whitney U test for questions [' + scaleQuestion.displayName + ", " + choiceQuestion.displayName + "]: " + err);
                 return {significance: "None (error)", calculated: []};
             }
-            allResults[options[i] + " x " + options[j]] = {p: statResult.p, u: statResult.u, n1: statResult.n1, n2: statResult.n2};
+            allResults[options[i] + " x " + options[j]] = {p: statResult.p, U: statResult.u, n1: statResult.n1, n2: statResult.n2};
             
             if (statResult.p <= pLowest) {
                 pLowest = statResult.p;
@@ -391,12 +388,12 @@ export function calculateStatisticsForMultipleHistogram(scaleQuestion, choiceQue
     return {significance: significance, calculated: ["p", "U", "n"], p: pLowest, U: uLowest, n: n, allResults: allResults};
 }
 
-export function calculateStatisticsForScatterPlot(ratioQuestion1, ratioQuestion2, choiceQuestion, option, stories: surveyCollection.Story[], minimumStoryCountRequiredForTest: number): any {
+export function calculateStatisticsForScatterPlot(ratioQuestion1, ratioQuestion2, choiceQuestion, option, stories: surveyCollection.Story[], minimumStoryCountRequiredForTest: number, unansweredText): any {
     // TODO: both continuous -- look for correlation with Pearson's R (if normal distribution) or Spearman's R / Kendall's Tau (if not normal distribution)"
-    var data = collectXYDataForFields(stories, ratioQuestion1.id, ratioQuestion2.id, choiceQuestion, option);
+    var data = collectXYDataForFields(stories, ratioQuestion1.id, ratioQuestion2.id, choiceQuestion, option, unansweredText);
     
     if (data.x.length < minimumStoryCountRequiredForTest) {
-        return {significance: "None (count of " + data.x.length + " below threshold)", calculated: ["n", unansweredKey], n: data.x.length, "No answer": data.unansweredCount};
+        return {significance: "None (count of " + data.x.length + " below threshold)", calculated: ["n", unansweredText], n: data.x.length, "No answer": data.unansweredCount};
     }
     
     // TODO: Add a flag somewhere to use Kendall's Tau instead of Pearson/Spearman's R
@@ -420,14 +417,14 @@ export function calculateStatisticsForScatterPlot(ratioQuestion1, ratioQuestion2
         var significance = " p=" + p.toFixed(3) + " rho=" + r.toFixed(3) + " n=" + n;
     }
     //  + " tt=" + statResult.test.toFixed(3) + " tz=" + statResult.z.toFixed(3) + " tp=" + statResult.prob.toFixed(3) ;
-    return {significance: significance, calculated: ["p", "rho", "n", unansweredKey], p: p, rho: r, n: n, "No answer": data.unansweredCount};
+    return {significance: significance, calculated: ["p", "rho", "n", "No answer"], p: p, rho: r, n: n, "No answer": data.unansweredCount};
 }
 
-export function calculateStatisticsForMultipleScatterPlot(ratioQuestion1, ratioQuestion2, choiceQuestion, stories: surveyCollection.Story[], minimumStoryCountRequiredForTest: number): any {
+export function calculateStatisticsForMultipleScatterPlot(ratioQuestion1, ratioQuestion2, choiceQuestion, stories: surveyCollection.Story[], minimumStoryCountRequiredForTest: number, unansweredText): any {
     var options = [];
     var index;
     if (choiceQuestion.displayType !== "checkbox" && choiceQuestion.displayType !== "checkboxes") {
-        options.push(unansweredKey);
+        options.push(unansweredText);
     }
     if (choiceQuestion.displayType === "boolean" || choiceQuestion.displayType === "checkbox") {
         options.push("false");
@@ -442,7 +439,7 @@ export function calculateStatisticsForMultipleScatterPlot(ratioQuestion1, ratioQ
     var maxSignificance = 0;
     for (index in options) {
         var option = options[index];
-        var optionStats = calculateStatisticsForScatterPlot(ratioQuestion1, ratioQuestion2, choiceQuestion, option, stories, minimumStoryCountRequiredForTest);
+        var optionStats = calculateStatisticsForScatterPlot(ratioQuestion1, ratioQuestion2, choiceQuestion, option, stories, minimumStoryCountRequiredForTest, unansweredText);
         if (optionStats.p && optionStats.p > maxSignificance) {
             maxSignificance = optionStats.p;
         }
@@ -462,7 +459,7 @@ export function calculateStatisticsForMultipleScatterPlot(ratioQuestion1, ratioQ
     return minSignificanceOptionStats;
 }
 
-export function calculateStatisticsForTable(nominalQuestion1, nominalQuestion2, stories: surveyCollection.Story[], minimumStoryCountRequiredForTest: number): any {
+export function calculateStatisticsForTable(nominalQuestion1, nominalQuestion2, stories: surveyCollection.Story[], minimumStoryCountRequiredForTest: number, unansweredText): any {
     // both not continuous -- look for a 'correspondence' between counts using Chi-squared test
     // Can't calculate a statistic if one or both are mutiple answer checkboxes
     
@@ -470,7 +467,7 @@ export function calculateStatisticsForTable(nominalQuestion1, nominalQuestion2, 
         return {significance: "None (choices not mutually exclusive)", calculated: []};
     }
     
-    var counts = countsForTableChoices(stories, nominalQuestion1.id, nominalQuestion2.id);
+    var counts = countsForTableChoices(stories, nominalQuestion1.id, nominalQuestion2.id, unansweredText);
     var observed = [];
     var expected = [];
     
