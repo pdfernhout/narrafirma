@@ -46,9 +46,9 @@ const defaultStatsTexts = {
     "U table": "Mann-Whitney U test results for multiple histograms, sorted by significance value (p)",
 }
 
-function customStatLabel(key, graphBrowserInstance) {
-    if (graphBrowserInstance.customStatsTextReplacements) {
-        return graphBrowserInstance.customStatsTextReplacements[defaultStatsTexts[key]] || defaultStatsTexts[key];
+function customStatLabel(key, graphHolder) {
+    if (graphHolder.customStatsTextReplacements) {
+        return graphHolder.customStatsTextReplacements[defaultStatsTexts[key]] || defaultStatsTexts[key];
     } else {
         return defaultStatsTexts[key];
     }
@@ -541,12 +541,12 @@ function escapeHtml(str) {
     return div.innerHTML;
 };
 
-function htmlForLabelAndValue(key, object, graphBrowserInstance: GraphHolder, html = true) {
+function htmlForLabelAndValue(key, object, graphHolder: GraphHolder, html = true) {
     var value = object[key];
     if (value === undefined) {
         console.log("value is undefined");
     }
-    const unansweredText = customStatLabel("unanswered", graphBrowserInstance);
+    const unansweredText = customStatLabel("unanswered", graphHolder);
 
     if (key === "mode") { // mode can be more than one number
         if (typeof value === "object") {
@@ -577,7 +577,7 @@ function htmlForLabelAndValue(key, object, graphBrowserInstance: GraphHolder, ht
             value = value.toFixed(4);
         }
     }
-    var keyToReport = customStatLabel(key, graphBrowserInstance) || key;
+    var keyToReport = customStatLabel(key, graphHolder) || key;
 
     if (html) {
         return '<span class="statistics-name">' + keyToReport + '</span>: <span class="statistics-value">' + value + "</span>";
@@ -586,12 +586,12 @@ function htmlForLabelAndValue(key, object, graphBrowserInstance: GraphHolder, ht
     }
 }
 
-function addStatisticsPanelForChart(chartPane: HTMLElement, graphBrowserInstance: GraphHolder, statistics, chartTitle, chartSize, hide = false) {
+function addStatisticsPanelForChart(chartPane: HTMLElement, graphHolder: GraphHolder, statistics, chartTitle, chartSize, hide = false) {
 
-    const text_stats = customStatLabel("stats", graphBrowserInstance);
-    const text_none = customStatLabel("none", graphBrowserInstance);
-    const text_mann_whitney = customStatLabel("U table", graphBrowserInstance);
-    const text_subgraph = customStatLabel("subgraph", graphBrowserInstance);
+    const text_stats = customStatLabel("stats", graphHolder);
+    const text_none = customStatLabel("none", graphHolder);
+    const text_mann_whitney = customStatLabel("U table", graphHolder);
+    const text_subgraph = customStatLabel("subgraph", graphHolder);
 
     var statsPane = document.createElement("h6");
     var html = "";
@@ -620,8 +620,8 @@ function addStatisticsPanelForChart(chartPane: HTMLElement, graphBrowserInstance
             textDelimiter = "; ";
         }
         for (var i = 0; i < statistics.statsDetailed.length; i++) {
-            html += htmlForLabelAndValue(statistics.statsDetailed[i], statistics, graphBrowserInstance);
-            text += htmlForLabelAndValue(statistics.statsDetailed[i], statistics, graphBrowserInstance, false);
+            html += htmlForLabelAndValue(statistics.statsDetailed[i], statistics, graphHolder);
+            text += htmlForLabelAndValue(statistics.statsDetailed[i], statistics, graphHolder, false);
             if (i < statistics.statsDetailed.length-1) {
                 html += htmlDelimiter;
                 text += textDelimiter;
@@ -647,8 +647,8 @@ function addStatisticsPanelForChart(chartPane: HTMLElement, graphBrowserInstance
                     } else {
                         first = false;
                     }
-                    html += htmlForLabelAndValue(key, result, graphBrowserInstance);
-                    text += htmlForLabelAndValue(key, result, graphBrowserInstance, false);
+                    html += htmlForLabelAndValue(key, result, graphHolder);
+                    text += htmlForLabelAndValue(key, result, graphHolder, false);
             }
             html += "</td></tr>\n";
             text += "\n";
@@ -679,20 +679,20 @@ function addTitlePanelForChart(chartPane, chartTitle) {
 
 // ---- Charts
 
-export function d3BarChartForQuestion(graphBrowserInstance: GraphHolder, question, storiesSelectedCallback, hideStatsPanel = false) {
+export function d3BarChartForQuestion(graphHolder: GraphHolder, question, storiesSelectedCallback, hideStatsPanel = false) {
     var allPlotItems = [];
     var xLabels = [];  
     var results = {};
     var key;
     
-    const unansweredText = customStatLabel("unanswered", graphBrowserInstance);
+    const unansweredText = customStatLabel("unanswered", graphHolder);
     preloadResultsForQuestionOptions(results, question, unansweredText);
     // change 0 to [] for preloaded results
     for (key in results) {
         results[key] = [];
     }
     
-    var stories = graphBrowserInstance.allStories;
+    var stories = graphHolder.allStories;
     for (var storyIndex in stories) {
         var story = stories[storyIndex];
 
@@ -717,13 +717,13 @@ export function d3BarChartForQuestion(graphBrowserInstance: GraphHolder, questio
     var chartTitle = "" + nameForQuestion(question);
 
     var xAxisLabel = nameForQuestion(question);
-    return d3BarChartForValues(graphBrowserInstance, allPlotItems, xLabels, chartTitle, xAxisLabel, question, storiesSelectedCallback, hideStatsPanel);
+    return d3BarChartForValues(graphHolder, allPlotItems, xLabels, chartTitle, xAxisLabel, question, storiesSelectedCallback, hideStatsPanel);
 }
 
-export function d3BarChartForDataIntegrity(graphBrowserInstance: GraphHolder, questions, dataIntegrityType) {
+export function d3BarChartForDataIntegrity(graphHolder: GraphHolder, questions, dataIntegrityType) {
     var allPlotItems = [];
     var xLabels = [];  
-    var stories = graphBrowserInstance.allStories;
+    var stories = graphHolder.allStories;
     var results = {};
 
     for (var questionIndex in questions) {
@@ -740,10 +740,10 @@ export function d3BarChartForDataIntegrity(graphBrowserInstance: GraphHolder, qu
         xLabels.push(question.displayName);
         allPlotItems.push({name: question.displayName, stories: storiesWithoutAnswersForThisQuestion, value: storiesWithoutAnswersForThisQuestion.length});
     }
-    return d3BarChartForValues(graphBrowserInstance, allPlotItems, xLabels, dataIntegrityType, dataIntegrityType, null, null);
+    return d3BarChartForValues(graphHolder, allPlotItems, xLabels, dataIntegrityType, dataIntegrityType, null, null);
 }
 
-export function d3BarChartForValues(graphBrowserInstance: GraphHolder, plotItems, xLabels, chartTitle, xAxisLabel, question, storiesSelectedCallback, hideStatsPanel = false) {
+export function d3BarChartForValues(graphHolder: GraphHolder, plotItems, xLabels, chartTitle, xAxisLabel, question, storiesSelectedCallback, hideStatsPanel = false) {
     
     var labelLengthLimit = 30;
     var longestLabelText = "";
@@ -758,7 +758,7 @@ export function d3BarChartForValues(graphBrowserInstance: GraphHolder, plotItems
     // Build chart
     // TODO: Improve the way labels are drawn or ellipsed based on chart size and font size and number of bars
 
-    var chartPane = newChartPane(graphBrowserInstance, "singleChartStyle");
+    var chartPane = newChartPane(graphHolder, "singleChartStyle");
     addTitlePanelForChart(chartPane, chartTitle);
     //m.render(chartPane, content);
 
@@ -769,11 +769,11 @@ export function d3BarChartForValues(graphBrowserInstance: GraphHolder, plotItems
     if (maxItemsPerBar >= 100) margin.left += letterSize;
     if (maxItemsPerBar >= 1000) margin.left += letterSize;
     
-    var chart = makeChartFramework(chartPane, "barChart", "large", margin, graphBrowserInstance.customGraphWidth);
+    var chart = makeChartFramework(chartPane, "barChart", "large", margin, graphHolder.customGraphWidth);
     var chartBody = chart.chartBody;
     
     var statistics = calculateStatistics.calculateStatisticsForBarGraphValues(function(plotItem) { return plotItem.value; });
-    graphBrowserInstance.statisticalInfo += addStatisticsPanelForChart(chartPane, graphBrowserInstance, statistics, chartTitle, "large", hideStatsPanel); 
+    graphHolder.statisticalInfo += addStatisticsPanelForChart(chartPane, graphHolder, statistics, chartTitle, "large", hideStatsPanel); 
     
     // draw the x axis
 
@@ -803,7 +803,7 @@ export function d3BarChartForValues(graphBrowserInstance: GraphHolder, plotItems
     
     var yAxis = addYAxis(chart, yScale, {graphType: "barChart"});
     
-    const countLabel = customStatLabel("count", graphBrowserInstance);
+    const countLabel = customStatLabel("count", graphHolder);
     addYAxisLabel(chart, countLabel, {graphType: "barChart"});
     
     // Append brush before data to ensure titles are drown
@@ -845,7 +845,7 @@ export function d3BarChartForValues(graphBrowserInstance: GraphHolder, plotItems
             .attr("width", xScale.rangeBand());
     
     // Add tooltips
-    if (!graphBrowserInstance.excludeStoryTooltips) {
+    if (!graphHolder.excludeStoryTooltips) {
         storyDisplayItems.append("svg:title")
             .text(function(storyItem: PlotItem) {
                 var story = storyItem.story;
@@ -873,15 +873,15 @@ export function d3BarChartForValues(graphBrowserInstance: GraphHolder, plotItems
         var selected = extent[0] <= midPoint && midPoint <= extent[1];
         if (selected) {
             const itemName = plotItem.value;
-            if (graphBrowserInstance.currentSelectionExtentPercentages.selectionCategories.indexOf(itemName) < 0) {
-                graphBrowserInstance.currentSelectionExtentPercentages.selectionCategories.push(itemName);
+            if (graphHolder.currentSelectionExtentPercentages.selectionCategories.indexOf(itemName) < 0) {
+                graphHolder.currentSelectionExtentPercentages.selectionCategories.push(itemName);
             }
         }
         return selected;
     }
     
     function brushend() {
-        updateSelectedStories(chart, storyDisplayItems, graphBrowserInstance, storiesSelectedCallback, isPlotItemSelected);
+        updateSelectedStories(chart, storyDisplayItems, graphHolder, storiesSelectedCallback, isPlotItemSelected);
     }
     if (storiesSelectedCallback) {
         chart.brushend = brushend;
@@ -893,15 +893,15 @@ export function d3BarChartForValues(graphBrowserInstance: GraphHolder, plotItems
 // Histogram reference for d3: http://bl.ocks.org/mbostock/3048450
 
 // choiceQuestion and choice may be undefined if this is just a simple histogram for all values
-export function d3HistogramChartForQuestion(graphBrowserInstance: GraphHolder, scaleQuestion, choiceQuestion, choice, storiesSelectedCallback, hideStatsPanel = false) {
+export function d3HistogramChartForQuestion(graphHolder: GraphHolder, scaleQuestion, choiceQuestion, choice, storiesSelectedCallback, hideStatsPanel = false) {
     // Do not include unanswered in histogram
     var unanswered = [];
     var values = [];
     var matchingStories = [];
 
-    const unansweredText = customStatLabel("unanswered", graphBrowserInstance);
+    const unansweredText = customStatLabel("unanswered", graphHolder);
     
-    var stories = graphBrowserInstance.allStories;
+    var stories = graphHolder.allStories;
     for (var storyIndex in stories) {
         var story = stories[storyIndex];
         var xValue = getScaleValueForQuestion(scaleQuestion, story, unansweredText);
@@ -927,7 +927,7 @@ export function d3HistogramChartForQuestion(graphBrowserInstance: GraphHolder, s
             matchingStories.push(story);
         }
     }
-    if (matchingStories.length < graphBrowserInstance.minimumStoryCountRequiredForGraph) {
+    if (matchingStories.length < graphHolder.minimumStoryCountRequiredForGraph) {
         return null;
     }
     var chartTitle = "" + nameForQuestion(scaleQuestion);
@@ -954,17 +954,17 @@ export function d3HistogramChartForQuestion(graphBrowserInstance: GraphHolder, s
             }
         }
     }
-    return d3HistogramChartForValues(graphBrowserInstance, values, choiceQuestion, choice, unanswered.length, matchingStories, style, chartSize, chartTitle, xAxisLabel, xAxisStart, xAxisEnd, storiesSelectedCallback, hideStatsPanel);
+    return d3HistogramChartForValues(graphHolder, values, choiceQuestion, choice, unanswered.length, matchingStories, style, chartSize, chartTitle, xAxisLabel, xAxisStart, xAxisEnd, storiesSelectedCallback, hideStatsPanel);
 }
 
-export function d3HistogramChartForDataIntegrity(graphBrowserInstance: GraphHolder, scaleQuestions, dataIntegrityType) {
+export function d3HistogramChartForDataIntegrity(graphHolder: GraphHolder, scaleQuestions, dataIntegrityType) {
     var unanswered = [];
     var values = [];
     
-    var stories = graphBrowserInstance.allStories;
+    var stories = graphHolder.allStories;
     var unansweredCount = -1;
 
-    const unansweredText = customStatLabel("unanswered", graphBrowserInstance);
+    const unansweredText = customStatLabel("unanswered", graphHolder);
 
     if (dataIntegrityType == "All scale values") {
         for (var storyIndex in stories) {
@@ -1018,10 +1018,10 @@ export function d3HistogramChartForDataIntegrity(graphBrowserInstance: GraphHold
         }
         unansweredCount = -1; // don't show; meaningless
     }
-    return d3HistogramChartForValues(graphBrowserInstance, values, null, null, unansweredCount, [], "singleChartStyle", "large", dataIntegrityType, dataIntegrityType, "", "", null);
+    return d3HistogramChartForValues(graphHolder, values, null, null, unansweredCount, [], "singleChartStyle", "large", dataIntegrityType, dataIntegrityType, "", "", null);
 }
 
-export function d3HistogramChartForValues(graphBrowserInstance: GraphHolder, plotItems, choiceQuestion, choice, unansweredCount, matchingStories, style, chartSize, chartTitle, xAxisLabel, xAxisStart, xAxisEnd, storiesSelectedCallback, hideStatsPanel = false) {
+export function d3HistogramChartForValues(graphHolder: GraphHolder, plotItems, choiceQuestion, choice, unansweredCount, matchingStories, style, chartSize, chartTitle, xAxisLabel, xAxisStart, xAxisEnd, storiesSelectedCallback, hideStatsPanel = false) {
     
     var margin = {top: 20, right: 15, bottom: 60, left: 70};
     if (plotItems.length > 1000) margin.left += 20;
@@ -1033,16 +1033,16 @@ export function d3HistogramChartForValues(graphBrowserInstance: GraphHolder, plo
         margin.bottom += 30;
     }
 
-    var chartPane = newChartPane(graphBrowserInstance, style);   
+    var chartPane = newChartPane(graphHolder, style);   
     if (!isSmallFormat) addTitlePanelForChart(chartPane, chartTitle);
 
-    var chart = makeChartFramework(chartPane, "histogram", chartSize, margin, graphBrowserInstance.customGraphWidth);
+    var chart = makeChartFramework(chartPane, "histogram", chartSize, margin, graphHolder.customGraphWidth);
     var chartBody = chart.chartBody;
     
     var values = plotItems.map(function(item) { return parseFloat(item.value); });
-    const unansweredText = customStatLabel("unanswered", graphBrowserInstance);
+    const unansweredText = customStatLabel("unanswered", graphHolder);
     var statistics = calculateStatistics.calculateStatisticsForHistogramValues(values, unansweredCount, unansweredText);
-    graphBrowserInstance.statisticalInfo += addStatisticsPanelForChart(chartPane, graphBrowserInstance, statistics, chartTitle, isSmallFormat ? "small" : "large", hideStatsPanel);
+    graphHolder.statisticalInfo += addStatisticsPanelForChart(chartPane, graphHolder, statistics, chartTitle, isSmallFormat ? "small" : "large", hideStatsPanel);
     
     var mean = statistics.mean;
     var standardDeviation = statistics.sd;
@@ -1074,7 +1074,7 @@ export function d3HistogramChartForValues(graphBrowserInstance: GraphHolder, plo
     
     // Generate a histogram using twenty uniformly-spaced bins.
     // TODO: Casting to any to get around D3 typing limitation where it expects number not an object
-    var data = (<any>d3.layout.histogram().bins(xScale.ticks(graphBrowserInstance.numHistogramBins))).value(function (d) { return d.value; })(plotItems);
+    var data = (<any>d3.layout.histogram().bins(xScale.ticks(graphHolder.numHistogramBins))).value(function (d) { return d.value; })(plotItems);
 
     // Set the bin for each plotItem
     data.forEach(function (bin) {
@@ -1102,7 +1102,7 @@ export function d3HistogramChartForValues(graphBrowserInstance: GraphHolder, plo
     var yAxis = addYAxis(chart, yScale, {isSmallFormat: isSmallFormat, graphType: "histogram"});
     
     if (!isSmallFormat) {
-        const frequencyLabel = customStatLabel("frequency", graphBrowserInstance);
+        const frequencyLabel = customStatLabel("frequency", graphHolder);
         addYAxisLabel(chart, frequencyLabel, {isSmallFormat: isSmallFormat, graphType: "histogram"});
     }
     
@@ -1145,7 +1145,7 @@ export function d3HistogramChartForValues(graphBrowserInstance: GraphHolder, plo
             .attr("width", xScale(data[0].dx) - 1);
     
     // Add tooltips
-    if (!graphBrowserInstance.excludeStoryTooltips) {
+    if (!graphHolder.excludeStoryTooltips) {
         storyDisplayItems.append("svg:title")
             .text(function(plotItem: PlotItem) {
                 var story = plotItem.story;
@@ -1203,8 +1203,8 @@ export function d3HistogramChartForValues(graphBrowserInstance: GraphHolder, plo
         if (selected) {
             const xBinStop = plotItem.xBinStart + data[0].dx;
             const itemName = plotItem.xBinStart + "-" + xBinStop;
-            if (graphBrowserInstance.currentSelectionExtentPercentages.selectionCategories.indexOf(itemName) < 0) {
-                graphBrowserInstance.currentSelectionExtentPercentages.selectionCategories.push(itemName);
+            if (graphHolder.currentSelectionExtentPercentages.selectionCategories.indexOf(itemName) < 0) {
+                graphHolder.currentSelectionExtentPercentages.selectionCategories.push(itemName);
             }
         }
         return selected;
@@ -1212,8 +1212,8 @@ export function d3HistogramChartForValues(graphBrowserInstance: GraphHolder, plo
     
     function brushend(doNotUpdateStoryList) {
         // Clear selections in other graphs
-        if (_.isArray(graphBrowserInstance.currentGraph) && !doNotUpdateStoryList) {
-            graphBrowserInstance.currentGraph.forEach(function (otherGraph) {
+        if (_.isArray(graphHolder.currentGraph) && !doNotUpdateStoryList) {
+            graphHolder.currentGraph.forEach(function (otherGraph) {
                 if (otherGraph !== chart) {
                     otherGraph.brush.brush.clear();
                     otherGraph.brush.brush(otherGraph.brush.brushGroup);
@@ -1223,7 +1223,7 @@ export function d3HistogramChartForValues(graphBrowserInstance: GraphHolder, plo
         }
         var callback = storiesSelectedCallback;
         if (doNotUpdateStoryList) callback = null;
-        updateSelectedStories(chart, storyDisplayItems, graphBrowserInstance, callback, isPlotItemSelected);
+        updateSelectedStories(chart, storyDisplayItems, graphHolder, callback, isPlotItemSelected);
     }
     
     if (storiesSelectedCallback) {
@@ -1237,11 +1237,11 @@ export function d3HistogramChartForValues(graphBrowserInstance: GraphHolder, plo
 
 // TODO: Need to update this to pass instance for self into histograms so they can clear the selections in other histograms
 // TODO: Also need to track the most recent histogram with an actual selection so can save and restore that from patterns browser
-export function multipleHistograms(graphBrowserInstance: GraphHolder, choiceQuestion, scaleQuestion, storiesSelectedCallback, hideStatsPanel = false) {
+export function multipleHistograms(graphHolder: GraphHolder, choiceQuestion, scaleQuestion, storiesSelectedCallback, hideStatsPanel = false) {
     var options = [];
     var index;
 
-    const unansweredText = customStatLabel("unanswered", graphBrowserInstance);
+    const unansweredText = customStatLabel("unanswered", graphHolder);
 
     if (choiceQuestion.displayType !== "checkbox") {
         options.push(unansweredText);
@@ -1261,7 +1261,7 @@ export function multipleHistograms(graphBrowserInstance: GraphHolder, choiceQues
     }
     // TODO: Could push extra options based on actual data choices (in case question changed at some point
     // TODO: This styling may be wrong
-    var chartPane = newChartPane(graphBrowserInstance, "noStyle");
+    var chartPane = newChartPane(graphHolder, "noStyle");
       
     var optionsText = "";
     if (scaleQuestion.displayConfiguration && scaleQuestion.displayConfiguration.length > 1) {
@@ -1274,18 +1274,18 @@ export function multipleHistograms(graphBrowserInstance: GraphHolder, choiceQues
     for (index in options) {
         var option = options[index];
         // TODO: Maybe need to pass which chart to the storiesSelectedCallback
-        var subchart = d3HistogramChartForQuestion(graphBrowserInstance, scaleQuestion, choiceQuestion, option, storiesSelectedCallback, hideStatsPanel);
+        var subchart = d3HistogramChartForQuestion(graphHolder, scaleQuestion, choiceQuestion, option, storiesSelectedCallback, hideStatsPanel);
         if (subchart) charts.push(subchart);
     }
     
     // End the float
     var clearFloat = document.createElement("br");
     clearFloat.style.clear = "left";
-    graphBrowserInstance.graphResultsPane.appendChild(clearFloat);
+    graphHolder.graphResultsPane.appendChild(clearFloat);
     
     // Add these statistics at the bottom after all other graphs
-    var statistics = calculateStatistics.calculateStatisticsForMultipleHistogram(scaleQuestion, choiceQuestion, graphBrowserInstance.allStories, graphBrowserInstance.minimumStoryCountRequiredForTest, unansweredText);
-    graphBrowserInstance.statisticalInfo += addStatisticsPanelForChart(graphBrowserInstance.graphResultsPane, graphBrowserInstance, statistics, chartTitle, "large", hideStatsPanel);
+    var statistics = calculateStatistics.calculateStatisticsForMultipleHistogram(scaleQuestion, choiceQuestion, graphHolder.allStories, graphHolder.minimumStoryCountRequiredForTest, unansweredText);
+    graphHolder.statisticalInfo += addStatisticsPanelForChart(graphHolder.graphResultsPane, graphHolder, statistics, chartTitle, "large", hideStatsPanel);
   
     return charts;
 }
@@ -1293,13 +1293,13 @@ export function multipleHistograms(graphBrowserInstance: GraphHolder, choiceQues
 // Reference for initial scatter chart: http://bl.ocks.org/bunkat/2595950
 // Reference for brushing: http://bl.ocks.org/mbostock/4560481
 // Reference for brush and tooltip: http://wrobstory.github.io/2013/11/D3-brush-and-tooltip.html
-export function d3ScatterPlot(graphBrowserInstance: GraphHolder, xAxisQuestion, yAxisQuestion, choiceQuestion, option, storiesSelectedCallback, hideStatsPanel = false) {
+export function d3ScatterPlot(graphHolder: GraphHolder, xAxisQuestion, yAxisQuestion, choiceQuestion, option, storiesSelectedCallback, hideStatsPanel = false) {
     // Collect data
     
     var allPlotItems = [];
     var storiesAtXYPoints = {};
-    var stories = graphBrowserInstance.allStories;
-    const unansweredText = customStatLabel("unanswered", graphBrowserInstance);
+    var stories = graphHolder.allStories;
+    const unansweredText = customStatLabel("unanswered", graphHolder);
     for (var index in stories) {
         var story = stories[index];
         var xValue = getScaleValueForQuestion(xAxisQuestion, story, unansweredText);
@@ -1329,7 +1329,7 @@ export function d3ScatterPlot(graphBrowserInstance: GraphHolder, xAxisQuestion, 
         storiesAtXYPoints[key].push(story); 
         allPlotItems.push(newPlotItem);
     }
-    if (allPlotItems.length < graphBrowserInstance.minimumStoryCountRequiredForGraph) {
+    if (allPlotItems.length < graphHolder.minimumStoryCountRequiredForGraph) {
         return null;
     }
 
@@ -1344,9 +1344,9 @@ export function d3ScatterPlot(graphBrowserInstance: GraphHolder, xAxisQuestion, 
         chartSize = "medium";
     }
 
-    var chartPane = newChartPane(graphBrowserInstance, style);
+    var chartPane = newChartPane(graphHolder, style);
     
-    let largeGraphWidth = graphBrowserInstance.customGraphWidth || defaultLargeGraphWidth;
+    let largeGraphWidth = graphHolder.customGraphWidth || defaultLargeGraphWidth;
     var margin = {top: 20, right: 15 + largeGraphWidth / 4, bottom: 90, left: 90};
     if (isSmallFormat) {
         margin.right = 20;
@@ -1355,14 +1355,14 @@ export function d3ScatterPlot(graphBrowserInstance: GraphHolder, xAxisQuestion, 
     var chartTitle = "" + nameForQuestion(xAxisQuestion) + " x " + nameForQuestion(yAxisQuestion);
     if (!isSmallFormat) addTitlePanelForChart(chartPane, chartTitle);
 
-    var chart = makeChartFramework(chartPane, "scatterPlot", chartSize, margin, graphBrowserInstance.customGraphWidth);
+    var chart = makeChartFramework(chartPane, "scatterPlot", chartSize, margin, graphHolder.customGraphWidth);
     var chartBody = chart.chartBody;
     
     chart.subgraphQuestion = choiceQuestion;
     chart.subgraphChoice = option;
 
-    var statistics = calculateStatistics.calculateStatisticsForScatterPlot(xAxisQuestion, yAxisQuestion, choiceQuestion, option, stories, graphBrowserInstance.minimumStoryCountRequiredForTest, unansweredText);
-    graphBrowserInstance.statisticalInfo += addStatisticsPanelForChart(chartPane, graphBrowserInstance, statistics, chartTitle, isSmallFormat ? "small" : "large", hideStatsPanel);
+    var statistics = calculateStatistics.calculateStatisticsForScatterPlot(xAxisQuestion, yAxisQuestion, choiceQuestion, option, stories, graphHolder.minimumStoryCountRequiredForTest, unansweredText);
+    graphHolder.statisticalInfo += addStatisticsPanelForChart(chartPane, graphHolder, statistics, chartTitle, isSmallFormat ? "small" : "large", hideStatsPanel);
     
     // draw the x axis
     
@@ -1410,8 +1410,8 @@ export function d3ScatterPlot(graphBrowserInstance: GraphHolder, xAxisQuestion, 
     // Append brush before data to ensure titles are drown
     chart.brush = createBrush(chartBody, xScale, yScale, brushend);
     
-    var opacity = 1.0 / graphBrowserInstance.numScatterDotOpacityLevels;
-    var dotSize = graphBrowserInstance.scatterDotSize;
+    var opacity = 1.0 / graphHolder.numScatterDotOpacityLevels;
+    var dotSize = graphHolder.scatterDotSize;
 
     var storyDisplayItems = chartBody.selectAll(".story")
             .data(allPlotItems)
@@ -1423,7 +1423,7 @@ export function d3ScatterPlot(graphBrowserInstance: GraphHolder, xAxisQuestion, 
             .attr("cy", function (plotItem) { return yScale(plotItem.y); } );
     
     // Add tooltips
-    if (!graphBrowserInstance.excludeStoryTooltips) {
+    if (!graphHolder.excludeStoryTooltips) {
         storyDisplayItems
             .append("svg:title")
             .text(function(plotItem) {
@@ -1453,11 +1453,11 @@ export function d3ScatterPlot(graphBrowserInstance: GraphHolder, xAxisQuestion, 
     }
     
     // Add line if correlation is significant (if option is set)
-    if (graphBrowserInstance.correlationLineChoice != "none") {
+    if (graphHolder.correlationLineChoice != "none") {
         let lineWidth = 0;
         if (statistics.p <= 0.01) {
             lineWidth = 3;
-        } else if ((statistics.p <= 0.05) && (graphBrowserInstance.correlationLineChoice == "0.05")) {
+        } else if ((statistics.p <= 0.05) && (graphHolder.correlationLineChoice == "0.05")) {
             lineWidth = 1;
         }
         if (lineWidth > 0) {
@@ -1482,8 +1482,8 @@ export function d3ScatterPlot(graphBrowserInstance: GraphHolder, xAxisQuestion, 
         if (selected) {
             // x1 = [0][0], y1 = [0][1], x2 = t[1][0], y2 = [1][1]
             const itemName = "" + extent[0][0].toFixed(0) + "," + extent[0][1].toFixed(0) + " - " + extent[1][0].toFixed(0) + "," + extent[1][1].toFixed(0);
-            if (graphBrowserInstance.currentSelectionExtentPercentages.selectionCategories.indexOf(itemName) < 0) {
-                graphBrowserInstance.currentSelectionExtentPercentages.selectionCategories.push(itemName);
+            if (graphHolder.currentSelectionExtentPercentages.selectionCategories.indexOf(itemName) < 0) {
+                graphHolder.currentSelectionExtentPercentages.selectionCategories.push(itemName);
             }
         }
         return selected;
@@ -1491,8 +1491,8 @@ export function d3ScatterPlot(graphBrowserInstance: GraphHolder, xAxisQuestion, 
     
     function brushend(doNotUpdateStoryList) {
         // Clear selections in other graphs (if multiple)
-        if (_.isArray(graphBrowserInstance.currentGraph) && !doNotUpdateStoryList) {
-            graphBrowserInstance.currentGraph.forEach(function (otherGraph) {
+        if (_.isArray(graphHolder.currentGraph) && !doNotUpdateStoryList) {
+            graphHolder.currentGraph.forEach(function (otherGraph) {
                 if (otherGraph !== chart) {
                     otherGraph.brush.brush.clear();
                     otherGraph.brush.brush(otherGraph.brush.brushGroup);
@@ -1502,17 +1502,17 @@ export function d3ScatterPlot(graphBrowserInstance: GraphHolder, xAxisQuestion, 
         }
         var callback = storiesSelectedCallback;
         if (doNotUpdateStoryList) callback = null;
-        updateSelectedStories(chart, storyDisplayItems, graphBrowserInstance, storiesSelectedCallback, isPlotItemSelected);
+        updateSelectedStories(chart, storyDisplayItems, graphHolder, storiesSelectedCallback, isPlotItemSelected);
     }
     chart.brushend = brushend;
     
     return chart;
 }
 
-export function multipleScatterPlot(graphBrowserInstance: GraphHolder, xAxisQuestion, yAxisQuestion, choiceQuestion, storiesSelectedCallback, hideStatsPanel = false) {
+export function multipleScatterPlot(graphHolder: GraphHolder, xAxisQuestion, yAxisQuestion, choiceQuestion, storiesSelectedCallback, hideStatsPanel = false) {
     var options = [];
     var index;
-    const unansweredText = customStatLabel("unanswered", graphBrowserInstance);
+    const unansweredText = customStatLabel("unanswered", graphHolder);
     if (choiceQuestion.displayType !== "checkbox" && choiceQuestion.displayType !== "checkboxes") {
         options.push(unansweredText);
     }
@@ -1530,31 +1530,31 @@ export function multipleScatterPlot(graphBrowserInstance: GraphHolder, xAxisQues
         }
     }
     
-    var chartPane = newChartPane(graphBrowserInstance, "noStyle");
+    var chartPane = newChartPane(graphHolder, "noStyle");
     var chartTitle = "" + nameForQuestion(xAxisQuestion) + " x " + nameForQuestion(yAxisQuestion) + " + " + nameForQuestion(choiceQuestion);
     addTitlePanelForChart(chartPane, chartTitle);
 
     var charts = [];
     for (index in options) {
         var option = options[index];
-        var subchart = d3ScatterPlot(graphBrowserInstance, xAxisQuestion, yAxisQuestion, choiceQuestion, option, storiesSelectedCallback, hideStatsPanel)
+        var subchart = d3ScatterPlot(graphHolder, xAxisQuestion, yAxisQuestion, choiceQuestion, option, storiesSelectedCallback, hideStatsPanel)
         if (subchart) charts.push(subchart);
     }
     
     // End the float
     var clearFloat = document.createElement("br");
     clearFloat.style.clear = "left";
-    graphBrowserInstance.graphResultsPane.appendChild(clearFloat);
+    graphHolder.graphResultsPane.appendChild(clearFloat);
     
     return charts;
 }
 
-export function d3ContingencyTable(graphBrowserInstance: GraphHolder, xAxisQuestion, yAxisQuestion, scaleQuestion, storiesSelectedCallback, hideStatsPanel = false) {
+export function d3ContingencyTable(graphHolder: GraphHolder, xAxisQuestion, yAxisQuestion, scaleQuestion, storiesSelectedCallback, hideStatsPanel = false) {
     // Collect data
     
     var columnLabels = {};
     var rowLabels = {};
-    const unansweredText = customStatLabel("unanswered", graphBrowserInstance);
+    const unansweredText = customStatLabel("unanswered", graphHolder);
     
     preloadResultsForQuestionOptions(columnLabels, xAxisQuestion, unansweredText);
     preloadResultsForQuestionOptions(rowLabels, yAxisQuestion, unansweredText);
@@ -1566,7 +1566,7 @@ export function d3ContingencyTable(graphBrowserInstance: GraphHolder, xAxisQuest
     var results = {};
     var plotItemStories = {};
     var grandTotal = 0;
-    var stories = graphBrowserInstance.allStories;
+    var stories = graphHolder.allStories;
     for (var index in stories) {
         var story = stories[index];
         var xValue = getChoiceValueForQuestion(xAxisQuestion, story, unansweredText);
@@ -1714,7 +1714,7 @@ export function d3ContingencyTable(graphBrowserInstance: GraphHolder, xAxisQuest
     // Build chart
     // TODO: Improve the way labels are drawn or ellipsed based on chart size and font size and number of rows and columns
 
-    var chartPane = newChartPane(graphBrowserInstance, "singleChartStyle");
+    var chartPane = newChartPane(graphHolder, "singleChartStyle");
     
     var chartTitle = "" + nameForQuestion(xAxisQuestion) + " x " + nameForQuestion(yAxisQuestion);
     if (scaleQuestion) {
@@ -1733,21 +1733,21 @@ export function d3ContingencyTable(graphBrowserInstance: GraphHolder, xAxisQuest
     if (rowCount > 10) { 
         graphSize = "tall";
     }
-    var chart = makeChartFramework(chartPane, "contingencyChart", graphSize, margin, graphBrowserInstance.customGraphWidth);
+    var chart = makeChartFramework(chartPane, "contingencyChart", graphSize, margin, graphHolder.customGraphWidth);
     var chartBody = chart.chartBody;
 
     var statistics;
     if (scaleQuestion) {
-        statistics = calculateStatistics.calculateStatisticsForMiniHistograms(scaleQuestion, xAxisQuestion, yAxisQuestion, stories, graphBrowserInstance.minimumStoryCountRequiredForTest, unansweredText);
+        statistics = calculateStatistics.calculateStatisticsForMiniHistograms(scaleQuestion, xAxisQuestion, yAxisQuestion, stories, graphHolder.minimumStoryCountRequiredForTest, unansweredText);
     } else {
-        statistics = calculateStatistics.calculateStatisticsForTable(xAxisQuestion, yAxisQuestion, stories, graphBrowserInstance.minimumStoryCountRequiredForTest, unansweredText);
+        statistics = calculateStatistics.calculateStatisticsForTable(xAxisQuestion, yAxisQuestion, stories, graphHolder.minimumStoryCountRequiredForTest, unansweredText);
     }
-    graphBrowserInstance.statisticalInfo += addStatisticsPanelForChart(chartPane, graphBrowserInstance, statistics, chartTitle, "large", hideStatsPanel);
+    graphHolder.statisticalInfo += addStatisticsPanelForChart(chartPane, graphHolder, statistics, chartTitle, "large", hideStatsPanel);
   
     // X axis and label
 
     let columnNamesAndTotals = {};
-    if (!graphBrowserInstance.hideNumbersOnContingencyGraphs) {
+    if (!graphHolder.hideNumbersOnContingencyGraphs) {
         columnLabelsArray.forEach(function(label) {
             columnNamesAndTotals[label] = columnStoryCounts[label] || 0;
         });
@@ -1767,7 +1767,7 @@ export function d3ContingencyTable(graphBrowserInstance: GraphHolder, xAxisQuest
     // Y axis and label
 
     let rowNamesAndTotals = {};
-    if (!graphBrowserInstance.hideNumbersOnContingencyGraphs) {
+    if (!graphHolder.hideNumbersOnContingencyGraphs) {
         rowLabelsArray.forEach(function(label) {
             rowNamesAndTotals[label] = rowStoryCounts[label] || 0;
         });
@@ -1906,7 +1906,7 @@ export function d3ContingencyTable(graphBrowserInstance: GraphHolder, xAxisQuest
                     .attr("cy", function (plotItem) { return yScale(plotItem.y) + yScale.rangeBand() / 2.0; } );
         }
 
-        if (!graphBrowserInstance.hideNumbersOnContingencyGraphs) {
+        if (!graphHolder.hideNumbersOnContingencyGraphs) {
             var storyClusterLabels = chartBody.selectAll(".storyClusterLabel")
                 .data(observedPlotItems)
                 .enter().append("text")
@@ -1961,7 +1961,7 @@ export function d3ContingencyTable(graphBrowserInstance: GraphHolder, xAxisQuest
     }
 
     // Add tooltips
-    if (!graphBrowserInstance.excludeStoryTooltips) {
+    if (!graphHolder.excludeStoryTooltips) {
         storyDisplayClusters.append("svg:title").text(tooltipTextForPlotItem);
         if (sdRects) sdRects.append("svg:title").text(tooltipTextForPlotItem);
         if (meanRects) meanRects.append("svg:title").text(tooltipTextForPlotItem);
@@ -1975,15 +1975,15 @@ export function d3ContingencyTable(graphBrowserInstance: GraphHolder, xAxisQuest
         var selected = extent[0][0] <= midPointX && midPointX <= extent[1][0] && extent[0][1] <= midPointY && midPointY <= extent[1][1];
         if (selected) {
             const itemName = plotItem.x + " x " + plotItem.y;
-            if (graphBrowserInstance.currentSelectionExtentPercentages.selectionCategories.indexOf(itemName) < 0) {
-                graphBrowserInstance.currentSelectionExtentPercentages.selectionCategories.push(itemName);
+            if (graphHolder.currentSelectionExtentPercentages.selectionCategories.indexOf(itemName) < 0) {
+                graphHolder.currentSelectionExtentPercentages.selectionCategories.push(itemName);
             }
         }
         return selected;
     }
     
     function brushend() {
-        updateSelectedStories(chart, storyDisplayClusters, graphBrowserInstance, storiesSelectedCallback, isPlotItemSelected);
+        updateSelectedStories(chart, storyDisplayClusters, graphHolder, storiesSelectedCallback, isPlotItemSelected);
     }
     chart.brushend = brushend;
     
@@ -1997,7 +1997,7 @@ function encodeBraces(optionText) {
     return optionText.replace("{", "&#123;").replace("}", "&#125;"); 
 }
 
-function setCurrentSelection(chart, graphBrowserInstance: GraphHolder, extent) {
+function setCurrentSelection(chart, graphHolder: GraphHolder, extent) {
     
     /* Chart types and scaling
     
@@ -2055,16 +2055,16 @@ function setCurrentSelection(chart, graphBrowserInstance: GraphHolder, extent) {
         };
     }
     selection.selectionCategories = []; // going to be set in isPlotItemSelected
-    graphBrowserInstance.currentSelectionExtentPercentages = selection;
-    if (_.isArray(graphBrowserInstance.currentGraph)) {
+    graphHolder.currentSelectionExtentPercentages = selection;
+    if (_.isArray(graphHolder.currentGraph)) {
         selection.subgraphQuestion = encodeBraces(nameForQuestion(chart.subgraphQuestion));
         selection.subgraphChoice = encodeBraces(chart.subgraphChoice);
     }
 }
 
-function updateSelectedStories(chart, storyDisplayItemsOrClusters, graphBrowserInstance: GraphHolder, storiesSelectedCallback, selectionTestFunction) {
+function updateSelectedStories(chart, storyDisplayItemsOrClusters, graphHolder: GraphHolder, storiesSelectedCallback, selectionTestFunction) {
     var extent = chart.brush.brush.extent();
-    setCurrentSelection(chart, graphBrowserInstance, extent);
+    setCurrentSelection(chart, graphHolder, extent);
     
     var selectedStories = [];
     storyDisplayItemsOrClusters.classed("selected", function(plotItem) {
@@ -2112,11 +2112,11 @@ export function restoreSelection(chart, selection) {
     return true;
 }
 
-function newChartPane(graphBrowserInstance: GraphHolder, styleClass: string): HTMLElement {
+function newChartPane(graphHolder: GraphHolder, styleClass: string): HTMLElement {
     var chartPane = document.createElement("div");
     chartPane.className = styleClass;
-    graphBrowserInstance.chartPanes.push(chartPane);
-    graphBrowserInstance.graphResultsPane.appendChild(chartPane);
+    graphHolder.chartPanes.push(chartPane);
+    graphHolder.graphResultsPane.appendChild(chartPane);
 
     return chartPane;
 }
