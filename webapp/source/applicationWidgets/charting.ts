@@ -371,7 +371,7 @@ function addXAxis(chart, xScale, options: AxisOptions) {
             labels.text(function(label, i) {
                 let result = label;
                 result = limitLabelLength(result, options.labelLengthLimit);
-                if (options.namesAndTotals[label]) {
+                if (options.namesAndTotals && options.namesAndTotals[label]) {
                     result = label + " (" + options.namesAndTotals[label] + ")";
                 }
                 return result; 
@@ -385,7 +385,7 @@ function addXAxis(chart, xScale, options: AxisOptions) {
             xAxis.tickFormat(function (label) {
                 let result = label;
                 result = limitLabelLength(result, options.labelLengthLimit);
-                if (options.namesAndTotals[label]) {
+                if (options.namesAndTotals && options.namesAndTotals[label]) {
                     result = label + " (" + options.namesAndTotals[label] + ")";
                 }
                 return result; 
@@ -425,7 +425,7 @@ function addYAxis(chart, yScale, options: AxisOptions) {
         yAxis.tickFormat(function (label) {
             let result = label;
             result = limitLabelLength(result, options.labelLengthLimit)
-            if (options.namesAndTotals[label]) {
+            if (options.namesAndTotals && options.namesAndTotals[label]) {
                 result = label + " (" + options.namesAndTotals[label] + ")";
             }
             return result; 
@@ -447,7 +447,7 @@ function addYAxis(chart, yScale, options: AxisOptions) {
         labels.text(function(label, i) {
             let result = label;
             result = limitLabelLength(result, options.labelLengthLimit);
-            if (options.namesAndTotals[label]) {
+            if (options.namesAndTotals && options.namesAndTotals[label]) {
                 result = label + " (" + options.namesAndTotals[label] + ")";
             }
             return result;
