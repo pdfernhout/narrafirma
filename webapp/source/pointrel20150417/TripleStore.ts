@@ -228,6 +228,18 @@ class TripleStore {
         // console.log("queryLatestC result", a, b, bIndex.latestC);
         return defensiveCopy(bIndex.latestC);
     }
+
+    queryAllC(a, b) {
+        if (a === undefined) {
+            throw new Error("a should not be undefined; b: " + b);
+        }
+        if (b === undefined) {
+            throw new Error("b should not be undefined; a: " + a);
+        }    
+        var bIndex = this.getIndexEntries(a, b);
+        if (!bIndex) return [];
+        return defensiveCopy(bIndex.versions);
+    }
     
     // The b keys returned here are stringified objects (could be strings, or other) and should be parsed by called code if needed
     queryAllLatestBCForA(a) {
