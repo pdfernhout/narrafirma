@@ -399,7 +399,7 @@ button:disabled {
 .questionExternal.narrafirma-question-type-label {
     background-color: white;
     margin-bottom: 4px;
-    border-radius: 12px;
+    border-radius: 3px;
 }
 
 .questionExternal.narrafirma-question-type-filterNotice {
