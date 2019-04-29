@@ -368,8 +368,13 @@ function addXAxis(chart, xScale, options: AxisOptions) {
             .call(xAxis).selectAll("text");
         
         if (options.labelLengthLimit) {
-            labels.text(function(d, i) {
-                return limitLabelLength(d, options.labelLengthLimit);
+            labels.text(function(label, i) {
+                let result = label;
+                result = limitLabelLength(result, options.labelLengthLimit);
+                if (options.namesAndTotals[label]) {
+                    result = label + " (" + options.namesAndTotals[label] + ")";
+                }
+                return result; 
             });
        }
        labels.append("svg:title").text(function(label, i) {
@@ -379,10 +384,11 @@ function addXAxis(chart, xScale, options: AxisOptions) {
         if (options.labelLengthLimit) {
             xAxis.tickFormat(function (label) {
                 let result = label;
+                result = limitLabelLength(result, options.labelLengthLimit);
                 if (options.namesAndTotals[label]) {
                     result = label + " (" + options.namesAndTotals[label] + ")";
                 }
-                return limitLabelLength(result, options.labelLengthLimit); 
+                return result; 
             });
         }
         // TODO: These do not have hovers
@@ -418,10 +424,11 @@ function addYAxis(chart, yScale, options: AxisOptions) {
     if (options.labelLengthLimit) {
         yAxis.tickFormat(function (label) {
             let result = label;
+            result = limitLabelLength(result, options.labelLengthLimit)
             if (options.namesAndTotals[label]) {
                 result = label + " (" + options.namesAndTotals[label] + ")";
             }
-            return limitLabelLength(result, options.labelLengthLimit); 
+            return result; 
         });
     } else {
         // This seems needed to ensure small numbers for labels don't get ".0" appended to them
@@ -439,10 +446,11 @@ function addYAxis(chart, yScale, options: AxisOptions) {
     if (options.labelLengthLimit) {
         labels.text(function(label, i) {
             let result = label;
+            result = limitLabelLength(result, options.labelLengthLimit);
             if (options.namesAndTotals[label]) {
                 result = label + " (" + options.namesAndTotals[label] + ")";
             }
-            return limitLabelLength(result, options.labelLengthLimit);
+            return result;
         });
     }
         
@@ -1793,31 +1801,25 @@ export function d3ContingencyTable(graphHolder: GraphHolder, xAxisQuestion, yAxi
     if (scaleQuestion) {
 
         if (maxPlotItemValue === 0) {
-            var xValueMultiplier = 0;
             var yValueMultiplier = 0;
         } else {
-            var xValueMultiplier = xScale.rangeBand() / maxPlotItemValue;
             var yValueMultiplier = yScale.rangeBand() / maxPlotItemValue;
         }
+        var barWidth = xScale.rangeBand();
     
         // rectangles
         var storyDisplayClusters = chartBody.selectAll(".miniHistogram")
             .data(observedPlotItems)
         .enter().append("rect")
             .attr("class", "miniHistogram")
-            .attr("x", function (plotItem) { 
-                var centerPoint = xScale(plotItem.x) + xScale.rangeBand() / 2.0;
-                var barWidth = xValueMultiplier * plotItem.value;
-                var centerToTopLeftCornerDisplacement = barWidth / 2.0;
-                return centerPoint - centerToTopLeftCornerDisplacement;
-            } )
+            .attr("x", function (plotItem) {return xScale(plotItem.x)})
             .attr("y", function (plotItem) { 
                 var centerPoint = yScale(plotItem.y) + yScale.rangeBand() / 2.0;
-                var centerToTopLeftCornerDisplacement = yValueMultiplier * plotItem.value / 2.0;
-                return centerPoint - centerToTopLeftCornerDisplacement;
-            } )
-            .attr("width", function (plotItem) { return xValueMultiplier * plotItem.value })
-            .attr("height", function (plotItem) { return yValueMultiplier * plotItem.value })
+                var centerToTopDisplacement = yValueMultiplier * plotItem.value / 2.0;
+                return centerPoint - centerToTopDisplacement;
+            })
+            .attr("width", function (plotItem) { return xScale.rangeBand()} ) 
+            .attr("height", function (plotItem) { return yValueMultiplier * plotItem.value; })
 
         // std dev rectangle
         var sdRects = chartBody.selectAll(".miniHistogramStdDev")
@@ -1825,55 +1827,51 @@ export function d3ContingencyTable(graphHolder: GraphHolder, xAxisQuestion, yAxi
         .enter().append("rect")
             .attr("class", "miniHistogramStdDev")
             .attr("x", function (plotItem) { 
-                if (plotItem.mean) {
-                    var centerPoint = xScale(plotItem.x) + xScale.rangeBand() / 2.0;
-                    var barWidth = xValueMultiplier * plotItem.value;
-                    var centerToTopLeftCornerDisplacement = barWidth / 2.0;
+                if (plotItem.mean && plotItem.sd) {
                     var meanMinusOneSD = Math.max(0, plotItem.mean - plotItem.sd);
                     var sdDisplacement = barWidth * meanMinusOneSD / 100.0;
-                    return centerPoint - centerToTopLeftCornerDisplacement + sdDisplacement;
+                    return xScale(plotItem.x) + sdDisplacement;
                 } else {
                     return 0;
                 }
             } )
             .attr("y", function (plotItem) { 
                 var centerPoint = yScale(plotItem.y) + yScale.rangeBand() / 2.0;
-                var centerToTopLeftCornerDisplacement = yValueMultiplier * plotItem.value / 2.0;
-                return centerPoint - centerToTopLeftCornerDisplacement;
+                var centerToTopDisplacement = yValueMultiplier * plotItem.value / 2.0;
+                return centerPoint - centerToTopDisplacement;
             } )
             .attr("width", function (plotItem) { 
-                if (plotItem.mean) {
-                    var barWidth = xValueMultiplier * plotItem.value;
-                    return barWidth * 2.0 * plotItem.sd / 100;
+                if (plotItem.mean && plotItem.sd) {
+                    var meanMinusOneSD = Math.max(0, plotItem.mean - plotItem.sd);
+                    var meanPlusOneSD = Math.min(100, plotItem.mean + plotItem.sd);
+                    return (meanPlusOneSD - meanMinusOneSD) * barWidth / 100.0;
                 } else {
-                    return 0
+                    return 0;
                 }; 
             })
-            .attr("height", function (plotItem) { if (plotItem.mean) {return yValueMultiplier * plotItem.value} else {return 0} })
+            .attr("height", function (plotItem) { return yValueMultiplier * plotItem.value; })
 
 
-        // mean rectangle
+        // mean rectangle (line)
         var meanRects = chartBody.selectAll(".miniHistogramMean")
             .data(observedPlotItems)
         .enter().append("rect")
             .attr("class", "miniHistogramMean")
             .attr("x", function (plotItem) { 
                 if (plotItem.mean) {
-                    var centerPoint = xScale(plotItem.x) + xScale.rangeBand() / 2.0;
-                    var centerToTopLeftCornerDisplacement = xValueMultiplier * plotItem.value / 2.0;
-                    var meanDisplacement = xValueMultiplier * plotItem.value * plotItem.mean / 100.0;
-                    return centerPoint - centerToTopLeftCornerDisplacement + meanDisplacement - 1;
+                    var meanDisplacement = barWidth * plotItem.mean / 100.0;
+                    return xScale(plotItem.x) + meanDisplacement - 1; // 1 is half of width
                 } else {
                     return 0;
                 }
             } )
             .attr("y", function (plotItem) { 
                 var centerPoint = yScale(plotItem.y) + yScale.rangeBand() / 2.0;
-                var centerToTopLeftCornerDisplacement = yValueMultiplier * plotItem.value / 2.0;
-                return centerPoint - centerToTopLeftCornerDisplacement;
+                var centerToTopDisplacement = yValueMultiplier * plotItem.value / 2.0;
+                return centerPoint - centerToTopDisplacement;
             } )
             .attr("width", function (plotItem) { if (plotItem.mean) {return 2} else {return 0}; })
-            .attr("height", function (plotItem) { if (plotItem.mean) {return yValueMultiplier * plotItem.value} else {return 0} })
+            .attr("height", function (plotItem) { return yValueMultiplier * plotItem.value; })
 
     } else {
 
