@@ -96,6 +96,7 @@ class ClusteringDiagram {
     showStrengthColors = true;
 
     selectionRect = null;
+    selectionRectUUID = generateRandomUuid("selectionRect_");
     selectedItems = [];
     rubberBanding = false;
     shiftKeyIsBeingHeldDownWhileRubberBanding = false;
@@ -262,7 +263,6 @@ class ClusteringDiagram {
             .style('stroke-width', '3')
             .style('stroke', '#a7a5a5')
             .on("mousedown", () => {
-                this.selectItem(null);
                 this.shiftKeyIsBeingHeldDownWhileRubberBanding = d3.event.shiftKey;
             });
 
@@ -274,7 +274,7 @@ class ClusteringDiagram {
             self.rubberBanding = true;
             self.rubberBandingStartX = position[0];
             self.rubberBandingStartY = position[1];
-            d3.select(".selectionRectangle")
+            d3.select("." + self.selectionRectUUID)
                 .attr('rx', 6) // this makes a rounded rectangle
                 .attr('ry', 6)
                 .transition()
@@ -287,7 +287,7 @@ class ClusteringDiagram {
         drag.on("drag", function() {
             if (self.rubberBanding) {
                 let position = d3.mouse(this);
-                d3.select(".selectionRectangle")
+                d3.select("." + self.selectionRectUUID)
                     .transition()
                     .duration(1)
                     .attr('rx', 6)
@@ -306,7 +306,7 @@ class ClusteringDiagram {
             self.selectItemsInRectangle(self.rubberBandingStartX, self.rubberBandingStartY, position[0], position[1], self.shiftKeyIsBeingHeldDownWhileRubberBanding);
             self.rubberBanding = false;
             self.shiftKeyIsBeingHeldDownWhileRubberBanding = false;
-            d3.select(".selectionRectangle")
+            d3.select("." + self.selectionRectUUID)
                 .style('stroke', "none")
                 .attr('transform', 'translate (0, 0)')
                 .attr('width', 0)
@@ -319,7 +319,7 @@ class ClusteringDiagram {
             .attr('class', 'mainSurface');
         
         this.selectionRect = this.mainSurface.append('rect')
-            .attr('class', 'selectionRectangle');
+            .attr('class', this.selectionRectUUID);
 
         this.recreateDisplayObjectsForAllItems();
 
@@ -580,16 +580,14 @@ class ClusteringDiagram {
         var moved = false;
         
         drag.on("dragstart", function () {
-            if (item) {
-                self.selectItem(item);
-            } else {
+            if (!item) {
                 self.rubberBanding = true;
                 self.rubberBandingStartX = d3.event.x;
                 self.rubberBandingStartY = d3.event.y;
             }
             moved = false;
         });
-        
+
         drag.on("drag", function () {
             // TODO: Casting to any as workaround to silence TypeScript error for maybe incomplete d3 typing file
             //item.x = Math.round(item.x + (<any>d3.event).dx);
@@ -774,7 +772,7 @@ class ClusteringDiagram {
     recreateDisplayObjectsForAllItems() {
         this.itemToDisplayObjectMap = <any>{};
         this.mainSurface.selectAll("*").remove();
-        this.selectionRect = this.mainSurface.append('rect').attr('class', 'selectionRectangle');
+        this.selectionRect = this.mainSurface.append('rect').attr('class', this.selectionRectUUID);
         this.model.items.forEach(function (item) {
             this.addDisplayObjectForItem(this.mainSurface, item);
         }, this);
