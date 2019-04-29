@@ -963,11 +963,11 @@ td.narrafirma-mw-nested-title, td.narrafirma-mw-nested-stats {
     
 }
 
-.narrafirma-catalysis-report-perspective-link-header {
-	margin: 0.5em;
+.narrafirma-catalysis-report-toc-link-header, .narrafirma-catalysis-report-perspective-link-header, .narrafirma-catalysis-report-observation-link-header {
+	margin-bottom: 0.5em;
 }
 
-.narrafirma-catalysis-report-perspective-link {
+.narrafirma-catalysis-report-toc-link, .narrafirma-catalysis-report-perspective-link, narrafirma-catalysis-report-observation-link {
 	margin: 0 0 0 1em;
 }
 
@@ -1001,7 +1001,7 @@ td.narrafirma-mw-nested-title, td.narrafirma-mw-nested-stats {
 	font-weight: 700;
     padding: 0.5em;
     background: #b0d4d4;
-    margin: 0;
+    margin: 0.5em 0 0 0;
 }
 
 .narrafirma-catalysis-report-theme-label {
@@ -1021,7 +1021,7 @@ td.narrafirma-mw-nested-title, td.narrafirma-mw-nested-stats {
     padding: 0.5em;
 	font-size: 1.5em;
 	font-weight: 700;
-    background: #ffe1aa;
+    background: #fcd997;
     margin: 0;
 }
 
@@ -1091,9 +1091,8 @@ td.narrafirma-mw-nested-title, td.narrafirma-mw-nested-stats {
 
 .narrafirma-catalysis-report-observation-linking-question-by-perspective {
     padding: 0.5em;
-    margin-bottom: 0.5em;
     font-style: italic;
-    background: #c5d2eb;
+    background: #facb74;
 }
 
 .narrafirma-catalysis-report-list-table {
