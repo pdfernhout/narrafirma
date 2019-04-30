@@ -402,6 +402,7 @@ export function printCatalysisReport() {
     options["showStatsPanelsInReport"] = project.tripleStore.queryLatestC(catalysisReportIdentifier, "showStatsPanelsInReport") || false;
     options["hideNumbersOnContingencyGraphs"] = project.tripleStore.queryLatestC(catalysisReportIdentifier, "hideNumbersOnContingencyGraphs") || false;
     options["printInterpretationsAsTable"] = project.tripleStore.queryLatestC(catalysisReportIdentifier, "printInterpretationsAsTable") || false;
+    options["catalysisReportIdentifier"] = catalysisReportIdentifier;
 
     let customGraphWidthAsString = project.tripleStore.queryLatestC(catalysisReportIdentifier, "customReportGraphWidth");
     if (customGraphWidthAsString) {
@@ -796,39 +797,69 @@ function printCatalysisReportWithClusteredInterpretations(project, catalysisRepo
     setTimeout(function() { printNextInterpretation(); }, 0);
 }
 
+function initializedGraphHolder(allStories, options) {
+    var graphHolder: GraphHolder = {
+        graphResultsPane: charting.createGraphResultsPane("narrafirma-graph-results-pane chartEnclosure"),
+        chartPanes: [],
+        allStories: allStories,
+        currentGraph: null,
+        currentSelectionExtentPercentages: null,
+        excludeStoryTooltips: true,
+        minimumStoryCountRequiredForTest: options.minimumStoryCountRequiredForTest,
+        minimumStoryCountRequiredForGraph: options.minimumStoryCountRequiredForGraph,
+        numHistogramBins: options.numHistogramBins,
+        numScatterDotOpacityLevels: options.numScatterDotOpacityLevels,
+        scatterDotSize: options.scatterDotSize,
+        correlationLineChoice: options.correlationLineChoice,
+        hideNumbersOnContingencyGraphs: options.hideNumbersOnContingencyGraphs,
+        outputGraphFormat: options.outputGraphFormat,
+        showStatsPanelsInReport: options.showStatsPanelsInReport,
+        customStatsTextReplacements: options.customStatsTextReplacements,
+        customGraphWidth: options.customGraphWidth,
+        graphTypesToCreate: {}
+    };
+    return graphHolder;
+}
+
+function graphTypeForListOfQuestions(questions) {
+    let result = "";
+    if (questions.length === 1) { // bar, histogram
+        if (questions[0].displayType === "slider") {
+            return "histogram"; // one scale
+        } else {
+            return "bar"; // one choice
+        }
+    } else if (questions.length === 2) { // table, scatter, multiple histogram
+        if (questions[0].displayType !== "slider" && questions[1].displayType !== "slider") { // two choices
+            return "table";
+        } else if (questions[0].displayType === "slider" && questions[1].displayType === "slider") { // two scales
+            return "scatter";
+        } else { // one scale one choice
+            return "multiple histogram";
+        }
+    } else if (questions.length === 3) { // contingency-histogram, multiple scatter
+        if (questions[0].displayType === "slider" && questions[1].displayType === "slider") {
+            return "multiple scatter"; // two scales, one choice
+        } else {
+            return "contingency-histogram"; // two choices, one scale
+        }
+    }
+}
+
 function printListOfObservations(observationList, idTagStart, reference, printLinkingQuestion, themesOrPerspectives, allStories, options) {
 
-    return printList(observationList, {}, false, function (item, index) {
+    return printList(observationList, {}, false, function (observation, index) {
         var project = Globals.project();
-        var pattern = item.pattern;
+        var pattern = observation.pattern;
         var selectionCallback = function() { return this; };
-        var graphHolder: GraphHolder = {
-            graphResultsPane: charting.createGraphResultsPane("narrafirma-graph-results-pane chartEnclosure"),
-            chartPanes: [],
-            allStories: allStories,
-            currentGraph: null,
-            currentSelectionExtentPercentages: null,
-            excludeStoryTooltips: true,
-            minimumStoryCountRequiredForTest: options.minimumStoryCountRequiredForTest,
-            minimumStoryCountRequiredForGraph: options.minimumStoryCountRequiredForGraph,
-            numHistogramBins: options.numHistogramBins,
-            numScatterDotOpacityLevels: options.numScatterDotOpacityLevels,
-            scatterDotSize: options.scatterDotSize,
-            correlationLineChoice: options.correlationLineChoice,
-            hideNumbersOnContingencyGraphs: options.hideNumbersOnContingencyGraphs,
-            outputGraphFormat: options.outputGraphFormat,
-            showStatsPanelsInReport: options.showStatsPanelsInReport,
-            customStatsTextReplacements: options.customStatsTextReplacements,
-            customGraphWidth: options.customGraphWidth,
-            graphTypesToCreate: {}
-        };
+        let graphHolder = initializedGraphHolder(allStories, options);
         const observationLabel = options.observationLabel;
 
         const resultItems = [];
 
-        const observationTitleToPrint = portionOfTextMatchingReference(item.observationTitle, reference);
-        const strengthStringToPrint = item.observationStrength ? " Strength: " + item.observationStrength : ""; 
-        const observationDescriptionToPrint = portionOfTextMatchingReference(item.observationDescription, reference);
+        const observationTitleToPrint = portionOfTextMatchingReference(observation.observationTitle, reference);
+        const strengthStringToPrint = observation.observationStrength ? " Strength: " + observation.observationStrength : ""; 
+        const observationDescriptionToPrint = portionOfTextMatchingReference(observation.observationDescription, reference);
 
         const headerItems = [];
         headerItems.push(m("span", {"class": "narrafirma-catalysis-report-observation-label"}, observationLabel));
@@ -840,17 +871,66 @@ function printListOfObservations(observationList, idTagStart, reference, printLi
         resultItems.push(m("h3.narrafirma-catalysis-report-observation", {"id": idTagTouse}, headerItems));
         resultItems.push(m("div.narrafirma-catalysis-report-observation-description", printText(observationDescriptionToPrint)));
 
-        if (item.pattern.graphType === "texts") {
+        if (observation.pattern.graphType === "texts") {
             resultItems.push(printReturnAndBlankLine());
         } else {
-            var graph = PatternExplorer.makeGraph(pattern, graphHolder, selectionCallback, !options.showStatsPanelsInReport);
-            if (graph) { 
-                resultItems.push(printGraphWithGraphHolder(graphHolder, options.customCSS));
+
+            // check for the "back door" method of making two observations connected to one pattern
+            // which is to pretend to make an observation with an uninteresting pattern, then replace its graph with another
+            // the "secret" code to do this is REPLACE_PATTERN (exactly) as the FIRST question name
+
+            const replacePatternCode = "REPLACE_PATTERN";
+            let replacePattern = false;
+            if (observation.observationExtraPatterns) {
+                const patternTexts = observation.observationExtraPatterns.split("\n");
+                // they must actually have another graph specified (hence length > 1) or they'll get a blank observation, which they probably didn't want
+                replacePattern = patternTexts.length > 1 && patternTexts[0].trim() === replacePatternCode;
+            }
+
+            if (!replacePattern) {
+                var graph = PatternExplorer.makeGraph(pattern, graphHolder, selectionCallback, !options.showStatsPanelsInReport);
+                if (graph) resultItems.push(printGraphWithGraphHolder(graphHolder, options.customCSS));
+            }
+
+            if (observation.observationExtraPatterns) {
+                const allQuestions = project.allQuestionsThatCouldBeGraphedForCatalysisReport(options.catalysisReportIdentifier, true);
+
+                // one pattern per line
+                const patternTexts = observation.observationExtraPatterns.split("\n");
+
+                patternTexts.forEach((patternText) => {
+
+                    if (patternText === replacePatternCode) return;
+
+                    // the question short names MUST be in the order they are in the patterns table (because some of the graphs require a certain order)
+                    const questionNames = patternText.split('==');
+
+                    if (questionNames.length) {
+
+                        // look up questions
+                        const questions = [];
+                        questionNames.forEach((questionName) => {
+                            for (let i = 0; i < allQuestions.length; i++) {
+                                if (allQuestions[i].displayName === questionName.trim()) {
+                                    questions.push(allQuestions[i]);
+                                }
+                            }
+                        });
+                        
+                        // generate graph
+                        if (questions.length > 0) {
+                            const graphType = graphTypeForListOfQuestions(questions);
+                            const extraPattern = {"graphType": graphType, "questions": questions};
+                            let extraGraphHolder = initializedGraphHolder(allStories, options);
+                            var extraGraph = PatternExplorer.makeGraph(extraPattern, extraGraphHolder, selectionCallback, !options.showStatsPanelsInReport);
+                            if (extraGraph) resultItems.push(printGraphWithGraphHolder(extraGraphHolder, options.customCSS));
+                        }
+                    }
+                });
             }
         }
-        
         if (printLinkingQuestion) {
-            const observationLinkingQuestionToPrint = portionOfTextMatchingReference(item.observationLinkingQuestion, reference);
+            const observationLinkingQuestionToPrint = portionOfTextMatchingReference(observation.observationLinkingQuestion, reference);
             let linkingQuestionClass = "";
             if (themesOrPerspectives = "themes") {
                 linkingQuestionClass = "div.narrafirma-catalysis-report-observation-linking-question-by-theme";
@@ -859,7 +939,6 @@ function printListOfObservations(observationList, idTagStart, reference, printLi
             }
             resultItems.push(m(linkingQuestionClass, printText(observationLinkingQuestionToPrint)));
         }
-
         return resultItems;
     });
 }

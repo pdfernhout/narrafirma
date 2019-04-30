@@ -224,6 +224,15 @@ class PatternExplorer {
                     displayPrompt: `You might want to enter a <strong>linking question</strong> that will connect this observation to its interpretations (e.g., "Why did people say ___?").`,
                     displayType: "text"
                 },
+                {
+                    id: "observationPanel_extraPatterns",
+                    valuePath: "currentObservationExtraPatterns",
+                    displayName: "Observation extra patterns",
+                    displayPrompt: `To <strong>include additional patterns</strong>, describe each pattern on a separate line. 
+                        Enter its question names exactly as you see them in the table above, in the same order, separated by two equals signs.
+                        (For details, see the help system.)`,
+                    displayType: "textarea"
+                },
             ]
         };
         this.interpretationsPanelSpecification = {
@@ -1425,6 +1434,13 @@ currentObservationLinkingQuestion(newValue = undefined) {
         return "";
     }
     return this.observationAccessor(this.currentPattern, "observationLinkingQuestion", newValue);
+}
+
+currentObservationExtraPatterns(newValue = undefined) {
+    if (!this.currentPattern) {
+        return "";
+    }
+    return this.observationAccessor(this.currentPattern, "observationExtraPatterns", newValue);
 }
 
 currentObservationSavedGraphSelections(newValue = undefined) {
