@@ -105,7 +105,7 @@ function add_catalysisReportGraphTypesChooser(panelBuilder: PanelBuilder, model,
             allGraphTypesAsArray.map((graphType) => {
                 var count = graphCountForGraphType(graphType, questions, graphMultiChoiceQuestionsAgainstThemselves);
                 var result = buildQuestionCheckbox(graphTypesToDisplayNamesMap[graphType], graphType, count);
-                if (graphTypesToCreate[graphType]) totalGraphCount += count;
+                if (graphTypesToCreate && graphTypesToCreate[graphType]) totalGraphCount += count;
                 return result;
             }),
         ]),

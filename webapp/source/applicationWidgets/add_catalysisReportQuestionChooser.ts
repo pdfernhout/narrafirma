@@ -192,9 +192,11 @@ function add_catalysisReportQuestionChooser(panelBuilder: PanelBuilder, model, f
 
     function selectAll() {
         var map = {};
-        elicitingQuestions.forEach((question) => {
-            map["elicitingQuestion"] = true;
-        });
+        if (elicitingQuestions) {
+            elicitingQuestions.forEach((question) => {
+                map["elicitingQuestion"] = true;
+            });
+        }
         allStoryQuestions.forEach((question) => {
             map["S_" + question.displayName] = true;
         });
@@ -286,7 +288,7 @@ function add_catalysisReportQuestionChooser(panelBuilder: PanelBuilder, model, f
     thirdColumn.push(m("b", "Additional information"));
     thirdColumn.push(m("br"));
     thirdColumn.push(m("br"));
-    thirdColumn.push(elicitingQuestions.map((question) => {return buildQuestionCheckboxSpecialForElicitingQuestion();}));
+    if (elicitingQuestions) thirdColumn.push(elicitingQuestions.map((question) => {return buildQuestionCheckboxSpecialForElicitingQuestion();}));
     thirdColumn.push(buildQuestionCheckboxSpecialForNumStoriesTold());
     thirdColumn.push(buildQuestionCheckboxSpecialForStoryLength());
     let thirdColumnTD = m("td", {"class": "narrafirma-questions-chooser-table-td"}, thirdColumn);
