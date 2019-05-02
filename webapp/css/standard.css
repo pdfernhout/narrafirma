@@ -863,6 +863,35 @@ table.filterTable td {
 
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Catalysis report ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
+.narrafirma-tabs-header {
+    font-size: 1em;
+    float: right;
+    margin-right: 1.2em;
+}
+
+.narrafirma-tab-button-selected { 
+    cursor: pointer;
+    font-weight: bold;
+    background-color: #b0d4d4;
+    border-radius: 4px;
+    border: 1px solid gray;
+  }
+
+.narrafirma-tab-button-selected:hover {
+    background-color: #cfebeb;
+}
+
+.narrafirma-tab-button {
+    cursor: pointer; 
+    background-color: #c5d5f7;
+    border-radius: 4px;
+    border: 1px solid gray;
+}
+
+.narrafirma-tab-button:hover {
+    background-color: #dfe7fa;
+}
+
 .narrafirma-questions-chooser-table {
     width: 95%;
     margin-left: 0.5em;
@@ -900,6 +929,14 @@ table.filterTable td {
     font-size: 0.9em;
 } 
 
+h6.narrafirma-statistics-panel-small {
+    font-weight: normal;
+}
+
+.statistics-name, .statistics-value, .narrafirma-mann-whitney-title {
+    font-weight: normal;
+}
+
 .narrafirma-statistics-panel-small {
     background-color: inherit;
 	padding: 0.5em;
@@ -908,17 +945,15 @@ table.filterTable td {
     max-width: 267px; /* this must match largeGraphWidth/3 in charting.ts */
 }
 
-.narrafirma-mann-whitney-title {
-    font-weight: bold;
-}
-
 table.narrafirma-mw-all-results {
     margin: 0.5em;
+    font-weight: normal;
     border: 1px solid black;
     border-collapse: collapse;
 }
 
 td.narrafirma-mw-nested-title, td.narrafirma-mw-nested-stats {
+    font-weight: normal;
     border: 1px solid black;
     padding: 0.25em;
 }

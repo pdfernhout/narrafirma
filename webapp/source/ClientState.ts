@@ -36,6 +36,7 @@ class ClientState {
     private _pageIdentifier: string = null;
     private _storyCollectionName: string = null;
     private _catalysisReportName: string = null;
+    private _observationAccessor: Object = null;
     private _debugMode: string = null;
     private _serverStatus: string = "narrafirma-serverstatus-ok";
     private _serverStatusText: string = "";
@@ -91,6 +92,13 @@ class ClientState {
             return null;
         }
         return catalysisReportIdentifier;
+    }
+
+    observationAccessor(newValue: Object = undefined) {
+        if (newValue !== undefined) {
+            this._observationAccessor = newValue;
+        }
+        return this._observationAccessor;
     }
     
     debugMode(newValue: string = undefined): string {
