@@ -235,14 +235,6 @@ class PatternExplorer {
                     displayPreventBreak: true,
                     displayConfiguration: this.doThingsWithSelectedStories.bind(this),
                 }, 
-                {
-                    id: "thingsYouCanDoPanel_savedGraphSelections",
-                    valuePath: "observationSavedGraphSelections",
-                    displayName: "Graph selections",
-                    displayPrompt: 'These are <strong>selections you have saved</strong> for this pattern.',
-                    displayType: "text",
-                },
-                
             ]};
 
         this.textAnswersPanelSpecification = {
@@ -298,6 +290,13 @@ class PatternExplorer {
                         Enter its question names exactly as you see them in the table above, in the same order, separated by two equals signs.
                         (For details, see the help system.)`,
                     displayType: "textarea"
+                },
+                {
+                    id: "observationPanel_savedGraphSelections",
+                    valuePath: "/clientState/observationAccessor/observationSavedGraphSelections",
+                    displayName: "Graph selections",
+                    displayPrompt: 'These are <strong>selections you have saved</strong> for this pattern.',
+                    displayType: "text",
                 },
             ]
         };
@@ -363,15 +362,24 @@ class PatternExplorer {
             if (this.observationAccessors.length === 0) return [];
             let tabs = [];
             for (let i = 0; i < this.observationAccessors.length; i++) {
-                const tab = m("button", 
-                    {class: (i === this.activeObservationTab) ? "narrafirma-tab-button-selected" : "narrafirma-tab-button", 
-                    onclick: this.switchToObservationTabClick.bind(this, i)}, 
-                    "" + (i+1));
+                const tab = m("button", {
+                    class: (i === this.activeObservationTab) ? "narrafirma-tab-button-selected" : "narrafirma-tab-button", 
+                    onclick: this.switchToObservationTabClick.bind(this, i),
+                    title: "Click to switch to another observation tab"
+                }, "" + (i+1));
                 tabs.push(tab);
             }
-            tabs.push(m("button", {class: "narrafirma-tab-button", onclick: this.addObservationTabClick.bind(this)}, "+"));
+            tabs.push(m("button", {
+                class: "narrafirma-tab-button", 
+                onclick: this.addObservationTabClick.bind(this),
+                title: "Click to add another observation to this pattern"
+            }, "+"));
             if (this.observationAccessors.length > 1) 
-                tabs.push(m("button", {class: "narrafirma-tab-button", onclick: this.deleteObservationTabClick.bind(this)}, "-"));
+                tabs.push(m("button", {
+                    class: "narrafirma-tab-button", 
+                    onclick: this.deleteObservationTabClick.bind(this),
+                    title: "Click here to delete this observation (permanently)"
+                }, "-"));
             let tabContents = [];
             if (this.activeObservationTab >= 0 && this.activeObservationTab < this.observationAccessors.length) {
                 const activeAccessor = this.observationAccessors[this.activeObservationTab];
@@ -1354,7 +1362,7 @@ class PatternExplorer {
         if (!this.currentPattern) return;
         
         // Find observation textarea and other needed data
-        var textarea = <HTMLTextAreaElement>document.getElementById("thingsYouCanDoPanel_savedGraphSelections");
+        var textarea = <HTMLTextAreaElement>document.getElementById("observationPanel_savedGraphSelections");
         var selection = this.graphHolder.currentSelectionExtentPercentages;
         var textToInsert = JSON.stringify(selection);
         
@@ -1376,7 +1384,7 @@ class PatternExplorer {
         if (this.activeObservationTab === undefined || this.activeObservationTab < 0 || !this.observationAccessors || this.activeObservationTab >= this.observationAccessors.length) return;
         const activeAccessor = this.observationAccessors[this.activeObservationTab];
 
-        var textarea = <HTMLTextAreaElement>document.getElementById("thingsYouCanDoPanel_savedGraphSelections");
+        var textarea = <HTMLTextAreaElement>document.getElementById("observationPanel_savedGraphSelections");
         if (!this.currentPattern) return;
         var text = activeAccessor.observationSavedGraphSelections();
 
@@ -1516,7 +1524,7 @@ class PatternExplorer {
                     // and if you didn't move everybody down to fill the gap, you would end up with (a) missing observations for indexes and (b) observations that are ignored
                     let indexToMoveDown = this.activeObservationTab + 1;
                     while (indexToMoveDown < this.currentPattern.observationIDs.length) {
-                        const patternReference = patternReferenceForPatternAndIndex(this.currentPattern, Math.max(indexToMoveDown-1, 0));
+                        const patternReference = patternReferenceForPatternAndIndex(this.currentPattern, indexToMoveDown - 1);
                         this.project.tripleStore.addTriple(this.catalysisReportObservationSetIdentifier, patternReference, this.currentPattern.observationIDs[indexToMoveDown]);
                         indexToMoveDown++;
                     }
