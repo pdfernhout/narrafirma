@@ -249,116 +249,23 @@ I wrote under it are also gone. Can I get it (and them) back?
 </div>
 <div class="question-answer">
 <p>
-You can't get the original name and text back, but your interpretations
-still exist. Find the pattern the observation was connected to and write a new
-observation name and text. Your interpretations should reappear in a list
-under the new name and text.
+If you deleted only the name and text of an observation, you can get the interpretations back.
+Just write a new observation name and/or text, and your interpretations will reappear.
+</p>
+<p>
+	However, if you deleted the entire observation using the minus button (-) under the graph, you can't get your interpretations back.
+	Only delete observations using the minus button if you are sure you don't want to keep the interpretations.
+</p>
+<p>Having said that, there is a way to find interpretation texts you lost, even if you have deleted the whole observation.
+	Go to the Project management page and export your entire project history.
+	Then open the JSON file in a text editor and search on some text you remember being in the lost interpretations.
 </p>
 </div>
 	
 <div class="question">
-I want to write two observations about one pattern. How can I do that?
+How do you write an observation that refers to multiple patterns?
 </div>
 <div class="question-answer">
-<p>
-	When we first started working on NarraFirma, it never occurred to us that people would want to write more than one observation per pattern.
-	When we found out that some people did want to do that, we decided not to change the one-observation-per-pattern system, for three reasons:
-</p>
-<ul>
-	<li>You really don't need to do this very often.</li>
-	<li>It would make the most complicated page in the application a lot more complicated.</li>
-	<li>It would be difficult to change the way observations are stored without breaking backward compatibility.</li>
-</ul>
-<p>
-	So you can write more than one observation per pattern, but it's a little messy.
-You can <strong>divide an observation into sections</strong> and refer to those sections (rather than the whole observation) in your interpretations.
-Here is how to do it.
-</p><p>
-When you write the observation (that is, its main text), begin each section with a <strong>header</strong> that starts
-and ends with the @ character (for example, @A@ and @B@). 
-Then refer to the headers in your interpretations (in their main texts, not their names). 
-</p>
-<p>
-When you print your catalysis report, NarraFirma will act <strong>as if the sections were separate observations</strong>.
-You can also segment observation titles and linking questions.
-</p>
-<p>
-For example, say you write an observation with two parts, like this:
-</p>
-<pre>
-	@A@ There are more stories about cats than about dogs. 
-	@B@ The stories people told about cats seem more friendly.
-</pre>
-<p>And say you give your observation this name:</p>
-<pre>
-	@A@ More Cats Than Dogs @B@ Cat Stories More Friendly
-</pre>
-<p>And this linking question:</p>
-<pre>
-	@A@ Why are there more cats than dogs? @B@ Why are the stories about cats friendlier?
-</pre>
-<p>
-Now say your interpretations look like this:
-</p>
-<pre>
-	@A@ Because cats are better than dogs.
-	@A@ Because cats live longer than dogs.
-	@B@ Because people who have cats are friendlier people.
-	@B@ Because the interviewer has a cat, so the people they talked to felt more at home.
-</pre>
-<p>
-The clustered-interpretations catalysis report will look like this: 
-</p>
-<pre>
-	Why are there more cats than dogs? Because cats are better than dogs.
-		More Cats Than Dogs: There are more stories about cats than about dogs.
-
-	Why are there more cats than dogs? Because cats live longer than dogs.
-		More Cats Than Dogs: There are more stories about cats than about dogs.
-
-	Why are the stories about cats friendlier? Because people who have cats are friendlier people.
-		Cat Stories More Friendly: The stories people told about cats seem more friendly.
-
-	Why are the stories about cats friendlier? Because the interviewer has a cat, so the people they talked to felt more at home.
-		Cat Stories More Friendly: The stories people told about cats seem more friendly.
-</pre>
-<p>And the clustered-observations report will look like this:</p>
-<pre>
-	More Cats Than Dogs: There are more stories about cats than about dogs.
-		Why are there more cats than dogs? 
-			Because cats are better than dogs.
-			Because cats live longer than dogs.
-
-	Cat Stories More Friendly: The stories people told about cats seem more friendly.
-		Why are the stories about cats friendlier? 
-			Because people who have cats are friendlier people.
-			Because the interviewer has a cat, so the people they talked to felt more at home.
-</pre>
-<p>
-These headers:
-</p>
-<ul>
-	<li>must have @ signs before and after them</li>
-	<li>can be anything you want inside those @ signs (first/second, 1/2, a/b, hey/ho, off/we go)</li>
-	<li>will not appear in the report</li>
-	<li>must be <i>identical</i> in the interpretation and observation</li>
-	<li>must be located <i>at the very start</i> of the interpretation text, observation text, observation name, or linking question</li>
-	<li>should not appear in any other field of the interpretation (just its main text)</li>
-</ul>
-<p>There are a few limitations with this segemented-texts approach. When you cluster observations,
-	you will have <i>only one bubble</i> to cluster with (so both segments have to be in the same theme). 
-	Also, you cannot set different observation strengths for the different parts of the observation.
-	Still, if you really want to say two things about a graph, this is how to do it.
-</p>
-</div>
-
-<div class="question">
-I want to write one observation about two patterns. How can I do that?
-</div>
-<div class="question-answer">
-<p>
-You're in luck, because this is easy. 
-</p>
 <ul>
 	<li>Under the box where you describe your observation, find the box labeled "To include additional patterns".</li>
 	<li>For each pattern you want to include, find its line in the patterns table at the top of the page. </li>
@@ -370,14 +277,7 @@ You're in luck, because this is easy.
 </ul>
 <p>
 	When NarraFirma prints your report, it will print the additional patterns you specified just after the pattern
-	associated with the observation. You can include as many additional patterns as you like; just make sure each one is described on its own line of text.
-</p>
-<p>
-There is a "secret" trick to this function. If the very first additional pattern name (on the first line of the box) reads <i>exactly</i> REPLACE_PATTERN,
-NarraFirma will <i>hide</i> the graph the observation is linked to. This means that you can <i>substitute</i> other patterns
-for the pattern that is supposed to be drawn for an observation. Why would you want to do this? Because it gives you another
-way to write more than one observation per pattern. Instead of segmenting an observation, you can "steal" an observation space
-from another pattern. 
+	associated with the observation (in the order you specified them). You can include as many additional patterns as you like; just make sure each one is described on its own line of text.
 </p>
 </div>
 
