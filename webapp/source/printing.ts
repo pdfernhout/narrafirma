@@ -14,6 +14,14 @@ import translate = require("./panelBuilder/translate");
 
 "use strict";
 
+// html headers used in report
+// H1 - Report title
+// H2 - Perspective title
+// H3 - Observation title
+// H4 - Interpretation title
+// H5 - Graph title
+// H6 - Statistics
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // General string functions
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -37,98 +45,6 @@ function printHTML(htmlToPrint: string) {
         w.document.write(htmlToPrint);
         w.document.close();
     }
-}
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// Text segmenting functions - for creating multiple (fake) observations for one pattern
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-var referenceMarker = "@";
-
-function textHasReferenceMarker(text) {
-    if (!text) return false;
-    return text.indexOf(referenceMarker) >= 0;
-}
-
-function findMarkedReferenceInText(text) {
-    if (!text) return null;
-    var startIndex = text.indexOf(referenceMarker);
-    if (startIndex >= 0) { 
-        var stopIndex = text.indexOf(referenceMarker, startIndex+1);
-        if (stopIndex >= 0 && stopIndex < text.length) 
-            return text.substring(startIndex+1, stopIndex);
-    } else return null;
-}
-
-function removeAllReferencesFromText(text) {
-    let result = "";
-    if (!text) return result;
-    let buildingReferenceText = false;
-    for (var charIndex = 0; charIndex < text.length; charIndex++) {
-        let character = text[charIndex];
-        if (character === referenceMarker) {
-            if (buildingReferenceText) {
-                buildingReferenceText = false;
-            } else {
-                buildingReferenceText = true;
-            }
-        } else {
-            if (!buildingReferenceText) {
-                result += character;
-            }
-        }
-    }
-    return result;
-}
-
-function portionOfTextMatchingReference(textToDrawPortionFrom, reference) {
-    if (!reference || !textToDrawPortionFrom) return textToDrawPortionFrom;
-    var textPortion = textToDrawPortionFrom;
-    if (reference) {
-        var referenceTag = referenceMarker + reference + referenceMarker;
-        var refIndexInTextToDrawPortionFrom = textToDrawPortionFrom.indexOf(referenceTag);
-        if (refIndexInTextToDrawPortionFrom >= 0) {
-            textPortion = "";
-            var charIndex = refIndexInTextToDrawPortionFrom + referenceTag.length + 1;
-            while (charIndex < textToDrawPortionFrom.length) {
-                if (textToDrawPortionFrom[charIndex] === referenceMarker) {
-                    break;
-                } else {
-                    textPortion += textToDrawPortionFrom[charIndex];
-                }
-                charIndex++;
-            }
-        }
-    } else {
-        textPortion = replaceAll(textPortion, referenceMarker, ""); // if no reference, is being printed alone; remove tags so they don't look ugly
-    }
-    return textPortion;
-}
-
-function segmentTextByReferenceMarkers(text) {
-    let result = {};
-    if (!text) return result;
-    let buildingReferenceText = false;
-    let currentReference = "";
-    for (var charIndex = 0; charIndex < text.length; charIndex++) {
-        let character = text[charIndex];
-        if (character === referenceMarker) {
-            if (buildingReferenceText) {
-                result[currentReference] = "";
-                buildingReferenceText = false;
-            } else {
-                buildingReferenceText = true;
-                currentReference = "";
-            }
-        } else {
-            if (buildingReferenceText) {
-                currentReference += character;
-            } else {
-                result[currentReference] += character;
-            }
-        }
-    }
-    return result;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -341,14 +257,14 @@ export function printCatalysisReport() {
     }
 
     var catalysisReportIdentifier = project.findCatalysisReport(catalysisReportName);
-    var printWhat = project.tripleStore.queryLatestC(catalysisReportIdentifier, "catalysisReportPrint_reportType");
-    if (!printWhat) {
+    var reportType = project.tripleStore.queryLatestC(catalysisReportIdentifier, "catalysisReportPrint_reportType");
+    if (!reportType) {
         alert("Please choose what kind of report you want to print.")
         return;
     }
 
-    var printStrengthsChoice = project.tripleStore.queryLatestC(catalysisReportIdentifier, "catalysisReportPrint_observationStrengths");
-    if (!printStrengthsChoice) {
+    var observationStrengthsUserChoice = project.tripleStore.queryLatestC(catalysisReportIdentifier, "catalysisReportPrint_observationStrengths");
+    if (!observationStrengthsUserChoice) {
         alert("Please choose which observation strengths you want to print.")
         return;
     }
@@ -362,8 +278,6 @@ export function printCatalysisReport() {
     var allStories = project.storiesForCatalysisReport(catalysisReportIdentifier);
 
     var options = {};
-
-    // user supplied texts
 
     options["reportNotes"] = getAndCleanUserText(project, catalysisReportIdentifier, "catalysisReport_notes", "introduction", false);
     options["aboutReport"] = getAndCleanUserText(project, catalysisReportIdentifier, "catalysisReport_about", "about text", false);
@@ -387,16 +301,12 @@ export function printCatalysisReport() {
     }
     options["customStatsTextReplacements"] = statsTextReplacements;
     
-    // graphing options
-
     options["minimumStoryCountRequiredForTest"] = project.tripleStore.queryLatestC(catalysisReportIdentifier, "minimumStoryCountRequiredForTest") || Project.default_minimumStoryCountRequiredForTest;
     options["minimumStoryCountRequiredForGraph"] = project.tripleStore.queryLatestC(catalysisReportIdentifier, "minimumStoryCountRequiredForGraph") || Project.default_minimumStoryCountRequiredForGraph; 
     options["numHistogramBins"] = project.tripleStore.queryLatestC(catalysisReportIdentifier, "numHistogramBins") || Project.default_numHistogramBins; 
     options["numScatterDotOpacityLevels"] = project.tripleStore.queryLatestC(catalysisReportIdentifier, "numScatterDotOpacityLevels") || Project.default_numScatterDotOpacityLevels; 
     options["scatterDotSize"] = project.tripleStore.queryLatestC(catalysisReportIdentifier, "scatterDotSize") || Project.default_scatterDotSize; 
     options["correlationLineChoice"] = project.tripleStore.queryLatestC(catalysisReportIdentifier, "correlationLineChoice") || Project.default_correlationLineChoice; 
-
-    // other report options
 
     options["outputGraphFormat"] = project.tripleStore.queryLatestC(catalysisReportIdentifier, "outputGraphFormat") || "SVG";
     options["showStatsPanelsInReport"] = project.tripleStore.queryLatestC(catalysisReportIdentifier, "showStatsPanelsInReport") || false;
@@ -412,13 +322,11 @@ export function printCatalysisReport() {
         }
     }
 
-    // including only some observation strengths
-
-    let printStrengthsToInclude = [];
-    if (printStrengthsChoice["strong"] != undefined && printStrengthsChoice["strong"] === true) printStrengthsToInclude.push("3 (strong)");
-    if (printStrengthsChoice["medium"] != undefined && printStrengthsChoice["medium"] === true) printStrengthsToInclude.push("2 (medium)");
-    if (printStrengthsChoice["weak"] != undefined && printStrengthsChoice["weak"] === true) printStrengthsToInclude.push("1 (weak)");
-    const includeObservationsWithoutStrengths = printStrengthsChoice["no strength value set"] != undefined && printStrengthsChoice["no strength value set"] == true;
+    let observationStrengthsToInclude = [];
+    if (observationStrengthsUserChoice["strong"] != undefined && observationStrengthsUserChoice["strong"] === true) observationStrengthsToInclude.push("3 (strong)");
+    if (observationStrengthsUserChoice["medium"] != undefined && observationStrengthsUserChoice["medium"] === true) observationStrengthsToInclude.push("2 (medium)");
+    if (observationStrengthsUserChoice["weak"] != undefined && observationStrengthsUserChoice["weak"] === true) observationStrengthsToInclude.push("1 (weak)");
+    const includeObservationsWithoutStrengths = observationStrengthsUserChoice["no strength value set"] != undefined && observationStrengthsUserChoice["no strength value set"] == true;
     const includeObservationsWithNoInterpretations = project.tripleStore.queryLatestC(catalysisReportIdentifier, "catalysisReportPrint_includeObservationsWithNoInterpretations") || false;
 
     var observationIDsToInclude = [];
@@ -426,7 +334,7 @@ export function printCatalysisReport() {
         var observation = project.tripleStore.makeObject(id, true);
         if (!observation.observationTitle || !observation.observationTitle.trim()) return;
         if (observation.observationStrength) {
-            if (printStrengthsToInclude.indexOf(observation.observationStrength) < 0) return;
+            if (observationStrengthsToInclude.indexOf(observation.observationStrength) < 0) return;
         } else {
             if (!includeObservationsWithoutStrengths) return;
         }
@@ -442,14 +350,14 @@ export function printCatalysisReport() {
         return;
     }
 
-    if (printWhat === "observations (disregarding any clustering)") {
+    if (reportType === "observations (disregarding any clustering)") {
         printCatalysisReportWithUnclusteredObservations(project, catalysisReportIdentifier, catalysisReportName, allStories, observationIDsToInclude, options);
-    } else if (printWhat === "themes (clustered observations)") {
+    } else if (reportType === "themes (clustered observations)") {
         printCatalysisReportWithClusteredObservations(project, catalysisReportIdentifier, catalysisReportName, allStories, observationIDsToInclude, options);
-    } else if (printWhat === "perspectives (clustered interpretations)") {
+    } else if (reportType === "perspectives (clustered interpretations)") {
         printCatalysisReportWithClusteredInterpretations(project, catalysisReportIdentifier, catalysisReportName, allStories, observationIDsToInclude, options);
     } else {
-        alert("The catalysis report type " + printWhat + " was not recognized.");
+        alert("The catalysis report type " + reportType + " was not recognized.");
     }
 }
 
@@ -468,29 +376,23 @@ function printCatalysisReportWithUnclusteredObservations(project, catalysisRepor
     
     let printItems = [];
     addPrintItemsForReportStart(printItems, project, catalysisReportName, catalysisReportIdentifier, allStories, options);
-    
-    var observationIndex = 0;
 
+    var observationIndex = 0;
     function printNextObservation() {
 
         if (progressModel.cancelled) {
+
             alert("Cancelled after working on " + (observationIndex + 1) + " observation(s)");
+
         } else if (observationIndex >= observationIDs.length) {
+
             finishCatalysisReport(project, catalysisReportName, catalysisReportIdentifier, printItems, progressModel, options);
+
         } else {
-            let observationID = observationIDs[observationIndex];
-            let observation = project.tripleStore.makeObject(observationID, true);
-            let references = [];
-            if (textHasReferenceMarker(observation.observationDescription)) { // split sectioned observations
-                let referencesAndSections = segmentTextByReferenceMarkers(observation.observationDescription); 
-                references = Object.keys(referencesAndSections);
-            } else {
-                references.push(""); // this will just print everything without sectioning
-            }
-            references.forEach(function(reference) {
-                printItems.push(<any>printListOfObservations([observationIDs[observationIndex]], "", reference, false, "neither", allStories, options));
-                printItems.push(m(".narrafirma-catalysis-report-observations-only-page-break", ""));
-                });
+
+            printItems.push(<any>printListOfObservations([observationIDs[observationIndex]], "", false, "neither", allStories, options));
+            printItems.push(m(".narrafirma-catalysis-report-observations-only-page-break", ""));
+
             progressModel.progressText = progressText(observationIndex);
             progressModel.redraw();
             observationIndex++;
@@ -534,89 +436,58 @@ function printCatalysisReportWithClusteredObservations(project, catalysisReportI
         function printNextObservation() {
     
             if (progressModel.cancelled) {
+
                 alert("Cancelled after working on " + (clusterIndex + 1) + " theme(s)");
+
             } else if (clusterIndex >= clustersToPrint.length) {
+
                 finishCatalysisReport(project, catalysisReportName, catalysisReportIdentifier, printItems, progressModel, options);
+
             } else {
+
                 var cluster = clustersToPrint[clusterIndex];
-                if (itemIndex === 0) { // first item in cluster
+
+                if (itemIndex === 0) { // first item in cluster - write second-level TOC
 
                     let numItemsToPrintInThisCluster = numItemsOutOfListToPrint(cluster.items);
 
-                    var clusterNameToPrintWithoutSpaces = replaceSpacesWithDashes(cluster.name);
+                    // theme name and notes
                     printItems.push(m("h2.narrafirma-catalysis-report-theme", 
-                        [m("span", {"class": "narrafirma-catalysis-report-theme-label " + clusterNameToPrintWithoutSpaces, "id": "c_" + clusterIndex}, options["themeLabel"]),
-                        cluster.name]));
+                        [m("span", {class: "narrafirma-catalysis-report-theme-label " + replaceSpacesWithDashes(cluster.name), id: "c_" + clusterIndex}, options.themeLabel), cluster.name]));
                     if (cluster.notes) printItems.push(m("div.narrafirma-catalysis-report-theme-notes", printText(cluster.notes)));
-    
-                    // table of contents level two - observations in this theme
-                    var tocHeaderLevelTwoRaw = project.tripleStore.queryLatestC(catalysisReportIdentifier, "catalysisReport_tocHeaderSecondLevel_observations");
-                    if (!tocHeaderLevelTwoRaw) tocHeaderLevelTwoRaw = "Observations in this theme (#):";
-                    var numberSignIndex = tocHeaderLevelTwoRaw.indexOf("#");
-                    if (numberSignIndex >= 0) {
-                        tocHeaderLevelTwoRaw = tocHeaderLevelTwoRaw.replace("#", numItemsToPrintInThisCluster);
-                    }
-                    try {
-                        var tocHeaderLevelTwo = sanitizeHTML.generateSmallerSetOfSanitizedHTMLForMithril(tocHeaderLevelTwoRaw);
-                    } catch (error) {
-                        alert("Problem in catalysis report contents header (second level): " + error);
-                    }
-                    printItems.push(m("div.narrafirma-catalysis-report-theme-link-header", tocHeaderLevelTwo));
-                
-                    var printItemsForThisCluster = [];
+
+                    // table of contents for theme
+                    addPrintHeaderForTOCLevelTwo(printItems, project, catalysisReportIdentifier, "themes", 
+                        "catalysisReport_tocHeaderSecondLevel_observations", "Observations in this theme (#):", numItemsToPrintInThisCluster);
+                    var tocItemsForCluster = [];
                     for (var i = 0; i < cluster.items.length ; i++) {
                         if (cluster.items[i].print) {
                             const idTag = "#c_" + clusterIndex + "_o_" + i;
-                            const clusteredItem = cluster.items[i];
-                            var observation = project.tripleStore.makeObject(clusteredItem.referenceUUID, true);
-
-                            if (textHasReferenceMarker(observation.observationDescription)) { // split sectioned observations
-                                let referencesAndSections = segmentTextByReferenceMarkers(observation.observationDescription); // references in description drive segmentation
-                                let references = Object.keys(referencesAndSections);
-                                let titleRefsAndSections = segmentTextByReferenceMarkers(observation.observationTitle);
-                                references.forEach(function(reference) {
-                                    printItemsForThisCluster.push(m("div", {"class": "narrafirma-catalysis-report-theme-link"}, 
-                                    [m("span", {"class": "narrafirma-catalysis-report-observation-name"}, m("a", {"href": idTag}, titleRefsAndSections[reference] || referencesAndSections[reference]))]));
-                                });
-                            } else {
-                                printItemsForThisCluster.push(m("div", {"class": "narrafirma-catalysis-report-theme-link"}, 
-                                    [m("span", {"class": "narrafirma-catalysis-report-observation-name"}, m("a", {"href": idTag}, observation.observationTitle || observation.observationDescription))]));
-                            }
+                            var observation = project.tripleStore.makeObject(cluster.items[i].referenceUUID, true);
+                            tocItemsForCluster.push(m("div", {"class": "narrafirma-catalysis-report-theme-link"}, 
+                                [m("span", {"class": "narrafirma-catalysis-report-observation-name"}, m("a", {"href": idTag}, observation.observationTitle || observation.observationDescription))]));
                         }
                     }
-                    printItems.push(m("div", {"class": "narrafirma-catalysis-report-observation-links"}, printItemsForThisCluster));
+                    printItems.push(m("div", {"class": "narrafirma-catalysis-report-observation-links"}, tocItemsForCluster));
                     printItems.push(m("br"));
-                }
-    
-                if (itemIndex >= cluster.items.length) {
+                    itemIndex++;
+
+                } else if (itemIndex >= cluster.items.length) { // last item in cluster - move to next cluster
+
                     clusterIndex++;
                     itemIndex = 0;
+
                 } else {
+
                     const item = cluster.items[itemIndex];
                     if (item.print) {
-
                         const idTag = "c_" + clusterIndex + "_o_" + itemIndex;
+                        printItems.push(<any>printListOfObservations([item.referenceUUID], idTag, true, "themes", allStories, options));
+
                         const interpretationsListIdentifier = project.tripleStore.queryLatestC(item.referenceUUID, "observationInterpretations");
                         const interpretationIDsForThisObservation = project.tripleStore.getListForSetIdentifier(interpretationsListIdentifier);
-                        const observation = project.tripleStore.makeObject(item.referenceUUID, true);
+                        printItems.push(<any>printListOfInterpretations(interpretationIDsForThisObservation, idTag, allStories, options));
 
-                        if (textHasReferenceMarker(observation.observationDescription)) { // split sectioned observations
-                            let referencesAndSections = segmentTextByReferenceMarkers(observation.observationDescription); // references in description drive segmentation
-                            let references = Object.keys(referencesAndSections);
-                            references.forEach(function(reference) {
-                                printItems.push(<any>printListOfObservations([item.referenceUUID], idTag, reference, true, "themes", allStories, options));
-                                interpretationIDsForThisObservation.forEach(function(id) {
-                                    let interpretation = project.tripleStore.makeObject(id, true);
-                                    let referenceInInterpretationText = findMarkedReferenceInText(interpretation.interpretation_text);
-                                    if (referenceInInterpretationText && referenceInInterpretationText === reference) {
-                                        printItems.push(<any>printListOfInterpretations([id], idTag, reference, observation.observationDescription, allStories, options));
-                                    }
-                                });
-                            });
-                        } else {
-                            printItems.push(<any>printListOfObservations([item.referenceUUID], idTag, "", true, "themes", allStories, options));
-                            printItems.push(<any>printListOfInterpretations(interpretationIDsForThisObservation, idTag, "", observation.observationDescription, allStories, options));
-                        }
                         progressModel.progressText = progressText(clusterIndex, itemIndex);
                         progressModel.redraw();
                     }
@@ -630,20 +501,12 @@ function printCatalysisReportWithClusteredObservations(project, catalysisReportI
 
 function printCatalysisReportWithClusteredInterpretations(project, catalysisReportIdentifier, catalysisReportName, allStories, observationIDs, options) {
 
-    // H1 - Report title
-    // H2 - Perspective title
-    // H3 - Observation title
-    // H4 - Interpretation title
-    // H5 - Graph title
-    // H6 - Statistics
-
     var clusteringDiagram = project.tripleStore.queryLatestC(catalysisReportIdentifier, "interpretationsClusteringDiagram");
     if (!clusteringDiagram) {
         alert("Please cluster interpretations before printing.");
         return;
     }
 
-    // set up progress bar
     var progressModel = dialogSupport.openProgressDialog("Starting up...", "Generating clustered-interpretations catalysis report", "Cancel", dialogCancelled);
 
     function progressText(clusterIndex: number, itemIndex: number) {
@@ -682,171 +545,94 @@ function printCatalysisReportWithClusteredInterpretations(project, catalysisRepo
 
             var cluster = clustersToPrint[clusterIndex];
 
-            if (itemIndex === 0) {
+            if (itemIndex === 0) { // first item in cluster - write second-level TOC
 
                 let numItemsToPrintInThisCluster = numItemsOutOfListToPrint(cluster.items);
 
-                // name and description of perspective
-
-                var perspectiveNameToPrintWithoutSpaces = replaceSpacesWithDashes(cluster.name);
+                // perspective name and notes
+                const headerClass = "narrafirma-catalysis-report-perspective-label " + replaceSpacesWithDashes(cluster.name);
                 printItems.push(m("h2.narrafirma-catalysis-report-perspective", 
-                    [m("span", {"class": "narrafirma-catalysis-report-perspective-label " + perspectiveNameToPrintWithoutSpaces, "id": "c_" + clusterIndex}, options["perspectiveLabel"]),
-                    cluster.name]));
+                    [m("span", {"class": headerClass, "id": "c_" + clusterIndex}, options["perspectiveLabel"]), cluster.name]));
                 if (cluster.notes) printItems.push(m("div.narrafirma-catalysis-report-perspective-notes", printText(cluster.notes)));
 
-                // table of contents level two - list of interpretations + observations + strengths in this perspective
-
-                var tocHeaderLevelTwoRaw = project.tripleStore.queryLatestC(catalysisReportIdentifier, "catalysisReport_tocHeaderSecondLevel");
-                if (!tocHeaderLevelTwoRaw) tocHeaderLevelTwoRaw = "Interpretations and observations in this perspective (#):";
-                var numberSignIndex = tocHeaderLevelTwoRaw.indexOf("#");
-                if (numberSignIndex >= 0) {
-                    tocHeaderLevelTwoRaw = tocHeaderLevelTwoRaw.replace("#", numItemsToPrintInThisCluster);
-                }
-                try {
-                    var tocHeaderLevelTwo = sanitizeHTML.generateSmallerSetOfSanitizedHTMLForMithril(tocHeaderLevelTwoRaw);
-                } catch (error) {
-                    alert("Problem in catalysis report contents header (second level): " + error);
-                }
-                printItems.push(m("br"));
-                printItems.push(m("div.narrafirma-catalysis-report-interp-link-header", tocHeaderLevelTwo));
-            
-                var printItemsForThisPerspective = [];
+                // table of contents for perspective
+                addPrintHeaderForTOCLevelTwo(printItems, project, catalysisReportIdentifier, "perspectives", 
+                        "catalysisReport_tocHeaderSecondLevel", "Interpretations and observations in this perspective (#):", numItemsToPrintInThisCluster);
+                var tocItemsForCluster = [];
                 for (var i = 0; i < cluster.items.length ; i++) {
                     const item = cluster.items[i];
                     if (item.print) {
                         const interpretation = project.tripleStore.makeObject(item.referenceUUID, true);
                         if (interpretation) {
-                            const reference = findMarkedReferenceInText(interpretation.interpretation_text);
                             var observationIDsForThisInterpretation = makeObservationIDsListForInterpretation(project, observationIDs, item);
                             observationsIDsForInterpretation[item.uuid] = observationIDsForThisInterpretation; // save to use later
-
                             for (var observationIndex = 0; observationIndex < observationIDsForThisInterpretation.length; observationIndex++) {
                                 var observation = project.tripleStore.makeObject(observationIDsForThisInterpretation[observationIndex], true);
                                 if (observation) {
-                                    var printItemsForThisOIPair = [];
-                                    printItemsForThisOIPair.push(m("td", {"class": "narrafirma-catalysis-report-interpretation-links-table-td"}, 
+                                    var tocItemsForOIPair = [];
+                                    tocItemsForOIPair.push(m("td", {"class": "narrafirma-catalysis-report-interpretation-links-table-td"}, 
                                         m("a", {href: "#c_" + clusterIndex + "_i_" + i}, interpretation.interpretation_name || interpretation.interpretation_text)));
-                                    var observationTitleToPrint = portionOfTextMatchingReference(observation.observationTitle || observation.observationDescription, reference);
-                                    printItemsForThisOIPair.push(m("td", {"class": "narrafirma-catalysis-report-interpretation-links-table-td"}, 
-                                        m("a", {href: "#c_" + clusterIndex + "_i_" + i + "_o_" + observationIndex}, observationTitleToPrint)));
-                                        printItemsForThisOIPair.push(m("td", {"class": "narrafirma-catalysis-report-interpretation-links-table-td"}, observation.observationStrength || ""));
-                                    
-                                    printItemsForThisPerspective.push(m("tr", {"class": "narrafirma-catalysis-report-interpretation-links-table-tr"}, printItemsForThisOIPair)); 
+                                    tocItemsForOIPair.push(m("td", {"class": "narrafirma-catalysis-report-interpretation-links-table-td"}, 
+                                        m("a", {href: "#c_" + clusterIndex + "_i_" + i + "_o_" + observationIndex}, observation.observationTitle || observation.observationDescription)));
+                                        tocItemsForOIPair.push(m("td", {"class": "narrafirma-catalysis-report-interpretation-links-table-td"}, observation.observationStrength || ""));
+                                    tocItemsForCluster.push(m("tr", {"class": "narrafirma-catalysis-report-interpretation-links-table-tr"}, tocItemsForOIPair)); 
                                 }
                             }
                         }
                     }
                 }
-                printItemsForThisPerspective.sort(compareRowsInPerspectiveLinksTable);
-                printItems.push(m("table", {"class": "narrafirma-catalysis-report-interpretation-links-table"}, printItemsForThisPerspective));
+                tocItemsForCluster.sort(compareRowsInPerspectiveLinksTable);
+                printItems.push(m("table", {"class": "narrafirma-catalysis-report-interpretation-links-table"}, tocItemsForCluster));
                 printItems.push(m("br"));
-            }
-            if (itemIndex >= cluster.items.length) {
+                itemIndex++;
+
+            } else if (itemIndex >= cluster.items.length) { // last item in cluster - move to next cluster
+
                 clusterIndex++;
                 itemIndex = 0;
+
             } else {
+
                 const item = cluster.items[itemIndex];
                 if (item.print) {
                     const interpretation = project.tripleStore.makeObject(item.referenceUUID, true);
                     if (interpretation && (interpretation.interpretation_name || interpretation.interpretation_text)) {
-                        const reference = findMarkedReferenceInText(interpretation.interpretation_text);
 
-                        // linking question (from observation)
                         const linkingQuestion = project.tripleStore.queryLatestC(observationsIDsForInterpretation[item.uuid][0], "observationLinkingQuestion");
-                        if (linkingQuestion) {
-                            const observationLinkingQuestionToPrint = portionOfTextMatchingReference(linkingQuestion, reference);
-                            printItems.push(m("div.narrafirma-catalysis-report-observation-linking-question-by-perspective", printText(observationLinkingQuestionToPrint)));
-                        }
-
-                        // interpretation name (if no name use text as name)
+                        if (linkingQuestion) 
+                            printItems.push(m("div.narrafirma-catalysis-report-observation-linking-question-by-perspective", printText(linkingQuestion)));
                         const interpretationNameWithoutSpaces = replaceSpacesWithDashes(interpretation.interpretation_name || "");
                         const idTag = "c_" + clusterIndex + "_i_" + itemIndex;
+
                         const printItemsForHeader = [];
-                        if (options["interpretationLabel"]) {
+                        if (options["interpretationLabel"]) 
                             printItemsForHeader.push(m("span", {"class": "narrafirma-catalysis-report-interpretation-label " + interpretationNameWithoutSpaces}, options["interpretationLabel"]));
-                        }
                         printItemsForHeader.push(interpretation.interpretation_name || "");
                         printItems.push(m("h4.narrafirma-catalysis-report-interpretation", {"id": idTag}, printItemsForHeader));
 
-                        // interpretatation text
-                        const interpretationTextToPrint = removeAllReferencesFromText(interpretation.interpretation_text);
-                        printItems.push(m("div.narrafirma-catalysis-report-interpretation-notes", printText(interpretationTextToPrint)));
+                        printItems.push(m("div.narrafirma-catalysis-report-interpretation-notes", printText(interpretation.interpretation_text)));
+                        if (item.idea) printItems.push(m("div.narrafirma-catalysis-report-interpretation-idea", printText(item.idea)));
+                        if (item.questions) printItems.push(m("div.narrafirma-catalysis-report-interpretation-questions", printText(item.questions)));
 
-                        // interpretation idea
-                        if (item.idea) {
-                            printItems.push(m("div.narrafirma-catalysis-report-interpretation-idea", printText(item.idea)));
-                        }
-                        // interpretation questions
-                        if (item.questions) {
-                            printItems.push(m("div.narrafirma-catalysis-report-interpretation-questions", printText(item.questions)));
-                        }
+                        printItems.push(<any>printListOfObservations(observationsIDsForInterpretation[item.uuid], idTag, false, "perspectives", allStories, options));
 
-                        // observations for this perspective
-                        printItems.push(<any>printListOfObservations(observationsIDsForInterpretation[item.uuid], idTag, reference, false, "perspectives", allStories, options));
-                        
                         progressModel.progressText = progressText(clusterIndex, itemIndex);
                         progressModel.redraw();
                     }
                 }
                 itemIndex++;
             }
-   
             setTimeout(function() { printNextInterpretation(); }, 0);
         }
     }
     setTimeout(function() { printNextInterpretation(); }, 0);
 }
 
-function initializedGraphHolder(allStories, options) {
-    var graphHolder: GraphHolder = {
-        graphResultsPane: charting.createGraphResultsPane("narrafirma-graph-results-pane chartEnclosure"),
-        chartPanes: [],
-        allStories: allStories,
-        currentGraph: null,
-        currentSelectionExtentPercentages: null,
-        excludeStoryTooltips: true,
-        minimumStoryCountRequiredForTest: options.minimumStoryCountRequiredForTest,
-        minimumStoryCountRequiredForGraph: options.minimumStoryCountRequiredForGraph,
-        numHistogramBins: options.numHistogramBins,
-        numScatterDotOpacityLevels: options.numScatterDotOpacityLevels,
-        scatterDotSize: options.scatterDotSize,
-        correlationLineChoice: options.correlationLineChoice,
-        hideNumbersOnContingencyGraphs: options.hideNumbersOnContingencyGraphs,
-        outputGraphFormat: options.outputGraphFormat,
-        showStatsPanelsInReport: options.showStatsPanelsInReport,
-        customStatsTextReplacements: options.customStatsTextReplacements,
-        customGraphWidth: options.customGraphWidth,
-        graphTypesToCreate: {}
-    };
-    return graphHolder;
-}
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Catalysis report - printing lists of observations or interpretations
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-function graphTypeForListOfQuestions(questions) {
-    let result = "";
-    if (questions.length === 1) { // bar, histogram
-        if (questions[0].displayType === "slider") {
-            return "histogram"; // one scale
-        } else {
-            return "bar"; // one choice
-        }
-    } else if (questions.length === 2) { // table, scatter, multiple histogram
-        if (questions[0].displayType !== "slider" && questions[1].displayType !== "slider") { // two choices
-            return "table";
-        } else if (questions[0].displayType === "slider" && questions[1].displayType === "slider") { // two scales
-            return "scatter";
-        } else { // one scale one choice
-            return "multiple histogram";
-        }
-    } else if (questions.length === 3) { // contingency-histogram, multiple scatter
-        if (questions[0].displayType === "slider" && questions[1].displayType === "slider") {
-            return "multiple scatter"; // two scales, one choice
-        } else {
-            return "contingency-histogram"; // two choices, one scale
-        }
-    }
-}
-
-function printListOfObservations(observationList, idTagStart, reference, printLinkingQuestion, themesOrPerspectives, allStories, options) {
+function printListOfObservations(observationList, idTagStart, printLinkingQuestion, themesOrPerspectives, allStories, options) {
 
     return printList(observationList, {}, false, function (observation, index) {
         var project = Globals.project();
@@ -857,40 +643,23 @@ function printListOfObservations(observationList, idTagStart, reference, printLi
 
         const resultItems = [];
 
-        const observationTitleToPrint = portionOfTextMatchingReference(observation.observationTitle, reference);
-        const strengthStringToPrint = observation.observationStrength ? " Strength: " + observation.observationStrength : ""; 
-        const observationDescriptionToPrint = portionOfTextMatchingReference(observation.observationDescription, reference);
-
         const headerItems = [];
         headerItems.push(m("span", {"class": "narrafirma-catalysis-report-observation-label"}, observationLabel));
-        headerItems.push(m("span", {"class": "narrafirma-catalysis-report-observation-title"}, printText(observationTitleToPrint)));
+        headerItems.push(m("span", {"class": "narrafirma-catalysis-report-observation-title"}, printText(observation.observationTitle)));
+        const strengthStringToPrint = observation.observationStrength ? " Strength: " + observation.observationStrength : ""; 
         headerItems.push(m("span", {"class": "narrafirma-catalysis-report-observation-strength"}, strengthStringToPrint));
 
         let idTagTouse = idTagStart;
         if (idTagTouse.indexOf("_o_") < 0) idTagTouse += "_o_" + index;
         resultItems.push(m("h3.narrafirma-catalysis-report-observation", {"id": idTagTouse}, headerItems));
-        resultItems.push(m("div.narrafirma-catalysis-report-observation-description", printText(observationDescriptionToPrint)));
+        resultItems.push(m("div.narrafirma-catalysis-report-observation-description", printText(observation.observationDescription)));
 
         if (observation.pattern.graphType === "texts") {
             resultItems.push(printReturnAndBlankLine());
         } else {
 
-            // check for the "back door" method of making two observations connected to one pattern
-            // which is to pretend to make an observation with an uninteresting pattern, then replace its graph with another
-            // the "secret" code to do this is REPLACE_PATTERN (exactly) as the FIRST question name
-
-            const replacePatternCode = "REPLACE_PATTERN";
-            let replacePattern = false;
-            if (observation.observationExtraPatterns) {
-                const patternTexts = observation.observationExtraPatterns.split("\n");
-                // they must actually have another graph specified (hence length > 1) or they'll get a blank observation, which they probably didn't want
-                replacePattern = patternTexts.length > 1 && patternTexts[0].trim() === replacePatternCode;
-            }
-
-            if (!replacePattern) {
-                var graph = PatternExplorer.makeGraph(pattern, graphHolder, selectionCallback, !options.showStatsPanelsInReport);
-                if (graph) resultItems.push(printGraphWithGraphHolder(graphHolder, options.customCSS));
-            }
+            var graph = PatternExplorer.makeGraph(pattern, graphHolder, selectionCallback, !options.showStatsPanelsInReport);
+            if (graph) resultItems.push(printGraphWithGraphHolder(graphHolder, options.customCSS));
 
             if (observation.observationExtraPatterns) {
                 const allQuestions = project.allQuestionsThatCouldBeGraphedForCatalysisReport(options.catalysisReportIdentifier, true);
@@ -899,8 +668,6 @@ function printListOfObservations(observationList, idTagStart, reference, printLi
                 const patternTexts = observation.observationExtraPatterns.split("\n");
 
                 patternTexts.forEach((patternText) => {
-
-                    if (patternText === replacePatternCode) return;
 
                     // the question short names MUST be in the order they are in the patterns table (because some of the graphs require a certain order)
                     const questionNames = patternText.split('==');
@@ -929,21 +696,69 @@ function printListOfObservations(observationList, idTagStart, reference, printLi
                 });
             }
         }
-        if (printLinkingQuestion) {
-            const observationLinkingQuestionToPrint = portionOfTextMatchingReference(observation.observationLinkingQuestion, reference);
+        if (printLinkingQuestion && observation.observationLinkingQuestion) {
             let linkingQuestionClass = "";
             if (themesOrPerspectives = "themes") {
                 linkingQuestionClass = "div.narrafirma-catalysis-report-observation-linking-question-by-theme";
             } else {
                 linkingQuestionClass = "div.narrafirma-catalysis-report-observation-linking-question-by-perspective";
             }
-            resultItems.push(m(linkingQuestionClass, printText(observationLinkingQuestionToPrint)));
+            resultItems.push(m(linkingQuestionClass, printText(observation.observationLinkingQuestion)));
         }
         return resultItems;
     });
 }
 
-function printListOfInterpretations(interpretationList, idTagStart, reference, observationDescription, allStories, options) {
+function graphTypeForListOfQuestions(questions) {
+    let result = "";
+    if (questions.length === 1) { // bar, histogram
+        if (questions[0].displayType === "slider") {
+            return "histogram"; // one scale
+        } else {
+            return "bar"; // one choice
+        }
+    } else if (questions.length === 2) { // table, scatter, multiple histogram
+        if (questions[0].displayType !== "slider" && questions[1].displayType !== "slider") { // two choices
+            return "table";
+        } else if (questions[0].displayType === "slider" && questions[1].displayType === "slider") { // two scales
+            return "scatter";
+        } else { // one scale one choice
+            return "multiple histogram";
+        }
+    } else if (questions.length === 3) { // contingency-histogram, multiple scatter
+        if (questions[0].displayType === "slider" && questions[1].displayType === "slider") {
+            return "multiple scatter"; // two scales, one choice
+        } else {
+            return "contingency-histogram"; // two choices, one scale
+        }
+    }
+}
+
+function initializedGraphHolder(allStories, options) {
+    var graphHolder: GraphHolder = {
+        graphResultsPane: charting.createGraphResultsPane("narrafirma-graph-results-pane chartEnclosure"),
+        chartPanes: [],
+        allStories: allStories,
+        currentGraph: null,
+        currentSelectionExtentPercentages: null,
+        excludeStoryTooltips: true,
+        minimumStoryCountRequiredForTest: options.minimumStoryCountRequiredForTest,
+        minimumStoryCountRequiredForGraph: options.minimumStoryCountRequiredForGraph,
+        numHistogramBins: options.numHistogramBins,
+        numScatterDotOpacityLevels: options.numScatterDotOpacityLevels,
+        scatterDotSize: options.scatterDotSize,
+        correlationLineChoice: options.correlationLineChoice,
+        hideNumbersOnContingencyGraphs: options.hideNumbersOnContingencyGraphs,
+        outputGraphFormat: options.outputGraphFormat,
+        showStatsPanelsInReport: options.showStatsPanelsInReport,
+        customStatsTextReplacements: options.customStatsTextReplacements,
+        customGraphWidth: options.customGraphWidth,
+        graphTypesToCreate: {}
+    };
+    return graphHolder;
+}
+
+function printListOfInterpretations(interpretationList, idTagStart, allStories, options) {
 
     return printList(interpretationList, {}, options["printInterpretationsAsTable"], function (item, index) {
         var project = Globals.project();
@@ -970,15 +785,13 @@ function printListOfInterpretations(interpretationList, idTagStart, reference, o
             graphTypesToCreate: {}
         };
 
-        const interpretationTextToPrint = portionOfTextMatchingReference(item.interpretation_text, reference);
-
         const headerItems = [];
         headerItems.push(m("span", {"class": "narrafirma-catalysis-report-interpretation-label"}, options.interpretationLabel));
         headerItems.push(m("span", {"class": "narrafirma-catalysis-report-observation-title"}, item.interpretation_name));
 
         const resultItems = [];
         resultItems.push(m("h3.narrafirma-catalysis-report-interpretation", {"id": idTagStart + "_i_" + index}, headerItems));
-        resultItems.push(m("div.narrafirma-catalysis-report-interpretation-notes", printText(interpretationTextToPrint)));
+        resultItems.push(m("div.narrafirma-catalysis-report-interpretation-notes", printText(item.interpretation_text)));
         if (item.interpretation_idea) resultItems.push(m("div.narrafirma-catalysis-report-interpretation-idea", printText(item.interpretation_idea)));
         if (item.interpretation_questions) resultItems.push(m("div.narrafirma-catalysis-report-interpretation-questions", printText(item.interpretation_questions)));
 
@@ -1152,6 +965,28 @@ function addPrintItemsForTOCLevelOne(printItems, tocHeaderRaw, clusters, cluster
         var cluster = clusters[i];
         printItems.push(m("div.narrafirma-catalysis-report-toc-link", m("a", {href: "#c_" + i}, cluster.name)));
     }
+}
+
+function addPrintHeaderForTOCLevelTwo(printItems, project, catalysisReportIdentifier, reportType, headerID, defaultHeader, numItems) {
+    var tocHeaderLevelTwoRaw = project.tripleStore.queryLatestC(catalysisReportIdentifier, headerID);
+    if (!tocHeaderLevelTwoRaw) tocHeaderLevelTwoRaw = defaultHeader;
+    var numberSignIndex = tocHeaderLevelTwoRaw.indexOf("#");
+    if (numberSignIndex >= 0) {
+        tocHeaderLevelTwoRaw = tocHeaderLevelTwoRaw.replace("#", numItems);
+    }
+    try {
+        var tocHeaderLevelTwo = sanitizeHTML.generateSmallerSetOfSanitizedHTMLForMithril(tocHeaderLevelTwoRaw);
+    } catch (error) {
+        alert("Problem in catalysis report contents header (second level): " + error);
+    }
+    let divClass;
+    if (reportType === "themes") {
+        divClass = "div.narrafirma-catalysis-report-theme-link-header";
+    } else if (reportType === "perspectives") {
+        divClass = "div.narrafirma-catalysis-report-perspective-link-header";
+        printItems.push(m("br"));
+    }
+    printItems.push(m(divClass, tocHeaderLevelTwo));
 }
 
 function addPrintItemsForReportStart(printItems, project, catalysisReportName, catalysisReportIdentifier, allStories, options) {
@@ -1482,7 +1317,9 @@ export function printStoryForm(model, fieldSpecification, value) {
     printHTML(output);
 }
 
-// ***************************************************************************************** Story cards 
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Printing story cards
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 export function printStoryCards() {
     var storyCollectionName = Globals.clientState().storyCollectionName();
@@ -1576,7 +1413,9 @@ function printList(list, fieldsToIgnore = {}, printAsTable = false, printItemFun
     return result;
 }
 
-// ***************************************************************************************** Presentation outline 
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Printing presentation outline
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 export function exportPresentationOutline() {
     var project = Globals.project();
@@ -1592,7 +1431,9 @@ export function exportPresentationOutline() {
     printHTML(htmlForPage);
 }
 
-// ***************************************************************************************** Session agendas 
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Printing session agendas
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 export function exportCollectionSessionAgenda(itemID) {
     var project = Globals.project();
@@ -1638,8 +1479,9 @@ export function printSensemakingSessionAgenda(itemID) {
     printHTML(htmlForPage);
 }
 
-
-// ***************************************************************************************** Project Report 
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Printing project report
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 function cssForProjectReport() {
     var result = `div {
