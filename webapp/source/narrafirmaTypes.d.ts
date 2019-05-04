@@ -31,6 +31,7 @@ interface GraphHolder {
     correlationLineChoice: string;
     hideNumbersOnContingencyGraphs: boolean;
     excludeStoryTooltips?: boolean; // this is used to suppress story tooltips in "data integrity" graphs where stories are not the things being represented
+    patternDisplayConfiguration: PatternDisplayConfiguration;
 
     // printed report options
     outputGraphFormat?: string;
@@ -40,6 +41,9 @@ interface GraphHolder {
     customGraphWidth?: number;
 }
 
+interface PatternDisplayConfiguration {
+    hideNoAnswerValues: boolean;
+}
 
 // Possible Grid configuration options
 interface GridConfiguration {

@@ -151,6 +151,7 @@ class PatternExplorer {
             correlationLineChoice: Project.default_correlationLineChoice,
             hideNumbersOnContingencyGraphs: false,
             graphTypesToCreate: Project.default_graphTypesToCreate,
+            patternDisplayConfiguration: {hideNoAnswerValues: false},
         };
         
         this.setUpEditingPanels(args);
@@ -223,6 +224,7 @@ class PatternExplorer {
                         "Show random sample of 10 selected stories", 
                         "Show random sample of 20 selected stories", 
                         "Show random sample of 30 selected stories",
+                        'Toggle display of "No answer" values',
                         "Save the current selection (it will appear in the text box below)",
                         "Restore a saved selection (from the text box below; position your cursor inside it first)",
                         "Save graph(s) as SVG file(s)",
@@ -572,6 +574,9 @@ class PatternExplorer {
     buildPatternList() {
         if (!this.questionsToInclude) return [];
 
+        const project = this.project;
+        const catalysisReportIdentifier = this.catalysisReportIdentifier;
+
         var nominalQuestions = [];
         var scaleQuestions = [];
         var textQuestions = [];
@@ -617,18 +622,25 @@ class PatternExplorer {
         var patternIndex = 0;
         // if a lot of patterns, use progress dialog, otherwise just calculate (and avoid having a dialog blip onto the screen and off again)
         if (result.length > 200) { // this is an arbitrary number, just a guess as to how long it will take to calculate 
+
             // first set all stats to "none" in case they cancel partway through
             result.forEach((pattern) => { pattern.statsSummary = "None (calculation cancelled)"; });
             var progressModel = dialogSupport.openProgressDialog("Processing statistics for question combinations", "Generating statistical results...", "Cancel", dialogCancelled);
+
             // reduce number of times progress message is updated (to speed up process), but show progress at least every 20 graphs so user knows it is working
             var howOftenToUpdateProgressMessage = Math.min(Math.max(Math.floor(result.length/100.0), 1), 20); 
             var stories = this.graphHolder.allStories;
             var minimumStoryCountRequiredForTest = this.graphHolder.minimumStoryCountRequiredForTest;
+
             setTimeout(function() { calculateStatsForNextPattern(); }, 0);
+
         } else { // just calculate without any progress dialog
+
             result.forEach((pattern) => {
-                calculateStatistics.calculateStatisticsForPattern(result[patternIndex], patternIndex, result.length, howOftenToUpdateProgressMessage,
-                    this.graphHolder.allStories, this.graphHolder.minimumStoryCountRequiredForTest, null, "No answer"); // no progress model, no custom unansweredText
+                const hideNoAnswerValues = PatternExplorer.getOrSetWhetherNoAnswerValuesShouldBeHiddenForPattern(project, catalysisReportIdentifier, pattern);
+                calculateStatistics.calculateStatisticsForPattern(result[patternIndex], this.graphHolder.allStories, 
+                    this.graphHolder.minimumStoryCountRequiredForTest, "No answer", !hideNoAnswerValues, 
+                    null, patternIndex, result.length, 0);
                 patternIndex += 1;
             });
         }
@@ -640,8 +652,10 @@ class PatternExplorer {
                 progressModel.hideDialogMethod();
                 progressModel.redraw();
             } else {
-                calculateStatistics.calculateStatisticsForPattern(result[patternIndex], patternIndex, result.length, howOftenToUpdateProgressMessage,
-                    stories, minimumStoryCountRequiredForTest, progressModel, "No answer");  // no progress model, no custom unansweredText
+                const hideNoAnswerValues = PatternExplorer.getOrSetWhetherNoAnswerValuesShouldBeHiddenForPattern(project, catalysisReportIdentifier, result[patternIndex]);
+                calculateStatistics.calculateStatisticsForPattern(result[patternIndex], stories, 
+                    minimumStoryCountRequiredForTest, "No answer", !hideNoAnswerValues, 
+                    progressModel, patternIndex, result.length, howOftenToUpdateProgressMessage);
                 patternIndex += 1;
                 setTimeout(function() { calculateStatsForNextPattern(); }, 0);
             }
@@ -919,6 +933,14 @@ class PatternExplorer {
         // tell grid to check to see if row is out of view - was causing problems if user scrolled with scroll bar then clicked in row
         this.patternsGrid.isNavigationalScrollingNeeded = "scrolled";
 
+        const oldHideNoAnswerValuesChoice = this.graphHolder.patternDisplayConfiguration.hideNoAnswerValues;
+        const newHideNoAnswerValuesChoice = PatternExplorer.getOrSetWhetherNoAnswerValuesShouldBeHiddenForPattern(this.project, this.catalysisReportIdentifier, pattern);
+        this.graphHolder.patternDisplayConfiguration.hideNoAnswerValues = newHideNoAnswerValuesChoice; 
+        if (oldHideNoAnswerValuesChoice !== newHideNoAnswerValuesChoice) {
+            calculateStatistics.calculateStatisticsForPattern(pattern, this.graphHolder.allStories, 
+                this.graphHolder.minimumStoryCountRequiredForTest, "No answer", !newHideNoAnswerValuesChoice, null, 0, 0, 0);
+        }
+
         this.graphHolder.statisticalInfo = "";
         this.graphHolder.currentGraph = PatternExplorer.makeGraph(pattern, this.graphHolder, this.updateStoriesPane.bind(this), this.hideStatsPanels);
         this.graphHolder.currentSelectionExtentPercentages = null;
@@ -956,7 +978,7 @@ class PatternExplorer {
                 break;
             case "data integrity":
                 if (pattern.patternName === "Unanswered choice questions" || pattern.patternName === "Unanswered scale questions") {
-                    newGraph = charting.d3BarChartForDataIntegrity(graphHolder, pattern.questions, pattern.patternName);
+                    newGraph = charting.d3BarChartToShowUnansweredChoiceQuestions(graphHolder, pattern.questions, pattern.patternName);
                     break;
                 } else {
                     if (pattern.patternName === "Participant means" || pattern.patternName === "Participant standard deviations") {
@@ -1033,6 +1055,9 @@ class PatternExplorer {
             case "Show random sample of 30 selected stories":
                 this.sampleStoriesSelectedInGraph(30);
                 break;
+            case 'Toggle display of "No answer" values':
+                this.toggleNoAnswerDisplayForPattern();
+                break;
             case "Save the current selection (it will appear in the text box below)":
                 this.saveGraphSelection();
                 break;
@@ -1048,6 +1073,30 @@ class PatternExplorer {
             default:
                 alert("Please choose an action from the list before you click the button.");
                 break;
+        }
+    }
+    
+    toggleNoAnswerDisplayForPattern() {
+        if (!this.currentPattern) return; 
+        const hideNoAnswerValues = PatternExplorer.getOrSetWhetherNoAnswerValuesShouldBeHiddenForPattern(this.project, this.catalysisReportIdentifier, this.currentPattern);
+        const newValue = !hideNoAnswerValues;
+        PatternExplorer.getOrSetWhetherNoAnswerValuesShouldBeHiddenForPattern(this.project, this.catalysisReportIdentifier, this.currentPattern, newValue);
+        this.updateGraphForNewPattern(this.currentPattern);
+    }
+
+    static getOrSetWhetherNoAnswerValuesShouldBeHiddenForPattern(project, catalysisReportIdentifier, pattern, newValue = undefined) {
+        const patternReference = JSON.stringify({"patternDisplayConfiguration": patternReferenceForPatternAndIndex(pattern, 0)});
+        const configurationObject: PatternDisplayConfiguration = project.tripleStore.queryLatestC(catalysisReportIdentifier, patternReference) || {};
+        if (newValue === undefined) {
+            if ("hideNoAnswerValues" in configurationObject) {
+                return configurationObject.hideNoAnswerValues;
+            } else {
+                return false;
+            }
+        } else {
+            configurationObject.hideNoAnswerValues = newValue;
+            project.tripleStore.addTriple(catalysisReportIdentifier, patternReference, configurationObject);
+            return configurationObject.hideNoAnswerValues;
         }
     }
 

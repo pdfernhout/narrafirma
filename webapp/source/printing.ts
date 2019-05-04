@@ -658,6 +658,8 @@ function printListOfObservations(observationList, idTagStart, printLinkingQuesti
             resultItems.push(printReturnAndBlankLine());
         } else {
 
+            const hideNoAnswerValues = PatternExplorer.getOrSetWhetherNoAnswerValuesShouldBeHiddenForPattern(project, options.catalysisReportIdentifier, pattern);
+            graphHolder.patternDisplayConfiguration.hideNoAnswerValues = hideNoAnswerValues;
             var graph = PatternExplorer.makeGraph(pattern, graphHolder, selectionCallback, !options.showStatsPanelsInReport);
             if (graph) resultItems.push(printGraphWithGraphHolder(graphHolder, options.customCSS));
 
@@ -689,6 +691,9 @@ function printListOfObservations(observationList, idTagStart, printLinkingQuesti
                             const graphType = graphTypeForListOfQuestions(questions);
                             const extraPattern = {"graphType": graphType, "questions": questions};
                             let extraGraphHolder = initializedGraphHolder(allStories, options);
+                            // the "show no answer values" option is whatever was set on the OTHER pattern that is being referenced here
+                            const hideNoAnswerValues = PatternExplorer.getOrSetWhetherNoAnswerValuesShouldBeHiddenForPattern(project, options.catalysisReportIdentifier, extraPattern);
+                            graphHolder.patternDisplayConfiguration.hideNoAnswerValues = hideNoAnswerValues;
                             var extraGraph = PatternExplorer.makeGraph(extraPattern, extraGraphHolder, selectionCallback, !options.showStatsPanelsInReport);
                             if (extraGraph) resultItems.push(printGraphWithGraphHolder(extraGraphHolder, options.customCSS));
                         }
@@ -753,6 +758,7 @@ function initializedGraphHolder(allStories, options) {
         showStatsPanelsInReport: options.showStatsPanelsInReport,
         customStatsTextReplacements: options.customStatsTextReplacements,
         customGraphWidth: options.customGraphWidth,
+        patternDisplayConfiguration: {hideNoAnswerValues: false},
         graphTypesToCreate: {}
     };
     return graphHolder;
@@ -782,6 +788,7 @@ function printListOfInterpretations(interpretationList, idTagStart, allStories, 
             showStatsPanelsInReport: options.showStatsPanelsInReport,
             customStatsTextReplacements: options["customStatsTextReplacements"],
             customGraphWidth: options["customGraphWidth"],
+            patternDisplayConfiguration: {hideNoAnswerValues: false},
             graphTypesToCreate: {}
         };
 
