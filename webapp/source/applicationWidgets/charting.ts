@@ -136,7 +136,6 @@ function pushToMapSlot(map, key, value) {
 
 function preloadResultsForQuestionOptionsInDictionary(result, question, unansweredText, showNoAnswerValues = true) {
     const type = question.displayType;
-    if (type !== "checkbox" && showNoAnswerValues) result[unansweredText] = 0;
     if (type === "boolean") {
         result["yes"] = 0;
         result["no"] = 0;
@@ -145,16 +144,17 @@ function preloadResultsForQuestionOptionsInDictionary(result, question, unanswer
         result["false"] = 0;
     } else if (question.valueOptions) {
         for (let i = 0; i < question.valueOptions.length; i++) {
-            if (!(question.valueOptions[i] in result)) { // this is in case there are duplicate answers
-                result[question.valueOptions[i]] = 0;
+            const value = String(question.valueOptions[i]);
+            if (!(value in result)) { // this is in case there are duplicate answers
+                result[value] = 0;
             }
         }
     }
+    if (type !== "checkbox" && showNoAnswerValues) result[unansweredText] = 0;
 }
 
 function preloadResultsForQuestionOptionsInArray(result, question, unansweredText, showNoAnswerValues = true) {
     const type = question.displayType;
-    if (type !== "checkbox" && showNoAnswerValues) result.push(unansweredText);
     if (type === "boolean") {
         result.push("yes");
         result.push("no");
@@ -163,11 +163,13 @@ function preloadResultsForQuestionOptionsInArray(result, question, unansweredTex
         result.push("false");
     } else if (question.valueOptions) {
         for (let i = 0; i < question.valueOptions.length; i++) {
-            if (result.indexOf(question.valueOptions[i]) < 0) { // this is in case there are duplicate answers
-                result.push(question.valueOptions[i]);
+            const value = String(question.valueOptions[i]);
+            if (result.indexOf(value) < 0) { // this is in case there are duplicate answers
+                result.push(value);
             }
         }
     }
+    if (type !== "checkbox" && showNoAnswerValues) result.push(unansweredText);
 }
 
 function limitLabelLength(label, maximumCharacters): string {
@@ -778,6 +780,7 @@ export function d3BarChartForQuestion(graphHolder: GraphHolder, question, storie
 
     var results = {}
     preloadResultsForQuestionOptionsInDictionary(results, question, unansweredText, showNAs);
+    preloadResultsForQuestionOptionsInArray(xLabels, question, unansweredText, showNAs);
     // change 0 to [] for preloaded results
     for (key in results) results[key] = [];
     
@@ -1619,11 +1622,16 @@ export function d3ContingencyTable(graphHolder: GraphHolder, xAxisQuestion, yAxi
     const showNAs = showNAValues(graphHolder);
     
     const columnLabels = {};
+    const columnLabelsArray = [];
     preloadResultsForQuestionOptionsInDictionary(columnLabels, xAxisQuestion, unansweredText, showNAs);
+    preloadResultsForQuestionOptionsInArray(columnLabelsArray, xAxisQuestion, unansweredText, showNAs);
     var xHasCheckboxes = xAxisQuestion.displayType === "checkboxes";
 
     const rowLabels = {};
+    const rowLabelsArray = [];
     preloadResultsForQuestionOptionsInDictionary(rowLabels, yAxisQuestion, unansweredText, showNAs);
+    preloadResultsForQuestionOptionsInArray(rowLabelsArray, yAxisQuestion, unansweredText, showNAs);
+    rowLabelsArray.reverse(); // because otherwise the Y axis labels come out bottom to top
     var yHasCheckboxes = yAxisQuestion.displayType === "checkboxes";
     
     var results = {};
@@ -1679,12 +1687,6 @@ export function d3ContingencyTable(graphHolder: GraphHolder, xAxisQuestion, yAxi
     var longestColumnTextLength = longestColumnText.length;
     if (longestColumnTextLength > labelLengthLimit) { longestColumnTextLength = labelLengthLimit + 3; }
     
-    var columnLabelsArray = [];
-    for (var columnName in columnLabels) {
-        columnLabelsArray.push(columnName);
-    }
-    var columnCount = columnLabelsArray.length;
-    
     var longestRowText = "";
     for (var rowName in rowLabels) {
         if (rowName.length > longestRowText.length) {
@@ -1693,11 +1695,6 @@ export function d3ContingencyTable(graphHolder: GraphHolder, xAxisQuestion, yAxi
     }
     var longestRowTextLength = longestRowText.length;
     if (longestRowTextLength > labelLengthLimit) { longestRowTextLength = labelLengthLimit + 3; }
-    
-    var rowLabelsArray = [];
-    for (var rowName in rowLabels) {
-        rowLabelsArray.push(rowName);
-    }
     var rowCount = rowLabelsArray.length;
 
     let rowStoryCounts = {};
