@@ -45,7 +45,6 @@ export function getChoiceValueForQuestionAndStory(question, story, unansweredTex
             }
         }
     }
-    if (JSON.stringify(value) === "{}") console.log("value", value, "question", question);
     return value;
 }
 
@@ -187,7 +186,7 @@ function collectValuesForTwoChoices(stories: surveyCollection.Story[], field1, f
     return result;
 }
 
-export function calculateStatisticsForPattern(pattern, stories, minimumStoryCountRequiredForTest, unansweredText, includeNAValues, progressModel, patternNumber, numPatterns, howOftenToUpdateProgressMessage) {
+export function calculateStatisticsForPattern(pattern, stories, minimumStoryCountRequiredForTest, unansweredText, includeNAValues, progressUpdater, patternNumber, numPatterns, howOftenToUpdateProgressMessage) {
     var graphType = pattern.graphType;
     var statistics = null;
 
@@ -220,10 +219,10 @@ export function calculateStatisticsForPattern(pattern, stories, minimumStoryCoun
         pattern.statsSummary = "ERROR";
     }
 
-    if (progressModel && patternNumber % howOftenToUpdateProgressMessage == 0) { // only report progress every total/100 graphs; makes it go faster
-        progressModel.progressText = "Calculating statistics for pattern " + patternNumber + " of " + numPatterns;
-        progressModel.redraw();
-        }
+    if (progressUpdater && (patternNumber % howOftenToUpdateProgressMessage == 0)) { // only report progress every total/100 graphs; makes it go faster
+        progressUpdater.progressMessage = "Calculating statistics for pattern " + patternNumber + " of " + numPatterns;
+        progressUpdater.redraw();
+    }
 }
 
 export function calculateStatisticsForBarGraphValues(values) {

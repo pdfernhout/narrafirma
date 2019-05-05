@@ -667,8 +667,10 @@ table.filterTable td {
     float: left;
 }
 
+/*
 .noStyle {
 }
+*/
 
 /* chartEnclosureStyle = "width: 850px; height: 650px; margin: 5px auto 0px auto;"; */
 .chartEnclosure {
@@ -731,8 +733,10 @@ table.filterTable td {
     padding-left: 0.5em;
 }
 
+/*
 .narrafirma-story-card-one-slider-table {
 }
+*/
 
 .narrafirma-story-card-question {
 	margin: 0 0 0.25em 0;
@@ -773,6 +777,7 @@ table.filterTable td {
     padding: 1em;
 }
 
+/*
 .narrafirma-story-card-slider-button {
 
 }
@@ -791,6 +796,7 @@ table.filterTable td {
 
 .narrafirma-story-card-annotation {
 }
+*/
 
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ story card printing ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
@@ -994,9 +1000,10 @@ td.narrafirma-mw-nested-title, td.narrafirma-mw-nested-stats {
     display: none;
 }
 
+/*
 .narrafirma-catalysis-report-conclusion {
-    
 }
+*/
 
 .narrafirma-catalysis-report-toc-link-header, .narrafirma-catalysis-report-perspective-link-header, .narrafirma-catalysis-report-observation-link-header {
 	margin-bottom: 0.5em;
@@ -1014,8 +1021,10 @@ td.narrafirma-mw-nested-title, td.narrafirma-mw-nested-stats {
     margin: 0;
 }
 
+/*
 .narrafirma-catalysis-report-perspective-label {
 }
+*/
 
 .narrafirma-catalysis-report-perspective-notes {
     padding: 0.5em;
@@ -1039,8 +1048,8 @@ td.narrafirma-mw-nested-title, td.narrafirma-mw-nested-stats {
     margin: 0.5em 0 0 0;
 }
 
-.narrafirma-catalysis-report-theme-label {
-}
+/* .narrafirma-catalysis-report-theme-label {
+} */
 
 .narrafirma-catalysis-report-theme-notes {
     padding: 0.5em;
@@ -1060,9 +1069,9 @@ td.narrafirma-mw-nested-title, td.narrafirma-mw-nested-stats {
     margin: 0;
 }
 
-.narrafirma-catalysis-report-interpretation-label {
+/* .narrafirma-catalysis-report-interpretation-label {
 
-}
+} */
 
 .narrafirma-catalysis-report-interpretation-notes {
 	padding: 0.5em;
@@ -1088,11 +1097,13 @@ td.narrafirma-mw-nested-title, td.narrafirma-mw-nested-stats {
     margin-bottom: 0;
 }
 
+/*
 .narrafirma-catalysis-report-graph {
 }
 
 .narrafirma-catalysis-report-observation-label {
 }
+*/
 
 .narrafirma-catalysis-report-observation-strength {
     font-size: 0.8em;
@@ -1383,6 +1394,13 @@ td.narrafirma-mw-nested-title, td.narrafirma-mw-nested-stats {
     margin-top: 1em;
 }
 
+#gridHeaderProgressMessage {
+    margin-left: 0.5em; 
+    padding: 0.5em;
+    color: #f88a57;
+    font-weight: bold;
+}
+
 .narrafirma-pattern-browser-selected-stories-header {
     margin-left: 1.4em;
     margin-top: 0.4em;
@@ -1453,5 +1471,5 @@ textarea.textEditorInDialog {
     height: 100%; 
     box-sizing: border-box;         /* For IE and modern versions of Chrome */
     -moz-box-sizing: border-box;    /* For Firefox                          */
-    -webkit-box-sizing: border-box; /* For Safari  
+    -webkit-box-sizing: border-box; /* For Safari  */
 }

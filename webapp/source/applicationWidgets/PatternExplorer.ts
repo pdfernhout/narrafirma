@@ -133,6 +133,8 @@ class PatternExplorer {
     hideStatsPanels = false;
     graphTypesToCreate = Project.default_graphTypesToCreate;
     numStoryCollectionsIncludedInReport = 0;
+
+    progressMessage = "Calculating statistics";
     
     constructor(args) {
         this.project = Globals.project();
@@ -405,14 +407,14 @@ class PatternExplorer {
             const patternsAndStrengthsToDisplayAbovePatternsTable = this.patternsAndStrengthsToDisplayAbovePatternsTable();
             if (this.currentPattern && this.currentPattern.graphType === "data integrity") {
                 parts = [
-                    m("div.patterns-grid-header", patternsAndStrengthsToDisplayAbovePatternsTable),
+                    m("div.patterns-grid-header", patternsAndStrengthsToDisplayAbovePatternsTable, m("span#gridHeaderProgressMessage", {innerText: this.progressMessage})),
                     this.patternsGrid.calculateView(),
                     m("div.narrafirma-graph-results-panel", {config: this.insertGraphResultsPaneConfig.bind(this)}),
                     buildObservationsAndInterpretationsPanels(),
                 ];
             } else if (this.currentPattern && this.currentPattern.graphType === "texts") {
                 parts = [
-                    m("div.patterns-grid-header", patternsAndStrengthsToDisplayAbovePatternsTable),
+                    m("div.patterns-grid-header", patternsAndStrengthsToDisplayAbovePatternsTable, m("span#gridHeaderProgressMessage", {innerText: this.progressMessage})),
                     this.patternsGrid.calculateView(),
                     panelBuilder.buildPanel(this.textAnswersPanelSpecification, this),
                     buildObservationsAndInterpretationsPanels(),
@@ -425,7 +427,7 @@ class PatternExplorer {
                 if (this.observationAccessors.length > this.activeObservationTab)
                 activeAccessor = this.observationAccessors[this.activeObservationTab];
                 parts = [
-                    m("div.patterns-grid-header", patternsAndStrengthsToDisplayAbovePatternsTable),
+                    m("div.patterns-grid-header", patternsAndStrengthsToDisplayAbovePatternsTable, m("span#gridHeaderProgressMessage", {innerText: this.progressMessage})),
                     this.patternsGrid.calculateView(),
                     this.currentPattern ?
                         [
@@ -573,9 +575,7 @@ class PatternExplorer {
     
     buildPatternList() {
         if (!this.questionsToInclude) return [];
-
         const project = this.project;
-        const catalysisReportIdentifier = this.catalysisReportIdentifier;
 
         var nominalQuestions = [];
         var scaleQuestions = [];
@@ -592,80 +592,40 @@ class PatternExplorer {
             }
         });
 
-        // first check how many patterns there will be, and warn user if the number is very high
-        // but only if there are enough questions selected to make it likely that it will matter
-        // all of these limits have been selected by trial and error (and could be different on faster computers) 
-        var goAhead = true;
-
-        if (this.questionsToInclude && Object.keys(this.questionsToInclude).length > 30) { 
-
-            // the [0] is because we want a count, and when it's building, buildOrCountPatternList returns an array of patterns
-            // so the count is just in an array by itself so the function can return an array
-            var numPatterns = this.buildOrCountPatternList(nominalQuestions, scaleQuestions, textQuestions, false)[0];
-            if (numPatterns > 10000) { // these limits were determined by trial and error
-                goAhead = confirm("You are about to generate " + numPatterns + " graphs. " +
-                    "This could take a long time. " +
-                    "You might want to try selecting fewer questions or graph types. " +
-                    "Are you sure you want to do this?");
-            } else if (numPatterns > 50000) { // these limits were determined by trial and error
-                goAhead = confirm("You are about to generate " + numPatterns + " graphs. " +
-                    "This could take a VERY long time, and it could cause your browser to stop responding. " +
-                    "You really should select fewer questions and/or graph types. " +
-                    "If you are SURE you want to do this, click OK. If your browser freezes, you may have to restart it.");
-            }
-            if (!goAhead) return []; // the Explore patterns page will appear in this case with nothing in the table, but that's okay
-        }
-
-        // now actually generate the patterns
         var result = this.buildOrCountPatternList(nominalQuestions, scaleQuestions, textQuestions, true);
 
-        var patternIndex = 0;
-        // if a lot of patterns, use progress dialog, otherwise just calculate (and avoid having a dialog blip onto the screen and off again)
-        if (result.length > 200) { // this is an arbitrary number, just a guess as to how long it will take to calculate 
-
-            // first set all stats to "none" in case they cancel partway through
-            result.forEach((pattern) => { pattern.statsSummary = "None (calculation cancelled)"; });
-            var progressModel = dialogSupport.openProgressDialog("Processing statistics for question combinations", "Generating statistical results...", "Cancel", dialogCancelled);
-
-            // reduce number of times progress message is updated (to speed up process), but show progress at least every 20 graphs so user knows it is working
-            var howOftenToUpdateProgressMessage = Math.min(Math.max(Math.floor(result.length/100.0), 1), 20); 
-            var stories = this.graphHolder.allStories;
-            var minimumStoryCountRequiredForTest = this.graphHolder.minimumStoryCountRequiredForTest;
-
-            setTimeout(function() { calculateStatsForNextPattern(); }, 0);
-
-        } else { // just calculate without any progress dialog
-
-            result.forEach((pattern) => {
-                const hideNoAnswerValues = PatternExplorer.getOrSetWhetherNoAnswerValuesShouldBeHiddenForPattern(project, catalysisReportIdentifier, pattern);
-                calculateStatistics.calculateStatisticsForPattern(result[patternIndex], this.graphHolder.allStories, 
-                    this.graphHolder.minimumStoryCountRequiredForTest, "No answer", !hideNoAnswerValues, 
-                    null, patternIndex, result.length, 0);
-                patternIndex += 1;
-            });
+        const progressUpdater = {
+            progressMessage: "Calculating statistics",
+            redraw: function() {
+                this.progressMessage = progressUpdater.progressMessage;
+                // update progress message without using Mithril to avoid slowdown on this large page
+                const progressMessageSpan = document.getElementById("gridHeaderProgressMessage")
+                if (progressMessageSpan) progressMessageSpan.innerText = this.progressMessage;
+            }
         }
+        progressUpdater.redraw();
 
-        function calculateStatsForNextPattern() {
-            if (progressModel.cancelled) {
-                toaster.toast("Cancelled after calculating statistics for " + (patternIndex + 1) + " patterns");
-            } else if (patternIndex >= result.length) {
-                progressModel.hideDialogMethod();
-                progressModel.redraw();
+        var patternIndex = 0;
+        var howOftenToUpdateProgressMessage = 100; 
+        var stories = this.graphHolder.allStories;
+        var minimumStoryCountRequiredForTest = this.graphHolder.minimumStoryCountRequiredForTest;
+
+        setTimeout(function() { calculateStatsForNextPattern(); }, 1);
+
+        const calculateStatsForNextPattern = () => {
+            if (patternIndex >= result.length) {
+                this.progressMessage = "";
+                m.redraw();
             } else {
-                const hideNoAnswerValues = PatternExplorer.getOrSetWhetherNoAnswerValuesShouldBeHiddenForPattern(project, catalysisReportIdentifier, result[patternIndex]);
+                const hideNoAnswerValues = PatternExplorer.getOrSetWhetherNoAnswerValuesShouldBeHiddenForPattern(project, this.catalysisReportIdentifier, result[patternIndex]);
                 calculateStatistics.calculateStatisticsForPattern(result[patternIndex], stories, 
                     minimumStoryCountRequiredForTest, "No answer", !hideNoAnswerValues, 
-                    progressModel, patternIndex, result.length, howOftenToUpdateProgressMessage);
+                    progressUpdater, patternIndex, result.length, howOftenToUpdateProgressMessage);
                 patternIndex += 1;
-                setTimeout(function() { calculateStatsForNextPattern(); }, 0);
+                setTimeout(function() { calculateStatsForNextPattern(); }, 1);
             }
         }
     
-        function dialogCancelled(dialogConfiguration, hideDialogMethod) {
-            progressModel.cancelled = true;
-            hideDialogMethod();
-        }
-
         return result;
     }
 
@@ -844,7 +804,7 @@ class PatternExplorer {
         let index = 0;
         let observationID = "";
         while (observationID !== undefined) {
-            observationID = findOrCreateObservationIDForPatternAndIndex(this.project, this.catalysisReportObservationSetIdentifier, pattern, index, index === 0);
+            observationID = findOrCreateObservationIDForPatternAndIndex(this.project, this.catalysisReportObservationSetIdentifier, pattern, index, false);
             if (observationID) pattern.observationIDs.push(observationID);
             index++;
         }
