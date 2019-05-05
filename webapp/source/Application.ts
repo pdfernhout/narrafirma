@@ -19,6 +19,7 @@ import PanelSetup = require("./PanelSetup");
 import Globals = require("./Globals");
 import versions = require("./versions");
 import _ = require("lodash");
+import topic = require("./pointrel20150417/topic");
 
 "use strict";
 
@@ -176,7 +177,7 @@ class Application {
         
         // TODO: Translate
         document.getElementById("pleaseWaitDiv").innerHTML = "Retrieving user information from server; please wait...";
-        
+
         // Cast to silence TypeScript warning about use of translate.configure
         (<any>translate).configure({}, applicationMessages.root);
         
@@ -400,10 +401,15 @@ class Application {
             Globals.clientState().updateHashIfNeededForChangedClientState();
             
             // TODO: What to do while waiting for data for a project to load from server the first time? Assuming authenticated OK etc.???
+
+            const topicSubscription = topic.subscribe("messageReceived", function() {
+                document.getElementById("pleaseWaitDiv").innerHTML = "Retrieving project information from server; please wait... " + Globals.project().pointrelClient.messageReceivedCount;
+            });    
             
             // TODO: This assumes we have picked a project, and are actually loading data and have not errored out
-            // TODO: Need some kind of progress indicator of messages loaded...
             Globals.project().pointrelClient.idleCallback = () => {
+                topicSubscription.remove();
+
                 // Now that data is presumably loaded into the Project tripleStore, we can proceed with further initialization
                 buttonActions.initialize(Globals.project(), Globals.clientState());
                 csvImportExport.initialize(Globals.project());
