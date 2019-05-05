@@ -1088,10 +1088,10 @@ class PatternExplorer {
         const patternReference = JSON.stringify({"patternDisplayConfiguration": patternReferenceForPatternAndIndex(pattern, 0)});
         const configurationObject: PatternDisplayConfiguration = project.tripleStore.queryLatestC(catalysisReportIdentifier, patternReference) || {};
         if (newValue === undefined) {
-            if ("hideNoAnswerValues" in configurationObject) {
+            if (configurationObject.hideNoAnswerValues !== undefined) {
                 return configurationObject.hideNoAnswerValues;
             } else {
-                return false;
+                return project.tripleStore.queryLatestC(catalysisReportIdentifier, "hideNoAnswerValues_reportDefault") || false;
             }
         } else {
             configurationObject.hideNoAnswerValues = newValue;

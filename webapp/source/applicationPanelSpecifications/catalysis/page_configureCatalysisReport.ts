@@ -125,6 +125,18 @@ var panel: Panel = {
             }
         },
         {
+            id: "configureCatalysisReport_hideNoAnswerValues",
+            valueType: "boolean",
+            valuePath: "/clientState/catalysisReportIdentifier/hideNoAnswerValues_reportDefault",
+            displayType: "checkbox",
+            displayConfiguration: "Hide no-answer counts by default",
+            displayPrompt: `You can set <strong>whether to graph "No answer" counts</strong> per pattern (in the "things you can do" list), but you can also set a 
+                default option for the whole catalysis report. This choice affects both the "Explore Patterns" page and the printed report.`,
+            displayVisible: function(panelBuilder, model) {
+                return !!Globals.clientState().catalysisReportIdentifier();
+            }
+        },
+        {
             id: "configureCatalysisReport_graphMultiChoiceQuestionsAgainstThemselves",
             valueType: "boolean",
             valuePath: "/clientState/catalysisReportIdentifier/graphMultiChoiceQuestionsAgainstThemselves",
