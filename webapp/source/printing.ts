@@ -453,19 +453,36 @@ function printCatalysisReportWithClusteredObservations(project, catalysisReportI
 
                     // theme name and notes
                     printItems.push(m("h2.narrafirma-catalysis-report-theme", 
-                        [m("span", {class: "narrafirma-catalysis-report-theme-label " + replaceSpacesWithDashes(cluster.name), id: "c_" + clusterIndex}, options.themeLabel), cluster.name]));
-                    if (cluster.notes) printItems.push(m("div.narrafirma-catalysis-report-theme-notes", printText(cluster.notes)));
+                        [
+                            m("span", {
+                                class: "narrafirma-catalysis-report-theme-label " + replaceSpacesWithDashes(cluster.name), 
+                                id: "c_" + clusterIndex
+                            }, 
+                            options.themeLabel), 
+                            printText(cluster.name)
+                        ]
+                    ));
+                    if (cluster.notes) {
+                        printItems.push(m("div.narrafirma-catalysis-report-theme-notes", printText(cluster.notes)));
+                    }
 
                     // table of contents for theme
                     addPrintHeaderForTOCLevelTwo(printItems, project, catalysisReportIdentifier, "themes", 
                         "catalysisReport_tocHeaderSecondLevel_observations", "Observations in this theme (#):", numItemsToPrintInThisCluster);
+
                     var tocItemsForCluster = [];
                     for (var i = 0; i < cluster.items.length ; i++) {
                         if (cluster.items[i].print) {
                             const idTag = "#c_" + clusterIndex + "_o_" + i;
                             var observation = project.tripleStore.makeObject(cluster.items[i].referenceUUID, true);
-                            tocItemsForCluster.push(m("div", {"class": "narrafirma-catalysis-report-theme-link"}, 
-                                [m("span", {"class": "narrafirma-catalysis-report-observation-name"}, m("a", {"href": idTag}, observation.observationTitle || observation.observationDescription))]));
+                            tocItemsForCluster.push(
+                                m("div", {"class": "narrafirma-catalysis-report-theme-link"}, 
+                                [
+                                    m("span", {"class": "narrafirma-catalysis-report-observation-name"}, 
+                                    m("a", {"href": idTag}, 
+                                    printText(observation.observationTitle || observation.observationDescription)))
+                                ]
+                            ));
                         }
                     }
                     printItems.push(m("div", {"class": "narrafirma-catalysis-report-observation-links"}, tocItemsForCluster));
@@ -551,30 +568,46 @@ function printCatalysisReportWithClusteredInterpretations(project, catalysisRepo
 
                 // perspective name and notes
                 const headerClass = "narrafirma-catalysis-report-perspective-label " + replaceSpacesWithDashes(cluster.name);
-                printItems.push(m("h2.narrafirma-catalysis-report-perspective", 
-                    [m("span", {"class": headerClass, "id": "c_" + clusterIndex}, options["perspectiveLabel"]), cluster.name]));
-                if (cluster.notes) printItems.push(m("div.narrafirma-catalysis-report-perspective-notes", printText(cluster.notes)));
+                printItems.push(
+                    m("h2.narrafirma-catalysis-report-perspective", 
+                    [
+                        m("span", {"class": headerClass, "id": "c_" + clusterIndex}, 
+                        options["perspectiveLabel"]), printText(cluster.name)
+                    ]
+                ));
+                if (cluster.notes) {
+                    printItems.push(m("div.narrafirma-catalysis-report-perspective-notes", printText(cluster.notes)));
+                }
 
                 // table of contents for perspective
                 addPrintHeaderForTOCLevelTwo(printItems, project, catalysisReportIdentifier, "perspectives", 
                         "catalysisReport_tocHeaderSecondLevel", "Interpretations and observations in this perspective (#):", numItemsToPrintInThisCluster);
+
                 var tocItemsForCluster = [];
                 for (var i = 0; i < cluster.items.length ; i++) {
                     const item = cluster.items[i];
                     if (item.print) {
                         const interpretation = project.tripleStore.makeObject(item.referenceUUID, true);
+
                         if (interpretation) {
                             var observationIDsForThisInterpretation = makeObservationIDsListForInterpretation(project, observationIDs, item);
                             observationsIDsForInterpretation[item.uuid] = observationIDsForThisInterpretation; // save to use later
+
                             for (var observationIndex = 0; observationIndex < observationIDsForThisInterpretation.length; observationIndex++) {
                                 var observation = project.tripleStore.makeObject(observationIDsForThisInterpretation[observationIndex], true);
                                 if (observation) {
+
                                     var tocItemsForOIPair = [];
+
+                                    const interpretationNameToPrint = interpretation.interpretation_name || interpretation.interpretation_text;
                                     tocItemsForOIPair.push(m("td", {"class": "narrafirma-catalysis-report-interpretation-links-table-td"}, 
-                                        m("a", {href: "#c_" + clusterIndex + "_i_" + i}, interpretation.interpretation_name || interpretation.interpretation_text)));
+                                        m("a", {href: "#c_" + clusterIndex + "_i_" + i}, printText(interpretationNameToPrint))));
+
+                                    const observationNameToPrint = observation.observationTitle || observation.observationDescription;
                                     tocItemsForOIPair.push(m("td", {"class": "narrafirma-catalysis-report-interpretation-links-table-td"}, 
-                                        m("a", {href: "#c_" + clusterIndex + "_i_" + i + "_o_" + observationIndex}, observation.observationTitle || observation.observationDescription)));
-                                        tocItemsForOIPair.push(m("td", {"class": "narrafirma-catalysis-report-interpretation-links-table-td"}, observation.observationStrength || ""));
+                                        m("a", {href: "#c_" + clusterIndex + "_i_" + i + "_o_" + observationIndex}, printText(observationNameToPrint))));
+                                    
+                                    tocItemsForOIPair.push(m("td", {"class": "narrafirma-catalysis-report-interpretation-links-table-td"}, observation.observationStrength || ""));
                                     tocItemsForCluster.push(m("tr", {"class": "narrafirma-catalysis-report-interpretation-links-table-tr"}, tocItemsForOIPair)); 
                                 }
                             }
@@ -599,15 +632,22 @@ function printCatalysisReportWithClusteredInterpretations(project, catalysisRepo
                     if (interpretation && (interpretation.interpretation_name || interpretation.interpretation_text)) {
 
                         const linkingQuestion = project.tripleStore.queryLatestC(observationsIDsForInterpretation[item.uuid][0], "observationLinkingQuestion");
-                        if (linkingQuestion) 
+                        if (linkingQuestion) {
                             printItems.push(m("div.narrafirma-catalysis-report-observation-linking-question-by-perspective", printText(linkingQuestion)));
+                        }
+
                         const interpretationNameWithoutSpaces = replaceSpacesWithDashes(interpretation.interpretation_name || "");
                         const idTag = "c_" + clusterIndex + "_i_" + itemIndex;
 
                         const printItemsForHeader = [];
-                        if (options["interpretationLabel"]) 
-                            printItemsForHeader.push(m("span", {"class": "narrafirma-catalysis-report-interpretation-label " + interpretationNameWithoutSpaces}, options["interpretationLabel"]));
-                        printItemsForHeader.push(interpretation.interpretation_name || "");
+                        if (options["interpretationLabel"]) {
+                            printItemsForHeader.push(
+                                m("span", {"class": "narrafirma-catalysis-report-interpretation-label " + interpretationNameWithoutSpaces}, 
+                                options["interpretationLabel"])
+                            );
+                        }
+                        
+                        printItemsForHeader.push(printText(interpretation.interpretation_name || ""));
                         printItems.push(m("h4.narrafirma-catalysis-report-interpretation", {"id": idTag}, printItemsForHeader));
 
                         printItems.push(m("div.narrafirma-catalysis-report-interpretation-notes", printText(interpretation.interpretation_text)));
@@ -794,7 +834,7 @@ function printListOfInterpretations(interpretationList, idTagStart, allStories, 
 
         const headerItems = [];
         headerItems.push(m("span", {"class": "narrafirma-catalysis-report-interpretation-label"}, options.interpretationLabel));
-        headerItems.push(m("span", {"class": "narrafirma-catalysis-report-observation-title"}, item.interpretation_name));
+        headerItems.push(m("span", {"class": "narrafirma-catalysis-report-observation-title"}, printText(item.interpretation_name)));
 
         const resultItems = [];
         resultItems.push(m("h3.narrafirma-catalysis-report-interpretation", {"id": idTagStart + "_i_" + index}, headerItems));
@@ -970,7 +1010,7 @@ function addPrintItemsForTOCLevelOne(printItems, tocHeaderRaw, clusters, cluster
     printItems.push(m("div.narrafirma-catalysis-report-toc-link-header", tocHeader));
     for (var i = 0; i < clusters.length ; i++) {
         var cluster = clusters[i];
-        printItems.push(m("div.narrafirma-catalysis-report-toc-link", m("a", {href: "#c_" + i}, cluster.name)));
+        printItems.push(m("div.narrafirma-catalysis-report-toc-link", m("a", {href: "#c_" + i}, printText(cluster.name))));
     }
 }
 
@@ -998,9 +1038,13 @@ function addPrintHeaderForTOCLevelTwo(printItems, project, catalysisReportIdenti
 
 function addPrintItemsForReportStart(printItems, project, catalysisReportName, catalysisReportIdentifier, allStories, options) {
     // title and report creation info
-    printItems.push(m("h1.narrafirma-catalysis-report-title", catalysisReportName));
-    printItems.push(m("div.narrafirma-catalysis-report-project-name-and-date", 
-        "This report for project " + project.projectIdentifier + " was generated by NarraFirma " + versions.narrafirmaApplication + " on "  + new Date().toString()));
+    printItems.push(m("h1.narrafirma-catalysis-report-title", printText(catalysisReportName)));
+
+    const hideReportCreationInfo = project.tripleStore.queryLatestC(catalysisReportIdentifier, "hideReportCreationInfo");
+    if (!hideReportCreationInfo) {
+        printItems.push(m("div.narrafirma-catalysis-report-project-name-and-date", 
+            "This report for project " + project.projectIdentifier + " was generated by NarraFirma " + versions.narrafirmaApplication + " on "  + new Date().toString()));
+    }
 
     // filter (if applicable)
     var filter = project.tripleStore.queryLatestC(catalysisReportIdentifier, "catalysisReport_filter");  
@@ -1028,7 +1072,7 @@ function getAndCleanUserText(project, catalysisReportIdentifier, id, errorMsg, s
 function filterWarningForCatalysisReport(filter, allStories) {
     var storyOrStoriesText = " stories";
     if (allStories.length == 1) storyOrStoriesText = " story";
-    // todo: translation
+    // TODO: translation
     var labelText = 'This report only pertains to stories that match the filter "' +  filter + '" (' + allStories.length + storyOrStoriesText + ")";
     return m("div", {"class": "narrafirma-catalysis-report-filter-warning"}, sanitizeHTML.generateSanitizedHTMLForMithril(labelText));
 }

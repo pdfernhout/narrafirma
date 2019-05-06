@@ -108,6 +108,17 @@ var panel: Panel = {
                 return !!Globals.clientState().catalysisReportIdentifier();
             }
         },
+        {
+            id: "configureCatalysisReport_hideReportCreationInfo",
+            valueType: "boolean",
+            valuePath: "/clientState/catalysisReportIdentifier/hideReportCreationInfo",
+            displayType: "checkbox",
+            displayConfiguration: "Hide report creation information",
+            displayPrompt: `If you like, you can <strong>hide the report creation information</strong> NarraFirma usually puts at the start of the report.`,
+            displayVisible: function(panelBuilder, model) {
+                return !!Globals.clientState().catalysisReportIdentifier();
+            }
+        },
 
         ///////////////////////////////////////////////////// print options
         {
