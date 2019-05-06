@@ -406,9 +406,9 @@ class PatternExplorer {
         if (!this.catalysisReportIdentifier) {
             parts = [m("div.narrafirma-choose-catalysis-report", "Please select a catalysis report to work with.")];
         } else if (isMissingQuestionsToInclude(this.questionsToInclude)) {
-            parts = [m("div.narrafirma-choose-questions-to-include", "Please select some questions to include in the report (on the previous page).")];
+            parts = [m("div.narrafirma-choose-questions-to-include", {style: "text-align: center; margin: 2em"}, "Nothing to see here! Please select some questions to include in the report (on the previous page).")];
         } else if (isMissingGraphTypesToCreate(this.graphTypesToCreate)) {
-            parts = [m("div.narrafirma-choose-graph-types-to-include", "Please select some graph types to include in the report (on the previous page).")];
+            parts = [m("div.narrafirma-choose-graph-types-to-include", {style: "text-align: center; margin: 2em"}, "Nothing to see here! Please select some graph types to include in the report (on the previous page).")];
         } else {
             const patternsAndStrengthsToDisplayAbovePatternsTable = this.patternsAndStrengthsToDisplayAbovePatternsTable();
 
