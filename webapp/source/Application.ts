@@ -403,7 +403,7 @@ class Application {
             // TODO: What to do while waiting for data for a project to load from server the first time? Assuming authenticated OK etc.???
 
             const topicSubscription = topic.subscribe("messageReceived", function() {
-                document.getElementById("pleaseWaitDiv").innerHTML = "Retrieving project information from server; please wait... " + Globals.project().pointrelClient.messageReceivedCount;
+                document.getElementById("pleaseWaitDiv").innerHTML = "Retrieving project information from server (" + Globals.project().pointrelClient.messageReceivedCount + "); please wait...";
             });    
             
             // TODO: This assumes we have picked a project, and are actually loading data and have not errored out
