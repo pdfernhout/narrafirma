@@ -189,7 +189,7 @@ function graphCountForGraphType(graphType, questions, graphMultiChoiceQuestionsA
     }
  
     // when creating question combinations, prevent mirror duplicates (axb, bxa) and self-matching questions (axa)
-    // unless they want axa for multi-choice questions
+    // unless they want axa for multi-choice (checkboxes) questions
     var usedQuestions;
     // two choice questions
     if (graphType === "tables") {
@@ -197,7 +197,7 @@ function graphCountForGraphType(graphType, questions, graphMultiChoiceQuestionsA
         nominalQuestions.forEach((question1) => {
             usedQuestions.push(question1);
             nominalQuestions.forEach((question2) => {
-                var okayToGraphQuestionAgainstItself = graphMultiChoiceQuestionsAgainstThemselves && question2.displayType === "checkboxes";
+                var okayToGraphQuestionAgainstItself = graphMultiChoiceQuestionsAgainstThemselves && question1.displayName === question2.displayName && question2.displayType === "checkboxes";
                 if (!okayToGraphQuestionAgainstItself && usedQuestions.indexOf(question2) !== -1) return;
                 graphCount++;
             });
@@ -229,7 +229,7 @@ function graphCountForGraphType(graphType, questions, graphMultiChoiceQuestionsA
         nominalQuestions.forEach((question1) => {
             usedQuestions.push(question1);
             nominalQuestions.forEach((question2) => {
-                var okayToGraphQuestionAgainstItself = graphMultiChoiceQuestionsAgainstThemselves && question2.displayType === "checkboxes";
+                var okayToGraphQuestionAgainstItself = graphMultiChoiceQuestionsAgainstThemselves && question1.displayName === question2.displayName && question2.displayType === "checkboxes";
                 if (!okayToGraphQuestionAgainstItself && usedQuestions.indexOf(question2) !== -1) return;
                 scaleQuestions.forEach((question3) => {
                     graphCount++;
