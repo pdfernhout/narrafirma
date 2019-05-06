@@ -1304,7 +1304,15 @@ class PatternExplorer {
             var questionAnswersToShow = [];
             questionIDsToShowForSelectedStories.forEach(function(fieldName) {
                 var answer = story.fieldValue(fieldName);
-                if (answer) questionAnswersToShow.push(answer);
+                if (answer) {
+                    if (typeof answer === "string") {
+                        questionAnswersToShow.push(answer);
+                    } else if (typeof answer === "number") {
+                        questionAnswersToShow.push(answer.toString());
+                    } else if (typeof answer === "object") { 
+                        Object.keys(answer).forEach(answerPart => { if (answer[answerPart]) questionAnswersToShow.push(answerPart) });
+                    }
+                }
             });
             if (questionAnswersToShow.length) {
                 return " (" + questionAnswersToShow.join(", ") + ")";
