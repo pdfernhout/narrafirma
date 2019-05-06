@@ -62,7 +62,7 @@ export function showPage(pageID, forceRefresh = false, isRedrawAlreadyQueued = f
     if (currentPageID === pageID && !forceRefresh) {
         return;
     }
-    
+
     var pageSpecification;
     try {
         pageSpecification = panelBuilder.getPageSpecificationForPageID(pageID);
@@ -71,6 +71,8 @@ export function showPage(pageID, forceRefresh = false, isRedrawAlreadyQueued = f
     }
     
     var badPage = null;
+
+    if (clientState.leavingPageCallback()) clientState.leavingPageCallback()();
     
     // Assume that if we have a panel specification for a page that it is OK to go to it
     if (!pageSpecification || pageSpecification.displayType !== "page") {
@@ -99,7 +101,7 @@ export function showPage(pageID, forceRefresh = false, isRedrawAlreadyQueued = f
         currentPageSpecification = pageSpecification;
         clientState.pageIdentifier(currentPageID);
     }
-    
+
     navigationPane.setCurrentPageSpecification(pageID, pageSpecification);
 
     if (!isRedrawAlreadyQueued) {

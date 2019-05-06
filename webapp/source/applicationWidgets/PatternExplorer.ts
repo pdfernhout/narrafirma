@@ -135,11 +135,17 @@ class PatternExplorer {
     numStoryCollectionsIncludedInReport = 0;
 
     progressMessage = "Calculating statistics";
+    calculationsCanceled = false;
     
     constructor(args) {
         this.project = Globals.project();
+
+        const clientState = Globals.clientState();
+        clientState.leavingPageCallback(() => {
+            this.calculationsCanceled = true;
+        });
         
-       this.graphHolder = {
+        this.graphHolder = {
             graphResultsPane: charting.createGraphResultsPane("narrafirma-graph-results-pane chartEnclosure"),
             chartPanes: [],
             allStories: [],
@@ -405,16 +411,31 @@ class PatternExplorer {
             parts = [m("div.narrafirma-choose-graph-types-to-include", "Please select some graph types to include in the report (on the previous page).")];
         } else {
             const patternsAndStrengthsToDisplayAbovePatternsTable = this.patternsAndStrengthsToDisplayAbovePatternsTable();
+
+            const cancelButton = m("button", {
+                onclick: () => {
+                    this.calculationsCanceled = true;
+                    this.progressMessage = "";
+                }
+            }, "Cancel");
+            const buildGridHeader = () => {
+                return m("div.patterns-grid-header", 
+                    patternsAndStrengthsToDisplayAbovePatternsTable, 
+                    m("span#gridHeaderProgressMessage" + (this.progressMessage ? ".pleaseWaitStatisticsOverlay" : ""), this.progressMessage),
+                    this.progressMessage ? cancelButton : [],
+                );
+            };
+
             if (this.currentPattern && this.currentPattern.graphType === "data integrity") {
                 parts = [
-                    m("div.patterns-grid-header", patternsAndStrengthsToDisplayAbovePatternsTable, m("span#gridHeaderProgressMessage", {innerText: this.progressMessage})),
+                    buildGridHeader(),
                     this.patternsGrid.calculateView(),
                     m("div.narrafirma-graph-results-panel", {config: this.insertGraphResultsPaneConfig.bind(this)}),
                     buildObservationsAndInterpretationsPanels(),
                 ];
             } else if (this.currentPattern && this.currentPattern.graphType === "texts") {
                 parts = [
-                    m("div.patterns-grid-header", patternsAndStrengthsToDisplayAbovePatternsTable, m("span#gridHeaderProgressMessage", {innerText: this.progressMessage})),
+                    buildGridHeader(),
                     this.patternsGrid.calculateView(),
                     panelBuilder.buildPanel(this.textAnswersPanelSpecification, this),
                     buildObservationsAndInterpretationsPanels(),
@@ -427,7 +448,7 @@ class PatternExplorer {
                 if (this.observationAccessors.length > this.activeObservationTab)
                 activeAccessor = this.observationAccessors[this.activeObservationTab];
                 parts = [
-                    m("div.patterns-grid-header", patternsAndStrengthsToDisplayAbovePatternsTable, m("span#gridHeaderProgressMessage", {innerText: this.progressMessage})),
+                    buildGridHeader(),
                     this.patternsGrid.calculateView(),
                     this.currentPattern ?
                         [
@@ -594,13 +615,17 @@ class PatternExplorer {
 
         var result = this.buildOrCountPatternList(nominalQuestions, scaleQuestions, textQuestions, true);
 
+        const self = this;
+
         const progressUpdater = {
             progressMessage: "Calculating statistics",
             redraw: function() {
-                this.progressMessage = progressUpdater.progressMessage;
+                self.progressMessage = progressUpdater.progressMessage;
                 // update progress message without using Mithril to avoid slowdown on this large page
                 const progressMessageSpan = document.getElementById("gridHeaderProgressMessage")
-                if (progressMessageSpan) progressMessageSpan.innerText = this.progressMessage;
+                if (progressMessageSpan) {
+                    progressMessageSpan.innerHTML = this.progressMessage;
+                }
             }
         }
         progressUpdater.redraw();
@@ -610,11 +635,14 @@ class PatternExplorer {
         var stories = this.graphHolder.allStories;
         var minimumStoryCountRequiredForTest = this.graphHolder.minimumStoryCountRequiredForTest;
 
-        setTimeout(function() { calculateStatsForNextPattern(); }, 1);
+        if (!this.calculationsCanceled) {
+            setTimeout(function() { calculateStatsForNextPattern(); }, 1);
+        }
 
         const calculateStatsForNextPattern = () => {
             if (patternIndex >= result.length) {
-                this.progressMessage = "";
+                progressUpdater.progressMessage = "";
+                progressUpdater.redraw();
                 m.redraw();
             } else {
                 const hideNoAnswerValues = PatternExplorer.getOrSetWhetherNoAnswerValuesShouldBeHiddenForPattern(project, this.catalysisReportIdentifier, result[patternIndex]);
@@ -622,7 +650,9 @@ class PatternExplorer {
                     minimumStoryCountRequiredForTest, "No answer", !hideNoAnswerValues, 
                     progressUpdater, patternIndex, result.length, howOftenToUpdateProgressMessage);
                 patternIndex += 1;
-                setTimeout(function() { calculateStatsForNextPattern(); }, 1);
+                if (!self.calculationsCanceled) {
+                    setTimeout(function() { calculateStatsForNextPattern(); }, 1);
+                }
             }
         }
     

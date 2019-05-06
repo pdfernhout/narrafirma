@@ -1396,9 +1396,25 @@ td.narrafirma-mw-nested-title, td.narrafirma-mw-nested-stats {
 
 #gridHeaderProgressMessage {
     margin-left: 0.5em; 
-    padding: 0.5em;
     color: #f88a57;
     font-weight: bold;
+}
+
+.pleaseWaitStatisticsOverlay {
+	font-size: 1em;
+	font-weight: bold;
+	text-align: center;
+	width: 300px;
+	height: 70px;
+	margin: 0.5em 0 0 00;
+	padding: 0.5em 3em 0.5em 0.5em;
+    border: 4px solid #b0d4d4;
+    background-color: #f3fdfd;
+    border-radius: 12px;
+    background-image: url('../images/dojo-Standby-loading.gif');
+    background-repeat: no-repeat;
+    background-position: 98% 80%;
+    z-index: 1001;
 }
 
 .narrafirma-pattern-browser-selected-stories-header {

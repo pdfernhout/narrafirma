@@ -40,6 +40,7 @@ class ClientState {
     private _debugMode: string = null;
     private _serverStatus: string = "narrafirma-serverstatus-ok";
     private _serverStatusText: string = "";
+    private _leavingPageCallback: () => void;
     
     // This should only be set by Globals
     _project: Project = null;
@@ -99,6 +100,13 @@ class ClientState {
             this._observationAccessor = newValue;
         }
         return this._observationAccessor;
+    }
+
+    leavingPageCallback(newValue: () => void = undefined) {
+        if (newValue !== undefined) {
+            this._leavingPageCallback = newValue;
+        }
+        return this._leavingPageCallback;
     }
     
     debugMode(newValue: string = undefined): string {
