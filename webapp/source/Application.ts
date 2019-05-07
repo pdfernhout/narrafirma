@@ -324,6 +324,8 @@ class Application {
         if (this.runningAfterInitialIdle) {
             if (!this.pendingRedraw) {
                 this.pendingRedraw = setTimeout(() => {
+                    // if the user was editing a field that is getting changed by another user, let them know
+                    Globals.clientState().anHTMLElementValueIsBeingSetBecauseOfAnIncomingMessage(true);
                     this.pendingRedraw = null;
                     m.redraw();
                 }, 0);

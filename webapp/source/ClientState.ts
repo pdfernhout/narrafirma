@@ -41,6 +41,7 @@ class ClientState {
     private _serverStatus: string = "narrafirma-serverstatus-ok";
     private _serverStatusText: string = "";
     private _leavingPageCallback: () => void;
+    private _anHTMLElementValueIsBeingSetBecauseOfAnIncomingMessage: boolean = null;
     
     // This should only be set by Globals
     _project: Project = null;
@@ -108,7 +109,14 @@ class ClientState {
         }
         return this._leavingPageCallback;
     }
-    
+
+    anHTMLElementValueIsBeingSetBecauseOfAnIncomingMessage(newValue: boolean = undefined) {
+        if (newValue !== undefined) {
+            this._anHTMLElementValueIsBeingSetBecauseOfAnIncomingMessage = newValue;
+        }
+        return this._anHTMLElementValueIsBeingSetBecauseOfAnIncomingMessage;
+    }
+
     debugMode(newValue: string = undefined): string {
         if (newValue !== undefined) {
             this._debugMode = newValue;

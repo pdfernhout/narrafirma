@@ -260,6 +260,34 @@ input[type="submit"].narrafirma-login-button:hover {
 	background-color: #fff;
 }
 
+.narrafirma-collision-message {
+    margin: 1em;
+    padding: 1em;
+    border: 1px solid black;
+    background-color: #ffe1aa;
+}
+
+.narrafirma-collision-header {
+    margin-bottom: 0.5em;
+}
+
+.narrafirma-collision-text {
+    font-weight: normal;
+    background-color: white;
+    border: 1px solid black;
+    padding: 0.5em;
+}
+
+.narrafirma-collision-button {
+    display: block;
+    margin: 0.5em auto 0.5em auto;
+}
+
+.narrafirma-collision-footer {
+    font-weight: normal;
+    margin-top: 0.5em;
+}
+
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Buttons bottom of page (and elsewhere) ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 .narrafirma-page-change-button {

@@ -5,11 +5,18 @@ import translate = require("./translate");
 import Globals = require("../Globals");
 import _ = require("lodash");
 import sanitizeHTML = require("../sanitizeHTML");
+import dialogSupport = require("../panelBuilder/dialogSupport");
 
 "use strict";
 
 function getIdForText(text) {
     return text;
+}
+
+let clientState = Globals.clientState();
+
+function closeCopyCollisionTextDialogClicked(text, hideDialogMethod) {     
+    hideDialogMethod();
 }
 
 function optionsForSelect(panelBuilder: PanelBuilder, model, fieldSpecification, currentValue, addNoSelectionOption) {
@@ -118,12 +125,28 @@ export function displayQuestion(panelBuilder: PanelBuilder, model, fieldSpecific
         value = valueProperty();
     }
     if (value === undefined) value = "";
+
+    // if someone has been working in a textarea and has written a lot of text, and it is about to be ovewritten because somebody else was doing the same thing,
+    // show them both texts so they can resolve the conflict
+    let savedValue = null;
+    if (displayType === "textarea") {
+        if (clientState.anHTMLElementValueIsBeingSetBecauseOfAnIncomingMessage()) {
+            const element = <HTMLTextAreaElement>document.getElementById(fieldID);
+            const activeElement = <HTMLTextAreaElement>document.activeElement;
+            if (element && element === activeElement) { // only do this for the textarea they are actually editing right now, not all the textareas on the page
+                if (element.value !== value) {
+                    savedValue = element.value;
+                    console.log('Collision alert: Another user has changed "' + fieldSpecification.displayName + '"\n-- from --\n"' + savedValue + '"\n-- to --\n"' + value + '"');
+                }
+            }
+        }
+    }
     
     function change(event, value) {
         if (event) value = event.target.value;
         valueProperty(value);
     }
-    
+
     function isEmpty(value) {
         return value === undefined || value === null || value === "";
     }
@@ -154,6 +177,14 @@ export function displayQuestion(panelBuilder: PanelBuilder, model, fieldSpecific
         makeLabel();
         parts = [
             m("textarea[class=narrafirma-textbox]", standardValueOptions),
+            savedValue ? m("div.narrafirma-collision-message", 
+                m("div.narrafirma-collision-header", m("b", "Collision alert!"), " Another user has changed the contents of this text box. Your entry was: "), 
+                m("div.narrafirma-collision-text", savedValue),
+                m("button.narrafirma-collision-button", {onclick: function () {
+                    dialogSupport.openTextEditorDialog(savedValue, 'Text for "' + fieldSpecification.displayName + '" overwritten by another user (you might want to copy this)', "Close", closeCopyCollisionTextDialogClicked.bind(null), false);
+                }}, "View in pop-up window"),
+                m("div.narrafirma-collision-footer", "Your entry has also been written to your browser's development console."),
+            ) : [],
             m("br")
         ];
     } else if (displayType === "checkbox") {

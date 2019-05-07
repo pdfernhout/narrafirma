@@ -43,7 +43,8 @@ var PageDisplayer: any = {
                 // alert("Something when wrong trying to create this page");
                 contentsDiv = m("div", "PROBLEM: Failed to view page: " + currentPageID);
             }
-         }
+        }
+        clientState.anHTMLElementValueIsBeingSetBecauseOfAnIncomingMessage(false);
         return m("div.pageContents", {key: "pageContents"}, contentsDiv);
     }
 };
