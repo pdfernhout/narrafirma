@@ -1976,7 +1976,7 @@ export function d3ContingencyTable(graphHolder: GraphHolder, xAxisQuestion, yAxi
         "\nY (" + nameForQuestion(yAxisQuestion) + "): " + plotItem.y;
         if (plotItem.expectedValue) {
             //console.log("plotItem.expectedValue ", plotItem.expectedValue);
-            tooltipText += "\nExpected: " + plotItem.expectedValue.toFixed(0) + "\nObserved: " + plotItem.value.toFixed(0);
+            tooltipText += "\nObserved: " + plotItem.value.toFixed(0) + "\nExpected: " + plotItem.expectedValue.toFixed(0);
         }
         if (scaleQuestion) {
             if (plotItem.mean !== undefined) tooltipText += "\nMean: " + plotItem.mean.toFixed(2);
