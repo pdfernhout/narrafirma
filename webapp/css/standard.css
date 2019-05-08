@@ -1039,7 +1039,7 @@ td.narrafirma-mw-nested-title, td.narrafirma-mw-nested-stats {
 	font-weight: 700;
     padding: 0.5em;
     background: #b0d4d4;
-    margin: 0;
+    margin: 0.5em 0 0 0;
 }
 
 /*
@@ -1145,21 +1145,21 @@ td.narrafirma-mw-nested-title, td.narrafirma-mw-nested-stats {
 .narrafirma-catalysis-report-observation-description {
     padding: 0.5em;
     margin-bottom: 0.5em;
-    background: rgb(238, 242, 250);
+    background: #eef2fa;
 }
 
 .narrafirma-catalysis-report-observation-linking-question-by-theme {
     padding: 0.5em;
-    margin-bottom: 0.5em;
-    text-align: center;
     font-style: italic;
-    background: #c5d2eb;
+    background: #eef2fa;
+    margin-left: 0.25em;
+    margin-right: 0.25em;
 }
 
 .narrafirma-catalysis-report-observation-linking-question-by-perspective {
     padding: 0.5em;
     font-style: italic;
-    background: #facb74;
+    background: #fce1af;
 }
 
 .narrafirma-catalysis-report-list-table {

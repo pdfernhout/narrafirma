@@ -108,6 +108,17 @@ var panel: Panel = {
             }
         },
         {
+            id: "configureCatalysisReport_printItemIndexNumbers",
+            valueType: "boolean",
+            valuePath: "/clientState/catalysisReportIdentifier/printItemIndexNumbers",
+            displayType: "checkbox",
+            displayConfiguration: "Print sequence numbers",
+            displayPrompt: `Do you want to <strong>print sequence numbers</strong> for each perspective, theme, observation, and interpretation in the report?`,
+            displayVisible: function(panelBuilder, model) {
+                return !!Globals.clientState().catalysisReportIdentifier();
+            }
+        },
+        {
             id: "configureCatalysisReport_hideReportCreationInfo",
             valueType: "boolean",
             valuePath: "/clientState/catalysisReportIdentifier/hideReportCreationInfo",
@@ -119,7 +130,7 @@ var panel: Panel = {
             }
         },
 
-        ///////////////////////////////////////////////////// print options
+        ///////////////////////////////////////////////////// other printing options
         {
             id: "catalysisReportPrint_printOptionsHeader",
             valueType: "none",

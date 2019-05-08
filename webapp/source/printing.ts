@@ -310,8 +310,9 @@ export function printCatalysisReport() {
 
     options["outputGraphFormat"] = project.tripleStore.queryLatestC(catalysisReportIdentifier, "outputGraphFormat") || "SVG";
     options["showStatsPanelsInReport"] = project.tripleStore.queryLatestC(catalysisReportIdentifier, "showStatsPanelsInReport") || false;
+    options["printItemIndexNumbers"] = project.tripleStore.queryLatestC(catalysisReportIdentifier, "printItemIndexNumbers") || false;
     options["hideNumbersOnContingencyGraphs"] = project.tripleStore.queryLatestC(catalysisReportIdentifier, "hideNumbersOnContingencyGraphs") || false;
-    options["printInterpretationsAsTable"] = project.tripleStore.queryLatestC(catalysisReportIdentifier, "printInterpretationsAsTable") || false;
+    options["useTableForInterpretationsFollowingObservation"] = project.tripleStore.queryLatestC(catalysisReportIdentifier, "useTableForInterpretationsFollowingObservation") || false;
     options["catalysisReportIdentifier"] = catalysisReportIdentifier;
 
     let customGraphWidthAsString = project.tripleStore.queryLatestC(catalysisReportIdentifier, "customReportGraphWidth");
@@ -365,15 +366,6 @@ function printCatalysisReportWithUnclusteredObservations(project, catalysisRepor
 
     var progressModel = dialogSupport.openProgressDialog("Starting up...", "Generating unclustered-observations catalysis report", "Cancel", dialogCancelled);
 
-    function progressText(observationIndex: number) {
-        return "Observation " + (observationIndex + 1) + " of " + observationIDs.length;
-    }
-    
-    function dialogCancelled(dialogConfiguration, hideDialogMethod) {
-        progressModel.cancelled = true;
-        hideDialogMethod();
-    }
-    
     let printItems = [];
     addPrintItemsForReportStart(printItems, project, catalysisReportName, catalysisReportIdentifier, allStories, options);
 
@@ -390,7 +382,7 @@ function printCatalysisReportWithUnclusteredObservations(project, catalysisRepor
 
         } else {
 
-            printItems.push(<any>printListOfObservations([observationIDs[observationIndex]], "", false, "neither", allStories, options));
+            printItems.push(printObservation(observationIDs[observationIndex], observationIndex, -1, "", false, "neither", allStories, options));
             printItems.push(m(".narrafirma-catalysis-report-observations-only-page-break", ""));
 
             progressModel.progressText = progressText(observationIndex);
@@ -399,6 +391,16 @@ function printCatalysisReportWithUnclusteredObservations(project, catalysisRepor
             setTimeout(function() { printNextObservation(); }, 0);
         }
     }
+
+    function progressText(observationIndex: number) {
+        return "Observation " + (observationIndex + 1) + " of " + observationIDs.length;
+    }
+    
+    function dialogCancelled(dialogConfiguration, hideDialogMethod) {
+        progressModel.cancelled = true;
+        hideDialogMethod();
+    }
+    
     setTimeout(function() { printNextObservation(); }, 0);
 }
 
@@ -412,15 +414,6 @@ function printCatalysisReportWithClusteredObservations(project, catalysisReportI
     
         var progressModel = dialogSupport.openProgressDialog("Starting up...", "Generating clustered-observations catalysis report", "Cancel", dialogCancelled);
     
-        function progressText(clusterIndex: number, observationIndex: number) {
-            return "Theme " + (clusterIndex + 1) + " of " + clustersToPrint.length + ", observation " + (observationIndex + 1) + " of " + clustersToPrint[clusterIndex].items.length;
-        }
-        
-        function dialogCancelled(dialogConfiguration, hideDialogMethod) {
-            progressModel.cancelled = true;
-            hideDialogMethod();
-        }
-    
         let printItems = [];
         addPrintItemsForReportStart(printItems, project, catalysisReportName, catalysisReportIdentifier, allStories, options);
         
@@ -428,10 +421,10 @@ function printCatalysisReportWithClusteredObservations(project, catalysisReportI
         clustersToPrint.sort(function(a, b) { return (a.order && b.order && a.order > b.order) ? 1 : -1 });
 
         var tocHeaderRaw = project.tripleStore.queryLatestC(catalysisReportIdentifier, "catalysisReport_tocHeaderFirstLevel_observations");
-        addPrintItemsForTOCLevelOne(printItems, tocHeaderRaw, clustersToPrint, "Themes");
+        addPrintItemsForTOCLevelOne(printItems, tocHeaderRaw, clustersToPrint, "Themes", options);
         
         var clusterIndex = 0;
-        let itemIndex = 0;
+        let itemIndex = -1; 
     
         function printNextObservation() {
     
@@ -447,24 +440,20 @@ function printCatalysisReportWithClusteredObservations(project, catalysisReportI
 
                 var cluster = clustersToPrint[clusterIndex];
 
-                if (itemIndex === 0) { // first item in cluster - write second-level TOC
+                if (itemIndex < 0) { 
 
                     let numItemsToPrintInThisCluster = numItemsOutOfListToPrint(cluster.items);
 
                     // theme name and notes
-                    printItems.push(m("h2.narrafirma-catalysis-report-theme", 
-                        [
-                            m("span", {
-                                class: "narrafirma-catalysis-report-theme-label " + replaceSpacesWithDashes(cluster.name), 
-                                id: "c_" + clusterIndex
-                            }, 
-                            options.themeLabel), 
+                    printItems.push(
+                        m(
+                            "h2", {class: "narrafirma-catalysis-report-theme "  + replaceSpacesWithDashes(cluster.name), id: "c_" + clusterIndex},
+                            m("span.narrafirma-catalysis-report-theme-label", options.themeLabel), 
+                            componentWithSequenceNumber(clusterIndex, -1, -1, options),
                             printText(cluster.name)
-                        ]
-                    ));
-                    if (cluster.notes) {
-                        printItems.push(m("div.narrafirma-catalysis-report-theme-notes", printText(cluster.notes)));
-                    }
+                        )
+                    );
+                    printItems.push(m("div.narrafirma-catalysis-report-theme-notes", printText(cluster.notes)));
 
                     // table of contents for theme
                     addPrintHeaderForTOCLevelTwo(printItems, project, catalysisReportIdentifier, "themes", 
@@ -474,12 +463,14 @@ function printCatalysisReportWithClusteredObservations(project, catalysisReportI
                     for (var i = 0; i < cluster.items.length ; i++) {
                         if (cluster.items[i].print) {
                             const idTag = "#c_" + clusterIndex + "_o_" + i;
-                            var observation = project.tripleStore.makeObject(cluster.items[i].referenceUUID, true);
+                            const observation = project.tripleStore.makeObject(cluster.items[i].referenceUUID, true);
+                            const sequenceText = options.printItemIndexNumbers ? (clusterIndex+1).toString() + "." + (i+1).toString() + ". " : "";
                             tocItemsForCluster.push(
                                 m("div", {"class": "narrafirma-catalysis-report-theme-link"}, 
                                 [
                                     m("span", {"class": "narrafirma-catalysis-report-observation-name"}, 
                                     m("a", {"href": idTag}, 
+                                    sequenceText,
                                     printText(observation.observationTitle || observation.observationDescription)))
                                 ]
                             ));
@@ -492,18 +483,18 @@ function printCatalysisReportWithClusteredObservations(project, catalysisReportI
                 } else if (itemIndex >= cluster.items.length) { // last item in cluster - move to next cluster
 
                     clusterIndex++;
-                    itemIndex = 0;
+                    itemIndex = -1;
 
                 } else {
 
                     const item = cluster.items[itemIndex];
                     if (item.print) {
                         const idTag = "c_" + clusterIndex + "_o_" + itemIndex;
-                        printItems.push(<any>printListOfObservations([item.referenceUUID], idTag, true, "themes", allStories, options));
+                        printItems.push(printObservation(item.referenceUUID, itemIndex, clusterIndex, idTag, true, "themes", allStories, options));
 
                         const interpretationsListIdentifier = project.tripleStore.queryLatestC(item.referenceUUID, "observationInterpretations");
                         const interpretationIDsForThisObservation = project.tripleStore.getListForSetIdentifier(interpretationsListIdentifier);
-                        printItems.push(<any>printListOfInterpretations(interpretationIDsForThisObservation, idTag, allStories, options));
+                        printItems.push(<any>printListOfInterpretations(interpretationIDsForThisObservation, itemIndex, clusterIndex, idTag, allStories, options));
 
                         progressModel.progressText = progressText(clusterIndex, itemIndex);
                         progressModel.redraw();
@@ -513,6 +504,16 @@ function printCatalysisReportWithClusteredObservations(project, catalysisReportI
                 setTimeout(function() { printNextObservation(); }, 0);
             }
         }
+
+        function progressText(clusterIndex: number, observationIndex: number) {
+            return "Theme " + (clusterIndex + 1) + " of " + clustersToPrint.length + ", observation " + (observationIndex + 1) + " of " + clustersToPrint[clusterIndex].items.length;
+        }
+        
+        function dialogCancelled(dialogConfiguration, hideDialogMethod) {
+            progressModel.cancelled = true;
+            hideDialogMethod();
+        }
+    
         setTimeout(function() { printNextObservation(); }, 0);
     }
 
@@ -542,11 +543,11 @@ function printCatalysisReportWithClusteredInterpretations(project, catalysisRepo
     clustersToPrint.sort(function(a, b) { return (a.order && b.order && a.order > b.order) ? 1 : -1 });
 
     var tocHeaderRaw = project.tripleStore.queryLatestC(catalysisReportIdentifier, "catalysisReport_tocHeaderFirstLevel");
-    addPrintItemsForTOCLevelOne(printItems, tocHeaderRaw, clustersToPrint, "Perspectives");
+    addPrintItemsForTOCLevelOne(printItems, tocHeaderRaw, clustersToPrint, "Perspectives", options);
 
     var clusterIndex = 0;
-    let itemIndex = 0;
-    var observationsIDsForInterpretation = {};
+    let itemIndex = -1; // start before zero index to print TOC
+    var observationsIDsForInterpretations = {};
 
     function printNextInterpretation() {
 
@@ -562,22 +563,20 @@ function printCatalysisReportWithClusteredInterpretations(project, catalysisRepo
 
             var cluster = clustersToPrint[clusterIndex];
 
-            if (itemIndex === 0) { // first item in cluster - write second-level TOC
+            if (itemIndex < 0) { // before first item in cluster - write second-level TOC
 
                 let numItemsToPrintInThisCluster = numItemsOutOfListToPrint(cluster.items);
 
-                // perspective name and notes
-                const headerClass = "narrafirma-catalysis-report-perspective-label " + replaceSpacesWithDashes(cluster.name);
+                // perspective name and notes 
                 printItems.push(
-                    m("h2.narrafirma-catalysis-report-perspective", 
-                    [
-                        m("span", {"class": headerClass, "id": "c_" + clusterIndex}, 
-                        options["perspectiveLabel"]), printText(cluster.name)
-                    ]
-                ));
-                if (cluster.notes) {
-                    printItems.push(m("div.narrafirma-catalysis-report-perspective-notes", printText(cluster.notes)));
-                }
+                    m(
+                        "h2", {class: "narrafirma-catalysis-report-perspective "  + replaceSpacesWithDashes(cluster.name), id: "c_" + clusterIndex},
+                        m("span.narrafirma-catalysis-report-perspective-label", options.perspectiveLabel), 
+                        componentWithSequenceNumber(clusterIndex, -1, -1, options),
+                        printText(cluster.name)
+                    )
+                );
+                printItems.push(m("div.narrafirma-catalysis-report-perspective-notes", printText(cluster.notes)));
 
                 // table of contents for perspective
                 addPrintHeaderForTOCLevelTwo(printItems, project, catalysisReportIdentifier, "perspectives", 
@@ -588,28 +587,23 @@ function printCatalysisReportWithClusteredInterpretations(project, catalysisRepo
                     const item = cluster.items[i];
                     if (item.print) {
                         const interpretation = project.tripleStore.makeObject(item.referenceUUID, true);
-
                         if (interpretation) {
                             var observationIDsForThisInterpretation = makeObservationIDsListForInterpretation(project, observationIDs, item);
-                            observationsIDsForInterpretation[item.uuid] = observationIDsForThisInterpretation; // save to use later
+                            observationsIDsForInterpretations[item.uuid] = observationIDsForThisInterpretation[0]; // save to use later; only first observation in list matters
+                            var observation = project.tripleStore.makeObject(observationsIDsForInterpretations[item.uuid]);
+                            if (observation) {
+                                var tocItemsForOIPair = [];
+                                const sequenceText = options.printItemIndexNumbers ? (clusterIndex+1).toString() + "." + (i+1).toString() + ". " : "";
+                                const interpretationNameToPrint = sequenceText + interpretation.interpretation_name || interpretation.interpretation_text;
+                                tocItemsForOIPair.push(m("td", {"class": "narrafirma-catalysis-report-interpretation-links-table-td"}, 
+                                    m("a", {href: "#c_" + clusterIndex + "_i_" + i}, printText(interpretationNameToPrint))));
 
-                            for (var observationIndex = 0; observationIndex < observationIDsForThisInterpretation.length; observationIndex++) {
-                                var observation = project.tripleStore.makeObject(observationIDsForThisInterpretation[observationIndex], true);
-                                if (observation) {
-
-                                    var tocItemsForOIPair = [];
-
-                                    const interpretationNameToPrint = interpretation.interpretation_name || interpretation.interpretation_text;
-                                    tocItemsForOIPair.push(m("td", {"class": "narrafirma-catalysis-report-interpretation-links-table-td"}, 
-                                        m("a", {href: "#c_" + clusterIndex + "_i_" + i}, printText(interpretationNameToPrint))));
-
-                                    const observationNameToPrint = observation.observationTitle || observation.observationDescription;
-                                    tocItemsForOIPair.push(m("td", {"class": "narrafirma-catalysis-report-interpretation-links-table-td"}, 
-                                        m("a", {href: "#c_" + clusterIndex + "_i_" + i + "_o_" + observationIndex}, printText(observationNameToPrint))));
-                                    
-                                    tocItemsForOIPair.push(m("td", {"class": "narrafirma-catalysis-report-interpretation-links-table-td"}, observation.observationStrength || ""));
-                                    tocItemsForCluster.push(m("tr", {"class": "narrafirma-catalysis-report-interpretation-links-table-tr"}, tocItemsForOIPair)); 
-                                }
+                                const observationNameToPrint = sequenceText + observation.observationTitle || observation.observationDescription;
+                                tocItemsForOIPair.push(m("td", {"class": "narrafirma-catalysis-report-interpretation-links-table-td"}, 
+                                    m("a", {href: "#c_" + clusterIndex + "_i_" + i + "_o_0"}, printText(observationNameToPrint))));
+                                
+                                tocItemsForOIPair.push(m("td", {"class": "narrafirma-catalysis-report-interpretation-links-table-td"}, observation.observationStrength || ""));
+                                tocItemsForCluster.push(m("tr", {"class": "narrafirma-catalysis-report-interpretation-links-table-tr"}, tocItemsForOIPair)); 
                             }
                         }
                     }
@@ -622,7 +616,7 @@ function printCatalysisReportWithClusteredInterpretations(project, catalysisRepo
             } else if (itemIndex >= cluster.items.length) { // last item in cluster - move to next cluster
 
                 clusterIndex++;
-                itemIndex = 0;
+                itemIndex = -1;
 
             } else {
 
@@ -631,30 +625,26 @@ function printCatalysisReportWithClusteredInterpretations(project, catalysisRepo
                     const interpretation = project.tripleStore.makeObject(item.referenceUUID, true);
                     if (interpretation && (interpretation.interpretation_name || interpretation.interpretation_text)) {
 
-                        const linkingQuestion = project.tripleStore.queryLatestC(observationsIDsForInterpretation[item.uuid][0], "observationLinkingQuestion");
+                        const interpretationNameWithoutSpaces = replaceSpacesWithDashes(interpretation.interpretation_name || "");
+                        let idTag = "c_" + clusterIndex + "_i_" + itemIndex;
+
+                        const headerItems = [];
+                        headerItems.push(m("span", {"class": "narrafirma-catalysis-report-interpretation-label " + interpretationNameWithoutSpaces}, printText(options.interpretationLabel)));
+                        headerItems.push(componentWithSequenceNumber(clusterIndex, -1, itemIndex, options));
+
+                        headerItems.push(printText(interpretation.interpretation_name || ""));
+                        printItems.push(m("h4.narrafirma-catalysis-report-interpretation", {"id": idTag}, headerItems));
+
+                        const linkingQuestion = project.tripleStore.queryLatestC(observationsIDsForInterpretations[item.uuid], "observationLinkingQuestion");
                         if (linkingQuestion) {
                             printItems.push(m("div.narrafirma-catalysis-report-observation-linking-question-by-perspective", printText(linkingQuestion)));
                         }
-
-                        const interpretationNameWithoutSpaces = replaceSpacesWithDashes(interpretation.interpretation_name || "");
-                        const idTag = "c_" + clusterIndex + "_i_" + itemIndex;
-
-                        const printItemsForHeader = [];
-                        if (options["interpretationLabel"]) {
-                            printItemsForHeader.push(
-                                m("span", {"class": "narrafirma-catalysis-report-interpretation-label " + interpretationNameWithoutSpaces}, 
-                                options["interpretationLabel"])
-                            );
-                        }
-                        
-                        printItemsForHeader.push(printText(interpretation.interpretation_name || ""));
-                        printItems.push(m("h4.narrafirma-catalysis-report-interpretation", {"id": idTag}, printItemsForHeader));
 
                         printItems.push(m("div.narrafirma-catalysis-report-interpretation-notes", printText(interpretation.interpretation_text)));
                         if (item.idea) printItems.push(m("div.narrafirma-catalysis-report-interpretation-idea", printText(item.idea)));
                         if (item.questions) printItems.push(m("div.narrafirma-catalysis-report-interpretation-questions", printText(item.questions)));
 
-                        printItems.push(<any>printListOfObservations(observationsIDsForInterpretation[item.uuid], idTag, false, "perspectives", allStories, options));
+                        printItems.push(printObservation(observationsIDsForInterpretations[item.uuid], itemIndex, clusterIndex, idTag + "_o_0", false, "perspectives", allStories, options));
 
                         progressModel.progressText = progressText(clusterIndex, itemIndex);
                         progressModel.redraw();
@@ -672,86 +662,90 @@ function printCatalysisReportWithClusteredInterpretations(project, catalysisRepo
 // Catalysis report - printing lists of observations or interpretations
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-function printListOfObservations(observationList, idTagStart, printLinkingQuestion, themesOrPerspectives, allStories, options) {
+function printObservation(observationID, observationIndex, clusterIndex, idTagStart, printLinkingQuestion, themesOrPerspectives, allStories, options) {
 
-    return printList(observationList, {}, false, function (observation, index) {
-        var project = Globals.project();
+    var project = Globals.project();
+    const observation = project.tripleStore.makeObject(observationID);
+    if (!observation) return [];
+
+    const resultItems = [];
+
+    const headerItems = [];
+    headerItems.push(m("span", {"class": "narrafirma-catalysis-report-observation-label"}, printText(options.observationLabel)));
+    headerItems.push(componentWithSequenceNumber(clusterIndex, -1, observationIndex, options));
+    headerItems.push(m("span", {"class": "narrafirma-catalysis-report-observation-title"}, printText(observation.observationTitle)));
+    const strengthStringToPrint = observation.observationStrength ? " Strength: " + observation.observationStrength : ""; 
+    headerItems.push(m("span", {"class": "narrafirma-catalysis-report-observation-strength"}, strengthStringToPrint));
+
+    let idTagTouse = idTagStart;
+    if (idTagTouse.indexOf("_o_") < 0) idTagTouse += "_o_" + observationIndex;
+    resultItems.push(m("h3.narrafirma-catalysis-report-observation", {"id": idTagTouse}, headerItems));
+    resultItems.push(m("div.narrafirma-catalysis-report-observation-description", printText(observation.observationDescription)));
+
+    if (observation.pattern.graphType === "texts") {
+        resultItems.push(printReturnAndBlankLine());
+    } else {
+
         var pattern = observation.pattern;
         var selectionCallback = function() { return this; };
         let graphHolder = initializedGraphHolder(allStories, options);
-        const observationLabel = options.observationLabel;
+        
+        const hideNoAnswerValues = PatternExplorer.getOrSetWhetherNoAnswerValuesShouldBeHiddenForPattern(project, options.catalysisReportIdentifier, pattern);
+        graphHolder.patternDisplayConfiguration.hideNoAnswerValues = hideNoAnswerValues;
 
-        const resultItems = [];
+        var graph = PatternExplorer.makeGraph(pattern, graphHolder, selectionCallback, !options.showStatsPanelsInReport);
+        if (graph) resultItems.push(printGraphWithGraphHolder(graphHolder, options.customCSS));
 
-        const headerItems = [];
-        headerItems.push(m("span", {"class": "narrafirma-catalysis-report-observation-label"}, observationLabel));
-        headerItems.push(m("span", {"class": "narrafirma-catalysis-report-observation-title"}, printText(observation.observationTitle)));
-        const strengthStringToPrint = observation.observationStrength ? " Strength: " + observation.observationStrength : ""; 
-        headerItems.push(m("span", {"class": "narrafirma-catalysis-report-observation-strength"}, strengthStringToPrint));
+        if (observation.observationExtraPatterns) {
+            const allQuestions = project.allQuestionsThatCouldBeGraphedForCatalysisReport(options.catalysisReportIdentifier, true);
 
-        let idTagTouse = idTagStart;
-        if (idTagTouse.indexOf("_o_") < 0) idTagTouse += "_o_" + index;
-        resultItems.push(m("h3.narrafirma-catalysis-report-observation", {"id": idTagTouse}, headerItems));
-        resultItems.push(m("div.narrafirma-catalysis-report-observation-description", printText(observation.observationDescription)));
+            // one pattern per line
+            const patternTexts = observation.observationExtraPatterns.split("\n");
 
-        if (observation.pattern.graphType === "texts") {
-            resultItems.push(printReturnAndBlankLine());
-        } else {
+            patternTexts.forEach((patternText) => {
 
-            const hideNoAnswerValues = PatternExplorer.getOrSetWhetherNoAnswerValuesShouldBeHiddenForPattern(project, options.catalysisReportIdentifier, pattern);
-            graphHolder.patternDisplayConfiguration.hideNoAnswerValues = hideNoAnswerValues;
-            var graph = PatternExplorer.makeGraph(pattern, graphHolder, selectionCallback, !options.showStatsPanelsInReport);
-            if (graph) resultItems.push(printGraphWithGraphHolder(graphHolder, options.customCSS));
+                // the question short names MUST be in the order they are in the patterns table (because some of the graphs require a certain order)
+                const questionNames = patternText.split('==');
 
-            if (observation.observationExtraPatterns) {
-                const allQuestions = project.allQuestionsThatCouldBeGraphedForCatalysisReport(options.catalysisReportIdentifier, true);
+                if (questionNames.length) {
 
-                // one pattern per line
-                const patternTexts = observation.observationExtraPatterns.split("\n");
-
-                patternTexts.forEach((patternText) => {
-
-                    // the question short names MUST be in the order they are in the patterns table (because some of the graphs require a certain order)
-                    const questionNames = patternText.split('==');
-
-                    if (questionNames.length) {
-
-                        // look up questions
-                        const questions = [];
-                        questionNames.forEach((questionName) => {
-                            for (let i = 0; i < allQuestions.length; i++) {
-                                if (allQuestions[i].displayName === questionName.trim()) {
-                                    questions.push(allQuestions[i]);
-                                }
+                    // look up questions
+                    const questions = [];
+                    questionNames.forEach((questionName) => {
+                        for (let i = 0; i < allQuestions.length; i++) {
+                            if (allQuestions[i].displayName === questionName.trim()) {
+                                questions.push(allQuestions[i]);
                             }
-                        });
-                        
-                        // generate graph
-                        if (questions.length > 0) {
-                            const graphType = graphTypeForListOfQuestions(questions);
-                            const extraPattern = {"graphType": graphType, "questions": questions};
-                            let extraGraphHolder = initializedGraphHolder(allStories, options);
-                            // the "show no answer values" option is whatever was set on the OTHER pattern that is being referenced here
-                            const hideNoAnswerValues = PatternExplorer.getOrSetWhetherNoAnswerValuesShouldBeHiddenForPattern(project, options.catalysisReportIdentifier, extraPattern);
-                            graphHolder.patternDisplayConfiguration.hideNoAnswerValues = hideNoAnswerValues;
-                            var extraGraph = PatternExplorer.makeGraph(extraPattern, extraGraphHolder, selectionCallback, !options.showStatsPanelsInReport);
-                            if (extraGraph) resultItems.push(printGraphWithGraphHolder(extraGraphHolder, options.customCSS));
                         }
+                    });
+                    
+                    // generate graph
+                    if (questions.length > 0) {
+                        const graphType = graphTypeForListOfQuestions(questions);
+                        const extraPattern = {"graphType": graphType, "questions": questions};
+                        let extraGraphHolder = initializedGraphHolder(allStories, options);
+
+                        // the "show no answer values" option is whatever was set on the OTHER pattern that is being referenced here
+                        const hideNoAnswerValues = PatternExplorer.getOrSetWhetherNoAnswerValuesShouldBeHiddenForPattern(project, options.catalysisReportIdentifier, extraPattern);
+                        extraGraphHolder.patternDisplayConfiguration.hideNoAnswerValues = hideNoAnswerValues;
+
+                        var extraGraph = PatternExplorer.makeGraph(extraPattern, extraGraphHolder, selectionCallback, !options.showStatsPanelsInReport);
+                        if (extraGraph) resultItems.push(printGraphWithGraphHolder(extraGraphHolder, options.customCSS));
                     }
-                });
-            }
+                }
+            });
         }
-        if (printLinkingQuestion && observation.observationLinkingQuestion) {
-            let linkingQuestionClass = "";
-            if (themesOrPerspectives = "themes") {
-                linkingQuestionClass = "div.narrafirma-catalysis-report-observation-linking-question-by-theme";
-            } else {
-                linkingQuestionClass = "div.narrafirma-catalysis-report-observation-linking-question-by-perspective";
-            }
-            resultItems.push(m(linkingQuestionClass, printText(observation.observationLinkingQuestion)));
+    }
+    if (printLinkingQuestion && observation.observationLinkingQuestion) {
+        let linkingQuestionClass = "";
+        if (themesOrPerspectives = "themes") {
+            linkingQuestionClass = "div.narrafirma-catalysis-report-observation-linking-question-by-theme";
+        } else {
+            linkingQuestionClass = "div.narrafirma-catalysis-report-observation-linking-question-by-perspective";
         }
-        return resultItems;
-    });
+        resultItems.push(m(linkingQuestionClass, printText(observation.observationLinkingQuestion)));
+    }
+    return [resultItems];
 }
 
 function graphTypeForListOfQuestions(questions) {
@@ -804,9 +798,9 @@ function initializedGraphHolder(allStories, options) {
     return graphHolder;
 }
 
-function printListOfInterpretations(interpretationList, idTagStart, allStories, options) {
+function printListOfInterpretations(interpretationList, observationIndex, clusterIndex, idTagStart, allStories, options) {
 
-    return printList(interpretationList, {}, options["printInterpretationsAsTable"], function (item, index) {
+    return printList(interpretationList, {}, options.useTableForInterpretationsFollowingObservation, function (item, index) {
         var project = Globals.project();
         var pattern = item.pattern;
         var selectionCallback = function() { return this; };
@@ -833,7 +827,8 @@ function printListOfInterpretations(interpretationList, idTagStart, allStories, 
         };
 
         const headerItems = [];
-        headerItems.push(m("span", {"class": "narrafirma-catalysis-report-interpretation-label"}, options.interpretationLabel));
+        headerItems.push(m("span", {"class": "narrafirma-catalysis-report-interpretation-label"}, printText(options.interpretationLabel)));
+        headerItems.push(componentWithSequenceNumber(clusterIndex, observationIndex, index, options));
         headerItems.push(m("span", {"class": "narrafirma-catalysis-report-observation-title"}, printText(item.interpretation_name)));
 
         const resultItems = [];
@@ -937,6 +932,19 @@ function printGraphWithGraphNode(graphNode: HTMLElement, graphHolder: GraphHolde
 // Catalysis report - support functions
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+function componentWithSequenceNumber(topLevelIndex, middleLevelIndex, bottomLevelIndex, options) {
+    let result = null;
+    if (options.printItemIndexNumbers) {
+        let sequenceText = "";
+        if (topLevelIndex >= 0) sequenceText += (topLevelIndex + 1).toString() + ".";
+        if (middleLevelIndex >= 0) sequenceText += (middleLevelIndex + 1).toString() + ".";
+        if (bottomLevelIndex >= 0) sequenceText += (bottomLevelIndex + 1).toString() + ".";
+        sequenceText += " ";
+        if (sequenceText) result = m("span", {class: "narrafirma-catalysis-report-sequence-number"}, sequenceText);
+    }
+    return result;
+}
+
 function numItemsOutOfListToPrint(items) {
     let result = 0;
     items.forEach( function(item) {
@@ -996,21 +1004,24 @@ function clustersThatMatchObservationIDList(project, clusteringDiagram, perspect
     return clustersToPrint;
 }
 
-function addPrintItemsForTOCLevelOne(printItems, tocHeaderRaw, clusters, clusterName) {
+function addPrintItemsForTOCLevelOne(printItems, tocHeaderRaw, clusters, clusterName, options) {
     if (!tocHeaderRaw) tocHeaderRaw = clusterName + " in this report (#):";
     var numberSignIndex = tocHeaderRaw.indexOf("#");
     if (numberSignIndex >= 0) {
         tocHeaderRaw = tocHeaderRaw.replace("#", clusters.length);
     }
+
     try {
         var tocHeader = sanitizeHTML.generateSmallerSetOfSanitizedHTMLForMithril(tocHeaderRaw);
     } catch (error) {
         alert("Problem in catalysis report contents header (first level): " + error);
     }
+
     printItems.push(m("div.narrafirma-catalysis-report-toc-link-header", tocHeader));
     for (var i = 0; i < clusters.length ; i++) {
         var cluster = clusters[i];
-        printItems.push(m("div.narrafirma-catalysis-report-toc-link", m("a", {href: "#c_" + i}, printText(cluster.name))));
+        const sequenceText = options.printItemIndexNumbers ? (i+1).toString() + ". " : "";
+        printItems.push(m("div.narrafirma-catalysis-report-toc-link", m("a", {href: "#c_" + i}, sequenceText, printText(cluster.name))));
     }
 }
 
@@ -1446,7 +1457,7 @@ function printItem(item, fieldsToIgnore = {}) {
     };
     return result;
 }
-
+ 
 function printList(list, fieldsToIgnore = {}, printAsTable = false, printItemFunction: Function = printItem) {
     let result = [];
     let row = [];
@@ -1675,7 +1686,7 @@ function printPartsForGrid(field, panelSpecificationCollection, tripleStore, par
     }
 }
 
-function printObservations(page, project, tripleStore, catalysisReportIdentifier) {
+function printObservationsInProjectReport(page, project, tripleStore, catalysisReportIdentifier) {
     var parts = [];
     var observationsHaveUserContent = false;
     var observationSetIdentifier = project.tripleStore.queryLatestC(catalysisReportIdentifier, "catalysisReport_observations");
@@ -1852,7 +1863,7 @@ function printPage(page, project, tripleStore, catalysisReportIdentifier, storyC
     // must print observations separately because they are not linked to the page specification structure
     // want this to print after the label that describes it
     if (page.displayName === "Explore patterns" && catalysisReportIdentifier) {
-        var observationParts = printObservations(page, project, tripleStore, catalysisReportIdentifier);
+        var observationParts = printObservationsInProjectReport(page, project, tripleStore, catalysisReportIdentifier);
         if (observationParts) {
             parts = parts.concat(observationParts);
             pageHasUserContent = true;
