@@ -271,19 +271,12 @@ input[type="submit"].narrafirma-login-button:hover {
     margin-bottom: 0.5em;
 }
 
-.narrafirma-collision-text {
-    font-weight: normal;
-    background-color: white;
-    border: 1px solid black;
-    padding: 0.5em;
-}
-
 .narrafirma-collision-button {
     display: block;
-    margin: 0.5em auto 0.5em auto;
+    margin: 1em auto 0.5em auto;
 }
 
-.narrafirma-collision-footer {
+.narrafirma-collision-explanation {
     font-weight: normal;
     margin-top: 0.5em;
 }

@@ -128,15 +128,16 @@ export function displayQuestion(panelBuilder: PanelBuilder, model, fieldSpecific
 
     // if someone has been working in a textarea and has written a lot of text, and it is about to be ovewritten because somebody else was doing the same thing,
     // show them both texts so they can resolve the conflict
-    let savedValue = null;
     if (displayType === "textarea") {
         if (clientState.anHTMLElementValueIsBeingSetBecauseOfAnIncomingMessage()) {
             const element = <HTMLTextAreaElement>document.getElementById(fieldID);
             const activeElement = <HTMLTextAreaElement>document.activeElement;
             if (element && element === activeElement) { // only do this for the textarea they are actually editing right now, not all the textareas on the page
                 if (element.value !== value) {
-                    savedValue = element.value;
-                    console.log('Collision alert: Another user has changed "' + fieldSpecification.displayName + '"\n-- from --\n"' + savedValue + '"\n-- to --\n"' + value + '"');
+                    if (!clientState.cachedOverwrittenTexts(fieldID)) { // only cache value the first time, to avoid overwriting it on the second change
+                        clientState.cachedOverwrittenTexts(fieldID, element.value);
+                    }
+                    console.log('Collision alert: Another user has changed "' + fieldSpecification.displayName + '"\n-- from --\n"' + element.value + '"\n-- to --\n"' + value + '"');
                 }
             }
         }
@@ -177,14 +178,20 @@ export function displayQuestion(panelBuilder: PanelBuilder, model, fieldSpecific
         makeLabel();
         parts = [
             m("textarea[class=narrafirma-textbox]", standardValueOptions),
-            savedValue ? m("div.narrafirma-collision-message", 
-                m("div.narrafirma-collision-header", m("b", "Collision alert!"), " Another user has changed the contents of this text box. Your entry was: "), 
-                m("div.narrafirma-collision-text", savedValue),
-                m("button.narrafirma-collision-button", {onclick: function () {
-                    dialogSupport.openTextEditorDialog(savedValue, 'Text for "' + fieldSpecification.displayName + '" overwritten by another user (you might want to copy this)', "Close", closeCopyCollisionTextDialogClicked.bind(null), false);
-                }}, "View in pop-up window"),
-                m("div.narrafirma-collision-footer", "Your entry has also been written to your browser's development console."),
-            ) : [],
+
+            clientState.cachedOverwrittenTexts(fieldID) ? 
+            
+                m("div.narrafirma-collision-message", 
+                    m("div.narrafirma-collision-header", m("b", "Collision alert!"), " Another user has changed the contents of this text box. Your entry was: "), 
+                    m("textarea[class=narrafirma-textbox]", {value: clientState.cachedOverwrittenTexts(fieldID), id: fieldID + "_overwritten"}),
+                    m("div.narrafirma-collision-explanation", "Please resolve the conflict by copying and pasting whatever you need between the two text boxes. (This box will remain until you click the button below or reload the page.)"),
+                    m("button.narrafirma-collision-button", {onclick: function () {
+                        clientState.cachedOverwrittenTexts(fieldID, null);
+                        const message = "If you need to access your original text again, search for it in your browser's development console or your exported history file.";
+                        alert(message);
+                    }}, "Mark Conflict as Resolved"),
+                ) : [],
+
             m("br")
         ];
     } else if (displayType === "checkbox") {

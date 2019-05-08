@@ -42,6 +42,7 @@ class ClientState {
     private _serverStatusText: string = "";
     private _leavingPageCallback: () => void;
     private _anHTMLElementValueIsBeingSetBecauseOfAnIncomingMessage: boolean = null;
+    private _cachedOverwrittenTexts = {};
     
     // This should only be set by Globals
     _project: Project = null;
@@ -115,6 +116,16 @@ class ClientState {
             this._anHTMLElementValueIsBeingSetBecauseOfAnIncomingMessage = newValue;
         }
         return this._anHTMLElementValueIsBeingSetBecauseOfAnIncomingMessage;
+    }
+
+    cachedOverwrittenTexts(fieldID: string, newValue: string = undefined) {
+        if (fieldID === undefined) return null;
+        if (newValue === null) {
+            delete this._cachedOverwrittenTexts[fieldID];
+        } else if (newValue !== undefined) {
+            this._cachedOverwrittenTexts[fieldID] = newValue;
+        }
+        return this._cachedOverwrittenTexts[fieldID];
     }
 
     debugMode(newValue: string = undefined): string {
