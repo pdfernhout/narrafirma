@@ -46,8 +46,7 @@ var panel: Panel = {
             valueType: "string",
             valueOptions: ["perspectives (clustered interpretations)", "themes (clustered observations)", "observations (disregarding any clustering)"],
             displayType: "select",
-            displayPrompt: `Would you like to print the report organized by <strong>perspectives</strong> (clustered interpretations)
-                or <strong>themes</strong> (clustered observations)? You can also print unclustered observations.`,
+            displayPrompt: `<strong>Which type</strong> of report would you like to print?`,
             displayVisible: function(panelBuilder, model) {
                 return !!Globals.clientState().catalysisReportIdentifier();
             }
@@ -81,7 +80,7 @@ var panel: Panel = {
             valueType: "dictionary",
             valueOptions: ["strong", "medium", "weak", "no strength value set"],
             displayType: "checkboxes",
-            displayPrompt: "Which observation <strong>strengths</strong> do you want to include in the report?",
+            displayPrompt: "Which observation <strong>strengths</strong> do you want to include?",
             displayVisible: function(panelBuilder, model) {
                 return !!Globals.clientState().catalysisReportIdentifier();
             }
@@ -114,7 +113,7 @@ var panel: Panel = {
             valuePath: "/clientState/catalysisReportIdentifier/hideReportCreationInfo",
             displayType: "checkbox",
             displayConfiguration: "Hide report creation information",
-            displayPrompt: `If you like, you can <strong>hide the report creation information</strong> NarraFirma usually puts at the start of the report.`,
+            displayPrompt: `You can <strong>hide the report creation information</strong> that NarraFirma usually puts at the start of the report.`,
             displayVisible: function(panelBuilder, model) {
                 return !!Globals.clientState().catalysisReportIdentifier();
             }
@@ -137,7 +136,7 @@ var panel: Panel = {
             valueOptions: ["SVG", "PNG"],
             displayType: "select",
             displayName: "Output graph format",
-            displayPrompt: `What <strong>output format</strong> should be used to draw the graphs in the printed report?`,
+            displayPrompt: `Which <strong>graph format</strong> do you want to use?`,
             displayVisible: function(panelBuilder, model) {
                 return !!Globals.clientState().catalysisReportIdentifier();
             }
@@ -148,8 +147,7 @@ var panel: Panel = {
             valueType: "string",
             displayType: "text",
             displayName: "Custom graph width",
-            displayPrompt: `The default width of large graphs in a printed catalysis report is 800 pixels. 
-                You can enter a <strong>custom graph width</strong> here.`,
+            displayPrompt: `<strong>How wide</strong> should the graphs be, in pixels? (If this field is left blank, large graphs will be 800 pixels wide.)`,
             displayVisible: function(panelBuilder, model) {
                 return !!Globals.clientState().catalysisReportIdentifier();
             }
@@ -160,7 +158,7 @@ var panel: Panel = {
             valueType: "boolean",
             displayType: "checkbox",
             displayConfiguration: "Show interpretations in a table side by side",
-            displayPrompt: "For a clustered-observations report, do you want to show the interpretations that follow an observation <strong>in a table</strong> side by side, or just one after another?",
+            displayPrompt: "For a clustered-observations report, do you want to show interpretations <strong>side by side</strong>? Or one after another?",
             displayVisible: function(panelBuilder, model) {
                 return !!Globals.clientState().catalysisReportIdentifier();
             }
@@ -182,7 +180,7 @@ var panel: Panel = {
             valueType: "string",
             displayType: "textarea",
             displayName: "Custom CSS",
-            displayPrompt: "You can enter <strong>custom CSS</strong> that modifies elements of the catalysis report here. (For more information on how this works, see the help system.)",
+            displayPrompt: "You can enter <strong>custom CSS</strong> that modifies elements of the catalysis report here. (For details, see the help system.)",
             displayVisible: function(panelBuilder, model) {
                 return !!Globals.clientState().catalysisReportIdentifier();
             }
@@ -194,10 +192,7 @@ var panel: Panel = {
             displayType: "textarea",
             displayName: "Introduction",
             displayPrompt: `
-            You can enter an <strong>introduction</strong> to your catalysis report here (explaining, for example,
-                what the project is about and where the stories came from). 
-                It will appear at the start of your printed report. You can add HTML to this text (for example, to
-                start the section with an "Introduction" header). See the help system for details.`,
+                This optional <strong>introduction</strong> begins your report. (See the help system to learn about HTML formatting you can use.)`,
             displayVisible: function(panelBuilder, model) {
                 return !!Globals.clientState().catalysisReportIdentifier();
             }
@@ -209,9 +204,7 @@ var panel: Panel = {
             displayType: "textarea",
             displayName: "About",
             displayPrompt: `
-            You can enter an <strong>About this report</strong> section that describes 
-            the structure of your report here (explaining, for example, how it was created). 
-            It will appear after your introduction at the start of your printed report.`,
+                An optional <strong>About this report</strong> section is printed after the introduction.`,
             displayVisible: function(panelBuilder, model) {
                 return !!Globals.clientState().catalysisReportIdentifier();
             }
@@ -223,10 +216,10 @@ var panel: Panel = {
             displayType: "text",
             displayName: "Contents header (top level)",
             displayPrompt: `
-            You can enter a custom <strong>header for the list of perspectives</strong> (the top-level table of contents) at the start
-            of your clustered-interpretations report. If you leave this field blank, the header will read "Perspectives in this report (#)."
-            To change the header, enter some text here. A number sign (#) will be replaced
-            with the number of perspectives in the report.`,
+                You can enter a custom <strong>header for the list of perspectives</strong> at the start
+                of your clustered-interpretations report. 
+                A number sign (#) will be replaced
+                with the number of perspectives in the report. (If you leave this field blank, the header will read "Perspectives in this report (#).")`,
             displayVisible: function(panelBuilder, model) {
                 return !!Globals.clientState().catalysisReportIdentifier();
             }
@@ -238,10 +231,10 @@ var panel: Panel = {
             displayType: "text",
             displayName: "Contents header (top level)",
             displayPrompt: `
-            You can enter a custom <strong>header for the list of themes</strong> (the top-level table of contents) at the start
-            of your clustered-observations report. If you leave this field blank, the header will read "Themes in this report (#)."
-            To change the header, enter some text here. A number sign (#) will be replaced
-            with the number of themes in the report.`,
+                You can enter a custom <strong>header for the list of themes</strong> at the start
+                of your clustered-observations report. 
+                A number sign (#) will be replaced
+                with the number of themes in the report. (If you leave this field blank, the header will read "Themes in this report (#).")`,
             displayVisible: function(panelBuilder, model) {
                 return !!Globals.clientState().catalysisReportIdentifier();
             }
@@ -254,11 +247,9 @@ var panel: Panel = {
             displayType: "text",
             displayName: "Contents header (second level)",
             displayPrompt: `
-            You can enter a custom <strong>header for the table of interpretations and observations in each perspective</strong> (the second-level table of contents) 
-            in a clustered-interpretations report. If you leave this field blank, the header will read 
-            "Interpretations and observations in this perspective (#)."
-            To change the header, enter some text here. A number sign (#) will be replaced
-            with the number of interpretations in the perspective.`,
+                You can enter a custom <strong>header for the table of interpretations and observations in each perspective</strong> 
+                in a clustered-interpretations report. A number sign (#) will be replaced with the number of interpretations in the perspective. 
+                (If you leave this field blank, the header will read "Interpretations and observations in this perspective (#).")`,
             displayVisible: function(panelBuilder, model) {
                 return !!Globals.clientState().catalysisReportIdentifier();
             }
@@ -270,11 +261,9 @@ var panel: Panel = {
             displayType: "text",
             displayName: "Contents header (second level)",
             displayPrompt: `
-            You can enter a custom <strong>header for the list of observations in each theme</strong> (the second-level table of contents) 
-            in a clustered-observations report. If you leave this field blank, the header will read 
-            "Observations and interpretations in this theme (#)."
-            To change the header, enter some text here. A number sign (#) will be replaced
-            with the number of observations in the theme.`,
+                You can enter a custom <strong>header for the list of observations in each theme</strong> 
+                in a clustered-observations report. A number sign (#) will be replaced with the number of observations in the theme. 
+                If you leave this field blank, the header will read "Observations and interpretations in this theme (#)."`,
             displayVisible: function(panelBuilder, model) {
                 return !!Globals.clientState().catalysisReportIdentifier();
             }
@@ -287,7 +276,7 @@ var panel: Panel = {
             displayType: "text",
             displayName: "Perspective label",
             displayPrompt: `
-            This optional label (e.g., "Perspective: ") will appear <strong>before each perspective name</strong> in the report.`,
+            This optional label will appear <strong>before each perspective name</strong> in the report.`,
             displayVisible: function(panelBuilder, model) {
                 return !!Globals.clientState().catalysisReportIdentifier();
             }
@@ -299,7 +288,7 @@ var panel: Panel = {
             displayType: "text",
             displayName: "Theme label",
             displayPrompt: `
-            This optional label (e.g., "Theme: ") will appear <strong>before each theme name</strong> in the report.`,
+            This optional label will appear <strong>before each theme name</strong> in the report.`,
             displayVisible: function(panelBuilder, model) {
                 return !!Globals.clientState().catalysisReportIdentifier();
             }
@@ -311,7 +300,7 @@ var panel: Panel = {
             displayType: "text",
             displayName: "Interpretation label",
             displayPrompt: `
-            This optional label (e.g., "Interpretation: ")  will appear <strong>before each interpretation name</strong> in the report.`,
+            This optional label will appear <strong>before each interpretation name</strong> in the report.`,
             displayVisible: function(panelBuilder, model) {
                 return !!Globals.clientState().catalysisReportIdentifier();
             }
@@ -323,7 +312,7 @@ var panel: Panel = {
             displayType: "text",
             displayName: "Observation label",
             displayPrompt: `
-            This optional label (e.g., "Observation: ")  will appear <strong>before each observation name</strong> in the report.`,
+            This optional label will appear <strong>before each observation name</strong> in the report.`,
             displayVisible: function(panelBuilder, model) {
                 return !!Globals.clientState().catalysisReportIdentifier();
             }
@@ -335,7 +324,7 @@ var panel: Panel = {
             displayType: "textarea",
             displayName: "Conclusion",
             displayPrompt: `
-            You can enter a  <strong>report conclusion</strong> here (for example, making suggestions for use of the report or summarizing major points).`,
+            You can enter a <strong>report conclusion</strong> here.`,
             displayVisible: function(panelBuilder, model) {
                 return !!Globals.clientState().catalysisReportIdentifier();
             }
@@ -347,7 +336,7 @@ var panel: Panel = {
             displayType: "textarea",
             displayName: "Text replacements",
             displayPrompt: `
-                You can <strong>replace graphing and statistical texts</strong> in your report with simpler or translated versions. 
+                You can <strong>replace graph and statistical texts</strong> in your report with simpler or translated versions. 
                 Enter one text replacement per line. 
                 Each line should have the standard text you want to replace, followed by an equals sign, followed by the text you want to replace it with.
                 For example, "median = médiane" will write "médiane" in every place where "median" would have been written.
@@ -375,7 +364,7 @@ var panel: Panel = {
                 <li>Mann-Whitney U</li>
                 <li>Mann-Whitney U test results for multiple histograms, sorted by significance value (p)</li>
                 </ul>
-                These replacements apply <em>only</em> to printed catalysis reports.
+                These replacements apply only to your printed catalysis report.
                 `,
             displayVisible: function(panelBuilder, model) {
                 return !!Globals.clientState().catalysisReportIdentifier();

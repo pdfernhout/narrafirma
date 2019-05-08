@@ -97,7 +97,7 @@ var panel: Panel = {
             valueType: "object",
             valuePath: "/clientState/catalysisReportIdentifier/graphTypesToCreate",
             displayType: "catalysisReportGraphTypesChooser",
-            displayPrompt: "Which <strong>graph types</strong> should appear on the \"Explore Patterns\" page?",
+            displayPrompt: "Which <strong>graph types</strong> do you want to see on the \"Explore Patterns\" page?",
             displayVisible: function(panelBuilder, model) {
                 return !!Globals.clientState().catalysisReportIdentifier();
             }
@@ -107,7 +107,7 @@ var panel: Panel = {
             valueType: "object",
             valuePath: "/clientState/catalysisReportIdentifier/questionsToInclude",
             displayType: "catalysisReportQuestionChooser",
-            displayPrompt: "Which <strong>questions</strong> should appear on the \"Explore Patterns\" page? (Note: Only questions checked here will be considered in data integrity graphs.)",
+            displayPrompt: "Which <strong>questions</strong> do you want to see on the \"Explore Patterns\" page? (Only questions checked here will be considered in data integrity graphs.)",
             displayVisible: function(panelBuilder, model) {
                 return !!Globals.clientState().catalysisReportIdentifier();
             }
@@ -118,20 +118,7 @@ var panel: Panel = {
             valuePath: "/clientState/catalysisReportIdentifier/showInterpretationsInGrid",
             displayType: "checkbox",
             displayConfiguration: "Show interpretations in the patterns table",
-            displayPrompt: `Should <strong>interpretations</strong> be shown in the table of patterns on the "Explore Patterns" page? 
-                (Tip: Turn this on to find or review interpretations; turn it off to shrink the table height.)`,
-            displayVisible: function(panelBuilder, model) {
-                return !!Globals.clientState().catalysisReportIdentifier();
-            }
-        },
-        {
-            id: "configureCatalysisReport_hideNoAnswerValues",
-            valueType: "boolean",
-            valuePath: "/clientState/catalysisReportIdentifier/hideNoAnswerValues_reportDefault",
-            displayType: "checkbox",
-            displayConfiguration: "Hide no-answer counts by default",
-            displayPrompt: `You can set <strong>whether to graph "No answer" counts</strong> per pattern (in the "things you can do" list), but you can also set a 
-                default option for the whole catalysis report. This choice affects both the "Explore Patterns" page and the printed report.`,
+            displayPrompt: `Do you want to <strong>see interpretations</strong> in the table of patterns on the "Explore Patterns" page?`,
             displayVisible: function(panelBuilder, model) {
                 return !!Globals.clientState().catalysisReportIdentifier();
             }
@@ -142,9 +129,7 @@ var panel: Panel = {
             valuePath: "/clientState/catalysisReportIdentifier/graphMultiChoiceQuestionsAgainstThemselves",
             displayType: "checkbox",
             displayConfiguration: "Show graphs of multi-choice questions against themselves",
-            displayPrompt: `Would you like to <strong>graph multi-choice questions against themselves</strong> 
-                to show patterns of coincidence among answers to the same question? 
-                `,
+            displayPrompt: `Would you like to <strong>graph multi-choice questions against themselves</strong>?`,
             displayVisible: function(panelBuilder, model) {
                 return !!Globals.clientState().catalysisReportIdentifier();
             }
@@ -155,7 +140,7 @@ var panel: Panel = {
             valuePath: "/clientState/catalysisReportIdentifier/hideStatsPanelsOnExplorePatternsPage",
             displayType: "checkbox",
             displayConfiguration: "Hide statistical results on Explore patterns page",
-            displayPrompt: `Would you prefer to <strong>hide statistical results on the Explore patterns page</strong>?
+            displayPrompt: `Would you prefer to <strong>hide statistical results on the "Explore Patterns" page</strong>?
                 (You can still see the results in a pop-up window when you choose "Show statistical results" from the "things you can do" list under the graph.)`,
             displayVisible: function(panelBuilder, model) {
                 return !!Globals.clientState().catalysisReportIdentifier();
@@ -167,8 +152,8 @@ var panel: Panel = {
             valueType: "string",
             displayType: "text",
             displayPrompt: `
-            If you want to <strong>filter</strong> the stories used in this report, enter your filter here.
-            (For details on how to use this function, click Help.)`,
+            If you want to <strong>filter the stories</strong> used in this report, enter your filter here.
+            (For details, click Help.)`,
             displayVisible: function(panelBuilder, model) {
                 return !!Globals.clientState().catalysisReportIdentifier();
             }
@@ -179,7 +164,20 @@ var panel: Panel = {
             id: "configureCatalysisReport_DrawingGraphsHeader",
             valueType: "none",
             displayType: "header",
-            displayPrompt: "How graphs are drawn",
+            displayPrompt: "Drawing graphs",
+            displayVisible: function(panelBuilder, model) {
+                return !!Globals.clientState().catalysisReportIdentifier();
+            }
+        },
+        {
+            id: "configureCatalysisReport_hideNoAnswerValues",
+            valueType: "boolean",
+            valuePath: "/clientState/catalysisReportIdentifier/hideNoAnswerValues_reportDefault",
+            displayType: "checkbox",
+            displayConfiguration: "Hide no-answer counts",
+            displayPrompt: `Do you want to <strong>hide the bars/bubbles/boxes that represent "No answer" counts</strong> on graphs? 
+                (This setting affects graphs in the application and the printed report.
+                You can override this choice for any pattern by choosing "Toggle display of "No answer" values" in the "things you can do" list.)`,
             displayVisible: function(panelBuilder, model) {
                 return !!Globals.clientState().catalysisReportIdentifier();
             }
@@ -190,8 +188,8 @@ var panel: Panel = {
             valueType: "string",
             displayType: "text",
             displayName: "Custom graph width",
-            displayPrompt: `The default width of large graphs on the "Explore patterns" page is 800 pixels. 
-                You can enter a <strong>custom graph width</strong> here. (There is a separate place to specify a custom graph width for the printed report.)`,
+            displayPrompt: `<strong>How wide should graphs be</strong> on the "Explore patterns" page, in pixels? (The default width is 800 pixels. 
+                There is a separate place to specify this for the printed report.)`,
             displayVisible: function(panelBuilder, model) {
                 return !!Globals.clientState().catalysisReportIdentifier();
             }
@@ -203,30 +201,15 @@ var panel: Panel = {
             valueOptions: fillChoiceArray(1, 30, 60, 100, 300, 500, 1000), // start, 1, 2, 5, 10, 50, 100
             displayType: "select",
             displayName: "Minimum story count for graph",
-            displayPrompt: `How many stories should a subset have to <strong>draw a graph</strong>? 
-                This choice affects multiple histograms and multiple scatterplots 
-                    on the "Explore Patterns" page and the printed catalysis report.
-                    Note that higher numbers could create graph sets with one or even zero graphs in them.
-                    If no selection is made, graphs will be drawn if at there is least one story in the subset.`,
+            displayPrompt: `<strong>How many stories should a subset have</strong> to draw a graph? 
+                    (This choice affects multiple histograms and multiple scatterplots in the application and the printed report.
+                    If no selection is made here, graphs will be drawn if at there is least one story in the subset.
+                    Note that a high number here could create patterns with no graphs in them.)`,
             displayVisible: function(panelBuilder, model) {
                 return !!Globals.clientState().catalysisReportIdentifier();
             }
 
         },  
-        {
-            id: "configureCatalysisReport_maxStoryLengthToShow",
-            valuePath: "/clientState/catalysisReportIdentifier/maxStoryLengthToShow",
-            valueType: "string",
-            valueOptions: ["500", "600", "700", "800", "900", "1000", "1100", "1200", "1300", "1400", "1500", "1600", "1700", "1800", "1900", "2000", "2500", "3000", "3500", "4000", "4500", "5000", "6000", "7000", "8000", "9000", "10000"],
-            displayType: "select",
-            displayName: "Maximum story length to show",
-            displayPrompt: `In the <strong>story length graph</strong>, above what character length do you want to lump all remaining stories into the last bin? 
-                This choice affects both the the "Explore Patterns" page and the printed catalysis report.
-                If no selection is made, the maximum story length will be drawn from the stories themselves.`,
-            displayVisible: function(panelBuilder, model) {
-                return !!Globals.clientState().catalysisReportIdentifier();
-            }
-        },   
         {
             id: "configureCatalysisReport_numStoryLengthBins",
             valuePath: "/clientState/catalysisReportIdentifier/numStoryLengthBins",
@@ -234,13 +217,27 @@ var panel: Panel = {
             valueOptions: ["2", "3", "4", "5", "6", "7", "8", "9", "10"],
             displayType: "select",
             displayName: "Number of story length bins",
-            displayPrompt: `How many <strong>story length categories</strong> do you want to graph? 
-                This choice affects both the the "Explore Patterns" page and the printed catalysis report.
-                If no selection is made, four categories will be used.`,
+            displayPrompt: `<strong>How many story length categories</strong> do you want to graph? 
+                (This choice affects graphs in the application and the printed report.
+                If no selection is made here, four categories will be used.)`,
             displayVisible: function(panelBuilder, model) {
                 return !!Globals.clientState().catalysisReportIdentifier();
             }
         },    
+        {
+            id: "configureCatalysisReport_maxStoryLengthToShow",
+            valuePath: "/clientState/catalysisReportIdentifier/maxStoryLengthToShow",
+            valueType: "string",
+            valueOptions: ["100", "200", "300", "400", "500", "600", "700", "800", "900", "1000", "1100", "1200", "1300", "1400", "1500", "1600", "1700", "1800", "1900", "2000", "2500", "3000", "3500", "4000", "4500", "5000", "6000", "7000", "8000", "9000", "10000"],
+            displayType: "select",
+            displayName: "Maximum story length to show",
+            displayPrompt: `In the story length graph, above what character length do you want to <strong>lump all remaining stories into the last bin</strong>? 
+                (This choice affects graphs in the application and the printed report.
+                If no selection is made here, the maximum story length will be drawn from the stories themselves.)`,
+            displayVisible: function(panelBuilder, model) {
+                return !!Globals.clientState().catalysisReportIdentifier();
+            }
+        },   
         {
             id: "configureCatalysisReport_numHistogramBins",
             valuePath: "/clientState/catalysisReportIdentifier/numHistogramBins",
@@ -248,9 +245,9 @@ var panel: Panel = {
             valueOptions: ["5", "10", "15", "20", "25", "30"],
             displayType: "select",
             displayName: "Number of histogram bins",
-            displayPrompt: `For <strong>histograms</strong>, how many <strong>bins</strong> (bars) should the data be sorted into?
-                This choice affects both the the "Explore Patterns" page and the printed catalysis report.
-                If no selection is made, 20 bins will be used.`,
+            displayPrompt: `How many <strong>histogram bins</strong> should the data be sorted into?
+                (This choice affects graphs in the application and the printed report.
+                If no selection is made here, 20 bins will be used.)`,
             displayVisible: function(panelBuilder, model) {
                 return !!Globals.clientState().catalysisReportIdentifier();
             }
@@ -261,7 +258,8 @@ var panel: Panel = {
             valuePath: "/clientState/catalysisReportIdentifier/hideNumbersOnContingencyGraphs",
             displayType: "checkbox",
             displayConfiguration: "Hide numbers on contingency graphs",
-            displayPrompt: `For <strong>contingency graphs</strong>, if you want to hide the observed/expected numbers of stories, check this box. This choice affects both the "Explore Patterns" page and the printed report.`,
+            displayPrompt: `To <strong>hide observed/expected story counts</strong> on continency tables, check this box. 
+                (This choice affects graphs in the application and the printed report.)`,
             displayVisible: function(panelBuilder, model) {
                 return !!Globals.clientState().catalysisReportIdentifier();
             }
@@ -274,8 +272,10 @@ var panel: Panel = {
             valueOptions: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20"],
             displayType: "select",
             displayName: "Number of scatter plot dot opacity levels",
-            displayPrompt: `For <strong>scatter plots</strong>, how many stories should it take to draw a completely <strong>opaque dot</strong>? 
-                Set this number high if you have a lot of identical scale values. If no selection is made, 3 levels will be used.`,
+            displayPrompt: `How many stories should it take to <strong>draw an opaque dot</strong> in a scatter plot? 
+                (This choice affects graphs in the application and the printed report. 
+                    If no selection is made here, 3 levels will be used.
+                    Set this number high if you have a lot of identical scale values.)`,
             displayVisible: function(panelBuilder, model) {
                 return !!Globals.clientState().catalysisReportIdentifier();
             }
@@ -288,10 +288,10 @@ var panel: Panel = {
             valueOptions: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20"],
             displayType: "select",
             displayName: "Scatter dot size",
-            displayPrompt: `For <strong>scatter plots</strong>, what <strong>dot size</strong> (in pixels) would you like? 
-                Set this number low if you have a large number of data points.
-                This choice affects both the the "Explore Patterns" page and the printed catalysis report.
-                If no selection is made, a size of 8 will be used.`,
+            displayPrompt: `<strong>How big should dots be</strong> on scatter plots, in pixels? 
+                This choice affects graphs in the application and the printed report.
+                If no selection is made here, a size of 8 will be used.
+                Set this number low if you have a large number of slightly-different data points.)`,
             displayVisible: function(panelBuilder, model) {
                 return !!Globals.clientState().catalysisReportIdentifier();
             }
@@ -308,9 +308,9 @@ var panel: Panel = {
             ],
             displayType: "select",
             displayName: "Mark correlation lines",
-            displayPrompt: `For <strong>scatter plots</strong>, at what significance level should <strong>correlations</strong> be marked?
-                This choice affects both the the "Explore Patterns" page and the printed catalysis report.
-                If no selection is made, a limit of 0.05 will be used.`,
+            displayPrompt: `When should <strong>correlation lines</strong> be drawn on scatter plots?
+                (This choice affects graphs in the application and the printed report.
+                If no selection is made here, a limit of 0.05 will be used.)`,
             displayVisible: function(panelBuilder, model) {
                 return !!Globals.clientState().catalysisReportIdentifier();
             }
@@ -333,10 +333,10 @@ var panel: Panel = {
             valueOptions: ["1", "5", "10", "15", "20", "25", "30", "35", "40", "45", "50", "60", "70", "80", "90", "100", "120", "140", "160", "180", "200", "250", "300"],
             displayType: "select",
             displayName: "Minimum subset size",
-            displayPrompt: `How large should <strong>subsets</strong> of stories be to be considered for statistical tests? 
-                Test results based on low sample sizes - usually less than 30 - should be regarded as suggestive rather than conclusive.
-                This choice affects both the the "Explore Patterns" page and the printed catalysis report.
-                If no selection is made, a 20-story minimum will be used.`,
+            displayPrompt: `<strong>How many stories should a subset have</strong> to be compared to other subsets in a statistical test?
+                (This choice affects multiple histograms and multiple scatterplots in the application and the printed report.
+                If no selection is made here, a 20-story minimum will be used.
+                Note that test results based on low sample sizes (usually less than 30) should be regarded as suggestive rather than conclusive.)`,
             displayVisible: function(panelBuilder, model) {
                 return !!Globals.clientState().catalysisReportIdentifier();
             }
@@ -348,9 +348,8 @@ var panel: Panel = {
             displayType: "textarea",
             displayName: "Fields to show on selections",
             displayPrompt: `
-                On the Explore patterns page, when you select stories on a graph, you can view them in a separate window for copying (maybe into an observation).
-                When you look at subsets of stories in that way, you might also want to <strong>see the answers to a few important questions</strong> about each story.
-                Enter the short names of those questions here, one per line. 
+                What questions do you want to include when you <strong>view selected stories</strong> in a pop-up window on the "Explore "Patterns" page?
+                (Enter the short names of the questions whose answers you want to see, one per line.)
                 `,
             displayVisible: function(panelBuilder, model) {
                 return !!Globals.clientState().catalysisReportIdentifier();
@@ -363,7 +362,7 @@ var panel: Panel = {
             id: "configureCatalysisReport_exportImportLabel",
             valueType: "none",
             displayType: "label",
-            displayPrompt: `You can copy observations, interpretations, and perspectives from one catalysis report to another (new, empty) report,
+            displayPrompt: `You can <strong>copy observations, interpretations, themes, and perspectives</strong> from one catalysis report to another (new, empty) report,
             as long as the question short names are the same. For more information, see the help system.`,
             displayVisible: function(panelBuilder, model) {
                 return !!Globals.clientState().catalysisReportIdentifier();
