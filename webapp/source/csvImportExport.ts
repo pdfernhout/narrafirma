@@ -6,6 +6,7 @@ import surveyCollection = require("./surveyCollection");
 import surveyStorage = require("./surveyStorage");
 import dialogSupport = require("./panelBuilder/dialogSupport");
 import ClusteringDiagram = require("./applicationWidgets/ClusteringDiagram");
+import PatternExplorer = require("./applicationWidgets/PatternExplorer");
 import Globals = require("./Globals");
 import m = require("mithril");
 import toaster = require("./panelBuilder/toaster");
@@ -2003,41 +2004,49 @@ export function exportStoryCollection() {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 export function exportCatalysisReportElementsToCSV() {
-    var output = "";
+    let output = "";
+    let i = 0;
+
     function addOutputLine(line) {
         output = addCSVOutputLine(output, line);
     }
 
-    var catalysisReportName = Globals.clientState().catalysisReportName();
-    var catalysisReportIdentifier = project.findCatalysisReport(catalysisReportName);  
-    var catalysisReportObservationSetIdentifier = project.tripleStore.queryLatestC(catalysisReportIdentifier, "catalysisReport_observations");
+    const catalysisReportName = Globals.clientState().catalysisReportName();
+    const catalysisReportIdentifier = project.findCatalysisReport(catalysisReportName);  
+    const catalysisReportObservationSetIdentifier = project.tripleStore.queryLatestC(catalysisReportIdentifier, "catalysisReport_observations");
     if (!catalysisReportObservationSetIdentifier) {
         console.log("catalysisReportObservationSetIdentifier not defined");
         return;
     }  
-    var observationIDs = project.tripleStore.getListForSetIdentifier(catalysisReportObservationSetIdentifier);
+    const observationIDs = project.tripleStore.getListForSetIdentifier(catalysisReportObservationSetIdentifier);
 
     addOutputLine(["; Export of catalysis elements for catalysis report " + catalysisReportName + " in project " + project.projectIdentifier]);
     addOutputLine([""]);
-    addOutputLine(["; Observation", "Name", "Description", "Strength", "Pattern", "Graph type", "Question 1", "Question 2", "Question 3", "Interpretation name|description|idea|x|y", "(repeat for each interpretation)"]);
+    addOutputLine(["; Observation", "Name", "Description", "Strength", "Linking question", "Pattern", "Graph type", "Question 1", "Question 2", "Question 3", "Additional patterns", "X", "Y", "Interpretation name|description|idea|questions|x|y", "(repeat for each interpretation)"]);
 
-    var clusteredItems = [];
-    var perspectives = [];
-    var clusteringDiagram = project.tripleStore.queryLatestC(catalysisReportIdentifier, "interpretationsClusteringDiagram");
-    if (clusteringDiagram) [perspectives, clusteredItems] = ClusteringDiagram.calculateClusteringForDiagram(clusteringDiagram);
+    let perspectives = [];
+    let clusteredInterpretations = [];
+    const interpretationsClusteringDiagram = project.tripleStore.queryLatestC(catalysisReportIdentifier, "interpretationsClusteringDiagram");
+    if (interpretationsClusteringDiagram) [perspectives, clusteredInterpretations] = ClusteringDiagram.calculateClusteringForDiagram(interpretationsClusteringDiagram);
 
-    for (var observationIndex = 0; observationIndex < observationIDs.length ; observationIndex++) {
+    let themes = [];
+    let clusteredObservations = [];
+    const observationsClusteringDiagram = project.tripleStore.queryLatestC(catalysisReportIdentifier, "observationsClusteringDiagram");
+    if (observationsClusteringDiagram) [themes, clusteredObservations] = ClusteringDiagram.calculateClusteringForDiagram(observationsClusteringDiagram);
 
-        var observationID = observationIDs[observationIndex];
-        var observation = project.tripleStore.makeObject(observationID, true);
+    for (let observationIndex = 0; observationIndex < observationIDs.length ; observationIndex++) {
+
+        const observationID = observationIDs[observationIndex];
+        const observation = project.tripleStore.makeObject(observationID, true);
 
         if (observation.observationTitle || observation.observationDescription) {
 
-            var observationLine = [];
+            const observationLine = [];
             observationLine.push("Observation");
             observationLine.push(observation.observationTitle || "");
             observationLine.push(observation.observationDescription || "");
             observationLine.push(observation.observationStrength || "");
+            observationLine.push(observation.observationLinkingQuestion || "");
             observationLine.push(observation.pattern.patternName || "");
             observationLine.push(observation.pattern.graphType || "");
 
@@ -2060,32 +2069,48 @@ export function exportCatalysisReportElementsToCSV() {
                     observationLine.push(observation.pattern.questions[2].id);
                 }
             }
+            observationLine.push(observation.observationExtraPatterns || "");
 
-            var interpretationsListIdentifier = project.tripleStore.queryLatestC(observationID, "observationInterpretations");
-            var interpretationsList = project.tripleStore.getListForSetIdentifier(interpretationsListIdentifier);
+            let foundClusteredObservation = null;
+            for (i = 0; i < clusteredObservations.length; i++) {
+                if (clusteredObservations[i].referenceUUID === observationID) {
+                    foundClusteredObservation = clusteredObservations[i];
+                    break;
+                }
+            }
+            if (foundClusteredObservation) {
+                observationLine.push(foundClusteredObservation.x);
+                observationLine.push(foundClusteredObservation.y);
+            } else {
+                observationLine.push("");
+                observationLine.push("");
+            }
+
+            const interpretationsList = project.tripleStore.getListForSetIdentifier(observation.observationInterpretations);
 
             interpretationsList.forEach((interpretationID) => {
 
-                var interpretation = project.tripleStore.makeObject(interpretationID, true);
+                const interpretation = project.tripleStore.makeObject(interpretationID, true);
 
-                if (interpretation.interpretation_name || interpretation.interpretation_text || interpretation.interpretation_idea) {
+                if (interpretation.interpretation_name || interpretation.interpretation_text) {
 
-                    var interpretationCell = [];
+                    const interpretationCell = [];
                     interpretationCell.push(interpretation.interpretation_name || "");
                     interpretationCell.push(interpretation.interpretation_text || "");
                     interpretationCell.push(interpretation.interpretation_idea || "");
+                    interpretationCell.push(interpretation.interpretation_questions || "");
 
-                    if (clusteredItems.length) {
-                        var foundClusteredItem = null;
-                        for (var itemIndex = 0; itemIndex < clusteredItems.length; itemIndex++) {
-                            if (clusteredItems[itemIndex].referenceUUID === interpretationID) {
-                                foundClusteredItem = clusteredItems[itemIndex];
+                    if (clusteredInterpretations.length) {
+                        let foundClusteredInterpretation = null;
+                        for (i = 0; i < clusteredInterpretations.length; i++) {
+                            if (clusteredInterpretations[i].referenceUUID === interpretationID) {
+                                foundClusteredInterpretation = clusteredInterpretations[i];
                                 break;
                             }
                         }
-                        if (foundClusteredItem) {
-                            interpretationCell.push(foundClusteredItem.x);
-                            interpretationCell.push(foundClusteredItem.y);
+                        if (foundClusteredInterpretation) {
+                            interpretationCell.push(foundClusteredInterpretation.x);
+                            interpretationCell.push(foundClusteredInterpretation.y);
                         }
                     }
                     observationLine.push(interpretationCell.join("|"));
@@ -2098,100 +2123,148 @@ export function exportCatalysisReportElementsToCSV() {
     if (perspectives.length) {
 
         addOutputLine([""]);
-        addOutputLine(["; Perspective", "Name", "Notes", "x", "Y"]);
+        addOutputLine(["; Perspective", "Name", "Notes", "X", "Y", "Order"]);
 
-        for (var perspectiveIndex = 0; perspectiveIndex < perspectives.length; perspectiveIndex++) {
-            var perspective = perspectives[perspectiveIndex];
-            addOutputLine(["Perspective", perspective.name, perspective.notes, perspective.x, perspective.y]);
+        for (i = 0; i < perspectives.length; i++) {
+            const perspective = perspectives[i];
+            addOutputLine(["Perspective", perspective.name || "", perspective.notes || "", perspective.x || "", perspective.y || "", perspective.order || ""]);
         }
     }
 
-    var exportBlob = new Blob([output], {type: "text/csv;charset=utf-8"});
+    if (themes.length) {
+
+        addOutputLine([""]);
+        addOutputLine(["; Theme", "Name", "Notes", "X", "Y", "Order"]);
+
+        for (i = 0; i < themes.length; i++) {
+            const theme = themes[i];
+            addOutputLine(["Theme", theme.name || "", theme.notes || "", theme.x || "", theme.y || "", theme.order || ""]);
+        }
+    }
+
+    const exportBlob = new Blob([output], {type: "text/csv;charset=utf-8"});
     saveAs(exportBlob, "Catalysis_report_elements_" + catalysisReportName + ".csv");
 } 
 
 export function processCSVContentsForCatalysisElements(contents) {
 
-    var numObservationsCreated = 0;
-    var numInterpretationsCreated = 0;
-    var numClusterItemsCreated = 0;
-    var numPerspectivesCreated = 0;
+    // there is a general assumption here that the catalysis report is empty (so we do not need to look for existing items for any of these things)
+
+    let numObservationsCreated = 0;
+    let numInterpretationsCreated = 0;
+    let numPerspectivesCreated = 0;
+    let numThemesCreated = 0;
+    const numObservationsAlreadyProcessedPerPattern = {};
 
     const catalysisReportIdentifier = Globals.clientState().catalysisReportIdentifier();
-    var observationSetIdentifier = project.tripleStore.queryLatestC(catalysisReportIdentifier, "catalysisReport_observations");
+    let observationSetIdentifier = project.tripleStore.queryLatestC(catalysisReportIdentifier, "catalysisReport_observations");
     if (!observationSetIdentifier) {
         observationSetIdentifier = generateRandomUuid("ObservationSet");
         project.tripleStore.addTriple(catalysisReportIdentifier, "catalysisReport_observations", observationSetIdentifier);
     }
 
-    var allQuestions = project.allQuestionsThatCouldBeGraphedForCatalysisReport(catalysisReportIdentifier, false);
+    const allQuestions = project.allQuestionsThatCouldBeGraphedForCatalysisReport(catalysisReportIdentifier, false);
 
-    var clusteringDiagram: ClusteringDiagramModel = project.tripleStore.queryLatestC(catalysisReportIdentifier, "interpretationsClusteringDiagram");
-    if (!clusteringDiagram) {
-        clusteringDiagram = ClusteringDiagram.newDiagramModel();
+    let interpretationsClusteringDiagram: ClusteringDiagramModel = project.tripleStore.queryLatestC(catalysisReportIdentifier, "interpretationsClusteringDiagram");
+    if (!interpretationsClusteringDiagram) {
+        interpretationsClusteringDiagram = ClusteringDiagram.newDiagramModel();
     }
-    var clusteringDiagramChanged = false;
+    let interpretationsClusteringDiagramChanged = false;
 
-    var rows = d3.csv.parseRows(contents);
+    let observationsClusteringDiagram = project.tripleStore.queryLatestC(catalysisReportIdentifier, "observationsClusteringDiagram");
+    if (!observationsClusteringDiagram) {
+        observationsClusteringDiagram = ClusteringDiagram.newDiagramModel();
+    }
+    let observationsClusteringDiagramChanged = false;
 
-    for (var rowIndex = 0; rowIndex < rows.length; rowIndex++) {
+    const rows = d3.csv.parseRows(contents);
 
-        var row = rows[rowIndex];
+    for (let rowIndex = 0; rowIndex < rows.length; rowIndex++) {
+
+        const row = rows[rowIndex];
         if (row.length < 2) continue;
         if (row[0][0] === ";") continue;
         if (row[0] === "") continue;
 
         if (row[0] === "Observation") {
 
-            // addOutputLine(["; Observation", "Name", "Description", "Strength", "Pattern", "Graph type", "Question 1", "Question 2", "Question 3", "Interpretation name|description|idea|x|y", "(repeat for each interpretation)"]);
+            // addOutputLine(["; Observation", "Name", "Description", "Strength", "Linking question", "Pattern", "Graph type", "Question 1", "Question 2", "Question 3", 
+            // "Additional patterns", "X", "Y", "Interpretation name|description|idea|questions|x|y", "(repeat for each interpretation)"]);
             
             const observationName = row[1];
             const observationDescription = row[2];
             const observationStrength = row[3];
-            const patternName = row[4];
-            const graphType = row[5];
+            const observationLinkingQuestion = row[4];
+            const patternName = row[5];
+            const graphType = row[6];
 
-            var patternQuestionIDs = [];
+            let patternQuestionIDs = [];
             if (graphType === "data integrity") {
                 patternQuestionIDs = [patternName];
             } else {
-                if (row[6]) patternQuestionIDs.push(row[6]);
                 if (row[7]) patternQuestionIDs.push(row[7]);
                 if (row[8]) patternQuestionIDs.push(row[8]);
+                if (row[9]) patternQuestionIDs.push(row[9]);
             }
-            
-            var interpretationSpecs = [];
-            if (row.length > 9) {
-                for (var colIndex = 9; colIndex < row.length; colIndex++) {
+            const observationExtraPatterns = row[10];
+
+            let x = 100;
+            if (row.length > 11) {
+                x = parseInt(row[11] || "");
+                if (isNaN(x)) x = 100;
+            }
+            let y = 100;
+            if (row.length > 12) {
+                y = parseInt(row[12] || "");
+                if (isNaN(y)) y = 100;
+            }
+
+            const interpretationSpecs = [];
+            if (row.length > 13) {
+                for (let colIndex = 13; colIndex < row.length; colIndex++) {
                     interpretationSpecs.push(row[colIndex]);
                 }
             }
 
-            var patternQuestions = [];
+            const patternQuestions = [];
             patternQuestionIDs.forEach(function(id) {
-                for (var questionIndex = 0; questionIndex < allQuestions.length; questionIndex++) {
+                for (let questionIndex = 0; questionIndex < allQuestions.length; questionIndex++) {
                     if (allQuestions[questionIndex].id === id) {
                         patternQuestions.push(allQuestions[questionIndex]);
                     }
                 }
             });
 
+            const patternQuestionsAsString = JSON.stringify(patternQuestions);
+            if (numObservationsAlreadyProcessedPerPattern[patternQuestionsAsString] === undefined) { 
+                numObservationsAlreadyProcessedPerPattern[patternQuestionsAsString] = 0;
+            }
+
+            const pattern = {graphType: graphType, patternName: patternName, questions: patternQuestions};
+            const patternReference = PatternExplorer.patternReferenceForPatternAndIndex(pattern, numObservationsAlreadyProcessedPerPattern[patternQuestionsAsString]);
+            numObservationsAlreadyProcessedPerPattern[patternQuestionsAsString] += 1; // increment after saving, because first one saved should be index 0
+
             const observationIdentifier = generateRandomUuid("Observation");
-            project.tripleStore.addTriple(observationSetIdentifier, {setItem: patternQuestionIDs}, observationIdentifier);
-            var patternCopyWithoutAccessorFunction = {
-                graphType: graphType,
-                patternName: patternName,
-                questions: patternQuestions
-            };
-            project.tripleStore.addTriple(observationIdentifier, "pattern", patternCopyWithoutAccessorFunction);
+            project.tripleStore.addTriple(observationSetIdentifier, patternReference, observationIdentifier);
+            
+            project.tripleStore.addTriple(observationIdentifier, "pattern", pattern);
             project.tripleStore.addTriple(observationIdentifier, "observationTitle", observationName); 
             project.tripleStore.addTriple(observationIdentifier, "observationDescription", observationDescription); 
             project.tripleStore.addTriple(observationIdentifier, "observationStrength", observationStrength); 
+            project.tripleStore.addTriple(observationIdentifier, "observationLinkingQuestion", observationLinkingQuestion); 
+            project.tripleStore.addTriple(observationIdentifier, "observationExtraPatterns", observationExtraPatterns); 
+
+            var newItem = ClusteringDiagram.addNewItemToDiagram(observationsClusteringDiagram, "item", observationName, observationDescription);
+            newItem.x = x;
+            newItem.y = y;
+            ClusteringDiagram.setItemColorBasedOnStrength(newItem, observationStrength);
+            observationsClusteringDiagramChanged = true;
+
             numObservationsCreated++;
 
             if (interpretationSpecs.length) {
 
-                var interpretationSetID = project.tripleStore.queryLatestC(observationIdentifier, "observationInterpretations");
+                let interpretationSetID = project.tripleStore.queryLatestC(observationIdentifier, "observationInterpretations");
                 if (!interpretationSetID) {
                     interpretationSetID = generateRandomUuid("InterpretationSet");
                     project.tripleStore.addTriple(observationIdentifier, "observationInterpretations", interpretationSetID);
@@ -2200,39 +2273,42 @@ export function processCSVContentsForCatalysisElements(contents) {
                 interpretationSpecs.forEach(function(spec) {
                     const partsOfSpec = spec.split("|");
 
-                    // "Interpretation name|description|idea|x|y"
+                    // "Interpretation name|description|idea|questions|x|y"
 
-                    var interp_Name = partsOfSpec[0] || "";
-                    var interp_Text = partsOfSpec[1] || "";
-                    var interp_Idea = partsOfSpec[2] || "";
+                    const name = partsOfSpec[0] || "";
+                    const text = partsOfSpec[1] || "";
+                    const idea = partsOfSpec[2] || "";
+                    const questions = partsOfSpec[3] || "";
+
                     
-                    var interp_X = 100;
-                    if (partsOfSpec.length > 3) {
-                        interp_X = parseInt(partsOfSpec[3] || "");
-                        if (isNaN(interp_X)) interp_X = 100;
-                    }
-                    var interp_Y = 100;
+                    var x = 100;
                     if (partsOfSpec.length > 4) {
-                        interp_Y = parseInt(partsOfSpec[4] || "");
-                        if (isNaN(interp_Y)) interp_Y = 100;
+                        x = parseInt(partsOfSpec[4] || "");
+                        if (isNaN(x)) x = 100;
+                    }
+                    var y = 100;
+                    if (partsOfSpec.length > 5) {
+                        y = parseInt(partsOfSpec[5] || "");
+                        if (isNaN(y)) y = 100;
                     }
 
-                    if (interp_Name && interp_Text) {
+                    if (name && text) {
 
                         var template = {
                             id: generateRandomUuid("Interpretation"),
-                            interpretation_name: interp_Name, 
-                            interpretation_text: interp_Text,  
-                            interpretation_idea: interp_Idea
+                            interpretation_name: name, 
+                            interpretation_text: text,  
+                            interpretation_idea: idea,
+                            interpretation_questions: questions
                         };
                         project.tripleStore.makeNewSetItem(interpretationSetID, "Interpretation", template);
                         numInterpretationsCreated++;
 
-                        var newItem = ClusteringDiagram.addNewItemToDiagram(clusteringDiagram, "item", interp_Name, interp_Text);
-                        newItem.x = interp_X;
-                        newItem.y = interp_Y;
-                        clusteringDiagramChanged = true;
-                        numClusterItemsCreated++;
+                        var newItem = ClusteringDiagram.addNewItemToDiagram(interpretationsClusteringDiagram, "item", name, text);
+                        newItem.x = x;
+                        newItem.y = y;
+                        ClusteringDiagram.setItemColorBasedOnStrength(newItem, observationStrength);
+                        interpretationsClusteringDiagramChanged = true;
                     }
 
                 });
@@ -2240,43 +2316,84 @@ export function processCSVContentsForCatalysisElements(contents) {
 
         } else if (row[0] === "Perspective") {
 
-            // addOutputLine(["; Perspective", "Name", "Notes", "x", "Y"]);
+            // addOutputLine(["; Perspective", "Name", "Notes", "X", "Y", "Order"]);
 
-            const persp_Name = row[1];
-            const persp_Notes = row[2];
+            const name = row[1];
+            const notes = row[2];
 
-            var persp_X = 100;
+            var x = 100;
             if (row.length > 3) {
-                persp_X = parseInt(row[3] || "");
-                if (isNaN(persp_X)) persp_X = 100;
+                x = parseInt(row[3] || "");
+                if (isNaN(x)) x = 100;
             }
-            var persp_Y = 100;
+            var y = 100;
             if (row.length > 4) {
-                persp_Y = parseInt(row[4] || "");
-                if (isNaN(persp_Y)) persp_Y = 100;
+                y = parseInt(row[4] || "");
+                if (isNaN(y)) y = 100;
+            }
+            var order = 1;
+            if (row.length > 5) {
+                order = parseInt(row[5] || "");
+                if (isNaN(order)) order = 1;
             }
 
-            var newItem = ClusteringDiagram.addNewItemToDiagram(clusteringDiagram, "cluster", persp_Name, persp_Notes);
-            newItem.x = persp_X;
-            newItem.y = persp_Y;
-            clusteringDiagramChanged = true;
+            var newItem = ClusteringDiagram.addNewItemToDiagram(interpretationsClusteringDiagram, "cluster", name, notes);
+            newItem.x = x;
+            newItem.y = y;
+            newItem.order = order;
+            interpretationsClusteringDiagramChanged = true;
             numPerspectivesCreated++;
 
+        } else if (row[0] === "Theme") {
+
+            // addOutputLine(["; Theme", "Name", "Notes", "X", "Y", "Order"]);
+
+            const name = row[1];
+            const notes = row[2];
+
+            var x = 100;
+            if (row.length > 3) {
+                x = parseInt(row[3] || "");
+                if (isNaN(x)) x = 100;
+            }
+            var y = 100;
+            if (row.length > 4) {
+                y = parseInt(row[4] || "");
+                if (isNaN(y)) y = 100;
+            }
+            var order = 1;
+            if (row.length > 5) {
+                order = parseInt(row[5] || "");
+                if (isNaN(order)) order = 1;
+            }
+
+            var newItem = ClusteringDiagram.addNewItemToDiagram(observationsClusteringDiagram, "cluster", name, notes);
+            newItem.x = x;
+            newItem.y = y;
+            newItem.order = order;
+            observationsClusteringDiagramChanged = true;
+            numThemesCreated++;
+
         } else {
-            alert('Unrecognized first cell in CSV row: "' + row[0] + '". The first cell in each row must be either "Observation" or "Perspective." If this is a comment row, make sure the first character in the first cell is a semicolon.');
+            alert('Unrecognized first cell in CSV row: "' + row[0] + '". The first cell in each row must be either "Observation", "Perspective", or "Theme". If this is a comment row, make sure the first character in the first cell is a semicolon.');
         }
     }
 
-    if (clusteringDiagramChanged) {
-        project.tripleStore.addTriple(catalysisReportIdentifier, "interpretationsClusteringDiagram", clusteringDiagram);
+    if (interpretationsClusteringDiagramChanged) {
+        project.tripleStore.addTriple(catalysisReportIdentifier, "interpretationsClusteringDiagram", interpretationsClusteringDiagram);
     }
 
-    alert("Successfully imported " 
-        + numObservationsCreated + (numObservationsCreated === 1 ? " observation, " : " observations, ")
-        + numInterpretationsCreated + (numInterpretationsCreated === 1 ? " interpretation, " : " interpretations, ")
-        + numClusterItemsCreated + (numClusterItemsCreated === 1 ? " cluster diagram item, and " : " cluster diagram items, and ")
-        + numPerspectivesCreated + (numPerspectivesCreated === 1 ? " perspective." : " perspectives.")
-        );
+    if (observationsClusteringDiagramChanged) {
+        project.tripleStore.addTriple(catalysisReportIdentifier, "observationsClusteringDiagram", observationsClusteringDiagram);
+    }
+
+    const reportItems = [];
+    reportItems.push(numObservationsCreated + (numObservationsCreated === 1 ? " observation" : " observations"));
+    reportItems.push(numInterpretationsCreated + (numInterpretationsCreated === 1 ? " interpretation" : " interpretations"));
+    reportItems.push(numPerspectivesCreated + (numPerspectivesCreated === 1 ? " perspective" : " perspectives"));
+    reportItems.push(numThemesCreated + (numThemesCreated === 1 ? " theme" : " themes"));
+    const reportText = "Successfully imported " + reportItems.join(", ") + ".";
+    alert(reportText);
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

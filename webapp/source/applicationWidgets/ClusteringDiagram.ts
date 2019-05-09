@@ -5,7 +5,6 @@ import dialogSupport = require("../panelBuilder/dialogSupport");
 import m = require("mithril");
 import Globals = require("../Globals");
 
-
 "use strict";
 
 // TODO: Make a systemic communications fix to PointrelClient so can stop using Math.round to ensure x and y are integers to avoid JSON conversion errors and sha256 error in WordPress plugin due to PHP and numeric precision (2015-10-08)
@@ -209,7 +208,28 @@ class ClusteringDiagram {
         });
         
         return [clusters, items];
-    }    
+    }   
+
+    static itemColor_strong = "#ff9138";
+    static itemColor_medium = "#ffbb84";
+    static itemColor_weak = "#ffe5d1";
+    static itemColor_unassigned = "#979696";
+
+    static setItemColorBasedOnStrength(item: ClusteringDiagramItem, strength: string) {
+        switch (strength) {
+            case "3 (strong)":
+                item.bodyColor = ClusteringDiagram.itemColor_strong;
+                break;
+            case "2 (medium)":
+                item.bodyColor = ClusteringDiagram.itemColor_medium;
+                break;
+            case "1 (weak)":  
+                item.bodyColor = ClusteringDiagram.itemColor_weak;
+                break;
+            default:
+                item.bodyColor = ClusteringDiagram.itemColor_unassigned;
+        }
+    }
     
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // constructor

@@ -463,7 +463,7 @@ export function copyInterpretationsToClusteringDiagram() {
                 }
                 if (item.strength === undefined || item.bodyColor === undefined || newStrength != item.strength) {
                     item.strength = newStrength;
-                    setItemColorBasedOnStrength(item, newStrength);
+                    ClusteringDiagram.setItemColorBasedOnStrength(item, newStrength);
                     itemChanged = true;
                 }
                 if (item.notesExtra === undefined || newNotesExtra === null || newNotesExtra != item.notesExtra) {
@@ -496,7 +496,7 @@ export function copyInterpretationsToClusteringDiagram() {
                     const item = ClusteringDiagram.addNewItemToDiagram(clusteringDiagram, "item", interpretation.name, interpretation.text);
                     item.referenceUUID = interpretation.id;
                     item.strength = observationStrength;
-                    setItemColorBasedOnStrength(item, observationStrength);
+                    ClusteringDiagram.setItemColorBasedOnStrength(item, observationStrength);
                 }
             }
         }
@@ -565,7 +565,7 @@ export function copyObservationsToClusteringDiagram() {
                 }
                 if (item.strength === undefined || item.bodyColor === undefined || newStrength != item.strength) {
                     item.strength = newStrength;
-                    setItemColorBasedOnStrength(item, newStrength);
+                    ClusteringDiagram.setItemColorBasedOnStrength(item, newStrength);
                     itemChanged = true;
                 }
                 if (itemChanged) updatedItemCount++;
@@ -585,7 +585,7 @@ export function copyObservationsToClusteringDiagram() {
                     const item = ClusteringDiagram.addNewItemToDiagram(clusteringDiagram, "item", observationName, observationDescription);
                     item.referenceUUID = id;
                     item.strength = observationStrength;
-                    setItemColorBasedOnStrength(item, observationStrength);
+                    ClusteringDiagram.setItemColorBasedOnStrength(item, observationStrength);
                 }
             }
         });
@@ -596,27 +596,6 @@ export function copyObservationsToClusteringDiagram() {
     } else {
         project.tripleStore.addTriple(catalysisReportIdentifier, "observationsClusteringDiagram", clusteringDiagram);
         toaster.toast("Added " + addedItemCount + " observations and updated " + updatedItemCount +  " observations in the clustering surface.");
-    }
-}
-
-const itemColor_strong = "#ff9138";
-const itemColor_medium = "#ffbb84";
-const itemColor_weak = "#ffe5d1";
-const itemColor_unassigned = "#979696";
-
-function setItemColorBasedOnStrength(item, strength) {
-    switch (strength) {
-        case "3 (strong)":
-            item.bodyColor = itemColor_strong;
-            break;
-        case "2 (medium)":
-            item.bodyColor = itemColor_medium;
-            break;
-        case "1 (weak)":  
-            item.bodyColor = itemColor_weak;
-            break;
-        default:
-            item.bodyColor = itemColor_unassigned;
     }
 }
 

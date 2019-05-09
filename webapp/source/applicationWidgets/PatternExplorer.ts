@@ -1,5 +1,5 @@
 import charting = require("./charting");
-import printing = require("../printing");
+import graphStyle = require("../graphStyle");
 import calculateStatistics = require("../calculateStatistics");
 import storyCardDisplay = require("../storyCardDisplay");
 import questionnaireGeneration = require("../questionnaireGeneration");
@@ -72,19 +72,8 @@ function decodeBraces(optionText) {
     return optionText.replace("&#123;", "{").replace("&#125;", "}"); 
 }
 
-function patternReferenceForPatternAndIndex(pattern, index) {
-    let questionReferences = [];
-    if (pattern.graphType == "data integrity") {
-        questionReferences = [pattern.patternName];
-    } else {
-        questionReferences = pattern.questions.map(function (question) {return question.id;});
-    }
-    if (index !== undefined && index !== null && index !== 0) questionReferences.push({observationIndex: index});
-    return {setItem: questionReferences};
-}
-
 function findOrCreateObservationIDForPatternAndIndex(project, catalysisReportObservationSetIdentifier, pattern, index, createIfNotFound) {
-    let patternReference = patternReferenceForPatternAndIndex(pattern, index);
+    let patternReference = PatternExplorer.patternReferenceForPatternAndIndex(pattern, index);
     if (!catalysisReportObservationSetIdentifier) throw new Error("findOrCreateObservationIDForPatternAndIndex: catalysisReportObservationSetIdentifier is undefined");
     let observationID = project.tripleStore.queryLatestC(catalysisReportObservationSetIdentifier, patternReference);
     if (!observationID && createIfNotFound) { 
@@ -137,6 +126,37 @@ class PatternExplorer {
     progressMessage = "Calculating statistics";
     calculationsCanceled = false;
     
+    //------------------------------------------------------------------------------------------------------------------------------------------
+    // static functions - used from printing and csv import/export
+    //------------------------------------------------------------------------------------------------------------------------------------------
+
+    static patternReferenceForPatternAndIndex(pattern, index: number) {
+        let questionReferences = [];
+        if (pattern.graphType == "data integrity") {
+            questionReferences = [pattern.patternName];
+        } else {
+            questionReferences = pattern.questions.map(function (question) {return question.id;});
+        }
+        if (index !== undefined && index !== null && index !== 0) questionReferences.push({observationIndex: index});
+        return {setItem: questionReferences};
+    }
+    
+    static getOrSetWhetherNoAnswerValuesShouldBeHiddenForPattern(project: Project, catalysisReportIdentifier: string, pattern, newValue = undefined) {
+        const patternReference = JSON.stringify({"patternDisplayConfiguration": PatternExplorer.patternReferenceForPatternAndIndex(pattern, 0)});
+        const configurationObject: PatternDisplayConfiguration = project.tripleStore.queryLatestC(catalysisReportIdentifier, patternReference) || {};
+        if (newValue === undefined) {
+            if (configurationObject.hideNoAnswerValues !== undefined) {
+                return configurationObject.hideNoAnswerValues;
+            } else {
+                return project.tripleStore.queryLatestC(catalysisReportIdentifier, "hideNoAnswerValues_reportDefault") || false;
+            }
+        } else {
+            configurationObject.hideNoAnswerValues = newValue;
+            project.tripleStore.addTriple(catalysisReportIdentifier, patternReference, configurationObject);
+            return configurationObject.hideNoAnswerValues;
+        }
+    }
+
     constructor(args) {
         this.project = Globals.project();
 
@@ -1074,22 +1094,6 @@ class PatternExplorer {
         this.updateGraphForNewPattern(this.currentPattern);
     }
 
-    static getOrSetWhetherNoAnswerValuesShouldBeHiddenForPattern(project, catalysisReportIdentifier, pattern, newValue = undefined) {
-        const patternReference = JSON.stringify({"patternDisplayConfiguration": patternReferenceForPatternAndIndex(pattern, 0)});
-        const configurationObject: PatternDisplayConfiguration = project.tripleStore.queryLatestC(catalysisReportIdentifier, patternReference) || {};
-        if (newValue === undefined) {
-            if (configurationObject.hideNoAnswerValues !== undefined) {
-                return configurationObject.hideNoAnswerValues;
-            } else {
-                return project.tripleStore.queryLatestC(catalysisReportIdentifier, "hideNoAnswerValues_reportDefault") || false;
-            }
-        } else {
-            configurationObject.hideNoAnswerValues = newValue;
-            project.tripleStore.addTriple(catalysisReportIdentifier, patternReference, configurationObject);
-            return configurationObject.hideNoAnswerValues;
-        }
-    }
-
     saveGraphAsSVGFile(fileTypeToSave) {
         if (!this.graphHolder || !this.graphHolder.graphResultsPane) return;
 
@@ -1150,7 +1154,7 @@ class PatternExplorer {
 
     prepareSVGToSaveToFile(svgNode) {
         const svgText = svgNode.outerHTML;
-        const styleText = "<style>" + printing.graphResultsPaneCSS + "</style>";
+        const styleText = "<style>" + graphStyle.graphResultsPaneCSS + "</style>";
         const head = '<svg title="graph" version="1.1" xmlns="http://www.w3.org/2000/svg">';
         const foot = "</svg>";
         return head + "\n" + styleText + "\n" + svgText + "\n" + foot;
@@ -1159,7 +1163,7 @@ class PatternExplorer {
     preparePNGToSaveToFile(svgNode) {
         const styleNode = document.createElement("style");
         styleNode.type = 'text/css';
-        styleNode.innerHTML = "<![CDATA[" + printing.graphResultsPaneCSS + "]]>";
+        styleNode.innerHTML = "<![CDATA[" + graphStyle.graphResultsPaneCSS + "]]>";
         svgNode.insertBefore(styleNode, svgNode.firstChild);
         const canvas = document.createElement("canvas");
         canvg(canvas, svgNode.outerHTML);
@@ -1534,7 +1538,7 @@ class PatternExplorer {
         }
 
         return setIdentifier;
-        }
+    }
 
     switchToObservationTabClick(tabIndex) {
         if (tabIndex !== undefined) {
@@ -1571,13 +1575,13 @@ class PatternExplorer {
                     // and if you didn't move everybody down to fill the gap, you would end up with (a) missing observations for indexes and (b) observations that are ignored
                     let indexToMoveDown = this.activeObservationTab + 1;
                     while (indexToMoveDown < this.currentPattern.observationIDs.length) {
-                        const patternReference = patternReferenceForPatternAndIndex(this.currentPattern, indexToMoveDown - 1);
+                        const patternReference = PatternExplorer.patternReferenceForPatternAndIndex(this.currentPattern, indexToMoveDown - 1);
                         this.project.tripleStore.addTriple(this.catalysisReportObservationSetIdentifier, patternReference, this.currentPattern.observationIDs[indexToMoveDown]);
                         indexToMoveDown++;
                     }
 
                     // now that everything has been moved down, remove the LAST index from the dataset by setting to null
-                    const patternReference = patternReferenceForPatternAndIndex(this.currentPattern, this.currentPattern.observationIDs.length-1);
+                    const patternReference = PatternExplorer.patternReferenceForPatternAndIndex(this.currentPattern, this.currentPattern.observationIDs.length-1);
                     this.project.tripleStore.addTriple(this.catalysisReportObservationSetIdentifier, patternReference, null);
                     
                     // now remove the selected observation ID from the list for the current pattern
