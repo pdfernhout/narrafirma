@@ -134,10 +134,16 @@ export function displayQuestion(panelBuilder: PanelBuilder, model, fieldSpecific
             const activeElement = <HTMLTextAreaElement>document.activeElement;
             if (element && element === activeElement) { // only do this for the textarea they are actually editing right now, not all the textareas on the page
                 if (element.value !== value) {
-                    if (!clientState.cachedOverwrittenTexts(fieldID)) { // only cache value the first time, to avoid overwriting it on the second change
+                    // more changes might come in while the user is attempting to resolve the conflict!
+                    // if that happens, keep adding more to the "overwritten texts" box, so they don't lose any of the versions of what they wrote
+                    const alreadyOverwrittenText = clientState.cachedOverwrittenTexts(fieldID);
+                    if (alreadyOverwrittenText) {
+                        clientState.cachedOverwrittenTexts(fieldID, element.value + "\n---\n" + alreadyOverwrittenText);
+                        console.log('Collision alert: Another user has changed "' + fieldSpecification.displayName + '"\n-- from --\n"' + clientState.cachedOverwrittenTexts(fieldID) + '"\n-- to --\n"' + value + '"');
+                    } else {
                         clientState.cachedOverwrittenTexts(fieldID, element.value);
+                        console.log('Collision alert: Another user has changed "' + fieldSpecification.displayName + '"\n-- from --\n"' + clientState.cachedOverwrittenTexts(fieldID) + '"\n-- to --\n"' + value + '"');
                     }
-                    console.log('Collision alert: Another user has changed "' + fieldSpecification.displayName + '"\n-- from --\n"' + element.value + '"\n-- to --\n"' + value + '"');
                 }
             }
         }
@@ -182,14 +188,23 @@ export function displayQuestion(panelBuilder: PanelBuilder, model, fieldSpecific
             clientState.cachedOverwrittenTexts(fieldID) ? 
             
                 m("div.narrafirma-collision-message", 
-                    m("div.narrafirma-collision-header", m("b", "Collision alert!"), " Another user has changed the contents of this text box. Your entry was: "), 
-                    m("textarea[class=narrafirma-textbox]", {value: clientState.cachedOverwrittenTexts(fieldID), id: fieldID + "_overwritten"}),
-                    m("div.narrafirma-collision-explanation", "Please resolve the conflict by copying and pasting whatever you need between the two text boxes. (This box will remain until you click the button below or reload the page.)"),
-                    m("button.narrafirma-collision-button", {onclick: function () {
-                        clientState.cachedOverwrittenTexts(fieldID, null);
-                        const message = "If you need to access your original text again, search for it in your browser's development console or your exported history file.";
-                        alert(message);
-                    }}, "Mark Conflict as Resolved"),
+                    m("div.narrafirma-collision-header", m("b", "Collision alert!"), " Another user has changed the contents of this text box. This is your version. It will remain here until you click one of the buttons below (or reload the page)."), 
+                    m("textarea[class=narrafirma-textbox]", {value: clientState.cachedOverwrittenTexts(fieldID), id: fieldID + "_cached"}),
+                    m("div.narrafirma-collision-buttons", [
+                        m("button.narrafirma-collision-button", {onclick: function () {
+                            // set the field value to the cached version, then delete the cached version
+                            valueProperty(clientState.cachedOverwrittenTexts(fieldID));
+                            clientState.cachedOverwrittenTexts(fieldID, null);
+                        }}, "Keep this version (delete theirs)"),
+                        m("button.narrafirma-collision-button", {onclick: function () {
+                            // just delete the cached version, thereby keeping the changed version
+                            clientState.cachedOverwrittenTexts(fieldID, null);
+                        }}, "Keep their version (delete this one)"),
+                        m("button.narrafirma-collision-button", {onclick: function () {
+                            // this does the same thing as accepting the other user's version, except that we assume this user has changed the field before they clicked this button
+                            clientState.cachedOverwrittenTexts(fieldID, null);
+                        }}, "I have resolved the conflict myself (delete this version)"),]),
+                    m("div.narrafirma-collision-explanation", "You can also find both versions of the text in your browser's development console (until you reload the page).")
                 ) : [],
 
             m("br")

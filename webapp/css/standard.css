@@ -272,8 +272,13 @@ input[type="submit"].narrafirma-login-button:hover {
 }
 
 .narrafirma-collision-button {
+    display: inline-block;
+    margin: 1em 0.5em 0.5em 0.5em;
+}
+
+.narrafirma-collision-buttons {
     display: block;
-    margin: 1em auto 0.5em auto;
+    text-align: center;
 }
 
 .narrafirma-collision-explanation {
