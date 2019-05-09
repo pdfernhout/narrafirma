@@ -44,7 +44,7 @@ var panel: Panel = {
             id: "catalysisReportPrint_reportType",
             valuePath: "/clientState/catalysisReportIdentifier/catalysisReportPrint_reportType",
             valueType: "string",
-            valueOptions: ["perspectives (clustered interpretations)", "themes (clustered observations)", "observations (disregarding any clustering)"],
+            valueOptions: ["perspectives (clustered interpretations)", "themes (clustered observations)", "observations (disregarding any clustering)", "observation graphs only"],
             displayType: "select",
             displayPrompt: `<strong>Which type</strong> of report would you like to print?`,
             displayVisible: function(panelBuilder, model) {
@@ -147,7 +147,19 @@ var panel: Panel = {
             valueOptions: ["SVG", "PNG"],
             displayType: "select",
             displayName: "Output graph format",
-            displayPrompt: `Which <strong>graph format</strong> do you want to use?`,
+            displayPrompt: `Which <strong>graph format</strong> do you want to use? (If no choice is made here, SVG format will be used.)`,
+            displayVisible: function(panelBuilder, model) {
+                return !!Globals.clientState().catalysisReportIdentifier();
+            }
+        },
+        {
+            id: "configureCatalysisReport_outputFontModifierPercent",
+            valuePath: "/clientState/catalysisReportIdentifier/outputFontModifierPercent",
+            valueType: "string",
+            displayType: "select",
+            valueOptions: ["50", "60", "70", "80", "90", "110", "120", "130", "140", "150", "160", "170", "180", "190", "200"],
+            displayName: "Output font modifier percent",
+            displayPrompt: `If you want to modify the <strong>font sizes</strong> in report graphs, choose a percentage modifier here.`,
             displayVisible: function(panelBuilder, model) {
                 return !!Globals.clientState().catalysisReportIdentifier();
             }

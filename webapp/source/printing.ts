@@ -12,6 +12,8 @@ import dialogSupport = require("./panelBuilder/dialogSupport");
 import canvg = require("canvgModule");
 import versions = require("./versions");
 import translate = require("./panelBuilder/translate");
+import jszip = require("jszip");
+import saveAs = require("FileSaver");
 
 "use strict";
 
@@ -264,22 +266,24 @@ export function printCatalysisReport() {
         return;
     }
 
-    var observationStrengthsUserChoice = project.tripleStore.queryLatestC(catalysisReportIdentifier, "catalysisReportPrint_observationStrengths");
-    if (!observationStrengthsUserChoice) {
-        alert("Please choose which observation strengths you want to print.")
-        return;
-    }
-
     var catalysisReportObservationSetIdentifier = project.tripleStore.queryLatestC(catalysisReportIdentifier, "catalysisReport_observations");
     if (!catalysisReportObservationSetIdentifier) {
         console.log("catalysisReportObservationSetIdentifier not defined");
         return;
     }
+
+    var strengthsChosen = project.tripleStore.queryLatestC(catalysisReportIdentifier, "catalysisReportPrint_observationStrengths");
+    if (!strengthsChosen) {
+        alert("Please choose which observation strengths you want to print.")
+        return;
+    }
+
     var observationIDs = project.tripleStore.getListForSetIdentifier(catalysisReportObservationSetIdentifier);
     var allStories = project.storiesForCatalysisReport(catalysisReportIdentifier);
 
     var options = {};
 
+    options["catalysisReportName"] = catalysisReportName;
     options["reportNotes"] = getAndCleanUserText(project, catalysisReportIdentifier, "catalysisReport_notes", "introduction", false);
     options["aboutReport"] = getAndCleanUserText(project, catalysisReportIdentifier, "catalysisReport_about", "about text", false);
     options["conclusion"] = getAndCleanUserText(project, catalysisReportIdentifier, "catalysisReport_conclusion", "conclusion", false);
@@ -324,11 +328,24 @@ export function printCatalysisReport() {
         }
     }
 
-    let observationStrengthsToInclude = [];
-    if (observationStrengthsUserChoice["strong"] != undefined && observationStrengthsUserChoice["strong"] === true) observationStrengthsToInclude.push("3 (strong)");
-    if (observationStrengthsUserChoice["medium"] != undefined && observationStrengthsUserChoice["medium"] === true) observationStrengthsToInclude.push("2 (medium)");
-    if (observationStrengthsUserChoice["weak"] != undefined && observationStrengthsUserChoice["weak"] === true) observationStrengthsToInclude.push("1 (weak)");
-    const includeObservationsWithoutStrengths = observationStrengthsUserChoice["no strength value set"] != undefined && observationStrengthsUserChoice["no strength value set"] == true;
+    let outputFontModifierPercentAsString = project.tripleStore.queryLatestC(catalysisReportIdentifier, "outputFontModifierPercent");
+    if (outputFontModifierPercentAsString) {
+        let outputFontModifierPercent = parseInt(outputFontModifierPercentAsString);
+        if (!isNaN(outputFontModifierPercent) && outputFontModifierPercent > 0 && outputFontModifierPercent < 1000) {
+            options["outputFontModifierPercent"] = outputFontModifierPercent;
+        }
+    }
+    options["adjustedCSS"] = graphStyle.modifyFontSize(graphStyle.graphResultsPaneCSS, options["outputFontModifierPercent"]);
+
+    const strengthsToInclude = [];
+    const strengthTextsToReport = [];
+    if (strengthsChosen["strong"] === true) { strengthsToInclude.push("3 (strong)"); strengthTextsToReport.push("strong"); }
+    if (strengthsChosen["medium"] === true) { strengthsToInclude.push("2 (medium)"); strengthTextsToReport.push("medium"); }
+    if (strengthsChosen["weak"] === true) { strengthsToInclude.push("1 (weak)"); strengthTextsToReport.push("weak"); }
+    let includeObservationsWithoutStrengths = false;
+    if (strengthsChosen["no strength value set"] === true) { includeObservationsWithoutStrengths = true; strengthTextsToReport.push("none"); }
+    options["strengthTextsToReport"] = strengthTextsToReport;
+
     const includeObservationsWithNoInterpretations = project.tripleStore.queryLatestC(catalysisReportIdentifier, "catalysisReportPrint_includeObservationsWithNoInterpretations") || false;
 
     var observationIDsToInclude = [];
@@ -336,7 +353,7 @@ export function printCatalysisReport() {
         var observation = project.tripleStore.makeObject(id, true);
         if (!observation.observationTitle || !observation.observationTitle.trim()) return;
         if (observation.observationStrength) {
-            if (observationStrengthsToInclude.indexOf(observation.observationStrength) < 0) return;
+            if (strengthsToInclude.indexOf(observation.observationStrength) < 0) return;
         } else {
             if (!includeObservationsWithoutStrengths) return;
         }
@@ -354,6 +371,8 @@ export function printCatalysisReport() {
 
     if (reportType === "observations (disregarding any clustering)") {
         printCatalysisReportWithUnclusteredObservations(project, catalysisReportIdentifier, catalysisReportName, allStories, observationIDsToInclude, options);
+    } else if (reportType === "observation graphs only") {
+        printCatalysisReportWithObservationGraphsOnly(project, catalysisReportIdentifier, catalysisReportName, allStories, observationIDsToInclude, options);
     } else if (reportType === "themes (clustered observations)") {
         printCatalysisReportWithClusteredObservations(project, catalysisReportIdentifier, catalysisReportName, allStories, observationIDsToInclude, options);
     } else if (reportType === "perspectives (clustered interpretations)") {
@@ -385,6 +404,102 @@ function printCatalysisReportWithUnclusteredObservations(project, catalysisRepor
 
             printItems.push(printObservation(observationIDs[observationIndex], observationIndex, -1, "", false, "neither", allStories, options));
             printItems.push(m(".narrafirma-catalysis-report-observations-only-page-break", ""));
+
+            progressModel.progressText = progressText(observationIndex);
+            progressModel.redraw();
+            observationIndex++;
+            setTimeout(function() { printNextObservation(); }, 0);
+        }
+    }
+
+    function progressText(observationIndex: number) {
+        return "Observation " + (observationIndex + 1) + " of " + observationIDs.length;
+    }
+    
+    function dialogCancelled(dialogConfiguration, hideDialogMethod) {
+        progressModel.cancelled = true;
+        hideDialogMethod();
+    }
+    
+    setTimeout(function() { printNextObservation(); }, 0);
+}
+
+function printCatalysisReportWithObservationGraphsOnly(project, catalysisReportIdentifier, catalysisReportName, allStories, observationIDs, options) {
+
+    var progressModel = dialogSupport.openProgressDialog("Starting up...", "Generating observation graphs", "Cancel", dialogCancelled);
+
+    const zipFile = new jszip();
+
+    function printGraphToZipFile(zipFile, graphHolder, graphNode, graphTitle, options) {
+        
+        const svgNode = graphNode.querySelector("svg");
+
+        if (svgNode) {
+
+            if (options.outputGraphFormat === "SVG") {
+
+                const svgFileText = graphStyle.prepareSVGToSaveToFile(svgNode, graphHolder.outputFontModifierPercent);
+                zipFile.file(graphTitle + ".svg", svgFileText);
+
+            } else if (options.outputGraphFormat === "PNG") {
+
+                // when using canvas.toBlob either the ZIP file or the PNG files come out corrupted
+                // found this method to fix it online and it works
+                const canvas = graphStyle.preparePNGToSaveToFile(svgNode, graphHolder.outputFontModifierPercent);
+                const dataURI = canvas.toDataURL("image/png");
+                const imageData = graphStyle.dataURItoBlob(dataURI);
+                zipFile.file(graphTitle + ".png", imageData, {binary: true});
+            }
+        }
+    }
+
+    var observationIndex = 0;
+    function printNextObservation() {
+
+        if (progressModel.cancelled) {
+
+            alert("Cancelled after working on " + (observationIndex + 1) + " observation(s)");
+
+        } else if (observationIndex >= observationIDs.length) {
+
+            progressModel.hideDialogMethod();
+            // Trying to avoid popup warning if open window from timeout by using finish dialog button press to display results
+            var finishModel = dialogSupport.openFinishedDialog("Done creating zip file of images; save it?", "Finished generating images", "Save", "Cancel", function(dialogConfiguration, hideDialogMethod) {
+                const fileName = options.catalysisReportName + " observation graphs ("  + options.strengthTextsToReport.join(" ") + ") " + options.outputGraphFormat + ".zip";
+                zipFile.generateAsync({type: "blob", platform: "UNIX", compression: "DEFLATE"})
+                    .then(function (blob) {
+                        saveAs(blob, fileName);
+                });
+                hideDialogMethod();
+                progressModel.redraw();
+            });
+            finishModel.redraw();
+
+        } else {
+
+            const observation = project.tripleStore.makeObject(observationIDs[observationIndex]);
+            if (observation) {
+
+                let graphTitle = observation.pattern.patternName;
+                graphTitle = graphTitle.replace("/", " "); // jszip interprets a forward slash as a folder designation 
+
+                let graphHolder = initializedGraphHolder(allStories, options);
+                const hideNoAnswerValues = PatternExplorer.getOrSetWhetherNoAnswerValuesShouldBeHiddenForPattern(project, options.catalysisReportIdentifier, observation.pattern);
+                graphHolder.patternDisplayConfiguration.hideNoAnswerValues = hideNoAnswerValues;
+                const selectionCallback = function() { return this; };
+                const graph = PatternExplorer.makeGraph(observation.pattern, graphHolder, selectionCallback, !options.showStatsPanelsInReport);
+
+                if (graphHolder.chartPanes.length > 1) {
+                    for (let graphIndex = 1; graphIndex < graphHolder.chartPanes.length; graphIndex++) { // start at 1 to skip over title pane
+                        const graphNode = graphHolder.chartPanes[graphIndex];
+                        const subGraphTitle = graphTitle + " " + graph[graphIndex-1].subgraphChoice; // subtract 1 because 1 is title pane
+                        printGraphToZipFile(zipFile, graphHolder, graphNode, subGraphTitle, options);
+                    } 
+                } else {
+                    const graphNode = <HTMLElement>graphHolder.graphResultsPane.firstChild;
+                    printGraphToZipFile(zipFile, graphHolder, graphNode, graphTitle, options);
+                }
+            }
 
             progressModel.progressText = progressText(observationIndex);
             progressModel.redraw();
@@ -790,10 +905,12 @@ function initializedGraphHolder(allStories, options) {
         correlationLineChoice: options.correlationLineChoice,
         hideNumbersOnContingencyGraphs: options.hideNumbersOnContingencyGraphs,
         outputGraphFormat: options.outputGraphFormat,
+        outputFontModifierPercent: options.outputFontModifierPercent,
         showStatsPanelsInReport: options.showStatsPanelsInReport,
         customStatsTextReplacements: options.customStatsTextReplacements,
         customGraphWidth: options.customGraphWidth,
         patternDisplayConfiguration: {hideNoAnswerValues: false},
+        adjustedCSS: options.adjustedCSS,
         graphTypesToCreate: {}
     };
     return graphHolder;
@@ -802,30 +919,6 @@ function initializedGraphHolder(allStories, options) {
 function printListOfInterpretations(interpretationList, observationIndex, clusterIndex, idTagStart, allStories, options) {
 
     return printList(interpretationList, {}, options.useTableForInterpretationsFollowingObservation, function (item, index) {
-        var project = Globals.project();
-        var pattern = item.pattern;
-        var selectionCallback = function() { return this; };
-        var graphHolder: GraphHolder = {
-            graphResultsPane: charting.createGraphResultsPane("narrafirma-graph-results-pane chartEnclosure"),
-            chartPanes: [],
-            allStories: allStories,
-            currentGraph: null,
-            currentSelectionExtentPercentages: null,
-            excludeStoryTooltips: true,
-            minimumStoryCountRequiredForTest: options.minimumStoryCountRequiredForTest,
-            minimumStoryCountRequiredForGraph: options.minimumStoryCountRequiredForGraph,
-            numHistogramBins: options.numHistogramBins,
-            numScatterDotOpacityLevels: options.numScatterDotOpacityLevels,
-            scatterDotSize: options.scatterDotSize,
-            hideNumbersOnContingencyGraphs: options.hideNumbersOnContingencyGraphs,
-            correlationLineChoice: options.correlationLineChoice,
-            outputGraphFormat: options.outputGraphFormat,
-            showStatsPanelsInReport: options.showStatsPanelsInReport,
-            customStatsTextReplacements: options["customStatsTextReplacements"],
-            customGraphWidth: options["customGraphWidth"],
-            patternDisplayConfiguration: {hideNoAnswerValues: false},
-            graphTypesToCreate: {}
-        };
 
         const headerItems = [];
         headerItems.push(m("span", {"class": "narrafirma-catalysis-report-interpretation-label"}, printText(options.interpretationLabel)));
@@ -866,7 +959,8 @@ function printGraphWithGraphHolder(graphHolder: GraphHolder, customCSS) {
                 var graphIndex = rowIndex * 3 + colIndex + 1;
                 if (graphIndex >= graphHolder.chartPanes.length) break;
                 var graphPane = graphHolder.chartPanes[graphIndex];
-                columnsForThisRow.push(m("td", printGraphWithGraphNode(graphPane, graphHolder, customCSS)));
+                const graph = printGraphWithGraphNode(graphPane, graphHolder, customCSS);
+                if (graph) columnsForThisRow.push(m("td", graph));
             }
             rows.push(m("tr", columnsForThisRow));
         } 
@@ -880,9 +974,9 @@ function printGraphWithGraphHolder(graphHolder: GraphHolder, customCSS) {
         
         return result;
     } else {
-        var result = [];
-        var graph = printGraphWithGraphNode(<HTMLElement>graphHolder.graphResultsPane.firstChild, graphHolder, customCSS);
-        result.push(graph);
+        const result = [];
+        const graph = printGraphWithGraphNode(<HTMLElement>graphHolder.graphResultsPane.firstChild, graphHolder, customCSS);
+        if (graph) result.push(graph);
         return result;
     }
 }
@@ -890,24 +984,30 @@ function printGraphWithGraphHolder(graphHolder: GraphHolder, customCSS) {
 function printGraphWithGraphNode(graphNode: HTMLElement, graphHolder: GraphHolder, customCSS) {
 
     const svgNode = graphNode.querySelector("svg");
+    if (!svgNode) return null;
+
     const titleNode = graphNode.querySelector(".narrafirma-graph-title");
     const statisticsNode = graphNode.querySelector(".narrafirma-statistics-panel");
 
     const styleNode = document.createElement("style");
     styleNode.type = 'text/css';
     // custom CSS must come AFTER other CSS, because the second declaration of the same class will override the earlier setting
-    styleNode.innerHTML = "<![CDATA[" + graphStyle.graphResultsPaneCSS + customCSS + "]]>";
+    
+    styleNode.innerHTML = "<![CDATA[" + graphHolder.adjustedCSS + customCSS + "]]>";
     svgNode.insertBefore(styleNode, svgNode.firstChild);
     
-    const svgOuterHTML = svgNode.outerHTML;
-
     const result = [];
     if (titleNode) result.push(m.trust(titleNode.outerHTML));
     
     if (graphHolder.outputGraphFormat === "PNG") {
 
         const canvas = document.createElement("canvas");
-        canvg(canvas, svgOuterHTML);
+        try {
+            canvg(canvas, svgNode.outerHTML);
+        } catch(error) {
+            alert("Please check your custom CSS. It appears to be badly formed: " + error);
+            return null;
+        }
         const imgData = canvas.toDataURL("image/png");
         const imageForGraph = m("img", {
             class: "narrafirma-catalysis-report-graph",
@@ -917,7 +1017,7 @@ function printGraphWithGraphNode(graphNode: HTMLElement, graphHolder: GraphHolde
         result.push(m("div.narrafirma-graph-image", imageForGraph || []));
 
     } else if (graphHolder.outputGraphFormat === "SVG") {
-        result.push(m("div.narrafirma-graph-image", m.trust(svgOuterHTML)));
+        result.push(m("div.narrafirma-graph-image", m.trust(svgNode.outerHTML)));
     } else {
         throw Error("Unsupported graph type: " + graphHolder.outputGraphFormat);
     }

@@ -17,7 +17,7 @@ interface GraphHolder {
     chartPanes: Array<HTMLElement>;
     currentGraph: any;
     currentSelectionExtentPercentages: GraphSelection;
-
+    
     // data elements
     allStories: Array<any>;
 
@@ -39,6 +39,8 @@ interface GraphHolder {
     statisticalInfo?: string;
     customStatsTextReplacements?: string;
     customGraphWidth?: number;
+    outputFontModifierPercent?: number;
+    adjustedCSS?: string;
 }
 
 interface PatternDisplayConfiguration {
