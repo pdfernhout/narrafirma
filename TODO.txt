@@ -5,22 +5,10 @@ M - medium priority
 L - low priority
 W - wish list
 
-NEW BUGS/ISSUES
+LEFT TO DO in version 1.3.0
 
-H Bug - PNGs empty in printed catalysis report, only affects single graphs - something to do with removal/re-insertion of stats panel, I think
-H Try to replicate apparent error reading CSV file with WP - timing issue again? probably - need way to show that server is still busy
-M When increase size of clustering diagram, frame (box) does not increase in size - but can still move items and clusters
-M Change catalysis report printing to look up interpretations by uuid from clustering item, instead of name or text (duplicate names/texts get merged)
-M Patterns table in explore patterns page does not update when you change an interpretation name or text. you have to reload the page to do that
-
-NEW FEATURE IDEAS
-
-H Consider adding separate SVG/PNG file output - html index, SVG/PNG files saved to disk with links instead of inline - choose folder
-M See if you can show the observation name/text on the clustering diagram
-M Consider supporting mass annotation - export stories with uuids, create new annotation question, import story uuids with new data in CSV file
-M Consider adding support for semicolon instead of comma (and comma instead of dot for decimals) for CSV import/export
-L Consider adding support for floating point scale values in CSV import
-L Add observation and interp index in printing of catalysis report (clustered and unclustered)
+H Finish testing "no answer" thing
+H Finish testing multi-observation thing
 
 ------------- Infrastructure -------------
 
@@ -109,21 +97,24 @@ W Survey - back button in browser -- deal with so don't lose data
 PLANNING
 
 COLLECTION
-L In general, size graphs better based on window size 
 W Add support for providing story browser filter options based on analyzing data from surveys to collect all actual choices as well as current questionnaire(s)
 W Remember previous filtering options for any question in story browser
 W Story list using dgrid with accordion for story
 W Add templates for annotation questions (re-add "Copy a question from a template" button, removed in commit 2dde70086198417d2d005e3a6707045c18823d22 2015-09-20 19:09:57)
+W Consider supporting mass annotation - export stories with uuids, create new annotation question, import story uuids with new data in CSV file
+W Consider adding support for floating point scale values in CSV import
+W Consider adding support for semicolon instead of comma (and comma instead of dot for decimals) for CSV import/export
 
 CATALYSIS
 W Need a flip axis for slider for catalysis when graphing? 
 W Support common maximum for multiple histograms 
-W Support multiple item selection in clustering diagram
 W Show percentages for question answers in title hover over questions in catalysis report configuration --> not important
 W Support storyThemer -- a widget where people look at each story, give it 1-3 themes, then merge the themes into smaller numbers of themes --> yes but time consuming
 W Support an excerpt list somehow --> copy and paste from story list is good enough
 W Need to be able to select text in existing story to AddToExcerpts
 W Support storiesList -- for choosing a resonant story
+W Consider drawing contingency graphs with side plots showing shapes of distributions (bar graphs) for each question
+W Make interpretations have link back to (single) observation, but retain search function for legacy data
 
 SENSEMAKING
 
@@ -137,9 +128,10 @@ RETURN
 GENERAL
 W Support Undo (including multi-user aspects with log)
 W User should be able to duplicate a project
+W Consider in "Print project report" checkboxes for different parts of the report
 
 CONFIGURATION
-? Add project configuration page?
+W Add project configuration page with options on what fields/sections/pages to show for project
 
 ------------- User interface -------------
 
@@ -158,6 +150,58 @@ M Improve reporting on startup for loading project data with some kind of progre
 M When import story form, hundreds of triples can be generated which take minutes to send to the server (with no progress feedback, even though done in background) -- may be related to console logging
 
 ==== DONE
+
+--- Release 1.3.0
+
+Added: Interface - Ability to create multiple observations per pattern 
+Added: Interface - Ability to include multiple patterns per observation
+Added: Interface - Ability to save selected pattern image(s) on Explore Patterns page to SVG or PNG (zip file if multiple graphs)
+Added: Interface - New field: observation "linking question" to introduce multiple interpretations (e.g., "Why do we see this pattern?")
+Added: Interface - New field: interpretation "questions" to suggest things people can ponder in sensemaking
+
+Added: Reporting - New catalysis report clustered by themes (groups of observations), with multiple interpretations following each observation
+Added: Reporting - Can export all images related to observations only (zip file of PNG or SVG images)
+Added: Reporting - Option to set print order of perspectives/themes during clustering (using "Edit cluster" popup window)
+Added: Reporting - Option to choose observation strengths (high, medium, low, unassigned) in all catalysis report types
+Added: Reporting - Option to hide specific observations, interpretations, or clusters from catalysis report (helpful when printing reports for different groups)
+Added: Reporting - Option to show sequence number in catalysis report for each perspective, theme, observation, and interpretation
+Added: Reporting - Option to hide report-creation information ("This report was generated") at start of catalysis report
+
+Added: Graphing - Option to increase or decrease all font sizes in report graphs by percentage
+Added: Graphing - Option to hide "no answers" counts (applies to graphs and statistics; choice is saved per report and per pattern)
+Added: Graphing - Option to replace all graph/statistical texts in catalysis report (e.g., "Count", "mean") to simplify or translate report
+Added: Graphing - Option to show observed/expected numbers on contingency-table bubbles 
+Added: Graphing - Option to show row/column totals on contingency-table axes
+
+Changed: Interface - Statistics calculations on "Explore patterns" page now happen in the background; can click on graphs while statistics are calculating
+Changed: Interface - Collisions between users editing the same (large text) field are easier to resolve; texts in progress are preserved and override/accept/edit options are available
+Changed: Interface - Startup message ("Retrieving project information") now shows count of messages loaded
+Changed: Interface - Lists of questions on "Configure catalysis report" and "Print story cards" pages are now multi-column (less scrolling)
+Changed: Interface - Better order/flow/explanations of things on "Configure catalysis report" page
+Changed: Interface - Options relevant only to printing have been moved from "Configure catalysis report" page to "Print catalysis report" page
+
+Changed: Reporting - Catalysis report now uses HTML headers (H1, H2, etc) which are more easily converted to styles by word processors
+Changed: Reporting - Old @header@ system for "sectioning" observations is no longer needed and has been removed (no backward compatibility; copy sections into new observations)
+
+Changed: Graphing - In contingency tables and contingency-histogram tables, Y axis now shows answers to question from top to bottom instead of bottom to top
+Changed: Graphing - "No answer" bars/bubbles/boxes are now last instead of first bars/columns/rows
+Changed: Graphing - Expected bubble on contingency tables is now red - easier to see (can be changed in custom CSS for report)
+Changed: Graphing - Squares in contingency-histogram tables are now all the same width, to make it easier to compare means
+
+Changed: Clustering - Interpretation/observation item colors now vary by observation strength (which can be switched on or off)
+Changed: Clustering - You can now select and move multiple items/clusters at once (shift-click, or click and drag selection box)
+Changed: Clustering - Hover-over hints now show observation name, text, and strength
+
+Fixed: Interface - Bug where multi-choice answers did not display correctly in the "Show selected stories" popup window 
+Fixed: Interface - Bug where count of contingency tables and contingency-histogram tables was sometimes wrong on "Configure catalysis report" page
+
+Fixed: Reporting - Bug where custom CSS was not being applied to images in catalysis report
+Fixed: Reporting - Bug where "Introduction" field was being ignored in catalysis report printing
+
+Fixed: Graphing - Bug where PNGs were empty in printed catalysis report
+Fixed: Graphing - Bug where "No answer" bar/bubble/box was being sorted in the middle of answers when some were numbers
+
+Fixed: Clustering - Bug where changing size of clustering surface did not update image immediately
 
 --- Release 1.2.6
 
