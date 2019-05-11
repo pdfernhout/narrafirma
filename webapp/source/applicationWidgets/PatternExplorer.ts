@@ -652,7 +652,7 @@ class PatternExplorer {
         progressUpdater.redraw();
 
         var patternIndex = 0;
-        var howOftenToUpdateProgressMessage = 100; 
+        var howOftenToUpdateProgressMessage = 20; 
         var stories = this.graphHolder.allStories;
         var minimumStoryCountRequiredForTest = this.graphHolder.minimumStoryCountRequiredForTest;
 
