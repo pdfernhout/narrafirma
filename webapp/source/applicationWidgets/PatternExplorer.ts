@@ -389,7 +389,9 @@ class PatternExplorer {
         }
 
         const buildObservationsAndInterpretationsPanels = () => {
-            if (this.observationAccessors.length === 0) return [];
+            if (this.observationAccessors.length === 0) {
+                return m("button", {onclick: this.addObservationTabClick.bind(this),}, m("span.button-text ", "Click here to add an observation for this pattern"));
+            }
             let tabs = [];
             for (let i = 0; i < this.observationAccessors.length; i++) {
                 const tab = m("button", {
@@ -404,12 +406,11 @@ class PatternExplorer {
                 onclick: this.addObservationTabClick.bind(this),
                 title: "Click to add another observation to this pattern"
             }, "+"));
-            if (this.observationAccessors.length > 1) 
-                tabs.push(m("button", {
-                    class: "narrafirma-tab-button", 
-                    onclick: this.deleteObservationTabClick.bind(this),
-                    title: "Click here to delete this observation (permanently)"
-                }, "-"));
+            tabs.push(m("button", {
+                class: "narrafirma-tab-button", 
+                onclick: this.deleteObservationTabClick.bind(this),
+                title: "Click here to delete this observation (permanently)"
+            }, "-"));
             let tabContents = [];
             if (this.activeObservationTab >= 0 && this.activeObservationTab < this.observationAccessors.length) {
                 const activeAccessor = this.observationAccessors[this.activeObservationTab];
@@ -418,7 +419,7 @@ class PatternExplorer {
                     panelBuilder.buildPanel(this.observationsPanelSpecification, {}),
                     activeAccessor.observationHasTitleOrDescription() ? panelBuilder.buildPanel(this.interpretationsPanelSpecification, {}) : m("div"),
                 ]);
-            }
+            } 
             return m(".narrafirma-tabs", m(".narrafirma-tabs-header", tabs), m(".narrafirma-tabs-body", tabContents),
             );
         }
