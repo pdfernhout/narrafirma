@@ -4,6 +4,7 @@
         js: "js",
         mithril: "lib/mithril/mithril",
         d3: "lib/d3/d3",
+        jszip: "lib/jszip/jszip",
         humane: "lib/humane/humane",
         lodash: "lib/lodash",
         jstat: "lib/jstat",
