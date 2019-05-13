@@ -166,6 +166,7 @@ Added: Reporting - Option to choose observation strengths (high, medium, low, un
 Added: Reporting - Option to hide specific observations, interpretations, or clusters from catalysis report (helpful when printing reports for different groups)
 Added: Reporting - Option to show sequence number in catalysis report for each perspective, theme, observation, and interpretation
 Added: Reporting - Option to hide report-creation information ("This report was generated") at start of catalysis report
+Added: Reporting - Can now use simple **bold** and __italic__ formatting in all report fields
 
 Added: Graphing - Option to increase or decrease all font sizes in report graphs by percentage
 Added: Graphing - Option to hide "no answers" counts (applies to graphs and statistics; choice is saved per report and per pattern)

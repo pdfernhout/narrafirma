@@ -104,9 +104,11 @@ function repeatTags(count, tags) {
 
 function printText(text) {
     try {
+        let result = text;
         if (text) {
-            var textWithCarriageReturns = replaceAll(text, "\n", "\n<br>"); 
-            var result = sanitizeHTML.generateSanitizedHTMLForMithril(textWithCarriageReturns);
+            result = replaceSimpleMarkupWithHTML(result);
+            result = replaceAll(result, "\n", "\n<br>"); 
+            result = sanitizeHTML.generateSanitizedHTMLForMithril(result);
         } else {
             result = "";
         }
@@ -115,6 +117,13 @@ function printText(text) {
         alert(error);
         return text;
     }
+}
+
+function replaceSimpleMarkupWithHTML(text: string) {
+    let result = text;
+    result = result.replace(/\*\*(.*?)\*\*/g, "<b>$1</b>");
+    result = result.replace(/__(.*?)__/g, "<i>$1</i>");
+    return result;
 }
 
 function printReturn() {
@@ -284,13 +293,13 @@ export function printCatalysisReport() {
     var options = {};
 
     options["catalysisReportName"] = catalysisReportName;
-    options["reportNotes"] = getAndCleanUserText(project, catalysisReportIdentifier, "catalysisReport_notes", "introduction", false);
-    options["aboutReport"] = getAndCleanUserText(project, catalysisReportIdentifier, "catalysisReport_about", "about text", false);
-    options["conclusion"] = getAndCleanUserText(project, catalysisReportIdentifier, "catalysisReport_conclusion", "conclusion", false);
-    options["perspectiveLabel"] = getAndCleanUserText(project, catalysisReportIdentifier, "catalysisReport_perspectiveLabel", "perspective label", false);
-    options["themeLabel"] = getAndCleanUserText(project, catalysisReportIdentifier, "catalysisReport_themeLabel", "theme label", false);
-    options["interpretationLabel"] = getAndCleanUserText(project, catalysisReportIdentifier, "catalysisReport_interpretationLabel", "interpretation label", false);
-    options["observationLabel"] = getAndCleanUserText(project, catalysisReportIdentifier, "catalysisReport_observationLabel", "observation label", false);
+    options["reportNotes"] = getAndCleanUserText(project, catalysisReportIdentifier, "catalysisReport_notes", "introduction");
+    options["aboutReport"] = getAndCleanUserText(project, catalysisReportIdentifier, "catalysisReport_about", "about text");
+    options["conclusion"] = getAndCleanUserText(project, catalysisReportIdentifier, "catalysisReport_conclusion", "conclusion");
+    options["perspectiveLabel"] = getAndCleanUserText(project, catalysisReportIdentifier, "catalysisReport_perspectiveLabel", "perspective label");
+    options["themeLabel"] = getAndCleanUserText(project, catalysisReportIdentifier, "catalysisReport_themeLabel", "theme label");
+    options["interpretationLabel"] = getAndCleanUserText(project, catalysisReportIdentifier, "catalysisReport_interpretationLabel", "interpretation label");
+    options["observationLabel"] = getAndCleanUserText(project, catalysisReportIdentifier, "catalysisReport_observationLabel", "observation label");
     options["customCSS"] = project.tripleStore.queryLatestC(catalysisReportIdentifier, "catalysisReport_customCSS");
     
     let statsTextReplacementsAsString = project.tripleStore.queryLatestC(catalysisReportIdentifier, "customStatsTextReplacements");
@@ -1113,7 +1122,7 @@ function addPrintItemsForTOCLevelOne(printItems, tocHeaderRaw, clusters, cluster
     }
 
     try {
-        var tocHeader = sanitizeHTML.generateSmallerSetOfSanitizedHTMLForMithril(tocHeaderRaw);
+        var tocHeader = sanitizeHTML.generateSanitizedHTMLForMithril(tocHeaderRaw);
     } catch (error) {
         alert("Problem in catalysis report contents header (first level): " + error);
     }
@@ -1134,7 +1143,7 @@ function addPrintHeaderForTOCLevelTwo(printItems, project, catalysisReportIdenti
         tocHeaderLevelTwoRaw = tocHeaderLevelTwoRaw.replace("#", numItems);
     }
     try {
-        var tocHeaderLevelTwo = sanitizeHTML.generateSmallerSetOfSanitizedHTMLForMithril(tocHeaderLevelTwoRaw);
+        var tocHeaderLevelTwo = sanitizeHTML.generateSanitizedHTMLForMithril(tocHeaderLevelTwoRaw);
     } catch (error) {
         alert("Problem in catalysis report contents header (second level): " + error);
     }
@@ -1167,14 +1176,10 @@ function addPrintItemsForReportStart(printItems, project, catalysisReportName, c
     printItems.push(m("div.narrafirma-catalysis-report-about", options["aboutReport"]));
 }
 
-function getAndCleanUserText(project, catalysisReportIdentifier, id, errorMsg, smallerSet: boolean) {
+function getAndCleanUserText(project, catalysisReportIdentifier, id, errorMsg) {
     var textRaw = project.tripleStore.queryLatestC(catalysisReportIdentifier, id);
     try {
-        if (smallerSet) {
-            var text = sanitizeHTML.generateSmallerSetOfSanitizedHTMLForMithril(textRaw);
-        } else {
-            var text = sanitizeHTML.generateSanitizedHTMLForMithril(textRaw);
-        }
+        var text = sanitizeHTML.generateSanitizedHTMLForMithril(textRaw);
     } catch (error) {
         alert("Problem in catalysis report " + errorMsg + ": " + error);
     }

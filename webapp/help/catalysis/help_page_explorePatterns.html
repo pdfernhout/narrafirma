@@ -112,9 +112,24 @@ and interpretations.
 	<li><b>Write tentative observations</b>. If you think you <i>might</i> want to write an observation for a graph, but but you're not sure,
 		make a tentative observation by putting some kind of special code in the observation name text box, like "?" or "maybe"
 		or "later". Then, later on, come back to all of your tentative observations and decide whether you want
-		to finish writing them. If an observation has no interpretations associated with it, it will not appear on the 
-		"Cluster interpretations" page or in the printed report (at least not in the "clustered interpretations" report).
-		So you can write tentative observations and then simply abandon them later.
+		to finish writing them. There are a few different ways to leave a tentative observation out of a report, depending on what sort of report it is.
+		<ul>
+		<li>For a clustered interpretations report, you can:
+		<ul>
+			<li>Not write any interpretations for the observation</li>
+			<li>Delete the bubbles that represent its interpretations from the interpretations clustering space</li>
+			<li>Mark the bubbles that represent its interpretations as hidden (select them, then click "Show or hide in report")</li>
+		</ul>
+		</li>
+		<li>
+		For a clustered observations report, you can:
+		<ul>
+			<li>Delete the observation itself (by clicking the minus button above the observation)</li>
+			<li>Delete the bubble that represents the observation from the observations clustering space</li>
+			<li>Mark the bubble that represents the observation as hidden</li>
+		</ul>
+		</li>
+		</ul>
 	</li>
 	<li>
 		<b>Use observation strengths to triage</b>. 
@@ -134,10 +149,6 @@ and interpretations.
 		Once you have finished writing your observations, 
 		you can sort your patterns list by observation strength, and write 
 		interpretations only for the observations marked strongest. 
-		Since NarraFirma uses your clustering diagram to organize the catalysis report,
-		not writing interpretations for an observation is the same as leaving it out 
-		of the report. But you can always go back to your observations again 
-		if you want to review them.
 	</li>
 	<li><b>Give everything a name</b>. Make sure all of your observations and interpretations have clear, brief names. They are used as headers in
 		the printed report. Interpretation names are also used to represent interpretations on the clustering diagram.
@@ -145,7 +156,7 @@ and interpretations.
 </ul>
 </div>
 
-<div class="heading">Frequently-asked questions</div>
+<div class="heading">Frequently-asked questions - Things you can see</div>
 
 <div class="question">
 What are the extra circles on the "table" diagrams with two choice questions?
@@ -191,26 +202,98 @@ marks one standard deviation away (lower and higher) from the mean.
 </div>
 
 <div class="question">
-	Is it absolutely necessary to see all of the statistical results? They are really annoying.
+What statistical tests are being reported?
 </div>
 <div class="question-answer">
-<p>You can hide them. 
-	Go to the "Configure catalysis report" page and uncheck the check box under "Would you prefer to hide statistical results on the Explore Patterns page?"
-	Then come back to the "Explore Patterns" page and look at your graphs again; they will not show any statistical results.
-	You can still see the statistical results by choosing "Show statistical results" in the "things you can do" list and clicking 'Do it.'
-</p><p>
-	Note: when you hide statistical results, the HTML elements (divs) that show the statistical results are actually still on the page. 
-	They just have their "display" options set to "none". If you wanted temporarily show a statistical-results panel (maybe for a screenshot or something), 
-	you could open your browser's development console, inspect the graph whose panel you want to show, find the hidden statistical panel, and turn off its "display: none" option.
+<ul>
+<li>
+For a contingency graph (two choice questions), the statistic is the 
+<a href="https://en.wikipedia.org/wiki/Chi-squared_test">chi-squared test</a>.</li>
+<li>For multiple histograms with mutually exclusive choices, 
+the test is the 
+<a href="https://en.wikipedia.org/wiki/Mann%E2%80%93Whitney_U_test">Mann-Whitney U test</a> 
+for differences between means. (The lowest significance level for any pair of subsets is reported.)</li>
+<li>
+For scatter plots, the test is 
+<a href="https://en.wikipedia.org/wiki/Spearman's_rank_correlation_coefficient">Spearman's ranked correlation coefficient</a>. 
+</li>
+</ul>
+<p>
+The non-parametric Mann-Whitney U test and Spearman's test are used without testing whether
+the data is normally distributed, to be conservative.
 </p>
 </div>
 
 <div class="question">
-	What does it mean where it says "These are selections you have saved for this graph"?  What do the options for "save the current selection" and "restore a saved selection" do?
+		Can I hide the statistical results? 
+	</div>
+	<div class="question-answer">
+	<p>Yes. 
+		Go to the "Configure catalysis report" page and uncheck the check box under "Would you prefer to hide statistical results on the Explore Patterns page?"
+		Then come back to the "Explore Patterns" page and look at your graphs again; they will not show any statistical results.
+		You can still see the statistical results by choosing "Show statistical results" in the "things you can do" list and clicking 'Do it.'
+	</p><p>
+		Note: when you hide statistical results, the HTML elements (divs) that show the statistical results are actually still on the page. 
+		They just have their "display" options set to "none". If you wanted temporarily show a statistical-results panel (maybe for a screenshot or something), 
+		you could open your browser's development console, inspect the graph whose panel you want to show, find the hidden statistical panel, and turn off its "display: none" option.
+	</p>
+	</div>
+	
+<div class="question">
+What is skewness? What is kurtosis?
 </div>
 <div class="question-answer">
 <p>
-If you've made a selection of stories in one part of a graph (say in the upper right corner of a
+	Skewness is a measure of how far the distribution is skewed away from being symmetrical. 
+	Positive skewness means the bulk of the values are on the left (and the right tail is longer). 
+	Negative skewness means the bulk of the values are on the right (and the left tail is longer).
+</p>
+<img src="help_skewness.png" width="200">
+<p>Kurtosis is a measure of how peaked or flat a distribution is.
+	Positive kurtosis means the distribution is strongly peaked.
+	Negative kurtosis means the distribution is flattened. 
+</p>
+<img src="help_kurtosis.png" width="200">
+</div>
+
+<div class="question">
+Why do some of the table rows say "None (choices not mutually exclusive)"?
+</div>
+<div class="question-answer">
+<p>
+That's because some of the tests (chi-squared, Mann-Whitney U) can only be run on mutually exclusive choices. 
+Any questions where people could choose more than one answer will have no test values when they 
+are combined with other questions.
+</p>
+</div>
+		
+<div class="heading">Frequently-asked questions - Things you can do</div>
+
+<div class="question">
+How can I format the texts in my observations and interpretations?
+</div>
+<div class="question-answer">
+<p>
+You can control the formatting of your observation and interpretation texts in three ways. 
+</p>
+<ol>
+		<li>You can use these simple markup tags: **bold** and __italic__.</li>
+	<li>You can use these HTML tags: 
+		address, article, b, 
+		big, blockquote, br, caption, cite, code, del, dd, d1, dt, em, h1, h2, h3, h4, h5, h6, 
+		hr, i, kbd, li, ol, p, pre, s, small, sup, sub, strong, strike, table, td, th, tr, u, ul.
+	</li>
+	<li>You can use custom CSS. See the help page on <a href="help_page_printCatalysisReport.html">Printing the catalysis report</a> for an explanation.</li>
+</ol>
+</div>
+
+<div class="question">
+	Can I save the list of stories I'm looking at under a graph?
+</div>
+<div class="question-answer">
+<p>
+	Yes you can.
+If you have made a selection of stories in one part of a graph (say in the upper right corner of a
 scatter plot), you might want to remember those stories when you look back at your observation
 again. Under the graph, choose "Save the current selection," then click "Do it." A text representation of what you selected 
 will appear in the "These are the selections you have saved" text box. 
@@ -228,24 +311,25 @@ You can record and use more than one selection, and you can
 </div>
 
 <div class="question">
-	What are linking questions for?
-</div>
-<div class="question-answer">
-	<p>Linking questions help readers of your catalysis report understand <strong>how each observation is connected to its interpretations</strong>. 
-		They do this by framing a question to which your interpretations are answers.
-	</p>
-	<ul>
-		<li>In a perspectives (clustered-interpretations) report, an observation's linking question is printed just before each of its interpretations.
-			In this case, the question serves as a quick summary of the observation that helps people understand what the interpretation refers to.
-		</li>
-		<li>In a themes (clustered-observations) report, an observation's linking question is printed between the observation and its interpretations.
-			In this case, the question is less a summary than an introduction to the array of answers represented by the interpretations.
-		</li>
-	</ul>
-	<p>Without linking questions, you might end up starting each interpretation with the same question. Writing linking questions
-		saves you that bother, and it makes your report more clear.
-	</p>
-</div>
+		How can I write an observation that refers to multiple patterns?
+		</div>
+		<div class="question-answer">
+		<ul>
+			<li>Under the box where you describe your observation, find the box labeled "To include additional patterns".</li>
+			<li>For each pattern you want to include, find its line in the patterns table at the top of the page. </li>
+			<li>Copy the <i>exact</i> name of each question in the pattern. (Patterns can have one, two, or three question names.) </li>
+			<li>If there is only one question in the pattern, just type that exact name into the additional-patterns box. </li>
+			<li>If there is more than one question in the pattern, type the names in the same order as they appear in the 
+				patterns table (where it says Question 1, Question 2, Question 3). 
+				Separate the question names by typing double equals signs between them, for example "Feel about == How long remember."</li>
+		</ul>
+		<p>
+			When NarraFirma prints your report, it will print the additional patterns you specified just after the pattern
+			associated with the observation (in the order you specified them). You can include as many additional patterns as you like; just make sure each one is described on its own line of text.
+		</p>
+		</div>
+		
+<div class="heading">Frequently-asked questions - Problems you might have</div>
 	
 <div class="question">
 Help! I deleted an observation, but I didn't mean to, and now the interpretations
@@ -266,26 +350,6 @@ Just write a new observation name and/or text, and your interpretations will rea
 </p>
 </div>
 	
-<div class="question">
-How do you write an observation that refers to multiple patterns?
-</div>
-<div class="question-answer">
-<ul>
-	<li>Under the box where you describe your observation, find the box labeled "To include additional patterns".</li>
-	<li>For each pattern you want to include, find its line in the patterns table at the top of the page. </li>
-	<li>Copy the <i>exact</i> name of each question in the pattern. (Patterns can have one, two, or three question names.) </li>
-	<li>If there is only one question in the pattern, just type that exact name into the additional-patterns box. </li>
-	<li>If there is more than one question in the pattern, type the names in the same order as they appear in the 
-		patterns table (where it says Question 1, Question 2, Question 3). 
-		Separate the question names by typing double equals signs between them, for example "Feel about == How long remember."</li>
-</ul>
-<p>
-	When NarraFirma prints your report, it will print the additional patterns you specified just after the pattern
-	associated with the observation (in the order you specified them). You can include as many additional patterns as you like; just make sure each one is described on its own line of text.
-</p>
-</div>
-
-
 <div class="question">
 I've got some observations written, but I've suddenly realized that I have to change something about my stories.
 Do I have to start all over again? 
@@ -321,56 +385,49 @@ to do this.
 </p>
 </div>
 
+<div class="heading">Frequently-asked questions - Things you might not see the point of</div>
+
 <div class="question">
-What statistical tests are being reported?
+	What are linking questions for?
 </div>
 <div class="question-answer">
-<ul>
-<li>
-For a contingency graph (two choice questions), the statistic is the 
-<a href="https://en.wikipedia.org/wiki/Chi-squared_test">chi-squared test</a>.</li>
-<li>For multiple histograms with mutually exclusive choices, 
-the test is the 
-<a href="https://en.wikipedia.org/wiki/Mann%E2%80%93Whitney_U_test">Mann-Whitney U test</a> 
-for differences between means. (The lowest significance level for any pair of subsets is reported.)</li>
-<li>
-For scatter plots, the test is 
-<a href="https://en.wikipedia.org/wiki/Spearman's_rank_correlation_coefficient">Spearman's ranked correlation coefficient</a>. 
-</li>
-</ul>
-<p>
-The non-parametric Mann-Whitney U test and Spearman's test are used without testing whether
-the data is normally distributed, to be conservative.
-</p>
+	<p>Linking questions help readers of your catalysis report understand <strong>how each observation is connected to its interpretations</strong>. 
+		They do this by framing a question to which your interpretations are answers.
+	</p>
+	<ul>
+		<li>In a perspectives (clustered-interpretations) report, an observation's linking question is printed just before each of its interpretations.
+			In this case, the question serves as a quick summary of the observation that helps people understand what the interpretation refers to.
+		</li>
+		<li>In a themes (clustered-observations) report, an observation's linking question is printed between the observation and its interpretations.
+			In this case, the question is less a summary than an introduction to the array of answers represented by the interpretations.
+		</li>
+	</ul>
+	<p>Without linking questions, you might end up starting each interpretation with the same question. Writing linking questions
+		saves you that bother, and it makes your report more clear.
+	</p>
 </div>
 
 <div class="question">
-What is skewness? What is kurtosis?
-</div>
-<div class="question-answer">
-<p>
-	Skewness is a measure of how far the distribution is skewed away from being symmetrical. 
-	Positive skewness means the bulk of the values are on the left (and the right tail is longer). 
-	Negative skewness means the bulk of the values are on the right (and the left tail is longer).
-</p>
-<img src="help_skewness.png" width="200">
-<p>Kurtosis is a measure of how peaked or flat a distribution is.
-	Positive kurtosis means the distribution is strongly peaked.
-	Negative kurtosis means the distribution is flattened. 
-</p>
-<img src="help_kurtosis.png" width="200">
-</div>
-
-<div class="question">
-Why do some of the table rows say "None (choices not mutually exclusive)"?
-</div>
-<div class="question-answer">
-<p>
-That's because some of the tests (chi-squared, Mann-Whitney U) can only be run on mutually exclusive choices. 
-Any questions where people could choose more than one answer will have no test values when they 
-are combined with other questions.
-</p>
-</div>
+		Why does an interpretation have a main text plus an idea and questions? What should I write there?
+	</div>
+	<div class="question-answer">
+		<p>The interpretation's <b>main text</b> is exactly that, an interpretation of the observation, a viewpoint on what it means.
+			It is an explanation of the observation from a particular perspective.
+		</p>
+		<p>
+			An <b>idea</b> is a thing somebody could <i>do</i> based on that interpretation. It's a suggestion for improvement,
+			and its goal is to get people thinking about possibilities.
+		</p>
+			Interpretation <b>questions</b> are things people might want to ponder and discuss as they consider the interpretation. Some example questions might be:
+			<ul>
+				<li>Who might agree with this interpretation of this pattern? Who might not?</li>
+				<li>What does this mean about ____?</li>
+				<li>What could lead to this?</li>
+				<li>Should we ___? Why? Why not?</li>
+				<li>How might we learn more about this?</li>
+			</ul>
+		</p>
+	</div>
 
 <div class="question">
 Why should I write two competing interpretations for each observation?
