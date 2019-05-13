@@ -757,8 +757,8 @@ function printCatalysisReportWithClusteredInterpretations(project, catalysisRepo
                         }
 
                         printItems.push(m("div.narrafirma-catalysis-report-interpretation-notes", printText(interpretation.interpretation_text)));
-                        if (item.idea) printItems.push(m("div.narrafirma-catalysis-report-interpretation-idea", printText(item.idea)));
-                        if (item.questions) printItems.push(m("div.narrafirma-catalysis-report-interpretation-questions", printText(item.questions)));
+                        if (interpretation.interpretation_idea) printItems.push(m("div.narrafirma-catalysis-report-interpretation-idea", printText(interpretation.interpretation_idea)));
+                        if (interpretation.interpretation_questions) printItems.push(m("div.narrafirma-catalysis-report-interpretation-questions", printText(interpretation.interpretation_questions)));
 
                         printItems.push(printObservation(observationsIDsForInterpretations[item.uuid], itemIndex, clusterIndex, idTag + "_o_0", false, "perspectives", allStories, options));
 
@@ -918,18 +918,18 @@ function initializedGraphHolder(allStories, options) {
 
 function printListOfInterpretations(interpretationList, observationIndex, clusterIndex, idTagStart, allStories, options) {
 
-    return printList(interpretationList, {}, options.useTableForInterpretationsFollowingObservation, function (item, index) {
+    return printList(interpretationList, {}, options.useTableForInterpretationsFollowingObservation, function (interpretation, index) {
 
         const headerItems = [];
         headerItems.push(m("span", {"class": "narrafirma-catalysis-report-interpretation-label"}, printText(options.interpretationLabel)));
         headerItems.push(componentWithSequenceNumber(clusterIndex, observationIndex, index, options));
-        headerItems.push(m("span", {"class": "narrafirma-catalysis-report-observation-title"}, printText(item.interpretation_name)));
+        headerItems.push(m("span", {"class": "narrafirma-catalysis-report-observation-title"}, printText(interpretation.interpretation_name)));
 
         const resultItems = [];
         resultItems.push(m("h3.narrafirma-catalysis-report-interpretation", {"id": idTagStart + "_i_" + index}, headerItems));
-        resultItems.push(m("div.narrafirma-catalysis-report-interpretation-notes", printText(item.interpretation_text)));
-        if (item.interpretation_idea) resultItems.push(m("div.narrafirma-catalysis-report-interpretation-idea", printText(item.interpretation_idea)));
-        if (item.interpretation_questions) resultItems.push(m("div.narrafirma-catalysis-report-interpretation-questions", printText(item.interpretation_questions)));
+        resultItems.push(m("div.narrafirma-catalysis-report-interpretation-notes", printText(interpretation.interpretation_text)));
+        if (interpretation.interpretation_idea) resultItems.push(m("div.narrafirma-catalysis-report-interpretation-idea", printText(interpretation.interpretation_idea)));
+        if (interpretation.interpretation_questions) resultItems.push(m("div.narrafirma-catalysis-report-interpretation-questions", printText(interpretation.interpretation_questions)));
 
         return resultItems;
     });
