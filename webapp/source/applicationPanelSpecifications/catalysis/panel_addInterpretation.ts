@@ -20,19 +20,19 @@ var panel: Panel = {
             displayPrompt: 'Give the interpretation a short <strong>name</strong>. This name will represent it during clustering and in the printed report.'
         },
         {
+            id: "interpretation_questions",
+            valueType: "string",
+            displayType: "textarea",
+            displayName: "Questions",
+            displayPrompt: "You might want to record some <strong>questions</strong> that arise from this interpretation."
+        },
+        {
             id: "interpretation_idea",
             valueType: "string",
             displayType: "textarea",
             displayName: "Idea",
             displayPrompt: "If you like, you can record an <strong>idea</strong> that follows from this interpretation."
         },
-        {
-            id: "interpretation_questions",
-            valueType: "string",
-            displayType: "textarea",
-            displayName: "Questions",
-            displayPrompt: "You might want to record some <strong>questions</strong> that arise from this interpretation."
-        }
     ]
 };
 

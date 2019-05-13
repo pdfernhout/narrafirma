@@ -766,8 +766,8 @@ function printCatalysisReportWithClusteredInterpretations(project, catalysisRepo
                         }
 
                         printItems.push(m("div.narrafirma-catalysis-report-interpretation-notes", printText(interpretation.interpretation_text)));
-                        if (interpretation.interpretation_idea) printItems.push(m("div.narrafirma-catalysis-report-interpretation-idea", printText(interpretation.interpretation_idea)));
                         if (interpretation.interpretation_questions) printItems.push(m("div.narrafirma-catalysis-report-interpretation-questions", printText(interpretation.interpretation_questions)));
+                        if (interpretation.interpretation_idea) printItems.push(m("div.narrafirma-catalysis-report-interpretation-idea", printText(interpretation.interpretation_idea)));
 
                         printItems.push(printObservation(observationsIDsForInterpretations[item.uuid], itemIndex, clusterIndex, idTag + "_o_0", false, "perspectives", allStories, options));
 
@@ -937,8 +937,8 @@ function printListOfInterpretations(interpretationList, observationIndex, cluste
         const resultItems = [];
         resultItems.push(m("h3.narrafirma-catalysis-report-interpretation", {"id": idTagStart + "_i_" + index}, headerItems));
         resultItems.push(m("div.narrafirma-catalysis-report-interpretation-notes", printText(interpretation.interpretation_text)));
-        if (interpretation.interpretation_idea) resultItems.push(m("div.narrafirma-catalysis-report-interpretation-idea", printText(interpretation.interpretation_idea)));
         if (interpretation.interpretation_questions) resultItems.push(m("div.narrafirma-catalysis-report-interpretation-questions", printText(interpretation.interpretation_questions)));
+        if (interpretation.interpretation_idea) resultItems.push(m("div.narrafirma-catalysis-report-interpretation-idea", printText(interpretation.interpretation_idea)));
 
         return resultItems;
     });
@@ -1619,8 +1619,8 @@ function printObservationsInProjectReport(page, project, tripleStore, catalysisR
                         var interpretationIdentifier = interpretations[key];
                         var interpretation = tripleStore.makeObject(interpretationIdentifier);
                         let printText = "<li><b>" + interpretation.interpretation_name + "</b> " + interpretation.interpretation_text
-                        if (interpretation.interpretation_idea) printText += " <i>" + interpretation.interpretation_idea + "</i>";
                         if (interpretation.interpretation_questions) printText += interpretation.interpretation_questions;
+                        if (interpretation.interpretation_idea) printText += " <i>" + interpretation.interpretation_idea + "</i>";
                         parts.push(printText + "</li>");
                         observationsHaveUserContent = true;
                     }
