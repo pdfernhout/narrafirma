@@ -415,14 +415,16 @@ class ClusteringDiagram {
 
         if (this.configuration === "interpretations" || this.configuration === "observations") {
             this.newButton("showHideItem", "Show or hide in report", () => {
-                if (this.lastSelectedItem) {
-                    if (this.lastSelectedItem.hidden === undefined) this.lastSelectedItem.hidden = false;
-                    this.lastSelectedItem.hidden = !this.lastSelectedItem.hidden;
-                    this.updateDisplayForChangedItem(this.lastSelectedItem, "update");
-                    this.incrementChangesCount();
+                if (this.selectedItems.length > 0) {
+                    this.selectedItems.forEach(item => {
+                        if (item.hidden === undefined) item.hidden = false;
+                        item.hidden = !item.hidden;
+                        this.updateDisplayForChangedItem(item, "update");
+                        this.incrementChangesCount();
+                    });
                 } else {
                 // TODO: Translate
-                    alert("Please select an item to show or hide.");
+                    alert("Please select at least one item or cluster to show or hide.");
                 }
             });
         }
