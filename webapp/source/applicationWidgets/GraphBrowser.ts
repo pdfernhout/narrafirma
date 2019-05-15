@@ -45,6 +45,7 @@ class GraphBrowser {
             scatterDotSize: Project.default_scatterDotSize,
             correlationLineChoice: Project.default_correlationLineChoice,
             customLabelLengthLimit: Project.default_customLabelLengthLimit,
+            customGraphWidth: Project.default_customDisplayGraphWidth,
             hideNumbersOnContingencyGraphs: false,
             patternDisplayConfiguration: {hideNoAnswerValues: false},
             graphTypesToCreate: {}

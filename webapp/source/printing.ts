@@ -328,16 +328,8 @@ export function printCatalysisReport() {
     options["printItemIndexNumbers"] = project.tripleStore.queryLatestC(catalysisReportIdentifier, "printItemIndexNumbers") || false;
     options["hideNumbersOnContingencyGraphs"] = project.tripleStore.queryLatestC(catalysisReportIdentifier, "hideNumbersOnContingencyGraphs") || false;
     options["useTableForInterpretationsFollowingObservation"] = project.tripleStore.queryLatestC(catalysisReportIdentifier, "useTableForInterpretationsFollowingObservation") || false;
+    options["customGraphWidth"] = parseInt(project.tripleStore.queryLatestC(catalysisReportIdentifier, "customReportGraphWidth")) || Project.default_customReportGraphWidth;
     options["catalysisReportIdentifier"] = catalysisReportIdentifier;
-
-    // user inputs this so must error-check parseint
-    let customGraphWidthAsString = project.tripleStore.queryLatestC(catalysisReportIdentifier, "customReportGraphWidth");
-    if (customGraphWidthAsString) {
-        let customGraphWidth = parseInt(customGraphWidthAsString);
-        if (!isNaN(customGraphWidth)) {
-            options["customGraphWidth"] = customGraphWidth;
-        }
-    }
 
     options["outputFontModifierPercent"] = parseInt(project.tripleStore.queryLatestC(catalysisReportIdentifier, "outputFontModifierPercent"));
     options["adjustedCSS"] = graphStyle.modifyFontSize(graphStyle.graphResultsPaneCSS, options["outputFontModifierPercent"]);
@@ -370,7 +362,7 @@ export function printCatalysisReport() {
         observationIDsToInclude.push(id);
     });
     if (observationIDsToInclude.length === 0) {
-        alert("No observations in this report match your choice of observation strengths to include.")
+        alert("No observations match your selection criteria. Try changing the observation strengths to include.")
         return;
     }
 

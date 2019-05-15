@@ -168,9 +168,12 @@ var panel: Panel = {
             id: "configureCatalysisReport_customReportGraphWidth",
             valuePath: "/clientState/catalysisReportIdentifier/customReportGraphWidth",
             valueType: "string",
-            displayType: "text",
-            displayName: "Custom graph width",
-            displayPrompt: `<strong>How wide</strong> should the graphs be, in pixels? (If this field is left blank, large graphs will be 800 pixels wide.)`,
+            displayType: "select",
+            valueOptions: ["400", "450", "500", "550", "600", "650", "700", "750", "800", "850", "900", "950", "1000", "1050", "1100", "1150", "1200", "1250", "1300", "1350", "1400", "1450", "1500", "1550", "1600", "1650", "1700", "1750", "1800", "1850", "1900", "1950", "2000"],
+            displayName: "Custom report graph width",
+            displayPrompt: `<strong>How wide should report graphs be</strong>, in pixels? 
+                (This choice affects graphs in the report only. 
+                If no selection is made here, graphs will be 800 pixels wide.)`,
             displayVisible: function(panelBuilder, model) {
                 return !!Globals.clientState().catalysisReportIdentifier();
             }

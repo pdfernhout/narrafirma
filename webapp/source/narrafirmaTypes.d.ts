@@ -39,7 +39,7 @@ interface GraphHolder {
     showStatsPanelsInReport?: boolean;
     statisticalInfo?: string;
     customStatsTextReplacements?: string;
-    customGraphWidth?: number;
+    customGraphWidth: number;
     outputFontModifierPercent?: number;
     adjustedCSS?: string;
 }
