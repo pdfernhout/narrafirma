@@ -363,6 +363,7 @@ export function copyInterpretationsToClusteringDiagram() {
     
     if (allInterpretations.length === 0) {
         alert("No interpretations have been found for this catalysis report.");
+        return;
     }
     
     var clusteringDiagram: ClusteringDiagramModel = project.tripleStore.queryLatestC(catalysisReportIdentifier, "interpretationsClusteringDiagram");
@@ -529,6 +530,11 @@ export function copyObservationsToClusteringDiagram() {
         return;
     }
     var observationIDs = project.tripleStore.getListForSetIdentifier(observationSetIdentifier);
+
+    if (observationIDs.length === 0) {
+        alert("No observations have been found for this catalysis report.");
+        return;
+    }
     
     var clusteringDiagram: ClusteringDiagramModel = project.tripleStore.queryLatestC(catalysisReportIdentifier, "observationsClusteringDiagram");
     if (!clusteringDiagram) {
