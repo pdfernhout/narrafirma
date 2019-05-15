@@ -744,11 +744,8 @@ class ClusteringDiagram {
         if (this.surfaceWidthBeingEdited !== this.model.surfaceWidthInPixels || this.surfaceHeightBeingEdited !== this.model.surfaceHeightInPixels) {
             this.model.surfaceWidthInPixels = this.surfaceWidthBeingEdited;
             this.model.surfaceHeightInPixels = this.surfaceHeightBeingEdited;
-            this._mainSurface
-                .attr('width', this.surfaceWidthBeingEdited)
-                .attr('height', this.surfaceHeightBeingEdited);
-            this.incrementChangesCount();
-            m.redraw();
+            this.incrementChangesCount(); // need to do this to save new surface size to the model
+            this.updateSizeOfSurfaceFromModel();
         }
     }
     
@@ -811,30 +808,41 @@ class ClusteringDiagram {
     }
 
     buildSurfaceSizeDialog() {
+        
+        const selectOptionsRaw = ["400", "450", "500", "550", "600", "650", "700", "750", "800", "850", "900", "950", "1000", "1050", "1100", "1150", "1200", "1250", "1300", "1350", "1400", "1450", "1500", "1550", "1600", "1650", "1700", "1750", "1800", "1850", "1900", "1950", "2000"];
+        const widthOptions = selectOptionsRaw.map((option, index) => {
+            return m("option", {value: option, selected: parseInt(option) === this.model.surfaceWidthInPixels}, option);
+        });
+        const heightOptions = selectOptionsRaw.map((option, index) => {
+            return m("option", {value: option, selected: parseInt(option) === this.model.surfaceHeightInPixels}, option);
+        });
+
         return m("div.overlay", m("div.modal-content", {"style": "width: 30%"}, [
-             "This is the current size of the clustering surface, in pixels. Enter one or two new numbers to change it.",
+             "Choose a new width and height for the clustering surface.",
              m("br"),
              m("br"),
              m('label', {"for": "sizeDialog_width"}, "Width:"),
-             m('input[type=text]', {
+             m("select", {
                  id: "sizeDialog_width",
-                 value: this.model.surfaceWidthInPixels,
+                 // the reason to do this is because this redraw method is called WHILE the user is holding down the OK button
+                 // during which time these two numbers do not agree, so the old value was flickering into view
+                 value: this.showSurfaceSizeDialog ? this.surfaceWidthBeingEdited : this.model.surfaceWidthInPixels,
                  onchange: (event) => { 
                     let newWidth = parseInt(event.target.value.trim(), 10);
                     if (newWidth) this.surfaceWidthBeingEdited = newWidth; 
-                    }
-             }),
+                    },
+             }, widthOptions),
              m('br'),
              m('br'),
              m('label', {"for": "sizeDialog_height"}, "Height:"),
-             m('input[type=text]', {
+             m("select", {
                  id: "sizeDialog_height",
-                 value: this.model.surfaceHeightInPixels,
+                 value: this.showSurfaceSizeDialog ? this.surfaceHeightBeingEdited : this.model.surfaceHeightInPixels,
                  onchange: (event) => { 
                     let newHeight = parseInt(event.target.value.trim(), 10);
                     if (newHeight) this.surfaceHeightBeingEdited = newHeight; 
                     }
-             }),
+             }, heightOptions),
              m("br"),
              m("br"),
              m("button", {onclick: () => {this.showSurfaceSizeDialog = false;}}, "Cancel"),
