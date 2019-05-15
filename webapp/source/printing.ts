@@ -999,7 +999,10 @@ function printGraphWithGraphNode(graphNode: HTMLElement, graphHolder: GraphHolde
     styleNode.type = 'text/css';
     // custom CSS must come AFTER other CSS, because the second declaration of the same class will override the earlier setting
     
-    styleNode.innerHTML = "<![CDATA[" + graphHolder.adjustedCSS + customCSS + "]]>";
+    let styleNodeText =  "<![CDATA[" + graphHolder.adjustedCSS;
+    if (customCSS) styleNodeText += customCSS;
+    styleNodeText += "]]>";
+    styleNode.innerHTML = styleNodeText;
     svgNode.insertBefore(styleNode, svgNode.firstChild);
     
     const result = [];
