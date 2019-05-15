@@ -331,7 +331,6 @@ button:disabled {
 }
 
 .homeButtonImage {
-	/* display: block; */
     background-image: url(../images/ionicicons/home.svg);
     background-repeat: no-repeat;
     background-size: auto 100%;
@@ -343,7 +342,6 @@ button:disabled {
 }
 
 .leftButtonImage {
-    /* display: block; */
     background-image: url(../images/ionicicons/arrow-left-a.svg);
     background-repeat: no-repeat;
     background-size: auto 100%;
@@ -355,14 +353,13 @@ button:disabled {
 }
 
 .rightButtonImage {
-    /* display: block; */
     background-image: url(../images/ionicicons/arrow-right-a.svg);
     background-repeat: no-repeat;
     background-size: auto 100%;
     width: 20px;
     height: 20px;
     text-align: center;
-    display: inline-block; /* May not work correctly in IE6 & IE7? Also does not work right in safari 5.1 with button a bit high. https://bugs.dojotoolkit.org/ticket/5170 */
+    display: inline-block; 
     vertical-align: middle;
 }
 
@@ -480,7 +477,7 @@ form {
 	border-radius: 3px;
 }
 
-.functionResult { /* apparently used on on "stop story collection" page */
+.functionResult { /* apparently used on "stop story collection" page */
     margin: 0.4em 0 1em 0.6em;
 }
 
@@ -680,25 +677,19 @@ table.filterTable td {
 }
 
 .singleChartStyle {
-    width: 800px; /* this must match largeGraphWidth in charting.ts */ 
+    width: 800px; /* this should match largeGraphWidth in charting.ts */ 
 }
 
 .smallChartStyle {
-    width: 267px; /* this must match largeGraphWidth/3 in charting.ts */
+    width: 267px; /* this should match largeGraphWidth/3 in charting.ts */
     float: left;
 }
 
 .mediumChartStyle {
-    width: 400px; /* this must match largeGraphWidth/2 in charting.ts */
+    width: 400px; /* this should match largeGraphWidth/2 in charting.ts */
     float: left;
 }
 
-/*
-.noStyle {
-}
-*/
-
-/* chartEnclosureStyle = "width: 850px; height: 650px; margin: 5px auto 0px auto;"; */
 .chartEnclosure {
     min-height: 200px;
 }
@@ -759,10 +750,9 @@ table.filterTable td {
     padding-left: 0.5em;
 }
 
-/*
 .narrafirma-story-card-one-slider-table {
+    font-size: 1em;
 }
-*/
 
 .narrafirma-story-card-question {
 	margin: 0 0 0.25em 0;
@@ -803,26 +793,25 @@ table.filterTable td {
     padding: 1em;
 }
 
-/*
 .narrafirma-story-card-slider-button {
-
+    font-size: 1em;
 }
 
 .narrafirma-story-card-slider-bars-before {
-
+    font-size: 1em;
 }
 
 .narrafirma-story-card-slider-bars-after {
-
+    font-size: 1em;
 }
 
 .narrafirma-story-card-slider-bars-no-answer {
-
+    font-size: 1em;
 }
 
 .narrafirma-story-card-annotation {
+    font-size: 1em;
 }
-*/
 
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ story card printing ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
@@ -974,7 +963,7 @@ h6.narrafirma-statistics-panel-small {
 	padding: 0.5em;
 	margin: 0.5em;
     font-size: 0.9em;
-    max-width: 267px; /* this must match largeGraphWidth/3 in charting.ts */
+    max-width: 267px; /* this should match largeGraphWidth/3 in charting.ts */
 }
 
 table.narrafirma-mw-all-results {
@@ -1026,10 +1015,9 @@ td.narrafirma-mw-nested-title, td.narrafirma-mw-nested-stats {
     display: none;
 }
 
-/*
 .narrafirma-catalysis-report-conclusion {
+    font-size: 1em;
 }
-*/
 
 .narrafirma-catalysis-report-toc-link-header, .narrafirma-catalysis-report-perspective-link-header, .narrafirma-catalysis-report-observation-link-header {
 	margin-bottom: 0.5em;
@@ -1047,10 +1035,9 @@ td.narrafirma-mw-nested-title, td.narrafirma-mw-nested-stats {
     margin: 0.5em 0 0 0;
 }
 
-/*
 .narrafirma-catalysis-report-perspective-label {
+    font-size: 1em;
 }
-*/
 
 .narrafirma-catalysis-report-perspective-notes {
     padding: 0.5em;
@@ -1074,8 +1061,9 @@ td.narrafirma-mw-nested-title, td.narrafirma-mw-nested-stats {
     margin: 0.5em 0 0 0;
 }
 
-/* .narrafirma-catalysis-report-theme-label {
-} */
+.narrafirma-catalysis-report-theme-label {
+    font-size: 1em;
+}
 
 .narrafirma-catalysis-report-theme-notes {
     padding: 0.5em;
@@ -1095,9 +1083,9 @@ td.narrafirma-mw-nested-title, td.narrafirma-mw-nested-stats {
     margin: 0;
 }
 
-/* .narrafirma-catalysis-report-interpretation-label {
-
-} */
+.narrafirma-catalysis-report-interpretation-label {
+    font-size: 1em;
+}
 
 .narrafirma-catalysis-report-interpretation-notes {
 	padding: 0.5em;
@@ -1123,13 +1111,13 @@ td.narrafirma-mw-nested-title, td.narrafirma-mw-nested-stats {
     margin-bottom: 0;
 }
 
-/*
 .narrafirma-catalysis-report-graph {
+    font-size: 1em;
 }
 
 .narrafirma-catalysis-report-observation-label {
+    font-size: 1em;
 }
-*/
 
 .narrafirma-catalysis-report-observation-strength {
     font-size: 0.8em;
