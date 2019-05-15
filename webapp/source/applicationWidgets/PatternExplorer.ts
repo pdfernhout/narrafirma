@@ -1297,7 +1297,7 @@ class PatternExplorer {
         text += "\nStories (" + stories.length + ") " + sayAboutSelection + " - " + selectionName + "\n";
         const header = "\n----------------------------------------------------------------------------------------------------\n";
         for (i = 0; i < stories.length; i++) {
-            text += "\n" + stories[i].indexInStoryCollection() + ". " + stories[i].model.storyName + textWithAnswersToSelectedQuestions(stories[i]) + "\n";
+            text += "\n" + stories[i].indexInStoryCollection() + ". " + stories[i].model.storyName + textWithAnswersToSelectedQuestions(stories[i]);
             if (this.numStoryCollectionsIncludedInReport > 1) text += "\nStory collection: " + stories[i].storyCollectionIdentifier();
             text += header + stories[i].model.storyText + "\n";
         }
@@ -1353,7 +1353,11 @@ class PatternExplorer {
     //------------------------------------------------------------------------------------------------------------------------------------------
     
     saveGraphSelection() {
-        if (this.activeObservationTab === undefined || this.activeObservationTab < 0 || !this.observationAccessors || this.activeObservationTab >= this.observationAccessors.length) return;
+        if (this.activeObservationTab === undefined || this.activeObservationTab < 0 || !this.observationAccessors || this.activeObservationTab >= this.observationAccessors.length) {
+            alert("Please create an observation in which to save your graph selection.");
+            return;
+        }
+
         const activeAccessor = this.observationAccessors[this.activeObservationTab];
         
         if (!this.graphHolder.currentGraph) {
@@ -1446,7 +1450,7 @@ class PatternExplorer {
         var selectedText = this.scanForSelectionJSON(true);
         if (!selectedText) {
             // TODO: Translate
-            alert("To restore a graph selection, your cursor has to be inside the curly-brackets reference in the graph selections text box.\nClick inside the curly brackets, then try this again.");
+            alert("To restore a graph selection, your cursor has to be inside the curly-brackets reference in a graph selections text box (which is part of an observation).\nClick inside the curly brackets, then try this again.");
             return;
         }
         
