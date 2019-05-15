@@ -1345,8 +1345,7 @@ export function multipleHistograms(graphHolder: GraphHolder, choiceQuestion, sca
     preloadResultsForQuestionOptionsInArray(options, choiceQuestion, unansweredText, showNAValues(graphHolder));
 
     // TODO: Could push extra options based on actual data choices (in case question changed at some point
-    // TODO: This styling may be wrong
-    var chartPane = newChartPane(graphHolder, "noStyle");
+    var chartPane = newChartPane(graphHolder, "singleChartStyle");
       
     var optionsText = "";
     if (scaleQuestion.displayConfiguration && scaleQuestion.displayConfiguration.length > 1) {
@@ -1595,7 +1594,7 @@ export function multipleScatterPlot(graphHolder: GraphHolder, xAxisQuestion, yAx
     const options = [];
     preloadResultsForQuestionOptionsInArray(options, choiceQuestion, unansweredText, showNAValues(graphHolder));
     
-    var chartPane = newChartPane(graphHolder, "noStyle");
+    var chartPane = newChartPane(graphHolder, "singleChartStyle");
     var chartTitle = "" + nameForQuestion(xAxisQuestion) + " x " + nameForQuestion(yAxisQuestion) + " + " + nameForQuestion(choiceQuestion);
     addTitlePanelForChart(chartPane, chartTitle);
 
