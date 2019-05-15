@@ -180,6 +180,7 @@ Changed: Interface - Startup message ("Retrieving project information") now show
 Changed: Interface - Lists of questions on "Configure catalysis report" and "Print story cards" pages are now multi-column (less scrolling)
 Changed: Interface - Better order/flow/explanations of things on "Configure catalysis report" page
 Changed: Interface - Options relevant only to printing have been moved from "Configure catalysis report" page to "Print catalysis report" page
+Changed: Interface - Project choice dialog now shows a login link if you are not already logged in
 
 Changed: Reporting - Catalysis report now uses HTML headers (H1, H2, etc) which are more easily converted to styles by word processors
 Changed: Reporting - Old @header@ system for "sectioning" observations is no longer needed and has been removed (no backward compatibility; copy sections into new observations)

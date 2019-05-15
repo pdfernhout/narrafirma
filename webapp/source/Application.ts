@@ -196,7 +196,7 @@ class Application {
                 document.getElementById("pleaseWaitDiv").style.display = "none";
                 document.getElementById("pageDiv").innerHTML = "Problem talking to server. Please contact your NarraFirma administrator.";
                 document.getElementById("pageDiv").style.display = "block";
-                alert("Something went wrong determining the current user identifier");
+                alert("Something went wrong determining the current user identifier.");
                 return;
             }
             console.log("initialize response", response);
@@ -225,17 +225,9 @@ class Application {
                 var loginText = "";
                 if (this.userIdentifier === "anonymous") {
                     recoveryText = "Please try logging in.";
-                    var isWordPressAJAX = !!window["ajaxurl"];
-                    var loginURL;
-                    if (isWordPressAJAX) {
-                        loginURL = "wordpress/wp-login.php";
-                    } else {
-                        loginURL = "login";
-                    }
-                    loginText = ' <a href="/' + loginURL + '">login</a>';
+                    loginText = this.loginLink();
                 }
-                
-                document.body.innerHTML += '<br><b>No projects. The NarraFirma application cannot run.</b> ' + recoveryText + loginText;
+                document.body.innerHTML += '<br><b>No projects. The NarraFirma application cannot run.</b> ' + recoveryText + " " + loginText;
                 alert("There are no projects accessible by the current user (" + this.userIdentifier + "). " + recoveryText);
                 return;
             }
@@ -267,7 +259,18 @@ class Application {
             var columns = {name: "Project name", id: "Project journal", write: "Editable"};
             // TODO: Only allow new project button for admins
             var isNewAllowed = false;
-            dialogSupport.openListChoiceDialog(null, projects, columns, "NarraFirma Projects", "Select a NarraFirma project to work on.", isNewAllowed, (projectChoice) => {
+
+            let loginLink;
+            let message;
+            if (this.userIdentifier === "anonymous") {
+                message = "Please select a NarraFirma project to work on - or ";
+                loginLink = m("a", {href: this.loginLink("href"), title: "Login"}, "log in");
+            } else {
+                message = "Hello " + this.userIdentifier + ". Please select a NarraFirma project to work on"
+                loginLink = null;
+            }
+            const prompt = m("div", [m("span", message), loginLink ? loginLink : [], m("span", ".")]);
+            dialogSupport.openListChoiceDialog(null, projects, columns, "NarraFirma Projects", prompt, isNewAllowed, (projectChoice) => {
                 if (!projectChoice) return;
                 
                 this.projectIdentifier = projectChoice.id;
@@ -290,6 +293,21 @@ class Application {
             // Because we are opening a dialog at startup, not caused by a user event, we need to tell Mithril to redraw.
             // Safari 5 seems to sometimes get the event sequence wrong at startup, adding 100ms delay to help ensure the redraw is queued after this event is entirely done
             setTimeout(m.redraw, 100);
+        }
+    }
+
+    loginLink(hrefOrLink = "link") {
+        var isWordPressAJAX = !!window["ajaxurl"];
+        var loginURL;
+        if (isWordPressAJAX) {
+            loginURL = "wordpress/wp-login.php";
+        } else {
+            loginURL = "login";
+        }
+        if (hrefOrLink === "href") {
+            return loginURL;
+        } else {
+            return '<a href="/' + loginURL + '">login</a>';
         }
     }
     

@@ -232,11 +232,10 @@ function build_listChooserDialogContent(dialogConfiguration, hideDialogMethod) {
         hideDialogMethod();
         args.dialogOKCallback({id: name, name: name, isNew: true});
     }
-    
+
     // style: "min-height: 400px; min-width: 600px; max-height: 800px; max-width: 800px; overflow: auto"
     return [
-        dialogConfiguration.dialogOKButtonLabel,
-        m("br"),
+        dialogConfiguration.dialogOKButtonLabel, 
         m("br"),
         dialogConfiguration.choices.sort((a, b) => {return a.name.localeCompare(b.name); }).map((choice) => {
             return [
