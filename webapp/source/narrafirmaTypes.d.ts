@@ -29,6 +29,7 @@ interface GraphHolder {
     numScatterDotOpacityLevels: number;
     scatterDotSize: number;
     correlationLineChoice: string;
+    customLabelLengthLimit: string;
     hideNumbersOnContingencyGraphs: boolean;
     excludeStoryTooltips?: boolean; // this is used to suppress story tooltips in "data integrity" graphs where stories are not the things being represented
     patternDisplayConfiguration: PatternDisplayConfiguration;

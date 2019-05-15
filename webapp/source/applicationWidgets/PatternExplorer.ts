@@ -177,6 +177,7 @@ class PatternExplorer {
             numScatterDotOpacityLevels: Project.default_numScatterDotOpacityLevels,
             scatterDotSize: Project.default_scatterDotSize,
             correlationLineChoice: Project.default_correlationLineChoice,
+            customLabelLengthLimit: "30",
             hideNumbersOnContingencyGraphs: false,
             graphTypesToCreate: Project.default_graphTypesToCreate,
             patternDisplayConfiguration: {hideNoAnswerValues: false},
@@ -555,6 +556,7 @@ class PatternExplorer {
         this.graphHolder.numScatterDotOpacityLevels = this.project.tripleStore.queryLatestC(this.catalysisReportIdentifier, "numScatterDotOpacityLevels") || Project.default_numScatterDotOpacityLevels; 
         this.graphHolder.scatterDotSize = this.project.tripleStore.queryLatestC(this.catalysisReportIdentifier, "scatterDotSize") || Project.default_scatterDotSize; 
         this.graphHolder.correlationLineChoice = this.project.tripleStore.queryLatestC(this.catalysisReportIdentifier, "correlationLineChoice") || Project.default_correlationLineChoice; 
+        this.graphHolder.customLabelLengthLimit = this.project.tripleStore.queryLatestC(this.catalysisReportIdentifier, "customLabelLengthLimit") || Project.default_customLabelLengthLimit; 
         this.graphHolder.customGraphWidth = this.project.tripleStore.queryLatestC(this.catalysisReportIdentifier, "customDisplayGraphWidth"); 
         this.graphHolder.hideNumbersOnContingencyGraphs = this.project.tripleStore.queryLatestC(this.catalysisReportIdentifier, "hideNumbersOnContingencyGraphs"); 
 

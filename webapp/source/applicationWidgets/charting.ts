@@ -321,7 +321,7 @@ function addXAxis(chart, xScale, options: AxisOptions) {
                 let result = label;
                 result = limitLabelLength(result, options.labelLengthLimit);
                 if (options.namesAndTotals && options.namesAndTotals[label]) {
-                    result = label + " (" + options.namesAndTotals[label] + ")";
+                    result = result + " (" + options.namesAndTotals[label] + ")";
                 }
                 return result; 
             });
@@ -335,7 +335,7 @@ function addXAxis(chart, xScale, options: AxisOptions) {
                 let result = label;
                 result = limitLabelLength(result, options.labelLengthLimit);
                 if (options.namesAndTotals && options.namesAndTotals[label]) {
-                    result = label + " (" + options.namesAndTotals[label] + ")";
+                    result = result + " (" + options.namesAndTotals[label] + ")";
                 }
                 return result; 
             });
@@ -375,7 +375,7 @@ function addYAxis(chart, yScale, options: AxisOptions) {
             let result = label;
             result = limitLabelLength(result, options.labelLengthLimit)
             if (options.namesAndTotals && options.namesAndTotals[label]) {
-                result = label + " (" + options.namesAndTotals[label] + ")";
+                result = result + " (" + options.namesAndTotals[label] + ")";
             }
             return result; 
         });
@@ -397,7 +397,7 @@ function addYAxis(chart, yScale, options: AxisOptions) {
             let result = label;
             result = limitLabelLength(result, options.labelLengthLimit);
             if (options.namesAndTotals && options.namesAndTotals[label]) {
-                result = label + " (" + options.namesAndTotals[label] + ")";
+                result = result + " (" + options.namesAndTotals[label] + ")";
             }
             return result;
         });
@@ -849,7 +849,7 @@ export function d3BarChartToShowUnansweredChoiceQuestions(graphHolder: GraphHold
 
 export function d3BarChartForValues(graphHolder: GraphHolder, plotItems, xLabels, chartTitle, xAxisLabel, question, storiesSelectedCallback, hideStatsPanel = false) {
     
-    var labelLengthLimit = 30;
+    var labelLengthLimit = parseInt(graphHolder.customLabelLengthLimit);
     var longestLabelText = "";
     for (var label in xLabels) {
         if (xLabels[label].length > longestLabelText.length) {
@@ -867,7 +867,7 @@ export function d3BarChartForValues(graphHolder: GraphHolder, plotItems, xLabels
 
     var maxItemsPerBar = d3.max(plotItems, function(plotItem: PlotItem) { return plotItem.value; });
 
-    var letterSize = 8;
+    var letterSize = 6; // it would be better to get this from the DOM - but it would decrease performance...
     var margin = {top: 20, right: 15, bottom: 90 + longestLabelTextLength * letterSize, left: 70};
     if (maxItemsPerBar >= 100) margin.left += letterSize;
     if (maxItemsPerBar >= 1000) margin.left += letterSize;
@@ -1676,7 +1676,7 @@ export function d3ContingencyTable(graphHolder: GraphHolder, xAxisQuestion, yAxi
         }
     }
 
-    var labelLengthLimit = 30;
+    var labelLengthLimit = parseInt(graphHolder.customLabelLengthLimit);
     var longestColumnText = "";
     for (var columnName in columnLabels) {
         if (columnName.length > longestColumnText.length) {
@@ -1685,6 +1685,7 @@ export function d3ContingencyTable(graphHolder: GraphHolder, xAxisQuestion, yAxi
     }
     var longestColumnTextLength = longestColumnText.length;
     if (longestColumnTextLength > labelLengthLimit) { longestColumnTextLength = labelLengthLimit + 3; }
+    if (!graphHolder.hideNumbersOnContingencyGraphs) longestColumnTextLength += 7; // space, parenthesis, 4 digits, parenthesis
     
     var longestRowText = "";
     for (var rowName in rowLabels) {
@@ -1694,6 +1695,7 @@ export function d3ContingencyTable(graphHolder: GraphHolder, xAxisQuestion, yAxi
     }
     var longestRowTextLength = longestRowText.length;
     if (longestRowTextLength > labelLengthLimit) { longestRowTextLength = labelLengthLimit + 3; }
+    if (!graphHolder.hideNumbersOnContingencyGraphs) longestRowTextLength += 7; // space, parenthesis, 4 digits, parenthesis
     var rowCount = rowLabelsArray.length;
 
     let rowStoryCounts = {};
@@ -1772,7 +1774,7 @@ export function d3ContingencyTable(graphHolder: GraphHolder, xAxisQuestion, yAxi
     }
     addTitlePanelForChart(chartPane, chartTitle);
 
-    var letterSize = 6;
+    var letterSize = 6; // it would be better to get this from the DOM - but it would decrease performance...
     var margin = {top: 20, right: 15, bottom: 90 + longestColumnTextLength * letterSize, left: 90 + longestRowTextLength * letterSize};
 
     // deal with questions that have LOTS of answers (not so much of a problem in the columns)
@@ -1891,7 +1893,6 @@ export function d3ContingencyTable(graphHolder: GraphHolder, xAxisQuestion, yAxi
                 }; 
             })
             .attr("height", function (plotItem) { return yValueMultiplier * plotItem.value; })
-
 
         // mean rectangle (line)
         var meanRects = chartBody.selectAll(".miniHistogramMean")

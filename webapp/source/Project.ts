@@ -29,6 +29,7 @@ class Project {
     static default_numScatterDotOpacityLevels = 3;
     static default_scatterDotSize = 8;
     static default_correlationLineChoice = "0.05";
+    static default_customLabelLengthLimit = "30";
     static default_numStoryLengthCategories = 4;
     static default_graphTypesToCreate = {
         "data integrity graphs": false,

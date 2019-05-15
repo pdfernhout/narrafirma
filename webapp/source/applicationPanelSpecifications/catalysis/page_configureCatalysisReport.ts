@@ -1,39 +1,6 @@
 import Globals = require("../../Globals");
 "use strict";
 
-// start, 1, 2, 5, 10, 50, 100
-function fillChoiceArray(start, lastSequential, lastEveryTwo = null, lastEveryFive = null, lastEveryTen = null, lastEveryFifty = null, lastEveryHundred = null) {
-    var result = [];
-    for (var i = start; i <= lastSequential; i++) {
-        result.push("" + i);
-    }
-    if (lastEveryTwo) {
-        for (i = lastSequential+2; i <= lastEveryTwo; i += 2) {
-            result.push("" + i);
-        }
-    }
-    if (lastEveryFive) {
-        for (i = lastEveryTwo+5; i <= lastEveryFive; i += 5) {
-            result.push("" + i);
-        }
-    }
-    if (lastEveryTen) {
-        for (i = lastEveryFive+10; i <= lastEveryTen; i += 10) {
-            result.push("" + i);
-        }  
-    }
-    if (lastEveryFifty) {
-        for (i = lastEveryTen+50; i <= lastEveryFifty; i += 50) {
-            result.push("" + i);
-        } 
-    }
-    if (lastEveryHundred) 
-        for (i = lastEveryFifty+100; i <= lastEveryHundred; i += 100) {
-            result.push("" + i);
-        }  
-    return result;
-}
-
 var panel: Panel = {
     id: "page_configureCatalysisReport",
     displayName: "Configure Catalysis Report",
@@ -195,10 +162,24 @@ var panel: Panel = {
             }
         },
         {
+            id: "configureCatalysisReport_customLabelLengthLimit",
+            valuePath: "/clientState/catalysisReportIdentifier/customLabelLengthLimit",
+            valueType: "string",
+            displayType: "select",
+            valueOptions: ["10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32", "33", "34", "35", "36", "37", "38", "39", "40", "41", "42", "43", "44", "45", "46", "47", "48", "49", "50", "51", "52", "53", "54", "55", "56", "57", "58", "59", "60"],
+            displayName: "Custom label length limit",
+            displayPrompt: `At what length do you want to <strong>truncate labels</strong> on bar and contingency charts?
+                (This choice affects graphs in the application and the printed report.
+                If no selection is made here, labels will be truncated at 30 characters.)`,
+            displayVisible: function(panelBuilder, model) {
+                return !!Globals.clientState().catalysisReportIdentifier();
+            }
+        },
+        {
             id: "configureCatalysisReport_minimumStoryCountRequiredForGraph",
             valuePath: "/clientState/catalysisReportIdentifier/minimumStoryCountRequiredForGraph",
             valueType: "string",
-            valueOptions: fillChoiceArray(1, 30, 60, 100, 300, 500, 1000), // start, 1, 2, 5, 10, 50, 100
+            valueOptions: ["1", "5", "10", "15", "20", "25", "30", "35", "40", "45", "50", "60", "70", "80", "90", "100", "120", "140", "160", "180", "200", "250", "300", "350", "400", "450", "500"],
             displayType: "select",
             displayName: "Minimum story count for graph",
             displayPrompt: `<strong>How many stories should a subset have</strong> to draw a graph? 
@@ -330,7 +311,7 @@ var panel: Panel = {
             id: "configureCatalysisReport_minimumSubsetSize",
             valuePath: "/clientState/catalysisReportIdentifier/minimumSubsetSize",
             valueType: "string",
-            valueOptions: ["1", "5", "10", "15", "20", "25", "30", "35", "40", "45", "50", "60", "70", "80", "90", "100", "120", "140", "160", "180", "200", "250", "300"],
+            valueOptions: ["1", "5", "10", "15", "20", "25", "30", "35", "40", "45", "50", "60", "70", "80", "90", "100", "120", "140", "160", "180", "200", "250", "300", "350", "400", "450", "500"],
             displayType: "select",
             displayName: "Minimum subset size",
             displayPrompt: `<strong>How many stories should a subset have</strong> to be compared to other subsets in a statistical test?

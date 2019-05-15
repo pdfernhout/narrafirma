@@ -321,6 +321,7 @@ export function printCatalysisReport() {
     options["numScatterDotOpacityLevels"] = project.tripleStore.queryLatestC(catalysisReportIdentifier, "numScatterDotOpacityLevels") || Project.default_numScatterDotOpacityLevels; 
     options["scatterDotSize"] = project.tripleStore.queryLatestC(catalysisReportIdentifier, "scatterDotSize") || Project.default_scatterDotSize; 
     options["correlationLineChoice"] = project.tripleStore.queryLatestC(catalysisReportIdentifier, "correlationLineChoice") || Project.default_correlationLineChoice; 
+    options["customLabelLengthLimit"] = parseInt(project.tripleStore.queryLatestC(catalysisReportIdentifier, "customLabelLengthLimit") || Project.default_customLabelLengthLimit); 
 
     options["outputGraphFormat"] = project.tripleStore.queryLatestC(catalysisReportIdentifier, "outputGraphFormat") || "SVG";
     options["showStatsPanelsInReport"] = project.tripleStore.queryLatestC(catalysisReportIdentifier, "showStatsPanelsInReport") || false;
@@ -329,6 +330,7 @@ export function printCatalysisReport() {
     options["useTableForInterpretationsFollowingObservation"] = project.tripleStore.queryLatestC(catalysisReportIdentifier, "useTableForInterpretationsFollowingObservation") || false;
     options["catalysisReportIdentifier"] = catalysisReportIdentifier;
 
+    // user inputs this so must error-check parseint
     let customGraphWidthAsString = project.tripleStore.queryLatestC(catalysisReportIdentifier, "customReportGraphWidth");
     if (customGraphWidthAsString) {
         let customGraphWidth = parseInt(customGraphWidthAsString);
@@ -337,13 +339,7 @@ export function printCatalysisReport() {
         }
     }
 
-    let outputFontModifierPercentAsString = project.tripleStore.queryLatestC(catalysisReportIdentifier, "outputFontModifierPercent");
-    if (outputFontModifierPercentAsString) {
-        let outputFontModifierPercent = parseInt(outputFontModifierPercentAsString);
-        if (!isNaN(outputFontModifierPercent) && outputFontModifierPercent > 0 && outputFontModifierPercent < 1000) {
-            options["outputFontModifierPercent"] = outputFontModifierPercent;
-        }
-    }
+    options["outputFontModifierPercent"] = parseInt(project.tripleStore.queryLatestC(catalysisReportIdentifier, "outputFontModifierPercent"));
     options["adjustedCSS"] = graphStyle.modifyFontSize(graphStyle.graphResultsPaneCSS, options["outputFontModifierPercent"]);
 
     const strengthsToInclude = [];
@@ -912,6 +908,7 @@ function initializedGraphHolder(allStories, options) {
         numScatterDotOpacityLevels: options.numScatterDotOpacityLevels,
         scatterDotSize: options.scatterDotSize,
         correlationLineChoice: options.correlationLineChoice,
+        customLabelLengthLimit: options.customLabelLengthLimit,
         hideNumbersOnContingencyGraphs: options.hideNumbersOnContingencyGraphs,
         outputGraphFormat: options.outputGraphFormat,
         outputFontModifierPercent: options.outputFontModifierPercent,
