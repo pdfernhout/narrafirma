@@ -1182,8 +1182,7 @@ td.narrafirma-mw-nested-title, td.narrafirma-mw-nested-stats {
 }
 
 .narrafirma-graph-results-pane {
-	width: 850px;
-	margin: 0.2em auto 0px auto;
+    margin: 5px auto 0px 4em;
 }
 
 .chartBackground {

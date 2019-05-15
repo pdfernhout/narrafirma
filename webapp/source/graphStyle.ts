@@ -10,8 +10,7 @@ function replaceAll(str, find, replace) {
 
 export const graphResultsPaneCSS = `
     .narrafirma-graph-results-pane {
-        width: 850px;
-        margin: 5px auto 0px auto;
+        margin: 5px auto 0px 4em;
     }
     
     .chartBackground {
