@@ -390,7 +390,7 @@ class PatternExplorer {
 
         const buildObservationsAndInterpretationsPanels = () => {
             if (this.observationAccessors.length === 0) {
-                return m("button", {onclick: this.addObservationTabClick.bind(this),}, m("span.button-text ", "Click here to add an observation for this pattern"));
+                return m("button", {onclick: this.addObservationTabClick.bind(this),}, m("span.button-text ", "Add an observation for this pattern"));
             }
             let tabs = [];
             for (let i = 0; i < this.observationAccessors.length; i++) {
@@ -555,7 +555,7 @@ class PatternExplorer {
         this.graphHolder.numScatterDotOpacityLevels = this.project.tripleStore.queryLatestC(this.catalysisReportIdentifier, "numScatterDotOpacityLevels") || Project.default_numScatterDotOpacityLevels; 
         this.graphHolder.scatterDotSize = this.project.tripleStore.queryLatestC(this.catalysisReportIdentifier, "scatterDotSize") || Project.default_scatterDotSize; 
         this.graphHolder.correlationLineChoice = this.project.tripleStore.queryLatestC(this.catalysisReportIdentifier, "correlationLineChoice") || Project.default_correlationLineChoice; 
-        this.graphHolder.customGraphWidth = this.project.tripleStore.queryLatestC(this.catalysisReportIdentifier, "customGraphWidth"); 
+        this.graphHolder.customGraphWidth = this.project.tripleStore.queryLatestC(this.catalysisReportIdentifier, "customDisplayGraphWidth"); 
         this.graphHolder.hideNumbersOnContingencyGraphs = this.project.tripleStore.queryLatestC(this.catalysisReportIdentifier, "hideNumbersOnContingencyGraphs"); 
 
         // get stories
