@@ -289,7 +289,7 @@ class PatternExplorer {
                     id: "observationPanel_description",
                     valuePath: "/clientState/observationAccessor/observationDescription",
                     displayName: "Observation description",
-                    displayPrompt: "If this pattern is noteworthy, enter an <strong>observation</strong> about the pattern here. (You can use **bold** and __italic__, plus some HTML tags; see the help system for details.)",
+                    displayPrompt: "If this pattern is noteworthy, enter an <strong>observation</strong> about the pattern here. To enter another observation, click the plus button.",
                     displayType: "textarea"
                 },
                 {
