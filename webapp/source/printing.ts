@@ -798,7 +798,6 @@ function printObservation(observationID, observationIndex, clusterIndex, idTagSt
     if (observation.pattern.graphType === "texts") {
         resultItems.push(printReturnAndBlankLine());
     } else {
-
         var pattern = observation.pattern;
         var selectionCallback = function() { return this; };
         let graphHolder = initializedGraphHolder(allStories, options);
@@ -808,47 +807,48 @@ function printObservation(observationID, observationIndex, clusterIndex, idTagSt
 
         var graph = PatternExplorer.makeGraph(pattern, graphHolder, selectionCallback, !options.showStatsPanelsInReport);
         if (graph) resultItems.push(printGraphWithGraphHolder(graphHolder, options.customCSS));
-
-        if (observation.observationExtraPatterns) {
-            const allQuestions = project.allQuestionsThatCouldBeGraphedForCatalysisReport(options.catalysisReportIdentifier, true);
-
-            // one pattern per line
-            const patternTexts = observation.observationExtraPatterns.split("\n");
-
-            patternTexts.forEach((patternText) => {
-
-                // the question short names MUST be in the order they are in the patterns table (because some of the graphs require a certain order)
-                const questionNames = patternText.split('==');
-
-                if (questionNames.length) {
-
-                    // look up questions
-                    const questions = [];
-                    questionNames.forEach((questionName) => {
-                        for (let i = 0; i < allQuestions.length; i++) {
-                            if (allQuestions[i].displayName === questionName.trim()) {
-                                questions.push(allQuestions[i]);
-                            }
-                        }
-                    });
-                    
-                    // generate graph
-                    if (questions.length > 0) {
-                        const graphType = graphTypeForListOfQuestions(questions);
-                        const extraPattern = {"graphType": graphType, "questions": questions};
-                        let extraGraphHolder = initializedGraphHolder(allStories, options);
-
-                        // the "show no answer values" option is whatever was set on the OTHER pattern that is being referenced here
-                        const hideNoAnswerValues = PatternExplorer.getOrSetWhetherNoAnswerValuesShouldBeHiddenForPattern(project, options.catalysisReportIdentifier, extraPattern);
-                        extraGraphHolder.patternDisplayConfiguration.hideNoAnswerValues = hideNoAnswerValues;
-
-                        var extraGraph = PatternExplorer.makeGraph(extraPattern, extraGraphHolder, selectionCallback, !options.showStatsPanelsInReport);
-                        if (extraGraph) resultItems.push(printGraphWithGraphHolder(extraGraphHolder, options.customCSS));
-                    }
-                }
-            });
-        }
     }
+
+    if (observation.observationExtraPatterns) {
+        const allQuestions = project.allQuestionsThatCouldBeGraphedForCatalysisReport(options.catalysisReportIdentifier, true);
+
+        // one pattern per line
+        const patternTexts = observation.observationExtraPatterns.split("\n");
+
+        patternTexts.forEach((patternText) => {
+
+            // the question short names MUST be in the order they are in the patterns table (because some of the graphs require a certain order)
+            const questionNames = patternText.split('==');
+
+            if (questionNames.length) {
+
+                // look up questions
+                const questions = [];
+                questionNames.forEach((questionName) => {
+                    for (let i = 0; i < allQuestions.length; i++) {
+                        if (allQuestions[i].displayName === questionName.trim()) {
+                            questions.push(allQuestions[i]);
+                        }
+                    }
+                });
+                
+                // generate graph
+                if (questions.length > 0) {
+                    const graphType = graphTypeForListOfQuestions(questions);
+                    const extraPattern = {"graphType": graphType, "questions": questions};
+                    let extraGraphHolder = initializedGraphHolder(allStories, options);
+
+                    // the "show no answer values" option is whatever was set on the OTHER pattern that is being referenced here
+                    const hideNoAnswerValues = PatternExplorer.getOrSetWhetherNoAnswerValuesShouldBeHiddenForPattern(project, options.catalysisReportIdentifier, extraPattern);
+                    extraGraphHolder.patternDisplayConfiguration.hideNoAnswerValues = hideNoAnswerValues;
+
+                    var extraGraph = PatternExplorer.makeGraph(extraPattern, extraGraphHolder, selectionCallback, !options.showStatsPanelsInReport);
+                    if (extraGraph) resultItems.push(printGraphWithGraphHolder(extraGraphHolder, options.customCSS));
+                }
+            }
+        });
+    }
+
     if (printLinkingQuestion && observation.observationLinkingQuestion) {
         let linkingQuestionClass = "";
         if (themesOrPerspectives = "themes") {
