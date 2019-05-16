@@ -884,6 +884,11 @@ table.filterTable td {
 
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Catalysis report ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
+.narrafirma-choose-pattern {
+    margin: 1em auto 2em auto;
+    text-align: center;
+}
+
 .narrafirma-tabs-header {
     font-size: 1em;
     float: right;

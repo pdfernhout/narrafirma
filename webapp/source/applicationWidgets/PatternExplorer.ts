@@ -483,7 +483,7 @@ class PatternExplorer {
                             buildObservationsAndInterpretationsPanels(),
                         ] :
                         // TODO: Translate
-                        m("div.narrafirma-choose-pattern", "Please select a pattern to view as a graph.")
+                        m("div.narrafirma-choose-pattern", "Please select a pattern to view in the table above.")
                 ];
             }
         }
@@ -1362,7 +1362,7 @@ class PatternExplorer {
         
         if (!this.graphHolder.currentGraph) {
             // TODO: Translated
-            alert("Please select a pattern first");
+            alert("Please select a pattern first.");
             return;
         }
         
@@ -1439,7 +1439,7 @@ class PatternExplorer {
     restoreGraphSelection() {
         if (!this.graphHolder.currentGraph) {
             // TODO: Translate
-            alert("Please select a pattern first");
+            alert("Please select a pattern first.");
             return;
         }
         
