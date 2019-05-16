@@ -21,17 +21,19 @@ export function getChoiceValueForQuestionAndStory(question, story, unansweredTex
     } else {
         value = story.fieldValue(question.id);
 
-        if (question.displayType === "checkbox" && !value) return "no";
-
-        if (question.displayType === "boolean") {
+        if (question.displayType === "checkbox") {
+            if (value) {
+                return "true"
+            } else {
+                return "false"
+            }
+        } else if (question.displayType === "boolean") {
             if (value) {
                 return "yes"
             } else {
                 return "no"
             }
-        }
-
-        if (value === undefined || value === null || value === "") {
+        } else if (value === undefined || value === null || value === "") {
             if (includeNAValues) {
                 if (question.displayType === "checkboxes") {
                     let result = {};
