@@ -1557,10 +1557,11 @@ export function autoFillStoryForm() {
 export function exportQuestionnaire(questionnaire = null) {
 
     var nameToSave = "";
-    if (!questionnaire) {
+    // for some reason the project name is being passed to this method from the "export story form" button, but "questionnaire" should be an object, not a string
+    if (!questionnaire || typeof questionnaire === "string") { 
         var storyCollectionName = Globals.clientState().storyCollectionName();
         if (!storyCollectionName) {
-            alert("Please select a story collection first");
+            alert("Please select a story collection first.");
             return;
         }
         nameToSave = storyCollectionName;
@@ -1703,23 +1704,28 @@ var exportQuestionTypeMap = {
 function addCSVOutputLine(output, line) {
     var start = true;
     line.forEach(function (item) {
+        let itemToSave;
         if (start) {
             start = false;
         } else {
             output += ",";
         }
         if (typeof item == 'number') {
-            item = "" + item;
+            itemToSave = "" + item;
+        } else if (typeof item == "boolean") {
+            itemToSave = item ? "true" : "false";
+        } else {
+            itemToSave = item;
         }
-        if (item && item.indexOf(",") !== -1) {
-            item = item.replace(/"/g, '""');
-            item = '"' + item + '"';
+        if (itemToSave.indexOf(",") !== -1) {
+            itemToSave = itemToSave.replace(/"/g, '""');
+            itemToSave = '"' + itemToSave + '"';
         }
-        if (item && item.indexOf("\n") !== -1) {
-            item = item.replace(/"/g, '""');
-            item = '"' + item + '"';
+        if (itemToSave.indexOf("\n") !== -1) {
+            itemToSave = itemToSave.replace(/"/g, '""');
+            itemToSave = '"' + itemToSave + '"';
         }
-        output += item;
+        output += itemToSave;
     });
     output += "\n";
     return output;
