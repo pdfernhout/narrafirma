@@ -932,7 +932,8 @@ table.filterTable td {
 }
 
 .narrafirma-choose-catalysis-report {
-    margin: 0.5em 0 0.5em 0.5em;
+    text-align: center;
+    margin: 2em auto 2em auto;
 }
 
 .narrafirma-choose-questions-to-include {
