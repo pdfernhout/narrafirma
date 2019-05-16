@@ -148,7 +148,7 @@ export const graphResultsPaneCSS = `
     }
     
     .contingencyChart .storyCluster.observed {
-      stroke-width: 3px;
+      stroke-width: 1px;
       stroke: #2e4a85;
       fill: #d5dae6;
     }

@@ -20,6 +20,7 @@ interface StoryPlotItem {
     stories: any[];
     value: number;
     expectedValue?: number;
+    text?: string;
 }
 
 const maxRangeLabelLength = 26;
@@ -1975,23 +1976,27 @@ export function d3ContingencyTable(graphHolder: GraphHolder, xAxisQuestion, yAxi
         }
 
         if (!graphHolder.hideNumbersOnContingencyGraphs) {
+            const letterSize = 8;
             const minSizeToDrawLabelInside = 24; 
             var storyClusterLabels = chartBody.selectAll(".storyClusterLabel")
                 .data(observedPlotItems)
                 .enter().append("text")
                     .text(function(plotItem: StoryPlotItem) { 
-                        if (plotItem.expectedValue) {
-                            return "" + plotItem.value + "/" + Math.round(plotItem.expectedValue); 
+                        if (plotItem.expectedValue && Math.round(plotItem.expectedValue) !== 0) {
+                            plotItem.text = "" + plotItem.value + "/" + Math.round(plotItem.expectedValue);
+                        } else if (plotItem.value) {
+                            plotItem.text = "" + plotItem.value;
                         } else {
-                            return "" + plotItem.value;
+                            plotItem.text = "";
                         }
+                        return plotItem.text; 
                     })
                     .attr("class", "storyClusterLabel")
                     .attr("x", function (plotItem) { return xScale(plotItem.x) + xScale.rangeBand() / 2.0; } )
                     .attr("y", function (plotItem) { return yScale(plotItem.y) + yScale.rangeBand() / 2.0; } )
-                    .attr("dx", function(plotItem) { if (xValueMultiplier * plotItem.value >= minSizeToDrawLabelInside) return 0; else return "0.75em"; }) 
-                    .attr("dy", function(plotItem) { if (xValueMultiplier * plotItem.value >= minSizeToDrawLabelInside) return "0.35em"; else return "1.5em"; }) 
-                    .attr("text-anchor", function(plotItem) { if (xValueMultiplier * plotItem.value >= minSizeToDrawLabelInside) return "middle"; else return "left"; }) 
+                    .attr("dx", function(plotItem) { if (xValueMultiplier * plotItem.value >= plotItem.text.length * letterSize) return 0; else return "0.5em"; }) 
+                    .attr("dy", function(plotItem) { if (xValueMultiplier * plotItem.value >= plotItem.text.length * letterSize) return "0.35em"; else return "1.2em"; }) 
+                    .attr("text-anchor", function(plotItem) { if (xValueMultiplier * plotItem.value >= plotItem.text.length * letterSize) return "middle"; else return "left"; }) 
             }
     }
 
