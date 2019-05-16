@@ -1224,14 +1224,14 @@ td.narrafirma-mw-nested-title, td.narrafirma-mw-nested-stats {
 
 .x-axis {
 	fill: none;
-	stroke: black;
+	stroke: gray;
 	stroke-width: 1px;
 	shape-rendering: crispEdges;	
 }
 
 .y-axis {
 	fill: none;
-	stroke:black;
+	stroke:gray;
 	stroke-width: 1px;
 	shape-rendering: crispEdges;	
 }

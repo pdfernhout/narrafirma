@@ -208,6 +208,34 @@ export function createGraphResultsPane(theClass): HTMLElement {
     return pane;
 }
 
+export function initializedGraphHolder(allStories, options) {
+    var graphHolder: GraphHolder = {
+        graphResultsPane: createGraphResultsPane("narrafirma-graph-results-pane chartEnclosure"),
+        chartPanes: [],
+        allStories: allStories,
+        currentGraph: null,
+        currentSelectionExtentPercentages: null,
+        excludeStoryTooltips: true,
+        minimumStoryCountRequiredForTest: options.minimumStoryCountRequiredForTest,
+        minimumStoryCountRequiredForGraph: options.minimumStoryCountRequiredForGraph,
+        numHistogramBins: options.numHistogramBins,
+        numScatterDotOpacityLevels: options.numScatterDotOpacityLevels,
+        scatterDotSize: options.scatterDotSize,
+        correlationLineChoice: options.correlationLineChoice,
+        customLabelLengthLimit: options.customLabelLengthLimit,
+        hideNumbersOnContingencyGraphs: options.hideNumbersOnContingencyGraphs,
+        outputGraphFormat: options.outputGraphFormat,
+        outputFontModifierPercent: options.outputFontModifierPercent,
+        showStatsPanelsInReport: options.showStatsPanelsInReport,
+        customStatsTextReplacements: options.customStatsTextReplacements,
+        customGraphWidth: options.customGraphWidth,
+        patternDisplayConfiguration: {hideNoAnswerValues: false},
+        adjustedCSS: options.adjustedCSS,
+        graphTypesToCreate: {}
+    };
+    return graphHolder;
+}
+
 const defaultLargeGraphWidth = 800;
 
 function makeChartFramework(chartPane: HTMLElement, chartType, size, margin, customGraphWidth) {
@@ -1947,26 +1975,23 @@ export function d3ContingencyTable(graphHolder: GraphHolder, xAxisQuestion, yAxi
         }
 
         if (!graphHolder.hideNumbersOnContingencyGraphs) {
+            const minSizeToDrawLabelInside = 24; 
             var storyClusterLabels = chartBody.selectAll(".storyClusterLabel")
                 .data(observedPlotItems)
                 .enter().append("text")
                     .text(function(plotItem: StoryPlotItem) { 
-                        if (xValueMultiplier * plotItem.value >= 20) { // don't write text if bubble is tiny
-                            if (plotItem.expectedValue) {
-                                return "" + plotItem.value + "/" + Math.round(plotItem.expectedValue); 
-                            } else {
-                                return "" + plotItem.value;
-                            }
-                        } else { 
-                            return ""
-                        }; 
+                        if (plotItem.expectedValue) {
+                            return "" + plotItem.value + "/" + Math.round(plotItem.expectedValue); 
+                        } else {
+                            return "" + plotItem.value;
+                        }
                     })
                     .attr("class", "storyClusterLabel")
                     .attr("x", function (plotItem) { return xScale(plotItem.x) + xScale.rangeBand() / 2.0; } )
                     .attr("y", function (plotItem) { return yScale(plotItem.y) + yScale.rangeBand() / 2.0; } )
-                    .attr("dx", 0) // padding-right
-                    .attr("dy", ".35em") // vertical-align: middle
-                    .attr("text-anchor", "middle") // text-align: middle
+                    .attr("dx", function(plotItem) { if (xValueMultiplier * plotItem.value >= minSizeToDrawLabelInside) return 0; else return "0.75em"; }) 
+                    .attr("dy", function(plotItem) { if (xValueMultiplier * plotItem.value >= minSizeToDrawLabelInside) return "0.35em"; else return "1.5em"; }) 
+                    .attr("text-anchor", function(plotItem) { if (xValueMultiplier * plotItem.value >= minSizeToDrawLabelInside) return "middle"; else return "left"; }) 
             }
     }
 
