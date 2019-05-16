@@ -426,6 +426,7 @@ function printCatalysisReportWithObservationGraphsOnly(project, catalysisReportI
     var progressModel = dialogSupport.openProgressDialog("Starting up...", "Generating observation graphs", "Cancel", dialogCancelled);
 
     const zipFile = new jszip();
+    let savedGraphCount = 0;
 
     function printGraphToZipFile(zipFile, graphHolder, graphNode, graphTitle, options) {
         
@@ -446,6 +447,7 @@ function printCatalysisReportWithObservationGraphsOnly(project, catalysisReportI
                 const dataURI = canvas.toDataURL("image/png");
                 const imageData = graphStyle.dataURItoBlob(dataURI);
                 zipFile.file(graphTitle + ".png", imageData, {binary: true});
+                savedGraphCount++;
             }
         }
     }
@@ -460,22 +462,22 @@ function printCatalysisReportWithObservationGraphsOnly(project, catalysisReportI
         } else if (observationIndex >= observationIDs.length) {
 
             progressModel.hideDialogMethod();
-            // Trying to avoid popup warning if open window from timeout by using finish dialog button press to display results
-            var finishModel = dialogSupport.openFinishedDialog("Done creating zip file of images; save it?", "Finished generating images", "Save", "Cancel", function(dialogConfiguration, hideDialogMethod) {
-                const fileName = options.catalysisReportName + " observation graphs ("  + options.strengthTextsToReport.join(" ") + ") " + options.outputGraphFormat + ".zip";
-                zipFile.generateAsync({type: "blob", platform: "UNIX", compression: "DEFLATE"})
-                    .then(function (blob) {
-                        saveAs(blob, fileName);
+            if (savedGraphCount > 0) {
+                var finishModel = dialogSupport.openFinishedDialog("Done creating zip file of images; save it?", "Finished generating images", "Save", "Cancel", function(dialogConfiguration, hideDialogMethod) {
+                    const fileName = options.catalysisReportName + " observation graphs ("  + options.strengthTextsToReport.join(" ") + ") " + options.outputGraphFormat + ".zip";
+                    zipFile.generateAsync({type: "blob", platform: "UNIX", compression: "DEFLATE"}).then(function (blob) {saveAs(blob, fileName);});
+                    hideDialogMethod();
                 });
-                hideDialogMethod();
-                progressModel.redraw();
-            });
-            finishModel.redraw();
+                finishModel.redraw();
+            } else {
+                alert("No graphs were found with your current selection criteria. Try choosing different observation strengths.");
+            }
+            progressModel.redraw();
 
         } else {
 
             const observation = project.tripleStore.makeObject(observationIDs[observationIndex]);
-            if (observation) {
+            if (observation && observation.pattern && observation.pattern.graphType !== "texts") {
 
                 let graphTitle = observation.pattern.patternName;
                 graphTitle = graphTitle.replace("/", " "); // jszip interprets a forward slash as a folder designation 
