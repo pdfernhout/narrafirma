@@ -299,6 +299,8 @@ export function printCatalysisReport() {
     options["perspectiveLabel"] = getAndCleanUserText(project, catalysisReportIdentifier, "catalysisReport_perspectiveLabel", "perspective label");
     options["themeLabel"] = getAndCleanUserText(project, catalysisReportIdentifier, "catalysisReport_themeLabel", "theme label");
     options["interpretationLabel"] = getAndCleanUserText(project, catalysisReportIdentifier, "catalysisReport_interpretationLabel", "interpretation label");
+    options["interpretationQuestionsLabel"] = getAndCleanUserText(project, catalysisReportIdentifier, "catalysisReport_interpretationQuestionsLabel", "interpretation questions label");
+    options["interpretationIdeaLabel"] = getAndCleanUserText(project, catalysisReportIdentifier, "catalysisReport_interpretationIdeaLabel", "interpretation idea label");
     options["observationLabel"] = getAndCleanUserText(project, catalysisReportIdentifier, "catalysisReport_observationLabel", "observation label");
     options["customCSS"] = project.tripleStore.queryLatestC(catalysisReportIdentifier, "catalysisReport_customCSS");
     
@@ -756,8 +758,12 @@ function printCatalysisReportWithClusteredInterpretations(project, catalysisRepo
                         }
 
                         printItems.push(m("div.narrafirma-catalysis-report-interpretation-notes", printText(interpretation.interpretation_text)));
-                        if (interpretation.interpretation_questions) printItems.push(m("div.narrafirma-catalysis-report-interpretation-questions", printText(interpretation.interpretation_questions)));
-                        if (interpretation.interpretation_idea) printItems.push(m("div.narrafirma-catalysis-report-interpretation-idea", printText(interpretation.interpretation_idea)));
+                        printInterpretationQuestionsAsHTMLList(printItems, interpretation.interpretation_questions, options);
+                        if (interpretation.interpretation_idea) {
+                            printItems.push(m("div.narrafirma-catalysis-report-interpretation-idea", 
+                                options.interpretationIdeaLabel ? m("span.narrafirma-catalysis-report-interpretation-idea-label", printText(options.interpretationIdeaLabel)) : [],
+                                printText(interpretation.interpretation_idea)));
+                        }
 
                         printItems.push(printObservation(observationsIDsForInterpretations[item.uuid], itemIndex, clusterIndex, idTag + "_o_0", false, "perspectives", allStories, options));
 
@@ -928,13 +934,33 @@ function printListOfInterpretations(interpretationList, observationIndex, cluste
         const resultItems = [];
         resultItems.push(m("h3.narrafirma-catalysis-report-interpretation", {"id": idTagStart + "_i_" + index}, headerItems));
         resultItems.push(m("div.narrafirma-catalysis-report-interpretation-notes", printText(interpretation.interpretation_text)));
-        if (interpretation.interpretation_questions) resultItems.push(m("div.narrafirma-catalysis-report-interpretation-questions", printText(interpretation.interpretation_questions)));
-        if (interpretation.interpretation_idea) resultItems.push(m("div.narrafirma-catalysis-report-interpretation-idea", printText(interpretation.interpretation_idea)));
-
+        printInterpretationQuestionsAsHTMLList(resultItems, interpretation.interpretation_questions, options);
+        if (interpretation.interpretation_idea) {
+            resultItems.push(m("div.narrafirma-catalysis-report-interpretation-idea", 
+                options.interpretationIdeaLabel ? m("span.narrafirma-catalysis-report-interpretation-idea-label", printText(options.interpretationIdeaLabel)) : [],
+                printText(interpretation.interpretation_idea)));
+        }
         return resultItems;
     });
 }
 
+function printInterpretationQuestionsAsHTMLList(printItems, questionsText, options) {
+    if (!questionsText) return;
+    let html;
+    const questionsAsList = questionsText.split("\n");
+    if (questionsAsList.length > 1) {
+        html = "<ul>";
+        questionsAsList.forEach(item => {html += "<li>" + item + "</li>"; });
+        html += "</ul>";
+    } else {
+        html = questionsText;
+    }
+    if (html) {
+        printItems.push(m("div.narrafirma-catalysis-report-interpretation-questions", 
+            options.interpretationQuestionsLabel ? m("div.narrafirma-catalysis-report-interpretation-questions-label", printText(options.interpretationQuestionsLabel)) : [],
+            printText(html)));
+    }
+}
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Catalysis report - printing graphs

@@ -1094,18 +1094,28 @@ td.narrafirma-mw-nested-title, td.narrafirma-mw-nested-stats {
 }
 
 .narrafirma-catalysis-report-interpretation-notes {
+    font-size: 1em;
 	padding: 0.5em;
     background: #ffeed0;
 }
 
 .narrafirma-catalysis-report-interpretation-idea {
+    font-size: 1em;
 	padding: 0.5em;
     background: #eafff7;
+}
+
+.narrafirma-catalysis-report-interpretation-idea-label {
+    font-size: 1em;
 }
 
 .narrafirma-catalysis-report-interpretation-questions {
     padding: 0.5em;
     background: #fff7ea;
+}
+
+.narrafirma-catalysis-report-interpretation-questions-label {
+    font-size: 1em;
 }
 
 .narrafirma-catalysis-report-observation {

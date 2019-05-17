@@ -332,6 +332,30 @@ var panel: Panel = {
             }
         },
         {
+            id: "catalysisReport_interpretationQuestionsLabel",
+            valuePath: "/clientState/catalysisReportIdentifier/catalysisReport_interpretationQuestionsLabel",
+            valueType: "string",
+            displayType: "text",
+            displayName: "Interpretation questions label",
+            displayPrompt: `
+            This optional label will appear <strong>before each list of interpretation questions</strong> in the report.`,
+            displayVisible: function(panelBuilder, model) {
+                return !!Globals.clientState().catalysisReportIdentifier();
+            }
+        },
+        {
+            id: "catalysisReport_interpretationIdeaLabel",
+            valuePath: "/clientState/catalysisReportIdentifier/catalysisReport_interpretationIdeaLabel",
+            valueType: "string",
+            displayType: "text",
+            displayName: "Interpretation idea label",
+            displayPrompt: `
+            This optional label will appear <strong>before each interpretation idea</strong> in the report.`,
+            displayVisible: function(panelBuilder, model) {
+                return !!Globals.clientState().catalysisReportIdentifier();
+            }
+        },
+        {
             id: "catalysisReport_observationLabel",
             valuePath: "/clientState/catalysisReportIdentifier/catalysisReport_observationLabel",
             valueType: "string",
