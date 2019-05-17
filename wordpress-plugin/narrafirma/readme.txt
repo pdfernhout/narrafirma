@@ -7,7 +7,7 @@ Author URI: http://www.cfkurtz.com
 Author: Cynthia Kurtz and Paul Fernhout
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=DGVVDT2D49QA8
 Requires at least: 4.3.1
-Tested up to: 5.0.3
+Tested up to: 5.2
 Stable tag: trunk
 Version: 1.3.0
 License: GPLv2 or later
@@ -105,6 +105,64 @@ We strongly suggest that you set up any web site on which you intend to install 
 12. Here the NarraFirma user is reflecting on the entire project, to learn from it and to keep good records for the future.
 
 == Changelog ==
+
+= 1.3.0 =
+
+Added: Interface - Ability to create multiple observations per pattern 
+Added: Interface - Ability to include multiple patterns per observation
+Added: Interface - Ability to save selected pattern image(s) on Explore Patterns page to SVG or PNG (zip file if multiple graphs)
+Added: Interface - New field: observation "linking question" to introduce multiple interpretations (e.g., "Why do we see this pattern?")
+Added: Interface - New field: interpretation "questions" to suggest things people can ponder in sensemaking (comes before "idea")
+
+Added: Reporting - New catalysis report clustered by themes (groups of observations), with multiple interpretations following each observation
+Added: Reporting - Option to choose observation strengths (high, medium, low, unassigned) in all catalysis report types
+Added: Reporting - Can export all images related to observations only (zip file of PNG or SVG images)
+Added: Reporting - Option to set print order of perspectives/themes during clustering (using "Edit cluster" popup window)
+Added: Reporting - Option to hide specific observations, interpretations, or clusters from catalysis report (helpful when printing reports for different groups)
+Added: Reporting - Option to show sequence number in catalysis report for each perspective, theme, observation, and interpretation
+Added: Reporting - Option to hide report-creation information ("This report was generated") at start of catalysis report
+Added: Reporting - Option to set label truncation limit on bar and contingency charts
+Added: Reporting - Can now use simple **bold** and __italic__ formatting in all report fields
+
+Added: Graphing - Option to increase or decrease graph font sizes in report graphs by percentage
+Added: Graphing - Option to hide "no answers" counts (applies to graphs and statistics; choice is saved per report and per pattern)
+Added: Graphing - Option to replace all graph/statistical texts in catalysis report (e.g., "Count", "mean") to simplify or translate report
+Added: Graphing - Option to show observed/expected numbers on contingency-table bubbles 
+Added: Graphing - Option to show row/column totals on contingency-table axes
+
+Changed: Interface - Statistics calculations on "Explore patterns" page now happen in the background; can click on graphs while statistics are calculating
+Changed: Interface - Collisions between users editing the same (large text) field are easier to resolve; writing in progress is preserved, and options are avilable to override/accept/edit changes
+Changed: Interface - Startup message ("Retrieving project information") now shows count of messages loaded 
+Changed: Interface - Lists of questions on "Configure catalysis report" and "Print story cards" pages are now multi-column (less scrolling)
+Changed: Interface - Better order/flow/explanations of things on "Configure catalysis report" page
+Changed: Interface - Options relevant only to printing have been moved from "Configure catalysis report" page to "Print catalysis report" page
+Changed: Interface - "Choose a project" dialog now shows a login link if you are not already logged in
+
+Changed: Reporting - Catalysis report now uses HTML headers (H1 through H6) which are more easily converted to styles by word processors
+Changed: Reporting - Old @header@ system for "sectioning" observations is no longer needed and has been removed (no backward compatibility; copy sections into new observations)
+
+Changed: Graphing - In contingency tables and contingency-histogram tables, Y axis now shows answers to question from top to bottom instead of bottom to top
+Changed: Graphing - "No answer" bars/bubbles/boxes are now last instead of first bars/columns/rows
+Changed: Graphing - Expected bubble on contingency tables is now red - easier to see (can be changed in custom CSS for report)
+Changed: Graphing - Squares in contingency-histogram tables are now all the same width, to make it easier to compare means
+
+Changed: Clustering - Interpretation/observation item colors now vary by observation strength (which can be switched on or off)
+Changed: Clustering - You can now select and move multiple items/clusters at once (shift-click, or click and drag selection box)
+Changed: Clustering - Hover-over hints now show observation name, text, and strength
+Changed: Clustering - Setting the clustering surface size is easier than it was
+
+Fixed: Bug (Interface) where multi-choice answers did not display correctly in the "Show selected stories" popup window 
+Fixed: Bug (Interface) where count of contingency tables and contingency-histogram tables was sometimes wrong on "Configure catalysis report" page
+
+Fixed: Bug (Reporting) where custom CSS was not being applied to images in catalysis report
+Fixed: Bug (Reporting) where "Introduction" field was being ignored in catalysis report printing
+
+Fixed: Bug (Export) where exporting story form or stories from "Export stories" page was not working correctly
+
+Fixed: Bug (Graphing) where PNGs were empty in printed catalysis report
+Fixed: Bug (Graphing) where "No answer" bar/bubble/box was being sorted in the middle of answers when some answers were numbers
+
+Fixed: Bug (Clustering) where changing size of clustering surface did not update image immediately
 
 = 1.2.6 =
 
@@ -340,6 +398,9 @@ loading application, getting user information, or retrieving project data.
 change logs, see the [GitHub repository](https://github.com/pdfernhout/narrafirma).
 
 == Upgrade Notice ==
+
+= 1.3.0 =
+This major upgrade improves the catalysis process, with many improvements to the interface, graphs, and report creation.
 
 = 1.2.6 =
 This critical upgrade fixes a longstanding bug we just noticed in how histograms are drawn. We apologize for never having noticed this before.
