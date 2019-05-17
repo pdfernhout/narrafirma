@@ -950,7 +950,7 @@ function printInterpretationQuestionsAsHTMLList(printItems, questionsText, optio
     const questionsAsList = questionsText.split("\n");
     if (questionsAsList.length > 1) {
         html = "<ul>";
-        questionsAsList.forEach(item => {html += "<li>" + item + "</li>"; });
+        questionsAsList.forEach(item => {if (item) html += "<li>" + item + "</li>"; });
         html += "</ul>";
     } else {
         html = questionsText;
