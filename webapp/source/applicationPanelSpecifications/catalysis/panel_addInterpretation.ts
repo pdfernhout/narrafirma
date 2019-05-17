@@ -24,7 +24,7 @@ var panel: Panel = {
             valueType: "string",
             displayType: "textarea",
             displayName: "Questions",
-            displayPrompt: "You might want to record some <strong>questions</strong> that arise from this interpretation."
+            displayPrompt: "You might want to record some <strong>questions</strong> that arise from this interpretation. (If you want your questions to appear as an HTML list in the report, write them on separate lines.)"
         },
         {
             id: "interpretation_idea",
