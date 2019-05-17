@@ -208,6 +208,7 @@ Fixed: Bug (Graphing) where PNGs were empty in printed catalysis report
 Fixed: Bug (Graphing) where "No answer" bar/bubble/box was being sorted in the middle of answers when some answers were numbers
 
 Fixed: Bug (Clustering) where changing size of clustering surface did not update image immediately
+Fixed: Bug (Clustering) where you could drag an item off the clustering surface
 
 --- Release 1.2.6
 

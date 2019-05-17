@@ -616,8 +616,8 @@ class ClusteringDiagram {
             //item.y = Math.round(item.y + (<any>d3.event).dy);
             //group.attr('transform', 'translate(' + item.x + ',' + item.y + ')');
             self.selectedItems.forEach(function(item) {
-                item.x = Math.round(item.x + (<any>d3.event).dx);
-                item.y = Math.round(item.y + (<any>d3.event).dy);
+                item.x = Math.min(self.model.surfaceWidthInPixels, Math.max(0, Math.round(item.x + (<any>d3.event).dx)));
+                item.y = Math.min(self.model.surfaceHeightInPixels, Math.max(0, Math.round(item.y + (<any>d3.event).dy)));
                 var displayObject = self.itemToDisplayObjectMap[item.uuid];
                 if (displayObject) {
                     displayObject.attr('transform', 'translate(' + item.x + ',' + item.y + ')');
