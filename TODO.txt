@@ -5,11 +5,6 @@ M - medium priority
 L - low priority
 W - wish list
 
-LEFT TO DO in version 1.3.0
-
-H Finish testing "no answer" thing
-H Finish testing multi-observation thing
-
 ------------- Infrastructure -------------
 
 BUILD
@@ -150,6 +145,10 @@ M Improve reporting on startup for loading project data with some kind of progre
 M When import story form, hundreds of triples can be generated which take minutes to send to the server (with no progress feedback, even though done in background) -- may be related to console logging
 
 ==== DONE
+
+--- Release 1.3.1
+
+Changed: Improved drawing of counts on contingency charts
 
 --- Release 1.3.0
 
