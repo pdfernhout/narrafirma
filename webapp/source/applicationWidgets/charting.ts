@@ -1994,8 +1994,16 @@ export function d3ContingencyTable(graphHolder: GraphHolder, xAxisQuestion, yAxi
                     .attr("class", "storyClusterLabel")
                     .attr("x", function (plotItem) { return xScale(plotItem.x) + xScale.rangeBand() / 2.0; } )
                     .attr("y", function (plotItem) { return yScale(plotItem.y) + yScale.rangeBand() / 2.0; } )
-                    .attr("dx", function(plotItem) { if (xValueMultiplier * plotItem.value >= plotItem.text.length * letterSize) return 0; else return "0.5em"; }) 
-                    .attr("dy", function(plotItem) { if (xValueMultiplier * plotItem.value >= plotItem.text.length * letterSize) return "0.35em"; else return "1.2em"; }) 
+                    .attr("dx", function(plotItem) { if (xValueMultiplier * plotItem.value >= plotItem.text.length * letterSize) return 0; else return "0.35em"; }) 
+                    .attr("dy", function(plotItem) { 
+                        if (xValueMultiplier * plotItem.value >= plotItem.text.length * letterSize) {
+                            return "0.35em"; 
+                        } else {
+                            // try to place text below bubble (note that the expected bubble is ignored)
+                            const displacement = 1.2 + yValueMultiplier * plotItem.value / 12; // these numbers were arrived at by trial and error
+                            return "" + displacement + "em";
+                        }
+                    }) 
                     .attr("text-anchor", function(plotItem) { if (xValueMultiplier * plotItem.value >= plotItem.text.length * letterSize) return "middle"; else return "left"; }) 
             }
     }
