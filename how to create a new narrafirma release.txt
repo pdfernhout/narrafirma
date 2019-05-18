@@ -223,6 +223,8 @@ for the new file. Any new file added to the project has to be handled
 this way. DO NOT LEAVE NEW FILES OUT OF THE RELEASE!!! 
 If you see a file and it has a question mark to its left,
 it means you need to add that file to the SVN repository. 
+Check that every file has either an "M" or an "A" in front of it. 
+No files should have question mark in front of them.
 (YES, DO THIS AGAIN. Check the status before and after you copy the files.)
 
 I5. Go back to the terminal view in VSC (looking at narrafirma-wp) and remove
