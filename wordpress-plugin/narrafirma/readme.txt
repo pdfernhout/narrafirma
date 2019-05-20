@@ -9,7 +9,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Requires at least: 4.3.1
 Tested up to: 5.2
 Stable tag: trunk
-Version: 1.3.1
+Version: 1.3.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -105,6 +105,10 @@ We strongly suggest that you set up any web site on which you intend to install 
 12. Here the NarraFirma user is reflecting on the entire project, to learn from it and to keep good records for the future.
 
 == Changelog ==
+
+= 1.3.2 =
+
+Fixed: Bug where SVG files were not being saved to ZIP file
 
 = 1.3.1 =
 
@@ -403,6 +407,9 @@ loading application, getting user information, or retrieving project data.
 change logs, see the [GitHub repository](https://github.com/pdfernhout/narrafirma).
 
 == Upgrade Notice ==
+
+= 1.3.2 =
+This is a quick fix for a bug that causes SVG files not to be saved to a ZIP file.
 
 = 1.3.1 = 
 This tiny upgrade fixes one nagging problem with the drawing of count labels on contingency charts.
