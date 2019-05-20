@@ -440,6 +440,7 @@ function printCatalysisReportWithObservationGraphsOnly(project, catalysisReportI
 
                 const svgFileText = graphStyle.prepareSVGToSaveToFile(svgNode, graphHolder.outputFontModifierPercent);
                 zipFile.file(graphTitle + ".svg", svgFileText);
+                savedGraphCount++;
 
             } else if (options.outputGraphFormat === "PNG") {
 
