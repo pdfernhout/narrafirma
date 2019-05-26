@@ -12,8 +12,6 @@ var panel: Panel = {
             displayType: "label",
             displayPrompt: `
                 On this page you can set various options that affect your catalysis report.
-                Most of these options affect only the "Explore patterns" page, but
-                some also influence the printed report.
             `
         },
         {
@@ -49,16 +47,6 @@ var panel: Panel = {
         },
 
 
-        ////////////////////////////////////////////////////// show or hide
-        {
-            id: "configureCatalysisReport_ShowOrHideHeader",
-            valueType: "none",
-            displayType: "header",
-            displayPrompt: "Things you can show and hide",
-            displayVisible: function(panelBuilder, model) {
-                return !!Globals.clientState().catalysisReportIdentifier();
-            }
-        },
         {
             id: "configureCatalysisReport_chooseGraphTypes",
             valueType: "object",
@@ -75,6 +63,26 @@ var panel: Panel = {
             valuePath: "/clientState/catalysisReportIdentifier/questionsToInclude",
             displayType: "catalysisReportQuestionChooser",
             displayPrompt: "Which <strong>questions</strong> do you want to see on the \"Explore Patterns\" page? (Only questions checked here will be considered in data integrity graphs.)",
+            displayVisible: function(panelBuilder, model) {
+                return !!Globals.clientState().catalysisReportIdentifier();
+            }
+        },
+        {
+            id: "configureCatalysisReport_advancedOptionsLabel",
+            valueType: "none",
+            displayType: "label",
+            displayPrompt: `<span.narrafirma-centered-label>Everything below this point is optional and can be ignored.</span>`,
+            displayVisible: function(panelBuilder, model) {
+                return !!Globals.clientState().catalysisReportIdentifier();
+            }
+        },
+
+        ////////////////////////////////////////////////////// more things you can show or hide
+        {
+            id: "configureCatalysisReport_MoreThingsYouCanShowOrHideHeader",
+            valueType: "none",
+            displayType: "header",
+            displayPrompt: "Things you can show or hide",
             displayVisible: function(panelBuilder, model) {
                 return !!Globals.clientState().catalysisReportIdentifier();
             }
@@ -247,7 +255,6 @@ var panel: Panel = {
                 return !!Globals.clientState().catalysisReportIdentifier();
             }
         },
-
         {
             id: "configureCatalysisReport_numScatterDotOpacityLevels",
             valuePath: "/clientState/catalysisReportIdentifier/numScatterDotOpacityLevels",
@@ -263,7 +270,6 @@ var panel: Panel = {
                 return !!Globals.clientState().catalysisReportIdentifier();
             }
         },
-
         {
             id: "configureCatalysisReport_scatterDotSize",
             valuePath: "/clientState/catalysisReportIdentifier/scatterDotSize",
@@ -279,7 +285,6 @@ var panel: Panel = {
                 return !!Globals.clientState().catalysisReportIdentifier();
             }
         },
-
         {
             id: "configureCatalysisReport_correlationLineChoice",
             valuePath: "/clientState/catalysisReportIdentifier/correlationLineChoice",
@@ -294,6 +299,19 @@ var panel: Panel = {
             displayPrompt: `When should <strong>correlation lines</strong> be drawn on scatter plots?
                 (This choice affects graphs in the application and the printed report.
                 If no selection is made here, a limit of 0.05 will be used.)`,
+            displayVisible: function(panelBuilder, model) {
+                return !!Globals.clientState().catalysisReportIdentifier();
+            }
+        },
+        {
+            id: "catalysisReport_customGraphCSS",
+            valuePath: "/clientState/catalysisReportIdentifier/catalysisReport_customGraphCSS",
+            valueType: "string",
+            displayType: "textarea",
+            displayName: "Custom Graph CSS",
+            displayPrompt: `You can enter <strong>custom CSS</strong> to change how graphs are drawn. 
+                (This choice affects graphs in the application and the printed report.
+                For details see the help system.)`,
             displayVisible: function(panelBuilder, model) {
                 return !!Globals.clientState().catalysisReportIdentifier();
             }

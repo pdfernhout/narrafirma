@@ -561,6 +561,15 @@ class PatternExplorer {
         this.graphHolder.customGraphWidth = parseInt(this.project.tripleStore.queryLatestC(this.catalysisReportIdentifier, "customDisplayGraphWidth")) || Project.default_customDisplayGraphWidth; 
         this.graphHolder.hideNumbersOnContingencyGraphs = this.project.tripleStore.queryLatestC(this.catalysisReportIdentifier, "hideNumbersOnContingencyGraphs"); 
 
+        // update page CSS for custom graph CSS - also save in graphHolder to use for saving files
+        this.graphHolder.customGraphCSS = this.project.tripleStore.queryLatestC(this.catalysisReportIdentifier, "catalysisReport_customGraphCSS");
+        if (this.graphHolder.customGraphCSS) {
+            const style = document.createElement("style");
+            style.innerHTML = this.graphHolder.customGraphCSS;
+            const reference = document.querySelector("script");
+            reference.parentNode.insertBefore(style, reference);
+        }
+
         // get stories
         this.graphHolder.allStories = this.project.storiesForCatalysisReport(catalysisReportIdentifier);
         this.numStoryCollectionsIncludedInReport = this.project.numStoryCollectionsInCatalysisReport(catalysisReportIdentifier);
@@ -1112,13 +1121,13 @@ class PatternExplorer {
 
             if (fileTypeToSave === "SVG") {
                 
-                const svgFileText = graphStyle.prepareSVGToSaveToFile(svgNodes[0]);
+                const svgFileText = graphStyle.prepareSVGToSaveToFile(svgNodes[0], this.graphHolder.customGraphCSS);
                 const svgFileBlob = new Blob([svgFileText], {type: "text/svg+xml;charset=utf-8"});
                 saveAs(svgFileBlob, patternTitle + ".svg", true); // true is to turn off 3-byte BOM (byte order mark) in UTF-8 encoding
 
             } else if (fileTypeToSave === "PNG") {
 
-                const canvas = graphStyle.preparePNGToSaveToFile(svgNodes[0]);
+                const canvas = graphStyle.preparePNGToSaveToFile(svgNodes[0], this.graphHolder.customGraphCSS);
                 canvas.toBlob(function(blob) {
                     saveAs(blob, patternTitle + ".png");
                 })
@@ -1135,14 +1144,14 @@ class PatternExplorer {
 
                 if (fileTypeToSave === "SVG") {
 
-                    const svgFileText = graphStyle.prepareSVGToSaveToFile(svgNodes[i]);
+                    const svgFileText = graphStyle.prepareSVGToSaveToFile(svgNodes[i], this.graphHolder.customGraphCSS);
                     zipFile.file(patternTitle + " " + graphTitle + ".svg", svgFileText);
 
                 } else if (fileTypeToSave === "PNG") {
 
                     // when using canvas.toBlob either the ZIP file or the PNG files come out corrupted
                     // found this method to fix it online and it works
-                    const canvas = graphStyle.preparePNGToSaveToFile(svgNodes[i]);
+                    const canvas = graphStyle.preparePNGToSaveToFile(svgNodes[i], this.graphHolder.customGraphCSS);
                     const dataURI = canvas.toDataURL("image/png");
                     const imageData = graphStyle.dataURItoBlob(dataURI);
                     zipFile.file(patternTitle + " " + graphTitle + ".png", imageData, {binary: true});

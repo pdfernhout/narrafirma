@@ -550,6 +550,13 @@ button.narrafirma-griditempanel-close-button {
     margin-left: 2em;
 }
 
+.narrafirma-centered-label {
+    text-align: center;
+    display: block;
+    margin-top: 0.5em;
+    font-style: italic;
+}
+
 .narrafirma-griditempanel-viewing .narrafirma-special-warning {
     background-color: white;
     color: #6d6c6c;

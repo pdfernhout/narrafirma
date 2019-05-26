@@ -69,7 +69,8 @@ var smallerSubsetOfAllowedHTMLTags = {
 };
 
 var allowedCSSClasses = {
-    "narrafirma-special-warning": 1
+    "narrafirma-special-warning": 1,
+    "narrafirma-centered-label": 1
 };
 
 export function generateSanitizedHTMLForMithril(html) {

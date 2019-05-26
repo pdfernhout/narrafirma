@@ -948,7 +948,6 @@ export function d3BarChartForValues(graphHolder: GraphHolder, plotItems, xLabels
             .attr('transform', function(plotItem: StoryPlotItem) { return 'translate(' + xScale(plotItem.name) + ',' + yScale(0) + ')'; });
 
     var barBackground = bars.append("rect")
-        // .attr("style", "stroke: rgb(0,0,0); fill: white;")
         .attr("x", function(plotItem: StoryPlotItem) { return 0; })
         .attr("y", function(plotItem: StoryPlotItem) { return yHeightScale(-plotItem.value); })
         .attr("height", function(plotItem: StoryPlotItem) { return yHeightScale(plotItem.value); })
@@ -964,7 +963,6 @@ export function d3BarChartForValues(graphHolder: GraphHolder, plotItems, xLabels
             .attr("dx", -3) // padding-right
             .attr("dy", ".35em") // vertical-align: middle
             .attr("text-anchor", "middle") // text-align: middle
-            .attr("style", "fill: black")
             
     // Overlay stories on each bar...
     var storyDisplayItems = bars.selectAll(".story")

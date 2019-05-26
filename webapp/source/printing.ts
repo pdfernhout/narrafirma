@@ -303,6 +303,7 @@ export function printCatalysisReport() {
     options["interpretationIdeaLabel"] = getAndCleanUserText(project, catalysisReportIdentifier, "catalysisReport_interpretationIdeaLabel", "interpretation idea label");
     options["observationLabel"] = getAndCleanUserText(project, catalysisReportIdentifier, "catalysisReport_observationLabel", "observation label");
     options["customCSS"] = project.tripleStore.queryLatestC(catalysisReportIdentifier, "catalysisReport_customCSS");
+    options["customGraphCSS"] = project.tripleStore.queryLatestC(catalysisReportIdentifier, "catalysisReport_customGraphCSS");
     
     let statsTextReplacementsAsString = project.tripleStore.queryLatestC(catalysisReportIdentifier, "customStatsTextReplacements");
     let statsTextReplacements = {};
@@ -438,7 +439,7 @@ function printCatalysisReportWithObservationGraphsOnly(project, catalysisReportI
 
             if (options.outputGraphFormat === "SVG") {
 
-                const svgFileText = graphStyle.prepareSVGToSaveToFile(svgNode, graphHolder.outputFontModifierPercent);
+                const svgFileText = graphStyle.prepareSVGToSaveToFile(svgNode, options.customGraphCSS, graphHolder.outputFontModifierPercent);
                 zipFile.file(graphTitle + ".svg", svgFileText);
                 savedGraphCount++;
 
@@ -446,7 +447,7 @@ function printCatalysisReportWithObservationGraphsOnly(project, catalysisReportI
 
                 // when using canvas.toBlob either the ZIP file or the PNG files come out corrupted
                 // found this method to fix it online and it works
-                const canvas = graphStyle.preparePNGToSaveToFile(svgNode, graphHolder.outputFontModifierPercent);
+                const canvas = graphStyle.preparePNGToSaveToFile(svgNode, options.customGraphCSS, graphHolder.outputFontModifierPercent);
                 const dataURI = canvas.toDataURL("image/png");
                 const imageData = graphStyle.dataURItoBlob(dataURI);
                 zipFile.file(graphTitle + ".png", imageData, {binary: true});
@@ -815,7 +816,7 @@ function printObservation(observationID, observationIndex, clusterIndex, idTagSt
         graphHolder.patternDisplayConfiguration.hideNoAnswerValues = hideNoAnswerValues;
 
         var graph = PatternExplorer.makeGraph(pattern, graphHolder, selectionCallback, !options.showStatsPanelsInReport);
-        if (graph) resultItems.push(printGraphWithGraphHolder(graphHolder, options.customCSS));
+        if (graph) resultItems.push(printGraphWithGraphHolder(graphHolder, options.customGraphCSS));
     }
 
     if (observation.observationExtraPatterns) {
@@ -852,7 +853,7 @@ function printObservation(observationID, observationIndex, clusterIndex, idTagSt
                     extraGraphHolder.patternDisplayConfiguration.hideNoAnswerValues = hideNoAnswerValues;
 
                     var extraGraph = PatternExplorer.makeGraph(extraPattern, extraGraphHolder, selectionCallback, !options.showStatsPanelsInReport);
-                    if (extraGraph) resultItems.push(printGraphWithGraphHolder(extraGraphHolder, options.customCSS));
+                    if (extraGraph) resultItems.push(printGraphWithGraphHolder(extraGraphHolder, options.customGraphCSS));
                 }
             }
         });

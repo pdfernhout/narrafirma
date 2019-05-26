@@ -244,18 +244,23 @@ export function modifyFontSize(css, outputFontModifierPercent) {
     return result;
 }
 
-export function prepareSVGToSaveToFile(svgNode, outputFontModifierPercent = null) {
+export function prepareSVGToSaveToFile(svgNode, customCSS, outputFontModifierPercent = null) {
     const svgText = svgNode.outerHTML;
-    const styleText = "<style>" + modifyFontSize(graphResultsPaneCSS, outputFontModifierPercent) + "</style>";
+    let styleText = "<style>" + modifyFontSize(graphResultsPaneCSS, outputFontModifierPercent);
+    if (customCSS) styleText += customCSS;
+    styleText += "</style>";
     const head = '<svg title="graph" version="1.1" xmlns="http://www.w3.org/2000/svg">';
     const foot = "</svg>";
     return head + "\n" + styleText + "\n" + svgText + "\n" + foot;
 }
 
-export function preparePNGToSaveToFile(svgNode, outputFontModifierPercent = null) {
+export function preparePNGToSaveToFile(svgNode, customCSS, outputFontModifierPercent = null) {
     const styleNode = document.createElement("style");
     styleNode.type = 'text/css';
-    styleNode.innerHTML = "<![CDATA[" + modifyFontSize(graphResultsPaneCSS, outputFontModifierPercent) + "]]>";
+    let styleText = "<![CDATA[" + modifyFontSize(graphResultsPaneCSS, outputFontModifierPercent);
+    if (customCSS) styleText += customCSS;
+    styleText += "]]>";
+    styleNode.innerHTML = styleText;
     svgNode.insertBefore(styleNode, svgNode.firstChild);
     const canvas = document.createElement("canvas");
     canvg(canvas, svgNode.outerHTML);

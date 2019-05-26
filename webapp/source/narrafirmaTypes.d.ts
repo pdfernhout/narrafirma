@@ -42,6 +42,7 @@ interface GraphHolder {
     customGraphWidth: number;
     outputFontModifierPercent?: number;
     adjustedCSS?: string;
+    customGraphCSS?: string;
 }
 
 interface PatternDisplayConfiguration {

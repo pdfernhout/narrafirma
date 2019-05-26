@@ -17,7 +17,7 @@ var panel: Panel = {
                 You can organize the report by the
                 <strong>perspectives</strong> (clusters of interpretations) or <strong>themes</strong> (clusters of observations)
                 you created on the previous page.
-                The report can also include an introduction and various other elements you can specify here.
+                The report can also include an introduction and other optional elements.
                 `
         },
         {
@@ -28,7 +28,7 @@ var panel: Panel = {
             valueOptionsSubfield: "catalysisReport_shortName",
             displayType: "select",
             displayName: "Catalysis report",
-            displayPrompt: "Choose a catalysis report to print."
+            displayPrompt: "Choose a catalysis <strong>report</strong> to print."
         },
         {
             id: "catalysisReportPrint_filterNotice",
@@ -52,29 +52,6 @@ var panel: Panel = {
             }
         },  
         {
-            id: "catalysisReportPrint_printButton",
-            valuePath: "/clientState/catalysisReportName",
-            valueType: "none",
-            displayType: "button",
-            displayPrompt: "Print selected catalysis report",
-            displayConfiguration: "printCatalysisReport",
-            displayVisible: function(panelBuilder, model) {
-                return !!Globals.clientState().catalysisReportIdentifier();
-            }
-        },
-
-
-        ///////////////////////////////////////////////////// things to show and hide
-        {
-            id: "catalysisReportPrint_showAndHideHeader",
-            valueType: "none",
-            displayType: "header",
-            displayPrompt: "Things to show and hide",
-            displayVisible: function(panelBuilder, model) {
-                return !!Globals.clientState().catalysisReportIdentifier();
-            }
-        },        
-        {
             id: "catalysisReportPrint_observationStrengths",
             valuePath: "/clientState/catalysisReportIdentifier/catalysisReportPrint_observationStrengths",
             valueType: "dictionary",
@@ -97,12 +74,44 @@ var panel: Panel = {
             }
         }, 
         {
+            id: "catalysisReportPrint_printButton",
+            valuePath: "/clientState/catalysisReportName",
+            valueType: "none",
+            displayType: "button",
+            displayPrompt: "Print selected catalysis report",
+            displayConfiguration: "printCatalysisReport",
+            displayVisible: function(panelBuilder, model) {
+                return !!Globals.clientState().catalysisReportIdentifier();
+            }
+        },
+        {
+            id: "configureCatalysisReport_advancedOptionsLabel",
+            valueType: "none",
+            displayType: "label",
+            displayPrompt: `<span.narrafirma-centered-label>Everything below this point is optional and can be ignored.</span>`,
+            displayVisible: function(panelBuilder, model) {
+                return !!Globals.clientState().catalysisReportIdentifier();
+            }
+        },
+
+
+        ///////////////////////////////////////////////////// things to show and hide
+        {
+            id: "catalysisReportPrint_MoreThingsToShowAndHideHeader",
+            valueType: "none",
+            displayType: "header",
+            displayPrompt: "Things you can show or hide",
+            displayVisible: function(panelBuilder, model) {
+                return !!Globals.clientState().catalysisReportIdentifier();
+            }
+        },        
+        {
             id: "configureCatalysisReport_showStatsPanelsInReport",
             valueType: "boolean",
             valuePath: "/clientState/catalysisReportIdentifier/showStatsPanelsInReport",
             displayType: "checkbox",
             displayConfiguration: "Include statistics",
-            displayPrompt: `Would you like to <strong>include statistical results</strong> in the catalysis report?`,
+            displayPrompt: `Would you like to <strong>print statistical results</strong>?`,
             displayVisible: function(panelBuilder, model) {
                 return !!Globals.clientState().catalysisReportIdentifier();
             }
@@ -206,7 +215,9 @@ var panel: Panel = {
             valueType: "string",
             displayType: "textarea",
             displayName: "Custom CSS",
-            displayPrompt: "You can enter <strong>custom CSS</strong> that modifies elements of the catalysis report here. (For details, see the help system.)",
+            displayPrompt: `You can enter <strong>custom CSS</strong> to modify elements of the catalysis report here. 
+                (This option does not affect report graphs.
+                Enter custom CSS for graphs on the "Configure catalysis report" page. For details on custom CSS, see the help system.)`,
             displayVisible: function(panelBuilder, model) {
                 return !!Globals.clientState().catalysisReportIdentifier();
             }
