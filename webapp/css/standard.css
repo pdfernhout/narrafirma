@@ -889,7 +889,40 @@ table.filterTable td {
 }
 
 
-/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Catalysis report ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Explore patterns page ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
+.patterns-grid-header {
+    margin-left: 1.4em;
+    margin-top: 1em;
+}
+
+#gridHeaderProgressMessage {
+    margin-left: 0.5em; 
+    color: #f88a57;
+    font-weight: bold;
+}
+
+.pleaseWaitStatisticsOverlay {
+	font-size: 1em;
+	font-weight: bold;
+	text-align: center;
+	width: 300px;
+	height: 70px;
+	margin: 0.5em 0 0 00;
+	padding: 0.5em 3em 0.5em 0.5em;
+    border: 2px solid #b0d4d4;
+    background-color: #f3fdfd;
+    border-radius: 6px;
+    background-image: url('../images/dojo-Standby-loading.gif');
+    background-repeat: no-repeat;
+    background-position: 98% 80%;
+    z-index: 1001;
+}
+
+.narrafirma-pattern-browser-selected-stories-header {
+    margin-left: 1.4em;
+    margin-top: 0.4em;
+}
 
 .narrafirma-choose-pattern {
     margin: 1em auto 2em auto;
@@ -950,6 +983,8 @@ table.filterTable td {
 .narrafirma-choose-graph-types-to-include {
     margin: 0.5em 0 0.5em 0.5em;
 }
+
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Catalysis report ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 .narrafirma-statistics-panel-header {
 	margin: 0.5em 0 0.5em 0;
@@ -1198,6 +1233,8 @@ td.narrafirma-mw-nested-title, td.narrafirma-mw-nested-stats {
 
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ d3 charting ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
+/* common to all graphs */
+
 .narrafirma-graph-title {
     margin: 0.5em;
     font-size: 1.2em;
@@ -1219,25 +1256,6 @@ td.narrafirma-mw-nested-title, td.narrafirma-mw-nested-stats {
 
 .chart {
     background-color: white;
-}
-
-.bar {
-  fill: none;
-}
-
-.barLabel {
-    fill: black;
-    font-size: 0.9em;
-}
-
-.histogramBarLabel {
-    fill: black;
-    font-size: 0.9em;
-}
-
-.histogramBarLabelSmall {
-    fill: black;
-    font-size: 0.7em;    
 }
 
 .x-axis {
@@ -1282,6 +1300,41 @@ td.narrafirma-mw-nested-title, td.narrafirma-mw-nested-stats {
     font-size: 0.8em;
 }
 
+.brush .extent {
+    fill-opacity: 0.3;
+    fill: lightgray;
+    stroke: darkslategray;
+    stroke-width: 1px;
+    shape-rendering: auto; /* was crispEdges; auto turns on anti-aliasing */
+  }
+  
+/* bar chart */
+
+.barChart-bar {
+  fill: none;
+}
+
+.barChart-barLabel {
+    fill: black;
+    font-size: 0.9em;
+}
+
+.barChart-story.even {
+    fill: #2e4a85;
+}
+
+.barChart-story.odd {
+    fill: #7b8cb2;
+}
+
+.barChart-story.even.selected {
+    fill: #e0a266;
+}
+
+.barChart-story.odd.selected {
+    fill: #cc6400;
+}
+  
 .barChart.x-axis-label {
     font-size: 1.2em;
 }
@@ -1290,56 +1343,36 @@ td.narrafirma-mw-nested-title, td.narrafirma-mw-nested-stats {
     font-size: 1em;
 }
 
-.histogram.x-axis-label.middle, .histogram.y-axis-label.middle {
-    font-size: 1.1em;
-}
+/* histogram */
 
-.histogram.x-axis-label.small.middle {
+.histogram-bar {
+    fill: none;
+}
+  
+.histogram-barLabel {
+    fill: black;
     font-size: 0.9em;
 }
 
-.histogram.x-axis-label.start, .histogram.x-axis-label.end {
-    font-size: 0.9em;
+.histogram-barLabelSmall {
+    fill: black;
+    font-size: 0.7em;    
 }
 
-.table.x-axis-label.middle, .table.y-axis-label.middle {
-    font-size: 1.1em;
+.histogram-story.even {
+    fill: #2e4a85;
 }
 
-.scatterplot.x-axis-label.middle, .scatterplot.y-axis-label.middle {
-    font-size: 1.1em;
+.histogram-story.even.selected {
+    fill: #e0a266;
 }
 
-.scatterplot.x-axis-label.small.middle, .scatterplot.y-axis-label.small.middle {
-    font-size: 0.9em;
+.histogram-story.odd {
+    fill: #7b8cb2;
 }
 
-.scatterplot.x-axis-label.start, .scatterplot.y-axis-label.start, .scatterplot.x-axis-label.end, .scatterplot.y-axis-label.end {
-    font-size: 0.9em;
-}
-
-.story.even {
-  fill: #2e4a85;
-}
-
-.story.odd {
-  fill: #7b8cb2;
-}
-
-.story.even.selected {
-  fill: #e0a266;
-}
-
-.story.odd.selected {
-  fill: #cc6400;
-}
-
-.brush .extent {
-  fill-opacity: 0.3;
-  fill: lightgray;
-  stroke: darkslategray;
-  stroke-width: 1px;
-  shape-rendering: auto; /* was crispEdges; auto turns on anti-aliasing */
+.histogram-story.odd.selected {
+    fill: #cc6400;
 }
 
 .histogram-mean {
@@ -1357,105 +1390,104 @@ td.narrafirma-mw-nested-title, td.narrafirma-mw-nested-stats {
 	stroke-width: 1.5px;
 }
 
-.scatterPlot .story {
-  stroke: #2e4a85;
-  stroke-width: 0.2px;
-  fill: #2e4a85;
-  fill-opacity: 0.7;
+.histogram.x-axis-label.middle, .histogram.y-axis-label.middle {
+    font-size: 1.1em;
 }
 
-.scatterPlot .story.selected {
-  stroke: #cc6400;
-  fill: #cc6400;
+.histogram.x-axis-label.small.middle {
+    font-size: 0.9em;
 }
 
-.contingencyChart .storyCluster.observed {
-  stroke-width: 1px;
-  stroke: #2e4a85;
-  fill: #d5dae6;
+.histogram.x-axis-label.start, .histogram.x-axis-label.end {
+    font-size: 0.9em;
 }
 
-.contingencyChart .storyClusterLabel {
+/* contingency chart */
+
+.contingencyChart-circle-observed {
+    stroke-width: 1px;
+    stroke: #2e4a85;
+    fill: #d5dae6;
+}
+
+.contingencyChart-circle-observed.selected {
+    stroke-width: 2px;
+    stroke: #cc6400;
+    fill: #e0a266;
+}
+
+.contingencyChart-circle-expected {
+    stroke-width: 1px;
+    stroke: red;
+    stroke-dasharray: "5, 5";
+    fill: none;
+}
+
+.contingencyChart-circle-label {
     font-size: 0.8em;
     fill: #2e4a85;
 }
 
-.contingencyChart .storyCluster.observed.selected {
-  stroke-width: 2px;
-  stroke: #cc6400;
-  fill: #e0a266;
-}
-
-.contingencyChart .expected {
-  stroke-width: 1px;
-  stroke: red;
-  stroke-dasharray: "5, 5";
-  fill: none;
-}
-
-.contingencyChart .miniHistogram {
+.contingencyChart-miniHistogram {
     fill: #eff4ff;
     stroke: black;
     stroke-width: 1px;
 }
 
-.contingencyChart .miniHistogram.selected {
+.contingencyChart-miniHistogram.selected {
     fill: #ffbb84;
     stroke: black;
     stroke-width: 1px;
 }
 
-.contingencyChart .miniHistogramMean {
+.contingencyChart-miniHistogram-mean {
     fill: blue;
     stroke: none;
 }
 
-.contingencyChart .miniHistogramStdDev {
+.contingencyChart-miniHistogram-stdDev {
     fill: #b0d4d4; 
     stroke: black;
     stroke-width: 1px;
 }
 
 .contingencyChart .axis path {
-  display: none;
+    display: none;
 }
 
 .contingencyChart .axis line {
-  shape-rendering: crispEdges;
-  stroke: gray;
+    shape-rendering: crispEdges;
+    stroke: gray;
 }
 
-.patterns-grid-header {
-    margin-left: 1.4em;
-    margin-top: 1em;
+.table.x-axis-label.middle, .table.y-axis-label.middle {
+    font-size: 1.1em;
 }
 
-#gridHeaderProgressMessage {
-    margin-left: 0.5em; 
-    color: #f88a57;
-    font-weight: bold;
+/* scatter plot */
+
+.scatterPlot-story {
+    stroke: #2e4a85;
+    stroke-width: 0.2px;
+    fill: #2e4a85;
+    fill-opacity: 0.7;
+}
+  
+.scatterPlot-story.selected {
+    stroke: #cc6400;
+    fill: #cc6400;
+}
+  
+.scatterplot.x-axis-label.middle, .scatterplot.y-axis-label.middle {
+    font-size: 1.1em;
 }
 
-.pleaseWaitStatisticsOverlay {
-	font-size: 1em;
-	font-weight: bold;
-	text-align: center;
-	width: 300px;
-	height: 70px;
-	margin: 0.5em 0 0 00;
-	padding: 0.5em 3em 0.5em 0.5em;
-    border: 2px solid #b0d4d4;
-    background-color: #f3fdfd;
-    border-radius: 6px;
-    background-image: url('../images/dojo-Standby-loading.gif');
-    background-repeat: no-repeat;
-    background-position: 98% 80%;
-    z-index: 1001;
+.scatterplot.x-axis-label.small.middle, .scatterplot.y-axis-label.small.middle {
+    font-size: 0.9em;
 }
 
-.narrafirma-pattern-browser-selected-stories-header {
-    margin-left: 1.4em;
-    margin-top: 0.4em;
+.scatterplot.x-axis-label.start, .scatterplot.y-axis-label.start, .scatterplot.x-axis-label.end, .scatterplot.y-axis-label.end {
+    font-size: 0.9em;
 }
 
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Dialogs ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */

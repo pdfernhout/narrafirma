@@ -941,10 +941,10 @@ export function d3BarChartForValues(graphHolder: GraphHolder, plotItems, xLabels
     // Append brush before data to ensure titles are drown
     if (storiesSelectedCallback) chart.brush = createBrush(chartBody, xScale, null, brushend);
     
-    var bars = chartBody.selectAll(".bar")
+    var bars = chartBody.selectAll(".barChart-bar")
             .data(plotItems)
         .enter().append("g")
-            .attr("class", "bar")
+            .attr("class", "barChart-bar")
             .attr('transform', function(plotItem: StoryPlotItem) { return 'translate(' + xScale(plotItem.name) + ',' + yScale(0) + ')'; });
 
     var barBackground = bars.append("rect")
@@ -953,11 +953,11 @@ export function d3BarChartForValues(graphHolder: GraphHolder, plotItems, xLabels
         .attr("height", function(plotItem: StoryPlotItem) { return yHeightScale(plotItem.value); })
         .attr("width", xScale.rangeBand());
 
-    var barLabels = chartBody.selectAll(".barLabel")
+    var barLabels = chartBody.selectAll(".barChart-label")
         .data(plotItems)
         .enter().append("text")
             .text(function(plotItem: StoryPlotItem) { if (plotItem.value > 0) { return "" + plotItem.value; } else { return ""}; })
-            .attr("class", "barLabel")
+            .attr("class", "barChart-label")
             .attr("x", function(plotItem: StoryPlotItem) { return xScale(plotItem.name) + xScale.rangeBand() / 2; } )
             .attr("y", function(plotItem: StoryPlotItem) { return chart.height - yHeightScale(plotItem.value) - 12; } )
             .attr("dx", -3) // padding-right
@@ -965,10 +965,10 @@ export function d3BarChartForValues(graphHolder: GraphHolder, plotItems, xLabels
             .attr("text-anchor", "middle") // text-align: middle
             
     // Overlay stories on each bar...
-    var storyDisplayItems = bars.selectAll(".story")
+    var storyDisplayItems = bars.selectAll(".barChart-story")
             .data(function(plotItem) { return plotItem.stories; })
         .enter().append("rect")
-            .attr('class', function (d, i) { return "story " + ((i % 2 === 0) ? "even" : "odd"); })
+            .attr('class', function (d, i) { return "barChart-story " + ((i % 2 === 0) ? "even" : "odd"); })
             .attr("x", function(plotItem: PlotItem) { return 0; })
             .attr("y", function(plotItem: PlotItem, i) { return yHeightScale(-i - 1); })
             .attr("height", function(plotItem: PlotItem) { return yHeightScale(1); })
@@ -1240,15 +1240,15 @@ export function d3HistogramChartForValues(graphHolder: GraphHolder, plotItems, c
     // Append brush before data to ensure titles are drown
     if (storiesSelectedCallback) chart.brush = createBrush(chartBody, xScale, null, brushend);
     
-    var bars = chartBody.selectAll(".bar")
+    var bars = chartBody.selectAll(".histogram-bar")
           .data(data)
       .enter().append("g")
-          .attr("class", "bar")
+          .attr("class", "histogram-bar")
           .attr("transform", function(d: any) { return "translate(" + xScale(d.x) + "," + yScale(0) + ")"; });
 
-    var barLabelClass = "histogramBarLabel";
+    var barLabelClass = "histogram-barLabel";
     if (isSmallFormat) {
-        barLabelClass = "histogramBarLabelSmall";
+        barLabelClass = "histogram-barLabelSmall";
     }
     var barLabels = chartBody.selectAll("." + barLabelClass)
             .data(data)
@@ -1262,10 +1262,10 @@ export function d3HistogramChartForValues(graphHolder: GraphHolder, plotItems, c
             .attr("text-anchor", "middle") // text-align: middle
               
       // Overlay stories on each bar...
-    var storyDisplayItems = bars.selectAll(".story")
+    var storyDisplayItems = bars.selectAll(".histogram-story")
             .data(function(plotItem) { return plotItem; })
         .enter().append("rect")
-            .attr('class', function (d, i) { return "story " + ((i % 2 === 0) ? "even" : "odd"); })
+            .attr('class', function (d, i) { return "histogram-story " + ((i % 2 === 0) ? "even" : "odd"); })
             .attr("x", function(plotItem) { return 0; })
             .attr("y", function(plotItem, i) { return yHeightScale(-i - 1); })
             .attr("height", function(plotItem) { return yHeightScale(1); })
@@ -1522,7 +1522,7 @@ export function d3ScatterPlot(graphHolder: GraphHolder, xAxisQuestion, yAxisQues
     var storyDisplayItems = chartBody.selectAll(".story")
             .data(allPlotItems)
         .enter().append("circle")
-            .attr("class", "story")
+            .attr("class", "scatterPlot-story")
             .attr("r", dotSize)
             .style("opacity", opacity)
             .attr("cx", function (plotItem) { return xScale(plotItem.x); } )
@@ -1878,10 +1878,10 @@ export function d3ContingencyTable(graphHolder: GraphHolder, xAxisQuestion, yAxi
         var barWidth = xScale.rangeBand();
     
         // rectangles
-        var storyDisplayClusters = chartBody.selectAll(".miniHistogram")
+        var storyDisplayClusters = chartBody.selectAll(".contingencyChart-miniHistogram")
             .data(observedPlotItems)
         .enter().append("rect")
-            .attr("class", "miniHistogram")
+            .attr("class", "contingencyChart-miniHistogram")
             .attr("x", function (plotItem) {return xScale(plotItem.x)})
             .attr("y", function (plotItem) { 
                 var centerPoint = yScale(plotItem.y) + yScale.rangeBand() / 2.0;
@@ -1892,10 +1892,10 @@ export function d3ContingencyTable(graphHolder: GraphHolder, xAxisQuestion, yAxi
             .attr("height", function (plotItem) { return yValueMultiplier * plotItem.value; })
 
         // std dev rectangle
-        var sdRects = chartBody.selectAll(".miniHistogramStdDev")
+        var sdRects = chartBody.selectAll(".contingencyChart-miniHistogram-stdDev")
             .data(observedPlotItems)
         .enter().append("rect")
-            .attr("class", "miniHistogramStdDev")
+            .attr("class", "contingencyChart-miniHistogram-stdDev")
             .attr("x", function (plotItem) { 
                 if (plotItem.mean && plotItem.sd) {
                     var meanMinusOneSD = Math.max(0, plotItem.mean - plotItem.sd);
@@ -1922,10 +1922,10 @@ export function d3ContingencyTable(graphHolder: GraphHolder, xAxisQuestion, yAxi
             .attr("height", function (plotItem) { return yValueMultiplier * plotItem.value; })
 
         // mean rectangle (line)
-        var meanRects = chartBody.selectAll(".miniHistogramMean")
+        var meanRects = chartBody.selectAll(".contingencyChart-miniHistogram-mean")
             .data(observedPlotItems)
         .enter().append("rect")
-            .attr("class", "miniHistogramMean")
+            .attr("class", "contingencyChart-miniHistogram-mean")
             .attr("x", function (plotItem) { 
                 if (plotItem.mean) {
                     var meanDisplacement = barWidth * plotItem.mean / 100.0;
@@ -1952,20 +1952,20 @@ export function d3ContingencyTable(graphHolder: GraphHolder, xAxisQuestion, yAxi
             var yValueMultiplier = yScale.rangeBand() / maxPlotItemValue / 2.0;
         }
 
-        var storyDisplayClusters = chartBody.selectAll(".storyCluster")
+        var storyDisplayClusters = chartBody.selectAll(".contingencyChart-circle-observed")
                 .data(observedPlotItems)
             .enter().append("ellipse")
-                .attr("class", "storyCluster observed")
+                .attr("class", "contingencyChart-circle-observed")
                 .attr("rx", function (plotItem) { return xValueMultiplier * plotItem.value; } )
                 .attr("ry", function (plotItem) { return yValueMultiplier * plotItem.value; } )
                 .attr("cx", function (plotItem) { return xScale(plotItem.x) + xScale.rangeBand() / 2.0; } )
                 .attr("cy", function (plotItem) { return yScale(plotItem.y) + yScale.rangeBand() / 2.0; } );
 
         if (expectedPlotItems.length) {
-            var expectedDisplayClusters = chartBody.selectAll(".expected")
+            var expectedDisplayClusters = chartBody.selectAll(".contingencyChart-circle-expected")
                     .data(expectedPlotItems)
                 .enter().append("ellipse")
-                    .attr("class", "expected")
+                    .attr("class", "contingencyChart-circle-expected")
                     // TODO: Scale size of plot item
                     .attr("rx", function (plotItem) { return xValueMultiplier * plotItem.value; } )
                     .attr("ry", function (plotItem) { return yValueMultiplier * plotItem.value; } )
@@ -1976,7 +1976,7 @@ export function d3ContingencyTable(graphHolder: GraphHolder, xAxisQuestion, yAxi
         if (!graphHolder.hideNumbersOnContingencyGraphs) {
             const letterSize = 8;
             const minSizeToDrawLabelInside = 24; 
-            var storyClusterLabels = chartBody.selectAll(".storyClusterLabel")
+            var circleLabels = chartBody.selectAll(".contingencyChart-circle-label")
                 .data(observedPlotItems)
                 .enter().append("text")
                     .text(function(plotItem: StoryPlotItem) { 
@@ -1989,7 +1989,7 @@ export function d3ContingencyTable(graphHolder: GraphHolder, xAxisQuestion, yAxi
                         }
                         return plotItem.text; 
                     })
-                    .attr("class", "storyClusterLabel")
+                    .attr("class", "contingencyChart-circle-label")
                     .attr("x", function (plotItem) { return xScale(plotItem.x) + xScale.rangeBand() / 2.0; } )
                     .attr("y", function (plotItem) { return yScale(plotItem.y) + yScale.rangeBand() / 2.0; } )
                     .attr("dx", function(plotItem) { if (xValueMultiplier * plotItem.value >= plotItem.text.length * letterSize) return 0; else return "0.35em"; }) 
