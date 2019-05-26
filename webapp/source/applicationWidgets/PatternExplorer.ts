@@ -563,11 +563,16 @@ class PatternExplorer {
 
         // update page CSS for custom graph CSS - also save in graphHolder to use for saving files
         this.graphHolder.customGraphCSS = this.project.tripleStore.queryLatestC(this.catalysisReportIdentifier, "catalysisReport_customGraphCSS");
+        
+        var oldCustomStyleSheetToBeRemoved = document.getElementById('customGraphStyleSheet');
+        if (oldCustomStyleSheetToBeRemoved && oldCustomStyleSheetToBeRemoved.parentElement) oldCustomStyleSheetToBeRemoved.parentElement.removeChild(oldCustomStyleSheetToBeRemoved);
+
         if (this.graphHolder.customGraphCSS) {
-            const style = document.createElement("style");
-            style.innerHTML = this.graphHolder.customGraphCSS;
-            const reference = document.querySelector("script");
-            reference.parentNode.insertBefore(style, reference);
+            const newStyleElement = document.createElement("style");
+            newStyleElement.setAttribute("id", "customGraphStyleSheet");
+            newStyleElement.innerHTML = this.graphHolder.customGraphCSS;
+            const script = document.querySelector("script");
+            script.parentNode.insertBefore(newStyleElement, script);
         }
 
         // get stories
