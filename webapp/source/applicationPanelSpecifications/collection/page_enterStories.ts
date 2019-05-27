@@ -11,7 +11,9 @@ var panel: Panel = {
             id: "enterStories_Label",
             valueType: "none",
             displayType: "label",
-            displayPrompt: "On this page you can <strong>enter</strong> or import stories you collected from participants."
+            displayPrompt: `On this page you can <strong>enter</strong> or import stories you collected from participants. 
+                (When importing stories, please be aware that the import process can take some time, especially if you are communicating with a remote server. 
+                If you import stories and you see no stories in the project, wait a minute or two, then check again.)`
         },
         {
             id: "storyCollectionChoice_enterStories",
@@ -52,13 +54,6 @@ var panel: Panel = {
             displayVisible: function(panelBuilder, model) {
                 return !!Globals.clientState().storyCollectionIdentifier();}
         },
-        {
-            id: "project_importStoriesLabel",
-            valueType: "none",
-            displayType: "label",
-            displayPrompt: `Note: It may take some time to finish importing your stories. If it looks like nothing has been imported, wait a little while.`
-        },
-
         {
             id: "project_csvFileUploader",
             valueType: "none",
