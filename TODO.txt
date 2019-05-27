@@ -146,6 +146,13 @@ M When import story form, hundreds of triples can be generated which take minute
 
 ==== DONE
 
+--- Release 1.3.3
+
+Added: Separate custom CSS field for graphs only - affects graphs both in application ("Explore patterns" page) and printed report
+Added: Buttons to hide advanced options from beginners (affects three pages: print story cards, configure catalysis report, print catalysis report)
+Added: More selection buttons (scales, choices, texts) to question choosing (in configure catalysis report and print story cards)
+Changed: Simplified CSS class names of graph elements for easier reference in writing custom CSS field
+
 --- Release 1.3.2
 
 Fixed: Bug where SVG files were not being written to ZIP file 

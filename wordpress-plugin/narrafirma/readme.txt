@@ -7,9 +7,9 @@ Author URI: http://www.cfkurtz.com
 Author: Cynthia Kurtz and Paul Fernhout
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=DGVVDT2D49QA8
 Requires at least: 4.3.1
-Tested up to: 5.2
+Tested up to: 5.2.1
 Stable tag: trunk
-Version: 1.3.2
+Version: 1.3.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -105,6 +105,13 @@ We strongly suggest that you set up any web site on which you intend to install 
 12. Here the NarraFirma user is reflecting on the entire project, to learn from it and to keep good records for the future.
 
 == Changelog ==
+
+= 1.3.3 =
+
+Added: Separate custom CSS field for graphs only - affects graphs both in application ("Explore patterns" page) and printed report
+Added: Buttons to hide advanced options from beginners (affects three pages: print story cards, configure catalysis report, print catalysis report)
+Added: More selection buttons (scales, choices, texts) to question choosing (in configure catalysis report and print story cards)
+Changed: Simplified CSS class names of graph elements for easier reference in writing custom CSS field
 
 = 1.3.2 =
 
@@ -407,6 +414,9 @@ loading application, getting user information, or retrieving project data.
 change logs, see the [GitHub repository](https://github.com/pdfernhout/narrafirma).
 
 == Upgrade Notice ==
+
+= 1.3.3 =
+This minor update provides a few more usability and capability improvements for the catalysis process.
 
 = 1.3.2 =
 This is a quick fix for a bug that causes SVG files not to be saved to a ZIP file.
