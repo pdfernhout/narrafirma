@@ -73,11 +73,14 @@ class ClientState {
     storyCollectionIdentifier(newValue = undefined) {
         if (newValue) throw new Error("storyCollectionIdentifier: setting value is not supported");
         var storyCollectionIdentifier = this._project.findStoryCollection(this._storyCollectionName);
-        if (!storyCollectionIdentifier) {
-            console.log("Problem finding storyCollectionIdentifier for: " + this._storyCollectionName);
-            return null;
-        }
+        if (!storyCollectionIdentifier) return null;
         return storyCollectionIdentifier;
+    }
+
+    haveStoryCollectionAndShowingAdvancedOptions() {
+        var storyCollectionIdentifier = this._project.findStoryCollection(this._storyCollectionName);
+        if (!storyCollectionIdentifier) return null;
+        return this._showAdvancedOptions;
     }
     
     catalysisReportName(newValue: string = undefined): string {
@@ -95,8 +98,7 @@ class ClientState {
         return catalysisReportIdentifier;
     }
 
-    haveCatalysisReportAndShowingAdvancedOptions(newValue = undefined) {
-        if (newValue) throw new Error("catalysisReportIdentifier: setting value is not supported");
+    haveCatalysisReportAndShowingAdvancedOptions() {
         var catalysisReportIdentifier = this._project.findCatalysisReport(this._catalysisReportName);
         if (!catalysisReportIdentifier) return null;
         return this._showAdvancedOptions;

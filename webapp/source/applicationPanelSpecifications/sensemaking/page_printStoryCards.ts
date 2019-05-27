@@ -34,18 +34,6 @@ var panel: Panel = {
             displayPrompt: ""
         },
         {
-            id: "printStoryCards_filter",
-            valuePath: "/clientState/storyCollectionName/printStoryCards_filter",
-            valueType: "string",
-            displayType: "text",
-            displayPrompt: `
-            If you want to <strong>filter</strong> the stories printed, enter your filter here.
-            (For details on how to use this function, click Help.)`,
-            displayVisible: function(panelBuilder, model) {
-                return !!Globals.clientState().storyCollectionIdentifier();
-            }
-        },
-        {
             id: "printStoryCards_questionsToInclude",
             valueType: "object",
             valuePath: "/clientState/storyCollectionName/printStoryCards_questionsToInclude",
@@ -67,7 +55,47 @@ var panel: Panel = {
             ],
             displayType: "select",
             displayName: "Order",
-            displayPrompt: "In what <strong>order</strong> would you like the answers to questions to appear?"
+            displayPrompt: "In what <strong>order</strong> would you like the answers to questions to appear?",
+            displayVisible: function(panelBuilder, model) {
+                return !!Globals.clientState().storyCollectionIdentifier();
+            }
+        },
+
+        {
+            id: "printStoryCards_showOrHideAdvancedOptions",
+            valueType: "none",
+            displayType: "button",
+            displayConfiguration: "showOrHideAdvancedOptions",
+            displayName: "Show/hide advanced options",
+            displayPrompt: function(panelBuilder, model) {
+                return Globals.clientState().showAdvancedOptions() ? "Hide advanced options" : "Show advanced options";
+            },
+            displayPreventBreak: false,
+            displayVisible: function(panelBuilder, model) {
+                return !!Globals.clientState().storyCollectionIdentifier();
+            }
+        },
+
+        {
+            id: "printStoryCards_MoreThingsToShowAndHideHeader",
+            valueType: "none",
+            displayType: "header",
+            displayPrompt: "Things you can show or hide",
+            displayVisible: function(panelBuilder, model) {
+                return !!Globals.clientState().haveStoryCollectionAndShowingAdvancedOptions();
+            }
+        }, 
+        {
+            id: "printStoryCards_filter",
+            valuePath: "/clientState/storyCollectionName/printStoryCards_filter",
+            valueType: "string",
+            displayType: "text",
+            displayPrompt: `
+            If you want to <strong>filter</strong> the stories printed, enter your filter here.
+            (For details on how to use this function, click Help.)`,
+            displayVisible: function(panelBuilder, model) {
+                return !!Globals.clientState().haveStoryCollectionAndShowingAdvancedOptions();
+            }
         },
         {
             id: "printStoryCards_storyTextCutoff",
@@ -76,7 +104,10 @@ var panel: Panel = {
             valueOptions: ["no limit", "100", "150", "200", "250", "300", "350", "400", "450", "500", "600", "700", "800", "900", "1000", "1100", "1200", "1300", "1400", "1500", "1600", "1700", "1800", "1900", "2000", "2200", "2400", "2600", "2800", "3000", "3500", "4000"],
             displayType: "select",
             displayName: "Story text length",
-            displayPrompt: "At what <strong>length</strong> (number of characters) should stories be truncated?"
+            displayPrompt: "At what <strong>length</strong> (number of characters) should stories be truncated?",
+            displayVisible: function(panelBuilder, model) {
+                return !!Globals.clientState().haveStoryCollectionAndShowingAdvancedOptions();
+            }
         },
         {
             id: "printStoryCards_storyTextCutoffMessage",
@@ -84,7 +115,10 @@ var panel: Panel = {
             valuePath: "/clientState/storyCollectionName/printStoryCards_storyTextCutoffMessage",
             displayType: "text",
             displayName: "Story text cutoff message",
-            displayPrompt: `What should the story card say <strong>after a story that has been truncated</strong>? (If this field is left blank, it will say "... (truncated)".)`
+            displayPrompt: `What should the story card say <strong>after a story that has been truncated</strong>? (If this field is left blank, it will say "... (truncated)".)`,
+            displayVisible: function(panelBuilder, model) {
+                return !!Globals.clientState().haveStoryCollectionAndShowingAdvancedOptions();
+            }
         },
         {
             id: "printStoryCards_includeIndexInStoryCollection",
@@ -93,7 +127,20 @@ var panel: Panel = {
             displayType: "checkbox",
             displayName: "Include index in story collection?",
             displayConfiguration: "Yes, include the story index",
-            displayPrompt: "Do you want to <strong>print each story's index</strong> in the story collection before its title?"
+            displayPrompt: "Do you want to <strong>print each story's index</strong> in the story collection before its title?",
+            displayVisible: function(panelBuilder, model) {
+                return !!Globals.clientState().haveStoryCollectionAndShowingAdvancedOptions();
+            }
+        },
+
+        {
+            id: "printStoryCards_CustomTextsHeader",
+            valueType: "none",
+            displayType: "header",
+            displayPrompt: "Custom texts",
+            displayVisible: function(panelBuilder, model) {
+                return !!Globals.clientState().haveStoryCollectionAndShowingAdvancedOptions();
+            }
         },
         {
             id: "printStoryCards_beforeSliderCharacter",
@@ -104,7 +151,7 @@ var panel: Panel = {
             displayPrompt: `
             Enter a character to print <strong>before</strong> (to the left of) the slider "button". If empty, the character "-" will be used.`,
             displayVisible: function(panelBuilder, model) {
-                return !!Globals.clientState().storyCollectionIdentifier();}
+                return !!Globals.clientState().haveStoryCollectionAndShowingAdvancedOptions();}
         },
         {
             id: "printStoryCards_sliderButtonCharacter",
@@ -115,7 +162,7 @@ var panel: Panel = {
             displayPrompt: `
             Enter a character to print as the slider <strong>button</strong>. If empty, the character "|" will be used.`,
             displayVisible: function(panelBuilder, model) {
-                return !!Globals.clientState().storyCollectionIdentifier();}
+                return !!Globals.clientState().haveStoryCollectionAndShowingAdvancedOptions();}
         },
         {
             id: "printStoryCards_afterSliderCharacter",
@@ -126,7 +173,7 @@ var panel: Panel = {
             displayPrompt: `
             Enter a character to print <strong>after</strong> (to the right of) the slider "button". If empty, the character "-" will be used.`,
             displayVisible: function(panelBuilder, model) {
-                return !!Globals.clientState().storyCollectionIdentifier();}
+                return !!Globals.clientState().haveStoryCollectionAndShowingAdvancedOptions();}
         },
         {
             id: "printStoryCards_noAnswerSliderCharacter",
@@ -137,7 +184,7 @@ var panel: Panel = {
             displayPrompt: `
             Enter a character to print on the slider space if there was <strong>no answer</strong> to the question. If empty, the character "-" will be used.`,
             displayVisible: function(panelBuilder, model) {
-                return !!Globals.clientState().storyCollectionIdentifier();}
+                return !!Globals.clientState().haveStoryCollectionAndShowingAdvancedOptions();}
         },
         {
             id: "printStoryCards_customCSS",
@@ -147,7 +194,7 @@ var panel: Panel = {
             displayName: "Custom CSS",
             displayPrompt: "You can enter <strong>custom CSS</strong> that modifies elements of your story cards here. (For more information on how this works, see the help system.)",
             displayVisible: function(panelBuilder, model) {
-                return !!Globals.clientState().storyCollectionIdentifier();}
+                return !!Globals.clientState().haveStoryCollectionAndShowingAdvancedOptions();}
         },
         {
             id: "printStoryCards_printFormButton",
@@ -156,7 +203,7 @@ var panel: Panel = {
             displayConfiguration: "printStoryCards",
             displayPrompt: "Print Story Cards",
             displayVisible: function(panelBuilder, model) {
-                return !!Globals.clientState().storyCollectionIdentifier();}
+                return !!Globals.clientState().haveStoryCollectionAndShowingAdvancedOptions();}
         }
     ]
 };

@@ -6,6 +6,8 @@ import questionnaireGeneration = require("../questionnaireGeneration");
 
 "use strict";
 
+// TODO: This code is redundant with code from add_catalysisReportQuestionChooser - needs to be merged
+
 function add_printStoryCardsQuestionChooser(panelBuilder: PanelBuilder, model, fieldSpecification) {
     
     var project = Globals.project();
@@ -66,23 +68,41 @@ function add_printStoryCardsQuestionChooser(panelBuilder: PanelBuilder, model, f
         ]);
     }
     
-    function selectAll() {
+    function selectElements(displayTypes: any = null) {
         var map = {};
-        elicitingQuestions.forEach((question) => {
-            map["elicitingQuestion"] = true;
-        });
+        if (elicitingQuestions) {
+            elicitingQuestions.forEach((question) => {
+                if (!displayTypes) map["elicitingQuestion"] = true;
+            });
+        }
         allStoryQuestions.forEach((question) => {
-            map["S_" + question.displayName] = true;
+            if (!displayTypes || displayTypes.indexOf(question.displayType) >= 0) map["S_" + question.displayName] = true;
         });
         allParticipantQuestions.forEach((question) => {
-            map["P_" + question.displayName] = true;
+            if (!displayTypes || displayTypes.indexOf(question.displayType) >= 0) map["P_" + question.displayName] = true;
         });
         allAnnotationQuestions.forEach((question) => {
-            map["A_" + question.displayName] = true;
+            if (!displayTypes || displayTypes.indexOf(question.displayType) >= 0) map["A_" + question.displayName] = true;
         });
-        map["numStoriesTold"] = true;
-        map["storyLength"] = true;
+        if (!displayTypes) map["numStoriesTold"] = true;
+        if (!displayTypes) map["storyLength"] = true;
         storageFunction(map);
+    }
+
+    function selectAll() {
+        selectElements();
+    }
+
+    function selectAllScaleQuestions() {
+        selectElements(["slider"]);
+    }
+
+    function selectAllChoiceQuestions() {
+        selectElements(["select", "radiobuttons", "checkboxes"]);
+    }
+    
+    function selectAllTextQuestions() {
+        selectElements(["text", "textarea"]);
     }
 
     function selectAllStoryQuestions() {
@@ -100,7 +120,15 @@ function add_printStoryCardsQuestionChooser(panelBuilder: PanelBuilder, model, f
         });
         storageFunction(map);
     }
-    
+
+    function selectAllAnnotationQuestions() {
+        var map = {};
+        allAnnotationQuestions.forEach((question) => {
+            map["A_" + question.displayName] = true;
+        });
+        storageFunction(map);
+    }
+
     function clearAll() {
         storageFunction({});
     }
@@ -190,12 +218,15 @@ function add_printStoryCardsQuestionChooser(panelBuilder: PanelBuilder, model, f
     return m("div.questionExternal", 
         [prompt, 
         m("div", table),
-        m("br"),
-        m("button", { onclick: selectAll }, "Select all"),
-        m("button", { onclick: selectAllStoryQuestions }, "Select only story questions"),
-        m("button", { onclick: selectAllParticipantQuestions }, "Select only participant questions"),
-        m("button", { onclick: clearAll }, "Clear all"),
-        m("br"),
+        m("span[style=margin-left: 0.5em]", "Select questions:"),
+        m("button", { onclick: selectAll }, "All"),
+        m("button", { onclick: selectAllStoryQuestions }, "Story"),
+        m("button", { onclick: selectAllParticipantQuestions }, "Participant"),
+        m("button", { onclick: selectAllAnnotationQuestions }, "Annotation"),
+        m("button", { onclick: selectAllScaleQuestions }, "Scale"),
+        m("button", { onclick: selectAllChoiceQuestions }, "Choice"),
+        m("button", { onclick: selectAllTextQuestions }, "Text"),
+        m("button", { onclick: clearAll }, "None"),
         m("br"),
         ]);
 
