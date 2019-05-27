@@ -36,7 +36,10 @@ function addButton(panelBuilder: PanelBuilder, model, fieldSpecification, callba
     
     if (fieldSpecification.displayClass) options.class = fieldSpecification.displayClass;
 
-    var text = m("span", {"class": "button-text"}, translate(fieldSpecification.id + "::prompt", fieldSpecification.displayPrompt));
+    let displayPrompt = fieldSpecification.displayPrompt;
+    if (typeof fieldSpecification.displayPrompt === "function") displayPrompt = displayPrompt(this, model, fieldSpecification);
+    // TODO: Translate and changing display prompt won't mix well
+    var text = m("span", {"class": "button-text"}, translate(fieldSpecification.id + "::prompt", displayPrompt));
  
     var parts = [text];
    

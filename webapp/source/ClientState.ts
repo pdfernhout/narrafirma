@@ -43,6 +43,7 @@ class ClientState {
     private _leavingPageCallback: () => void;
     private _anHTMLElementValueIsBeingSetBecauseOfAnIncomingMessage: boolean = null;
     private _cachedOverwrittenTexts = {};
+    private _showAdvancedOptions: boolean = false;
     
     // This should only be set by Globals
     _project: Project = null;
@@ -90,11 +91,15 @@ class ClientState {
     catalysisReportIdentifier(newValue = undefined) {
         if (newValue) throw new Error("catalysisReportIdentifier: setting value is not supported");
         var catalysisReportIdentifier = this._project.findCatalysisReport(this._catalysisReportName);
-        if (!catalysisReportIdentifier) {
-            console.log("Problem finding catalysisReportIdentifier for: " + this._catalysisReportName);
-            return null;
-        }
+        if (!catalysisReportIdentifier) return null;
         return catalysisReportIdentifier;
+    }
+
+    haveCatalysisReportAndShowingAdvancedOptions(newValue = undefined) {
+        if (newValue) throw new Error("catalysisReportIdentifier: setting value is not supported");
+        var catalysisReportIdentifier = this._project.findCatalysisReport(this._catalysisReportName);
+        if (!catalysisReportIdentifier) return null;
+        return this._showAdvancedOptions;
     }
 
     observationAccessor(newValue: Object = undefined) {
@@ -126,6 +131,13 @@ class ClientState {
             this._cachedOverwrittenTexts[fieldID] = newValue;
         }
         return this._cachedOverwrittenTexts[fieldID];
+    }
+
+    showAdvancedOptions(newValue: boolean = undefined) {
+        if (newValue !== undefined) {
+            this._showAdvancedOptions = newValue;
+        }
+        return this._showAdvancedOptions;
     }
 
     debugMode(newValue: string = undefined): string {

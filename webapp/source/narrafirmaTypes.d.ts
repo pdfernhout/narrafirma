@@ -83,7 +83,7 @@ interface PanelField {
     id: string;
     valueType: string;
     displayType: string;
-    displayPrompt: string;
+    displayPrompt: any;
     valuePath?: string;
     valueOptions?: string | string[] | Object;
     valueOptionsSubfield?: string;

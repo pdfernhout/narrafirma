@@ -80,15 +80,21 @@ var panel: Panel = {
             displayType: "button",
             displayPrompt: "Print selected catalysis report",
             displayConfiguration: "printCatalysisReport",
+            displayPreventBreak: true,
             displayVisible: function(panelBuilder, model) {
                 return !!Globals.clientState().catalysisReportIdentifier();
             }
         },
         {
-            id: "configureCatalysisReport_advancedOptionsLabel",
+            id: "printCatalysisReport_showOrHideAdvancedOptions",
             valueType: "none",
-            displayType: "label",
-            displayPrompt: `<span.narrafirma-centered-label>Everything below this point is optional and can be ignored.</span>`,
+            displayType: "button",
+            displayConfiguration: "showOrHideAdvancedOptions",
+            displayName: "Show/hide advanced options",
+            displayPrompt: function(panelBuilder, model) {
+                return Globals.clientState().showAdvancedOptions() ? "Hide advanced options" : "Show advanced options";
+            },
+            displayPreventBreak: false,
             displayVisible: function(panelBuilder, model) {
                 return !!Globals.clientState().catalysisReportIdentifier();
             }
@@ -102,7 +108,7 @@ var panel: Panel = {
             displayType: "header",
             displayPrompt: "Things you can show or hide",
             displayVisible: function(panelBuilder, model) {
-                return !!Globals.clientState().catalysisReportIdentifier();
+                return !!Globals.clientState().haveCatalysisReportAndShowingAdvancedOptions();
             }
         },        
         {
@@ -113,7 +119,7 @@ var panel: Panel = {
             displayConfiguration: "Include statistics",
             displayPrompt: `Would you like to <strong>print statistical results</strong>?`,
             displayVisible: function(panelBuilder, model) {
-                return !!Globals.clientState().catalysisReportIdentifier();
+                return !!Globals.clientState().haveCatalysisReportAndShowingAdvancedOptions();
             }
         },
         {
@@ -124,7 +130,7 @@ var panel: Panel = {
             displayConfiguration: "Print sequence numbers",
             displayPrompt: `Do you want to <strong>print sequence numbers</strong> for each perspective, theme, observation, and interpretation in the report?`,
             displayVisible: function(panelBuilder, model) {
-                return !!Globals.clientState().catalysisReportIdentifier();
+                return !!Globals.clientState().haveCatalysisReportAndShowingAdvancedOptions();
             }
         },
         {
@@ -135,7 +141,7 @@ var panel: Panel = {
             displayConfiguration: "Hide report creation information",
             displayPrompt: `You can <strong>hide the report creation information</strong> that NarraFirma usually puts at the start of the report.`,
             displayVisible: function(panelBuilder, model) {
-                return !!Globals.clientState().catalysisReportIdentifier();
+                return !!Globals.clientState().haveCatalysisReportAndShowingAdvancedOptions();
             }
         },
 
@@ -146,7 +152,7 @@ var panel: Panel = {
             displayType: "header",
             displayPrompt: "Other printing options",
             displayVisible: function(panelBuilder, model) {
-                return !!Globals.clientState().catalysisReportIdentifier();
+                return !!Globals.clientState().haveCatalysisReportAndShowingAdvancedOptions();
             }
         },        
         {
@@ -158,7 +164,7 @@ var panel: Panel = {
             displayName: "Output graph format",
             displayPrompt: `Which <strong>graph format</strong> do you want to use? (If no choice is made here, SVG format will be used.)`,
             displayVisible: function(panelBuilder, model) {
-                return !!Globals.clientState().catalysisReportIdentifier();
+                return !!Globals.clientState().haveCatalysisReportAndShowingAdvancedOptions();
             }
         },
         {
@@ -170,7 +176,7 @@ var panel: Panel = {
             displayName: "Output font modifier percent",
             displayPrompt: `If you want to modify the <strong>font sizes</strong> in report graphs, choose a percentage modifier here.`,
             displayVisible: function(panelBuilder, model) {
-                return !!Globals.clientState().catalysisReportIdentifier();
+                return !!Globals.clientState().haveCatalysisReportAndShowingAdvancedOptions();
             }
         },
         {
@@ -184,7 +190,7 @@ var panel: Panel = {
                 (This choice affects graphs in the report only. 
                 If no selection is made here, graphs will be 800 pixels wide.)`,
             displayVisible: function(panelBuilder, model) {
-                return !!Globals.clientState().catalysisReportIdentifier();
+                return !!Globals.clientState().haveCatalysisReportAndShowingAdvancedOptions();
             }
         },
         {
@@ -195,7 +201,7 @@ var panel: Panel = {
             displayConfiguration: "Show interpretations in a table side by side",
             displayPrompt: "For a clustered-observations report, do you want to show interpretations <strong>side by side</strong>? Or one after another?",
             displayVisible: function(panelBuilder, model) {
-                return !!Globals.clientState().catalysisReportIdentifier();
+                return !!Globals.clientState().haveCatalysisReportAndShowingAdvancedOptions();
             }
         }, 
 
@@ -206,7 +212,7 @@ var panel: Panel = {
             displayType: "header",
             displayPrompt: "Custom texts",
             displayVisible: function(panelBuilder, model) {
-                return !!Globals.clientState().catalysisReportIdentifier();
+                return !!Globals.clientState().haveCatalysisReportAndShowingAdvancedOptions();
             }
         },        
         {
@@ -219,7 +225,7 @@ var panel: Panel = {
                 (This option does not affect report graphs.
                 Enter custom CSS for graphs on the "Configure catalysis report" page. For details on custom CSS, see the help system.)`,
             displayVisible: function(panelBuilder, model) {
-                return !!Globals.clientState().catalysisReportIdentifier();
+                return !!Globals.clientState().haveCatalysisReportAndShowingAdvancedOptions();
             }
         },
         {
@@ -231,7 +237,7 @@ var panel: Panel = {
             displayPrompt: `
                 This optional <strong>introduction</strong> begins your report. (See the help system to learn about HTML formatting you can use.)`,
             displayVisible: function(panelBuilder, model) {
-                return !!Globals.clientState().catalysisReportIdentifier();
+                return !!Globals.clientState().haveCatalysisReportAndShowingAdvancedOptions();
             }
         },
         {
@@ -243,7 +249,7 @@ var panel: Panel = {
             displayPrompt: `
                 An optional <strong>About this report</strong> section is printed after the introduction.`,
             displayVisible: function(panelBuilder, model) {
-                return !!Globals.clientState().catalysisReportIdentifier();
+                return !!Globals.clientState().haveCatalysisReportAndShowingAdvancedOptions();
             }
         },
         {
@@ -258,7 +264,7 @@ var panel: Panel = {
                 A number sign (#) will be replaced
                 with the number of perspectives in the report. (If you leave this field blank, the header will read "Perspectives in this report (#).")`,
             displayVisible: function(panelBuilder, model) {
-                return !!Globals.clientState().catalysisReportIdentifier();
+                return !!Globals.clientState().haveCatalysisReportAndShowingAdvancedOptions();
             }
         },
         {
@@ -273,7 +279,7 @@ var panel: Panel = {
                 A number sign (#) will be replaced
                 with the number of themes in the report. (If you leave this field blank, the header will read "Themes in this report (#).")`,
             displayVisible: function(panelBuilder, model) {
-                return !!Globals.clientState().catalysisReportIdentifier();
+                return !!Globals.clientState().haveCatalysisReportAndShowingAdvancedOptions();
             }
         },
 
@@ -288,7 +294,7 @@ var panel: Panel = {
                 in a clustered-interpretations report. A number sign (#) will be replaced with the number of interpretations in the perspective. 
                 (If you leave this field blank, the header will read "Interpretations and observations in this perspective (#).")`,
             displayVisible: function(panelBuilder, model) {
-                return !!Globals.clientState().catalysisReportIdentifier();
+                return !!Globals.clientState().haveCatalysisReportAndShowingAdvancedOptions();
             }
         },
         {
@@ -302,7 +308,7 @@ var panel: Panel = {
                 in a clustered-observations report. A number sign (#) will be replaced with the number of observations in the theme. 
                 If you leave this field blank, the header will read "Observations and interpretations in this theme (#)."`,
             displayVisible: function(panelBuilder, model) {
-                return !!Globals.clientState().catalysisReportIdentifier();
+                return !!Globals.clientState().haveCatalysisReportAndShowingAdvancedOptions();
             }
         },
 
@@ -315,7 +321,7 @@ var panel: Panel = {
             displayPrompt: `
             This optional label will appear <strong>before each perspective name</strong> in the report.`,
             displayVisible: function(panelBuilder, model) {
-                return !!Globals.clientState().catalysisReportIdentifier();
+                return !!Globals.clientState().haveCatalysisReportAndShowingAdvancedOptions();
             }
         },
         {
@@ -327,7 +333,7 @@ var panel: Panel = {
             displayPrompt: `
             This optional label will appear <strong>before each theme name</strong> in the report.`,
             displayVisible: function(panelBuilder, model) {
-                return !!Globals.clientState().catalysisReportIdentifier();
+                return !!Globals.clientState().haveCatalysisReportAndShowingAdvancedOptions();
             }
         },
         {
@@ -339,7 +345,7 @@ var panel: Panel = {
             displayPrompt: `
             This optional label will appear <strong>before each interpretation name</strong> in the report.`,
             displayVisible: function(panelBuilder, model) {
-                return !!Globals.clientState().catalysisReportIdentifier();
+                return !!Globals.clientState().haveCatalysisReportAndShowingAdvancedOptions();
             }
         },
         {
@@ -351,7 +357,7 @@ var panel: Panel = {
             displayPrompt: `
             This optional label will appear <strong>before each list of interpretation questions</strong> in the report.`,
             displayVisible: function(panelBuilder, model) {
-                return !!Globals.clientState().catalysisReportIdentifier();
+                return !!Globals.clientState().haveCatalysisReportAndShowingAdvancedOptions();
             }
         },
         {
@@ -363,7 +369,7 @@ var panel: Panel = {
             displayPrompt: `
             This optional label will appear <strong>before each interpretation idea</strong> in the report.`,
             displayVisible: function(panelBuilder, model) {
-                return !!Globals.clientState().catalysisReportIdentifier();
+                return !!Globals.clientState().haveCatalysisReportAndShowingAdvancedOptions();
             }
         },
         {
@@ -375,7 +381,7 @@ var panel: Panel = {
             displayPrompt: `
             This optional label will appear <strong>before each observation name</strong> in the report.`,
             displayVisible: function(panelBuilder, model) {
-                return !!Globals.clientState().catalysisReportIdentifier();
+                return !!Globals.clientState().haveCatalysisReportAndShowingAdvancedOptions();
             }
         },
         {
@@ -387,7 +393,7 @@ var panel: Panel = {
             displayPrompt: `
             You can enter a <strong>report conclusion</strong> here.`,
             displayVisible: function(panelBuilder, model) {
-                return !!Globals.clientState().catalysisReportIdentifier();
+                return !!Globals.clientState().haveCatalysisReportAndShowingAdvancedOptions();
             }
         },
         {
@@ -428,7 +434,7 @@ var panel: Panel = {
                 These replacements apply only to your printed catalysis report.
                 `,
             displayVisible: function(panelBuilder, model) {
-                return !!Globals.clientState().catalysisReportIdentifier();
+                return !!Globals.clientState().haveCatalysisReportAndShowingAdvancedOptions();
             }
         },
 

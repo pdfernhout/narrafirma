@@ -68,10 +68,15 @@ var panel: Panel = {
             }
         },
         {
-            id: "configureCatalysisReport_advancedOptionsLabel",
+            id: "configureCatalysisReport_showOrHideAdvancedOptions",
             valueType: "none",
-            displayType: "label",
-            displayPrompt: `<span.narrafirma-centered-label>Everything below this point is optional and can be ignored.</span>`,
+            displayType: "button",
+            displayConfiguration: "showOrHideAdvancedOptions",
+            displayName: "Show/hide advanced options",
+            displayPrompt: function(panelBuilder, model) {
+                return Globals.clientState().showAdvancedOptions() ? "Hide advanced options" : "Show advanced options";
+            },
+            displayPreventBreak: false,
             displayVisible: function(panelBuilder, model) {
                 return !!Globals.clientState().catalysisReportIdentifier();
             }
@@ -84,7 +89,7 @@ var panel: Panel = {
             displayType: "header",
             displayPrompt: "Things you can show or hide",
             displayVisible: function(panelBuilder, model) {
-                return !!Globals.clientState().catalysisReportIdentifier();
+                return !!Globals.clientState().haveCatalysisReportAndShowingAdvancedOptions();
             }
         },
         {
@@ -95,7 +100,7 @@ var panel: Panel = {
             displayConfiguration: "Show interpretations in the patterns table",
             displayPrompt: `Do you want to <strong>see interpretations</strong> in the table of patterns on the "Explore Patterns" page?`,
             displayVisible: function(panelBuilder, model) {
-                return !!Globals.clientState().catalysisReportIdentifier();
+                return !!Globals.clientState().haveCatalysisReportAndShowingAdvancedOptions();
             }
         },
         {
@@ -106,7 +111,7 @@ var panel: Panel = {
             displayConfiguration: "Show graphs of multi-choice questions against themselves",
             displayPrompt: `Would you like to <strong>graph multi-choice questions against themselves</strong>?`,
             displayVisible: function(panelBuilder, model) {
-                return !!Globals.clientState().catalysisReportIdentifier();
+                return !!Globals.clientState().haveCatalysisReportAndShowingAdvancedOptions();
             }
         },
         {
@@ -118,7 +123,7 @@ var panel: Panel = {
             displayPrompt: `Would you prefer to <strong>hide statistical results on the "Explore Patterns" page</strong>?
                 (You can still see the results in a pop-up window when you choose "Show statistical results" from the "things you can do" list under the graph.)`,
             displayVisible: function(panelBuilder, model) {
-                return !!Globals.clientState().catalysisReportIdentifier();
+                return !!Globals.clientState().haveCatalysisReportAndShowingAdvancedOptions();
             }
         },
         {
@@ -130,7 +135,7 @@ var panel: Panel = {
             If you want to <strong>filter the stories</strong> used in this report, enter your filter here.
             (For details, click Help.)`,
             displayVisible: function(panelBuilder, model) {
-                return !!Globals.clientState().catalysisReportIdentifier();
+                return !!Globals.clientState().haveCatalysisReportAndShowingAdvancedOptions();
             }
         },
 
@@ -141,7 +146,7 @@ var panel: Panel = {
             displayType: "header",
             displayPrompt: "Drawing graphs",
             displayVisible: function(panelBuilder, model) {
-                return !!Globals.clientState().catalysisReportIdentifier();
+                return !!Globals.clientState().haveCatalysisReportAndShowingAdvancedOptions();
             }
         },
         {
@@ -154,7 +159,7 @@ var panel: Panel = {
                 (This setting affects graphs in the application and the printed report.
                 You can override this choice for any pattern by choosing "Toggle display of "No answer" values" in the "things you can do" list.)`,
             displayVisible: function(panelBuilder, model) {
-                return !!Globals.clientState().catalysisReportIdentifier();
+                return !!Globals.clientState().haveCatalysisReportAndShowingAdvancedOptions();
             }
         },
         {
@@ -168,7 +173,7 @@ var panel: Panel = {
                 (This choice affects graphs in the application only. 
                 If no selection is made here, graphs will be 800 pixels wide.)`,
             displayVisible: function(panelBuilder, model) {
-                return !!Globals.clientState().catalysisReportIdentifier();
+                return !!Globals.clientState().haveCatalysisReportAndShowingAdvancedOptions();
             }
         },
         {
@@ -182,7 +187,7 @@ var panel: Panel = {
                 (This choice affects graphs in the application and the printed report.
                 If no selection is made here, labels will be truncated at 30 characters.)`,
             displayVisible: function(panelBuilder, model) {
-                return !!Globals.clientState().catalysisReportIdentifier();
+                return !!Globals.clientState().haveCatalysisReportAndShowingAdvancedOptions();
             }
         },
         {
@@ -197,7 +202,7 @@ var panel: Panel = {
                     If no selection is made here, graphs will be drawn if at there is least one story in the subset.
                     Note that a high number here could create patterns with no graphs in them.)`,
             displayVisible: function(panelBuilder, model) {
-                return !!Globals.clientState().catalysisReportIdentifier();
+                return !!Globals.clientState().haveCatalysisReportAndShowingAdvancedOptions();
             }
 
         },  
@@ -212,7 +217,7 @@ var panel: Panel = {
                 (This choice affects graphs in the application and the printed report.
                 If no selection is made here, four categories will be used.)`,
             displayVisible: function(panelBuilder, model) {
-                return !!Globals.clientState().catalysisReportIdentifier();
+                return !!Globals.clientState().haveCatalysisReportAndShowingAdvancedOptions();
             }
         },    
         {
@@ -226,7 +231,7 @@ var panel: Panel = {
                 (This choice affects graphs in the application and the printed report.
                 If no selection is made here, the maximum story length will be drawn from the stories themselves.)`,
             displayVisible: function(panelBuilder, model) {
-                return !!Globals.clientState().catalysisReportIdentifier();
+                return !!Globals.clientState().haveCatalysisReportAndShowingAdvancedOptions();
             }
         },   
         {
@@ -240,7 +245,7 @@ var panel: Panel = {
                 (This choice affects graphs in the application and the printed report.
                 If no selection is made here, 20 bins will be used.)`,
             displayVisible: function(panelBuilder, model) {
-                return !!Globals.clientState().catalysisReportIdentifier();
+                return !!Globals.clientState().haveCatalysisReportAndShowingAdvancedOptions();
             }
         },
         {
@@ -252,7 +257,7 @@ var panel: Panel = {
             displayPrompt: `To <strong>hide observed/expected story counts</strong> on continency tables, check this box. 
                 (This choice affects graphs in the application and the printed report.)`,
             displayVisible: function(panelBuilder, model) {
-                return !!Globals.clientState().catalysisReportIdentifier();
+                return !!Globals.clientState().haveCatalysisReportAndShowingAdvancedOptions();
             }
         },
         {
@@ -267,7 +272,7 @@ var panel: Panel = {
                     If no selection is made here, 3 levels will be used.
                     Set this number high if you have a lot of identical scale values.)`,
             displayVisible: function(panelBuilder, model) {
-                return !!Globals.clientState().catalysisReportIdentifier();
+                return !!Globals.clientState().haveCatalysisReportAndShowingAdvancedOptions();
             }
         },
         {
@@ -282,7 +287,7 @@ var panel: Panel = {
                 If no selection is made here, a size of 8 will be used.
                 Set this number low if you have a large number of slightly-different data points.)`,
             displayVisible: function(panelBuilder, model) {
-                return !!Globals.clientState().catalysisReportIdentifier();
+                return !!Globals.clientState().haveCatalysisReportAndShowingAdvancedOptions();
             }
         },
         {
@@ -300,7 +305,7 @@ var panel: Panel = {
                 (This choice affects graphs in the application and the printed report.
                 If no selection is made here, a limit of 0.05 will be used.)`,
             displayVisible: function(panelBuilder, model) {
-                return !!Globals.clientState().catalysisReportIdentifier();
+                return !!Globals.clientState().haveCatalysisReportAndShowingAdvancedOptions();
             }
         },
         {
@@ -313,7 +318,7 @@ var panel: Panel = {
                 (This choice affects graphs in the application and the printed report.
                 For details see the help system.)`,
             displayVisible: function(panelBuilder, model) {
-                return !!Globals.clientState().catalysisReportIdentifier();
+                return !!Globals.clientState().haveCatalysisReportAndShowingAdvancedOptions();
             }
         },
 
@@ -324,7 +329,7 @@ var panel: Panel = {
             displayType: "header",
             displayPrompt: "Other options",
             displayVisible: function(panelBuilder, model) {
-                return !!Globals.clientState().catalysisReportIdentifier();
+                return !!Globals.clientState().haveCatalysisReportAndShowingAdvancedOptions();
             }
         },
         {
@@ -339,7 +344,7 @@ var panel: Panel = {
                 If no selection is made here, a 20-story minimum will be used.
                 Note that test results based on low sample sizes (usually less than 30) should be regarded as suggestive rather than conclusive.)`,
             displayVisible: function(panelBuilder, model) {
-                return !!Globals.clientState().catalysisReportIdentifier();
+                return !!Globals.clientState().haveCatalysisReportAndShowingAdvancedOptions();
             }
         },
         {
@@ -353,7 +358,7 @@ var panel: Panel = {
                 (Enter the short names of the questions whose answers you want to see, one per line.)
                 `,
             displayVisible: function(panelBuilder, model) {
-                return !!Globals.clientState().catalysisReportIdentifier();
+                return !!Globals.clientState().haveCatalysisReportAndShowingAdvancedOptions();
             }
         },
         
@@ -366,7 +371,7 @@ var panel: Panel = {
             displayPrompt: `You can <strong>copy observations, interpretations, themes, and perspectives</strong> from one catalysis report to another (new, empty) report,
             as long as the question short names are the same. For more information, see the help system.`,
             displayVisible: function(panelBuilder, model) {
-                return !!Globals.clientState().catalysisReportIdentifier();
+                return !!Globals.clientState().haveCatalysisReportAndShowingAdvancedOptions();
             }
         },
         {
@@ -378,7 +383,7 @@ var panel: Panel = {
             displayPrompt: "Export report elements to CSV",
             displayPreventBreak: true,
             displayVisible: function(panelBuilder, model) {
-                return !!Globals.clientState().catalysisReportIdentifier();
+                return !!Globals.clientState().haveCatalysisReportAndShowingAdvancedOptions();
             }
         },
         {
@@ -389,7 +394,7 @@ var panel: Panel = {
             displayName: "Import elements",
             displayPrompt: "Import report elements from CSV",
             displayVisible: function(panelBuilder, model) {
-                return !!Globals.clientState().catalysisReportIdentifier();
+                return !!Globals.clientState().haveCatalysisReportAndShowingAdvancedOptions();
             }
         },
         {
@@ -398,7 +403,7 @@ var panel: Panel = {
             displayType: "html",
             displayPrompt: '<input type="file" id="csvFileLoader" name="files" title="Import Data from CSV File" style="display:none"/>',
             displayVisible: function(panelBuilder, model) {
-                return !!Globals.clientState().catalysisReportIdentifier();}
+                return !!Globals.clientState().haveCatalysisReportAndShowingAdvancedOptions();}
         },
     ]
 };
