@@ -560,20 +560,7 @@ class PatternExplorer {
         this.graphHolder.customLabelLengthLimit = this.project.tripleStore.queryLatestC(this.catalysisReportIdentifier, "customLabelLengthLimit") || Project.default_customLabelLengthLimit; 
         this.graphHolder.customGraphWidth = parseInt(this.project.tripleStore.queryLatestC(this.catalysisReportIdentifier, "customDisplayGraphWidth")) || Project.default_customDisplayGraphWidth; 
         this.graphHolder.hideNumbersOnContingencyGraphs = this.project.tripleStore.queryLatestC(this.catalysisReportIdentifier, "hideNumbersOnContingencyGraphs"); 
-
-        // update page CSS for custom graph CSS - also save in graphHolder to use for saving files
-        this.graphHolder.customGraphCSS = this.project.tripleStore.queryLatestC(this.catalysisReportIdentifier, "catalysisReport_customGraphCSS");
-        
-        var oldCustomStyleSheetToBeRemoved = document.getElementById('customGraphStyleSheet');
-        if (oldCustomStyleSheetToBeRemoved && oldCustomStyleSheetToBeRemoved.parentElement) oldCustomStyleSheetToBeRemoved.parentElement.removeChild(oldCustomStyleSheetToBeRemoved);
-
-        if (this.graphHolder.customGraphCSS) {
-            const newStyleElement = document.createElement("style");
-            newStyleElement.setAttribute("id", "customGraphStyleSheet");
-            newStyleElement.innerHTML = this.graphHolder.customGraphCSS;
-            const script = document.querySelector("script");
-            script.parentNode.insertBefore(newStyleElement, script);
-        }
+        this.updateStyleSheetForCustomGraphCSS();
 
         // get stories
         this.graphHolder.allStories = this.project.storiesForCatalysisReport(catalysisReportIdentifier);
@@ -615,16 +602,27 @@ class PatternExplorer {
         this.updateGraphForNewPattern(null);     
     }
 
+    updateStyleSheetForCustomGraphCSS() {
+        // save css in graphHolder to use for saving files to SVG/PNG
+        this.graphHolder.customGraphCSS = this.project.tripleStore.queryLatestC(this.catalysisReportIdentifier, "catalysisReport_customGraphCSS");
+        
+        const styleSheetName = "customGraphStyleSheet";                
+        const oldStyleSheet = document.getElementById(styleSheetName);
+        if (oldStyleSheet && oldStyleSheet.parentNode) oldStyleSheet.parentNode.removeChild(oldStyleSheet);
+        
+        if (this.graphHolder.customGraphCSS) {
+            const newStyleSheet = document.createElement("style");
+            newStyleSheet.setAttribute("id", styleSheetName);
+            newStyleSheet.innerHTML = this.graphHolder.customGraphCSS;
+            const script = document.querySelector("script");
+            script.parentNode.insertBefore(newStyleSheet, script);
+        }
+    }
+
     // TODO: Similar to what is in add_graphBrowser
     getCurrentCatalysisReportIdentifier(args) {
-        var model = args.model;
-        var fieldSpecification = args.fieldSpecification;
-        
-        // Get selected catalysis report
-        var catalysisReportShortName = valuePathResolver.newValuePathForFieldSpecification(model, fieldSpecification)();
-        
+        const catalysisReportShortName = valuePathResolver.newValuePathForFieldSpecification(args.model, args.fieldSpecification)();
         if (!catalysisReportShortName) return null;
-        
         return this.project.findCatalysisReport(catalysisReportShortName);
     }
 
