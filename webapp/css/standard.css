@@ -958,14 +958,14 @@ table.filterTable td {
     background-color: #dfe7fa;
 }
 
-.narrafirma-questions-chooser-table {
+.narrafirma-questions-chooser-table, .narrafirma-graph-types-chooser-table {
     width: 95%;
     margin-left: 0.5em;
     margin-top: 0.5em;
     border-collapse: collapse;
 }
 
-.narrafirma-questions-chooser-table-td {
+.narrafirma-questions-chooser-table-td, .narrafirma-graph-types-chooser-table-td {
     vertical-align: top;
     border: 1px dashed gray;
     padding: 8px;
@@ -1234,6 +1234,11 @@ td.narrafirma-mw-nested-title, td.narrafirma-mw-nested-stats {
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ d3 charting ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 /* common to all graphs */
+
+.narrafirma-graph-thumbnail {
+    margin: 0.25em 0 0 2em;
+    height: 64px;
+}
 
 .narrafirma-graph-title {
     margin: 0.5em;

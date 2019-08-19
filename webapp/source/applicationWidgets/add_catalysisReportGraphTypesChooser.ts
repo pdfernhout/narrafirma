@@ -15,7 +15,7 @@ function add_catalysisReportGraphTypesChooser(panelBuilder: PanelBuilder, model,
         
     var storageFunction = valuePathResolver.newValuePathForFieldSpecification(model, fieldSpecification);
 
-    var allGraphTypes = {
+    const allGraphTypes = {
         "bar graphs": true,
         "histograms": true,
         "tables": true,
@@ -23,34 +23,58 @@ function add_catalysisReportGraphTypesChooser(panelBuilder: PanelBuilder, model,
         "scatterplots": true,
         "contingency-histogram tables": true,
         "multiple scatterplots": true,
+        "scale network maps": true,
         "data integrity graphs": true,
         "texts": true,
     }
-    
-    var graphTypesToDisplayNamesMap = {
-        "bar graphs": "choices (bar graphs)",
-        "histograms": "scales (histograms)",
-        "tables": "choice x choice combinations (contingency tables)",
-        "multiple histograms": "scale x choice combinations (side-by-side histograms)",
-        "scatterplots": "scale x scale combinations (scatterplots)",
-        "contingency-histogram tables": "choice x choice x scale combinations (contingency-histogram tables)",
-        "multiple scatterplots": "scale x scale x choice combinations (side-by-side scatterplots)",
-        "data integrity graphs": "data integrity graphs",
+
+    const allGraphTypesThumbnailNames = {
+        "bar graphs": "barGraphs",
+        "histograms": "histograms",
+        "tables": "tables",
+        "multiple histograms": "multiHistograms",
+        "scatterplots": "scatterPlots",
+        "contingency-histogram tables": "contingencyHistograms",
+        "multiple scatterplots": "multiScatterPlots",
+        "scale network maps": "scaleNetworks",
+        "data integrity graphs": "dataIntegrity",
         "texts": "texts",
     }
+    
+    const graphTypesToDisplayNamesMap = {
+        "bar graphs": "bar graphs (choices)",
+        "histograms": "histograms (scales)",
+        "tables": "tables (choices + choices)",
+        "multiple histograms": "histogram sets (scales + choices)",
+        "scatterplots": "scatterplots (scales + scales)",
+        "contingency-histogram tables": "histogram tables (choices + choices + scales)",
+        "multiple scatterplots": "scatterplot sets (scales + scales + choices)",
+        "scale network maps": "network maps (all scales together + choices)",
+        "data integrity graphs": "data integrity graphs",
+        "texts": "text listings",
+    }
 
-    var graphTypesToSingularDisplayNamesMap = {
-        "bar graphs": "choice (bar graph)",
-        "histograms": "scale (histogram)",
-        "tables": "choice x choice combination (contingency table)",
-        "multiple histograms": "scale x choice combination (side-by-side histograms)",
-        "scatterplots": "scale x scale combination (scatterplot)",
-        "contingency-histogram tables": "choice x choice x scale combination (contingency-histogram table)",
-        "multiple scatterplots": "scale x scale x choice combination (side-by-side scatterplots)",
+    const graphTypesToSingularDisplayNamesMap = {
+        "bar graphs": "bar graph (choice)",
+        "histograms": "histogram (scale)",
+        "tables": "table (choice + choice)",
+        "multiple histograms": "histogram set (scale + choice)",
+        "scatterplots": "scatterplot (scale + scale)",
+        "contingency-histogram tables": "histogram table (choice + choice + scale)",
+        "multiple scatterplots": "scatterplot set (scale + scale + choice)",
+        "scale network maps": "network map (all scales together)",
         "data integrity graphs": "data integrity graph",
-        "texts": "text",
+        "texts": "text listing",
     }
     
+    const columnNames = ["One question at a time", "Two-question combinations", "Three or more questions together"];
+
+    const graphTypesInTableColumns = [
+        ["bar graphs", "histograms", "texts"],
+        ["tables", "multiple histograms", "scatterplots"],
+        ["contingency-histogram tables", "multiple scatterplots", "scale network maps", "data integrity graphs"]
+    ]
+
     function isChecked(shortName, value = undefined) {
         var map = storageFunction() || {};
         if (value === undefined) {
@@ -61,24 +85,23 @@ function add_catalysisReportGraphTypesChooser(panelBuilder: PanelBuilder, model,
     }
 
     function buildQuestionCheckbox(aName, id, count): any {
-        const spaceAfter = [
-            "scales (histograms)", 
-            "scale x scale combinations (scatterplots)",
-            "scale x scale x choice combinations (side-by-side scatterplots)"
-        ].indexOf(aName) >= 0;
-
         var nameToDisplay;
         if (count == 1) {
-            nameToDisplay = "" + count + " " + graphTypesToSingularDisplayNamesMap[id];
+            nameToDisplay = " " + count + " " + graphTypesToSingularDisplayNamesMap[id];
         } else {
-            nameToDisplay = "" + count + " " + aName;
+            nameToDisplay = " " + count + " " + aName;
         }
 
         return m("div", [
             m("input[type=checkbox]", {id: id, checked: isChecked(id), onchange: function(event) { isChecked(id, event.target.checked); }}),
             m("label", {"for": id}, nameToDisplay),
             m("br"),
-            spaceAfter ? m("br") : ""
+            m("img", {
+                src: 'help/catalysis/graphThumbnail_' + allGraphTypesThumbnailNames[id] + '.png', 
+                class: "narrafirma-graph-thumbnail"
+            }),
+            m("br"),
+            m("br"),
         ]);
     }
     
@@ -97,30 +120,39 @@ function add_catalysisReportGraphTypesChooser(panelBuilder: PanelBuilder, model,
     var graphMultiChoiceQuestionsAgainstThemselves = project.tripleStore.queryLatestC(catalysisReportIdentifier, "graphMultiChoiceQuestionsAgainstThemselves");
     var totalGraphCount = 0;
 
+    let columnTDs = [];
+    for (let i = 0; i < columnNames.length; i++) {
+        let column = [];
+        column.push(m("b", columnNames[i]));
+        column.push(m("br"));
+        column.push(m("br"));
+        graphTypesInTableColumns[i].forEach(function(graphType) {
+            let count = graphCountForGraphType(graphType, questions, graphMultiChoiceQuestionsAgainstThemselves);
+            let checkbox = buildQuestionCheckbox(graphTypesToDisplayNamesMap[graphType], graphType, count);
+            column.push(checkbox);
+            if (graphTypesToCreate && graphTypesToCreate[graphType]) totalGraphCount += count;
+        })
+        columnTDs.push(m("td", {"class": "narrafirma-graph-types-chooser-table-td"}, column));
+    }
+
     // TODO: Translate
+
     return m("div.questionExternal", [
-        prompt,
-        m("div", [
-            m("br"),  
-            allGraphTypesAsArray.map((graphType) => {
-                var count = graphCountForGraphType(graphType, questions, graphMultiChoiceQuestionsAgainstThemselves);
-                var result = buildQuestionCheckbox(graphTypesToDisplayNamesMap[graphType], graphType, count);
-                if (graphTypesToCreate && graphTypesToCreate[graphType]) totalGraphCount += count;
-                return result;
-            }),
-        ]),
-    m("br"),
-    m("button", { onclick: selectAll }, "Select all"),
-    m("button", { onclick: clearAll }, "Clear all"),
-    m("br"),
-    m("p" + tipStyleForGraphCount(totalGraphCount), tipForGraphCount(totalGraphCount))
+        prompt, m("div", [m("table", {"class": "narrafirma-graph-types-chooser-table"}, m("tr", columnTDs))]),
+        m("span[style=margin-left: 0.5em]", "Select graph types:"),
+        m("button", { onclick: selectAll }, "Select all"),
+        m("button", { onclick: clearAll }, "Clear all"),
+        m("br"),
+        m("p" + tipStyleForGraphCount(totalGraphCount), tipForGraphCount(totalGraphCount))
     ]);
 }
 
 function tipForGraphCount(totalGraphCount) {
     var tip;
-    if (totalGraphCount < 5000) {
-        tip = "You have selected a total of " + totalGraphCount + " graphs."
+    if (totalGraphCount === 1) {
+        tip = totalGraphCount + " graph selected"
+    } else if (totalGraphCount < 5000) {
+        tip = totalGraphCount + " graphs selected"
     } else if (totalGraphCount < 10000) {
         tip = "You have selected a total of " + totalGraphCount + " graphs. If the Explore patterns page loads slowly, choose fewer graph types and/or questions."
     } else if (totalGraphCount < 50000) {
@@ -256,6 +288,7 @@ function graphCountForGraphType(graphType, questions, graphMultiChoiceQuestionsA
 
     console.log("ERROR: Unexpected graph type", graphType);
     alert("ERROR: Unexpected graph type: " + graphType);
+    return 0;
 }
 
 export = add_catalysisReportGraphTypesChooser;
