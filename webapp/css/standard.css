@@ -996,6 +996,7 @@ table.filterTable td {
 	padding: 0.5em;
 	margin: 0.5em;
     font-size: 0.9em;
+    font-weight: normal;
 } 
 
 h6.narrafirma-statistics-panel-small {
@@ -1011,7 +1012,6 @@ h6.narrafirma-statistics-panel-small {
 	padding: 0.5em;
 	margin: 0.5em;
     font-size: 0.9em;
-    max-width: 267px; /* this should match largeGraphWidth/3 in charting.ts */
 }
 
 table.narrafirma-mw-all-results {
@@ -1497,6 +1497,12 @@ td.narrafirma-mw-nested-title, td.narrafirma-mw-nested-stats {
 
 /* correlation map */
 
+.narrafirma-correlation-map-frame {
+    stroke: lightgray;
+    fill: none;
+    stroke-width: 1px;
+}
+
 .narrafirma-correlation-map-node-count {
     fill: #ffe1aa;
     stroke: #f88a57;
@@ -1510,7 +1516,7 @@ td.narrafirma-mw-nested-title, td.narrafirma-mw-nested-stats {
 .narrafirma-correlation-map-node-max {
     fill: white;
     stroke: #f88a57;
-    stroke-width: 2px;
+    stroke-width: 1.5px;
 }
 
 .narrafirma-correlation-map-node-max-selected {
@@ -1531,6 +1537,18 @@ td.narrafirma-mw-nested-title, td.narrafirma-mw-nested-stats {
 
 .narrafirma-correlation-map-option-title {
     margin-bottom: 1.5em;
+}
+
+.narrafirma-correlation-map-stats-table {
+    font-weight: normal;
+    border-collapse: collapse;
+    margin: auto;
+}
+
+.narrafirma-correlation-map-stats-table td {
+    border: 1px solid lightgray;
+    padding: 0.25em;
+    text-align: right;
 }
 
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Dialogs ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */

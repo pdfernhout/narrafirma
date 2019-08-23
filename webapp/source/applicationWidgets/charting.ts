@@ -2083,6 +2083,54 @@ export function d3ContingencyTable(graphHolder: GraphHolder, xAxisQuestion, yAxi
 //------------------------------------------------------------------------------------------------------------------------------------------
 // correlation map 
 //------------------------------------------------------------------------------------------------------------------------------------------
+
+function addStatisticsPanelForCorrelationMap(chartPane: HTMLElement, graphHolder: GraphHolder, pairStatsInfo, chartTitle, chartSize, hide = false) {
+    var statsPane = document.createElement("h6");
+    var html = "";
+    var text = "";
+    if (hide) statsPane.style.cssText = "display:none";
+
+    const keyToReportForR = customStatLabel("r", graphHolder) || "r";
+    const keyToReportForP = customStatLabel("p", graphHolder) || "p";
+    const keyToReportForN = customStatLabel("n", graphHolder) || "n";
+
+    if (pairStatsInfo.length > 0) {
+        html += '<table class="narrafirma-correlation-map-stats-table">';
+        html += '<tr><th></th><th></th><th>' + keyToReportForR + "</th><th>" + keyToReportForP + "</th><th>" + keyToReportForN + "</th></tr>";
+    }
+
+    for (let pairIndex = 0; pairIndex < pairStatsInfo.length; pairIndex++) {
+        const thisPairInfo = pairStatsInfo[pairIndex];
+        html += "<tr>"
+        html += "<td>" + thisPairInfo["one"] + "</td>";
+        html += "<td>" + thisPairInfo["two"] + "</td>";
+        html += "<td>" + thisPairInfo["r"].toFixed(2) + "</td>";
+        html += "<td>";
+        html += (thisPairInfo["p"] < 0.001) ? "< 0.001" : thisPairInfo["p"].toFixed(3);
+        html += "</td>";
+        html += "<td>" + thisPairInfo["n"] + "</td>";
+        html += "</tr>"
+
+        text += thisPairInfo["one"] + " x " + thisPairInfo["two"];
+        text += ": " + keyToReportForR + " = " + thisPairInfo["r"].toFixed(2);
+        text += " " + keyToReportForP + " = ";
+        text += (thisPairInfo["p"] < 0.001) ? "< 0.001" : thisPairInfo["p"].toFixed(3);
+        text += " " + keyToReportForN + " = " + thisPairInfo["n"];
+        text += "\n";
+    }
+    html += "</table>"
+
+    if (chartSize === "large") {
+        statsPane.className = "narrafirma-statistics-panel";
+    } else {
+        statsPane.className = "narrafirma-statistics-panel-small narrafirma-statistics-panel";
+    }
+
+    statsPane.innerHTML = html;
+    chartPane.appendChild(statsPane);
+    return text;
+}
+
 export function d3CorrelationMap(graphHolder: GraphHolder, scaleQuestions, choiceQuestion, nodes, largestCount, option, hideStatsPanel = false) {
     if (nodes.length < 3) return null;
 
@@ -2091,17 +2139,25 @@ export function d3CorrelationMap(graphHolder: GraphHolder, scaleQuestions, choic
     const stories = graphHolder.allStories;
     const unansweredText = customStatLabel("unanswered", graphHolder);
     const showNAs = showNAValues(graphHolder);
+    let statsInfo = [];
     let usedQuestionIndexes = [];
     for (let scaleIndex1 = 0; scaleIndex1 < scaleQuestions.length; scaleIndex1++) {
         usedQuestionIndexes.push(scaleIndex1);
         for (let scaleIndex2 = 0; scaleIndex2 < scaleQuestions.length; scaleIndex2++) {
             if (usedQuestionIndexes.indexOf(scaleIndex2) === -1) {
-                var statistics = calculateStatistics.calculateStatisticsForScatterPlot(scaleQuestions[scaleIndex1], scaleQuestions[scaleIndex2], 
+                var pairStats = calculateStatistics.calculateStatisticsForScatterPlot(scaleQuestions[scaleIndex1], scaleQuestions[scaleIndex2], 
                     choiceQuestion, option, stories, graphHolder.minimumStoryCountRequiredForTest, unansweredText, showNAs);
                 const pToShowLink = parseFloat(graphHolder.correlationLineChoice);
-                if (statistics.p <= pToShowLink && statistics.n >= graphHolder.minimumStoryCountRequiredForGraph) {
-                    const link: MapLink = {source: scaleIndex1, target: scaleIndex2, value: statistics.rho, p: statistics.p, n: statistics.n};
+                if (pairStats.p <= pToShowLink && pairStats.n >= graphHolder.minimumStoryCountRequiredForGraph) {
+                    const link: MapLink = {source: scaleIndex1, target: scaleIndex2, value: pairStats.rho, p: pairStats.p, n: pairStats.n};
                     links.push(link);
+                    if (pairStats.statsDetailed.length > 1) {
+                        const pairStatsInfo = {
+                            "one": scaleIndex1+1, // scaleQuestions[scaleIndex1].displayName, 
+                            "two": scaleIndex2+1, // scaleQuestions[scaleIndex2].displayName, 
+                            "r": pairStats.rho, "p": pairStats.p, "n": pairStats.n};
+                        statsInfo.push(pairStatsInfo);
+                    }
                 }
             }
         }
@@ -2130,7 +2186,9 @@ export function d3CorrelationMap(graphHolder: GraphHolder, scaleQuestions, choic
             .attr("y", "1em")
             .text(choiceQuestion.displayName + ": " + option)
     } 
-    chartBody.style({'stroke': 'light-gray', 'stroke-width': '1px'})
+    const subgraphName = isSmallFormat ? choiceQuestion.displayName + ": " + option : "";
+    const textForThisOption = addStatisticsPanelForCorrelationMap(chartPane, graphHolder, statsInfo, subgraphName, chartSize, hideStatsPanel); 
+    graphHolder.statisticalInfo += subgraphName + "\n\n" + textForThisOption + "\n\n";
 
     // save info about nodes and links for later reference
     let namesForNodeIDs = {};
@@ -2153,13 +2211,18 @@ export function d3CorrelationMap(graphHolder: GraphHolder, scaleQuestions, choic
     const nodeNames = nodes.map(function(node) {return node.name});
     let nodeScale = d3.scale.ordinal()
         .domain(nodeNames)
-        .rangeRoundPoints([(option !== null) ? 60 : 40, chart.height - 60]); // trial and error
+        .rangeRoundPoints([(option !== null) ? 60 : 40, chart.height - 60]); 
 
     // set up sizes for circles and placements
-    const maxCircleSize = chart.width / 16.0; // trial and error
-    const maxLinkWidth = chart.width / 24.0; // trial and error
-    const nodeValueMultiplier = maxCircleSize / largestCount; // if choice question, largestCount is for ALL graphs
+    const maxCircleRadius = 0.25 * chart.height / nodes.length; 
+    const maxLinkWidth = maxCircleRadius * 2;  
+    const nodeValueMultiplier = maxCircleRadius / largestCount; // if choice question, largestCount is for ALL graphs
     const midX = chart.width / 2.0;
+
+    let frameRect = chartBody.append("rect")
+        .attr('width', chart.width)
+        .attr('height', chart.height)
+        .attr('class', 'narrafirma-correlation-map-frame')
 
     // create node circles - two for each question, max count and actual count
     // max count cirles must be beneath count circles
@@ -2167,8 +2230,8 @@ export function d3CorrelationMap(graphHolder: GraphHolder, scaleQuestions, choic
         .data(nodes)
             .enter().append("ellipse")
                 .attr("class", "narrafirma-correlation-map-node-max")
-                .attr("rx", function (node: MapNode) { return maxCircleSize; } )
-                .attr("ry", function (node: MapNode) { return maxCircleSize; } )
+                .attr("rx", function (node: MapNode) { return maxCircleRadius; } )
+                .attr("ry", function (node: MapNode) { return maxCircleRadius; } )
                 .attr("cx", midX )
                 .attr("cy", function (node: MapNode) { return nodeScale(node.name); } )
     let nodeCountCircles = chartBody.selectAll(".narrafirma-correlation-map-node-count")
@@ -2188,7 +2251,7 @@ export function d3CorrelationMap(graphHolder: GraphHolder, scaleQuestions, choic
                     const arcStartY = nodeScale(namesForNodeIDs[link.source].name);
                     const arcEndY = nodeScale(namesForNodeIDs[link.target].name);
                     const arcDirection = (link.value > 0) ? "1" : "0";
-                    const arcDisplacement = (link.value > 0) ? maxCircleSize : -maxCircleSize;
+                    const arcDisplacement = (link.value > 0) ? maxCircleRadius : -maxCircleRadius;
                     // M x,y = Move Command (move the pen to a location)
                     let result = "M " + (midX + arcDisplacement) + "," + arcStartY + " ";
                     // Elliptical Arc Curve Command
@@ -2273,7 +2336,7 @@ export function d3CorrelationMap(graphHolder: GraphHolder, scaleQuestions, choic
                 .text(function(node: MapNode) { return (node.count > graphHolder.minimumStoryCountRequiredForGraph) ? node.name : ""})
                 .attr("class", "narrafirma-correlation-map-node-label")
                 .attr("x", midX )
-                .attr("y", function(node: MapNode) { return nodeScale(node.name) + maxCircleSize + 8; } ) 
+                .attr("y", function(node: MapNode) { return nodeScale(node.name) + maxCircleRadius + 8; } ) 
                 .attr("dx", "0")
                 .attr("dy", "0.5em") // vertical-align: top
                 .attr("text-anchor", "middle") // text-align: middle
