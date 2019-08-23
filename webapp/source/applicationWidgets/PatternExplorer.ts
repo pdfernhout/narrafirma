@@ -100,6 +100,7 @@ class PatternExplorer {
     
     patternsGridFieldSpecification: any = null;
     thingsYouCanDoPanelSpecification = null;
+    thingsYouCanDoIfNoSelectionPanelSpecification = null;
     textAnswersPanelSpecification = null;
     observationsPanelSpecification = null;
     interpretationsPanelSpecification = null;
@@ -268,6 +269,29 @@ class PatternExplorer {
                     displayConfiguration: this.doThingsWithSelectedStories.bind(this),
                 }, 
             ]};
+
+        this.thingsYouCanDoIfNoSelectionPanelSpecification = {
+                "id": "thingsYouCanDoPanel",
+                panelFields: [ 
+                    {
+                        id: "thingsYouCanDoPanel_actionRequested",
+                        valuePath: "selectionActionRequested",
+                        displayPrompt: "These are some <strong>things you can do</strong> based on the graph above.",
+                        displayType: "select",
+                        displayWithoutQuestionDivs: true,
+                        valueOptions: [
+                            "Show statistical results",
+                            "Save graph(s) as SVG file(s)",
+                            "Save graph(s) as PNG file(s)"],
+                    },
+                    {
+                        id: "thingsYouCanDoPanel_doThingsWithSelectedStories",
+                        displayPrompt: "Do it",
+                        displayType: "button",
+                        displayPreventBreak: true,
+                        displayConfiguration: this.doThingsWithSelectedStories.bind(this),
+                    }, 
+                ]};
 
         this.textAnswersPanelSpecification = {
             "id": "textAnswersPanel",
@@ -449,11 +473,16 @@ class PatternExplorer {
                 );
             };
 
-            if (this.currentPattern && this.currentPattern.graphType === "data integrity") {
+            let activeAccessor = null;
+            if (this.observationAccessors.length > this.activeObservationTab)
+            activeAccessor = this.observationAccessors[this.activeObservationTab];
+
+            if (this.currentPattern && (this.currentPattern.graphType === "data integrity" || this.currentPattern.graphType === "correlation map")) {
                 parts = [
                     buildGridHeader(),
                     this.patternsGrid.calculateView(),
                     m("div.narrafirma-graph-results-panel", {config: this.insertGraphResultsPaneConfig.bind(this)}),
+                    panelBuilder.buildPanel(this.thingsYouCanDoIfNoSelectionPanelSpecification, activeAccessor || this),
                     buildObservationsAndInterpretationsPanels(),
                 ];
             } else if (this.currentPattern && this.currentPattern.graphType === "texts") {
@@ -467,9 +496,6 @@ class PatternExplorer {
                 const numStories = this.modelForStoryGrid.storiesSelectedInGraph.length;
                 const storyOrStoriesWord = (numStories > 1) ? "stories" : "story";
                 var selectedStoriesText = "" + numStories + " " + storyOrStoriesWord + " in selection - " + this.nameForCurrentGraphSelection();
-                let activeAccessor = null;
-                if (this.observationAccessors.length > this.activeObservationTab)
-                activeAccessor = this.observationAccessors[this.activeObservationTab];
                 parts = [
                     buildGridHeader(),
                     this.patternsGrid.calculateView(),
@@ -836,6 +862,22 @@ class PatternExplorer {
             });
         };
 
+        // all scale questions, all choice questions
+        if (this.graphTypesToCreate["correlation maps"]) {
+            result.push(this.makePattern(nextID(), "correlation map", scaleQuestions, "Correlation map"));
+            nominalQuestions.forEach((nominalQuestion) => {
+                if (build) {
+                    let aName = "Correlation map for " + nominalQuestion.displayName;
+                    let questionList = [];
+                    questionList.push(nominalQuestion); // choice question must be first in the list
+                    questionList = questionList.concat(scaleQuestions);
+                    result.push(this.makePattern(nextID(), "correlation map", questionList, aName));
+                } else {
+                    graphCount++;
+                }
+            });
+        }
+
         if (build) {
             return result;
         } else {
@@ -847,11 +889,14 @@ class PatternExplorer {
     // selected pattern 
     //------------------------------------------------------------------------------------------------------------------------------------------
     
-    makePattern(id, graphType, questions, patternNameIfDataIntegrity) {
+    makePattern(id, graphType, questions, patternNameIfSpecialType) {
         var pattern; 
         if (graphType == "data integrity") {
-            pattern = {id: id, graphType: graphType, patternName: patternNameIfDataIntegrity, 
+            pattern = {id: id, graphType: graphType, patternName: patternNameIfSpecialType, 
                 questions: questions, q1DisplayName: "", q2DisplayName: "", q3DisplayName: ""};    
+        } else if (graphType == "correlation map") {
+            pattern = {id: id, graphType: graphType, patternName: patternNameIfSpecialType, 
+                questions: questions, q1DisplayName: "", q2DisplayName: "", q3DisplayName: ""};  
         } else if (questions.length === 1) {
             pattern = {id: id, graphType: graphType, patternName: nameForQuestion(questions[0]), 
                 questions: questions, q1DisplayName: questions[0].displayName, q2DisplayName: "", q3DisplayName: ""};    
@@ -1002,6 +1047,9 @@ class PatternExplorer {
             case "multiple scatter":
                 newGraph = charting.multipleScatterPlot(graphHolder, q1, q2, q3, selectionCallback, hideStatsPanel);
                 break;
+            case "correlation map":
+                newGraph = charting.d3CorrelationMapOrMaps(graphHolder, pattern.questions, hideStatsPanel);
+                break;
             case "data integrity":
                 if (pattern.patternName === "Unanswered choice questions" || pattern.patternName === "Unanswered scale questions") {
                     newGraph = charting.d3BarChartToShowUnansweredChoiceQuestions(graphHolder, pattern.questions, pattern.patternName);
@@ -1091,10 +1139,10 @@ class PatternExplorer {
                 this.restoreGraphSelection();
                 break;
             case "Save graph(s) as SVG file(s)":
-                this.saveGraphAsSVGFile("SVG");
+                this.saveGraphAsFile("SVG");
                 break;
             case "Save graph(s) as PNG file(s)":
-                this.saveGraphAsSVGFile("PNG");
+                this.saveGraphAsFile("PNG");
                 break;
             default:
                 alert("Please choose an action from the list before you click the button.");
@@ -1110,7 +1158,7 @@ class PatternExplorer {
         this.updateGraphForNewPattern(this.currentPattern);
     }
 
-    saveGraphAsSVGFile(fileTypeToSave) {
+    saveGraphAsFile(fileTypeToSave) {
         if (!this.graphHolder || !this.graphHolder.graphResultsPane) return;
 
         const svgNodes = this.graphHolder.graphResultsPane.querySelectorAll("svg"); 
@@ -1354,6 +1402,8 @@ class PatternExplorer {
             case "multiple scatter":
                 result += " [" + selection.subgraphChoice + "]: " + selection.selectionCategories.join(", ");
                 break;
+
+            // cfk add case for network graph
             default:
                 alert("NO name for current graph selection");
         }

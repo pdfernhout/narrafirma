@@ -42,7 +42,8 @@ class Project {
         "contingency-histogram tables": false,
         "multiple histograms": false,
         "scatterplots": false,
-        "multiple scatterplots": false
+        "multiple scatterplots": false,
+        "correlation maps": false
     }
 
     // The activeQuestionnaires field tracks what should be available to survey users and to construct related messages

@@ -79,7 +79,7 @@ function getStoryLengthValueForStory(story, question, unansweredText, includeNAV
     }
 }
 
-function collectValuesForOneScale(stories: surveyCollection.Story[], fieldName, conversionFunction = null) {
+export function collectValuesForOneScale(stories: surveyCollection.Story[], fieldName, conversionFunction = null) {
     var result = [];
     for (var i = 0; i < stories.length; i++) {
         var value = stories[i].fieldValue(fieldName);
@@ -125,7 +125,7 @@ function collectValuesForTwoScalesAndMaybeOneChoiceOption(stories: surveyCollect
     return {x: xResult, y: yResult, unansweredCount: unansweredCount};
 }
 
-function collectValuesForOneScaleAndOneOrTwoChoices(stories: surveyCollection.Story[], unansweredText, includeNAValues, scaleQuestion, choiceQuestion, secondChoiceQuestion = null) {
+export function collectValuesForOneScaleAndOneOrTwoChoices(stories: surveyCollection.Story[], unansweredText, includeNAValues, scaleQuestion, choiceQuestion, secondChoiceQuestion = null) {
 
     function addValue(arrayHolder, fieldName, value, secondFieldName = null) {
         var key = fieldName;
@@ -209,7 +209,9 @@ export function calculateStatisticsForPattern(pattern, stories, minimumStoryCoun
     } else if (graphType == "data integrity") {
         statistics = {statsSummary: "None", statsDetailed: []};
     } else if (graphType == "texts") {
-        statistics = {statsSummary: "None", statsDetailed: []};            
+        statistics = {statsSummary: "None", statsDetailed: []};   
+    } else if (graphType == "correlation map") {
+        statistics = {statsSummary: "None", statsDetailed: []};          // cfk fix later 
     } else {
         console.log("ERROR: Unexpected graphType: " + graphType);
         throw new Error("ERROR: Not suported graphType: " + graphType);

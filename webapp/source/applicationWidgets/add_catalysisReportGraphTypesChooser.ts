@@ -23,7 +23,7 @@ function add_catalysisReportGraphTypesChooser(panelBuilder: PanelBuilder, model,
         "scatterplots": true,
         "contingency-histogram tables": true,
         "multiple scatterplots": true,
-        "scale network maps": true,
+        "correlation maps": true,
         "data integrity graphs": true,
         "texts": true,
     }
@@ -36,7 +36,7 @@ function add_catalysisReportGraphTypesChooser(panelBuilder: PanelBuilder, model,
         "scatterplots": "scatterPlots",
         "contingency-histogram tables": "contingencyHistograms",
         "multiple scatterplots": "multiScatterPlots",
-        "scale network maps": "scaleNetworks",
+        "correlation maps": "correlationMaps",
         "data integrity graphs": "dataIntegrity",
         "texts": "texts",
     }
@@ -49,7 +49,7 @@ function add_catalysisReportGraphTypesChooser(panelBuilder: PanelBuilder, model,
         "scatterplots": "scatterplots (scales + scales)",
         "contingency-histogram tables": "histogram tables (choices + choices + scales)",
         "multiple scatterplots": "scatterplot sets (scales + scales + choices)",
-        "scale network maps": "network maps (all scales together + choices)",
+        "correlation maps": "correlation maps (all scales together + choices)",
         "data integrity graphs": "data integrity graphs",
         "texts": "text listings",
     }
@@ -62,7 +62,7 @@ function add_catalysisReportGraphTypesChooser(panelBuilder: PanelBuilder, model,
         "scatterplots": "scatterplot (scale + scale)",
         "contingency-histogram tables": "histogram table (choice + choice + scale)",
         "multiple scatterplots": "scatterplot set (scale + scale + choice)",
-        "scale network maps": "network map (all scales together)",
+        "correlation maps": "correlation map (all scales together)",
         "data integrity graphs": "data integrity graph",
         "texts": "text listing",
     }
@@ -72,7 +72,7 @@ function add_catalysisReportGraphTypesChooser(panelBuilder: PanelBuilder, model,
     const graphTypesInTableColumns = [
         ["bar graphs", "histograms", "texts"],
         ["tables", "multiple histograms", "scatterplots"],
-        ["contingency-histogram tables", "multiple scatterplots", "scale network maps", "data integrity graphs"]
+        ["contingency-histogram tables", "multiple scatterplots", "correlation maps", "data integrity graphs"]
     ]
 
     function isChecked(shortName, value = undefined) {
@@ -284,6 +284,10 @@ function graphCountForGraphType(graphType, questions, graphMultiChoiceQuestionsA
             });
         });
         return graphCount;
+    }
+
+    if (graphType === "correlation maps") {
+        return 1 + nominalQuestions.length;
     }
 
     console.log("ERROR: Unexpected graph type", graphType);

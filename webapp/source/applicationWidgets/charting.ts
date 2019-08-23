@@ -23,6 +23,20 @@ interface StoryPlotItem {
     text?: string;
 }
 
+interface MapNode {
+    id: number;
+    name: string;
+    count: number;
+}
+
+interface MapLink {
+    source: number;
+    target: number;
+    value: number;
+    p: number;
+    n: number;
+}
+
 const maxRangeLabelLength = 26;
 
 const defaultStatsTexts = {
@@ -2064,5 +2078,277 @@ export function d3ContingencyTable(graphHolder: GraphHolder, xAxisQuestion, yAxi
     chart.brushend = brushend;
     
     return chart;
+}
+
+//------------------------------------------------------------------------------------------------------------------------------------------
+// correlation map 
+//------------------------------------------------------------------------------------------------------------------------------------------
+export function d3CorrelationMap(graphHolder: GraphHolder, scaleQuestions, choiceQuestion, nodes, largestCount, option, hideStatsPanel = false) {
+    if (nodes.length < 3) return null;
+
+    // already have node info, now get link info
+    let links = [];
+    const stories = graphHolder.allStories;
+    const unansweredText = customStatLabel("unanswered", graphHolder);
+    const showNAs = showNAValues(graphHolder);
+    let usedQuestionIndexes = [];
+    for (let scaleIndex1 = 0; scaleIndex1 < scaleQuestions.length; scaleIndex1++) {
+        usedQuestionIndexes.push(scaleIndex1);
+        for (let scaleIndex2 = 0; scaleIndex2 < scaleQuestions.length; scaleIndex2++) {
+            if (usedQuestionIndexes.indexOf(scaleIndex2) === -1) {
+                var statistics = calculateStatistics.calculateStatisticsForScatterPlot(scaleQuestions[scaleIndex1], scaleQuestions[scaleIndex2], 
+                    choiceQuestion, option, stories, graphHolder.minimumStoryCountRequiredForTest, unansweredText, showNAs);
+                const pToShowLink = parseFloat(graphHolder.correlationLineChoice);
+                if (statistics.p <= pToShowLink && statistics.n >= graphHolder.minimumStoryCountRequiredForGraph) {
+                    const link: MapLink = {source: scaleIndex1, target: scaleIndex2, value: statistics.rho, p: statistics.p, n: statistics.n};
+                    links.push(link);
+                }
+            }
+        }
+    }
+
+    // set up chart size and objects
+    const isSmallFormat = !!choiceQuestion;
+    let style = "singleChartStyle";
+    let chartSize = "large";
+    if (isSmallFormat) {
+        style = "mediumChartStyle";
+        chartSize = "medium";
+    }
+    const chartPane = newChartPane(graphHolder, style);
+    const margin = {top: 20, right: 20, bottom: 20, left: 20};
+    if (!isSmallFormat) addTitlePanelForChart(chartPane, "Correlation map");
+    const chart = makeChartFramework(chartPane, "correlationMap", chartSize, margin, graphHolder.customGraphWidth);
+    const chartBody = chart.chartBody;
+    chart.subgraphQuestion = choiceQuestion;
+    chart.subgraphChoice = option;
+    if (isSmallFormat) {
+        let graphTitle = chartBody.append("text")
+            .attr("class", "narrafirma-correlation-map-option-title")
+            .attr("text-anchor", "left")
+            .attr("x", "0.5em")
+            .attr("y", "1em")
+            .text(choiceQuestion.displayName + ": " + option)
+    } 
+    chartBody.style({'stroke': 'light-gray', 'stroke-width': '1px'})
+
+    // save info about nodes and links for later reference
+    let namesForNodeIDs = {};
+    let linkInfoForNodeIDs = {};
+    let linkInfoForNodeIDPairs = {};
+    nodes.forEach(function (node) {
+        namesForNodeIDs[node.id] = node;
+        linkInfoForNodeIDs[node.id] = [];
+    });
+    links.forEach(function (link) {
+        linkInfoForNodeIDs[link.source].push({otherNode: namesForNodeIDs[link.target].name, value: link.value, n: link.n, p: link.p});
+        linkInfoForNodeIDs[link.target].push({otherNode: namesForNodeIDs[link.source].name, value: link.value, n: link.n, p: link.p});
+        linkInfoForNodeIDPairs[link.source + " " + link.target] = {
+            sourceName: namesForNodeIDs[link.source].name, 
+            targetName: namesForNodeIDs[link.target].name, 
+            value: link.value, n: link.n, p: link.p}
+    });
+
+    // set up scale to place node circles vertically
+    const nodeNames = nodes.map(function(node) {return node.name});
+    let nodeScale = d3.scale.ordinal()
+        .domain(nodeNames)
+        .rangeRoundPoints([(option !== null) ? 60 : 40, chart.height - 60]); // trial and error
+
+    // set up sizes for circles and placements
+    const maxCircleSize = chart.width / 16.0; // trial and error
+    const maxLinkWidth = chart.width / 24.0; // trial and error
+    const nodeValueMultiplier = maxCircleSize / largestCount; // if choice question, largestCount is for ALL graphs
+    const midX = chart.width / 2.0;
+
+    // create node circles - two for each question, max count and actual count
+    // max count cirles must be beneath count circles
+    let nodeMaxCountCircles = chartBody.selectAll(".narrafirma-correlation-map-node-max")
+        .data(nodes)
+            .enter().append("ellipse")
+                .attr("class", "narrafirma-correlation-map-node-max")
+                .attr("rx", function (node: MapNode) { return maxCircleSize; } )
+                .attr("ry", function (node: MapNode) { return maxCircleSize; } )
+                .attr("cx", midX )
+                .attr("cy", function (node: MapNode) { return nodeScale(node.name); } )
+    let nodeCountCircles = chartBody.selectAll(".narrafirma-correlation-map-node-count")
+        .data(nodes)
+            .enter().append("ellipse")
+                .attr("class", "narrafirma-correlation-map-node-count")
+                .attr("rx", function (node: MapNode) { return nodeValueMultiplier * node.count; } )
+                .attr("ry", function (node: MapNode) { return nodeValueMultiplier * node.count; } )
+                .attr("cx", midX )
+                .attr("cy", function (node: MapNode) { return nodeScale(node.name); } )
+
+    // create link paths
+    let linkPaths = chartBody.selectAll(".correlation-map-links")
+        .data(links)
+            .enter().append("path")
+                .attr('d', function(link: MapLink) {
+                    const arcStartY = nodeScale(namesForNodeIDs[link.source].name);
+                    const arcEndY = nodeScale(namesForNodeIDs[link.target].name);
+                    const arcDirection = (link.value > 0) ? "1" : "0";
+                    const arcDisplacement = (link.value > 0) ? maxCircleSize : -maxCircleSize;
+                    // M x,y = Move Command (move the pen to a location)
+                    let result = "M " + (midX + arcDisplacement) + "," + arcStartY + " ";
+                    // Elliptical Arc Curve Command
+                    // https://www.w3.org/TR/SVG/paths.html#PathDataEllipticalArcCommands
+                    // A rx,ry x-axis-rotation large-arc-flag, sweep-flag x,y 
+                    const distance = Math.abs((arcEndY - arcStartY))/ 2;
+                    result += "A" +  distance + "," + distance; // arc radius x and y (same)
+                    result += "-30"; // x-axis-rotation (-30 seems to work)
+                    result += " 0"; // large-arc-flag (always 0 because the angle of the arc is less than 180 degrees)
+                    result += "," + arcDirection; // direction arc is drawn in (1 is to the right)
+                    result += " " + (midX + arcDisplacement) + "," + arcEndY; // end point
+                    return result;
+                })
+                .style("fill", "none")
+                .attr("class", "narrafirma-correlation-map-link")
+                .style("stroke-width", function(link: MapLink) { return Math.abs(link.value * maxLinkWidth / 2)})
+
+    // set up highlighting whe users mouses over nodes or links
+    // sometimes the nodeCountCircle will be tiny and sometimes it will be as big as the nodeMaxCountCircle
+    // so they both have to respond in the same way - it is redundant but necessary to accommodate different counts
+    nodeMaxCountCircles
+        .on("mouseover", function(node: MapNode) {
+            d3.select(this).classed("narrafirma-correlation-map-node-max-selected", true);
+            linkPaths.classed('narrafirma-correlation-map-link-selected', function(path) {return path.source === node.id || path.target === node.id});
+        })
+        .on("mouseout", function(node: MapNode) {
+            d3.select(this).classed("narrafirma-correlation-map-node-max-selected", false);
+            d3.select(this).classed("narrafirma-correlation-map-node-max", true);
+            linkPaths.classed("narrafirma-correlation-map-link-selected", false);
+            linkPaths.classed("narrafirma-correlation-map-link", true);
+        })
+    nodeCountCircles
+        .on("mouseover", function(node: MapNode) {
+            d3.select(this).classed("narrafirma-correlation-map-node-count-selected", true);
+            linkPaths.classed('narrafirma-correlation-map-link-selected', function(path) {return path.source === node.id || path.target === node.id});
+        })
+        .on("mouseout", function(node: MapNode) {
+            d3.select(this).classed("narrafirma-correlation-map-node-count-selected", false);
+            d3.select(this).classed("narrafirma-correlation-map-node-count", true);
+            linkPaths.classed("narrafirma-correlation-map-link-selected", false);
+            linkPaths.classed("narrafirma-correlation-map-link", true);
+        })
+    linkPaths
+        .on("mouseover", function(link: MapLink) {
+            d3.select(this).classed("narrafirma-correlation-map-link", false);
+            d3.select(this).classed("narrafirma-correlation-map-link-selected", true);
+        })
+        .on("mouseout", function(link: MapLink) {
+            d3.select(this).classed("narrafirma-correlation-map-link-selected", false);
+            d3.select(this).classed("narrafirma-correlation-map-link", true);
+        })
+
+    // set up tooltips for nodes and links
+    function textForNode(node: MapNode) {
+        let result = node.name + " (" + node.count + " stories)";
+        linkInfoForNodeIDs[node.id].forEach(function(linkInfo) {
+            result += "\n    x " + linkInfo.otherNode;
+            result += " (r = " + linkInfo.value.toFixed(2);
+            result += (linkInfo.p < 0.001) ? ", p < 0.001" : ", p = " + linkInfo.p.toFixed(3);
+            result += ", n = " + linkInfo.n + ")";
+        })
+        return result;
+    }
+    nodeCountCircles.append("svg:title").text(function(node: MapNode) {return textForNode(node)})
+    nodeMaxCountCircles.append("svg:title").text(function(node: MapNode) {return textForNode(node)})
+
+    function textForLink(link: MapLink) {
+        const lookup = "" + link.source + " " + link.target;
+        const linkInfo = linkInfoForNodeIDPairs[lookup];
+        let result = linkInfo.sourceName + " x " + linkInfo.targetName;
+        result += "\n    r = " + linkInfo.value.toFixed(2);
+        result += (linkInfo.p < 0.001) ? "\n    p < 0.001" : "\n    p = " + linkInfo.p.toFixed(3);
+        result += "\n    n = " + linkInfo.n;
+        return result;
+    }
+    linkPaths.append("svg:title").text(function(link: MapLink) {return textForLink(link)})
+
+    // finally (on top) draw node names
+    let nodeLabels = chartBody.selectAll(".narrafirma-correlation-map-node-label")
+        .data(nodes)
+            .enter().append("text")
+                .text(function(node: MapNode) { return (node.count > graphHolder.minimumStoryCountRequiredForGraph) ? node.name : ""})
+                .attr("class", "narrafirma-correlation-map-node-label")
+                .attr("x", midX )
+                .attr("y", function(node: MapNode) { return nodeScale(node.name) + maxCircleSize + 8; } ) 
+                .attr("dx", "0")
+                .attr("dy", "0.5em") // vertical-align: top
+                .attr("text-anchor", "middle") // text-align: middle
+
+    return chart;
+}
+
+export function d3CorrelationMapOrMaps(graphHolder: GraphHolder, questions, hideStatsPanel = false) {
+    const nodesInfo = nodeInfoForScalesWithOrWithoutChoiceQuestion(graphHolder, questions);
+    const options = nodesInfo["Options"];
+    const largestCount = nodesInfo["Largest count"];
+    const nodes = nodesInfo["Nodes"];
+    if (options.length > 1) {
+        var subCharts = [];
+        for (let i = 0; i < options.length; i++) {
+            var subchart = d3CorrelationMap(graphHolder, questions.slice(1), questions[0], nodes[options[i]], largestCount, options[i], hideStatsPanel)
+            if (subchart) subCharts.push(subchart);
+        }
+        var clearFloat = document.createElement("br");
+        clearFloat.style.clear = "left";
+        graphHolder.graphResultsPane.appendChild(clearFloat);
+        return subCharts;
+    } else {
+        var chart = d3CorrelationMap(graphHolder, questions, null, nodes["ALL"], largestCount, null, hideStatsPanel);
+        return chart;
+    }
+}
+
+function nodeInfoForScalesWithOrWithoutChoiceQuestion(graphHolder, questions) {
+    const stories = graphHolder.allStories;
+    const unansweredText = customStatLabel("unanswered", graphHolder);
+    const showNAs = showNAValues(graphHolder);
+
+    let choiceQuestion = null;
+    let scaleQuestions = null;
+    const options = [];
+    if (questions[0].displayType !== "slider") { 
+        choiceQuestion = questions[0];
+        preloadResultsForQuestionOptionsInArray(options, choiceQuestion, unansweredText, showNAs);
+        scaleQuestions = questions.slice(1);
+    } else {
+        options.push("ALL");
+        scaleQuestions = questions;
+    }
+
+    let nodesInfo = {};
+    let nodes = {};
+    let largestCount = 0; 
+
+    for (let i = 0; i < options.length; i++) {
+        const option = options[i];
+        nodes[option] = [];
+        for (let scaleIndex = 0; scaleIndex < scaleQuestions.length; scaleIndex++) {
+            let count = 0;
+            for (let storyIndex = 0; storyIndex < stories.length; storyIndex++) {
+                const scaleValue = calculateStatistics.getScaleValueForQuestionAndStory(scaleQuestions[scaleIndex], stories[storyIndex], unansweredText);
+                if (scaleValue !== undefined && scaleValue !== unansweredText) {
+                    if (choiceQuestion) {
+                        const choiceValue = calculateStatistics.getChoiceValueForQuestionAndStory(choiceQuestion, stories[storyIndex], 
+                            unansweredText, showNAs);
+                        if (!calculateStatistics.choiceValueMatchesQuestionOption(choiceValue, choiceQuestion, option)) continue;
+                    }
+                    count++;
+                }
+            }
+            if (count >= graphHolder.minimumStoryCountRequiredForGraph) {
+                const node: MapNode = {id: scaleIndex, name: scaleQuestions[scaleIndex].displayName, count: count};
+                nodes[option].push(node);
+            }
+            if (count > largestCount) largestCount = count;
+        }
+    }
+    nodesInfo["Options"] = options;
+    nodesInfo["Largest count"] = largestCount;
+    nodesInfo["Nodes"] = nodes;
+    return nodesInfo;
 }
 
