@@ -236,6 +236,7 @@ export function initializedGraphHolder(allStories, options) {
         numHistogramBins: options.numHistogramBins,
         numScatterDotOpacityLevels: options.numScatterDotOpacityLevels,
         scatterDotSize: options.scatterDotSize,
+        correlationMapShape: options.correlationMapShape,
         correlationLineChoice: options.correlationLineChoice,
         customLabelLengthLimit: options.customLabelLengthLimit,
         hideNumbersOnContingencyGraphs: options.hideNumbersOnContingencyGraphs,
@@ -2132,7 +2133,10 @@ function addStatisticsPanelForCorrelationMap(chartPane: HTMLElement, graphHolder
 }
 
 export function d3CorrelationMap(graphHolder: GraphHolder, scaleQuestions, choiceQuestion, nodes, largestCount, option, hideStatsPanel = false) {
+    
     if (nodes.length < 3) return null;
+
+    let mapShape = graphHolder.correlationMapShape;
 
     // already have node info, now get link info
     let links = [];
@@ -2172,7 +2176,7 @@ export function d3CorrelationMap(graphHolder: GraphHolder, scaleQuestions, choic
         chartSize = "medium";
     }
     const chartPane = newChartPane(graphHolder, style);
-    const margin = {top: 20, right: 20, bottom: 20, left: 20};
+    const margin = {top: 10, right: 10, bottom: 10, left: 10};
     if (!isSmallFormat) addTitlePanelForChart(chartPane, "Correlation map");
     const chart = makeChartFramework(chartPane, "correlationMap", chartSize, margin, graphHolder.customGraphWidth);
     const chartBody = chart.chartBody;
@@ -2183,9 +2187,14 @@ export function d3CorrelationMap(graphHolder: GraphHolder, scaleQuestions, choic
             .attr("class", "narrafirma-correlation-map-option-title")
             .attr("text-anchor", "left")
             .attr("x", "0.5em")
-            .attr("y", "1em")
+            .attr("y", "1.25em")
             .text(choiceQuestion.displayName + ": " + option)
     } 
+    let frameRect = chartBody.append("rect")
+        .attr('width', chart.width)
+        .attr('height', chart.height)
+        .attr('class', 'narrafirma-correlation-map-frame')
+
     const subgraphName = isSmallFormat ? choiceQuestion.displayName + ": " + option : "";
     const textForThisOption = addStatisticsPanelForCorrelationMap(chartPane, graphHolder, statsInfo, subgraphName, chartSize, hideStatsPanel); 
     graphHolder.statisticalInfo += subgraphName + "\n\n" + textForThisOption + "\n\n";
@@ -2207,53 +2216,64 @@ export function d3CorrelationMap(graphHolder: GraphHolder, scaleQuestions, choic
             value: link.value, n: link.n, p: link.p}
     });
 
-    // set up scale to place node circles vertically
-    const nodeNames = nodes.map(function(node) {return node.name});
-    let nodeScale = d3.scale.ordinal()
-        .domain(nodeNames)
-        .rangeRoundPoints([(option !== null) ? 60 : 40, chart.height - 60]); 
-
     // set up sizes for circles and placements
     const maxCircleRadius = 0.25 * chart.height / nodes.length; 
     const maxLinkWidth = maxCircleRadius * 2;  
     const nodeValueMultiplier = maxCircleRadius / largestCount; // if choice question, largestCount is for ALL graphs
     const midX = chart.width / 2.0;
+    const midY = chart.height / 2.0;
 
-    let frameRect = chartBody.append("rect")
-        .attr('width', chart.width)
-        .attr('height', chart.height)
-        .attr('class', 'narrafirma-correlation-map-frame')
+    // set up scale to place node circles vertically 
+    const nodeNames = nodes.map(function(node) {return node.name});
+    let nodeScaleInAVerticalLine = d3.scale.ordinal()
+        .domain(nodeNames)
+        .rangeRoundPoints([(option !== null) ? 60 : 40, chart.height - 60]); 
 
-    // create node circles - two for each question, max count and actual count
-    // max count cirles must be beneath count circles
-    let nodeMaxCountCircles = chartBody.selectAll(".narrafirma-correlation-map-node-max")
-        .data(nodes)
-            .enter().append("ellipse")
-                .attr("class", "narrafirma-correlation-map-node-max")
-                .attr("rx", function (node: MapNode) { return maxCircleRadius; } )
-                .attr("ry", function (node: MapNode) { return maxCircleRadius; } )
-                .attr("cx", midX )
-                .attr("cy", function (node: MapNode) { return nodeScale(node.name); } )
-    let nodeCountCircles = chartBody.selectAll(".narrafirma-correlation-map-node-count")
-        .data(nodes)
-            .enter().append("ellipse")
-                .attr("class", "narrafirma-correlation-map-node-count")
-                .attr("rx", function (node: MapNode) { return nodeValueMultiplier * node.count; } )
-                .attr("ry", function (node: MapNode) { return nodeValueMultiplier * node.count; } )
-                .attr("cx", midX )
-                .attr("cy", function (node: MapNode) { return nodeScale(node.name); } )
+    // set up "clock face" to place node circles in a big circle
+    let nodePointsInACircle = {};
+    const largeCircleRadius = chart.width / 4.0;
+    for (let i = 0; i < nodes.length; i++) {
+        let angle = i * 2 * Math.PI / nodes.length;
+        let x = midX + largeCircleRadius * Math.cos(angle) + maxCircleRadius / 2;
+        let y = midY + largeCircleRadius * Math.sin(angle) + maxCircleRadius / 2;
+        nodePointsInACircle[i] = {"x": x, "y": y};
+    }
+
+    function nodeCenterX(node, index) {
+        if (mapShape === "line with arcs") {
+            return midX;
+        } else if (mapShape === "circle with lines") {
+            return nodePointsInACircle[index].x;
+        }
+    }
+
+    function nodeCenterY(node, index) {
+        if (mapShape === "line with arcs") {
+            return nodeScaleInAVerticalLine(node.name);
+        } else if (mapShape === "circle with lines") {
+            return nodePointsInACircle[index].y;
+        }
+    }
 
     // create link paths
-    let linkPaths = chartBody.selectAll(".correlation-map-links")
+    // these must be created first (beneath) because, for the circle condition, they have to go to the center points of the circles
+    let linkPaths = null;
+    if (mapShape === "line with arcs") {
+        linkPaths = chartBody.selectAll(".narrafirma-correlation-map-link")
         .data(links)
             .enter().append("path")
                 .attr('d', function(link: MapLink) {
-                    const arcStartY = nodeScale(namesForNodeIDs[link.source].name);
-                    const arcEndY = nodeScale(namesForNodeIDs[link.target].name);
-                    const arcDirection = (link.value > 0) ? "1" : "0";
+                    if (mapShape === "circle with lines") return null;
+                    let arcStartX, arcStartY, arcEndX, arcEndY, arcDirection = null;
                     const arcDisplacement = (link.value > 0) ? maxCircleRadius : -maxCircleRadius;
+                    arcStartX = midX + arcDisplacement;
+                    arcStartY = nodeScaleInAVerticalLine(namesForNodeIDs[link.source].name);
+                    arcEndX = midX + arcDisplacement;
+                    arcEndY = nodeScaleInAVerticalLine(namesForNodeIDs[link.target].name);
+                    arcDirection = (link.value > 0) ? "1" : "0";
+                    
                     // M x,y = Move Command (move the pen to a location)
-                    let result = "M " + (midX + arcDisplacement) + "," + arcStartY + " ";
+                    let result = "M " + arcStartX + "," + arcStartY + " ";
                     // Elliptical Arc Curve Command
                     // https://www.w3.org/TR/SVG/paths.html#PathDataEllipticalArcCommands
                     // A rx,ry x-axis-rotation large-arc-flag, sweep-flag x,y 
@@ -2262,14 +2282,47 @@ export function d3CorrelationMap(graphHolder: GraphHolder, scaleQuestions, choic
                     result += "-30"; // x-axis-rotation (-30 seems to work)
                     result += " 0"; // large-arc-flag (always 0 because the angle of the arc is less than 180 degrees)
                     result += "," + arcDirection; // direction arc is drawn in (1 is to the right)
-                    result += " " + (midX + arcDisplacement) + "," + arcEndY; // end point
+                    result += " " + arcEndX + "," + arcEndY; // end point
                     return result;
                 })
                 .style("fill", "none")
                 .attr("class", "narrafirma-correlation-map-link")
                 .style("stroke-width", function(link: MapLink) { return Math.abs(link.value * maxLinkWidth / 2)})
+    } else if (mapShape === "circle with lines") {
+        linkPaths = chartBody.selectAll(".narrafirma-correlation-map-link") 
+            .data(links)
+                .enter().append("line")
+                    .attr("x1", function(link: MapLink) { return nodeCenterX(null, link.source) })
+                    .attr("y1", function(link: MapLink) { return nodeCenterY(null, link.source) })
+                    .attr("x2", function(link: MapLink) { return nodeCenterX(null, link.target) })
+                    .attr("y2", function(link: MapLink) { return nodeCenterY(null, link.target) })
+                    .style("fill", "none")
+                    .attr("class", "narrafirma-correlation-map-link")
+                    .style("stroke-width", function(link: MapLink) { return Math.abs(link.value * maxLinkWidth / 2)})
+    }
 
-    // set up highlighting whe users mouses over nodes or links
+    // create node circles - two for each question, max count and actual count
+    // max count circles must be drawn beneath count circles (first)
+    let nodeMaxCountCircles = chartBody.selectAll(".narrafirma-correlation-map-node-max")
+        .data(nodes)
+            .enter().append("ellipse")
+                .attr("class", "narrafirma-correlation-map-node-max")
+                .attr("rx", function (node: MapNode) { return maxCircleRadius; } )
+                .attr("ry", function (node: MapNode) { return maxCircleRadius; } )
+                .attr("cx", function (node: MapNode, index: number) { return nodeCenterX(node, index) } )
+                .attr("cy", function (node: MapNode, index: number) { return nodeCenterY(node, index) } )
+                
+    let nodeCountCircles = chartBody.selectAll(".narrafirma-correlation-map-node-count")
+        .data(nodes)
+            .enter().append("ellipse")
+                .attr("class", "narrafirma-correlation-map-node-count")
+                .attr("rx", function (node: MapNode) { return nodeValueMultiplier * node.count; } )
+                .attr("ry", function (node: MapNode) { return nodeValueMultiplier * node.count; } )
+                .attr("cx", midX )
+                .attr("cx", function (node: MapNode, index: number) { return nodeCenterX(node, index) } )
+                .attr("cy", function (node: MapNode, index: number) { return nodeCenterY(node, index) } )
+
+    // set up highlighting for when user mouses over nodes
     // sometimes the nodeCountCircle will be tiny and sometimes it will be as big as the nodeMaxCountCircle
     // so they both have to respond in the same way - it is redundant but necessary to accommodate different counts
     nodeMaxCountCircles
@@ -2294,6 +2347,8 @@ export function d3CorrelationMap(graphHolder: GraphHolder, scaleQuestions, choic
             linkPaths.classed("narrafirma-correlation-map-link-selected", false);
             linkPaths.classed("narrafirma-correlation-map-link", true);
         })
+
+    // set up highlighting for when user mouses over links
     linkPaths
         .on("mouseover", function(link: MapLink) {
             d3.select(this).classed("narrafirma-correlation-map-link", false);
@@ -2304,7 +2359,7 @@ export function d3CorrelationMap(graphHolder: GraphHolder, scaleQuestions, choic
             d3.select(this).classed("narrafirma-correlation-map-link", true);
         })
 
-    // set up tooltips for nodes and links
+    // set up tooltips for nodes
     function textForNode(node: MapNode) {
         let result = node.name + " (" + node.count + " stories)";
         linkInfoForNodeIDs[node.id].forEach(function(linkInfo) {
@@ -2318,6 +2373,7 @@ export function d3CorrelationMap(graphHolder: GraphHolder, scaleQuestions, choic
     nodeCountCircles.append("svg:title").text(function(node: MapNode) {return textForNode(node)})
     nodeMaxCountCircles.append("svg:title").text(function(node: MapNode) {return textForNode(node)})
 
+    // set up tooltips for links
     function textForLink(link: MapLink) {
         const lookup = "" + link.source + " " + link.target;
         const linkInfo = linkInfoForNodeIDPairs[lookup];
@@ -2335,11 +2391,12 @@ export function d3CorrelationMap(graphHolder: GraphHolder, scaleQuestions, choic
             .enter().append("text")
                 .text(function(node: MapNode) { return (node.count > graphHolder.minimumStoryCountRequiredForGraph) ? node.name : ""})
                 .attr("class", "narrafirma-correlation-map-node-label")
-                .attr("x", midX )
-                .attr("y", function(node: MapNode) { return nodeScale(node.name) + maxCircleRadius + 8; } ) 
+                .attr("x", function(node: MapNode, index: number) { return nodeCenterX(node, index) } )
+                .attr("y", function(node: MapNode, index: number) { return nodeCenterY(node, index) + maxCircleRadius + 8; } ) 
                 .attr("dx", "0")
                 .attr("dy", "0.5em") // vertical-align: top
                 .attr("text-anchor", "middle") // text-align: middle
+                .style("font-size", isSmallFormat ? "0.9em" : "1em")
 
     return chart;
 }

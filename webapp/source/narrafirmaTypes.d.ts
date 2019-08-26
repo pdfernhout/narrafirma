@@ -28,6 +28,7 @@ interface GraphHolder {
     numHistogramBins: number;
     numScatterDotOpacityLevels: number;
     scatterDotSize: number;
+    correlationMapShape: string;
     correlationLineChoice: string;
     customLabelLengthLimit: string;
     hideNumbersOnContingencyGraphs: boolean;

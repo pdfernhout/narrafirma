@@ -309,6 +309,20 @@ var panel: Panel = {
             }
         },
         {
+            id: "configureCatalysisReport_correlationMapShape",
+            valuePath: "/clientState/catalysisReportIdentifier/correlationMapShape",
+            valueType: "string",
+            valueOptions: ["line with arcs", "circle with lines"],
+            displayType: "select",
+            displayName: "Correlation map shape",
+            displayPrompt: `What <strong>shape</strong> should correlation maps be? 
+                (This choice affects graphs in the application and the printed report.
+                If no selection is made here, the "line with arcs" choice will be used.)`,
+            displayVisible: function(panelBuilder, model) {
+                return !!Globals.clientState().haveCatalysisReportAndShowingAdvancedOptions();
+            }
+        },
+        {
             id: "catalysisReport_customGraphCSS",
             valuePath: "/clientState/catalysisReportIdentifier/catalysisReport_customGraphCSS",
             valueType: "string",

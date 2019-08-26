@@ -323,9 +323,11 @@ export function printCatalysisReport() {
     options["numHistogramBins"] = project.tripleStore.queryLatestC(catalysisReportIdentifier, "numHistogramBins") || Project.default_numHistogramBins; 
     options["numScatterDotOpacityLevels"] = project.tripleStore.queryLatestC(catalysisReportIdentifier, "numScatterDotOpacityLevels") || Project.default_numScatterDotOpacityLevels; 
     options["scatterDotSize"] = project.tripleStore.queryLatestC(catalysisReportIdentifier, "scatterDotSize") || Project.default_scatterDotSize; 
+    options["correlationMapShape"] = project.tripleStore.queryLatestC(catalysisReportIdentifier, "correlationMapShape") || Project.default_correlationMapShape; 
+    
     options["correlationLineChoice"] = project.tripleStore.queryLatestC(catalysisReportIdentifier, "correlationLineChoice") || Project.default_correlationLineChoice; 
     options["customLabelLengthLimit"] = parseInt(project.tripleStore.queryLatestC(catalysisReportIdentifier, "customLabelLengthLimit") || Project.default_customLabelLengthLimit); 
-
+    
     options["outputGraphFormat"] = project.tripleStore.queryLatestC(catalysisReportIdentifier, "outputGraphFormat") || "SVG";
     options["showStatsPanelsInReport"] = project.tripleStore.queryLatestC(catalysisReportIdentifier, "showStatsPanelsInReport") || false;
     options["printItemIndexNumbers"] = project.tripleStore.queryLatestC(catalysisReportIdentifier, "printItemIndexNumbers") || false;
@@ -909,6 +911,7 @@ function initializedGraphHolder(allStories, options) {
         numHistogramBins: options.numHistogramBins,
         numScatterDotOpacityLevels: options.numScatterDotOpacityLevels,
         scatterDotSize: options.scatterDotSize,
+        correlationMapShape: options.correlationMapShape,
         correlationLineChoice: options.correlationLineChoice,
         customLabelLengthLimit: options.customLabelLengthLimit,
         hideNumbersOnContingencyGraphs: options.hideNumbersOnContingencyGraphs,
@@ -992,7 +995,7 @@ function printGraphWithGraphHolder(graphHolder: GraphHolder, customCSS) {
             }
             rows.push(m("tr", columnsForThisRow));
         } 
-        result.push(m("table", {"class": "narrafirma-print-multiple-histograms"}, rows));
+        result.push(m("table", {"class": "narrafirma-print-multiple-histograms"}, rows)); // CFK FIX could be other classes
         
         // Add the overall statistics (for all panes)
         if (graphHolder.showStatsPanelsInReport) {

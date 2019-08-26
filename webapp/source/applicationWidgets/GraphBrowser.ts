@@ -43,6 +43,7 @@ class GraphBrowser {
             numHistogramBins: Project.default_numHistogramBins,
             numScatterDotOpacityLevels: Project.default_numScatterDotOpacityLevels,
             scatterDotSize: Project.default_scatterDotSize,
+            correlationMapShape: Project.default_correlationMapShape,
             correlationLineChoice: Project.default_correlationLineChoice,
             customLabelLengthLimit: Project.default_customLabelLengthLimit,
             customGraphWidth: Project.default_customDisplayGraphWidth,

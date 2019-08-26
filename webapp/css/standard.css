@@ -993,8 +993,8 @@ table.filterTable td {
 
 .narrafirma-statistics-panel {
     background-color: inherit;
-	padding: 0.5em;
-	margin: 0.5em;
+	padding: 0.25em;
+	margin: 0.25em;
     font-size: 0.9em;
     font-weight: normal;
 } 
@@ -1009,8 +1009,8 @@ h6.narrafirma-statistics-panel-small {
 
 .narrafirma-statistics-panel-small {
     background-color: inherit;
-	padding: 0.5em;
-	margin: 0.5em;
+	padding: 0.25em;
+	margin: 0.25em;
     font-size: 0.9em;
 }
 
