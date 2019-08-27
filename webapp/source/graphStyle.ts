@@ -263,7 +263,64 @@ export const graphResultsPaneCSS = `
 .scatterplot.x-axis-label.start, .scatterplot.y-axis-label.start, .scatterplot.x-axis-label.end, .scatterplot.y-axis-label.end {
     font-size: 0.9em;
 }
-    
+
+/* correlation map */
+
+.narrafirma-correlation-map-frame {
+    stroke: lightgray;
+    fill: none;
+    stroke-width: 1px;
+}
+
+.narrafirma-correlation-map-node-count {
+    fill: #ffe1aa;
+    stroke: #f88a57;
+    stroke-width: 2px;
+}
+
+.narrafirma-correlation-map-node-count-selected {
+    fill: #f88a57;
+}
+
+.narrafirma-correlation-map-node-max {
+    fill: white;
+    stroke: #f88a57;
+    stroke-width: 1.5px;
+}
+
+.narrafirma-correlation-map-node-max-selected {
+    fill: #f88a57;
+}
+
+.narrafirma-correlation-map-node-label {
+    font-size: 1em;
+}
+
+.narrafirma-correlation-map-link {
+    stroke: #d7dce4; 
+}
+
+.narrafirma-correlation-map-link-selected {
+    stroke: #f88a57; 
+}
+
+.narrafirma-correlation-map-option-title {
+    margin: 0.5em 0 1.5em 0.5em;
+    font-size: 1em;
+}
+
+.narrafirma-correlation-map-stats-table {
+    font-weight: normal;
+    border-collapse: collapse;
+    margin: auto;
+}
+
+.narrafirma-correlation-map-stats-table td {
+    border: 1px solid lightgray;
+    padding: 0.25em;
+    text-align: right;
+}
+
 `;
 
 export function modifyFontSize(css, outputFontModifierPercent) {

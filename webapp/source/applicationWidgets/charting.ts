@@ -2094,7 +2094,13 @@ export function d3CorrelationMapOrMaps(graphHolder: GraphHolder, questions, hide
     const options = nodesInfo["Options"];
     const largestCount = nodesInfo["Largest count"];
     const nodes = nodesInfo["Nodes"];
+
     if (options.length > 1) {
+
+        var chartPane = newChartPane(graphHolder, "singleChartStyle");
+        var chartTitle = "Correlation map";
+        addTitlePanelForChart(chartPane, chartTitle);
+
         var subCharts = [];
         for (let i = 0; i < options.length; i++) {
             var subchart = d3CorrelationMap(graphHolder, questions.slice(1), questions[0], nodes[options[i]], largestCount, options[i], hideStatsPanel)
@@ -2221,14 +2227,15 @@ export function d3CorrelationMap(graphHolder: GraphHolder, scaleQuestions, choic
     if (isSmallFormat) {
         let graphTitle = chartBody.append("text")
             .attr("class", "narrafirma-correlation-map-option-title")
-            .attr("text-anchor", "left")
-            .attr("x", "0.5em")
-            .attr("y", "1.25em")
+            .attr("x", chart.width / 2)
+            .attr("y", "1.5em")
+            .attr("text-anchor", "middle")
             .text(choiceQuestion.displayName + ": " + option)
     } 
     let frameRect = chartBody.append("rect")
         .attr('width', chart.width)
         .attr('height', chart.height)
+        .style("fill", "none")
         .attr('class', 'narrafirma-correlation-map-frame')
 
     const subgraphName = isSmallFormat ? choiceQuestion.displayName + ": " + option : "";
@@ -2429,7 +2436,6 @@ export function d3CorrelationMap(graphHolder: GraphHolder, scaleQuestions, choic
                 .attr("dx", "0")
                 .attr("dy", "0.5em") // vertical-align: top
                 .attr("text-anchor", "middle") // text-align: middle
-                .style("font-size", isSmallFormat ? "0.9em" : "1em")
                 .style("font-style", function(node: MapNode) { return (node.type === "story") ? "normal" : "italic" } )
 
     return chart;

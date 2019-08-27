@@ -1536,7 +1536,8 @@ td.narrafirma-mw-nested-title, td.narrafirma-mw-nested-stats {
 }
 
 .narrafirma-correlation-map-option-title {
-    margin-bottom: 1.5em;
+    margin: 0.5em 0 1.5em 0.5em;
+    font-size: 1em;
 }
 
 .narrafirma-correlation-map-stats-table {

@@ -211,7 +211,7 @@ export function calculateStatisticsForPattern(pattern, stories, minimumStoryCoun
     } else if (graphType == "texts") {
         statistics = {statsSummary: "None", statsDetailed: []};   
     } else if (graphType == "correlation map") {
-        statistics = {statsSummary: "None", statsDetailed: []};          // cfk fix later 
+        statistics = {statsSummary: "None", statsDetailed: []};           
     } else {
         console.log("ERROR: Unexpected graphType: " + graphType);
         throw new Error("ERROR: Not suported graphType: " + graphType);

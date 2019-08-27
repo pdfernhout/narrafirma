@@ -974,7 +974,7 @@ function printInterpretationQuestionsAsHTMLList(printItems, questionsText, optio
 function printGraphWithGraphHolder(graphHolder: GraphHolder, customCSS) {
     // TODO: why are bar graphs and histograms drawn with a left axis color of #C26E00 when this never appears in the code? canvg thing?
     if (graphHolder.chartPanes.length > 1) {
-        // multiple histograms
+        // multiple graphs
         var result = [];
         
         // Add the title
@@ -995,7 +995,7 @@ function printGraphWithGraphHolder(graphHolder: GraphHolder, customCSS) {
             }
             rows.push(m("tr", columnsForThisRow));
         } 
-        result.push(m("table", {"class": "narrafirma-print-multiple-histograms"}, rows)); // CFK FIX could be other classes
+        result.push(m("table", {"class": "narrafirma-print-multiple-graphs"}, rows)); 
         
         // Add the overall statistics (for all panes)
         if (graphHolder.showStatsPanelsInReport) {
