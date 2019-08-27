@@ -26,6 +26,7 @@ interface StoryPlotItem {
 interface MapNode {
     id: number;
     name: string;
+    type: string;
     count: number;
 }
 
@@ -2147,7 +2148,15 @@ function nodeInfoForScalesWithOrWithoutChoiceQuestion(graphHolder, questions) {
                 }
             }
             if (count >= graphHolder.minimumStoryCountRequiredForGraph) {
-                const node: MapNode = {id: scaleIndex, name: scaleQuestions[scaleIndex].displayName, count: count};
+                let type = null;
+                if (scaleQuestions[scaleIndex].id.indexOf("S_") >= 0) {
+                    type = "story";
+                } else if (scaleQuestions[scaleIndex].id.indexOf("P_") >= 0) {
+                    type = "participant";
+                } else if (scaleQuestions[scaleIndex].id.indexOf("A_") >= 0) {
+                    type = "annotation";
+                }
+                const node: MapNode = {id: scaleIndex, name: scaleQuestions[scaleIndex].displayName, type: type, count: count};
                 nodes[option].push(node);
             }
             if (count > largestCount) largestCount = count;
@@ -2356,14 +2365,14 @@ export function d3CorrelationMap(graphHolder: GraphHolder, scaleQuestions, choic
         .style("display", "none");
     let tooltipSubchartPane = document.createElement("div");
     tooltipSubchartPane.className = "narrafirma-correlation-map-popup-graph-pane";
-    const tooltipOffset = 16;
+    const tooltipOffset = (choiceQuestion !== null) ? 24 : 32;
 
     // set up tooltip histogram drawing for nodes
     // sometimes the nodeCountCircle will be tiny and sometimes it will be as big as the nodeMaxCountCircle
     // so they both have to respond in the same way (hence the functions)
 
-    function setUpMouseOverForNode(node: MapNode, parent) {
-        d3.select(parent).classed("narrafirma-correlation-map-node-max-selected", true);
+    function setUpMouseOverForNode(node: MapNode, parent, countOrMax) {
+        d3.select(parent).classed("narrafirma-correlation-map-node-" + countOrMax + "-selected", true);
         linkPaths.classed('narrafirma-correlation-map-link-selected', function(path) {return path.source === node.id || path.target === node.id});
         let tooltipSubchart = d3HistogramChartForPopup(graphHolder, tooltipSubchartPane, scaleQuestions[node.id], choiceQuestion, option);
         let svgNode = tooltipSubchart.querySelector("svg");
@@ -2374,20 +2383,20 @@ export function d3CorrelationMap(graphHolder: GraphHolder, scaleQuestions, choic
             .style("top", chartPane.offsetTop + d3.mouse(parent)[1] + tooltipOffset + "px") 
     }
 
-    function setUpMouseOutForNode(node: MapNode, parent) {
-        d3.select(parent).classed("narrafirma-correlation-map-node-max-selected", false);
-        d3.select(parent).classed("narrafirma-correlation-map-node-max", true);
+    function setUpMouseOutForNode(node: MapNode, parent, countOrMax) {
+        d3.select(parent).classed("narrafirma-correlation-map-node-" + countOrMax + "-selected", false);
+        d3.select(parent).classed("narrafirma-correlation-map-node-" + countOrMax, true);
         linkPaths.classed("narrafirma-correlation-map-link-selected", false);
         linkPaths.classed("narrafirma-correlation-map-link", true);
         tooltipDiv.html("").style("display", "none");    
     }
 
     nodeMaxCountCircles
-        .on("mouseover", function(node: MapNode) { setUpMouseOverForNode(node, this) } )
-        .on("mouseout", function(node: MapNode) { setUpMouseOutForNode(node, this) } )
+        .on("mouseover", function(node: MapNode) { setUpMouseOverForNode(node, this, "max") } )
+        .on("mouseout", function(node: MapNode) { setUpMouseOutForNode(node, this, "max") } )
     nodeCountCircles
-        .on("mouseover", function(node: MapNode) { setUpMouseOverForNode(node, this) } )
-        .on("mouseout", function(node: MapNode) { setUpMouseOutForNode(node, this) } )
+        .on("mouseover", function(node: MapNode) { setUpMouseOverForNode(node, this, "count") } )
+        .on("mouseout", function(node: MapNode) { setUpMouseOutForNode(node, this, "count") } )
         
     // set up tooltip scatterplot graph drawing for links
     linkPaths
@@ -2421,6 +2430,7 @@ export function d3CorrelationMap(graphHolder: GraphHolder, scaleQuestions, choic
                 .attr("dy", "0.5em") // vertical-align: top
                 .attr("text-anchor", "middle") // text-align: middle
                 .style("font-size", isSmallFormat ? "0.9em" : "1em")
+                .style("font-style", function(node: MapNode) { return (node.type === "story") ? "normal" : "italic" } )
 
     return chart;
 }
