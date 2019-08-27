@@ -72,6 +72,7 @@ function customStatLabel(key, graphHolder) {
 }
 
 function showNAValues(graphHolder: GraphHolder) {
+    if (graphHolder.patternDisplayConfiguration === undefined) return true;
     return !graphHolder.patternDisplayConfiguration.hideNoAnswerValues;
 }
 
@@ -271,6 +272,9 @@ function makeChartFramework(chartPane: HTMLElement, chartType, size, margin, cus
     } else if (size == "medium") {
         fullWidth = largeGraphWidth / 2;
         fullHeight = largeGraphWidth / 2;
+    } else if (size == "thumbnail") {
+        fullWidth = 101;
+        fullHeight = 101;
     } else {
         throw new Error("Unexpected chart size: " + size); 
     }
@@ -806,7 +810,6 @@ function newChartPane(graphHolder: GraphHolder, styleClass: string): HTMLElement
     chartPane.className = styleClass;
     graphHolder.chartPanes.push(chartPane);
     graphHolder.graphResultsPane.appendChild(chartPane);
-
     return chartPane;
 }
 
@@ -2085,51 +2088,75 @@ export function d3ContingencyTable(graphHolder: GraphHolder, xAxisQuestion, yAxi
 // correlation map 
 //------------------------------------------------------------------------------------------------------------------------------------------
 
-function addStatisticsPanelForCorrelationMap(chartPane: HTMLElement, graphHolder: GraphHolder, pairStatsInfo, chartTitle, chartSize, hide = false) {
-    var statsPane = document.createElement("h6");
-    var html = "";
-    var text = "";
-    if (hide) statsPane.style.cssText = "display:none";
-
-    const keyToReportForR = customStatLabel("r", graphHolder) || "r";
-    const keyToReportForP = customStatLabel("p", graphHolder) || "p";
-    const keyToReportForN = customStatLabel("n", graphHolder) || "n";
-
-    if (pairStatsInfo.length > 0) {
-        html += '<table class="narrafirma-correlation-map-stats-table">';
-        html += '<tr><th></th><th></th><th>' + keyToReportForR + "</th><th>" + keyToReportForP + "</th><th>" + keyToReportForN + "</th></tr>";
-    }
-
-    for (let pairIndex = 0; pairIndex < pairStatsInfo.length; pairIndex++) {
-        const thisPairInfo = pairStatsInfo[pairIndex];
-        html += "<tr>"
-        html += "<td>" + thisPairInfo["one"] + "</td>";
-        html += "<td>" + thisPairInfo["two"] + "</td>";
-        html += "<td>" + thisPairInfo["r"].toFixed(2) + "</td>";
-        html += "<td>";
-        html += (thisPairInfo["p"] < 0.001) ? "< 0.001" : thisPairInfo["p"].toFixed(3);
-        html += "</td>";
-        html += "<td>" + thisPairInfo["n"] + "</td>";
-        html += "</tr>"
-
-        text += thisPairInfo["one"] + " x " + thisPairInfo["two"];
-        text += ": " + keyToReportForR + " = " + thisPairInfo["r"].toFixed(2);
-        text += " " + keyToReportForP + " = ";
-        text += (thisPairInfo["p"] < 0.001) ? "< 0.001" : thisPairInfo["p"].toFixed(3);
-        text += " " + keyToReportForN + " = " + thisPairInfo["n"];
-        text += "\n";
-    }
-    html += "</table>"
-
-    if (chartSize === "large") {
-        statsPane.className = "narrafirma-statistics-panel";
+export function d3CorrelationMapOrMaps(graphHolder: GraphHolder, questions, hideStatsPanel = false) {
+    const nodesInfo = nodeInfoForScalesWithOrWithoutChoiceQuestion(graphHolder, questions);
+    const options = nodesInfo["Options"];
+    const largestCount = nodesInfo["Largest count"];
+    const nodes = nodesInfo["Nodes"];
+    if (options.length > 1) {
+        var subCharts = [];
+        for (let i = 0; i < options.length; i++) {
+            var subchart = d3CorrelationMap(graphHolder, questions.slice(1), questions[0], nodes[options[i]], largestCount, options[i], hideStatsPanel)
+            if (subchart) subCharts.push(subchart);
+        }
+        var clearFloat = document.createElement("br");
+        clearFloat.style.clear = "left";
+        graphHolder.graphResultsPane.appendChild(clearFloat);
+        return subCharts;
     } else {
-        statsPane.className = "narrafirma-statistics-panel-small narrafirma-statistics-panel";
+        var chart = d3CorrelationMap(graphHolder, questions, null, nodes["ALL"], largestCount, null, hideStatsPanel);
+        return chart;
+    }
+}
+
+function nodeInfoForScalesWithOrWithoutChoiceQuestion(graphHolder, questions) {
+    const stories = graphHolder.allStories;
+    const unansweredText = customStatLabel("unanswered", graphHolder);
+    const showNAs = showNAValues(graphHolder);
+
+    let choiceQuestion = null;
+    let scaleQuestions = null;
+    const options = [];
+    if (questions[0].displayType !== "slider") { 
+        choiceQuestion = questions[0];
+        preloadResultsForQuestionOptionsInArray(options, choiceQuestion, unansweredText, showNAs);
+        scaleQuestions = questions.slice(1);
+    } else {
+        options.push("ALL");
+        scaleQuestions = questions;
     }
 
-    statsPane.innerHTML = html;
-    chartPane.appendChild(statsPane);
-    return text;
+    let nodesInfo = {};
+    let nodes = {};
+    let largestCount = 0; 
+
+    for (let i = 0; i < options.length; i++) {
+        const option = options[i];
+        nodes[option] = [];
+        for (let scaleIndex = 0; scaleIndex < scaleQuestions.length; scaleIndex++) {
+            let count = 0;
+            for (let storyIndex = 0; storyIndex < stories.length; storyIndex++) {
+                const scaleValue = calculateStatistics.getScaleValueForQuestionAndStory(scaleQuestions[scaleIndex], stories[storyIndex], unansweredText);
+                if (scaleValue !== undefined && scaleValue !== unansweredText) {
+                    if (choiceQuestion) {
+                        const choiceValue = calculateStatistics.getChoiceValueForQuestionAndStory(choiceQuestion, stories[storyIndex], 
+                            unansweredText, showNAs);
+                        if (!calculateStatistics.choiceValueMatchesQuestionOption(choiceValue, choiceQuestion, option)) continue;
+                    }
+                    count++;
+                }
+            }
+            if (count >= graphHolder.minimumStoryCountRequiredForGraph) {
+                const node: MapNode = {id: scaleIndex, name: scaleQuestions[scaleIndex].displayName, count: count};
+                nodes[option].push(node);
+            }
+            if (count > largestCount) largestCount = count;
+        }
+    }
+    nodesInfo["Options"] = options;
+    nodesInfo["Largest count"] = largestCount;
+    nodesInfo["Nodes"] = nodes;
+    return nodesInfo;
 }
 
 export function d3CorrelationMap(graphHolder: GraphHolder, scaleQuestions, choiceQuestion, nodes, largestCount, option, hideStatsPanel = false) {
@@ -2322,77 +2349,75 @@ export function d3CorrelationMap(graphHolder: GraphHolder, scaleQuestions, choic
                 .attr("cx", function (node: MapNode, index: number) { return nodeCenterX(node, index) } )
                 .attr("cy", function (node: MapNode, index: number) { return nodeCenterY(node, index) } )
 
-    // set up highlighting for when user mouses over nodes
-    // sometimes the nodeCountCircle will be tiny and sometimes it will be as big as the nodeMaxCountCircle
-    // so they both have to respond in the same way - it is redundant but necessary to accommodate different counts
-    nodeMaxCountCircles
-        .on("mouseover", function(node: MapNode) {
-            d3.select(this).classed("narrafirma-correlation-map-node-max-selected", true);
-            linkPaths.classed('narrafirma-correlation-map-link-selected', function(path) {return path.source === node.id || path.target === node.id});
-        })
-        .on("mouseout", function(node: MapNode) {
-            d3.select(this).classed("narrafirma-correlation-map-node-max-selected", false);
-            d3.select(this).classed("narrafirma-correlation-map-node-max", true);
-            linkPaths.classed("narrafirma-correlation-map-link-selected", false);
-            linkPaths.classed("narrafirma-correlation-map-link", true);
-        })
-    nodeCountCircles
-        .on("mouseover", function(node: MapNode) {
-            d3.select(this).classed("narrafirma-correlation-map-node-count-selected", true);
-            linkPaths.classed('narrafirma-correlation-map-link-selected', function(path) {return path.source === node.id || path.target === node.id});
-        })
-        .on("mouseout", function(node: MapNode) {
-            d3.select(this).classed("narrafirma-correlation-map-node-count-selected", false);
-            d3.select(this).classed("narrafirma-correlation-map-node-count", true);
-            linkPaths.classed("narrafirma-correlation-map-link-selected", false);
-            linkPaths.classed("narrafirma-correlation-map-link", true);
-        })
+    // set up tooltip div to show when user hovers over node or link
+    let tooltipDiv = d3.select("body")
+        .append("div")
+        .attr("class", "narrafirma-correlation-map-popup-graph-div")
+        .style("display", "none");
+    let tooltipSubchartPane = document.createElement("div");
+    tooltipSubchartPane.className = "narrafirma-correlation-map-popup-graph-pane";
+    const tooltipOffset = 16;
 
-    // set up highlighting for when user mouses over links
+    // set up tooltip histogram drawing for nodes
+    // sometimes the nodeCountCircle will be tiny and sometimes it will be as big as the nodeMaxCountCircle
+    // so they both have to respond in the same way (hence the functions)
+
+    function setUpMouseOverForNode(node: MapNode, parent) {
+        d3.select(parent).classed("narrafirma-correlation-map-node-max-selected", true);
+        linkPaths.classed('narrafirma-correlation-map-link-selected', function(path) {return path.source === node.id || path.target === node.id});
+        let tooltipSubchart = d3HistogramChartForPopup(graphHolder, tooltipSubchartPane, scaleQuestions[node.id], choiceQuestion, option);
+        let svgNode = tooltipSubchart.querySelector("svg");
+        tooltipDiv
+            .html('<div class="narrafirma-correlation-map-thumbnail">' + svgNode.outerHTML + "</div>")
+            .style("display", "block")
+            .style("left", chartPane.offsetLeft + d3.mouse(parent)[0] + tooltipOffset + "px")
+            .style("top", chartPane.offsetTop + d3.mouse(parent)[1] + tooltipOffset + "px") 
+    }
+
+    function setUpMouseOutForNode(node: MapNode, parent) {
+        d3.select(parent).classed("narrafirma-correlation-map-node-max-selected", false);
+        d3.select(parent).classed("narrafirma-correlation-map-node-max", true);
+        linkPaths.classed("narrafirma-correlation-map-link-selected", false);
+        linkPaths.classed("narrafirma-correlation-map-link", true);
+        tooltipDiv.html("").style("display", "none");    
+    }
+
+    nodeMaxCountCircles
+        .on("mouseover", function(node: MapNode) { setUpMouseOverForNode(node, this) } )
+        .on("mouseout", function(node: MapNode) { setUpMouseOutForNode(node, this) } )
+    nodeCountCircles
+        .on("mouseover", function(node: MapNode) { setUpMouseOverForNode(node, this) } )
+        .on("mouseout", function(node: MapNode) { setUpMouseOutForNode(node, this) } )
+        
+    // set up tooltip scatterplot graph drawing for links
     linkPaths
         .on("mouseover", function(link: MapLink) {
             d3.select(this).classed("narrafirma-correlation-map-link", false);
             d3.select(this).classed("narrafirma-correlation-map-link-selected", true);
+            let tooltipSubchart = d3ScatterPlotForPopup(graphHolder, tooltipSubchartPane, scaleQuestions[link.source], scaleQuestions[link.target], choiceQuestion, option);
+            let svgNode = tooltipSubchart.querySelector("svg");
+            tooltipDiv
+                .html('<div class="narrafirma-correlation-map-thumbnail">' + svgNode.outerHTML + "</div>")
+                .style("display", "block")
+                .style("left", chartPane.offsetLeft + d3.mouse(this)[0] + tooltipOffset + "px")
+                .style("top", chartPane.offsetTop + d3.mouse(this)[1] + tooltipOffset + "px")
         })
         .on("mouseout", function(link: MapLink) {
             d3.select(this).classed("narrafirma-correlation-map-link-selected", false);
             d3.select(this).classed("narrafirma-correlation-map-link", true);
+            tooltipDiv.html("").style("display", "none");
         })
-
-    // set up tooltips for nodes
-    function textForNode(node: MapNode) {
-        let result = node.name + " (" + node.count + " stories)";
-        linkInfoForNodeIDs[node.id].forEach(function(linkInfo) {
-            result += "\n    x " + linkInfo.otherNode;
-            result += " (r = " + linkInfo.value.toFixed(2);
-            result += (linkInfo.p < 0.001) ? ", p < 0.001" : ", p = " + linkInfo.p.toFixed(3);
-            result += ", n = " + linkInfo.n + ")";
-        })
-        return result;
-    }
-    nodeCountCircles.append("svg:title").text(function(node: MapNode) {return textForNode(node)})
-    nodeMaxCountCircles.append("svg:title").text(function(node: MapNode) {return textForNode(node)})
-
-    // set up tooltips for links
-    function textForLink(link: MapLink) {
-        const lookup = "" + link.source + " " + link.target;
-        const linkInfo = linkInfoForNodeIDPairs[lookup];
-        let result = linkInfo.sourceName + " x " + linkInfo.targetName;
-        result += "\n    r = " + linkInfo.value.toFixed(2);
-        result += (linkInfo.p < 0.001) ? "\n    p < 0.001" : "\n    p = " + linkInfo.p.toFixed(3);
-        result += "\n    n = " + linkInfo.n;
-        return result;
-    }
-    linkPaths.append("svg:title").text(function(link: MapLink) {return textForLink(link)})
 
     // finally (on top) draw node names
+    const labelOffset = (nodes.length > 8) ? 4 : 8;
     let nodeLabels = chartBody.selectAll(".narrafirma-correlation-map-node-label")
         .data(nodes)
             .enter().append("text")
                 .text(function(node: MapNode) { return (node.count > graphHolder.minimumStoryCountRequiredForGraph) ? node.name : ""})
                 .attr("class", "narrafirma-correlation-map-node-label")
                 .attr("x", function(node: MapNode, index: number) { return nodeCenterX(node, index) } )
-                .attr("y", function(node: MapNode, index: number) { return nodeCenterY(node, index) + maxCircleRadius + 8; } ) 
+                // cfk fix 8 is too large if there are a lot of questions
+                .attr("y", function(node: MapNode, index: number) { return nodeCenterY(node, index) + maxCircleRadius + labelOffset; } ) 
                 .attr("dx", "0")
                 .attr("dy", "0.5em") // vertical-align: top
                 .attr("text-anchor", "middle") // text-align: middle
@@ -2401,74 +2426,163 @@ export function d3CorrelationMap(graphHolder: GraphHolder, scaleQuestions, choic
     return chart;
 }
 
-export function d3CorrelationMapOrMaps(graphHolder: GraphHolder, questions, hideStatsPanel = false) {
-    const nodesInfo = nodeInfoForScalesWithOrWithoutChoiceQuestion(graphHolder, questions);
-    const options = nodesInfo["Options"];
-    const largestCount = nodesInfo["Largest count"];
-    const nodes = nodesInfo["Nodes"];
-    if (options.length > 1) {
-        var subCharts = [];
-        for (let i = 0; i < options.length; i++) {
-            var subchart = d3CorrelationMap(graphHolder, questions.slice(1), questions[0], nodes[options[i]], largestCount, options[i], hideStatsPanel)
-            if (subchart) subCharts.push(subchart);
-        }
-        var clearFloat = document.createElement("br");
-        clearFloat.style.clear = "left";
-        graphHolder.graphResultsPane.appendChild(clearFloat);
-        return subCharts;
-    } else {
-        var chart = d3CorrelationMap(graphHolder, questions, null, nodes["ALL"], largestCount, null, hideStatsPanel);
-        return chart;
+function addStatisticsPanelForCorrelationMap(chartPane: HTMLElement, graphHolder: GraphHolder, pairStatsInfo, chartTitle, chartSize, hide = false) {
+    var statsPane = document.createElement("h6");
+    var html = "";
+    var text = "";
+    if (hide) statsPane.style.cssText = "display:none";
+
+    const keyToReportForR = customStatLabel("r", graphHolder) || "r";
+    const keyToReportForP = customStatLabel("p", graphHolder) || "p";
+    const keyToReportForN = customStatLabel("n", graphHolder) || "n";
+
+    if (pairStatsInfo.length > 0) {
+        html += '<table class="narrafirma-correlation-map-stats-table">';
+        html += '<tr><th></th><th></th><th>' + keyToReportForR + "</th><th>" + keyToReportForP + "</th><th>" + keyToReportForN + "</th></tr>";
     }
+
+    for (let pairIndex = 0; pairIndex < pairStatsInfo.length; pairIndex++) {
+        const thisPairInfo = pairStatsInfo[pairIndex];
+        html += "<tr>"
+        html += "<td>" + thisPairInfo["one"] + "</td>";
+        html += "<td>" + thisPairInfo["two"] + "</td>";
+        html += "<td>" + thisPairInfo["r"].toFixed(2) + "</td>";
+        html += "<td>";
+        html += (thisPairInfo["p"] < 0.001) ? "< 0.001" : thisPairInfo["p"].toFixed(3);
+        html += "</td>";
+        html += "<td>" + thisPairInfo["n"] + "</td>";
+        html += "</tr>"
+
+        text += thisPairInfo["one"] + " x " + thisPairInfo["two"];
+        text += ": " + keyToReportForR + " = " + thisPairInfo["r"].toFixed(2);
+        text += " " + keyToReportForP + " = ";
+        text += (thisPairInfo["p"] < 0.001) ? "< 0.001" : thisPairInfo["p"].toFixed(3);
+        text += " " + keyToReportForN + " = " + thisPairInfo["n"];
+        text += "\n";
+    }
+    html += "</table>"
+
+    if (chartSize === "large") {
+        statsPane.className = "narrafirma-statistics-panel";
+    } else {
+        statsPane.className = "narrafirma-statistics-panel-small narrafirma-statistics-panel";
+    }
+
+    statsPane.innerHTML = html;
+    chartPane.appendChild(statsPane);
+    return text;
 }
 
-function nodeInfoForScalesWithOrWithoutChoiceQuestion(graphHolder, questions) {
+export function d3ScatterPlotForPopup(graphHolder: GraphHolder, parentNode, xAxisQuestion, yAxisQuestion, choiceQuestion, option) {
+    const allPlotItems = [];
     const stories = graphHolder.allStories;
     const unansweredText = customStatLabel("unanswered", graphHolder);
     const showNAs = showNAValues(graphHolder);
-
-    let choiceQuestion = null;
-    let scaleQuestions = null;
-    const options = [];
-    if (questions[0].displayType !== "slider") { 
-        choiceQuestion = questions[0];
-        preloadResultsForQuestionOptionsInArray(options, choiceQuestion, unansweredText, showNAs);
-        scaleQuestions = questions.slice(1);
-    } else {
-        options.push("ALL");
-        scaleQuestions = questions;
+    for (var index in stories) {
+        const story = stories[index];
+        const xValue = calculateStatistics.getScaleValueForQuestionAndStory(xAxisQuestion, story, unansweredText);
+        const yValue = calculateStatistics.getScaleValueForQuestionAndStory(yAxisQuestion, story, unansweredText);
+        if (xValue === unansweredText || yValue === unansweredText) continue;
+        if (choiceQuestion) {
+            const choiceValue = calculateStatistics.getChoiceValueForQuestionAndStory(choiceQuestion, story, unansweredText, showNAs);
+            if (!calculateStatistics.choiceValueMatchesQuestionOption(choiceValue, choiceQuestion, option)) continue;
+        }
+        const newPlotItem = makePlotItem(xAxisQuestion, yAxisQuestion, xValue, yValue, story, unansweredText);
+        allPlotItems.push(newPlotItem);
     }
 
-    let nodesInfo = {};
-    let nodes = {};
-    let largestCount = 0; 
+    var chartPane = document.createElement("div");
+    parentNode.appendChild(chartPane);
+    
+    var margin = {top: 0, right: 0, bottom: 0, left: 0};
+    var chart = makeChartFramework(chartPane, "scatterPlot", "thumbnail", margin, null);
+    var chartBody = chart.chartBody;
 
-    for (let i = 0; i < options.length; i++) {
-        const option = options[i];
-        nodes[option] = [];
-        for (let scaleIndex = 0; scaleIndex < scaleQuestions.length; scaleIndex++) {
-            let count = 0;
-            for (let storyIndex = 0; storyIndex < stories.length; storyIndex++) {
-                const scaleValue = calculateStatistics.getScaleValueForQuestionAndStory(scaleQuestions[scaleIndex], stories[storyIndex], unansweredText);
-                if (scaleValue !== undefined && scaleValue !== unansweredText) {
-                    if (choiceQuestion) {
-                        const choiceValue = calculateStatistics.getChoiceValueForQuestionAndStory(choiceQuestion, stories[storyIndex], 
-                            unansweredText, showNAs);
-                        if (!calculateStatistics.choiceValueMatchesQuestionOption(choiceValue, choiceQuestion, option)) continue;
-                    }
-                    count++;
-                }
-            }
-            if (count >= graphHolder.minimumStoryCountRequiredForGraph) {
-                const node: MapNode = {id: scaleIndex, name: scaleQuestions[scaleIndex].displayName, count: count};
-                nodes[option].push(node);
-            }
-            if (count > largestCount) largestCount = count;
+    var xScale = d3.scale.linear()
+        .domain([0, 100])
+        .range([0, chart.width]);
+    var yScale = d3.scale.linear()
+        .domain([0, 100])
+        .range([chart.height, 0]);       
+
+    var opacity = 1.0 / graphHolder.numScatterDotOpacityLevels;
+    var dotSize = 2; 
+
+    var storyDisplayItems = chartBody.selectAll(".story")
+            .data(allPlotItems)
+        .enter().append("circle")
+            .attr("class", "narrafirma-correlation-map-thumbnail-scatterPlot-story")
+            .attr("r", dotSize)
+            .style("opacity", opacity)
+            .attr("cx", function (plotItem) { return xScale(plotItem.x); } )
+            .attr("cy", function (plotItem) { return yScale(plotItem.y); } );
+    
+    return chartPane;
+}
+
+export function d3HistogramChartForPopup(graphHolder: GraphHolder, parentNode, scaleQuestion, choiceQuestion, option) {
+    const unansweredText = customStatLabel("unanswered", graphHolder);
+    const showNAs = showNAValues(graphHolder);
+
+    const plotItems = [];
+    const stories = graphHolder.allStories;
+    for (let storyIndex in stories) {
+        const story = stories[storyIndex];
+        const scaleValue = calculateStatistics.getScaleValueForQuestionAndStory(scaleQuestion, story, unansweredText);
+        if (choiceQuestion) {
+            const choiceValue = calculateStatistics.getChoiceValueForQuestionAndStory(choiceQuestion, story, unansweredText, showNAs);
+            if (!calculateStatistics.choiceValueMatchesQuestionOption(choiceValue, choiceQuestion, option)) continue;
+        }
+        const newPlotItem = {story: story, value: scaleValue};
+        if (scaleValue !== unansweredText) {
+            plotItems.push(newPlotItem);
         }
     }
-    nodesInfo["Options"] = options;
-    nodesInfo["Largest count"] = largestCount;
-    nodesInfo["Nodes"] = nodes;
-    return nodesInfo;
+
+    const chartPane = document.createElement("div");
+    parentNode.appendChild(chartPane);
+
+    const margin = {top: 0, right: 0, bottom: 0, left: 0};
+    const chart = makeChartFramework(chartPane, "histogram", "thumbnail", margin, null);
+    
+    const xScale = d3.scale.linear()
+        .domain([0, 100])
+        .range([0, chart.width]);
+    
+    // Generate a histogram using twenty uniformly-spaced bins.
+    const data = (<any>d3.layout.histogram().bins(xScale.ticks(graphHolder.numHistogramBins))).value(function (d) { return d.value; })(plotItems);
+
+    // Set the bin for each plotItem
+    data.forEach(function (bin) {
+        bin.forEach(function (plotItem) {
+            plotItem.xBinStart = bin.x;
+        });
+    });
+    const maxValue = d3.max(data, function(d: any) { return d.y; });
+    
+    const yScale = d3.scale.linear()
+        .domain([0, maxValue])
+        .range([chart.height, 0]);
+    
+    // Extra version of scale for calculating heights without subtracting as in height - yScale(value)
+    const yHeightScale = d3.scale.linear()
+        .domain([0, maxValue])
+        .range([0, chart.height]);
+    
+    const bars = chart.chartBody.selectAll(".narrafirma-correlation-map-thumbnail-histogram-bar")
+          .data(data).enter().append("g")
+          .attr("class", "narrafirma-correlation-map-thumbnail-histogram-bar")
+          .attr("transform", function(item: any) { return "translate(" + xScale(item.x) + "," + yScale(0) + ")"; });
+
+    const storyDisplayItems = bars.selectAll(".narrafirma-correlation-map-thumbnail-histogram-story")
+            .data(function(plotItem) { return plotItem; })
+        .enter().append("rect")
+            .attr('class', function (d, i) { return "narrafirma-correlation-map-thumbnail-histogram-story " + ((i % 2 === 0) ? "even" : "odd"); })
+            .attr("x", function(plotItem) { return 0; })
+            .attr("y", function(plotItem, i) { return yHeightScale(-i - 1); })
+            .attr("height", function(plotItem) { return yHeightScale(1); })
+            .attr("width", xScale(data[0].dx) - 1);
+    
+    return chartPane;
 }
 

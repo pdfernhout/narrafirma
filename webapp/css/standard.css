@@ -1551,6 +1551,42 @@ td.narrafirma-mw-nested-title, td.narrafirma-mw-nested-stats {
     text-align: right;
 }
 
+.narrafirma-correlation-map-popup-graph-div {
+    position: absolute;
+    border: 2px solid lightgray;
+    font-size: 0.9em;
+    background-color: white;
+}
+
+.narrafirma-correlation-map-popup-graph-pane {
+    background-color: white;
+}
+
+.narrafirma-correlation-map-thumbnail {
+    display: block;
+    background-color: white;
+    margin: auto;
+}
+
+.narrafirma-correlation-map-thumbnail-histogram-bar {
+    fill: none;
+}
+
+.narrafirma-correlation-map-thumbnail-histogram-story.even {
+    fill: #2e4a85;
+}
+
+.narrafirma-correlation-map-thumbnail-histogram-story.odd {
+    fill: #7b8cb2;
+}
+
+.narrafirma-correlation-map-thumbnail-scatterPlot-story {
+    stroke: #2e4a85;
+    stroke-width: 0.2px;
+    fill: #2e4a85;
+    fill-opacity: 0.7;   
+}
+
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Dialogs ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 /* derived from http://www.cssscript.com/minimal-modal-window-with-plain-javascript/ */
