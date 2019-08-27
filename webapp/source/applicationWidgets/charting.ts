@@ -2416,7 +2416,6 @@ export function d3CorrelationMap(graphHolder: GraphHolder, scaleQuestions, choic
                 .text(function(node: MapNode) { return (node.count > graphHolder.minimumStoryCountRequiredForGraph) ? node.name : ""})
                 .attr("class", "narrafirma-correlation-map-node-label")
                 .attr("x", function(node: MapNode, index: number) { return nodeCenterX(node, index) } )
-                // cfk fix 8 is too large if there are a lot of questions
                 .attr("y", function(node: MapNode, index: number) { return nodeCenterY(node, index) + maxCircleRadius + labelOffset; } ) 
                 .attr("dx", "0")
                 .attr("dy", "0.5em") // vertical-align: top
