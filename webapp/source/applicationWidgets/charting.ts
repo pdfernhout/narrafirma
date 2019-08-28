@@ -815,7 +815,7 @@ function newChartPane(graphHolder: GraphHolder, styleClass: string): HTMLElement
 }
 
 //------------------------------------------------------------------------------------------------------------------------------------------
-// bar chart 
+// *bar chart*
 //------------------------------------------------------------------------------------------------------------------------------------------
 
 export function d3BarChartForQuestion(graphHolder: GraphHolder, question, storiesSelectedCallback, hideStatsPanel = false) {
@@ -825,6 +825,7 @@ export function d3BarChartForQuestion(graphHolder: GraphHolder, question, storie
     
     const showNAs = showNAValues(graphHolder);
     const unansweredText = customStatLabel("unanswered", graphHolder);
+    graphHolder.dataForCSVExport = {};
 
     var results = {}
     preloadResultsForQuestionOptionsInDictionary(results, question, unansweredText, showNAs);
@@ -852,10 +853,11 @@ export function d3BarChartForQuestion(graphHolder: GraphHolder, question, storie
     for (key in results) {
         xLabels.push(key);
         allPlotItems.push({name: key, stories: results[key], value: results[key].length});
+        graphHolder.dataForCSVExport[key] = results[key].length;
     }
     var chartTitle = "" + nameForQuestion(question);
-
     var xAxisLabel = nameForQuestion(question);
+
     return d3BarChartForValues(graphHolder, allPlotItems, xLabels, chartTitle, xAxisLabel, question, storiesSelectedCallback, hideStatsPanel);
 }
 
@@ -864,6 +866,7 @@ export function d3BarChartToShowUnansweredChoiceQuestions(graphHolder: GraphHold
     var xLabels = [];  
     var stories = graphHolder.allStories;
     var results = {};
+    graphHolder.dataForCSVExport = {};
 
     function questionWasNotAnswered(question, value) {
         if (question.displayType === "checkbox" && !value) return false; // if they answered no on a checkbox they answered the question
@@ -891,6 +894,7 @@ export function d3BarChartToShowUnansweredChoiceQuestions(graphHolder: GraphHold
         }
         xLabels.push(question.displayName);
         allPlotItems.push({name: question.displayName, stories: storiesWithoutAnswersForThisQuestion, value: storiesWithoutAnswersForThisQuestion.length});
+        graphHolder.dataForCSVExport[question.displayName] = storiesWithoutAnswersForThisQuestion.length;
     }
     return d3BarChartForValues(graphHolder, allPlotItems, xLabels, dataIntegrityType, dataIntegrityType, null, null);
 }
@@ -1040,7 +1044,7 @@ export function d3BarChartForValues(graphHolder: GraphHolder, plotItems, xLabels
 }
 
 //------------------------------------------------------------------------------------------------------------------------------------------
-// histogram 
+// *histogram* 
 //------------------------------------------------------------------------------------------------------------------------------------------
 // Histogram reference for d3: http://bl.ocks.org/mbostock/3048450
 
@@ -1052,6 +1056,12 @@ export function d3HistogramChartForQuestion(graphHolder: GraphHolder, scaleQuest
 
     const unansweredText = customStatLabel("unanswered", graphHolder);
     const showNAs = showNAValues(graphHolder);
+    if (choiceQuestion) {
+        graphHolder.dataForCSVExport[choice] = [];
+    } else {
+        graphHolder.dataForCSVExport = {};
+        graphHolder.dataForCSVExport[scaleQuestion.displayName] = [];
+    }
 
     const stories = graphHolder.allStories;
     for (let storyIndex in stories) {
@@ -1111,6 +1121,8 @@ export function d3HistogramChartForDataIntegrity(graphHolder: GraphHolder, scale
     var unansweredCount = -1;
 
     const unansweredText = customStatLabel("unanswered", graphHolder);
+    graphHolder.dataForCSVExport = {};
+    graphHolder.dataForCSVExport[dataIntegrityType] = [];
 
     if (dataIntegrityType == "All scale values") {
         for (var storyIndex in stories) {
@@ -1218,9 +1230,18 @@ export function d3HistogramChartForValues(graphHolder: GraphHolder, plotItems, c
     
     // draw the y axis
     
-    // Generate a histogram using twenty uniformly-spaced bins.
+    // Generate a histogram using numHistogramBins uniformly-spaced bins.
     // TODO: Casting to any to get around D3 typing limitation where it expects number not an object
     var data = (<any>d3.layout.histogram().bins(xScale.ticks(graphHolder.numHistogramBins))).value(function (d) { return d.value; })(plotItems);
+
+    data.forEach(function (bin) {
+        const csvText = [bin.x, bin.x + bin.dx - ((bin.x == 95) ? 0 : 1), bin.length].join(",");
+        if (choiceQuestion) {
+            graphHolder.dataForCSVExport[choice].push(csvText);
+        } else {
+            graphHolder.dataForCSVExport[chartTitle].push(csvText);
+        }
+    });
 
     // Set the bin for each plotItem
     data.forEach(function (bin) {
@@ -1389,6 +1410,7 @@ export function multipleHistograms(graphHolder: GraphHolder, choiceQuestion, sca
     const unansweredText = customStatLabel("unanswered", graphHolder);
     const options = [];
     preloadResultsForQuestionOptionsInArray(options, choiceQuestion, unansweredText, showNAValues(graphHolder));
+    graphHolder.dataForCSVExport = {};
 
     // TODO: Could push extra options based on actual data choices (in case question changed at some point
     var chartPane = newChartPane(graphHolder, "singleChartStyle");
@@ -1422,7 +1444,7 @@ export function multipleHistograms(graphHolder: GraphHolder, choiceQuestion, sca
 }
 
 //------------------------------------------------------------------------------------------------------------------------------------------
-// scatter plot 
+// *scatterplot* 
 //------------------------------------------------------------------------------------------------------------------------------------------
 // Reference for initial scatter chart: http://bl.ocks.org/bunkat/2595950
 // Reference for brushing: http://bl.ocks.org/mbostock/4560481
@@ -1436,6 +1458,13 @@ export function d3ScatterPlot(graphHolder: GraphHolder, xAxisQuestion, yAxisQues
     const stories = graphHolder.allStories;
     const unansweredText = customStatLabel("unanswered", graphHolder);
     const showNAs = showNAValues(graphHolder);
+    if (choiceQuestion) {
+        graphHolder.dataForCSVExport[option] = [];
+    } else {
+        graphHolder.dataForCSVExport = {};
+        graphHolder.dataForCSVExport[xAxisQuestion.displayName + "," + yAxisQuestion.displayName] = [];
+    }
+
     for (var index in stories) {
         const story = stories[index];
         const xValue = calculateStatistics.getScaleValueForQuestionAndStory(xAxisQuestion, story, unansweredText);
@@ -1449,6 +1478,12 @@ export function d3ScatterPlot(graphHolder: GraphHolder, xAxisQuestion, yAxisQues
 
         const newPlotItem = makePlotItem(xAxisQuestion, yAxisQuestion, xValue, yValue, story, unansweredText);
         allPlotItems.push(newPlotItem);
+
+        if (choiceQuestion) {
+            graphHolder.dataForCSVExport[option].push([xValue + "," + yValue]);
+        } else {
+            graphHolder.dataForCSVExport[xAxisQuestion.displayName + "," + yAxisQuestion.displayName].push(xValue + "," + yValue);
+        }
 
         const key = xValue + "|" + yValue;
         if (!(key in storiesAtXYPoints)) storiesAtXYPoints[key] = [];
@@ -1639,6 +1674,7 @@ export function multipleScatterPlot(graphHolder: GraphHolder, xAxisQuestion, yAx
     const unansweredText = customStatLabel("unanswered", graphHolder);
     const options = [];
     preloadResultsForQuestionOptionsInArray(options, choiceQuestion, unansweredText, showNAValues(graphHolder));
+    graphHolder.dataForCSVExport = {};
     
     var chartPane = newChartPane(graphHolder, "singleChartStyle");
     var chartTitle = "" + nameForQuestion(xAxisQuestion) + " x " + nameForQuestion(yAxisQuestion) + " + " + nameForQuestion(choiceQuestion);
@@ -1658,7 +1694,7 @@ export function multipleScatterPlot(graphHolder: GraphHolder, xAxisQuestion, yAx
 }
 
 //------------------------------------------------------------------------------------------------------------------------------------------
-// contingency table 
+// *contingency table*
 //------------------------------------------------------------------------------------------------------------------------------------------
 
 export function d3ContingencyTable(graphHolder: GraphHolder, xAxisQuestion, yAxisQuestion, scaleQuestion, storiesSelectedCallback, hideStatsPanel = false) {
@@ -1682,6 +1718,7 @@ export function d3ContingencyTable(graphHolder: GraphHolder, xAxisQuestion, yAxi
     var results = {};
     var plotItemStories = {};
     var stories = graphHolder.allStories;
+    graphHolder.dataForCSVExport = {};
 
     for (var index in stories) {
         var story = stories[index];
@@ -1799,6 +1836,13 @@ export function d3ContingencyTable(graphHolder: GraphHolder, xAxisQuestion, yAxi
                 }
             }
             observedPlotItems.push(observedPlotItem);
+            if (scaleQuestion) {
+                let valuesToReport = [mean.toFixed(2), sd.toFixed(2), skewness.toFixed(2), kurtosis.toFixed(2)];
+                valuesToReport = valuesToReport.concat(scaleValues);
+                graphHolder.dataForCSVExport[observedPlotItem.x + " x " + observedPlotItem.y] = valuesToReport;
+            } else {
+                graphHolder.dataForCSVExport[observedPlotItem.x + " x " + observedPlotItem.y] = observedPlotItem.value;
+            }
             if (!rowStoryCounts[row]) rowStoryCounts[row] = 0;
             rowStoryCounts[row] += storiesForNewPlotItem.length;
             if (!columnStoryCounts[column]) columnStoryCounts[column] = 0;
@@ -2086,7 +2130,7 @@ export function d3ContingencyTable(graphHolder: GraphHolder, xAxisQuestion, yAxi
 }
 
 //------------------------------------------------------------------------------------------------------------------------------------------
-// correlation map 
+// *correlation map*
 //------------------------------------------------------------------------------------------------------------------------------------------
 
 export function d3CorrelationMapOrMaps(graphHolder: GraphHolder, questions, hideStatsPanel = false) {
@@ -2094,6 +2138,8 @@ export function d3CorrelationMapOrMaps(graphHolder: GraphHolder, questions, hide
     const options = nodesInfo["Options"];
     const largestCount = nodesInfo["Largest count"];
     const nodes = nodesInfo["Nodes"];
+
+    graphHolder.dataForCSVExport = {};
 
     if (options.length > 1) {
 
@@ -2178,6 +2224,12 @@ export function d3CorrelationMap(graphHolder: GraphHolder, scaleQuestions, choic
     
     if (nodes.length < 3) return null;
 
+    if (choiceQuestion) {
+        graphHolder.dataForCSVExport[option] = [];
+    } else {
+        graphHolder.dataForCSVExport["Correlation map"] = [];
+    }
+
     let mapShape = graphHolder.correlationMapShape;
 
     // already have node info, now get link info
@@ -2199,15 +2251,28 @@ export function d3CorrelationMap(graphHolder: GraphHolder, scaleQuestions, choic
                     links.push(link);
                     if (pairStats.statsDetailed.length > 1) {
                         const pairStatsInfo = {
-                            "one": scaleIndex1+1, // scaleQuestions[scaleIndex1].displayName, 
-                            "two": scaleIndex2+1, // scaleQuestions[scaleIndex2].displayName, 
-                            "r": pairStats.rho, "p": pairStats.p, "n": pairStats.n};
+                            "one": scaleIndex1+1, 
+                            "one_name": scaleQuestions[scaleIndex1].displayName, 
+                            "two": scaleIndex2+1, 
+                            "two_name": scaleQuestions[scaleIndex2].displayName, 
+                            "r": pairStats.rho, 
+                            "p": pairStats.p, 
+                            "n": pairStats.n};
                         statsInfo.push(pairStatsInfo);
                     }
                 }
             }
         }
     }
+
+    statsInfo.forEach(function (stats) {
+        const csvText = stats.one_name + " x " + stats.two_name + "," + [stats.r, stats.p, stats.n].join(",");
+        if (choiceQuestion) {
+            graphHolder.dataForCSVExport[option].push(csvText);
+        } else {
+            graphHolder.dataForCSVExport["Correlation map"].push(csvText);
+        }
+    });
 
     // set up chart size and objects
     const isSmallFormat = !!choiceQuestion;

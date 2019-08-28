@@ -260,7 +260,8 @@ class PatternExplorer {
                         "Save the current selection (it will appear in the text box below)",
                         "Restore a saved selection (from the text box below; position your cursor inside it first)",
                         "Save graph(s) as SVG file(s)",
-                        "Save graph(s) as PNG file(s)"],
+                        "Save graph(s) as PNG file(s)",
+                        "Save graph(s) as CSV file"],
                 },
                 {
                     id: "thingsYouCanDoPanel_doThingsWithSelectedStories",
@@ -283,7 +284,8 @@ class PatternExplorer {
                         valueOptions: [
                             "Show statistical results",
                             "Save graph(s) as SVG file(s)",
-                            "Save graph(s) as PNG file(s)"],
+                            "Save graph(s) as PNG file(s)",
+                            "Save graph(s) as CSV file"],
                     },
                     {
                         id: "thingsYouCanDoPanel_doThingsWithSelectedStories",
@@ -1147,6 +1149,9 @@ class PatternExplorer {
             case "Save graph(s) as PNG file(s)":
                 this.saveGraphAsFile("PNG");
                 break;
+            case "Save graph(s) as CSV file":
+                this.saveGraphAsCSV();
+                break;
             default:
                 alert("Please choose an action from the list before you click the button.");
                 break;
@@ -1217,6 +1222,139 @@ class PatternExplorer {
                     saveAs(blob, patternTitle + " " + fileTypeToSave + ".zip");
             });
         }
+    }
+
+    saveGraphAsCSV() {
+        if (!this.currentPattern) {
+            alert("Please choose a graph.");
+            return;
+        } 
+        let output = "";
+        let niceGraphTypeName = "";
+        const graphHolder = this.graphHolder;
+        const patternName = this.currentPattern.patternName;
+        const dataKeys = Object.keys(graphHolder.dataForCSVExport);
+        let optionsForFirstQuestion = [];
+        let optionsForSecondQuestion = [];
+        switch (this.currentPattern.graphType) {
+            case "bar":
+                niceGraphTypeName = "Bar graph";
+                // {option: count}
+                dataKeys.forEach( function(key) {
+                    output += key + "," + graphHolder.dataForCSVExport[key] + "\n";
+                })
+                break;
+            case "table":
+                niceGraphTypeName = "Table";
+                // {option,option: count}
+                dataKeys.forEach(function(key) {
+                    const parts = key.split(",");
+                    if (optionsForFirstQuestion.indexOf(parts[0]) < 0) optionsForFirstQuestion.push(parts[0]);
+                    if (optionsForSecondQuestion.indexOf(parts[1]) < 0) optionsForSecondQuestion.push(parts[1]);
+                });
+                output += "," + optionsForFirstQuestion.join(",") + "\n";
+                optionsForSecondQuestion.forEach(function(secondOption) {
+                    output += secondOption + ",";
+                    optionsForFirstQuestion.forEach(function(firstOption) {
+                        output += graphHolder.dataForCSVExport[firstOption + "," + secondOption] + ",";
+                    })
+                    output += "\n";
+                })
+                break;
+            case "contingency-histogram":
+                niceGraphTypeName = "Histogram table";
+                // {option x option: [mean, sd, skewness, kurtosis]}
+                output += ",mean,sd,skewness,kurtosis,values\n";
+                dataKeys.forEach( function(key) {
+                    output += key + ",";
+                    output += graphHolder.dataForCSVExport[key].join(",") + "\n";
+                })
+                output = this.transposeCSVData(output);
+                break;
+            case "histogram":
+                niceGraphTypeName = "Histogram";
+                // {question name: bins and values}
+                dataKeys.forEach( function(key) {
+                    output += graphHolder.dataForCSVExport[key].join("\n");
+                })
+                break;
+            case "multiple histogram":
+                niceGraphTypeName = "Histogram set";
+                // {option: bins and values}
+                dataKeys.forEach( function(key) {
+                    output += "\n" + key + "\n";
+                    output += graphHolder.dataForCSVExport[key].join("\n") + "\n";
+                })
+                break;
+            case "scatter":
+                niceGraphTypeName = "Scatter plot";
+                // {question name: array of xy pairs}
+                output += "x,y\n";
+                Object.keys(graphHolder.dataForCSVExport).forEach( function(key) {
+                    output += graphHolder.dataForCSVExport[key].join("\n");
+                })
+                break;        
+            case "multiple scatter":
+                niceGraphTypeName = "Scatter plot set";
+                // {option: array of xy pairs}
+                Object.keys(graphHolder.dataForCSVExport).forEach( function(key) {
+                    output += "\n\n" + key + "\n";
+                    output += "x,y\n";
+                    output += graphHolder.dataForCSVExport[key].join("\n");
+                })
+                break;
+            case "data integrity":
+                if (["All scale values", "Participant means", "Participant standard deviations"].indexOf(patternName) >= 0) { 
+                    niceGraphTypeName = "Histogram";
+                    // {data integrity type: bins and values}
+                    dataKeys.forEach( function(key) {
+                        output += graphHolder.dataForCSVExport[key].join("\n");
+                    })
+                } else if (["Unanswered choice questions", "Unanswered scale questions"].indexOf(patternName) >= 0) { 
+                    niceGraphTypeName = "Bar graph";
+                    // {question name: count}
+                    dataKeys.forEach( function(key) {
+                        output += key + "," + graphHolder.dataForCSVExport[key] + "\n";
+                    })
+                }
+                break;
+            case "correlation map":
+                niceGraphTypeName = "Network map";
+                // {option: r,p,n}
+                dataKeys.forEach( function(key) {
+                    output += "\n" + key + ",r,p,n\n";
+                    output += graphHolder.dataForCSVExport[key].join("\n") + "\n";
+                })
+                break;
+            default:
+                alert("No csv output has been implemented for the current graph selection.");
+        }
+        output = this.currentPattern.patternName + " (" + niceGraphTypeName + ")\n\n" + output;
+        const exportBlob = new Blob([output], {type: "text/csv;charset=utf-8"});
+        saveAs(exportBlob, this.currentPattern.patternName + ".csv");
+    }
+
+    transposeCSVData(data) {
+        const rows = data.split("\n");
+        const cells = [];
+        let highestColumnCount = 0;
+        rows.forEach(function(row) {
+            cells.push(row.split(","));
+            if (row.length > highestColumnCount) highestColumnCount = row.length;
+        });
+        const newCells = [];
+        for (let colIndex = 0; colIndex < highestColumnCount; colIndex++) {
+            const newRow = [];
+            for (let rowIndex = 0; rowIndex < rows.length; rowIndex++) {
+                newRow.push(cells[rowIndex][colIndex]);
+            }
+            newCells.push(newRow);
+        }
+        let result = "";
+        newCells.forEach(function(newRow) {
+            result += newRow.join(",") + "\n";
+        })
+        return result;
     }
 
     showStatisticalResultsForGraph() {
@@ -1405,8 +1543,6 @@ class PatternExplorer {
             case "multiple scatter":
                 result += " [" + selection.subgraphChoice + "]: " + selection.selectionCategories.join(", ");
                 break;
-
-            // cfk add case for network graph
             default:
                 alert("NO name for current graph selection");
         }
