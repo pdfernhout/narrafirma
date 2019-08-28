@@ -1837,11 +1837,16 @@ export function d3ContingencyTable(graphHolder: GraphHolder, xAxisQuestion, yAxi
             }
             observedPlotItems.push(observedPlotItem);
             if (scaleQuestion) {
-                let valuesToReport = [mean.toFixed(2), sd.toFixed(2), skewness.toFixed(2), kurtosis.toFixed(2)];
+                let valuesToReport = [
+                    (mean !== undefined && !isNaN(mean)) ? mean : "", 
+                    (sd !== undefined && !isNaN(sd)) ? sd : "", 
+                    (skewness !== undefined && !isNaN(skewness)) ? skewness : "", 
+                    (kurtosis !== undefined && !isNaN(kurtosis)) ? kurtosis : "", 
+                ];
                 valuesToReport = valuesToReport.concat(scaleValues);
                 graphHolder.dataForCSVExport[observedPlotItem.x + " x " + observedPlotItem.y] = valuesToReport;
             } else {
-                graphHolder.dataForCSVExport[observedPlotItem.x + " x " + observedPlotItem.y] = observedPlotItem.value;
+                graphHolder.dataForCSVExport[observedPlotItem.x + "," + observedPlotItem.y] = observedPlotItem.value;
             }
             if (!rowStoryCounts[row]) rowStoryCounts[row] = 0;
             rowStoryCounts[row] += storiesForNewPlotItem.length;

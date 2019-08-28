@@ -85,6 +85,30 @@ function findOrCreateObservationIDForPatternAndIndex(project, catalysisReportObs
     return observationID;
 }
 
+function transposeCSVData(data) {
+    const rows = data.split("\n");
+    const cells = [];
+    let highestColumnCount = 0;
+    rows.forEach(function(row) {
+        cells.push(row.split(","));
+        if (row.length > highestColumnCount) highestColumnCount = row.length;
+    });
+    const newCells = [];
+    for (let colIndex = 0; colIndex < highestColumnCount; colIndex++) {
+        const newRow = [];
+        for (let rowIndex = 0; rowIndex < rows.length; rowIndex++) {
+            newRow.push(cells[rowIndex][colIndex]);
+        }
+        newCells.push(newRow);
+    }
+    let result = "";
+    newCells.forEach(function(newRow) {
+        result += newRow.join(",") + "\n";
+    })
+    return result;
+}
+
+
 //------------------------------------------------------------------------------------------------------------------------------------------
 // PatternExplorer
 //------------------------------------------------------------------------------------------------------------------------------------------
@@ -1150,7 +1174,7 @@ class PatternExplorer {
                 this.saveGraphAsFile("PNG");
                 break;
             case "Save graph(s) as CSV file":
-                this.saveGraphAsCSV();
+                PatternExplorer.saveGraphAsCSV(this.currentPattern, this.graphHolder);
                 break;
             default:
                 alert("Please choose an action from the list before you click the button.");
@@ -1224,19 +1248,18 @@ class PatternExplorer {
         }
     }
 
-    saveGraphAsCSV() {
-        if (!this.currentPattern) {
+    static saveGraphAsCSV(pattern, graphHolder, saveFile = true) {
+        if (!pattern) {
             alert("Please choose a graph.");
             return;
         } 
         let output = "";
         let niceGraphTypeName = "";
-        const graphHolder = this.graphHolder;
-        const patternName = this.currentPattern.patternName;
+        const patternName = pattern.patternName;
         const dataKeys = Object.keys(graphHolder.dataForCSVExport);
         let optionsForFirstQuestion = [];
         let optionsForSecondQuestion = [];
-        switch (this.currentPattern.graphType) {
+        switch (pattern.graphType) {
             case "bar":
                 niceGraphTypeName = "Bar graph";
                 // {option: count}
@@ -1269,7 +1292,7 @@ class PatternExplorer {
                     output += key + ",";
                     output += graphHolder.dataForCSVExport[key].join(",") + "\n";
                 })
-                output = this.transposeCSVData(output);
+                output = transposeCSVData(output);
                 break;
             case "histogram":
                 niceGraphTypeName = "Histogram";
@@ -1329,32 +1352,13 @@ class PatternExplorer {
             default:
                 alert("No csv output has been implemented for the current graph selection.");
         }
-        output = this.currentPattern.patternName + " (" + niceGraphTypeName + ")\n\n" + output;
-        const exportBlob = new Blob([output], {type: "text/csv;charset=utf-8"});
-        saveAs(exportBlob, this.currentPattern.patternName + ".csv");
-    }
-
-    transposeCSVData(data) {
-        const rows = data.split("\n");
-        const cells = [];
-        let highestColumnCount = 0;
-        rows.forEach(function(row) {
-            cells.push(row.split(","));
-            if (row.length > highestColumnCount) highestColumnCount = row.length;
-        });
-        const newCells = [];
-        for (let colIndex = 0; colIndex < highestColumnCount; colIndex++) {
-            const newRow = [];
-            for (let rowIndex = 0; rowIndex < rows.length; rowIndex++) {
-                newRow.push(cells[rowIndex][colIndex]);
-            }
-            newCells.push(newRow);
+        output = pattern.patternName + " (" + niceGraphTypeName + ")\n\n" + output;
+        if (saveFile) {
+            const exportBlob = new Blob([output], {type: "text/csv;charset=utf-8"});
+            saveAs(exportBlob, pattern.patternName + ".csv");
+        } else {
+            return output;
         }
-        let result = "";
-        newCells.forEach(function(newRow) {
-            result += newRow.join(",") + "\n";
-        })
-        return result;
     }
 
     showStatisticalResultsForGraph() {

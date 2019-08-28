@@ -375,6 +375,8 @@ export function printCatalysisReport() {
         printCatalysisReportWithUnclusteredObservations(project, catalysisReportIdentifier, catalysisReportName, allStories, observationIDsToInclude, options);
     } else if (reportType === "observation graphs only") {
         printCatalysisReportWithObservationGraphsOnly(project, catalysisReportIdentifier, catalysisReportName, allStories, observationIDsToInclude, options);
+    } else if (reportType === "observation graph data as csv") {
+        printCatalysisReportWithCSVOnly(project, catalysisReportIdentifier, catalysisReportName, allStories, observationIDsToInclude, options);
     } else if (reportType === "themes (clustered observations)") {
         printCatalysisReportWithClusteredObservations(project, catalysisReportIdentifier, catalysisReportName, allStories, observationIDsToInclude, options);
     } else if (reportType === "perspectives (clustered interpretations)") {
@@ -459,6 +461,7 @@ function printCatalysisReportWithObservationGraphsOnly(project, catalysisReportI
     }
 
     var observationIndex = 0;
+
     function printNextObservation() {
 
         if (progressModel.cancelled) {
@@ -503,6 +506,90 @@ function printCatalysisReportWithObservationGraphsOnly(project, catalysisReportI
                 } else {
                     const graphNode = <HTMLElement>graphHolder.graphResultsPane.firstChild;
                     printGraphToZipFile(zipFile, graphHolder, graphNode, graphTitle, options);
+                }
+            }
+
+            progressModel.progressText = progressText(observationIndex);
+            progressModel.redraw();
+            observationIndex++;
+            setTimeout(function() { printNextObservation(); }, 0);
+        }
+    }
+
+    function progressText(observationIndex: number) {
+        return "Observation " + (observationIndex + 1) + " of " + observationIDs.length;
+    }
+    
+    function dialogCancelled(dialogConfiguration, hideDialogMethod) {
+        progressModel.cancelled = true;
+        hideDialogMethod();
+    }
+    
+    setTimeout(function() { printNextObservation(); }, 0);
+}
+
+function printCatalysisReportWithCSVOnly(project, catalysisReportIdentifier, catalysisReportName, allStories, observationIDs, options) {
+
+    var progressModel = dialogSupport.openProgressDialog("Starting up...", "Generating observation graph data", "Cancel", dialogCancelled);
+
+    const zipFile = new jszip();
+    let savedGraphCount = 0;
+
+    function saveCSVGraphToZipFile(zipFile, graphHolder, pattern) {
+        let output = PatternExplorer.saveGraphAsCSV(pattern, graphHolder, false);
+        const firstLineOfOutput = output.substr(0, output.indexOf("\n"));
+        // add utf-8 BOM - https://github.com/Stuk/jszip/issues/368
+        output = '\uFEFF' + output; 
+        zipFile.file(firstLineOfOutput + ".csv", output);
+        savedGraphCount++;
+    }
+
+    var observationIndex = 0;
+    
+    function printNextObservation() {
+
+        if (progressModel.cancelled) {
+
+            alert("Cancelled after working on " + (observationIndex + 1) + " observation(s)");
+
+        } else if (observationIndex >= observationIDs.length) {
+
+            progressModel.hideDialogMethod();
+            if (savedGraphCount > 0) {
+                var finishModel = dialogSupport.openFinishedDialog("Done creating zip file of graph data; save it?", "Finished generating graph data", "Save", "Cancel", function(dialogConfiguration, hideDialogMethod) {
+                    const fileName = options.catalysisReportName + " graph data ("  + options.strengthTextsToReport.join(" ") + ").zip";
+                    zipFile.generateAsync({type: "blob", platform: "UNIX", compression: "DEFLATE"}).then(function (blob) {saveAs(blob, fileName);});
+                    hideDialogMethod();
+                });
+                finishModel.redraw();
+            } else {
+                alert("No graphs were found with your current selection criteria. Try choosing different observation strengths.");
+            }
+            progressModel.redraw();
+
+        } else {
+
+            const observation = project.tripleStore.makeObject(observationIDs[observationIndex]);
+            if (observation && observation.pattern && observation.pattern.graphType !== "texts") {
+
+                let graphTitle = observation.pattern.patternName;
+                graphTitle = graphTitle.replace("/", " "); // jszip interprets a forward slash as a folder designation 
+
+                let graphHolder = initializedGraphHolder(allStories, options);
+                const hideNoAnswerValues = PatternExplorer.getOrSetWhetherNoAnswerValuesShouldBeHiddenForPattern(project, options.catalysisReportIdentifier, observation.pattern);
+                graphHolder.patternDisplayConfiguration.hideNoAnswerValues = hideNoAnswerValues;
+                const selectionCallback = function() { return this; };
+                const graph = PatternExplorer.makeGraph(observation.pattern, graphHolder, selectionCallback, !options.showStatsPanelsInReport);
+
+                if (graphHolder.chartPanes.length > 1) {
+                    for (let graphIndex = 1; graphIndex < graphHolder.chartPanes.length; graphIndex++) { // start at 1 to skip over title pane
+                        const graphNode = graphHolder.chartPanes[graphIndex];
+                        const subGraphTitle = graphTitle + " " + graph[graphIndex-1].subgraphChoice; // subtract 1 because 1 is title pane
+                        saveCSVGraphToZipFile(zipFile, graphHolder, observation.pattern);
+                    } 
+                } else {
+                    const graphNode = <HTMLElement>graphHolder.graphResultsPane.firstChild;
+                    saveCSVGraphToZipFile(zipFile, graphHolder, observation.pattern);
                 }
             }
 
