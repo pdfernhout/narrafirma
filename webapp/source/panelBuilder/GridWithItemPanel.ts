@@ -341,7 +341,7 @@ class GridWithItemPanel {
         
         var buttonPanel = m("div.narrafirma-button-panel", buttons);
         
-        var parts = [m("div.narrafirm-grid", [table]), buttonPanel];
+        var parts = [m("div.narrafirm-grid", {id: this.gridID}, [table]), buttonPanel];
         
         if (this.isViewing()) {
             parts.push(this.bottomEditorForItem(panelBuilder, this.selectedItem, "view"));
