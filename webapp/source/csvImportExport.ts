@@ -390,6 +390,10 @@ function processCSVContentsForStories(contents, saveStories, writeLog, questionn
 
                     // Scale, text is scale value
                     } else if (importValueType === "Scale") {
+                        let valueAsFloat = parseFloat(value);
+                        if (valueAsFloat % 1 !== 0) {
+                            log("ERROR||Answer for " + questionName + " (" + importValueType + "): Should be an integer but is not: " + valueAsFloat);
+                        }
                         var valueAsInt = parseInt(value);
                         var adjustedValue = changeValueForCustomScaleValues(valueAsInt, question, questionnaire);
                         newItem[questionName] = adjustedValue;
