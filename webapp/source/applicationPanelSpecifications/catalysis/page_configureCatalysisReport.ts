@@ -93,12 +93,12 @@ var panel: Panel = {
             }
         },
         {
-            id: "configureCatalysisReport_showInterpretationsInGrid",
+            id: "configureCatalysisReport_columnIDsToShowInPatternsTable",
             valueType: "boolean",
-            valuePath: "/clientState/catalysisReportIdentifier/showInterpretationsInGrid",
-            displayType: "checkbox",
-            displayConfiguration: "Show interpretations in the patterns table",
-            displayPrompt: `Do you want to <strong>see interpretations</strong> in the table of patterns on the "Explore Patterns" page?`,
+            valuePath: "/clientState/catalysisReportIdentifier/columnIDsToShowInPatternsTable",
+            displayType: "catalysisReportPatternTableColumnsChooser",
+            displayConfiguration: "Columns to show in the patterns table",
+            displayPrompt: `What <strong>columns</strong> do you want to see in the table of patterns on the "Explore Patterns" page?`,
             displayVisible: function(panelBuilder, model) {
                 return !!Globals.clientState().haveCatalysisReportAndShowingAdvancedOptions();
             }

@@ -44,6 +44,19 @@ var patternsPanelSpecification = {
     ]
 };
 
+const columnIDsToDisplayNamesMap = {
+    "patternName": "Name",
+    "remarkable": "Remarkable?",
+    "q1DisplayName": "Q1",
+    "q2DisplayName": "Q2",
+    "q3DisplayName": "Q3",
+    "graphType": "Type",
+    "statsSummary": "Significance",
+    "observation": "Observations",
+    "strength": "Strengths",
+    "interpretations": "Interpretations",
+}
+
 const interpretationsColumnSpec = {id: "interpretations", displayName: "Interpretations", valueOptions: []};
 
 function nameForQuestion(question) {
@@ -699,20 +712,17 @@ class PatternExplorer {
         this.questions = this.questions.concat(leadingStoryQuestions, elicitingQuestions, numStoriesToldQuestions, storyLengthQuestions, storyQuestions, participantQuestions, annotationQuestions);
         this.questionsToInclude = this.project.tripleStore.queryLatestC(this.catalysisReportIdentifier, "questionsToInclude"); 
 
-        // adjust patterns grid for showing or hiding interpretations
-        if (this.showInterpretationsInGrid) {
-            let hasColumnAlready = false;
-            for (var index = 0; index < patternsPanelSpecification.panelFields.length; index++) {
-                if (patternsPanelSpecification.panelFields[index].displayName === "Interpretations") {
-                    hasColumnAlready = true;
-                    break;
+        // adjust patterns grid for showing or hiding columns
+        const columnIDsToShow = this.project.tripleStore.queryLatestC(this.catalysisReportIdentifier, "columnIDsToShowInPatternsTable");
+        if (columnIDsToShow !== undefined) { // if undefined, may be legacy data - show all columns
+            const allColumnIDs = Object.keys(columnIDsToDisplayNamesMap);
+            this.patternsGridFieldSpecification.itemPanelSpecification.panelFields = [{id: "id", displayName: "Index", valueOptions: []}];
+            allColumnIDs.forEach( (columnID) => {
+                if (columnIDsToShow[columnID]) {
+                    const columnSpec = {id: columnID, displayName: columnIDsToDisplayNamesMap[columnID], valueOptions: []};
+                    this.patternsGridFieldSpecification.itemPanelSpecification.panelFields.push(columnSpec);
                 }
-            }
-            if (!hasColumnAlready) patternsPanelSpecification.panelFields.push(interpretationsColumnSpec);
-        }
-        else {
-            patternsPanelSpecification.panelFields =
-                patternsPanelSpecification.panelFields.filter(function (each) { return each.displayName !== "Interpretations"; });
+            })
         }
         this.patternsGrid.updateDisplayConfigurationAndData(this.patternsGridFieldSpecification);
         this.modelForPatternsGrid.patterns = this.buildPatternList();
