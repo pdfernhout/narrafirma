@@ -477,13 +477,15 @@ class PatternExplorer {
             const remarkable = PatternExplorer.getOrSetWhetherPatternIsMarkedAsRemarkable(this.project, this.catalysisReportIdentifier, this.currentPattern);
             result.push(m("span", {class: "narrafirma-mark-pattern-text"}, "Remarkable?"));
             result.push(m("button", {class: "narrafirma-mark-pattern-button", 
-                onclick: this.setRemarkableToYes.bind(this), disabled: remarkable === "yes"}, m("span.button-text ", "yes"))); 
+                onclick: this.setRemarkableFlag.bind(this, "yes"), disabled: remarkable === "yes"}, m("span.button-text ", "yes"))); 
             result.push(m("button", {class: "narrafirma-mark-pattern-button", 
-                onclick: this.setRemarkableToMaybe.bind(this), disabled: remarkable === "maybe"}, m("span.button-text ", "maybe")));
+                onclick: this.setRemarkableFlag.bind(this, "maybe"), disabled: remarkable === "maybe"}, m("span.button-text ", "maybe")));
             result.push(m("button", {class: "narrafirma-mark-pattern-button", 
-                onclick: this.setRemarkableToNo.bind(this), disabled: remarkable === "no"}, m("span.button-text ", "no")));
+                onclick: this.setRemarkableFlag.bind(this, "no"), disabled: remarkable === "no"}, m("span.button-text ", "no")));
             result.push(m("button", {class: "narrafirma-mark-pattern-button", 
-                onclick: this.setRemarkableToUnmarked.bind(this), disabled: remarkable === undefined || remarkable === ""}, 
+                onclick: this.setRemarkableFlag.bind(this, "redundant"), disabled: remarkable === "redundant"}, m("span.button-text ", "redundant")));
+            result.push(m("button", {class: "narrafirma-mark-pattern-button", 
+                onclick: this.setRemarkableFlag.bind(this, ""), disabled: remarkable === undefined || remarkable === ""}, 
                 m("span.button-text ", "unmarked"))); 
 
             if (this.observationAccessors.length === 0) {
@@ -590,36 +592,11 @@ class PatternExplorer {
         return m("div.narrafirma-patterns-grid", parts);
     }
 
-    setRemarkableToYes() {
+    setRemarkableFlag(newValue: string) {
         if (!this.currentPattern) return; 
-        const oldRemarkable = PatternExplorer.getOrSetWhetherPatternIsMarkedAsRemarkable(this.project, this.catalysisReportIdentifier, this.currentPattern);
-        const newRemarkable = "yes";
-        PatternExplorer.getOrSetWhetherPatternIsMarkedAsRemarkable(this.project, this.catalysisReportIdentifier, this.currentPattern, newRemarkable);
-        if (oldRemarkable !== newRemarkable) this.updateGraphForNewPattern(this.currentPattern);
-    }
-
-    setRemarkableToMaybe() {
-        if (!this.currentPattern) return; 
-        const oldRemarkable = PatternExplorer.getOrSetWhetherPatternIsMarkedAsRemarkable(this.project, this.catalysisReportIdentifier, this.currentPattern);
-        const newRemarkable = "maybe";
-        PatternExplorer.getOrSetWhetherPatternIsMarkedAsRemarkable(this.project, this.catalysisReportIdentifier, this.currentPattern, newRemarkable);
-        if (oldRemarkable !== newRemarkable) this.updateGraphForNewPattern(this.currentPattern);
-    }
-
-    setRemarkableToNo() {
-        if (!this.currentPattern) return; 
-        const oldRemarkable = PatternExplorer.getOrSetWhetherPatternIsMarkedAsRemarkable(this.project, this.catalysisReportIdentifier, this.currentPattern);
-        const newRemarkable = "no";
-        PatternExplorer.getOrSetWhetherPatternIsMarkedAsRemarkable(this.project, this.catalysisReportIdentifier, this.currentPattern, newRemarkable);
-        if (oldRemarkable !== newRemarkable) this.updateGraphForNewPattern(this.currentPattern);
-    }
-
-    setRemarkableToUnmarked() {
-        if (!this.currentPattern) return; 
-        const oldRemarkable = PatternExplorer.getOrSetWhetherPatternIsMarkedAsRemarkable(this.project, this.catalysisReportIdentifier, this.currentPattern);
-        const newRemarkable = "";
-        PatternExplorer.getOrSetWhetherPatternIsMarkedAsRemarkable(this.project, this.catalysisReportIdentifier, this.currentPattern, newRemarkable);
-        if (oldRemarkable !== newRemarkable) this.updateGraphForNewPattern(this.currentPattern);
+        const oldValue = PatternExplorer.getOrSetWhetherPatternIsMarkedAsRemarkable(this.project, this.catalysisReportIdentifier, this.currentPattern);
+        PatternExplorer.getOrSetWhetherPatternIsMarkedAsRemarkable(this.project, this.catalysisReportIdentifier, this.currentPattern, newValue);
+        if (oldValue !== newValue) this.updateGraphForNewPattern(this.currentPattern);
     }
 
     patternsAndStrengthsToDisplayAbovePatternsTable() {
