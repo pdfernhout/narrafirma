@@ -62,9 +62,22 @@ function computeColumnsForItemPanelSpecification(itemPanelSpecification, gridCon
     }
     
     fieldsToInclude.forEach(function (fieldSpecification) {
+
+        // this is for one particular case (the patterns table in PatternExplorer) 
+        // where the string to translate is literally "id" 
+        // this causes the translate function to show "ID" instead of fieldSpecification.displayName 
+        // because the "messages" data structure in applicationMessages thing has the lookup string "id::shortname"
+        // this was a mistake that can't be changed because the "id" field is saved in the data for patterns
+        let columnLabel = "";
+        if (fieldSpecification.id === "id") {
+            columnLabel = fieldSpecification.displayName;
+        } else {
+            columnLabel = translate(fieldSpecification.id + "::shortName", fieldSpecification.displayName);
+        }
+
         var newColumn =  {
             field: fieldSpecification.id,
-            label: translate(fieldSpecification.id + "::shortName", fieldSpecification.displayName)
+            label: columnLabel
         };
         columns.push(newColumn);
     });

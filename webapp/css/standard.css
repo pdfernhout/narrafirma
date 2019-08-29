@@ -313,6 +313,7 @@ button:hover {
 
 button:disabled {
     background-color: lightgray;
+    color: darkgray;
 }
 
 .button-text {
@@ -982,6 +983,17 @@ table.filterTable td {
 
 .narrafirma-choose-graph-types-to-include {
     margin: 0.5em 0 0.5em 0.5em;
+}
+
+.narrafirma-mark-pattern-button {
+    margin-left: 0.1em;
+    margin-right: 0.1em;
+}
+
+.narrafirma-mark-pattern-text {
+    display: inline-block;
+    vertical-align: bottom;
+    margin: 0 0.75em 0.5em 0.75em;
 }
 
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Catalysis report ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */

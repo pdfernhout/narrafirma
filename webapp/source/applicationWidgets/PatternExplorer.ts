@@ -31,15 +31,16 @@ var patternsPanelSpecification = {
     id: "patternsPanel",
     modelClass: "Pattern",
     panelFields: [
-        {id: "id", displayName: "Index"},
-        {id: "patternName", displayName: "Pattern name", valueOptions: []},
-        {id: "q1DisplayName", displayName: "Question 1", valueOptions: []},
-        {id: "q2DisplayName", displayName: "Question 2", valueOptions: []},
-        {id: "q3DisplayName", displayName: "Question 3", valueOptions: []},
-        {id: "graphType", displayName: "Graph type", valueOptions: []},
-        {id: "statsSummary", displayName: "Significance value", valueOptions: []},
-        {id: "observation", displayName: "Observation(s)", valueOptions: []},
-        {id: "strength", displayName: "Strength(s)", valueOptions: []},
+        {id: "id", displayName: "Index", valueOptions: []},
+        {id: "patternName", displayName: "Name", valueOptions: []},
+        {id: "remarkable", displayName: "Remarkable?", valueOptions: []},
+        {id: "q1DisplayName", displayName: "Q1", valueOptions: []},
+        {id: "q2DisplayName", displayName: "Q2", valueOptions: []},
+        {id: "q3DisplayName", displayName: "Q3", valueOptions: []},
+        {id: "graphType", displayName: "Type", valueOptions: []},
+        {id: "statsSummary", displayName: "Significance", valueOptions: []},
+        {id: "observation", displayName: "Observations", valueOptions: []},
+        {id: "strength", displayName: "Strengths", valueOptions: []},
     ]
 };
 
@@ -182,6 +183,22 @@ class PatternExplorer {
         }
     }
 
+    static getOrSetWhetherPatternIsMarkedAsRemarkable(project: Project, catalysisReportIdentifier: string, pattern, newValue = undefined) {
+        const patternReference = JSON.stringify({"patternDisplayConfiguration": PatternExplorer.patternReferenceForPatternAndIndex(pattern, 0)});
+        const configurationObject: PatternDisplayConfiguration = project.tripleStore.queryLatestC(catalysisReportIdentifier, patternReference) || {};
+        if (newValue === undefined) {
+            if (configurationObject.remarkable !== undefined) {
+                return configurationObject.remarkable;
+            } else {
+                return undefined;
+            }
+        } else {
+            configurationObject.remarkable = newValue;
+            project.tripleStore.addTriple(catalysisReportIdentifier, patternReference, configurationObject);
+            return configurationObject.remarkable;
+        }
+    }
+
     constructor(args) {
         this.project = Globals.project();
 
@@ -281,8 +298,8 @@ class PatternExplorer {
                         "Show random sample of 20 selected stories", 
                         "Show random sample of 30 selected stories",
                         'Toggle display of "No answer" values',
-                        "Save the current selection (it will appear in the text box below)",
-                        "Restore a saved selection (from the text box below; position your cursor inside it first)",
+                        "Save current selection (will appear in text box below)",
+                        "Restore saved selection (position cursor in text box)",
                         "Save graph(s) as SVG file(s)",
                         "Save graph(s) as PNG file(s)",
                         "Save graph(s) as CSV file"],
@@ -442,39 +459,56 @@ class PatternExplorer {
         }
 
         const buildObservationsAndInterpretationsPanels = () => {
+            const result = [];
+
+            const remarkable = PatternExplorer.getOrSetWhetherPatternIsMarkedAsRemarkable(this.project, this.catalysisReportIdentifier, this.currentPattern);
+            result.push(m("span", {class: "narrafirma-mark-pattern-text"}, "Remarkable?"));
+            result.push(m("button", {class: "narrafirma-mark-pattern-button", 
+                onclick: this.setRemarkableToYes.bind(this), disabled: remarkable === "yes"}, m("span.button-text ", "yes"))); 
+            result.push(m("button", {class: "narrafirma-mark-pattern-button", 
+                onclick: this.setRemarkableToMaybe.bind(this), disabled: remarkable === "maybe"}, m("span.button-text ", "maybe")));
+            result.push(m("button", {class: "narrafirma-mark-pattern-button", 
+                onclick: this.setRemarkableToNo.bind(this), disabled: remarkable === "no"}, m("span.button-text ", "no")));
+            result.push(m("button", {class: "narrafirma-mark-pattern-button", 
+                onclick: this.setRemarkableToUnmarked.bind(this), disabled: remarkable === undefined || remarkable === ""}, 
+                m("span.button-text ", "unmarked"))); 
+
             if (this.observationAccessors.length === 0) {
-                return m("button", {onclick: this.addObservationTabClick.bind(this),}, m("span.button-text ", "Add an observation for this pattern"));
+                if (remarkable === "yes")
+                    result.push(m("button", {style: "margin-left: 0.8em", 
+                        onclick: this.addObservationTabClick.bind(this),}, m("span.button-text ", "Add observation")));
+            } else {
+                let tabs = [];
+                for (let i = 0; i < this.observationAccessors.length; i++) {
+                    const tab = m("button", {
+                        class: (i === this.activeObservationTab) ? "narrafirma-tab-button-selected" : "narrafirma-tab-button", 
+                        onclick: this.switchToObservationTabClick.bind(this, i),
+                        title: "Click to switch to another observation tab"
+                    }, "" + (i+1));
+                    tabs.push(tab);
+                }
+                tabs.push(m("button", {
+                    class: "narrafirma-tab-button", 
+                    onclick: this.addObservationTabClick.bind(this),
+                    title: "Click to add another observation to this pattern"
+                }, "+"));
+                tabs.push(m("button", {
+                    class: "narrafirma-tab-button", 
+                    onclick: this.deleteObservationTabClick.bind(this),
+                    title: "Click here to delete this observation (permanently)"
+                }, "-"));
+                let tabContents = [];
+                if (this.activeObservationTab >= 0 && this.activeObservationTab < this.observationAccessors.length) {
+                    const activeAccessor = this.observationAccessors[this.activeObservationTab];
+                    clientState.observationAccessor(activeAccessor);
+                    tabContents.push([
+                        panelBuilder.buildPanel(this.observationsPanelSpecification, {}),
+                        activeAccessor.observationHasTitleOrDescription() ? panelBuilder.buildPanel(this.interpretationsPanelSpecification, {}) : m("div"),
+                    ]);
+                } 
+                result.push(m(".narrafirma-tabs", m(".narrafirma-tabs-header", tabs), m(".narrafirma-tabs-body", tabContents)));
             }
-            let tabs = [];
-            for (let i = 0; i < this.observationAccessors.length; i++) {
-                const tab = m("button", {
-                    class: (i === this.activeObservationTab) ? "narrafirma-tab-button-selected" : "narrafirma-tab-button", 
-                    onclick: this.switchToObservationTabClick.bind(this, i),
-                    title: "Click to switch to another observation tab"
-                }, "" + (i+1));
-                tabs.push(tab);
-            }
-            tabs.push(m("button", {
-                class: "narrafirma-tab-button", 
-                onclick: this.addObservationTabClick.bind(this),
-                title: "Click to add another observation to this pattern"
-            }, "+"));
-            tabs.push(m("button", {
-                class: "narrafirma-tab-button", 
-                onclick: this.deleteObservationTabClick.bind(this),
-                title: "Click here to delete this observation (permanently)"
-            }, "-"));
-            let tabContents = [];
-            if (this.activeObservationTab >= 0 && this.activeObservationTab < this.observationAccessors.length) {
-                const activeAccessor = this.observationAccessors[this.activeObservationTab];
-                clientState.observationAccessor(activeAccessor);
-                tabContents.push([
-                    panelBuilder.buildPanel(this.observationsPanelSpecification, {}),
-                    activeAccessor.observationHasTitleOrDescription() ? panelBuilder.buildPanel(this.interpretationsPanelSpecification, {}) : m("div"),
-                ]);
-            } 
-            return m(".narrafirma-tabs", m(".narrafirma-tabs-header", tabs), m(".narrafirma-tabs-body", tabContents),
-            );
+            return result;
         }
 
         if (!this.catalysisReportIdentifier) {
@@ -541,6 +575,38 @@ class PatternExplorer {
             }
         }
         return m("div.narrafirma-patterns-grid", parts);
+    }
+
+    setRemarkableToYes() {
+        if (!this.currentPattern) return; 
+        const oldRemarkable = PatternExplorer.getOrSetWhetherPatternIsMarkedAsRemarkable(this.project, this.catalysisReportIdentifier, this.currentPattern);
+        const newRemarkable = "yes";
+        PatternExplorer.getOrSetWhetherPatternIsMarkedAsRemarkable(this.project, this.catalysisReportIdentifier, this.currentPattern, newRemarkable);
+        if (oldRemarkable !== newRemarkable) this.updateGraphForNewPattern(this.currentPattern);
+    }
+
+    setRemarkableToMaybe() {
+        if (!this.currentPattern) return; 
+        const oldRemarkable = PatternExplorer.getOrSetWhetherPatternIsMarkedAsRemarkable(this.project, this.catalysisReportIdentifier, this.currentPattern);
+        const newRemarkable = "maybe";
+        PatternExplorer.getOrSetWhetherPatternIsMarkedAsRemarkable(this.project, this.catalysisReportIdentifier, this.currentPattern, newRemarkable);
+        if (oldRemarkable !== newRemarkable) this.updateGraphForNewPattern(this.currentPattern);
+    }
+
+    setRemarkableToNo() {
+        if (!this.currentPattern) return; 
+        const oldRemarkable = PatternExplorer.getOrSetWhetherPatternIsMarkedAsRemarkable(this.project, this.catalysisReportIdentifier, this.currentPattern);
+        const newRemarkable = "no";
+        PatternExplorer.getOrSetWhetherPatternIsMarkedAsRemarkable(this.project, this.catalysisReportIdentifier, this.currentPattern, newRemarkable);
+        if (oldRemarkable !== newRemarkable) this.updateGraphForNewPattern(this.currentPattern);
+    }
+
+    setRemarkableToUnmarked() {
+        if (!this.currentPattern) return; 
+        const oldRemarkable = PatternExplorer.getOrSetWhetherPatternIsMarkedAsRemarkable(this.project, this.catalysisReportIdentifier, this.currentPattern);
+        const newRemarkable = "";
+        PatternExplorer.getOrSetWhetherPatternIsMarkedAsRemarkable(this.project, this.catalysisReportIdentifier, this.currentPattern, newRemarkable);
+        if (oldRemarkable !== newRemarkable) this.updateGraphForNewPattern(this.currentPattern);
     }
 
     patternsAndStrengthsToDisplayAbovePatternsTable() {
@@ -949,6 +1015,7 @@ class PatternExplorer {
             index++;
         }
 
+        
         var observationTitleOrDescriptionAccessor = () => {
             return this.getCombinedObservationsInfoForPattern(pattern, "observationTitle") || this.getCombinedObservationsInfoForPattern(pattern, "observationDescription");
         };
@@ -958,10 +1025,15 @@ class PatternExplorer {
         var interpretationsAccessor = () => {
             return this.getCombinedObservationsInfoForPattern(pattern, "observationInterpretations") || "";
         };
+        var remarkableAccessor = () => {
+            const remarkable = PatternExplorer.getOrSetWhetherPatternIsMarkedAsRemarkable(this.project, this.catalysisReportIdentifier, pattern);
+            return (remarkable === undefined) ? "" : remarkable;
+        }
        
         pattern.observation = observationTitleOrDescriptionAccessor;  // circular reference
         pattern.strength = strengthAccessor;
         pattern.interpretations = interpretationsAccessor;
+        pattern.remarkable = remarkableAccessor;
         return pattern;
     }
 
@@ -1161,10 +1233,10 @@ class PatternExplorer {
             case 'Toggle display of "No answer" values':
                 this.toggleNoAnswerDisplayForPattern();
                 break;
-            case "Save the current selection (it will appear in the text box below)":
+            case "Save current selection (will appear in text box below)":
                 this.saveGraphSelection();
                 break;
-            case "Restore a saved selection (from the text box below; position your cursor inside it first)":
+            case "Restore saved selection (position cursor in text box)":
                 this.restoreGraphSelection();
                 break;
             case "Save graph(s) as SVG file(s)":

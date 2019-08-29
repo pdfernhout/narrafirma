@@ -49,6 +49,7 @@ interface GraphHolder {
 
 interface PatternDisplayConfiguration {
     hideNoAnswerValues: boolean;
+    remarkable?: string;
 }
 
 // Possible Grid configuration options
