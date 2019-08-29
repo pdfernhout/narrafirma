@@ -495,7 +495,7 @@ function processCSVContentsForStories(contents, saveStories, writeLog, questionn
                     if (columnsToIgnore.indexOf(headerName) >= 0) {
                         log("LOG||Ignoring data column: " + fieldName);
                     } else {
-                        log("ERROR||NO MATCHING QUESTION FOUND for data column name: " + fieldName);
+                        log("LOG||NO MATCHING QUESTION FOUND for data column name: " + fieldName);
                     }
                 }
             }
