@@ -57,8 +57,6 @@ const columnIDsToDisplayNamesMap = {
     "interpretations": "Interpretations",
 }
 
-const interpretationsColumnSpec = {id: "interpretations", displayName: "Interpretations", valueOptions: []};
-
 function nameForQuestion(question) {
     if (question.displayName) return question.displayName;
     if (question.displayPrompt) return question.displayPrompt;
@@ -156,7 +154,6 @@ class PatternExplorer {
     storyGridFieldSpecification: any = null;
     storyGrid: GridWithItemPanel = null;
 
-    showInterpretationsInGrid = false;
     graphMultiChoiceQuestionsAgainstThemselves = false;
     hideStatsPanels = false;
     graphTypesToCreate = Project.default_graphTypesToCreate;
@@ -654,7 +651,6 @@ class PatternExplorer {
 
         // update options kept in this object
         this.graphTypesToCreate = this.project.tripleStore.queryLatestC(catalysisReportIdentifier, "graphTypesToCreate") || Project.default_graphTypesToCreate;
-        this.showInterpretationsInGrid = this.project.tripleStore.queryLatestC(this.catalysisReportIdentifier, "showInterpretationsInGrid"); 
         this.graphMultiChoiceQuestionsAgainstThemselves = this.project.tripleStore.queryLatestC(this.catalysisReportIdentifier, "graphMultiChoiceQuestionsAgainstThemselves"); 
         this.hideStatsPanels = this.project.tripleStore.queryLatestC(this.catalysisReportIdentifier, "hideStatsPanelsOnExplorePatternsPage"); 
         this.catalysisReportObservationSetIdentifier = this.getObservationSetIdentifier(catalysisReportIdentifier);
