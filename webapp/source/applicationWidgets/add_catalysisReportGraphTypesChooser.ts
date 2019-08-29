@@ -287,7 +287,15 @@ function graphCountForGraphType(graphType, questions, graphMultiChoiceQuestionsA
     }
 
     if (graphType === "correlation maps") {
-        return 1 + nominalQuestions.length;
+        const scaleQuestions = [];
+        questions.forEach( (question) => {
+            if (question.displayType === "slider") scaleQuestions.push(question);
+        })
+        if (scaleQuestions.length >= 3) {
+            return 1 + nominalQuestions.length;
+        } else {
+            return 0;
+        }
     }
 
     console.log("ERROR: Unexpected graph type", graphType);

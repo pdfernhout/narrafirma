@@ -942,18 +942,20 @@ class PatternExplorer {
 
         // all scale questions, all choice questions
         if (this.graphTypesToCreate["correlation maps"]) {
-            result.push(this.makePattern(nextID(), "correlation map", scaleQuestions, "Correlation map"));
-            nominalQuestions.forEach((nominalQuestion) => {
-                if (build) {
-                    let aName = "Correlation map for " + nominalQuestion.displayName;
-                    let questionList = [];
-                    questionList.push(nominalQuestion); // choice question must be first in the list
-                    questionList = questionList.concat(scaleQuestions);
-                    result.push(this.makePattern(nextID(), "correlation map", questionList, aName));
-                } else {
-                    graphCount++;
-                }
-            });
+            if (scaleQuestions.length >= 3) {
+                result.push(this.makePattern(nextID(), "correlation map", scaleQuestions, "Correlation map"));
+                nominalQuestions.forEach((nominalQuestion) => {
+                    if (build) {
+                        let aName = "Correlation map for " + nominalQuestion.displayName;
+                        let questionList = [];
+                        questionList.push(nominalQuestion); // choice question must be first in the list
+                        questionList = questionList.concat(scaleQuestions);
+                        result.push(this.makePattern(nextID(), "correlation map", questionList, aName));
+                    } else {
+                        graphCount++;
+                    }
+                });
+            }
         }
 
         if (build) {
