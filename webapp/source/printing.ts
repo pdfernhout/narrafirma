@@ -353,7 +353,9 @@ export function printCatalysisReport() {
     var observationIDsToInclude = [];
     observationIDs.forEach((id) => {
         var observation = project.tripleStore.makeObject(id, true);
-        if (!observation.observationTitle || !observation.observationTitle.trim()) return;
+        if (!observation.observationTitle || !observation.observationTitle.trim()) {
+            if (!observation.observationDescription || !observation.observationDescription.trim()) return;
+        }
         if (observation.observationStrength) {
             if (strengthsToInclude.indexOf(observation.observationStrength) < 0) return;
         } else {
@@ -885,7 +887,8 @@ function printObservation(observationID, observationIndex, clusterIndex, idTagSt
     const headerItems = [];
     headerItems.push(m("span", {"class": "narrafirma-catalysis-report-observation-label"}, printText(options.observationLabel)));
     headerItems.push(componentWithSequenceNumber(clusterIndex, -1, observationIndex, options));
-    headerItems.push(m("span", {"class": "narrafirma-catalysis-report-observation-title"}, printText(observation.observationTitle)));
+    headerItems.push(m("span", {"class": "narrafirma-catalysis-report-observation-title"}, 
+        printText(observation.observationTitle || observation.observationDescription)));
     const strengthStringToPrint = observation.observationStrength ? " Strength: " + observation.observationStrength : ""; 
     headerItems.push(m("span", {"class": "narrafirma-catalysis-report-observation-strength"}, strengthStringToPrint));
 
@@ -1721,7 +1724,7 @@ function printObservationsInProjectReport(page, project, tripleStore, catalysisR
         for (var key in observations) {
             var observationIdentifier = observations[key];
             var observation = tripleStore.makeObject(observationIdentifier);
-            if (observation.observationTitle) {
+            if (observation.observationTitle || observation.observationDescription) {
                 parts.push("<p><b>" + observation.pattern.patternName + ": " + observation.observationTitle + "</b> " + observation.observationDescription + "</p>");
                 var interpretationsSetIdentifier = project.tripleStore.queryLatestC(observationIdentifier, "observationInterpretations");
                 if (interpretationsSetIdentifier) {

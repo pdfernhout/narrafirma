@@ -591,6 +591,7 @@ class ClusteringDiagram {
         
         let textToShow = item.name;
         if (item.order) textToShow = item.order + ". " + item.name;
+        if (!textToShow) textToShow = item.notes.split(" ").slice(0, 10).join(" ") + " ...";
         this.addText(group, textToShow, radius * 1.5, textStyle, textColor);
     
         group.on("mousedown", () => {
