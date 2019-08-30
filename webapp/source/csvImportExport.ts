@@ -390,9 +390,14 @@ function processCSVContentsForStories(contents, saveStories, writeLog, questionn
 
                     // Scale, text is scale value
                     } else if (importValueType === "Scale") {
-                        let valueAsFloat = parseFloat(value);
+                        // parseFloat does not take a locale parameter and cannot process a comma as the decimal delimiter
+                        // so we should test for the presence of a comma, assuming that if it's present in a scale value
+                        // it is meant to be a decimal delimiter 
+                        let valueAsFloat = parseFloat(value.replace(",", "."));
                         if (valueAsFloat % 1 !== 0) {
-                            log("ERROR||Answer for " + questionName + " (" + importValueType + "): Should be an integer but is not: " + valueAsFloat);
+                            // we only want to give this error once per question, or the console will fill up with hundreds of these messages
+                            // parseInt stops when it encounters anything but a digit, so the number will be truncated
+                            log("ERROR||Answer for " + questionName + " (" + importValueType + "): Should be an integer but is not. It has been truncated.");
                         }
                         var valueAsInt = parseInt(value);
                         var adjustedValue = changeValueForCustomScaleValues(valueAsInt, question, questionnaire);
