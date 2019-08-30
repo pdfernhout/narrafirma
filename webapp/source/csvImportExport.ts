@@ -61,7 +61,10 @@ function shortenTextIfNecessary(text: string) {
 //------------------------------------------------------------------------------------------------------------------------------------------
 
 function processCSVContents(contents, callbackForItem) {
-    var rows = d3.csv.parseRows(contents);
+
+    const delimiter = Globals.clientState().csvDelimiter();
+    const csv = d3.dsv(delimiter, "text/plain");
+    var rows = csv.parseRows(contents);
     var items = [];
     var header = null;
     
@@ -1590,8 +1593,9 @@ export function exportQuestionnaire(questionnaire = null) {
     
     var output = "";
     var lineIndex = 1;
+    const delimiter = Globals.clientState().csvDelimiter();
     function addOutputLine(line) {
-        output = addCSVOutputLine(output, line);
+        output = addCSVOutputLine(output, line, delimiter);
     }
     
     var header = ["Data column name", "Type", "About", "Short name", "Long name", "Answers"];
@@ -1710,14 +1714,14 @@ var exportQuestionTypeMap = {
     "textarea": "Textarea"
 };
 
-function addCSVOutputLine(output, line) {
+function addCSVOutputLine(output, line, delimiter) {
     var start = true;
     line.forEach(function (item) {
-        let itemToSave;
+        let itemToSave = "";
         if (start) {
             start = false;
         } else {
-            output += ",";
+            output += delimiter;
         }
         if (typeof item == 'number') {
             itemToSave = "" + item;
@@ -1726,7 +1730,7 @@ function addCSVOutputLine(output, line) {
         } else {
             itemToSave = item;
         }
-        if (itemToSave.indexOf(",") !== -1) {
+        if (itemToSave.indexOf(delimiter) !== -1) {
             itemToSave = itemToSave.replace(/"/g, '""');
             itemToSave = '"' + itemToSave + '"';
         }
@@ -1743,7 +1747,8 @@ function addCSVOutputLine(output, line) {
 export function exportQuestionnaireForImport(questionnaire = null) { // to preserve import options for externally derived data
 
     var nameToSave;
-    if (!questionnaire) {
+    // for some reason the project name is being passed to this method from the "export story form" button, but "questionnaire" should be an object, not a string
+    if (!questionnaire || typeof questionnaire === "string") { 
         var storyCollectionName = Globals.clientState().storyCollectionName();
         if (!storyCollectionName) {
             alert("Please select a story collection first");
@@ -1766,8 +1771,9 @@ export function exportQuestionnaireForImport(questionnaire = null) { // to prese
     }
     var output = "";
     var lineIndex = 1;
+    const delimiter = Globals.clientState().csvDelimiter();
     function addOutputLine(line) {
-        output = addCSVOutputLine(output, line);
+        output = addCSVOutputLine(output, line, delimiter);
     }
     
     var header = ["Data column name", "Type", "About", "Short name", "Long name", "Answers"];
@@ -1776,11 +1782,11 @@ export function exportQuestionnaireForImport(questionnaire = null) { // to prese
     if (questionnaire.import_elicitingQuestionColumnName) {
         var elicitingLine = [
             questionnaire.import_elicitingQuestionColumnName, "eliciting", "eliciting", 
-            questionnaire.import_elicitingQuestionGraphName, 
+            questionnaire.import_elicitingQuestionGraphName || "", 
             questionnaire.chooseQuestionText];
-            questionnaire.elicitingQuestions.forEach(function (elicitingQuestionSpecification) {
-            elicitingLine.push(elicitingQuestionSpecification.importName + "|" + elicitingQuestionSpecification.id + "|" + elicitingQuestionSpecification.text);
-        });
+            questionnaire.elicitingQuestions.forEach( (question) => {
+                elicitingLine.push(question.importName || question.id + "|" + question.id + "|" + question.text);
+            });
         addOutputLine(elicitingLine);
     }
 
@@ -1976,8 +1982,9 @@ export function exportStoryCollection() {
     headersForQuestions(adjustedAnnotationQuestions);
   
     var output = "";
+    const delimiter = Globals.clientState().csvDelimiter();
     function addOutputLine(line) {
-        output = addCSVOutputLine(output, line);
+        output = addCSVOutputLine(output, line, delimiter);
     }
     
     addOutputLine(header1);
@@ -2022,8 +2029,9 @@ export function exportCatalysisReportElementsToCSV() {
     let output = "";
     let i = 0;
 
+    const delimiter = Globals.clientState().csvDelimiter();
     function addOutputLine(line) {
-        output = addCSVOutputLine(output, line);
+        output = addCSVOutputLine(output, line, delimiter);
     }
 
     const catalysisReportName = Globals.clientState().catalysisReportName();
@@ -2192,7 +2200,9 @@ export function processCSVContentsForCatalysisElements(contents) {
     }
     let observationsClusteringDiagramChanged = false;
 
-    const rows = d3.csv.parseRows(contents);
+    const delimiter = Globals.clientState().csvDelimiter();
+    const csv = d3.dsv(delimiter, "text/plain");
+    const rows = csv.parseRows(contents);
 
     for (let rowIndex = 0; rowIndex < rows.length; rowIndex++) {
 

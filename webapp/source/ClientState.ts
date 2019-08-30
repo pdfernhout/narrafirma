@@ -82,6 +82,27 @@ class ClientState {
         if (!storyCollectionIdentifier) return null;
         return this._showAdvancedOptions;
     }
+
+    csvDelimiter() {
+        const defaultValue = ",";
+        if (!this._project) return defaultValue;
+        const value = this._project.tripleStore.queryLatestC(this._project.projectIdentifier, "projectOptions_csvDelimiter");
+        if (value) {
+            switch (value) {
+                case "comma":
+                    return ",";
+                case "semicolon":
+                    return ";";
+                case "tab":
+                    return "\t";
+                default:
+                    alert("ERROR: Unexpected value for csv delimiter: " + value);
+                    return defaultValue;
+            }
+        } else {
+            return defaultValue;
+        }
+    }
     
     catalysisReportName(newValue: string = undefined): string {
         if (newValue !== undefined) {

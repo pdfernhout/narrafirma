@@ -1,5 +1,6 @@
 import page_dashboard = require("./dashboard/page_dashboard");
 import page_administration = require("./administration/page_administration");
+import page_projectOptions = require("./administration/page_projectOptions");
 import page_importExport = require("./administration/page_importExport");
 import page_print = require("./administration/page_print");
 import page_planning = require("./planning/page_planning");
@@ -83,6 +84,7 @@ import panel_addNewReturnRequest = require("./return/panel_addNewReturnRequest")
 var navigationModules = {};
 navigationModules["page_dashboard"] = page_dashboard;
 navigationModules["page_administration"] = page_administration;
+navigationModules["page_projectOptions"] = page_projectOptions;
 navigationModules["page_importExport"] = page_importExport;
 navigationModules["page_print"] = page_print;
 navigationModules["page_planning"] = page_planning;
@@ -177,6 +179,7 @@ var sections = [
         sectionName: "Administration",
         pages: [
             "page_administration",
+            "page_projectOptions",
             "page_importExport",
             "page_print"
         ],
