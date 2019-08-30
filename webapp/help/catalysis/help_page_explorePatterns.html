@@ -31,18 +31,22 @@ describing your data, make observations about them, and interpret those observat
 <p>
 Start by choosing a catalysis report to work with. Then look at the patterns (graphs) NarraFirma has generated.
 Click on a pattern name in the table to see it below the table. 
-You can use the arrow buttons to move systematically through the list of patterns.
+You can also use the arrow buttons to move systematically through the list of patterns.
 </p>
 <p>
 As you are looking at a graph, <b>hover the mouse to see the stories</b>, thus:
 <ul>
 <li>In a <b>bar graph</b> (one choice question) or <b>histogram</b> (scale question), hover over any 
 bar segment to see the story there.</li>
-<li>In a <b>contingency table</b> (two choice questions considered together), hover over an ellipse to see a list of story names.</li>
-<li>In a <b>contingency-histogram table</b> (two choice questions and a scale question considered together), 
+<li>In a <b>table</b> (two choice questions considered together), hover over an ellipse to see a list of story names.</li>
+<li>In a <b>histogram table</b> (two choice questions and a scale question considered together), 
 	hover over an square to see a list of story names. (The line is the mean of the scale-question distribution,
 	and the square around it is one standard deviation to the left and right of the mean.)</li>
-<li>In a <b>scatter plot</b> (two scale questions), hover over any dot to see the story (or stories) it represents.</li>
+<li>In a <b>scatterplot</b> (two scale questions), hover over any dot to see the story (or stories) it represents.</li>
+<li>You can't hover to see stories in a <b>correlation map</b> or any of the <b>data integrity</b> graphs.
+	You can hover in a correlation map to see histograms and scatterplots; but you can't hover over those to see stories.
+</li>
+
 </ul>
 <p>
 When you are looking at any graph, <b>click and drag to select stories</b>. 
@@ -54,16 +58,21 @@ The selected stories will appear in the list under the graph.
 		Where you drag vertically doesn't matter.
 		You can't select parts of a bar, just the whole thing.
 	</li>
-	<li>In a <b>contingency table</b> (two choice questions considered together), 
+	<li>In a <b>table</b> (two choice questions considered together), 
 		select any number of ellipses by dragging through their center points.</li>
-	<li>In a <b>contingency-histogram table</b> (two choice questions and a scale question considered together), 
+	<li>In a <b>histogram table</b> (two choice questions and a scale question considered together), 
 		select any number of squares by dragging through their center points.</li>
-	<li>In a <b>scatter plot</b> (two scale questions), select stories by dragging through their center points.</li>
+	<li>In a <b>scatterplot</b> (two scale questions), select stories by dragging through their center points.</li>
+	<li>You can't select stories in a <b>correlation map</b> or in any of the <b>data integrity</b> graphs.</li>
 </ul>
 <p>
-If you think a pattern is worth noting in your report, fill in an observation
-under the graph, and give the observation a name. Then enter at least two
-competing interpretations &mdash; that is, two things reasonable people with different viewpoints might say about
+If you think a pattern is worth noting in your report, 
+mark it as remarkable using the "yes" button under the graph. Then <b>create an observation</b>
+and fill it in. Be sure to give the observation a name, because it will be used as its header in your report. 
+</p>
+<p>
+Next, <b>enter at least two
+competing interpretations</b> for the observation &mdash; that is, two things reasonable people with different viewpoints might say about
 what the observation means. Give each interpretation a name as well.
 </p>
 <p>If you think of another observation about the same pattern, click the plus button,
@@ -71,8 +80,8 @@ what the observation means. Give each interpretation a name as well.
 </p>
 <p>
 When you look back at the table at the top of the page, you will be able 
-to sort it by whether you have marked the graph with an observation.
-In that way you can first go through your patterns looking for interesting
+to sort it by whether patterns have been marked as remarkable and whether you have written observations and interpretations for them.
+In this way, you can first go through your patterns looking for interesting
 patterns, then go back to the patterns you marked to think about them more
 deeply.
 </p>
@@ -82,7 +91,7 @@ deeply.
 
 <div class="text">
 <p>This is the most complicated page in the entire NarraFirma application.
-Give yourself some time to learn how to use it effectively. A few tips should help
+Give yourself some time to learn how to use it effectively. These tips should help
 you manage the complex task of reviewing patterns and writing observations
 and interpretations.
 </p>
@@ -91,7 +100,26 @@ and interpretations.
 		the patterns generated from your data. At different times in your catalysis work you will want to use this sorting 
 		function differently. Early on you might want to sort by type of graph. Later you might
 		want to see which are the most statistically significant trends. After you have started to 
-		write observations for your report, you will want to see which patterns you have written about.
+		write observations for your report, you will want to see which patterns you have marked and/or written about.
+	</li>
+	<li><b>Use the "Remarkable?" system</b>. You can mark patterns using any of five buttons (below the graph):
+		<ul>
+			<li><b>yes</b>: This pattern is important, and you want to write an observation and interpretations for it (or you already did).
+				<i><b>You can only create new observations on patterns that have been marked as remarkable.</b></i></li>
+			<li><b>no</b>: You have definitely decided not to include this pattern in your report.</li>
+			<li><b>maybe</b>: You might want to include this pattern, and you've marked it to check again later or discuss
+				with your team. You will probably be changing the "maybe" status later on.</li>
+			<li><b>redundant</b>: This pattern is important, but it is similar to another pattern you have 
+				written an observation and interpretations for, so you are not going to include it in the report.
+				You might want to add a non-printing note to this observation so you know which observation it is redundant with.
+				You might also want to include its name and/or graph in the pattern you wrote the observation for.</li>
+			<li><b>unmarked</b>: This pattern has not yet been reviewed. You can "unmark" a pattern after you have marked it,
+				perhaps because you think it should be looked at again, or something.</li>
+		</ul>
+		The marking system has no effect on printing the report. Observations (and interpretations) are printed
+		if they have either a name or a text, and if their strength value matches the values you chose when printing the report.
+		You can also hide individual observations and/or interpretations from the report by hiding them on the 
+		<a href="help_page_clusterInterpretations.html">clustering page</a>.
 	</li>
 	<li>
 		<b>Start with the simpler patterns</b>. It can help to look at your patterns one type at a time. For example, you might start by 
@@ -108,28 +136,6 @@ and interpretations.
 		Once you are sure that a question is not worth considering, you can 
 		uncheck its checkbox on the "Configure catalysis report" page.
 		This will reduce the number of patterns generated and streamline your task.
-	</li>
-	<li><b>Write tentative observations</b>. If you think you <i>might</i> want to write an observation for a graph, but but you're not sure,
-		make a tentative observation by putting some kind of special code in the observation name text box, like "?" or "maybe"
-		or "later". Then, later on, come back to all of your tentative observations and decide whether you want
-		to finish writing them. There are a few different ways to leave a tentative observation out of a report, depending on what sort of report it is.
-		<ul>
-		<li>For a clustered interpretations report, you can:
-		<ul>
-			<li>Not write any interpretations for the observation</li>
-			<li>Delete the bubbles that represent its interpretations from the interpretations clustering space</li>
-			<li>Mark the bubbles that represent its interpretations as hidden (select them, then click "Show or hide in report")</li>
-		</ul>
-		</li>
-		<li>
-		For a clustered observations report, you can:
-		<ul>
-			<li>Delete the observation itself (by clicking the minus button above the observation)</li>
-			<li>Delete the bubble that represents the observation from the observations clustering space</li>
-			<li>Mark the bubble that represents the observation as hidden</li>
-		</ul>
-		</li>
-		</ul>
 	</li>
 	<li>
 		<b>Use observation strengths to triage</b>. 
@@ -151,7 +157,7 @@ and interpretations.
 		interpretations only for the observations marked strongest. 
 	</li>
 	<li><b>Give everything a name</b>. Make sure all of your observations and interpretations have clear, brief names. They are used as headers in
-		the printed report. Interpretation names are also used to represent interpretations on the clustering diagram.
+		the printed report. 
 	</li>
 </ul>
 </div>
@@ -159,47 +165,193 @@ and interpretations.
 <div class="heading">Frequently-asked questions - Things you can see</div>
 
 <div class="question">
-What are the extra circles on the "table" diagrams with two choice questions?
-</div>
-<div class="question-answer">
-<p>
-Those are the counts of stories that would be in each "cell" of the table
-if the two sets of choices were distributed only by chance. You could call
-them the "expected" counts, as against the counts actually observed.
-Tables of count results where the expected counts are very different
-from the observed counts are likely to produce significant test
-results from the chi-squared test.
-</p>
-<p>You can hover your mouse over any of the circles to see how many stories were expected
-to be found there and how many were actually found there. Or, if you have that option turned on, you can 
-read the counts directly in the table (observed/expected).
-</p>
-</div>
-
-<div class="question">
-What are the lines and squares on the "contingency-histogram" graphs?
-</div>
-<div class="question-answer">
-<p>
-The line is the mean of the distribution for the scale question shown.
-The smaller box around the line shows one standard deviation to the left and right of the mean.
-The height of the box shows the relative number of stories in that category.
-</p>
-<p>You can hover your mouse over any of the squares to see how many stories are in that
-combination (of two choice questions and one scale question), and what the exact values are for the
-mean, standard deviation, skewness, and kurtosis of the distribution.
-</p>
-</div>
-
-<div class="question">
-What are the little colored lines on the histograms?
-</div>
-<div class="question-answer">
-<p>
-The red line is the mean (average) of the distribution. Each of the two green lines
-marks one standard deviation away (lower and higher) from the mean.
-</p>
-</div>
+		Can you explain the different graph types? I don't understand what they are showing me.
+		</div>
+		<div class="question-answer">
+		<table border="0" cellspacing="12" cellpadding="4">
+		<tr>
+			<td valign="top"><img src="graphThumbnail_barGraphs.png" height="64px" alt="bar graph"></td>
+			<td valign="top">A <b>bar graph</b> shows counts of particular answers to a choice question, 
+				like "Who acted responsibly in this story?"
+				The height of each bar shows the count of stories for which the question was answered that way.
+				Note that this is not necessarily a count of how many <i>participants</i> answered the question that way, 
+				if anyone could or did tell more than one story.
+			</td>
+		</tr>
+		
+		<tr>
+			<td valign="top"><img src="graphThumbnail_histograms.png" height="64px" alt="histogram"></td>
+			<td valign="top">A <b>histogram</b> shows the frequency distribution of answers to a scale question, 
+				like "How much cooperation do you see in this story?"
+				The height of each bar shows the count of stories for which the question was answered in the range
+				specified in the scale at the bottom of the graph. For example, a bar drawn between the axis values
+				of zero and ten shows how many stories had a scale value set to anything between zero and ten, inclusive.
+				<br><br>
+				Actually, zero and 100 are special cases. A zero value always gets counted in the first column of the histogram,
+				and a 100 value always gets counted in the last column. For every <i>other</i> column, the upper bound is inclusive
+				and the lower bound is exclusive. Thus, a value of 10 will go into the first column and not the second.
+				<br><br>
+				The red line on a histogram shows the arithmetic mean of all of the values. The two green lines
+				on either side of the red line show one standard deviation above and below the mean.
+			</td>
+		</tr>
+		
+		<tr>
+			<td valign="top"><img src="graphThumbnail_texts.png" height="64px" alt="text listing"></td>
+			<td valign="top">A <b>text listing</b> is just a plain-text record of any free entry (type-in) questions you asked. 
+				You can copy and paste from these listings into observations.
+			</td>
+		</tr>
+		
+		<tr>
+			<td valign="top"><img src="graphThumbnail_tables.png" height="64px" alt="table"></td>
+			<td valign="top">A <b>table</b> shows the counts of stories
+				for which both questions were answered in the way indicated by the row and column of the grid.
+				You might know these as <i>contingency tables</i>.
+				For example, a table might show the concurrence of two questions: "Who acted responsibly in this story?" and
+				"Who was <i>supposed</i> to have responsibility in this story?" A
+				One bubble on the graph might show how many stories for which participants said that one person 
+				took care of another person's responsibility.
+				<br><br>
+				If there are unfilled ellipses on the graph, they indicate how many stories would be <i>expected</i>
+				to have those two answers, if the answers were filled in randomly. The formula for expected counts
+				is (row total x column total) / total number of stories. Expected counts are only shown when both
+				questions have mutually exclusive answer sets.
+				<br><br>
+				Tables of count results where the expected counts are very different
+				from the observed counts are likely to produce significant test
+				results from the chi-squared test.
+				<br><br>
+				You can hover your mouse over any of the circles to see how many stories were expected
+				to be found there and how many were actually found there. Or, if you have that option turned on, you can 
+				read the counts directly in the table (observed/expected).
+			</td>
+		</tr>
+		
+		<tr>
+			<td valign="top"><img src="graphThumbnail_multiHistograms.png" height="64px" alt="histogram set"></td>
+			<td valign="top">A <b>histogram set</b> shows the frequency distributions of a scale question for
+				<i>subsets</i> of stories for which a choice question was answered in different ways. For example,
+				such a set might show answers to the question "How much cooperation do you see in this story?"
+				divided into two graphs: participants who said "the town council" had responsibility for what happened
+				in the story; and participants who said "all of us" had responsibility for what happened in the story.
+			</td>
+		</tr>
+		
+		<tr>
+			<td valign="top"><img src="graphThumbnail_scatterPlots.png" height="64px" alt="scatterplot"></td>
+			<td valign="top">A <b>scatterplot</b> (also known as an XY graph) shows the distribution of answers to two scale 
+			questions considered together, like "How much cooperation do you see in this story?"
+			and "How much conflict do you see in this story?"
+			<br><br>
+			A red line on a scatterplot means that answers to the two questions are significantly correlated.
+			That is, when someone chose a high scale value for one question, they also chose a high scale value
+			for the other question -- on the same story. The slope of the line shows the calculated correlation coefficient.
+		</td>
+		</tr>
+		
+		<tr>
+			<td valign="top"><img src="graphThumbnail_contingencyHistograms.png" height="64px" alt="histogram table"></td>
+			<td valign="top">A <b>histogram table</b> is a table with representations of histograms (frequency distributions) in each cell. 
+				Each cell shows the mean and standard deviation of the distributions of answers to a scale question
+				for a subset of stories specified by a combination of answers to the two choice questions.
+				<br><br>
+				For example, one cell in a table might show how participants answered the scale question
+				"How much cooperation do you see in this story?" -- for the subset of stories 
+				in which participants said "a manager" was supposed to be responsible
+				for a situation but "a line employee" took charge of it.
+				<br><br>
+				The red line in these mini-histogram representations represents the arithmetic mean of the distribution.
+				The shaded box represents one standard deviation on either side of the mean. The height
+				of each box shows how many stories are in the subset. (The width of the box is constant.)
+				<br><br>
+				You can hover your mouse over any of the squares to see how many stories are in that
+				combination (of two choice questions and one scale question), and what the exact values are for the
+				mean, standard deviation, skewness, and kurtosis of the distribution.
+			</td>
+		</tr>
+		
+		<tr>
+			<td valign="top"><img src="graphThumbnail_multiScatterPlots.png" height="64px" alt="scatterplot set"></td>
+			<td valign="top">A <b>scatterplot set</b> shows answers to two scale questions for
+				<i>subsets</i> of stories for which a choice question was answered in different ways.
+				For example, such a set might show the relationship between
+				answers to the two scale questions "How much cooperation do you see in this story?"
+				and "How much conflict do you see in this story?"
+				divided into two graphs: participants who said "the town council" had responsibility for what happened
+				in the story; and participants who said "all of us" had responsibility for what happened in the story.
+			</td>
+		</tr>
+		
+		<tr>
+			<td valign="top"><img src="graphThumbnail_correlationMaps.png" height="64px" alt="correlation map"></td>
+			<td valign="top">A <b>correlation map</b> is a diagram that shows the relationships
+				among <i>all</i> selected scale questions, either overall or for subsets of stories
+				for which a choice question was answered in different ways.
+				For example, a correlation map might show that the question 
+				"How much cooperation do you see in this story?" is negatively correlated with
+				"How much conflict do you see in this story?" and positively correlated with
+				"How responsible were the people in this story?" -- but
+				only in subsets of stories in which the answer to "Who acted responsibly in this story?"
+				was "parents."
+				<br><br>
+				You can choose to see correlation maps in either of two formats: a line of questions with arcs
+				connecting them, or a circle of questions with straight lines connecting them. Change this option
+				on the 
+				<a href="help_page_configureCatalysisReport.html">Configure catalysis report</a> page 
+				by answering the question "What shape should correlation maps be?"
+				<br><br>
+				Only statistically significant correlations are shown (at the level specified
+				in the advanced option "When should correlation lines be drawn on scatter plots?").
+				The width of each linking line shows the correlation coefficient (r) for that combination
+				of scale questions. When the correlation is perfect (r = 1.0 or r = -1.0), the line thickness is the same
+				as the circle diameter. 
+				<br><br>
+				The sizes of the (inner) question bubbles in a correlation map show the number of stories for which
+				that scale question was answered. If you are looking a series of correlation maps for subsets
+				of stories in a choice question, the comparison is across all the bubbles on the screen,
+				not just one of the maps. That way you can compare the numbers of stories across subsets.
+			</td>
+		</tr>
+		
+		<tr>
+			<td valign="top"><img src="graphThumbnail_dataIntegrity.png" height="64px" alt="data integrity"></td>
+			<td>A <b>data integrity</b> graph is a special kind of graph specifically for checking to make sure
+				your data holds together. If there are disqualifying biases in your data, you will be able to see
+				them here. Specifically:
+				<ul>
+					<li><b>All scale values</b>: These are all the scale numbers for every story you collected, lumped together into one
+						giant distribution. Look for a good spread of values. Huge spikes at either the midpoint of the range
+						or either extreme could mean people didn't want to answer or weren't paying attention.
+					</li>
+					<li><b>Participant means</b>: These are the mean values of each participant's scale answers,
+						considering all of the stories they told.
+						For example, if you had four scale questions in your story form, and Participant 23
+						answered with values of 12, 32, 41, and 19, their value on this graph would be 
+						counted as 23. On this graph, look for a bell-shaped curve. If you only see a very
+						narrow, very tall spike, it means that everyone answered all the questions in a similar way.
+						That's not good.
+					</li>
+					<li><b>Participant standard deviations</b>: These are the standard deviations of each participant's scale answers,
+						considering all of the stories they told.
+						In the case above (where Participant 23 gave values of 12, 32, 41, and 19), their value
+						on this graph would be 13, which is the standard deviation of that distribution of values.
+						On this graph, look for a peak not too close to the left. The closer this peak is to zero,
+						the more everyone chose the same values no matter what question was asked. When people say
+						the same thing no matter what you ask them, they aren't paying attention.
+					</li>
+					<li><b>Unanswered choice questions</b>: These are counts of how many stories for which no answer was given
+						for each choice question. Look at this graph to see whether you need to eliminate any questions
+						from consideration because too many people ignored or didn't like the question.
+					</li>
+					<li><b>Unanswered scale questions</b>: These are counts of how many stories for which no answer was given
+							for each scale question. Again, look for problematic questions few people answered.</li>
+				</ul>
+			</td>
+		</tr>
+		
+		</table>
+		</div>
 
 <div class="question">
 What statistical tests are being reported?
@@ -315,7 +467,7 @@ You can record and use more than one selection, and you can
 		</div>
 		<div class="question-answer">
 		<ul>
-			<li>Under the box where you describe your observation, find the box labeled "To include additional patterns".</li>
+			<li>Under the box where you describe your observation, find the box labeled "To include additional patterns."</li>
 			<li>For each pattern you want to include, find its line in the patterns table at the top of the page. </li>
 			<li>Copy the <i>exact</i> name of each question in the pattern. (Patterns can have one, two, or three question names.) </li>
 			<li>If there is only one question in the pattern, just type that exact name into the additional-patterns box. </li>

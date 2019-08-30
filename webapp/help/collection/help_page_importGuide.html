@@ -483,6 +483,8 @@ Here's what the import options for the "LongAgo" question look like in NarraFirm
 <h4 id="nf_scale">Scale questions</h4>
 
 <p>This type of question covers one column, and its cells contain numbers that correspond to locations along a linear scale. 
+        Scale values <i>must</i> be integers. NarraFirma does not accept floating-point (real) numbers for scales.
+</p><p>
         In our example data file, the "Remember" question is of this type:</p>
 
 <table border="1" cellpadding="4" cellspacing="0">
@@ -500,7 +502,8 @@ Here's what the import options for the "LongAgo" question look like in NarraFirm
         </tr>
         </table>
 
-<p>The default NarraFirma scale goes from zero to 100. If your scale is not from zero to 100, you can set a custom scale range in either of two places:
+<p>The default NarraFirma scale goes from zero to 100. 
+    If your scale is not from zero to 100, you can set a custom scale range in either of two places:
     for each question, or for the story form in general. If all of your scale questions use the same scale, it's easier to 
     <a href="#nf_form">set the range at the story
     form level</a>. However, if each scale question has its own minimum and maximum, you can set them in the 
@@ -761,7 +764,8 @@ In our example data file, the "Needed" question is of this type:</p>
     <tr>
     <td>In your data file, what is the <b>minimum value</b> for your scale questions?</td>
     <td>If you have scale questions in your file, and they are all (or mostly)
-        the same, and their ranges do not go from zero to 100, enter the lowest number on your scales here.</td>
+        the same, and their ranges do not go from zero to 100, enter the lowest number on your scales here.
+        Remember that all scale values must be integers.</td>
     </tr>
 
     <tr>
@@ -848,7 +852,7 @@ Look at each column name and think about the data in that column so you can desc
         <tr><th>Data type</th><th>Link</th><th>Explanation</th></tr>
         <tr><td>Single choice</td><td><a href="#csv_singlechoice">go</a></td><td>one column, one choice, text</td></tr>
         <tr><td>Single choice indexed</td><td><a href="#csv_singlechoiceindexed">go</a></td><td>one column, one choice, index</td></tr>
-        <tr><td>Scale</td><td><a href="#csv_scale">go</a></td><td>one column, one answer, number on linear scale</td></tr>
+        <tr><td>Scale</td><td><a href="#csv_scale">go</a></td><td>one column, one answer, integer on linear scale</td></tr>
         <tr><td>Text</td><td><a href="#csv_text">go</a></td><td>one column, plain text</td></tr>
         <tr><td>Multi-choice multi-column texts</td><td><a href="#nf_multicolumntexts">go</a></td><td>multiple columns, multiple choices, texts</td></tr>
         <tr><td>Multi-choice multi-column yes/no</td><td><a href="#nf_multicolumnyesno">go</a></td><td> multiple columns, multiple choices, yes/no</td></tr>
@@ -1216,7 +1220,7 @@ use the annotation system instead.
             </tr>
             </table>
             
-<p>Let's say I happen to know that I asked this question on a scale from one to ten. 
+<p>Let's say I happen to know that I asked this question on an integer scale from one to ten. 
     NarraFirma's default scale runs from zero to 100, so I will need to tell NarraFirma that I want a custom scale range for this question.
 </p>
 
@@ -2339,7 +2343,7 @@ Before you can import your data file, you need to <b>create a story collection</
     <ul>
         <li>"Single choice" format for all single-choice questions, with answer texts in the column</li>
         <li>"Multi-choice multi-column texts" format for all multi-choice questions, with answer texts in multiple columns</li>
-        <li>"Scale" format for all scalar questions, with a range from zero to 100</li>
+        <li>"Scale" format for all scalar questions, with an integer range from zero to 100</li>
     </ul>
 </div>
 
