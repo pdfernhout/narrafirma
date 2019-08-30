@@ -498,9 +498,9 @@ class PatternExplorer {
                 m("span.button-text ", "unmarked"))); 
 
             if (this.observationAccessors.length === 0) {
-                if (remarkable === "yes")
-                    result.push(m("button", {style: "margin-left: 0.8em", 
-                        onclick: this.addObservationTabClick.bind(this),}, m("span.button-text ", "Add observation")));
+                result.push(m("button", {style: "margin-left: 0.8em", 
+                    disabled: remarkable !== "yes",
+                    onclick: this.addObservationTabClick.bind(this),}, m("span.button-text ", "Add observation")));
             } else {
                 let tabs = [];
                 for (let i = 0; i < this.observationAccessors.length; i++) {
@@ -513,6 +513,7 @@ class PatternExplorer {
                 }
                 tabs.push(m("button", {
                     class: "narrafirma-tab-button", 
+                    disabled: remarkable !== "yes",
                     onclick: this.addObservationTabClick.bind(this),
                     title: "Click to add another observation to this pattern"
                 }, "+"));
