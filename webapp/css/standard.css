@@ -1275,6 +1275,12 @@ td.narrafirma-mw-nested-title, td.narrafirma-mw-nested-stats {
     fill: none;
 }
 
+.contingencyChart.chartBodyBackground {
+    fill: none;
+    stroke: black;
+    stroke-width: 0.5px;
+}
+
 .chart {
     background-color: white;
 }
