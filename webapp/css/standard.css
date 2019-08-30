@@ -312,8 +312,8 @@ button:hover {
 }
 
 button:disabled {
-    background-color: lightgray;
-    color: darkgray;
+    background-color: #dddddd;
+    color: #525050; 
 }
 
 .button-text {
