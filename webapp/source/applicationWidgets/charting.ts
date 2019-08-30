@@ -2149,7 +2149,7 @@ export function d3CorrelationMapOrMaps(graphHolder: GraphHolder, questions, hide
     if (options.length > 1) {
 
         var chartPane = newChartPane(graphHolder, "singleChartStyle");
-        var chartTitle = "Correlation map";
+        var chartTitle = "Correlation map for " + questions[0].displayName;
         addTitlePanelForChart(chartPane, chartTitle);
 
         var subCharts = [];
@@ -2485,7 +2485,7 @@ export function d3CorrelationMap(graphHolder: GraphHolder, scaleQuestions, choic
             tooltipDiv
                 .html('<div class="narrafirma-correlation-map-thumbnail">' + svgNode.outerHTML + "</div>")
                 .style("display", "block")
-                .style("left", chartPane.offsetLeft + d3.mouse(this)[0] + tooltipOffset + "px")
+                .style("left", chartPane.offsetLeft + d3.mouse(this)[0] + ((mapShape === "line with arcs" && link.value < 0) ? -tooltipOffset/2-101 : tooltipOffset) + "px")
                 .style("top", chartPane.offsetTop + d3.mouse(this)[1] + tooltipOffset + "px")
         })
         .on("mouseout", function(link: MapLink) {
