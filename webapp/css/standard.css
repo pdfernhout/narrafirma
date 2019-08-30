@@ -695,7 +695,7 @@ table.filterTable td {
 
 .mediumChartStyle {
     width: 400px; /* this should match largeGraphWidth/2 in charting.ts */
-    float: left;
+    display: inline-block;
 }
 
 .chartEnclosure {
@@ -1029,8 +1029,12 @@ h6.narrafirma-statistics-panel-small {
 table.narrafirma-mw-all-results {
     margin: 0.5em;
     font-weight: normal;
-    border: 1px solid black;
     border-collapse: collapse;
+    display: block;
+    max-height: 300px;
+    overflow-y: scroll;
+    max-width: 800px;
+    overflow-x: scroll;
 }
 
 td.narrafirma-mw-nested-title, td.narrafirma-mw-nested-stats {
