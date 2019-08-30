@@ -92,16 +92,17 @@ function add_catalysisReportGraphTypesChooser(panelBuilder: PanelBuilder, model,
             nameToDisplay = " " + count + " " + aName;
         }
 
-        return m("div", [
+        return m("div", {style: "margin-bottom: 1em"}, [
             m("input[type=checkbox]", {id: id, checked: isChecked(id), onchange: function(event) { isChecked(id, event.target.checked); }}),
-            m("label", {"for": id}, nameToDisplay),
-            m("br"),
-            m("img", {
-                src: 'help/catalysis/graphThumbnail_' + allGraphTypesThumbnailNames[id] + '.png', 
-                class: "narrafirma-graph-thumbnail"
-            }),
-            m("br"),
-            m("br"),
+            m("label", {"for": id}, 
+                m("span", [
+                m("span", nameToDisplay),
+                m("br"),
+                m("img", {
+                    src: 'help/catalysis/graphThumbnail_' + allGraphTypesThumbnailNames[id] + '.png', 
+                    class: "narrafirma-graph-thumbnail"
+                }),
+            ])),
         ]);
     }
     
