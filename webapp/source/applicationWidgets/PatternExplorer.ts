@@ -34,6 +34,7 @@ var patternsPanelSpecification = {
         {id: "id", displayName: "Index", valueOptions: []},
         {id: "patternName", displayName: "Name", valueOptions: []},
         {id: "remarkable", displayName: "Remarkable?", valueOptions: []},
+        {id: "note", displayName: "Notes", valueOptions: []},
         {id: "q1DisplayName", displayName: "Q1", valueOptions: []},
         {id: "q2DisplayName", displayName: "Q2", valueOptions: []},
         {id: "q3DisplayName", displayName: "Q3", valueOptions: []},
@@ -47,6 +48,7 @@ var patternsPanelSpecification = {
 const columnIDsToDisplayNamesMap = {
     "patternName": "Name",
     "remarkable": "Remarkable?",
+    "note": "Notes",
     "q1DisplayName": "Q1",
     "q2DisplayName": "Q2",
     "q3DisplayName": "Q3",
@@ -367,14 +369,14 @@ class PatternExplorer {
                     id: "observationPanel_description",
                     valuePath: "/clientState/observationAccessor/observationDescription",
                     displayName: "Observation description",
-                    displayPrompt: "Enter an <strong>observation</strong> about the pattern here. (To enter another observation, click the plus button.)",
+                    displayPrompt: "Enter an <strong>observation</strong> about the pattern here. (To add another observation, click the plus button.)",
                     displayType: "textarea"
                 },
                 {
                     id: "observationPanel_title",
                     valuePath: "/clientState/observationAccessor/observationTitle",
                     displayName: "Observation title",
-                    displayPrompt: "Please give this observation a short <strong>name</strong>. This name will represent it during clustering and will be its heading in the printed report.",
+                    displayPrompt: "Give the observation a short <strong>name</strong>. This name will represent it during clustering and will be its heading in the printed report.",
                     displayType: "text"
                 },
                 {
@@ -389,8 +391,18 @@ class PatternExplorer {
                     id: "observationPanel_linkingQuestion",
                     valuePath: "/clientState/observationAccessor/observationLinkingQuestion",
                     displayName: "Observation linking question",
-                    displayPrompt: `You might want to enter a <strong>linking question</strong> that will connect this observation to its interpretations (e.g., "Why did people say ___?").`,
+                    displayPrompt: `You might want to enter a <strong>linking question</strong> that will connect this observation 
+                        to its interpretations (e.g., "Why did people say ___?").
+                        It will be printed in the report before the interpretations.`,
                     displayType: "text"
+                },
+                {
+                    id: "observationPanel_observationNote",
+                    valuePath: "/clientState/observationAccessor/observationNote",
+                    displayName: "Observation note",
+                    displayPrompt: `You might want to save a <strong>note</strong> to yourself about this observation. 
+                        It will not be printed in the report.`,
+                    displayType: "textarea"
                 },
                 {
                     id: "observationPanel_extraPatterns",
@@ -405,7 +417,7 @@ class PatternExplorer {
                     id: "observationPanel_savedGraphSelections",
                     valuePath: "/clientState/observationAccessor/observationSavedGraphSelections",
                     displayName: "Graph selections",
-                    displayPrompt: 'These are <strong>selections you have saved</strong> for this pattern.',
+                    displayPrompt: 'These are <strong>selections you have saved</strong> for this pattern. (For details, see the help system.)',
                     displayType: "text",
                 },
             ]
@@ -1014,11 +1026,15 @@ class PatternExplorer {
             const remarkable = PatternExplorer.getOrSetWhetherPatternIsMarkedAsRemarkable(this.project, this.catalysisReportIdentifier, pattern);
             return (remarkable === undefined) ? "" : remarkable;
         }
+        var noteAccessor = () => {
+            return this.getCombinedObservationsInfoForPattern(pattern, "observationNote") || "";
+        };
        
         pattern.observation = observationTitleOrDescriptionAccessor;  // circular reference
         pattern.strength = strengthAccessor;
         pattern.interpretations = interpretationsAccessor;
         pattern.remarkable = remarkableAccessor;
+        pattern.note = noteAccessor;
         return pattern;
     }
 
@@ -1875,6 +1891,10 @@ class ObservationAccessor {
 
     observationSavedGraphSelections(newValue = undefined) {
         return this.getOrSetField("observationSavedGraphSelections", newValue);
+    }
+
+    observationNote(newValue = undefined) {
+        return this.getOrSetField("observationNote", newValue);
     }
 
     observationInterpretations(newValue = undefined) {

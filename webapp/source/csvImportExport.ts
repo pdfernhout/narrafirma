@@ -56,6 +56,8 @@ function shortenTextIfNecessary(text: string) {
     return text.slice(0,50) + "...";
 }
 
+const observationNoteIdentifier = "[note]";
+
 //------------------------------------------------------------------------------------------------------------------------------------------
 // reading CSV - in general
 //------------------------------------------------------------------------------------------------------------------------------------------
@@ -2139,6 +2141,8 @@ export function exportCatalysisReportElementsToCSV() {
                     observationLine.push(interpretationCell.join("|"));
                 }
             });
+
+            if (observation.observationNote) observationLine.push(observationNoteIdentifier + observation.observationNote);
             addOutputLine(observationLine);
         }
     }
@@ -2215,6 +2219,7 @@ export function processCSVContentsForCatalysisElements(contents) {
 
             // addOutputLine(["; Observation", "Name", "Description", "Strength", "Linking question", "Pattern", "Graph type", "Question 1", "Question 2", "Question 3", 
             // "Additional patterns", "X", "Y", "Interpretation name|description|idea|questions|x|y", "(repeat for each interpretation)"]);
+            // optional note at the end, prefaced by observationNoteIdentifier
             
             const observationName = row[1];
             const observationDescription = row[2];
@@ -2245,9 +2250,19 @@ export function processCSVContentsForCatalysisElements(contents) {
             }
 
             const interpretationSpecs = [];
+            let observationNote = null;
             if (row.length > 13) {
                 for (let colIndex = 13; colIndex < row.length; colIndex++) {
-                    interpretationSpecs.push(row[colIndex]);
+                    // the note field was added after this export format was designed
+                    // i am writing out the note after the interpretations
+                    // but the only way to test for it during import is to use an identifier
+                    // to distinguish it from the interpretations
+                    // hence I am testing for the prefix observationNoteIdentifier
+                    if (row[colIndex].indexOf(observationNoteIdentifier) >= 0) {
+                        observationNote = row[colIndex].substring(observationNoteIdentifier.length);
+                    } else {
+                        interpretationSpecs.push(row[colIndex]);
+                    }
                 }
             }
 
@@ -2278,6 +2293,7 @@ export function processCSVContentsForCatalysisElements(contents) {
             project.tripleStore.addTriple(observationIdentifier, "observationStrength", observationStrength); 
             project.tripleStore.addTriple(observationIdentifier, "observationLinkingQuestion", observationLinkingQuestion); 
             project.tripleStore.addTriple(observationIdentifier, "observationExtraPatterns", observationExtraPatterns); 
+            if (observationNote) project.tripleStore.addTriple(observationIdentifier, "observationNote", observationNote); 
 
             var newItem = ClusteringDiagram.addNewItemToDiagram(observationsClusteringDiagram, "item", observationName, observationDescription);
             newItem.x = x;

@@ -18,6 +18,7 @@ function add_catalysisReportPatternTableColumnsChooser(panelBuilder: PanelBuilde
     const allColumnIDs = {
         "patternName": true,
         "remarkable": true,
+        "note": true,
         "q1DisplayName": true,
         "q2DisplayName": true,
         "q3DisplayName": true,
@@ -31,6 +32,7 @@ function add_catalysisReportPatternTableColumnsChooser(panelBuilder: PanelBuilde
     const columnIDsToDisplayNamesMap = {
         "patternName": "Name -- appears on graph",
         "remarkable": "Remarkable? -- mark to keep track of progress",
+        "note": "Notes -- comments you want to save but not print",
         "q1DisplayName": "Q1 -- first question in pattern (use these to find particular questions)",
         "q2DisplayName": "Q2 -- second question in pattern",
         "q3DisplayName": "Q3 -- third question in pattern",
