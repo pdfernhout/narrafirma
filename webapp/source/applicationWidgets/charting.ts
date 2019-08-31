@@ -3,6 +3,7 @@ import d3 = require("d3");
 import m = require("mithril");
 import calculateStatistics = require("../calculateStatistics");
 import _ = require("lodash");
+import Globals = require("../Globals");
 
 "use strict";
 
@@ -1234,8 +1235,9 @@ export function d3HistogramChartForValues(graphHolder: GraphHolder, plotItems, c
     // TODO: Casting to any to get around D3 typing limitation where it expects number not an object
     var data = (<any>d3.layout.histogram().bins(xScale.ticks(graphHolder.numHistogramBins))).value(function (d) { return d.value; })(plotItems);
 
+    const delimiter = Globals.clientState().csvDelimiter();
     data.forEach(function (bin) {
-        const csvText = [bin.x, bin.x + bin.dx - ((bin.x == 95) ? 0 : 1), bin.length].join(",");
+        const csvText = [bin.x, bin.x + bin.dx - ((bin.x == 95) ? 0 : 1), bin.length].join(delimiter);
         if (choiceQuestion) {
             graphHolder.dataForCSVExport[choice].push(csvText);
         } else {
@@ -1458,11 +1460,12 @@ export function d3ScatterPlot(graphHolder: GraphHolder, xAxisQuestion, yAxisQues
     const stories = graphHolder.allStories;
     const unansweredText = customStatLabel("unanswered", graphHolder);
     const showNAs = showNAValues(graphHolder);
+    const delimiter = Globals.clientState().csvDelimiter();
     if (choiceQuestion) {
         graphHolder.dataForCSVExport[option] = [];
     } else {
         graphHolder.dataForCSVExport = {};
-        graphHolder.dataForCSVExport[xAxisQuestion.displayName + "," + yAxisQuestion.displayName] = [];
+        graphHolder.dataForCSVExport[xAxisQuestion.displayName + delimiter + yAxisQuestion.displayName] = [];
     }
 
     for (var index in stories) {
@@ -1480,9 +1483,9 @@ export function d3ScatterPlot(graphHolder: GraphHolder, xAxisQuestion, yAxisQues
         allPlotItems.push(newPlotItem);
 
         if (choiceQuestion) {
-            graphHolder.dataForCSVExport[option].push([xValue + "," + yValue]);
+            graphHolder.dataForCSVExport[option].push([xValue + delimiter + yValue]);
         } else {
-            graphHolder.dataForCSVExport[xAxisQuestion.displayName + "," + yAxisQuestion.displayName].push(xValue + "," + yValue);
+            graphHolder.dataForCSVExport[xAxisQuestion.displayName + delimiter + yAxisQuestion.displayName].push(xValue + delimiter + yValue);
         }
 
         const key = xValue + "|" + yValue;
@@ -1719,6 +1722,7 @@ export function d3ContingencyTable(graphHolder: GraphHolder, xAxisQuestion, yAxi
     var plotItemStories = {};
     var stories = graphHolder.allStories;
     graphHolder.dataForCSVExport = {};
+    const delimiter = Globals.clientState().csvDelimiter();
 
     for (var index in stories) {
         var story = stories[index];
@@ -1846,7 +1850,7 @@ export function d3ContingencyTable(graphHolder: GraphHolder, xAxisQuestion, yAxi
                 valuesToReport = valuesToReport.concat(scaleValues);
                 graphHolder.dataForCSVExport[observedPlotItem.x + " x " + observedPlotItem.y] = valuesToReport;
             } else {
-                graphHolder.dataForCSVExport[observedPlotItem.x + "," + observedPlotItem.y] = observedPlotItem.value;
+                graphHolder.dataForCSVExport[observedPlotItem.x + delimiter + observedPlotItem.y] = observedPlotItem.value;
             }
             if (!rowStoryCounts[row]) rowStoryCounts[row] = 0;
             rowStoryCounts[row] += storiesForNewPlotItem.length;
@@ -2235,7 +2239,8 @@ export function d3CorrelationMap(graphHolder: GraphHolder, scaleQuestions, choic
         graphHolder.dataForCSVExport["Correlation map"] = [];
     }
 
-    let mapShape = graphHolder.correlationMapShape;
+    const mapShape = graphHolder.correlationMapShape;
+    const delimiter = Globals.clientState().csvDelimiter();
 
     // already have node info, now get link info
     let links = [];
@@ -2271,7 +2276,7 @@ export function d3CorrelationMap(graphHolder: GraphHolder, scaleQuestions, choic
     }
 
     statsInfo.forEach(function (stats) {
-        const csvText = stats.one_name + " x " + stats.two_name + "," + [stats.r, stats.p, stats.n].join(",");
+        const csvText = stats.one_name + " x " + stats.two_name + delimiter + [stats.r, stats.p, stats.n].join(delimiter);
         if (choiceQuestion) {
             graphHolder.dataForCSVExport[option].push(csvText);
         } else {
@@ -2376,7 +2381,6 @@ export function d3CorrelationMap(graphHolder: GraphHolder, scaleQuestions, choic
         .data(links)
             .enter().append("path")
                 .attr('d', function(link: MapLink) {
-                    if (mapShape === "circle with lines") return null;
                     let arcStartX, arcStartY, arcEndX, arcEndY, arcDirection = null;
                     const arcDisplacement = (link.value > 0) ? maxCircleRadius : -maxCircleRadius;
                     arcStartX = midX + arcDisplacement;

@@ -65,6 +65,10 @@ function nameForQuestion(question) {
     return question.id;
 }
 
+function replaceAll(str: string, find: string, replace: string) {
+    return str.replace(new RegExp(find, 'g'), replace);
+}
+
 function buildStoryDisplayPanel(panelBuilder: PanelBuilder, model) {
     var storyCardDiv = storyCardDisplay.generateStoryCardContent(model, undefined);
     return storyCardDiv;
@@ -99,12 +103,12 @@ function findOrCreateObservationIDForPatternAndIndex(project, catalysisReportObs
     return observationID;
 }
 
-function transposeCSVData(data) {
+function transposeCSVData(data, delimiter) {
     const rows = data.split("\n");
     const cells = [];
     let highestColumnCount = 0;
     rows.forEach(function(row) {
-        cells.push(row.split(","));
+        cells.push(row.split(delimiter));
         if (row.length > highestColumnCount) highestColumnCount = row.length;
     });
     const newCells = [];
@@ -117,7 +121,7 @@ function transposeCSVData(data) {
     }
     let result = "";
     newCells.forEach(function(newRow) {
-        result += newRow.join(",") + "\n";
+        result += newRow.join(delimiter) + "\n";
     })
     return result;
 }
@@ -1327,6 +1331,7 @@ class PatternExplorer {
             alert("Please choose a graph.");
             return;
         } 
+        const delimiter = Globals.clientState().csvDelimiter();
         let output = "";
         let niceGraphTypeName = "";
         const patternName = pattern.patternName;
@@ -1338,22 +1343,22 @@ class PatternExplorer {
                 niceGraphTypeName = "Bar graph";
                 // {option: count}
                 dataKeys.forEach( function(key) {
-                    output += key + "," + graphHolder.dataForCSVExport[key] + "\n";
+                    output += key + delimiter + graphHolder.dataForCSVExport[key] + "\n";
                 })
                 break;
             case "table":
                 niceGraphTypeName = "Table";
                 // {option,option: count}
                 dataKeys.forEach(function(key) {
-                    const parts = key.split(",");
+                    const parts = key.split(delimiter); 
                     if (optionsForFirstQuestion.indexOf(parts[0]) < 0) optionsForFirstQuestion.push(parts[0]);
                     if (optionsForSecondQuestion.indexOf(parts[1]) < 0) optionsForSecondQuestion.push(parts[1]);
                 });
-                output += "," + optionsForFirstQuestion.join(",") + "\n";
+                output += delimiter + optionsForFirstQuestion.join(delimiter) + "\n";
                 optionsForSecondQuestion.forEach(function(secondOption) {
-                    output += secondOption + ",";
+                    output += secondOption + delimiter;
                     optionsForFirstQuestion.forEach(function(firstOption) {
-                        output += graphHolder.dataForCSVExport[firstOption + "," + secondOption] + ",";
+                        output += graphHolder.dataForCSVExport[firstOption + delimiter + secondOption] + delimiter;
                     })
                     output += "\n";
                 })
@@ -1361,12 +1366,12 @@ class PatternExplorer {
             case "contingency-histogram":
                 niceGraphTypeName = "Histogram table";
                 // {option x option: [mean, sd, skewness, kurtosis]}
-                output += ",mean,sd,skewness,kurtosis,values\n";
+                output += delimiter + "mean" + delimiter + "sd" + delimiter + "skewness" + delimiter + "kurtosis" + delimiter + "values\n";
                 dataKeys.forEach( function(key) {
-                    output += key + ",";
-                    output += graphHolder.dataForCSVExport[key].join(",") + "\n";
+                    output += key + delimiter;
+                    output += graphHolder.dataForCSVExport[key].join(delimiter) + "\n";
                 })
-                output = transposeCSVData(output);
+                output = transposeCSVData(output, delimiter);
                 break;
             case "histogram":
                 niceGraphTypeName = "Histogram";
@@ -1386,7 +1391,7 @@ class PatternExplorer {
             case "scatter":
                 niceGraphTypeName = "Scatter plot";
                 // {question name: array of xy pairs}
-                output += "x,y\n";
+                output += "x" + delimiter + "y\n";
                 Object.keys(graphHolder.dataForCSVExport).forEach( function(key) {
                     output += graphHolder.dataForCSVExport[key].join("\n");
                 })
@@ -1396,7 +1401,7 @@ class PatternExplorer {
                 // {option: array of xy pairs}
                 Object.keys(graphHolder.dataForCSVExport).forEach( function(key) {
                     output += "\n\n" + key + "\n";
-                    output += "x,y\n";
+                    output += "x" + delimiter + "y\n";
                     output += graphHolder.dataForCSVExport[key].join("\n");
                 })
                 break;
@@ -1411,7 +1416,7 @@ class PatternExplorer {
                     niceGraphTypeName = "Bar graph";
                     // {question name: count}
                     dataKeys.forEach( function(key) {
-                        output += key + "," + graphHolder.dataForCSVExport[key] + "\n";
+                        output += key + delimiter + graphHolder.dataForCSVExport[key] + "\n";
                     })
                 }
                 break;
@@ -1419,7 +1424,7 @@ class PatternExplorer {
                 niceGraphTypeName = "Network map";
                 // {option: r,p,n}
                 dataKeys.forEach( function(key) {
-                    output += "\n" + key + ",r,p,n\n";
+                    output += "\n" + key + delimiter + "r" + delimiter + "p" + delimiter + "n\n";
                     output += graphHolder.dataForCSVExport[key].join("\n") + "\n";
                 })
                 break;
