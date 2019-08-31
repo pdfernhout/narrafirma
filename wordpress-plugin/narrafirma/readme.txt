@@ -7,9 +7,9 @@ Author URI: http://www.cfkurtz.com
 Author: Cynthia Kurtz and Paul Fernhout
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=DGVVDT2D49QA8
 Requires at least: 4.3.1
-Tested up to: 5.2.1
+Tested up to: 5.2.2
 Stable tag: trunk
-Version: 1.3.3
+Version: 1.4.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -105,6 +105,22 @@ We strongly suggest that you set up any web site on which you intend to install 
 12. Here the NarraFirma user is reflecting on the entire project, to learn from it and to keep good records for the future.
 
 == Changelog ==
+ 
+= 1.4.0 =
+
+Added: Correlation map that shows relationships among all scale questions (overall and by choice question)
+Added: Ability to save graph data to CSV file (to recreate graph outside NarraFirma) for selected graph or whole catalysis report
+Added: System for marking patterns as remarkable, unremarkable, to be reviewed, or redundant - improves catalysis workflow
+Added: Ability to show or hide all columns in pattern table on "Explore patterns" page
+Added: Non-printing observation note (to remember something about an observation without having it appear in the report)
+Added: Project options page (for options that affect whole project)
+Added: Project option to set CSV delimiter for import and export (comma, semicolon, tab)
+Changed: Better interface for choosing graph types to show on "Explore patterns" page, with graphics
+Changed: Import system now warns if you try to import floating-point (real) numbers rather than integers for scale data
+Changed: Better help on graph types on "Explore patterns" page
+Changed: Limited size of Mann-Whitney statistical results table for contingency-histograms and multiple histograms (can be very long)
+Fixed: Observation/interpretation with no name now shows description on clustering page (instead of nothing)
+Fixed: Firefox bug causing help window to be shown in tiny font; now appears in tab but normal sized
 
 = 1.3.3 =
 
@@ -414,6 +430,9 @@ loading application, getting user information, or retrieving project data.
 change logs, see the [GitHub repository](https://github.com/pdfernhout/narrafirma).
 
 == Upgrade Notice ==
+
+= 1.4.0 =
+This somewhat-major upgrade adds a new type of graph (correlation map) and makes several process/workflow improvements to the catalysis process.
 
 = 1.3.3 =
 This minor update provides a few more usability and capability improvements for the catalysis process.
