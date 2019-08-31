@@ -28,6 +28,12 @@ export const graphResultsPaneCSS = `
     fill: none;
 }
 
+.contingencyChart.chartBodyBackground {
+    fill: none;
+    stroke: black;
+    stroke-width: 0.5px;
+}
+
 .chart {
     background-color: white;
 }
