@@ -11,10 +11,10 @@ var panel: Panel = {
             valueType: "none",
             displayType: "label",
             displayPrompt: `
-                <p>On this page you will design one or more <strong>story forms</strong> for your project. 
+                On this page you will design one or more <strong>story forms</strong> for your project. 
                 Choose from the library of questions you already created to create the form your participants will use to tell their stories and answer questions about them.
                 You can also generate a story form using all existing questions or import one from a CSV file.
-                </p>`
+                `
         },
         {
             id: "project_storyForms",
@@ -54,6 +54,12 @@ var panel: Panel = {
             displayPrompt: `When you import questions from a CSV file, what do you want to do <strong>when a question already exists</strong> in the project? 
                 (Questions match if their short names match. This only applies to story and participant questions. Eliciting questions are always overwritten.)`,
 
+        },
+        {
+            id: "storyForms_csvDelimiterLabel",
+            valueType: "none",
+            displayType: "label",
+            displayPrompt: `Note: You can change your CSV delimiter in the "Project options" page under "Project administration."`
         },
         {
             id: "project_csvFileUploaderForForm",

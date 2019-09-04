@@ -27,6 +27,7 @@ interface StoryPlotItem {
 interface MapNode {
     id: number;
     name: string;
+    scaleEnds: string;
     type: string;
     count: number;
 }
@@ -240,6 +241,8 @@ export function initializedGraphHolder(allStories, options) {
         numScatterDotOpacityLevels: options.numScatterDotOpacityLevels,
         scatterDotSize: options.scatterDotSize,
         correlationMapShape: options.correlationMapShape,
+        correlationMapIncludeScaleEndLabels: options.correlationMapIncludeScaleEndLabels,
+        correlationMapCircleDiameter: options.correlationMapCircleDiameter,
         correlationLineChoice: options.correlationLineChoice,
         customLabelLengthLimit: options.customLabelLengthLimit,
         hideNumbersOnContingencyGraphs: options.hideNumbersOnContingencyGraphs,
@@ -274,6 +277,9 @@ function makeChartFramework(chartPane: HTMLElement, chartType, size, margin, cus
     } else if (size == "medium") {
         fullWidth = largeGraphWidth / 2;
         fullHeight = largeGraphWidth / 2;
+    } else if (size == "medium-large") {
+        fullWidth = 2 * largeGraphWidth / 3;
+        fullHeight = 2 * largeGraphWidth / 3;
     } else if (size == "thumbnail") {
         fullWidth = 101;
         fullHeight = 101;
@@ -2191,6 +2197,7 @@ function nodeInfoForScalesWithOrWithoutChoiceQuestion(graphHolder, questions) {
     let nodesInfo = {};
     let nodes = {};
     let largestCount = 0; 
+    var labelLengthLimit = parseInt(graphHolder.customLabelLengthLimit);
 
     for (let i = 0; i < options.length; i++) {
         const option = options[i];
@@ -2217,7 +2224,15 @@ function nodeInfoForScalesWithOrWithoutChoiceQuestion(graphHolder, questions) {
                 } else if (scaleQuestions[scaleIndex].id.indexOf("A_") >= 0) {
                     type = "annotation";
                 }
-                const node: MapNode = {id: scaleIndex, name: scaleQuestions[scaleIndex].displayName, type: type, count: count};
+                let scaleEnds = "";
+                if (scaleQuestions[scaleIndex].displayConfiguration && scaleQuestions[scaleIndex].displayConfiguration.length > 1) { 
+                    const leftEnd = scaleQuestions[scaleIndex].displayConfiguration[0];
+                    const rightEnd = scaleQuestions[scaleIndex].displayConfiguration[1];
+                    if (leftEnd !== "" && rightEnd !== "")
+                        scaleEnds = limitLabelLength(leftEnd + " - " + rightEnd, labelLengthLimit);
+                }
+                const name = limitLabelLength(scaleQuestions[scaleIndex].displayName, labelLengthLimit);
+                const node: MapNode = {id: scaleIndex, name: name, type: type, scaleEnds: scaleEnds, count: count};
                 nodes[option].push(node);
             }
             if (count > largestCount) largestCount = count;
@@ -2233,14 +2248,18 @@ export function d3CorrelationMap(graphHolder: GraphHolder, scaleQuestions, choic
     
     if (nodes.length < 3) return null;
 
+    // set up easier access to options
+    const isSmallFormat = !!choiceQuestion;
+    const mapShape = graphHolder.correlationMapShape;
+    const scaleEndOption = graphHolder.correlationMapIncludeScaleEndLabels;
+    const delimiter = Globals.clientState().csvDelimiter();
+
+    // set up csv data holder
     if (choiceQuestion) {
         graphHolder.dataForCSVExport[option] = [];
     } else {
         graphHolder.dataForCSVExport["Correlation map"] = [];
     }
-
-    const mapShape = graphHolder.correlationMapShape;
-    const delimiter = Globals.clientState().csvDelimiter();
 
     // already have node info, now get link info
     let links = [];
@@ -2275,6 +2294,7 @@ export function d3CorrelationMap(graphHolder: GraphHolder, scaleQuestions, choic
         }
     }
 
+    // save info for csv file
     statsInfo.forEach(function (stats) {
         const csvText = stats.one_name + " x " + stats.two_name + delimiter + [stats.r, stats.p, stats.n].join(delimiter);
         if (choiceQuestion) {
@@ -2285,15 +2305,14 @@ export function d3CorrelationMap(graphHolder: GraphHolder, scaleQuestions, choic
     });
 
     // set up chart size and objects
-    const isSmallFormat = !!choiceQuestion;
     let style = "singleChartStyle";
     let chartSize = "large";
     if (isSmallFormat) {
         style = "mediumChartStyle";
-        chartSize = "medium";
+        chartSize = "medium-large"; // really doesn't fit into the medium size
     }
     const chartPane = newChartPane(graphHolder, style);
-    const margin = {top: 10, right: 10, bottom: 10, left: 10};
+    const margin = {top: 0, right: 10, bottom: 10, left: 0};
     if (!isSmallFormat) addTitlePanelForChart(chartPane, "Correlation map");
     const chart = makeChartFramework(chartPane, "correlationMap", chartSize, margin, graphHolder.customGraphWidth);
     const chartBody = chart.chartBody;
@@ -2321,8 +2340,12 @@ export function d3CorrelationMap(graphHolder: GraphHolder, scaleQuestions, choic
     let namesForNodeIDs = {};
     let linkInfoForNodeIDs = {};
     let linkInfoForNodeIDPairs = {};
+    let longestNameLength = 0;
+    let longestScaleEndLength = 0;
     nodes.forEach(function (node) {
         namesForNodeIDs[node.id] = node;
+        if (node.name.length > longestNameLength) longestNameLength = node.name.length;
+        if (node.scaleEnds.length > longestScaleEndLength) longestScaleEndLength = node.scaleEnds.length;
         linkInfoForNodeIDs[node.id] = [];
     });
     links.forEach(function (link) {
@@ -2335,26 +2358,29 @@ export function d3CorrelationMap(graphHolder: GraphHolder, scaleQuestions, choic
     });
 
     // set up sizes for circles and placements
-    const maxCircleRadius = 0.25 * chart.height / nodes.length; 
+    const maxCircleRadius = 0.18 * chart.height / nodes.length; // number arrived at by trial and error
     const maxLinkWidth = maxCircleRadius * 2;  
     const nodeValueMultiplier = maxCircleRadius / largestCount; // if choice question, largestCount is for ALL graphs
-    const midX = chart.width / 2.0;
+    const midX = chart.width / 2.0; 
     const midY = chart.height / 2.0;
 
     // set up scale to place node circles vertically 
     const nodeNames = nodes.map(function(node) {return node.name});
     let nodeScaleInAVerticalLine = d3.scale.ordinal()
         .domain(nodeNames)
-        .rangeRoundPoints([(option !== null) ? 60 : 40, chart.height - 60]); 
+        .rangeRoundPoints([(choiceQuestion === null) ? 40 : 60, chart.height - 80]); 
 
     // set up "clock face" to place node circles in a big circle
     let nodePointsInACircle = {};
-    const largeCircleRadius = chart.width / 4.0;
+    let circleDiameter = graphHolder.correlationMapCircleDiameter;
+    if (isSmallFormat) circleDiameter = circleDiameter / 2;
+    const angleIncrement = 2.0 * Math.PI / nodes.length;
+    let angle = - Math.PI / 2.0; // start at pi/2 which is twelve o'clock
     for (let i = 0; i < nodes.length; i++) {
-        let angle = i * 2 * Math.PI / nodes.length;
-        let x = midX + largeCircleRadius * Math.cos(angle) + maxCircleRadius / 2;
-        let y = midY + largeCircleRadius * Math.sin(angle) + maxCircleRadius / 2;
+        let x = midX + Math.cos(angle) * circleDiameter / 2;
+        let y = midY +  Math.sin(angle) * circleDiameter / 2;
         nodePointsInACircle[i] = {"x": x, "y": y};
+        angle += angleIncrement;
     }
 
     function nodeCenterX(node, index) {
@@ -2415,6 +2441,7 @@ export function d3CorrelationMap(graphHolder: GraphHolder, scaleQuestions, choic
                     .attr("y2", function(link: MapLink) { return nodeCenterY(null, link.target) })
                     .style("fill", "none")
                     .attr("class", "narrafirma-correlation-map-link")
+                    .style("stroke-dasharray", function(link: MapLink) { return (link.value < 0) ? (isSmallFormat ? "3" : "5") : "none"; })
                     .style("stroke-width", function(link: MapLink) { return Math.abs(link.value * maxLinkWidth / 2)})
     }
 
@@ -2498,20 +2525,94 @@ export function d3CorrelationMap(graphHolder: GraphHolder, scaleQuestions, choic
             tooltipDiv.html("").style("display", "none");
         })
 
-    // finally (on top) draw node names
-    const labelOffset = (nodes.length > 8) ? 4 : 8;
+    // finally (on top) draw node names 
+    
+    let drawScaleEndLabels = false;
+    switch (scaleEndOption) {
+        case "always":
+            drawScaleEndLabels = true;
+            break;
+        case "only when there is no choice question": 
+            drawScaleEndLabels = !isSmallFormat;
+            break;
+        case "only when there are 6 or fewer questions":
+            drawScaleEndLabels = nodes.length <= 6;
+            break;
+        case "never":
+            drawScaleEndLabels = false;
+            break;
+        default:
+            console.log("ERROR: No value for correlationMapIncludeScaleEndLabels");
+    }
+
+    function nodeTextAnchor(node: MapNode, index: number) {
+        if (mapShape === "circle with lines") {
+            if (index === 0 || index === nodes.length / 2) { // top, bottom: center
+                return "middle";
+            } else if (index < nodes.length / 2) { // right side: align left
+                return "start";
+            } else if (index > nodes.length / 2) { // left side: align right
+                return "end";
+            }
+        } else {
+            return "middle";
+        }
+    }
+
+    function nodeTextY(node: MapNode, index: number) {
+        const start = nodeCenterY(node, index);
+        if (mapShape === "circle with lines") {
+            if (index === 0) { // top: above
+                return start - maxCircleRadius;
+            } else if (index === nodes.length / 2) { // bottom: below
+                return start + maxCircleRadius;
+            } else { // to either side: below
+                return start + maxCircleRadius;
+            }
+        } else {
+            return start + maxCircleRadius;
+        }
+    }
+
+    function nodeTextDY(node: MapNode, index: number, level) {
+        if (mapShape === "circle with lines") {
+            if (index === 0) { // top: above, subtext below that
+                return (level === 0) ? (drawScaleEndLabels ? "-1.5em" : "-1em") : "-0.5em"; 
+            } else if (index === nodes.length / 2) { // bottom: below, subtext below that
+                return (level === 0) ? (drawScaleEndLabels ? "1em" : "1em") : "2.5em"; 
+            } else { // to either side: same y as circle, subtext below that
+                return (level === 0) ? (drawScaleEndLabels ? "1em" : "1em") : "2.5em"; 
+            }
+        } else {
+            return (level === 0) ? "1em" : "2.5em"; 
+        }
+    }
+
     let nodeLabels = chartBody.selectAll(".narrafirma-correlation-map-node-label")
         .data(nodes)
             .enter().append("text")
                 .text(function(node: MapNode) { return (node.count > graphHolder.minimumStoryCountRequiredForGraph) ? node.name : ""})
                 .attr("class", "narrafirma-correlation-map-node-label")
-                .attr("x", function(node: MapNode, index: number) { return nodeCenterX(node, index) } )
-                .attr("y", function(node: MapNode, index: number) { return nodeCenterY(node, index) + maxCircleRadius + labelOffset; } ) 
-                .attr("dx", "0")
-                .attr("dy", "0.5em") // vertical-align: top
-                .attr("text-anchor", "middle") // text-align: middle
+                .attr("x", function(node: MapNode, index: number) { return nodeCenterX(node, index) } ) 
+                .attr("y", function(node: MapNode, index: number) { return nodeTextY(node, index) } ) 
+                .attr("dx", 0)
+                .attr("dy", function(node: MapNode, index: number) { return nodeTextDY(node, index, 0) } )
+                .attr("text-anchor", function(node: MapNode, index: number) { return nodeTextAnchor(node, index) } )
                 .style("font-style", function(node: MapNode) { return (node.type === "story") ? "normal" : "italic" } )
 
+    if (drawScaleEndLabels) { 
+        let nodeLabelsScaleEnds = chartBody.selectAll(".narrafirma-correlation-map-node-scale-ends-label")
+            .data(nodes)
+                .enter().append("text")
+                    .text(function(node: MapNode) { return (node.count > graphHolder.minimumStoryCountRequiredForGraph) ? node.scaleEnds : ""})
+                    .attr("class", "narrafirma-correlation-map-node-scale-ends-label")
+                    .attr("x", function(node: MapNode, index: number) { return nodeCenterX(node, index) } ) 
+                    .attr("y", function(node: MapNode, index: number) { return nodeTextY(node, index) } ) 
+                    .attr("dx", 0 )
+                    .attr("dy", function(node: MapNode, index: number) { return nodeTextDY(node, index, 1) } )
+                    .attr("text-anchor", function(node: MapNode, index: number) { return nodeTextAnchor(node, index) } )
+                    .style("font-style", function(node: MapNode) { return (node.type === "story") ? "normal" : "italic" } )
+    }
     return chart;
 }
 

@@ -29,6 +29,8 @@ interface GraphHolder {
     numScatterDotOpacityLevels: number;
     scatterDotSize: number;
     correlationMapShape: string;
+    correlationMapIncludeScaleEndLabels: string;
+    correlationMapCircleDiameter: number;
     correlationLineChoice: string;
     customLabelLengthLimit: string;
     hideNumbersOnContingencyGraphs: boolean;

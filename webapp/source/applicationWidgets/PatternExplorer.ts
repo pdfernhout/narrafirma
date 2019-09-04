@@ -235,6 +235,8 @@ class PatternExplorer {
             numScatterDotOpacityLevels: Project.default_numScatterDotOpacityLevels,
             scatterDotSize: Project.default_scatterDotSize,
             correlationMapShape: Project.default_correlationMapShape,
+            correlationMapIncludeScaleEndLabels: Project.default_correlationMapIncludeScaleEndLabels,
+            correlationMapCircleDiameter: Project.default_correlationMapCircleDiameter,
             correlationLineChoice: Project.default_correlationLineChoice,
             customLabelLengthLimit: Project.default_customLabelLengthLimit,
             customGraphWidth: Project.default_customDisplayGraphWidth,
@@ -679,6 +681,8 @@ class PatternExplorer {
         this.graphHolder.numScatterDotOpacityLevels = this.project.tripleStore.queryLatestC(this.catalysisReportIdentifier, "numScatterDotOpacityLevels") || Project.default_numScatterDotOpacityLevels; 
         this.graphHolder.scatterDotSize = this.project.tripleStore.queryLatestC(this.catalysisReportIdentifier, "scatterDotSize") || Project.default_scatterDotSize; 
         this.graphHolder.correlationMapShape = this.project.tripleStore.queryLatestC(this.catalysisReportIdentifier, "correlationMapShape") || Project.default_correlationMapShape; 
+        this.graphHolder.correlationMapIncludeScaleEndLabels = this.project.tripleStore.queryLatestC(this.catalysisReportIdentifier, "correlationMapIncludeScaleEndLabels") || Project.default_correlationMapIncludeScaleEndLabels; 
+        this.graphHolder.correlationMapCircleDiameter = parseInt(this.project.tripleStore.queryLatestC(this.catalysisReportIdentifier, "correlationMapCircleDiameter")) || Project.default_correlationMapCircleDiameter; 
         
         this.graphHolder.correlationLineChoice = this.project.tripleStore.queryLatestC(this.catalysisReportIdentifier, "correlationLineChoice") || Project.default_correlationLineChoice; 
         this.graphHolder.customLabelLengthLimit = this.project.tripleStore.queryLatestC(this.catalysisReportIdentifier, "customLabelLengthLimit") || Project.default_customLabelLengthLimit; 

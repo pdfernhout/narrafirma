@@ -302,6 +302,10 @@ export const graphResultsPaneCSS = `
     font-size: 1em;
 }
 
+.narrafirma-correlation-map-node-scale-ends-label {
+    font-size: 0.8em;
+}
+
 .narrafirma-correlation-map-link {
     stroke: #d7dce4; 
 }
@@ -313,6 +317,8 @@ export const graphResultsPaneCSS = `
 .narrafirma-correlation-map-option-title {
     margin: 0.5em 0 1.5em 0.5em;
     font-size: 1em;
+    font-variant-caps: small-caps;
+    font-weight: bold;
 }
 
 .narrafirma-correlation-map-stats-table {

@@ -44,6 +44,8 @@ class GraphBrowser {
             numScatterDotOpacityLevels: Project.default_numScatterDotOpacityLevels,
             scatterDotSize: Project.default_scatterDotSize,
             correlationMapShape: Project.default_correlationMapShape,
+            correlationMapIncludeScaleEndLabels: Project.default_correlationMapIncludeScaleEndLabels,
+            correlationMapCircleDiameter: Project.default_correlationMapCircleDiameter,
             correlationLineChoice: Project.default_correlationLineChoice,
             customLabelLengthLimit: Project.default_customLabelLengthLimit,
             customGraphWidth: Project.default_customDisplayGraphWidth,

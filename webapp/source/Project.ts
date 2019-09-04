@@ -29,6 +29,8 @@ class Project {
     static default_numScatterDotOpacityLevels = 3;
     static default_scatterDotSize = 8;
     static default_correlationMapShape = "line with arcs";
+    static default_correlationMapIncludeScaleEndLabels = "only when there is no choice question";
+    static default_correlationMapCircleDiameter = 300;
     static default_correlationLineChoice = "0.05";
     static default_customLabelLengthLimit = "30";
     static default_customReportGraphWidth = 800;

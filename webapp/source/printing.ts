@@ -324,6 +324,8 @@ export function printCatalysisReport() {
     options["numScatterDotOpacityLevels"] = project.tripleStore.queryLatestC(catalysisReportIdentifier, "numScatterDotOpacityLevels") || Project.default_numScatterDotOpacityLevels; 
     options["scatterDotSize"] = project.tripleStore.queryLatestC(catalysisReportIdentifier, "scatterDotSize") || Project.default_scatterDotSize; 
     options["correlationMapShape"] = project.tripleStore.queryLatestC(catalysisReportIdentifier, "correlationMapShape") || Project.default_correlationMapShape; 
+    options["correlationMapIncludeScaleEndLabels"] = project.tripleStore.queryLatestC(catalysisReportIdentifier, "correlationMapIncludeScaleEndLabels") || Project.default_correlationMapIncludeScaleEndLabels; 
+    options["correlationMapCircleDiameter"] = parseInt(project.tripleStore.queryLatestC(catalysisReportIdentifier, "correlationMapCircleDiameter")) || Project.default_correlationMapCircleDiameter; 
     
     options["correlationLineChoice"] = project.tripleStore.queryLatestC(catalysisReportIdentifier, "correlationLineChoice") || Project.default_correlationLineChoice; 
     options["customLabelLengthLimit"] = parseInt(project.tripleStore.queryLatestC(catalysisReportIdentifier, "customLabelLengthLimit") || Project.default_customLabelLengthLimit); 
@@ -1002,6 +1004,8 @@ function initializedGraphHolder(allStories, options) {
         numScatterDotOpacityLevels: options.numScatterDotOpacityLevels,
         scatterDotSize: options.scatterDotSize,
         correlationMapShape: options.correlationMapShape,
+        correlationMapIncludeScaleEndLabels: options.correlationMapIncludeScaleEndLabels,
+        correlationMapCircleDiameter: options.correlationMapCircleDiameter,
         correlationLineChoice: options.correlationLineChoice,
         customLabelLengthLimit: options.customLabelLengthLimit,
         hideNumbersOnContingencyGraphs: options.hideNumbersOnContingencyGraphs,

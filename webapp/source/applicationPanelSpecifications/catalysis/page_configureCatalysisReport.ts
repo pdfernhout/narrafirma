@@ -183,7 +183,7 @@ var panel: Panel = {
             displayType: "select",
             valueOptions: ["10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32", "33", "34", "35", "36", "37", "38", "39", "40", "41", "42", "43", "44", "45", "46", "47", "48", "49", "50", "51", "52", "53", "54", "55", "56", "57", "58", "59", "60"],
             displayName: "Custom label length limit",
-            displayPrompt: `At what length do you want to <strong>truncate labels</strong> on bar and contingency charts?
+            displayPrompt: `At what length do you want to <strong>truncate labels</strong> on bar graphs, tables, and correlation maps?
                 (This choice affects graphs in the application and the printed report.
                 If no selection is made here, labels will be truncated at 30 characters.)`,
             displayVisible: function(panelBuilder, model) {
@@ -318,6 +318,37 @@ var panel: Panel = {
             displayPrompt: `What <strong>shape</strong> should correlation maps be? 
                 (This choice affects graphs in the application and the printed report.
                 If no selection is made here, the "line with arcs" choice will be used.)`,
+            displayVisible: function(panelBuilder, model) {
+                return !!Globals.clientState().haveCatalysisReportAndShowingAdvancedOptions();
+            }
+        },
+        {
+            id: "configureCatalysisReport_correlationMapIncludeScaleEndLabels",
+            valuePath: "/clientState/catalysisReportIdentifier/correlationMapIncludeScaleEndLabels",
+            valueType: "string",
+            valueOptions: ["always", "only when there is no choice question", "only when there are 6 or fewer questions", "never"],
+            displayType: "select",
+            displayName: "Correlation map end labels choice",
+            displayPrompt: `For correlation maps, when should the <strong>ends of scales</strong> be labeled? 
+                Depending on your project, these could be helpful, irrelevant, or in the way. 
+                (This choice affects graphs in the application and the printed report.
+                If no selection is made here, the "only on main graph" choice will be used.)`,
+            displayVisible: function(panelBuilder, model) {
+                return !!Globals.clientState().haveCatalysisReportAndShowingAdvancedOptions();
+            }
+        },
+        {
+            id: "configureCatalysisReport_correlationMapCircleDiameter",
+            valuePath: "/clientState/catalysisReportIdentifier/correlationMapCircleDiameter",
+            valueType: "string",
+            valueOptions: ["50", "100", "150", "200", "250", "300", "350", "400", "450", "500", "550", "600", "650", "700", "750", "800", "850", "900", "950", "1000"],
+            displayType: "select",
+            displayName: "Correlation circle diameter",
+            displayPrompt: `For circular correlation maps, what should the 
+                <strong>circle diameter</strong> be, in pixels?
+                Circles on subchoice graphs will be half this diameter.
+                (This choice affects graphs in the application and the printed report.
+                If no selection is made here, a diameter of 300 pixels will be used.)`,
             displayVisible: function(panelBuilder, model) {
                 return !!Globals.clientState().haveCatalysisReportAndShowingAdvancedOptions();
             }

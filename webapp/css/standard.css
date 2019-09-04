@@ -685,16 +685,14 @@ table.filterTable td {
 }
 
 .singleChartStyle {
-    width: 800px; /* this should match largeGraphWidth in charting.ts */ 
+    display: block;
 }
 
 .smallChartStyle {
-    width: 267px; /* this should match largeGraphWidth/3 in charting.ts */
-    float: left;
+    display: inline-block;
 }
 
 .mediumChartStyle {
-    width: 400px; /* this should match largeGraphWidth/2 in charting.ts */
     display: inline-block;
 }
 
@@ -1519,6 +1517,7 @@ td.narrafirma-mw-nested-title, td.narrafirma-mw-nested-stats {
 
 /* correlation map */
 
+
 .narrafirma-correlation-map-frame {
     stroke: lightgray;
     fill: none;
@@ -1549,6 +1548,10 @@ td.narrafirma-mw-nested-title, td.narrafirma-mw-nested-stats {
     font-size: 1em;
 }
 
+.narrafirma-correlation-map-node-scale-ends-label {
+    font-size: 0.8em;
+}
+
 .narrafirma-correlation-map-link {
     stroke: #d7dce4; 
 }
@@ -1560,6 +1563,8 @@ td.narrafirma-mw-nested-title, td.narrafirma-mw-nested-stats {
 .narrafirma-correlation-map-option-title {
     margin: 0.5em 0 1.5em 0.5em;
     font-size: 1em;
+    font-variant-caps: small-caps;
+    font-weight: bold;
 }
 
 .narrafirma-correlation-map-stats-table {
