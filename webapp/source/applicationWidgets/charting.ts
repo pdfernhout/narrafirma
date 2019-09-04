@@ -921,7 +921,7 @@ export function d3BarChartForValues(graphHolder: GraphHolder, plotItems, xLabels
     // Build chart
     // TODO: Improve the way labels are drawn or ellipsed based on chart size and font size and number of bars
 
-    var chartPane = newChartPane(graphHolder, "singleChartStyle");
+    var chartPane = newChartPane(graphHolder, "singleChartStyleWithoutChildren");
     addTitlePanelForChart(chartPane, chartTitle);
 
     var maxItemsPerBar = d3.max(plotItems, function(plotItem: PlotItem) { return plotItem.value; });
@@ -1096,7 +1096,7 @@ export function d3HistogramChartForQuestion(graphHolder: GraphHolder, scaleQuest
     var chartTitle = "" + nameForQuestion(scaleQuestion);
     if (choiceQuestion) chartTitle = "" + choice;
     
-    var style = "singleChartStyle";
+    var style = "singleChartStyleWithoutChildren";
     var chartSize = "large";
     if (choiceQuestion) {
         style = "smallChartStyle";
@@ -1183,7 +1183,7 @@ export function d3HistogramChartForDataIntegrity(graphHolder: GraphHolder, scale
         }
         unansweredCount = -1; // don't show; meaningless
     }
-    return d3HistogramChartForValues(graphHolder, values, null, null, unansweredCount, [], "singleChartStyle", "large", dataIntegrityType, dataIntegrityType, "", "", null);
+    return d3HistogramChartForValues(graphHolder, values, null, null, unansweredCount, [], "singleChartStyleWithoutChildren", "large", dataIntegrityType, dataIntegrityType, "", "", null);
 }
 
 export function d3HistogramChartForValues(graphHolder: GraphHolder, plotItems, choiceQuestion, choice, unansweredCount, matchingStories, style, chartSize, chartTitle, xAxisLabel, xAxisStart, xAxisEnd, storiesSelectedCallback, hideStatsPanel = false) {
@@ -1421,7 +1421,7 @@ export function multipleHistograms(graphHolder: GraphHolder, choiceQuestion, sca
     graphHolder.dataForCSVExport = {};
 
     // TODO: Could push extra options based on actual data choices (in case question changed at some point
-    var chartPane = newChartPane(graphHolder, "singleChartStyle");
+    var chartPane = newChartPane(graphHolder, "singleChartStyleWithChildren");
       
     var optionsText = "";
     if (scaleQuestion.displayConfiguration && scaleQuestion.displayConfiguration.length > 1) {
@@ -1505,7 +1505,7 @@ export function d3ScatterPlot(graphHolder: GraphHolder, xAxisQuestion, yAxisQues
 
     var isSmallFormat = !!choiceQuestion;
     
-    var style = "singleChartStyle";
+    var style = "singleChartStyleWithoutChildren";
     var chartSize = "large";
     if (isSmallFormat) {
         style = "mediumChartStyle";
@@ -1685,7 +1685,7 @@ export function multipleScatterPlot(graphHolder: GraphHolder, xAxisQuestion, yAx
     preloadResultsForQuestionOptionsInArray(options, choiceQuestion, unansweredText, showNAValues(graphHolder));
     graphHolder.dataForCSVExport = {};
     
-    var chartPane = newChartPane(graphHolder, "singleChartStyle");
+    var chartPane = newChartPane(graphHolder, "singleChartStyleWithChildren");
     var chartTitle = "" + nameForQuestion(xAxisQuestion) + " x " + nameForQuestion(yAxisQuestion) + " + " + nameForQuestion(choiceQuestion);
     addTitlePanelForChart(chartPane, chartTitle);
 
@@ -1868,7 +1868,7 @@ export function d3ContingencyTable(graphHolder: GraphHolder, xAxisQuestion, yAxi
     // Build chart
     // TODO: Improve the way labels are drawn or ellipsed based on chart size and font size and number of rows and columns
 
-    var chartPane = newChartPane(graphHolder, "singleChartStyle");
+    var chartPane = newChartPane(graphHolder, "singleChartStyleWithoutChildren");
     
     var chartTitle = "" + nameForQuestion(xAxisQuestion) + " x " + nameForQuestion(yAxisQuestion);
     if (scaleQuestion) {
@@ -2158,7 +2158,7 @@ export function d3CorrelationMapOrMaps(graphHolder: GraphHolder, questions, hide
 
     if (options.length > 1) {
 
-        var chartPane = newChartPane(graphHolder, "singleChartStyle");
+        var chartPane = newChartPane(graphHolder, "singleChartStyleWithChildren");
         var chartTitle = "Correlation map for " + questions[0].displayName;
         addTitlePanelForChart(chartPane, chartTitle);
 
@@ -2305,7 +2305,7 @@ export function d3CorrelationMap(graphHolder: GraphHolder, scaleQuestions, choic
     });
 
     // set up chart size and objects
-    let style = "singleChartStyle";
+    let style = "singleChartStyleWithoutChildren";
     let chartSize = "large";
     if (isSmallFormat) {
         style = "mediumChartStyle";
@@ -2627,7 +2627,7 @@ function addStatisticsPanelForCorrelationMap(chartPane: HTMLElement, graphHolder
     const keyToReportForN = customStatLabel("n", graphHolder) || "n";
 
     if (pairStatsInfo.length > 0) {
-        html += '<table class="narrafirma-correlation-map-stats-table">';
+        html += '<table class="narrafirma-correlation-map-stats-table scrolling-small">';
         html += '<tr><th></th><th></th><th>' + keyToReportForR + "</th><th>" + keyToReportForP + "</th><th>" + keyToReportForN + "</th></tr>";
     }
 

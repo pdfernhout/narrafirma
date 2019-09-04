@@ -569,6 +569,15 @@ button.narrafirma-griditempanel-close-button {
     margin: 0.4em;
 }
 
+table tr:hover button.fader {
+    opacity: 1;
+}
+
+table button.fader {
+    opacity: 1;
+    overflow: auto;
+}
+
 table.scrolling {
   margin: 0.6em 1em 0em 1em;
   display: block;
@@ -590,23 +599,22 @@ table.scrolling td {
     height: 1em;
 }
 
-table button.fader {
-    opacity: 1;
-    overflow: auto;
-}
-
 table.scrolling tr {
 	border: 1px solid black;
-}
-
-table tr:hover button.fader {
-    opacity: 1;
 }
 
 table.scrolling tr:hover {
     outline: 4px solid;
 }
 
+table.scrolling-small {
+    display: block;
+    width: max-content;
+    max-height: 300px;
+    overflow-y: scroll;
+    border-collapse: collapse;
+  }
+  
 .narrafirma-grid-row-unselected-odd {
 	background-color: #eff4ff;
 }
@@ -684,16 +692,23 @@ table.filterTable td {
 	margin: 0.4em 0 0.4em 0;
 }
 
-.singleChartStyle {
+.singleChartStyleWithoutChildren {
+    display: inline-block;
+    vertical-align: top;
+}
+
+.singleChartStyleWithChildren {
     display: block;
 }
 
 .smallChartStyle {
     display: inline-block;
+    vertical-align: top;
 }
 
 .mediumChartStyle {
     display: inline-block;
+    vertical-align: top;
 }
 
 .chartEnclosure {
@@ -1003,14 +1018,13 @@ table.filterTable td {
 
 .narrafirma-statistics-panel {
     background-color: inherit;
-	padding: 0.25em;
-	margin: 0.25em;
     font-size: 0.9em;
     font-weight: normal;
 } 
 
 h6.narrafirma-statistics-panel-small {
     font-weight: normal;
+    display: block;
 }
 
 .statistics-name, .statistics-value, .narrafirma-mann-whitney-title {
@@ -1019,9 +1033,9 @@ h6.narrafirma-statistics-panel-small {
 
 .narrafirma-statistics-panel-small {
     background-color: inherit;
-	padding: 0.25em;
-	margin: 0.25em;
     font-size: 0.9em;
+    width: max-content;
+    margin: auto;
 }
 
 table.narrafirma-mw-all-results {
