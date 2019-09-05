@@ -56,6 +56,7 @@ M Implement duplication of items in grid
 EXPORT/IMPORT
 W Add way to clear out or reset old survey results? Or maybe partition them by survey?
 W Give user list of data fields in questionnaire not found in data file
+W Remove restriction that text fields to be added to the story text must be to the right of the main story text column (easy to forget)
 
 VALIDATION
 W Think about validation and how or when or if it should be done
@@ -147,6 +148,12 @@ M Improve reporting on startup for loading project data with some kind of progre
 M When import story form, hundreds of triples can be generated which take minutes to send to the server (with no progress feedback, even though done in background) -- may be related to console logging
 
 ==== DONE
+
+--- Release 1.4.1
+
+Added: Message when there are no graphs for a pattern because none had the minimum number of stories to graph.
+Fixed: Bug where expected bubbles on contingency graphs were sometimes too small (statistical results were not affected)
+Fixed: Spurious message in contingency graph when question has no answer counts
 
 --- Release 1.4.0
 

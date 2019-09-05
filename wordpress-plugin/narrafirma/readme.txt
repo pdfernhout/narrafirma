@@ -7,9 +7,9 @@ Author URI: http://www.cfkurtz.com
 Author: Cynthia Kurtz and Paul Fernhout
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=DGVVDT2D49QA8
 Requires at least: 4.3.1
-Tested up to: 5.2.2
+Tested up to: 5.2.3
 Stable tag: trunk
-Version: 1.4.0
+Version: 1.4.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -105,6 +105,12 @@ We strongly suggest that you set up any web site on which you intend to install 
 12. Here the NarraFirma user is reflecting on the entire project, to learn from it and to keep good records for the future.
 
 == Changelog ==
+
+= 1.4.1 =
+
+Added: Message when there are no graphs for a pattern because none had the minimum number of stories to graph
+Fixed: Bug where expected bubbles on contingency graphs were sometimes too small (statistical results were not affected)
+Fixed: Spurious message in contingency graph when question has no answer counts
  
 = 1.4.0 =
 
@@ -430,6 +436,9 @@ loading application, getting user information, or retrieving project data.
 change logs, see the [GitHub repository](https://github.com/pdfernhout/narrafirma).
 
 == Upgrade Notice ==
+ 
+= 1.4.1 =
+This minor upgrade fixes a bug in contingency diagram drawing, plus a few other small fixes.
 
 = 1.4.0 =
 This somewhat-major upgrade adds a new type of graph (correlation map) and makes several process/workflow improvements to the catalysis process.
