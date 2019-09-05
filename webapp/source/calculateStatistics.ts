@@ -510,7 +510,10 @@ export function calculateStatisticsForTable(nominalQuestion1, nominalQuestion2, 
             field2Total = field2OptionsUsed[field2Option];
             observedValue = counts.counts[valueTag(field1Option, field2Option)] ||  0;
             observed.push(observedValue);
-            var expectedValue = field1Total * field2Total / usedTotal;
+            var expectedValue = 0;
+            if (usedTotal) {
+                var expectedValue = field1Total * field2Total / usedTotal;
+            }
             expected.push(expectedValue);           
         }
     }
