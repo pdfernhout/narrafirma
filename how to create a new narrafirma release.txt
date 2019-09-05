@@ -182,7 +182,12 @@ I2. Open the terminal view in that VSC window (on narrafirma-wp). Type
 to make sure the code there is up to date with the WordPress svn repository. If
 there is no response to the command, it is up to date.
 
-[If (and only if) it says there are any changes to the svn repository, type
+-----------------------------------
+If (and only if) it says there are any changes to the svn repository
+(which would only happen if you had not updated the svn database completely/correctly
+after the last release/change, and this should rarely happen), 
+
+type
 
     svn update
 
@@ -193,7 +198,8 @@ If any new files have been added, you must do a
 for the new file. Any new file added to the project has to be handled
 this way. DO NOT LEAVE NEW FILES OUT OF THE RELEASE!!! 
 If you see a file and it has a question mark to its left,
-it means you need to add that file to the SVN repository.]
+it means you need to add that file to the SVN repository.
+-----------------------------------
 
 I3. In the Finder, go to NarraFirma/wordpress plugin/release zips and unzip the
 generated WordPress zip file
