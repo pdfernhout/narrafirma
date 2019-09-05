@@ -1793,6 +1793,14 @@ export function d3ContingencyTable(graphHolder: GraphHolder, xAxisQuestion, yAxi
 
     let rowStoryCounts = {};
     let columnStoryCounts = {};
+
+    let totalColumnCount = 0;
+    for (let columnIndex in columnLabelsArray) {
+        var column = columnLabelsArray[columnIndex];
+        var columnSelector = JSON.stringify({x: column});
+        var columnTotal = results[columnSelector] || 0;
+        totalColumnCount += columnTotal;
+    }
     
     var observedPlotItems = [];
     var expectedPlotItems = [];
@@ -1811,7 +1819,7 @@ export function d3ContingencyTable(graphHolder: GraphHolder, xAxisQuestion, yAxi
                 var rowSelector = JSON.stringify({y: row});
                 var rowTotal = results[rowSelector] || 0; 
             
-                expectedValue = (columnTotal * rowTotal) / stories.length;
+                expectedValue = (columnTotal * rowTotal) / totalColumnCount;
                 var expectedPlotItem = {x: column, y: row, value: expectedValue};
                 expectedPlotItems.push(expectedPlotItem);
             }
