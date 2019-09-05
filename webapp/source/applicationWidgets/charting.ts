@@ -670,6 +670,10 @@ function addTitlePanelForChart(chartPane, chartTitle) {
     chartPane.appendChild(titlePane);
 }
 
+function addNoGraphsWarningForChart(chartPane) {
+    chartPane.innerHTML += '<p style="margin-left: 0.5em">There are no graphs for this selection in which the number of stories is greater than the minimum required to draw a graph.</p>';
+}
+
 //------------------------------------------------------------------------------------------------------------------------------------------
 // d3 support functions - selecting items in graphs
 //------------------------------------------------------------------------------------------------------------------------------------------
@@ -1430,13 +1434,14 @@ export function multipleHistograms(graphHolder: GraphHolder, choiceQuestion, sca
     var chartTitle = "" + nameForQuestion(scaleQuestion) + optionsText + " x " + nameForQuestion(choiceQuestion);
     addTitlePanelForChart(chartPane, chartTitle);
 
-    var charts = [];
+    var subCharts = [];
     for (index in options) {
         var option = options[index];
         // TODO: Maybe need to pass which chart to the storiesSelectedCallback
         var subchart = d3HistogramChartForQuestion(graphHolder, scaleQuestion, choiceQuestion, option, storiesSelectedCallback, hideStatsPanel);
-        if (subchart) charts.push(subchart);
+        if (subchart) subCharts.push(subchart);
     }
+    if (subCharts.length === 0) addNoGraphsWarningForChart(chartPane);
     
     // End the float
     var clearFloat = document.createElement("br");
@@ -1448,7 +1453,7 @@ export function multipleHistograms(graphHolder: GraphHolder, choiceQuestion, sca
         graphHolder.minimumStoryCountRequiredForTest, unansweredText, showNAValues(graphHolder));
     graphHolder.statisticalInfo += addStatisticsPanelForChart(graphHolder.graphResultsPane, graphHolder, statistics, chartTitle, "large", hideStatsPanel);
   
-    return charts;
+    return subCharts;
 }
 
 //------------------------------------------------------------------------------------------------------------------------------------------
@@ -1694,6 +1699,7 @@ export function multipleScatterPlot(graphHolder: GraphHolder, xAxisQuestion, yAx
         var subchart = d3ScatterPlot(graphHolder, xAxisQuestion, yAxisQuestion, choiceQuestion, options[i], storiesSelectedCallback, hideStatsPanel)
         if (subchart) subCharts.push(subchart);
     }
+    if (subCharts.length === 0) addNoGraphsWarningForChart(chartPane);
     
     var clearFloat = document.createElement("br");
     clearFloat.style.clear = "left";
@@ -2175,6 +2181,7 @@ export function d3CorrelationMapOrMaps(graphHolder: GraphHolder, questions, hide
             var subchart = d3CorrelationMap(graphHolder, questions.slice(1), questions[0], nodes[options[i]], largestCount, options[i], hideStatsPanel)
             if (subchart) subCharts.push(subchart);
         }
+        if (subCharts.length === 0) addNoGraphsWarningForChart(chartPane);
         var clearFloat = document.createElement("br");
         clearFloat.style.clear = "left";
         graphHolder.graphResultsPane.appendChild(clearFloat);
