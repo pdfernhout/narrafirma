@@ -60,6 +60,16 @@ var panel: Panel = {
                 return !!Globals.clientState().storyCollectionIdentifier();
             }
         },
+        {
+            id: "printStoryCards_printFormButton",
+            valueType: "none",
+            displayType: "button",
+            displayConfiguration: "printStoryCards",
+            displayPrompt: "Print Story Cards",
+            displayPreventBreak: true,
+            displayVisible: function(panelBuilder, model) {
+                return !!Globals.clientState().storyCollectionIdentifier();}
+        },
 
         {
             id: "printStoryCards_showOrHideAdvancedOptions",
@@ -196,15 +206,7 @@ var panel: Panel = {
             displayVisible: function(panelBuilder, model) {
                 return !!Globals.clientState().haveStoryCollectionAndShowingAdvancedOptions();}
         },
-        {
-            id: "printStoryCards_printFormButton",
-            valueType: "none",
-            displayType: "button",
-            displayConfiguration: "printStoryCards",
-            displayPrompt: "Print Story Cards",
-            displayVisible: function(panelBuilder, model) {
-                return !!Globals.clientState().haveStoryCollectionAndShowingAdvancedOptions();}
-        }
+        
     ]
 };
 
