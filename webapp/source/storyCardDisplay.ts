@@ -22,17 +22,16 @@ function wrap(elementType, cssClass, text) {
 }
 
 function displayHTMLForSlider(fieldSpecification, fieldName, value, options) {
-    if (!fieldSpecification.displayConfiguration || fieldSpecification.displayConfiguration.length < 2) {
-        console.log("missing displayConfiguration for slider", fieldSpecification);
-        return m("div", "ERROR: Problem displaying slider " + fieldSpecification.id);
+    var lowLabel = "";
+    var highLabel = "";
+    if (fieldSpecification.displayConfiguration !== undefined && fieldSpecification.displayConfiguration.length > 1) {
+        lowLabel = fieldSpecification.displayConfiguration[0];
+        highLabel = fieldSpecification.displayConfiguration[1];
     }
-
-    // Assumes values go from 0 to 100; places 100.0 in last bucket
-    var lowLabel = fieldSpecification.displayConfiguration[0];
-    var highLabel = fieldSpecification.displayConfiguration[1];
     var sliderText = [];
     var sliderTextBefore = "";
     var sliderTextAfter = "";
+    // Assumes values go from 0 to 100; places 100.0 in last bucket
     var bucketCount = 50;
     var bucketSize = 100.0 / bucketCount;
     var placed = false;
