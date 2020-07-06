@@ -45,7 +45,7 @@
   },
   "devDependencies": {
     "typescript": "3.9.6",
-    "lodash": "3.4.0",
+    "lodash": "4.17.15",
     "amdrequire": "0.0.3"
   }
 }
