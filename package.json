@@ -1,5 +1,5 @@
 {
-  "name": "NarraFirma",
+  "name": "narrafirma",
   "description": "NarraFirma webapp for Participatory Narrative Inquiry (PNI)",
   "version": "1.4.1",
   "keywords": [
@@ -44,6 +44,8 @@
     "build": "tsc"
   },
   "devDependencies": {
-    "typescript": "2.4.2"
+    "typescript": "3.9.6",
+    "lodash": "3.4.0",
+    "amdrequire": "0.0.3"
   }
 }
