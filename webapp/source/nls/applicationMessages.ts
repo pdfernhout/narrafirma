@@ -3,7 +3,7 @@
 // See: http://dojotoolkit.org/documentation/tutorials/1.9/i18n/
 import kludgeForUseStrict = require("../kludgeForUseStrict");
 "use strict";
-var messages = {
+const messages = {
     root: {
      // Do not translate text in double braces since they are identifiers looked up and replaced by the program at runtime
      // For example: {{total}} should stay the same in the translation

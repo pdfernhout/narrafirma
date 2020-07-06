@@ -2,7 +2,7 @@ import surveyCollection = require("../../surveyCollection");
 
 "use strict";
 
-var panel: Panel = {
+const panel: Panel = {
     id: "panel_addStoryCollection",
     modelClass: "StoryCollection",
     panelFields: [

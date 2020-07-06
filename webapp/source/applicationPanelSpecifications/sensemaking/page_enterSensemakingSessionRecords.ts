@@ -1,7 +1,7 @@
 import kludgeForUseStrict = require("../../kludgeForUseStrict");
 "use strict";
 
-var panel: Panel = {
+const panel: Panel = {
     id: "page_enterSensemakingSessionRecords",
     displayName: "Enter sensemaking session records",
     tooltipText: "Reflect on your sensemaking sessions to capture what happened and what you learned.",

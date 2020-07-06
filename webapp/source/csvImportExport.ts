@@ -15,7 +15,7 @@ import sanitizeHTML = require("./sanitizeHTML");
 
 "use strict";
 
-var project: Project;
+let project: Project;
 
 export function initialize(theProject) {
     project = theProject;
@@ -46,7 +46,7 @@ function stringBeyond(aString: string, beyondWhat: string) {
 }
 
 function padLeadingZeros(num: number, size: number) {
-    var result = num + "";
+    let result = num + "";
     while (result.length < size) result = "0" + result;
     return result;
 }
@@ -66,27 +66,27 @@ function processCSVContents(contents, callbackForItem) {
 
     const delimiter = Globals.clientState().csvDelimiter();
     const csv = d3.dsv(delimiter, "text/plain");
-    var rows = csv.parseRows(contents);
-    var items = [];
-    var header = null;
+    const rows = csv.parseRows(contents);
+    const items = [];
+    let header = null;
     
-    for (var rowIndex = 0; rowIndex < rows.length; rowIndex++) {
-        var row = rows[rowIndex];
-        var rowIsEmpty = true;
-        for (var i = 0; i < row.length; i++) {
+    for (let rowIndex = 0; rowIndex < rows.length; rowIndex++) {
+        const row = rows[rowIndex];
+        let rowIsEmpty = true;
+        for (let i = 0; i < row.length; i++) {
             if (row[i] != "") {
                 rowIsEmpty = false;
             }
         }
-        var rowIsCommentedOut = row[0].trim().charAt(0) === ";";
+        const rowIsCommentedOut = row[0].trim().charAt(0) === ";";
         if (rowIsEmpty || rowIsCommentedOut) {
             ;
         } else {
             if (!header) { // no header yet - read header
                 header = [];
-                var headerEnded = false;
-                for (var headerIndex = 0; headerIndex < row.length; headerIndex++) {
-                    var headerCellValue = row[headerIndex];
+                let headerEnded = false;
+                for (let headerIndex = 0; headerIndex < row.length; headerIndex++) {
+                    const headerCellValue = row[headerIndex];
                     if (headerCellValue) {
                         if (headerEnded) { // already read empty cell (so header appears to be ended) but it really isn't
                             console.log("ERROR: header has empty field before end");
@@ -98,7 +98,7 @@ function processCSVContents(contents, callbackForItem) {
                     }
                 }
             } else { // header already exists - read row, create item
-                var newItem = callbackForItem(header, row);
+                const newItem = callbackForItem(header, row);
                 if (newItem) items.push(newItem);
             }
         }
@@ -107,15 +107,15 @@ function processCSVContents(contents, callbackForItem) {
 }
 
 function chooseCSVFileToImport(callback, saveStories: boolean, writeLog: boolean, questionnaire = null) {
-    var cvsFileUploader = <HTMLInputElement>document.getElementById("csvFileLoader");
+    const cvsFileUploader = <HTMLInputElement>document.getElementById("csvFileLoader");
     cvsFileUploader.onchange = function() {
-        var file = cvsFileUploader.files[0];
+        const file = cvsFileUploader.files[0];
         if (!file) {
             return;
         }
-        var reader = new FileReader();
+        const reader = new FileReader();
         reader.onload = function(e: Event) {
-            var contents = (<FileReader>e.target).result;
+            const contents = (<FileReader>e.target).result;
             callback(contents, saveStories, writeLog, questionnaire);
         };
         reader.readAsText(file);
@@ -130,8 +130,8 @@ function chooseCSVFileToImport(callback, saveStories: boolean, writeLog: boolean
 function processCSVContentsForStories(contents, saveStories, writeLog, questionnaire = null) {
 
     // set up log
-    var logItems = [];
-    var logQuestionAnswerCounts = {};
+    const logItems = [];
+    const logQuestionAnswerCounts = {};
 
     function log(text) {
         if (writeLog) {
@@ -151,12 +151,14 @@ function processCSVContentsForStories(contents, saveStories, writeLog, questionn
         logQuestionAnswerCounts[questionName][answerName]++;
     }
 
+    let storyCollectionName;
+    
     if (!questionnaire) {
         // check for story collection
-        var storyCollectionName = Globals.clientState().storyCollectionName();
+        storyCollectionName = Globals.clientState().storyCollectionName();
         if (!storyCollectionName) alert("No story collection has been selected");
         // check for story form
-        var questionnaire = surveyCollection.getQuestionnaireForStoryCollection(storyCollectionName, true);
+        const questionnaire = surveyCollection.getQuestionnaireForStoryCollection(storyCollectionName, true);
     }
     if (!questionnaire) return;
 
@@ -165,17 +167,17 @@ function processCSVContentsForStories(contents, saveStories, writeLog, questionn
     log("INFO||Data column headers and cell values are only logged the FIRST time their unique value is encountered. Subsequent identical messages are suppressed. Text answers are not reported.");
     
     // set up progress bar
-    var messageText = "";
+    let messageText = "";
     if (saveStories) {
         messageText = "Progress importing stories";
     } else {
         messageText = "Progress checking stories";
     }
-    var progressModel = dialogSupport.openProgressDialog("Processing CSV file...", messageText, "Cancel", dialogCancelled);
+    const progressModel = dialogSupport.openProgressDialog("Processing CSV file...", messageText, "Cancel", dialogCancelled);
 
     // set up check for story length (to exclude too-short stories)
-    var canCheckStoryLength = true;
-    var minWordsToIncludeStory = 0;
+    let canCheckStoryLength = true;
+    let minWordsToIncludeStory = 0;
     if (questionnaire.import_minWordsToIncludeStory) {
         minWordsToIncludeStory = parseInt(questionnaire.import_minWordsToIncludeStory);
         if (isNaN(minWordsToIncludeStory)) {
@@ -184,25 +186,25 @@ function processCSVContentsForStories(contents, saveStories, writeLog, questionn
         }
     }
   
-    var rowNumber = 0;
-    var numRowsSkipped = 0;
+    let rowNumber = 0;
+    let numRowsSkipped = 0;
 
     // callback function to process file contents
-    var headerAndItems = processCSVContents(contents, function (header, row) {
+    const headerAndItems = processCSVContents(contents, function (header, row) {
 
         rowNumber++;
         log("DEBUG||<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< PROCESSING ROW " + rowNumber + " >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
-        var newItem = {};
-        var saveStory = true;
+        const newItem = {};
+        let saveStory = true;
 
         // get list of columns to append to story text (do not count as questions)
-        var columnsToAppendToStoryText = [];
+        let columnsToAppendToStoryText = [];
         if (questionnaire.import_columnsToAppendToStoryText) {
             columnsToAppendToStoryText = questionnaire.import_columnsToAppendToStoryText.split("\n");
         }
 
         // get list of things to write before appended texts
-        var textsToWriteBeforeAppendedColumns = [];
+        let textsToWriteBeforeAppendedColumns = [];
         if (questionnaire.import_textsToWriteBeforeAppendedColumns) {
             if (typeof questionnaire.import_textsToWriteBeforeAppendedColumns === "string") {
                 textsToWriteBeforeAppendedColumns = questionnaire.import_textsToWriteBeforeAppendedColumns.split("\n");
@@ -212,20 +214,20 @@ function processCSVContentsForStories(contents, saveStories, writeLog, questionn
         }
 
         // get list of columns to ignore completely
-        var columnsToIgnore = [];
+        let columnsToIgnore = [];
         if (questionnaire.import_columnsToIgnore) {
             columnsToIgnore = questionnaire.import_columnsToIgnore.split("\n");
         }
 
         // read row by column
-        for (var fieldIndex = 0; fieldIndex < header.length; fieldIndex++) {
+        for (let fieldIndex = 0; fieldIndex < header.length; fieldIndex++) {
 
             if (!saveStory) {
                 break; // if already decided not to save the story (based on story text length), skip every column after story text
             }
 
             // get cell value - but if row is shorter than header, don't assign any value
-            var value = undefined;
+            let value = undefined;
             if (row[fieldIndex] != undefined) {
                 value = row[fieldIndex].trim(); // note the value is trimmed
             }
@@ -235,17 +237,17 @@ function processCSVContentsForStories(contents, saveStories, writeLog, questionn
                 continue; 
             }
 
-            var headerName = header[fieldIndex];
+            let headerName = header[fieldIndex];
 
             // check to see if the header name is in the list of names to be changed because they conflict with other things (like yes/no answer formatting)
             // yes this is done for EVERY row instead of once for the header, which is slow
             // but since the function that reads the header is also used for reading story forms, i don't know HOW to do it only once
             if (questionnaire.import_stringsToRemoveFromHeaders) {
                 if (value != undefined && value !== "") {
-                    var stringsToRemove = questionnaire.import_stringsToRemoveFromHeaders.split("\n");
+                    const stringsToRemove = questionnaire.import_stringsToRemoveFromHeaders.split("\n");
                     if (stringsToRemove.length) {
-                        for (var stringIndex = 0; stringIndex < stringsToRemove.length; stringIndex++) {
-                            var stringToRemove = stringsToRemove[stringIndex];
+                        for (let stringIndex = 0; stringIndex < stringsToRemove.length; stringIndex++) {
+                            const stringToRemove = stringsToRemove[stringIndex];
                             if (headerName.indexOf(stringToRemove) >= 0) {
                                 headerName = replaceAll(headerName, stringsToRemove[stringIndex], "");
                             }
@@ -267,7 +269,7 @@ function processCSVContentsForStories(contents, saveStories, writeLog, questionn
 
             // column is story text - check length if desired, and if too short, do not save story
             } else if (headerName === questionnaire.import_storyTextColumnName) {
-                var saveStoryText = false;
+                let saveStoryText = false;
                 if (value === undefined || value === "") {
                     log("WARN||Row skipped because story text is empty.");
                     saveStory = false;
@@ -278,7 +280,7 @@ function processCSVContentsForStories(contents, saveStories, writeLog, questionn
                     numRowsSkipped++;
                 } else { 
                     if (canCheckStoryLength && minWordsToIncludeStory > 0) {
-                        var storyAsWords = value.split(" ");
+                        const storyAsWords = value.split(" ");
                         if (storyAsWords.length < minWordsToIncludeStory) {
                             log("WARN||Row skipped because story text length (" + storyAsWords.length + ") is below minimum of " + minWordsToIncludeStory + "; text is: " + shortenTextIfNecessary(value));
                             saveStory = false;
@@ -297,8 +299,8 @@ function processCSVContentsForStories(contents, saveStories, writeLog, questionn
 
             // column is one of additional text columns to be appended to story text (must be to the right of story text in data file)
             } else if (columnsToAppendToStoryText.indexOf(headerName) >= 0) {
-                var indexOfColumnInList = columnsToAppendToStoryText.indexOf(headerName);
-                var textBefore = " --- ";
+                const indexOfColumnInList = columnsToAppendToStoryText.indexOf(headerName);
+                let textBefore = " --- ";
                 if (textsToWriteBeforeAppendedColumns.length > indexOfColumnInList && textsToWriteBeforeAppendedColumns[indexOfColumnInList]) {
                     textBefore = textsToWriteBeforeAppendedColumns[indexOfColumnInList];
                 }
@@ -307,12 +309,12 @@ function processCSVContentsForStories(contents, saveStories, writeLog, questionn
 
             // column is eliciting question chosen
             } else if (headerName === questionnaire.import_elicitingQuestionColumnName) {
-                var questionShortName = getElicitingQuestionDisplayNameForColumnName(value, questionnaire);
+                const questionShortName = getElicitingQuestionDisplayNameForColumnName(value, questionnaire);
                 if (questionShortName) {
                     newItem["Eliciting question"] = questionShortName;
                     log("LOG||Eliciting question: " + questionShortName);
                 } else {
-                    var importNames = [];
+                    const importNames = [];
                     questionnaire.elicitingQuestions.forEach(function(question) {
                         importNames.push(question.importName);
                     });
@@ -326,9 +328,9 @@ function processCSVContentsForStories(contents, saveStories, writeLog, questionn
             } else {
 
                 // column is answer to question - get question name, and possibly answer name, from column header
-                var fieldName = "";
-                var answerName = "";
-                var separator = questionnaire.import_multiChoiceYesQASeparator;
+                let fieldName = "";
+                let answerName = "";
+                let separator = questionnaire.import_multiChoiceYesQASeparator;
                 if (separator != undefined && headerName.indexOf(separator) >= 0) {
                     if (separator.toLowerCase() === "space") {
                         separator = " ";
@@ -342,17 +344,17 @@ function processCSVContentsForStories(contents, saveStories, writeLog, questionn
                 }
 
                 // get question referred to by header name from story form
-                var question = questionForHeaderFieldName(fieldName, fieldIndex, questionnaire, project);
+                const question = questionForHeaderFieldName(fieldName, fieldIndex, questionnaire, project);
 
                 if (question) { 
 
-                    var questionName = question.displayName;
-                    var importValueType = question.import_valueType;
+                    const questionName = question.displayName;
+                    const importValueType = question.import_valueType;
                     log("LOG||Data column name: " + fieldName + " matched with question: " + questionName);
 
                     // simple data types, text is answer
                     if (["Single choice", "Radiobuttons", "Boolean", "Checkbox", "Text", "Textarea"].indexOf(importValueType) >= 0) {
-                        var answerNameToUse = getDisplayAnswerNameForDataAnswerName(value, question);
+                        const answerNameToUse = getDisplayAnswerNameForDataAnswerName(value, question);
                         if (answerNameToUse) {
                             if (["Text", "Textarea"].indexOf(importValueType) >= 0) { // don't log anything when reading text entries
                                 newItem[questionName] = answerNameToUse;
@@ -367,7 +369,7 @@ function processCSVContentsForStories(contents, saveStories, writeLog, questionn
                             }
                         } else { // no match, log error
                             if (["Text", "Textarea"].indexOf(importValueType) < 0) { 
-                                var listToShow = question.import_answerNames;
+                                let listToShow = question.import_answerNames;
                                 if (!listToShow) listToShow = question.valueOptions;
                                 log("ERROR||Answer for " + questionName + " (" + importValueType + "): NO MATCHING ANSWER FOUND for answer name [" + value + 
                                     "] out of list [" + listToShow.join(" | ") + "]");
@@ -376,10 +378,10 @@ function processCSVContentsForStories(contents, saveStories, writeLog, questionn
 
                     // Single choice indexed, text is number of choice in list
                     } else if (importValueType === "Single choice indexed") {
-                        var valueAsInt = parseInt(value);
-                        var valueAssigned = false;
+                        const valueAsInt = parseInt(value);
+                        let valueAssigned = false;
                         if (!isNaN(valueAsInt)) {
-                            for (var index = 0; index < question.valueOptions.length; index++) {
+                            for (let index = 0; index < question.valueOptions.length; index++) {
                                 if (valueAsInt-1 === index) {
                                     if (!newItem[questionName]) count(questionName, question.valueOptions[index]);
                                     newItem[questionName] = question.valueOptions[index];
@@ -404,10 +406,10 @@ function processCSVContentsForStories(contents, saveStories, writeLog, questionn
                             // parseInt stops when it encounters anything but a digit, so the number will be truncated
                             log("ERROR||Answer for " + questionName + " (" + importValueType + "): Should be an integer but is not. It has been truncated.");
                         }
-                        var valueAsInt = parseInt(value);
-                        var adjustedValue = changeValueForCustomScaleValues(valueAsInt, question, questionnaire);
+                        const valueAsInt = parseInt(value);
+                        const adjustedValue = changeValueForCustomScaleValues(valueAsInt, question, questionnaire);
                         newItem[questionName] = adjustedValue;
-                        var infoString = "LOG||Answer for " + questionName + " (" + importValueType + "): " + adjustedValue;
+                        let infoString = "LOG||Answer for " + questionName + " (" + importValueType + "): " + adjustedValue;
                         if (adjustedValue != valueAsInt) {
                             infoString += " (adjusted from " + valueAsInt + ")";
                         }
@@ -417,7 +419,7 @@ function processCSVContentsForStories(contents, saveStories, writeLog, questionn
                     // Multi-choice multi-column texts, text is one answer to add to list
                     // in case of lumping, dictionary entry will be set to true again
                     } else if (importValueType === "Multi-choice multi-column texts") {
-                        var answerNameToUse = getDisplayAnswerNameForDataAnswerName(value, question);
+                        const answerNameToUse = getDisplayAnswerNameForDataAnswerName(value, question);
                         if (answerNameToUse) {
                             if (!newItem[questionName]) newItem[questionName] = {};
                             if (!newItem[questionName][answerNameToUse]) count(questionName, answerNameToUse);
@@ -425,7 +427,7 @@ function processCSVContentsForStories(contents, saveStories, writeLog, questionn
                             log("LOG||Answer for " + questionName + " (" + importValueType + "): " + answerNameToUse);
                             
                         } else { // no match, log error
-                            var listToShow = question.import_answerNames;
+                            let listToShow = question.import_answerNames;
                             if (!listToShow) listToShow = question.valueOptions;
                             log("ERROR||Answer for " + questionName + " (" + importValueType + "): NO MATCHING ANSWER FOUND for answer name [" + value + 
                                 "] out of list [" + listToShow.join(" | ") + "]");
@@ -436,13 +438,13 @@ function processCSVContentsForStories(contents, saveStories, writeLog, questionn
                     } else if (importValueType === "Multi-choice multi-column yes/no") {
                         if (value === questionnaire.import_multiChoiceYesIndicator) {
                             if (!newItem[questionName]) newItem[questionName] = {};
-                            var answerNameToUse = getDisplayAnswerNameForDataAnswerName(answerName, question);
+                            const answerNameToUse = getDisplayAnswerNameForDataAnswerName(answerName, question);
                             if (answerNameToUse) {
                                 if (!newItem[questionName][answerNameToUse]) count(questionName, answerNameToUse);
                                 newItem[questionName][answerNameToUse] = true;
                                 log("LOG||Answer for " + questionName + " (" + importValueType + "): " + answerNameToUse);
                             } else { // no match, log error
-                                var listToShow = question.import_answerNames;
+                                let listToShow = question.import_answerNames;
                                 if (!listToShow) listToShow = question.valueOptions;
                                 log("ERROR||Answer for " + questionName + " (" + importValueType + "): NO MATCHING ANSWER FOUND for answer name [" + answerName + 
                                     "] out of list [" + listToShow.join(" | ") + "]");
@@ -453,19 +455,19 @@ function processCSVContentsForStories(contents, saveStories, writeLog, questionn
                     // in case of lumping, dictionary entry will be set to true again
                     } else if (importValueType === "Multi-choice single-column delimited") {
                         newItem[questionName] = {};
-                        var delimiter = questionnaire.import_multiChoiceDelimiter;
+                        let delimiter = questionnaire.import_multiChoiceDelimiter;
                         if (delimiter && delimiter.toLowerCase() === "space") delimiter = " ";
-                        var delimitedItems = value.split(delimiter);
+                        const delimitedItems = value.split(delimiter);
                         delimitedItems.forEach((delimitedItem) => {
-                            var trimmedDelimitedItem = delimitedItem.trim();
+                            const trimmedDelimitedItem = delimitedItem.trim();
                             if (trimmedDelimitedItem !== "") {
-                                var answerNameToUse = getDisplayAnswerNameForDataAnswerName(trimmedDelimitedItem, question);
+                                const answerNameToUse = getDisplayAnswerNameForDataAnswerName(trimmedDelimitedItem, question);
                                 if (answerNameToUse) {
                                     if (!newItem[questionName][answerNameToUse]) count(questionName, answerNameToUse);
                                     newItem[questionName][answerNameToUse] = true;
                                     log("LOG||Answer for " + questionName + " (" + importValueType + "): " + answerNameToUse);
                                 } else { // no match, log error
-                                    var listToShow = question.import_answerNames;
+                                    let listToShow = question.import_answerNames;
                                     if (!listToShow) listToShow = question.valueOptions;
                                     log("ERROR||Answer for " + questionName + " (" + importValueType + "): NO MATCHING ANSWER FOUND for answer name [" + trimmedDelimitedItem + 
                                         "] out of list " + listToShow.join(" | ") + "]");
@@ -477,16 +479,16 @@ function processCSVContentsForStories(contents, saveStories, writeLog, questionn
                     // in case of lumping, dictionary entry will be set to true again
                     } else if (importValueType === "Multi-choice single-column delimited indexed") {
                         newItem[questionName] = {};
-                        var delimiter = questionnaire.import_multiChoiceDelimiter;
+                        let delimiter = questionnaire.import_multiChoiceDelimiter;
                         if (delimiter.toLowerCase() === "space") delimiter = " ";
-                        var delimitedIndexTexts = value.split(delimiter);
+                        const delimitedIndexTexts = value.split(delimiter);
                         delimitedIndexTexts.forEach((delimitedIndexText) => {
-                            var delimitedIndex = parseInt(delimitedIndexText);
-                            var valueAssigned = false;
+                            const delimitedIndex = parseInt(delimitedIndexText);
+                            let valueAssigned = false;
                             if (!isNaN(delimitedIndex)) {
-                                for (var index = 0; index < question.valueOptions.length; index++) {
+                                for (let index = 0; index < question.valueOptions.length; index++) {
                                     if (delimitedIndex-1 === index) {
-                                        var answerNameToUse = question.valueOptions[index];
+                                        const answerNameToUse = question.valueOptions[index];
                                         if (!newItem[questionName][answerNameToUse]) count(questionName, answerNameToUse);
                                         newItem[questionName][answerNameToUse] = true;
                                         valueAssigned = true;
@@ -521,7 +523,7 @@ function processCSVContentsForStories(contents, saveStories, writeLog, questionn
     // note that this is done after processing all the rows. I don't know how to change it given how processCSVContents works.
     // if I put it in the callback function the alert would be raised on every row
     // and I can't put it in the processCSVContents function because it's multiple purpose and also used for story forms
-    var header = headerAndItems.header;
+    const header = headerAndItems.header;
     if (!header) {
         alert("ERROR: No header line found in CSV data file.")
         progressModel.hideDialogMethod();
@@ -551,26 +553,26 @@ function processCSVContentsForStories(contents, saveStories, writeLog, questionn
     //////////////////////////////////////// IF SAVING STORIES AND NOT WRITING LOG
 
     // convert arrays created while reading rows into proper stories (survey results)
-    var items = headerAndItems.items;
-    var surveyResults = [];
-    var untitledCount = 0;
-    var importedByUserIdentifier = project.userIdentifier.userIdentifier; // TODO: this is a kludgy way to get a string and seems brittle
+    const items = headerAndItems.items;
+    const surveyResults = [];
+    let untitledCount = 0;
+    const importedByUserIdentifier = project.userIdentifier.userIdentifier; // TODO: this is a kludgy way to get a string and seems brittle
 
     // group items by participant ID field, if entered
-    var itemsByParticipantID = {};
-    for (var itemIndex = 0; itemIndex < items.length; itemIndex++) {
-        var item = items[itemIndex];
-        var participantID = item["Participant ID"] || generateRandomUuid("Participant");
+    const itemsByParticipantID = {};
+    for (let itemIndex = 0; itemIndex < items.length; itemIndex++) {
+        const item = items[itemIndex];
+        const participantID = item["Participant ID"] || generateRandomUuid("Participant");
         if (!itemsByParticipantID[participantID]) {
             itemsByParticipantID[participantID] = [];
         }
         itemsByParticipantID[participantID].push(item);
     }
 
-    var totalStoryCount = 0;
-    for (var participantIDIndex in itemsByParticipantID) {
+    let totalStoryCount = 0;
+    for (const participantIDIndex in itemsByParticipantID) {
         // TODO: Copied code from surveyBuilder module! Need a common function with surveyBuilder to make this!!!
-        var newSurveyResult = {
+        const newSurveyResult = {
             __type: "org.workingwithstories.QuestionnaireResponse",
             // TODO: Think about whether to include entire questionnaire or something else perhaps
             questionnaire: questionnaire,
@@ -587,11 +589,11 @@ function processCSVContentsForStories(contents, saveStories, writeLog, questionn
             importedBy: importedByUserIdentifier // TODO: this is a kludgy way to get a string and seems brittle
         };
 
-        for (var storyIndex in itemsByParticipantID[participantIDIndex]) {
-            var storyItem = itemsByParticipantID[participantIDIndex][storyIndex];
+        for (const storyIndex in itemsByParticipantID[participantIDIndex]) {
+            const storyItem = itemsByParticipantID[participantIDIndex][storyIndex];
         
-            var elicitingQuestion = storyItem["Eliciting question"] || questionnaire.elicitingQuestions[0].id;
-            var story = {
+            const elicitingQuestion = storyItem["Eliciting question"] || questionnaire.elicitingQuestions[0].id;
+            const story = {
                 __type: "org.workingwithstories.Story",
                 // TODO: Can this "id" field be safely removed? id: generateRandomUuid("TODO:???"),
                 storyID: generateRandomUuid("Story"),
@@ -602,11 +604,11 @@ function processCSVContentsForStories(contents, saveStories, writeLog, questionn
                 numStoriesTold: "" + itemsByParticipantID[participantIDIndex].length
             };
         
-            var i;
-            var question;
+            let i;
+            let question;
             for (i = 0; i < questionnaire.storyQuestions.length; i++) {
                 question = questionnaire.storyQuestions[i];
-                var value = storyItem[question.id.substring("S_".length)];
+                const value = storyItem[question.id.substring("S_".length)];
                 story[question.id] = value;
             }
 
@@ -614,7 +616,7 @@ function processCSVContentsForStories(contents, saveStories, writeLog, questionn
             totalStoryCount += 1;
             for (i = 0; i < questionnaire.participantQuestions.length; i++) {
                 question = questionnaire.participantQuestions[i];
-                var value = storyItem[question.id.substring("S_".length)];
+                const value = storyItem[question.id.substring("S_".length)];
                 newSurveyResult.participantData[question.id] = value;
             }
         }
@@ -633,7 +635,7 @@ function processCSVContentsForStories(contents, saveStories, writeLog, questionn
         hideDialogMethod();
     }
     
-    var wizardPane = {
+    const wizardPane = {
         forward: function () {
             console.log("survey sending success");
             if (progressModel.failed) return;
@@ -650,8 +652,8 @@ function processCSVContentsForStories(contents, saveStories, writeLog, questionn
         }
     };
     
-    var totalSurveyCount = surveyResults.length;
-    var surveyIndexToSend = 0;
+    const totalSurveyCount = surveyResults.length;
+    let surveyIndexToSend = 0;
     let numStoriesSentSoFar = 0;
     
     function sendNextSurveyResult() {
@@ -662,7 +664,7 @@ function processCSVContentsForStories(contents, saveStories, writeLog, questionn
             progressModel.hideDialogMethod();
             progressModel.redraw();
         } else {
-            var surveyResult = surveyResults[surveyIndexToSend++];
+            const surveyResult = surveyResults[surveyIndexToSend++];
             // TODO: Translate
             numStoriesSentSoFar += surveyResult.stories.length;
             progressModel.progressText = "Sending " + numStoriesSentSoFar + "/" + totalStoryCount + " stories from " + surveyIndexToSend + "/" + totalSurveyCount + " participants to server";
@@ -681,13 +683,13 @@ function processCSVContentsForStories(contents, saveStories, writeLog, questionn
     // write accumulated log items to console
     if (writeLog) {
 
-        var consoleMessageCounts = {"INFO": 0, "WARN": 0, "LOG": 0, "DEBUG": 0, "ERROR": 0};
+        const consoleMessageCounts = {"INFO": 0, "WARN": 0, "LOG": 0, "DEBUG": 0, "ERROR": 0};
         if (logItems.length > 0) {
             console.clear();
             logItems.forEach(function(item) {
-                var typeAndText = item.split("||");
-                var type = typeAndText[0];
-                var text = typeAndText[1];
+                const typeAndText = item.split("||");
+                const type = typeAndText[0];
+                const text = typeAndText[1];
                 if (type === "INFO") {
                     console.info(text);
                     consoleMessageCounts["INFO"]++;
@@ -708,16 +710,16 @@ function processCSVContentsForStories(contents, saveStories, writeLog, questionn
         }
 
         // write answer counts to bottom of console log
-        var questionNames = Object.keys(logQuestionAnswerCounts);
+        const questionNames = Object.keys(logQuestionAnswerCounts);
         if (questionNames.length > 0) {
             console.info("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< ANSWER COUNTS >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
-            for (var questionIndex = 0; questionIndex < questionNames.length; questionIndex++) {
-                var questionName = questionNames[questionIndex];
-                var answerOutputText = "";
-                var answerInfo = logQuestionAnswerCounts[questionName];
-                var answerNames = Object.keys(answerInfo);
-                for (var answerIndex = 0; answerIndex < answerNames.length; answerIndex++) {
-                    var answerName = answerNames[answerIndex];
+            for (let questionIndex = 0; questionIndex < questionNames.length; questionIndex++) {
+                const questionName = questionNames[questionIndex];
+                let answerOutputText = "";
+                const answerInfo = logQuestionAnswerCounts[questionName];
+                const answerNames = Object.keys(answerInfo);
+                for (let answerIndex = 0; answerIndex < answerNames.length; answerIndex++) {
+                    const answerName = answerNames[answerIndex];
                     answerOutputText += answerName + ": " + answerInfo[answerName];
                     if (answerIndex < answerNames.length-1) {
                         answerOutputText += "; "
@@ -748,15 +750,15 @@ function processCSVContentsForStories(contents, saveStories, writeLog, questionn
 function questionForHeaderFieldName(fieldName, fieldIndex, questionnaire, project) {
     if (!questionnaire) return null;
     if (!fieldName) return null;
-    var matchingQuestion = null;
-    for (var i = 0; i < questionnaire.storyQuestions.length; i++) {
+    let matchingQuestion = null;
+    for (let i = 0; i < questionnaire.storyQuestions.length; i++) {
         if (questionnaire.storyQuestions[i].import_columnName === fieldName) {
             matchingQuestion = questionnaire.storyQuestions[i];
             break;
         }
     }
     if (!matchingQuestion) {
-            for (i = 0; i < questionnaire.participantQuestions.length; i++) {
+            for (let i = 0; i < questionnaire.participantQuestions.length; i++) {
             if (questionnaire.participantQuestions[i].import_columnName === fieldName) {
                 matchingQuestion = questionnaire.participantQuestions[i];
                 break;
@@ -764,8 +766,8 @@ function questionForHeaderFieldName(fieldName, fieldIndex, questionnaire, projec
         }
     }
     if (!matchingQuestion) {
-        var leadingStoryQuestions = questionnaireGeneration.getLeadingStoryQuestions(questionnaire.elicitingQuestions);
-        for (i = 0; i < leadingStoryQuestions.length; i++) {
+        const leadingStoryQuestions = questionnaireGeneration.getLeadingStoryQuestions(questionnaire.elicitingQuestions);
+        for (let i = 0; i < leadingStoryQuestions.length; i++) {
             if (leadingStoryQuestions[i].import_columnName === fieldName) {
                 matchingQuestion = leadingStoryQuestions[i];
                 break;
@@ -780,7 +782,7 @@ function getDisplayAnswerNameForDataAnswerName(value, question) {
     if (!question.valueOptions || question.valueOptions.length < 1) {
         return value;
     } else {
-        for (var i = 0; i < question.valueOptions.length; i++) {
+        for (let i = 0; i < question.valueOptions.length; i++) {
             // first check to see if it matches the import option name
             if (question.import_answerNames && i < question.import_answerNames.length) {
                 if (value === question.import_answerNames[i]) {
@@ -798,8 +800,8 @@ function getDisplayAnswerNameForDataAnswerName(value, question) {
 }
 
 function getElicitingQuestionDisplayNameForColumnName(value, questionnaire) {
-    for (var i = 0; i < questionnaire.elicitingQuestions.length; i++) {
-        var question = questionnaire.elicitingQuestions[i];
+    for (let i = 0; i < questionnaire.elicitingQuestions.length; i++) {
+        const question = questionnaire.elicitingQuestions[i];
         if (value === question.importName) {
             return question.id;
         }
@@ -809,14 +811,14 @@ function getElicitingQuestionDisplayNameForColumnName(value, questionnaire) {
 
 function changeValueForCustomScaleValues(value, question, questionnaire) {
     if (question.displayType !== "slider") return null;
-    var min = undefined;
+    let min = undefined;
     // the "" + is because apparently there are situations in which the scale value is an integer
     if (question.import_minScaleValue !== undefined && question.import_minScaleValue != "") { // could be zero
         min = parseInt("" + question.import_minScaleValue);
     } else if (questionnaire.import_minScaleValue !== undefined && questionnaire.import_minScaleValue !== "") { 
         min = parseInt("" + questionnaire.import_minScaleValue);
     }
-    var max = undefined;
+    let max = undefined;
     if (question.import_maxScaleValue !== undefined && question.import_maxScaleValue != "") {
         max = parseInt("" + question.import_maxScaleValue);
     } else if (questionnaire.import_maxScaleValue != undefined && questionnaire.import_maxScaleValue != "") {
@@ -831,9 +833,9 @@ function changeValueForCustomScaleValues(value, question, questionnaire) {
     } else if (value >= max) {
         return 100;
     } else {
-        var multiplier = 100 / (max - min);
+        const multiplier = 100 / (max - min);
         if (multiplier && multiplier > 0) {
-             var adjustedValue = Math.round((value - min) * multiplier);
+             let adjustedValue = Math.round((value - min) * multiplier);
              if (adjustedValue > 100) adjustedValue = 100;
              if (adjustedValue < 0) adjustedValue = 0;
              return adjustedValue;
@@ -847,23 +849,23 @@ function changeValueForCustomScaleValues(value, question, questionnaire) {
 
 function processCSVContentsForQuestionnaire(contents) {
 
-    var headerAndItems = processCSVContents(contents, function (header, row) {
-        var newItem = {};
-        var lastFieldIndex;
-        for (var fieldIndex = 0; fieldIndex < row.length; fieldIndex++) {
-            var fieldName = header[fieldIndex];
+    const headerAndItems = processCSVContents(contents, function (header, row) {
+        const newItem = {};
+        let lastFieldIndex;
+        for (let fieldIndex = 0; fieldIndex < row.length; fieldIndex++) {
+            let fieldName = header[fieldIndex];
             if (fieldName) {
                 lastFieldIndex = fieldIndex;
             } else {
                 fieldName = header[lastFieldIndex];
             }
             // TODO: Should the value really be trimmed?
-            var value = row[fieldIndex].trim();
+            const value = row[fieldIndex].trim();
             if (fieldIndex < header.length - 1) {
                 newItem[fieldName] = value;
             } else {
                 // Handle multiple values for last header items
-                var list = newItem[fieldName];
+                let list = newItem[fieldName];
                 if (!list) {
                     list = [];
                     newItem[fieldName] = list;
@@ -874,7 +876,7 @@ function processCSVContentsForQuestionnaire(contents) {
         return newItem;
     });
 
-    var header = headerAndItems.header;
+    const header = headerAndItems.header;
     if (!header) {
         alert("ERROR: No header line found in CSV file.")
         return false;
@@ -884,14 +886,14 @@ function processCSVContentsForQuestionnaire(contents) {
         return false;
     }
     
-    var shortName = prompt("Please enter a short name for the new story form. (It must be unique within the project.)");
+    const shortName = prompt("Please enter a short name for the new story form. (It must be unique within the project.)");
     if (!shortName) return;
     if (questionnaireGeneration.buildQuestionnaire(shortName)) {
         alert('A story form already exists with that name: "' + shortName + '"');
         return;
     }
     
-    var storyFormListIdentifier = project.getFieldValue("project_storyForms");
+    let storyFormListIdentifier = project.getFieldValue("project_storyForms");
     
     if (!storyFormListIdentifier) {
         storyFormListIdentifier = project.tripleStore.newIdForSet("StoryFormSet");
@@ -900,7 +902,7 @@ function processCSVContentsForQuestionnaire(contents) {
  
     // TODO: Generalize random uuid function to take class name
 
-    var template = {
+    const template = {
         id: generateRandomUuid("StoryForm"),
         questionForm_shortName: shortName,
         questionForm_elicitingQuestions: project.tripleStore.newIdForSet("ElicitingQuestionChoiceSet"),
@@ -956,7 +958,7 @@ function processCSVContentsForQuestionnaire(contents) {
         questionForm_chooseQuestionText: "What question would you like to answer?",
     };
     
-    var overrideOption = project.tripleStore.queryLatestC(project.projectIdentifier, "project_csvQuestionOverwriteOption");
+    let overrideOption = project.tripleStore.queryLatestC(project.projectIdentifier, "project_csvQuestionOverwriteOption");
 
     // TODO: translate
     if (overrideOption === "always replace existing questions with matching questions from the CSV file") {
@@ -971,16 +973,16 @@ function processCSVContentsForQuestionnaire(contents) {
         overrideOption = "stop";
     }
 
-    var storyQuestionsThatAlreadyExist = [];
-    var participantQuestionsThatAlreadyExist = [];
-    var items = headerAndItems.items;
-    var itemIndex;
+    const storyQuestionsThatAlreadyExist = [];
+    const participantQuestionsThatAlreadyExist = [];
+    const items = headerAndItems.items;
+    let itemIndex;
 
     for (itemIndex = 0; itemIndex < items.length; itemIndex++) {
-        var item = items[itemIndex];
-        var about = item.About;
-        var question;
-        var existingQuestion = null;
+        const item = items[itemIndex];
+        const about = item.About;
+        let question;
+        let existingQuestion = null;
         if (about === "story") {
             question = questionForItem(item, "storyQuestion");
             existingQuestion = existingQuestionThatMatchesNewQuestion(question, "storyQuestion");
@@ -993,7 +995,7 @@ function processCSVContentsForQuestionnaire(contents) {
     }
 
     if (storyQuestionsThatAlreadyExist.length || participantQuestionsThatAlreadyExist.length) {
-        var message = 'These questions already exist';
+        let message = 'These questions already exist';
 
         switch (overrideOption) {
             case "always":
@@ -1053,7 +1055,7 @@ function processCSVContentsForQuestionnaire(contents) {
     //   If does not exist, create it in the related set
     //   Add a reference to the question in the story form
         
-    var questionTypeCounts = {};
+    const questionTypeCounts = {};
 
     // in pre-1.2 files, headers for eliciting question, story title, story text, and participant ID were hard coded
     project.tripleStore.addTriple(template.id, "questionForm_import_elicitingQuestionColumnName", "Eliciting question");
@@ -1062,10 +1064,10 @@ function processCSVContentsForQuestionnaire(contents) {
     project.tripleStore.addTriple(template.id, "questionForm_import_participantIDColumnName", "Participant ID");
 
     for (itemIndex = 0; itemIndex < items.length; itemIndex++) {
-        var item = items[itemIndex];
-        var about = item.About;
-        var reference;
-        var question;
+        const item = items[itemIndex];
+        const about = item.About;
+        let reference;
+        let question;
         if (about === "story") {
             question = questionForItem(item, "storyQuestion");
             reference = ensureQuestionExists(question, "storyQuestion", overrideOption);
@@ -1081,13 +1083,13 @@ function processCSVContentsForQuestionnaire(contents) {
             project.tripleStore.addTriple(template.id, "questionForm_import_elicitingQuestionGraphName", item["Short name"] || "Eliciting question");
             template.questionForm_chooseQuestionText = item["Long name"] || "Eliciting question"; 
             project.tripleStore.addTriple(template.id, "questionForm_chooseQuestionText", item["Long name"] || "Eliciting question");
-            var answers = item["Answers"];
+            const answers = item["Answers"];
             answers.forEach(function (elicitingQuestionDefinition) {
                 if (!elicitingQuestionDefinition) elicitingQuestionDefinition = "ERROR: Missing eliciting question text";
-                var sections = elicitingQuestionDefinition.split("|");
-                var dataColumnName = "";
-                var shortName = "";
-                var longName = "";
+                const sections = elicitingQuestionDefinition.split("|");
+                let dataColumnName = "";
+                let shortName = "";
+                let longName = "";
                 // If only one section, use it as import name, short name, AND text
                 // if two sections, use first as both import name and short name, use second as text
                 if (sections.length < 2) {
@@ -1105,7 +1107,7 @@ function processCSVContentsForQuestionnaire(contents) {
                     shortName = sections[1];
                     longName = sections[2];
                 }
-                var elicitingQuestion = {
+                const elicitingQuestion = {
                     elicitingQuestion_dataColumnName: dataColumnName.trim(),
                     elicitingQuestion_shortName: shortName.trim(),
                     elicitingQuestion_text: longName.trim(),
@@ -1115,8 +1117,8 @@ function processCSVContentsForQuestionnaire(contents) {
                 addReferenceToList(template.questionForm_elicitingQuestions, reference, "elicitingQuestion", "ElicitingQuestionChoice");
             });
         } else if (about === "form") {
-            var type = item.Type;
-            var text = item.Answers[0];
+            const type = item.Type;
+            const text = item.Answers[0];
             if (text && text != "") {
                 switch (type) {
                     case "Title":
@@ -1226,16 +1228,16 @@ function processCSVContentsForQuestionnaire(contents) {
                 }
             }
         } else if (about === "import") {
-            var type = item.Type;
-            var text = item.Answers[0];
+            const type = item.Type;
+            const text = item.Answers[0];
             if (text && text != "") {
                 if (type === "Scale range") {
-                    var answers = item["Answers"];
-                    var answerCount = 0;
+                    const answers = item["Answers"];
+                    let answerCount = 0;
                     answers.forEach(function (textValue) {
-                        var value = parseInt(textValue);
+                        const value = parseInt(textValue);
                         if (isNaN(value)) {
-                            var word = "minimum";
+                            let word = "minimum";
                             if (answerCount === 1) word = "maximum";
                             alert('The text you entered for the ' + word + ' scale value ("' + textValue + '") could not be converted to a number.');
                         }
@@ -1270,14 +1272,14 @@ function processCSVContentsForQuestionnaire(contents) {
                     template.import_participantIDColumnName = text;
                     project.tripleStore.addTriple(template.id, "questionForm_import_participantIDColumnName", text);
                 } else if (type === "Data columns to ignore") {
-                    var answersAsLines = item["Answers"].join("\n");
+                    const answersAsLines = item["Answers"].join("\n");
                     template.import_columnsToIgnore = answersAsLines;
                     project.tripleStore.addTriple(template.id, "questionForm_import_columnsToIgnore", answersAsLines);
                 } else if (type === "Data columns to append to story text") {
-                    var columnsToAppend = [];
-                    var textsBeforeColumns = [];
+                    const columnsToAppend = [];
+                    const textsBeforeColumns = [];
                     item["Answers"].forEach(function (answer) {
-                        var sections = answer.split("|");
+                        const sections = answer.split("|");
                         if (sections.length > 0) {
                             columnsToAppend.push(sections[0]);
                         }
@@ -1285,14 +1287,14 @@ function processCSVContentsForQuestionnaire(contents) {
                             textsBeforeColumns.push(sections[1]);
                         } 
                     });
-                    var columnsAsLines = columnsToAppend.join("\n");
+                    const columnsAsLines = columnsToAppend.join("\n");
                     template.import_columnsToAppendToStoryText = columnsAsLines;
                     project.tripleStore.addTriple(template.id, "questionForm_import_columnsToAppendToStoryText", columnsAsLines);
-                    var textsAsLines = textsBeforeColumns.join("\n");
+                    const textsAsLines = textsBeforeColumns.join("\n");
                     template.import_textsToWriteBeforeAppendedColumns = textsAsLines;
                     project.tripleStore.addTriple(template.id, "questionForm_import_textsToWriteBeforeAppendedColumns", textsBeforeColumns);
                 } else if (type === "Minimum words to include story") {
-                    var minWords = parseInt(text);
+                    const minWords = parseInt(text);
                     if (isNaN(minWords)) {
                         alert("The value you entered for the minimum words to include for a story (" + text + ") is not a number. It must be a number.");
                         template.import_minWordsToIncludeStory = "0";
@@ -1302,7 +1304,7 @@ function processCSVContentsForQuestionnaire(contents) {
                         project.tripleStore.addTriple(template.id, "questionForm_import_minWordsToIncludeStory", text);
                     }
                 } else if (type === "Texts to remove from column headers") {
-                    var answersAsLines = item["Answers"].join("\n");
+                    const answersAsLines = item["Answers"].join("\n");
                     template.import_stringsToRemoveFromHeaders = answersAsLines;
                     project.tripleStore.addTriple(template.id, "questionForm_import_stringsToRemoveFromHeaders", answersAsLines);
                 }
@@ -1320,14 +1322,14 @@ function processCSVContentsForQuestionnaire(contents) {
     toaster.toast("Updating server in progress in background");
     
     function addReferenceToList(listIdentifier: string, reference: string, fieldName: string, className: string) {
-        var order = questionTypeCounts[fieldName];
+        let order = questionTypeCounts[fieldName];
         if (!order) {
             order = 0;
         }
         order = order + 1;
         questionTypeCounts[fieldName] = order;
         
-        var choice = {
+        const choice = {
             order: order
         };
         choice[fieldName] = reference;
@@ -1341,7 +1343,7 @@ function processCSVContentsForQuestionnaire(contents) {
 //------------------------------------------------------------------------------------------------------------------------------------------
 
 function ensureQuestionExists(question, questionCategory: string, overrideOption: string) {
-    var matchingQuestion = existingQuestionThatMatchesNewQuestion(question, questionCategory);
+    const matchingQuestion = existingQuestionThatMatchesNewQuestion(question, questionCategory);
     if (!matchingQuestion) {
         project.addQuestionForCategory(question, questionCategory);
         return question[questionCategory + "_shortName"];
@@ -1353,8 +1355,8 @@ function ensureQuestionExists(question, questionCategory: string, overrideOption
                 project.addQuestionForCategory(question, questionCategory);
                 return question[questionCategory + "_shortName"];
             case "ask each":
-                var message = 'A question with the name "' + matchingQuestion[questionCategory + "_shortName"] 
-                    + '" already exists. Do you want to overwrite it? Click OK to ovewrite the existing question. Click Cancel to keep the existing question.';
+                const message = 'A question with the name "' + matchingQuestion[questionCategory + "_shortName"] 
+                    + '" already exists. Do you want to overwrite it? Click OK to overwrite the existing question. Click Cancel to keep the existing question.';
                 if (confirm(message)) {
                     project.deleteQuestionInCategory(matchingQuestion, questionCategory);
                     project.addQuestionForCategory(question, questionCategory);
@@ -1373,10 +1375,10 @@ function ensureQuestionExists(question, questionCategory: string, overrideOption
 }
 
 function existingQuestionThatMatchesNewQuestion(question, questionCategory: string) {
-    var idAccessor = questionCategory + "_shortName";
-    var existingQuestionsInCategory = project.questionsForCategory(questionCategory);
-    for (var i = 0; i < existingQuestionsInCategory.length; i++) {
-        var existingQuestion = existingQuestionsInCategory[i];
+    const idAccessor = questionCategory + "_shortName";
+    const existingQuestionsInCategory = project.questionsForCategory(questionCategory);
+    for (let i = 0; i < existingQuestionsInCategory.length; i++) {
+        const existingQuestion = existingQuestionsInCategory[i];
         if (existingQuestion[idAccessor] === question[idAccessor]) {
             return existingQuestion;
         }
@@ -1385,16 +1387,16 @@ function existingQuestionThatMatchesNewQuestion(question, questionCategory: stri
 }
 
 function questionForItem(item, questionCategory) {
-    var valueType = "string";
-    var questionType = "text";
-    var valueOptions;
-    var import_columnName;
-    var import_answerNames;
-    var import_minScaleValue = "";
-    var import_maxScaleValue = "";
+    let valueType = "string";
+    let questionType = "text";
+    let valueOptions;
+    let import_columnName;
+    let import_answerNames;
+    let import_minScaleValue = "";
+    let import_maxScaleValue = "";
     
-    var itemType = item["Type"].trim();
-    var answers = item["Answers"];
+    let itemType = item["Type"].trim();
+    const answers = item["Answers"];
 
     // legacy - old name for "Multi-choice multi-column texts" was "Multiple choice"
     if (itemType === "Multiple choice") {
@@ -1403,7 +1405,7 @@ function questionForItem(item, questionCategory) {
 
     if (["Single choice", "Single choice indexed"].indexOf(itemType) >= 0) {
         questionType = "select";
-        var valueAndImportOptions = valueAndImportOptionsForAnswers(answers);
+        const valueAndImportOptions = valueAndImportOptionsForAnswers(answers);
         valueOptions = valueAndImportOptions[0];
         import_answerNames = valueAndImportOptions[1];
         if (answers.length < 2) {
@@ -1411,7 +1413,7 @@ function questionForItem(item, questionCategory) {
         }
     } else if (["Multi-choice multi-column texts", "Multi-choice multi-column yes/no", "Multi-choice single-column delimited", "Multi-choice single-column delimited indexed"].indexOf(itemType) >= 0) {
         questionType = "checkboxes";
-        var valueAndImportOptions = valueAndImportOptionsForAnswers(answers);
+        const valueAndImportOptions = valueAndImportOptionsForAnswers(answers);
         valueOptions = valueAndImportOptions[0];
         import_answerNames = valueAndImportOptions[1];
         if (answers.length < 2) {
@@ -1419,7 +1421,7 @@ function questionForItem(item, questionCategory) {
         }
     } else if (itemType === "Radiobuttons") {
         questionType = "radiobuttons";
-        var valueAndImportOptions = valueAndImportOptionsForAnswers(answers);
+        const valueAndImportOptions = valueAndImportOptionsForAnswers(answers);
         valueOptions = valueAndImportOptions[0];
         import_answerNames = valueAndImportOptions[1];
         if (answers.length < 2) {
@@ -1444,12 +1446,12 @@ function questionForItem(item, questionCategory) {
             valueOptions = [answers[0], answers[1]];
         }
         if (answers.length > 2) {
-            var answerCount = 0;
-            var minAndMax = answers.slice(2);
+            let answerCount = 0;
+            const minAndMax = answers.slice(2);
             minAndMax.forEach(function (textValue) {
-                var value = parseInt(textValue);
+                const value = parseInt(textValue);
                 if (isNaN(value)) {
-                    var word = "minimum";
+                    let word = "minimum";
                     if (answerCount === 1) word = "maximum";
                     alert('The text you entered for the ' + word + ' scale value ("' + textValue + '") for the question "' + item["Short name"] + '" could not be converted to a number.');
                 }
@@ -1465,7 +1467,7 @@ function questionForItem(item, questionCategory) {
         console.log("IMPORT ERROR: unsupported question type: ", itemType);
     }
     
-    var question = {};
+    const question = {};
     question[questionCategory + "_type"] = questionType;
     question[questionCategory + "_shortName"] = item["Short name"];
     question[questionCategory + "_text"] = item["Long name"];
@@ -1480,10 +1482,10 @@ function questionForItem(item, questionCategory) {
 }
 
 function valueAndImportOptionsForAnswers(answers) {
-    var valueOptions = [];
-    var import_answerNames = [];
-    for (var i = 0; i < answers.length; i++) {
-        var dataAndDisplay = answers[i].split("|");
+    const valueOptions = [];
+    const import_answerNames = [];
+    for (let i = 0; i < answers.length; i++) {
+        const dataAndDisplay = answers[i].split("|");
         if (dataAndDisplay.length > 1) {
             import_answerNames.push(dataAndDisplay[0]);
             valueOptions.push(dataAndDisplay[1]);
@@ -1500,19 +1502,19 @@ function valueAndImportOptionsForAnswers(answers) {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 export function autoFillStoryForm() {
-    var questionnaireName = prompt("Please enter a short name for the new story form.");
+    const questionnaireName = prompt("Please enter a short name for the new story form.");
     if (!questionnaireName) return;
     if (questionnaireGeneration.buildQuestionnaire(questionnaireName)) {
         alert('A story form already exists with that name: "' + questionnaireName + '"');
         return;
     }
    
-    var storyFormListIdentifier = project.getFieldValue("project_storyForms");
+    let storyFormListIdentifier = project.getFieldValue("project_storyForms");
     if (!storyFormListIdentifier) {
         storyFormListIdentifier = project.tripleStore.newIdForSet("StoryFormSet");
         project.setFieldValue("project_storyForms", storyFormListIdentifier);
     }
-    var template = {
+    const template = {
         id: generateRandomUuid("StoryForm"),
         questionForm_shortName: questionnaireName,
         questionForm_elicitingQuestions: project.tripleStore.newIdForSet("ElicitingQuestionChoiceSet"),
@@ -1521,23 +1523,23 @@ export function autoFillStoryForm() {
     };
     project.tripleStore.makeNewSetItem(storyFormListIdentifier, "StoryForm", template);
 
-    var questionTypeCounts = {};        
-    var question;
-    var questionIndex;
+    const questionTypeCounts = {};        
+    let question;
+    let questionIndex;
 
-    var elicitingQuestions = project.collectAllElicitingQuestions();
+    const elicitingQuestions = project.collectAllElicitingQuestions();
     for (questionIndex in elicitingQuestions) {
         question = elicitingQuestions[questionIndex];
         addReferenceToList(template.questionForm_elicitingQuestions, question.elicitingQuestion_shortName, "elicitingQuestion", "ElicitingQuestionChoice");
     }
 
-    var storyQuestions = project.collectAllStoryQuestions();
+    const storyQuestions = project.collectAllStoryQuestions();
     for (questionIndex in storyQuestions) {
         question = storyQuestions[questionIndex];
         addReferenceToList(template.questionForm_storyQuestions, question.storyQuestion_shortName, "storyQuestion", "StoryQuestionChoice");
     }
 
-    var participantQuestions = project.collectAllParticipantQuestions();
+    const participantQuestions = project.collectAllParticipantQuestions();
     for (questionIndex in participantQuestions) {
         question = participantQuestions[questionIndex];
         addReferenceToList(template.questionForm_participantQuestions, question.participantQuestion_shortName, "participantQuestion", "ParticipantQuestionChoice");
@@ -1548,14 +1550,14 @@ export function autoFillStoryForm() {
     toaster.toast("Finished generating story form \"" + questionnaireName + "\" from available questions.");
     
     function addReferenceToList(listIdentifier: string, reference: string, fieldName: string, className: string) {
-        var order = questionTypeCounts[fieldName];
+        let order = questionTypeCounts[fieldName];
         if (!order) {
             order = 0;
         }
         order = order + 1;
         questionTypeCounts[fieldName] = order;
         
-        var choice = {
+        const choice = {
             order: order
         };
         choice[fieldName] = reference;
@@ -1570,16 +1572,16 @@ export function autoFillStoryForm() {
 
 export function exportQuestionnaire(questionnaire = null) {
 
-    var nameToSave = "";
+    let nameToSave = "";
     // for some reason the project name is being passed to this method from the "export story form" button, but "questionnaire" should be an object, not a string
     if (!questionnaire || typeof questionnaire === "string") { 
-        var storyCollectionName = Globals.clientState().storyCollectionName();
+        const storyCollectionName = Globals.clientState().storyCollectionName();
         if (!storyCollectionName) {
             alert("Please select a story collection first.");
             return;
         }
         nameToSave = storyCollectionName;
-        var questionnaire = surveyCollection.getQuestionnaireForStoryCollection(storyCollectionName);
+        const questionnaire = surveyCollection.getQuestionnaireForStoryCollection(storyCollectionName);
         if (!questionnaire) {
             alert("The story collection has not been initialized with a story form: " + storyCollectionName);
             return;
@@ -1593,32 +1595,32 @@ export function exportQuestionnaire(questionnaire = null) {
         return;
     }
     
-    var output = "";
-    var lineIndex = 1;
+    let output = "";
+    const lineIndex = 1;
     const delimiter = Globals.clientState().csvDelimiter();
     function addOutputLine(line) {
         output = addCSVOutputLine(output, line, delimiter);
     }
     
-    var header = ["Data column name", "Type", "About", "Short name", "Long name", "Answers"];
+    const header = ["Data column name", "Type", "About", "Short name", "Long name", "Answers"];
     addOutputLine(header);
     
-    var elicitingLine = ["Eliciting question", "eliciting", "eliciting", "Eliciting question", "Eliciting question"];
+    const elicitingLine = ["Eliciting question", "eliciting", "eliciting", "Eliciting question", "Eliciting question"];
     questionnaire.elicitingQuestions.forEach(function (elicitingQuestionSpecification) {
         elicitingLine.push(elicitingQuestionSpecification.id + "|" + elicitingQuestionSpecification.text);
     });
     addOutputLine(elicitingLine);
 
     function outputQuestions(questions, about) {
-        for (var i = 0; i < questions.length; i++) {
-            var outputLine = [];
-            var question = questions[i];
+        for (let i = 0; i < questions.length; i++) {
+            const outputLine = [];
+            const question = questions[i];
 
             // data column name
             outputLine.push(question.displayName || ""); // short name is also data column name for export
             
             // type
-            var questionType = exportQuestionTypeMap[question.displayType];
+            let questionType = exportQuestionTypeMap[question.displayType];
             if (!questionType) {
                 console.log("EXPORT ERROR: unsupported question type: ", question.displayType);
                 questionType = "UNSUPPORTED:" + question.displayType;
@@ -1659,8 +1661,8 @@ export function exportQuestionnaire(questionnaire = null) {
     outputQuestions(questionnaire.storyQuestions, "story");
     outputQuestions(questionnaire.participantQuestions, "participant");
     
-    var annotationQuestions = project.collectAllAnnotationQuestions();
-    var adjustedAnnotationQuestions = questionnaireGeneration.convertEditorQuestions(annotationQuestions, "A_");
+    const annotationQuestions = project.collectAllAnnotationQuestions();
+    const adjustedAnnotationQuestions = questionnaireGeneration.convertEditorQuestions(annotationQuestions, "A_");
     outputQuestions(adjustedAnnotationQuestions, "annotation");
 
     addOutputLine(["", "Title", "form", "", "", questionnaire.title || ""]);
@@ -1700,12 +1702,12 @@ export function exportQuestionnaire(questionnaire = null) {
     // do not need to write "Story title column name" or "Story text column name" or "Eliciting question column name" or "Participant ID column name"
     // because the default (non specified) options will work for all of these things
 
-    var questionnaireBlob = new Blob([output], {type: "text/csv;charset=utf-8"});
+    const questionnaireBlob = new Blob([output], {type: "text/csv;charset=utf-8"});
     // TODO: This seems to clear the console in FireFox 40; why?
     saveAs(questionnaireBlob, "export_story_form_" + nameToSave + ".csv");
 }
 
-var exportQuestionTypeMap = {
+const exportQuestionTypeMap = {
     "select": "Single choice",
     "slider": "Scale",
     "checkboxes": "Multi-choice multi-column texts",
@@ -1717,7 +1719,7 @@ var exportQuestionTypeMap = {
 };
 
 function addCSVOutputLine(output, line, delimiter) {
-    var start = true;
+    let start = true;
     line.forEach(function (item) {
         let itemToSave = "";
         if (start) {
@@ -1748,17 +1750,17 @@ function addCSVOutputLine(output, line, delimiter) {
 
 export function exportQuestionnaireForImport(questionnaire = null) { // to preserve import options for externally derived data
 
-    var nameToSave;
+    let nameToSave;
     // for some reason the project name is being passed to this method from the "export story form" button, but "questionnaire" should be an object, not a string
     if (!questionnaire || typeof questionnaire === "string") { 
-        var storyCollectionName = Globals.clientState().storyCollectionName();
+        const storyCollectionName = Globals.clientState().storyCollectionName();
         if (!storyCollectionName) {
             alert("Please select a story collection first");
             return;
         }
         nameToSave = storyCollectionName;
         
-        var questionnaire = surveyCollection.getQuestionnaireForStoryCollection(storyCollectionName);
+        const questionnaire = surveyCollection.getQuestionnaireForStoryCollection(storyCollectionName);
         if (!questionnaire) {
             alert("The story collection has not been initialized with a story form: " + storyCollectionName);
             return;
@@ -1771,18 +1773,18 @@ export function exportQuestionnaireForImport(questionnaire = null) { // to prese
         alert("ERROR: No story form was specified.");
         return;
     }
-    var output = "";
-    var lineIndex = 1;
+    let output = "";
+    const lineIndex = 1;
     const delimiter = Globals.clientState().csvDelimiter();
     function addOutputLine(line) {
         output = addCSVOutputLine(output, line, delimiter);
     }
     
-    var header = ["Data column name", "Type", "About", "Short name", "Long name", "Answers"];
+    const header = ["Data column name", "Type", "About", "Short name", "Long name", "Answers"];
     addOutputLine(header);
 
     if (questionnaire.import_elicitingQuestionColumnName) {
-        var elicitingLine = [
+        const elicitingLine = [
             questionnaire.import_elicitingQuestionColumnName, "eliciting", "eliciting", 
             questionnaire.import_elicitingQuestionGraphName || "", 
             questionnaire.chooseQuestionText];
@@ -1793,9 +1795,9 @@ export function exportQuestionnaireForImport(questionnaire = null) { // to prese
     }
 
     function outputQuestions(questions, about) {
-        for (var i = 0; i < questions.length; i++) {
-            var outputLine = [];
-            var question = questions[i];
+        for (let i = 0; i < questions.length; i++) {
+            const outputLine = [];
+            const question = questions[i];
 
             outputLine.push(question.import_columnName || ""); 
             outputLine.push(question.import_valueType || "");
@@ -1822,8 +1824,8 @@ export function exportQuestionnaireForImport(questionnaire = null) { // to prese
                }
             } else { 
                 if (question.valueOptions) {
-                    for (var j = 0; j < question.valueOptions.length; j++) {
-                       var cellValue = "";
+                    for (let j = 0; j < question.valueOptions.length; j++) {
+                       let cellValue = "";
                        if (question.import_answerNames && j < question.import_answerNames.length) {
                            cellValue += question.import_answerNames[j] + "|";
                        }
@@ -1881,8 +1883,8 @@ export function exportQuestionnaireForImport(questionnaire = null) { // to prese
     if (questionnaire.import_minWordsToIncludeStory) addOutputLine(["", "Minimum words to include story", "import", "", "", questionnaire.import_minWordsToIncludeStory || ""]);
 
     if (questionnaire.import_stringsToRemoveFromHeaders) {
-        var textsToRemoveOutputLine = ["", "Texts to remove from column headers", "import", "", ""];
-        var textsList = questionnaire.import_stringsToRemoveFromHeaders.split("\n");
+        const textsToRemoveOutputLine = ["", "Texts to remove from column headers", "import", "", ""];
+        const textsList = questionnaire.import_stringsToRemoveFromHeaders.split("\n");
         if (textsList) {
             textsList.forEach(function(item) {
                 textsToRemoveOutputLine.push(item);
@@ -1892,8 +1894,8 @@ export function exportQuestionnaireForImport(questionnaire = null) { // to prese
     }
     
     if (questionnaire.import_columnsToIgnore) {
-        var columnsToIgnoreOutputLine = ["", "Data columns to ignore", "import", "", ""];
-        var columnList = questionnaire.import_columnsToIgnore.split("\n");
+        const columnsToIgnoreOutputLine = ["", "Data columns to ignore", "import", "", ""];
+        const columnList = questionnaire.import_columnsToIgnore.split("\n");
         if (columnList) {
             columnList.forEach(function(item) {
                 columnsToIgnoreOutputLine.push(item);
@@ -1904,10 +1906,10 @@ export function exportQuestionnaireForImport(questionnaire = null) { // to prese
     
     
     if (questionnaire.import_columnsToAppendToStoryText) {
-        var columnsToAppendOutputLine = ["", "Data columns to append to story text", "import", "", ""];
-        var columnsToAppend = questionnaire.import_columnsToAppendToStoryText.split("\n");
+        const columnsToAppendOutputLine = ["", "Data columns to append to story text", "import", "", ""];
+        const columnsToAppend = questionnaire.import_columnsToAppendToStoryText.split("\n");
         if (columnsToAppend) {
-            var textsBeforeColumns = [];
+            let textsBeforeColumns = [];
             if (questionnaire.import_textsToWriteBeforeAppendedColumns) {
                 if (typeof questionnaire.import_textsToWriteBeforeAppendedColumns === "string") {
                     textsBeforeColumns = questionnaire.import_textsToWriteBeforeAppendedColumns.split("\n");
@@ -1915,8 +1917,8 @@ export function exportQuestionnaireForImport(questionnaire = null) { // to prese
                     textsBeforeColumns = questionnaire.import_textsToWriteBeforeAppendedColumns;
                 }
             }
-            for (var i = 0; i < columnsToAppend.length; i++) {
-                var textToWrite = columnsToAppend[i];
+            for (let i = 0; i < columnsToAppend.length; i++) {
+                let textToWrite = columnsToAppend[i];
                 if (textsBeforeColumns) {
                     textToWrite += "|" + textsBeforeColumns[i];
                 }
@@ -1926,7 +1928,7 @@ export function exportQuestionnaireForImport(questionnaire = null) { // to prese
         addOutputLine(columnsToAppendOutputLine);
     }
 
-    var questionnaireBlob = new Blob([output], {type: "text/csv;charset=utf-8"});
+    const questionnaireBlob = new Blob([output], {type: "text/csv;charset=utf-8"});
     // TODO: This seems to clear the console in FireFox 40; why?
     saveAs(questionnaireBlob, "export_story_form_for_import_" + nameToSave + ".csv");
 }
@@ -1936,21 +1938,21 @@ export function exportQuestionnaireForImport(questionnaire = null) { // to prese
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 export function exportStoryCollection() {
-    var storyCollectionName = Globals.clientState().storyCollectionName();
+    const storyCollectionName = Globals.clientState().storyCollectionName();
     if (!storyCollectionName) {
         alert("Please select a story collection first");
         return;
     }
     
-    var questionnaire = surveyCollection.getQuestionnaireForStoryCollection(storyCollectionName);
+    const questionnaire = surveyCollection.getQuestionnaireForStoryCollection(storyCollectionName);
     if (!questionnaire) {
         alert("The story collection has not been initialized with a story form: " + storyCollectionName);
         return;
     }
 
-    var allStories = surveyCollection.getStoriesForStoryCollection(storyCollectionName, true);
-    var header1 = [];
-    var header2 = [];
+    const allStories = surveyCollection.getStoriesForStoryCollection(storyCollectionName, true);
+    const header1 = [];
+    const header2 = [];
       
     function header(contents, secondHeader = "") {
         header1.push(contents);
@@ -1963,8 +1965,8 @@ export function exportStoryCollection() {
     header("Eliciting question");
     
     function headersForQuestions(questions) {
-        for (var i = 0; i < questions.length; i++) {
-            var question = questions[i];
+        for (let i = 0; i < questions.length; i++) {
+            const question = questions[i];
             // TODO: Maybe should export ID instead? Or more header lines with ID and prompt?
             if (question.valueOptions && question.displayType === "checkboxes") {
                 question.valueOptions.forEach(function(option) {
@@ -1979,11 +1981,11 @@ export function exportStoryCollection() {
     headersForQuestions(questionnaire.storyQuestions);
     headersForQuestions(questionnaire.participantQuestions);
     
-    var annotationQuestions = project.collectAllAnnotationQuestions();
-    var adjustedAnnotationQuestions = questionnaireGeneration.convertEditorQuestions(annotationQuestions, "A_");
+    const annotationQuestions = project.collectAllAnnotationQuestions();
+    const adjustedAnnotationQuestions = questionnaireGeneration.convertEditorQuestions(annotationQuestions, "A_");
     headersForQuestions(adjustedAnnotationQuestions);
   
-    var output = "";
+    let output = "";
     const delimiter = Globals.clientState().csvDelimiter();
     function addOutputLine(line) {
         output = addCSVOutputLine(output, line, delimiter);
@@ -1993,9 +1995,9 @@ export function exportStoryCollection() {
     addOutputLine(header2);
     
     function dataForQuestions(questions, story: surveyCollection.Story, outputLine) {
-        for (var i = 0; i < questions.length; i++) {
-            var question = questions[i];
-            var value = story.fieldValue(question.id);
+        for (let i = 0; i < questions.length; i++) {
+            const question = questions[i];
+            let value = story.fieldValue(question.id);
             if (value === undefined || value === null) value = "";
             if (question.valueOptions && question.displayType === "checkboxes") {
                question.valueOptions.forEach(function(option) {
@@ -2008,7 +2010,7 @@ export function exportStoryCollection() {
     }
     
     allStories.forEach(function (story) {
-        var outputLine = [];
+        const outputLine = [];
         outputLine.push(story.storyName());
         outputLine.push(story.storyText());
         outputLine.push(story.elicitingQuestion());
@@ -2018,7 +2020,7 @@ export function exportStoryCollection() {
         addOutputLine(outputLine);
     }); 
     
-    var storyCollectionBlob = new Blob([output], {type: "text/csv;charset=utf-8"});
+    const storyCollectionBlob = new Blob([output], {type: "text/csv;charset=utf-8"});
     // TODO: This seems to clear the console in FireFox 40; why?
     saveAs(storyCollectionBlob, "export_story_collection_" + storyCollectionName + ".csv");
 }
@@ -2295,7 +2297,7 @@ export function processCSVContentsForCatalysisElements(contents) {
             project.tripleStore.addTriple(observationIdentifier, "observationExtraPatterns", observationExtraPatterns); 
             if (observationNote) project.tripleStore.addTriple(observationIdentifier, "observationNote", observationNote); 
 
-            var newItem = ClusteringDiagram.addNewItemToDiagram(observationsClusteringDiagram, "item", observationName, observationDescription);
+            const newItem = ClusteringDiagram.addNewItemToDiagram(observationsClusteringDiagram, "item", observationName, observationDescription);
             newItem.x = x;
             newItem.y = y;
             ClusteringDiagram.setItemColorBasedOnStrength(newItem, observationStrength);
@@ -2322,12 +2324,12 @@ export function processCSVContentsForCatalysisElements(contents) {
                     const questions = partsOfSpec[3] || "";
 
                     
-                    var x = 100;
+                    let x = 100;
                     if (partsOfSpec.length > 4) {
                         x = parseInt(partsOfSpec[4] || "");
                         if (isNaN(x)) x = 100;
                     }
-                    var y = 100;
+                    let y = 100;
                     if (partsOfSpec.length > 5) {
                         y = parseInt(partsOfSpec[5] || "");
                         if (isNaN(y)) y = 100;
@@ -2335,7 +2337,7 @@ export function processCSVContentsForCatalysisElements(contents) {
 
                     if (name && text) {
 
-                        var template = {
+                        const template = {
                             id: generateRandomUuid("Interpretation"),
                             interpretation_name: name, 
                             interpretation_text: text,  
@@ -2345,7 +2347,7 @@ export function processCSVContentsForCatalysisElements(contents) {
                         project.tripleStore.makeNewSetItem(interpretationSetID, "Interpretation", template);
                         numInterpretationsCreated++;
 
-                        var newItem = ClusteringDiagram.addNewItemToDiagram(interpretationsClusteringDiagram, "item", name, text);
+                        const newItem = ClusteringDiagram.addNewItemToDiagram(interpretationsClusteringDiagram, "item", name, text);
                         newItem.x = x;
                         newItem.y = y;
                         ClusteringDiagram.setItemColorBasedOnStrength(newItem, observationStrength);
@@ -2362,23 +2364,23 @@ export function processCSVContentsForCatalysisElements(contents) {
             const name = row[1];
             const notes = row[2];
 
-            var x = 100;
+            let x = 100;
             if (row.length > 3) {
                 x = parseInt(row[3] || "");
                 if (isNaN(x)) x = 100;
             }
-            var y = 100;
+            let y = 100;
             if (row.length > 4) {
                 y = parseInt(row[4] || "");
                 if (isNaN(y)) y = 100;
             }
-            var order = 1;
+            let order = 1;
             if (row.length > 5) {
                 order = parseInt(row[5] || "");
                 if (isNaN(order)) order = 1;
             }
 
-            var newItem = ClusteringDiagram.addNewItemToDiagram(interpretationsClusteringDiagram, "cluster", name, notes);
+            const newItem = ClusteringDiagram.addNewItemToDiagram(interpretationsClusteringDiagram, "cluster", name, notes);
             newItem.x = x;
             newItem.y = y;
             newItem.order = order;
@@ -2392,23 +2394,23 @@ export function processCSVContentsForCatalysisElements(contents) {
             const name = row[1];
             const notes = row[2];
 
-            var x = 100;
+            let x = 100;
             if (row.length > 3) {
                 x = parseInt(row[3] || "");
                 if (isNaN(x)) x = 100;
             }
-            var y = 100;
+            let y = 100;
             if (row.length > 4) {
                 y = parseInt(row[4] || "");
                 if (isNaN(y)) y = 100;
             }
-            var order = 1;
+            let order = 1;
             if (row.length > 5) {
                 order = parseInt(row[5] || "");
                 if (isNaN(order)) order = 1;
             }
 
-            var newItem = ClusteringDiagram.addNewItemToDiagram(observationsClusteringDiagram, "cluster", name, notes);
+            const newItem = ClusteringDiagram.addNewItemToDiagram(observationsClusteringDiagram, "cluster", name, notes);
             newItem.x = x;
             newItem.y = y;
             newItem.order = order;
@@ -2465,7 +2467,7 @@ export function checkCSVStoriesWithStoryForm(questionnaire) {
 }
 
 export function importCSVQuestionnaire() {
-    var overrideOption = project.tripleStore.queryLatestC(project.projectIdentifier, "project_csvQuestionOverwriteOption");
+    const overrideOption = project.tripleStore.queryLatestC(project.projectIdentifier, "project_csvQuestionOverwriteOption");
     if (!overrideOption) {
         alert("Please choose how you want to deal with existing questions while importing your CSV file.");
         return;

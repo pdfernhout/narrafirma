@@ -11,7 +11,7 @@ class PanelSpecificationCollection {
     panelIDToPanelSpecificationMap = {};
     
     allPages = [];
-    pageIDToPageSpecificatiomMap = {};
+    pageIDToPageSpecificationMap = {};
     
     childPageIDListForHeaderID = {};
     
@@ -22,22 +22,22 @@ class PanelSpecificationCollection {
 
     // TODO: Maybe should remove this function? Currently only used by one test
     addPanelSpecificationFromJSONText(panelSpecificationJSONText) {
-        var panelSpecification = JSON.parse(panelSpecificationJSONText);
+        const panelSpecification = JSON.parse(panelSpecificationJSONText);
         this.addPanelSpecification(panelSpecification);
         return panelSpecification;
     }
     
     addPanelSpecification(panelSpecification) {
-        // TODO: Maybe should copy panelSpecification to ensure it won't change if changed latar by caller?
+        // TODO: Maybe should copy panelSpecification to ensure it won't change if changed later by caller?
         this.allPanels.push(panelSpecification);
         this.panelIDToPanelSpecificationMap[panelSpecification.id] = panelSpecification;
         
         if (panelSpecification.displayType === "page") {
             this.allPages.push(panelSpecification);
-            this.pageIDToPageSpecificatiomMap[panelSpecification.id] = panelSpecification;
+            this.pageIDToPageSpecificationMap[panelSpecification.id] = panelSpecification;
             
             if (!panelSpecification.isHeader) {
-                var list = this.childPageIDListForHeaderID[this.lastHeader] || [];
+                const list = this.childPageIDListForHeaderID[this.lastHeader] || [];
                 list.push(panelSpecification.id);
                 this.childPageIDListForHeaderID[this.lastHeader] = list;
             } else {
@@ -45,23 +45,23 @@ class PanelSpecificationCollection {
             }
         }
         
-        var modelClass = panelSpecification.modelClass;
+        const modelClass = panelSpecification.modelClass;
         if (modelClass) {
-            var model = this.modelClassToModelFieldSpecificationsMap[modelClass];
+            let model = this.modelClassToModelFieldSpecificationsMap[modelClass];
             if (!model) {
                 model = [];
                 this.modelClassToModelFieldSpecificationsMap[modelClass] = model;
             }
         }
         
-        for (var i = 0; i < panelSpecification.panelFields.length; i++) {
-            var fieldSpecification = panelSpecification.panelFields[i];
+        for (let i = 0; i < panelSpecification.panelFields.length; i++) {
+            const fieldSpecification = panelSpecification.panelFields[i];
             this.addFieldSpecification(modelClass, fieldSpecification);
         }
     }
     
     addFieldSpecification(modelClass, fieldSpecification) {
-        var model = this.modelClassToModelFieldSpecificationsMap[modelClass];
+        const model = this.modelClassToModelFieldSpecificationsMap[modelClass];
         // TODO: Is this modelClass line still needed?
         fieldSpecification.modelClass = modelClass;
         this.allFieldSpecifications.push(fieldSpecification);
@@ -76,7 +76,7 @@ class PanelSpecificationCollection {
     }
      
     initialDataForField(fieldSpecification) {
-        var valueType = fieldSpecification.valueType;
+        const valueType = fieldSpecification.valueType;
         if (valueType === "string") return "";
         if (valueType === "array") return [];
         if (valueType === "dictionary") return {};
@@ -89,15 +89,15 @@ class PanelSpecificationCollection {
     
     // This builds a specific model based on the name of the model, using data from one or more pages or panels that define that model
     buildModel(modelName) {
-        var model = {__type: modelName};
-        var modelFieldSpecifications = this.modelClassToModelFieldSpecificationsMap[modelName];
+        const model = {__type: modelName};
+        const modelFieldSpecifications = this.modelClassToModelFieldSpecificationsMap[modelName];
         if (!modelFieldSpecifications) {
             console.log("ERROR: No model defined for model name", modelName);
             throw new Error("No model defined for model name: " + modelName);
         }
         
-        for (var i = 0; i < modelFieldSpecifications.length; i++) {
-            var fieldSpecification = modelFieldSpecifications[i];
+        for (let i = 0; i < modelFieldSpecifications.length; i++) {
+            const fieldSpecification = modelFieldSpecifications[i];
             if (!fieldSpecification.valueType) console.log("WARNING: Missing valueType for fieldSpecification", fieldSpecification);
             if (fieldSpecification.valueType && fieldSpecification.valueType !== "none") {
                 model[fieldSpecification.id] = this.initialDataForField(fieldSpecification);
@@ -108,8 +108,8 @@ class PanelSpecificationCollection {
     
     // This ignores the model type for the page or panel and just puts all the model fields into the supplied model
     addFieldsToModel(model, fieldSpecifications) {
-        for (var i = 0; i < fieldSpecifications.length; i++) {
-            var fieldSpecification = fieldSpecifications[i];
+        for (let i = 0; i < fieldSpecifications.length; i++) {
+            const fieldSpecification = fieldSpecifications[i];
             if (!fieldSpecification.valueType) console.log("WARNING: Missing valueType for fieldSpecification", fieldSpecification);
             if (fieldSpecification.valueType && fieldSpecification.valueType !== "none") {
                 model[fieldSpecification.id] = this.initialDataForField(fieldSpecification);
@@ -127,7 +127,7 @@ class PanelSpecificationCollection {
     }
     
     getPageSpecificationForPageID(pageID) {
-        return this.pageIDToPageSpecificatiomMap[pageID];
+        return this.pageIDToPageSpecificationMap[pageID];
     }
     
     getPanelSpecificationForPanelID(panelID) {

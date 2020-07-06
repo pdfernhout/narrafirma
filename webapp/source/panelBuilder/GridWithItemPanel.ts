@@ -12,9 +12,9 @@ import _ = require("lodash");
 // This defines a gui component which has a grid, some buttons, and a detail panel do display the currently selected item or enter a new item
 // TODO: Probably need to prevent user surveys from having a question with a short name of "_id".
 
-var gridsMade = 0;
+let gridsMade = 0;
 
-var displayTypesToDisplayAsColumns = {
+const displayTypesToDisplayAsColumns = {
    text: true,
    textarea: true,
    select: true,
@@ -22,20 +22,20 @@ var displayTypesToDisplayAsColumns = {
 };
 
 function computeColumnsForItemPanelSpecification(itemPanelSpecification, gridConfiguration: GridConfiguration) {
-    // var self = this;
+    // const self = this;
     
-    var columns = [];
+    const columns = [];
     
-    var panelFields = itemPanelSpecification.panelFields;
+    const panelFields = itemPanelSpecification.panelFields;
     
     if (!panelFields || !gridConfiguration) return columns;
     
-    var maxColumnCount = 5;
-    var columnCount = 0;
+    const maxColumnCount = 5;
+    let columnCount = 0;
     
-    var fieldsToInclude = [];
+    const fieldsToInclude = [];
     
-    var columnsToDisplay = gridConfiguration.columnsToDisplay;
+    const columnsToDisplay = gridConfiguration.columnsToDisplay;
     
     // Put the columns in the order supplied if using columnsToDisplay, otherwise put them in order of panel specification
     if (columnsToDisplay && columnsToDisplay.constructor === Array) {
@@ -46,7 +46,7 @@ function computeColumnsForItemPanelSpecification(itemPanelSpecification, gridCon
         });
     } else {
         panelFields.forEach(function (fieldSpecification) {
-            var includeField = false;
+            const includeField = false;
             if (columnsToDisplay) {
                 // TODO: improve this check if need to exclude other fields?
                 if (fieldSpecification.displayType !== "label" && fieldSpecification.displayType !== "header") {
@@ -75,7 +75,7 @@ function computeColumnsForItemPanelSpecification(itemPanelSpecification, gridCon
             columnLabel = translate(fieldSpecification.id + "::shortName", fieldSpecification.displayName);
         }
 
-        var newColumn =  {
+        const newColumn =  {
             field: fieldSpecification.id,
             label: columnLabel
         };
@@ -86,8 +86,8 @@ function computeColumnsForItemPanelSpecification(itemPanelSpecification, gridCon
 }
 
 function isElementInViewport(parent, element) {
-    var elementRect = element.getBoundingClientRect();
-    var parentRect = parent.getBoundingClientRect();
+    const elementRect = element.getBoundingClientRect();
+    const parentRect = parent.getBoundingClientRect();
     return (
         elementRect.top >= parentRect.top &&
         elementRect.left >= parentRect.left &&
@@ -108,20 +108,20 @@ class ItemPanel {
     
     calculateView(args) {
         // TODO: Should provide copy of item?
-        var panelBuilder: PanelBuilder = args.panelBuilder;
+        const panelBuilder: PanelBuilder = args.panelBuilder;
         // Possible recursion if the panels contain a table
         
-        var theClass = "narrafirma-griditempanel-viewing";
+        let theClass = "narrafirma-griditempanel-viewing";
         if (args.mode === "edit") {
             theClass = "narrafirma-griditempanel-editing";  
         }
         
-        var oldReadOnly = panelBuilder.readOnly;
+        const oldReadOnly = panelBuilder.readOnly;
         if (args.mode === "view") {
             panelBuilder.readOnly = true;
         }
         try {
-            var div = m("div", {"class": theClass}, panelBuilder.buildPanel(args.grid.itemPanelSpecification, args.item));
+            const div = m("div", {"class": theClass}, panelBuilder.buildPanel(args.grid.itemPanelSpecification, args.item));
             return div;
         } finally {
             panelBuilder.readOnly = oldReadOnly;
@@ -129,7 +129,7 @@ class ItemPanel {
     }
 }
 
-var defaultGridConfiguration: GridConfiguration = {
+const defaultGridConfiguration: GridConfiguration = {
     idProperty: undefined,
     
     viewButton: true,
@@ -153,9 +153,9 @@ var defaultGridConfiguration: GridConfiguration = {
     moveUpDownButtons: false
 };
 
-var sortCharacterUp = "\u25B2";
-var sortCharacterDown = "\u25BC";
-var sortCharacterBoth = "\u2003"; // Blank space equal to 1em
+const sortCharacterUp = "\u25B2";
+const sortCharacterDown = "\u25BC";
+const sortCharacterBoth = "\u2003"; // Blank space equal to 1em
 
 // GridWithItemPanel needs to be a component so it can maintain a local sorted list
 class GridWithItemPanel {
@@ -199,8 +199,8 @@ class GridWithItemPanel {
     }
     
     updateDisplayConfigurationAndData(theDisplayConfiguration: GridDisplayConfiguration) {
-        var itemPanelID: string;
-        var itemPanelSpecification = null;
+        let itemPanelID: string;
+        let itemPanelSpecification = null;
         
         if (_.isString(theDisplayConfiguration)) {
             itemPanelID = <any>theDisplayConfiguration;
@@ -246,12 +246,12 @@ class GridWithItemPanel {
         
         this.valueProperty = valuePathResolver.newValuePathForFieldSpecification(this.model, this.fieldSpecification);
         
-        var itemClassName = itemPanelSpecification.modelClass;
+        const itemClassName = itemPanelSpecification.modelClass;
         if (!itemClassName) {
             console.log("Error: No modelClass in panel specification", itemPanelSpecification);
             throw new Error("Error: No modelClass in panel specification for grid");
         }
-        var setClassName = itemPanelSpecification.modelClass + "Set";
+        const setClassName = itemPanelSpecification.modelClass + "Set";
         
         if (this.useTriples()) {
             this.dataStore = new TripleSetDataStore(this.valueProperty, this.idProperty, this.gridConfiguration.transformDisplayedValues, setClassName, itemClassName, Globals.project().tripleStore);
@@ -286,7 +286,7 @@ class GridWithItemPanel {
     
     addNavigationButtons(buttons) {
         // TODO: Improve navigation enabling
-        var navigationDisabled = this.isEditing() || this.dataStore.isEmpty() || undefined;
+        const navigationDisabled = this.isEditing() || this.dataStore.isEmpty() || undefined;
         buttons.push(m("button", {onclick: this.navigateClicked.bind(this, "start"), disabled: navigationDisabled}, translate("#button_navigateStart|[<<")));
         buttons.push(m("button", {onclick: this.navigateClicked.bind(this, "previous"), disabled: navigationDisabled}, translate("#button_navigatePrevious|<")));
         buttons.push(m("button", {onclick: this.navigateClicked.bind(this, "next"), disabled: navigationDisabled}, translate("#button_navigateNext|>")));
@@ -295,13 +295,13 @@ class GridWithItemPanel {
     
     calculateView() {
         // Deal with the fact that new items might be added at any time by other users
-        // TODO: This is very inefficient. Alternatives include: listening for changes that add or remove items; or determing nature of change prompting redraw
+        // TODO: This is very inefficient. Alternatives include: listening for changes that add or remove items; or determining nature of change prompting redraw
         this.updateData();
         
-        var panelBuilder = this.panelBuilder;
+        const panelBuilder = this.panelBuilder;
         
-        var columnHeaders = this.columns.map((column) => {
-            var sortCharacter = sortCharacterBoth;
+        const columnHeaders = this.columns.map((column) => {
+            let sortCharacter = sortCharacterBoth;
             if (column.field === this.sortBy) {
                 if (this.sortDirection === "ascending") {
                     sortCharacter = sortCharacterDown;
@@ -316,18 +316,18 @@ class GridWithItemPanel {
             columnHeaders.push(m("th", ""));
         }
         
-        var table = m("table.scrolling", this.tableConfigurationWithSortingOnHeaderClick(), [
+        const table = m("table.scrolling", this.tableConfigurationWithSortingOnHeaderClick(), [
             m("tr", {"class": "grid-header-row"}, columnHeaders),
             <any>this.dataStore.map((item, index) => {
                 return this.rowForItem(item, index);
             })
         ]);
         
-        var addButtonDisabled = this.readOnly || this.isEditing() || undefined;
+        const addButtonDisabled = this.readOnly || this.isEditing() || undefined;
         
-        var buttons = [];
+        let buttons = [];
         if (this.gridConfiguration.addButton) {
-            var addButton = m("button", {onclick: this.addItem.bind(this), disabled: addButtonDisabled}, translate("#button_Add|Add"));
+            const addButton = m("button", {onclick: this.addItem.bind(this), disabled: addButtonDisabled}, translate("#button_Add|Add"));
             buttons.push(addButton);
         }
         
@@ -339,9 +339,9 @@ class GridWithItemPanel {
             this.addNavigationButtons(buttons);
         }
         
-        var buttonPanel = m("div.narrafirma-button-panel", buttons);
+        const buttonPanel = m("div.narrafirma-button-panel", buttons);
         
-        var parts = [m("div.narrafirm-grid", {id: this.gridID}, [table]), buttonPanel];
+        const parts = [m("div.narrafirma-grid", {id: this.gridID}, [table]), buttonPanel];
         
         if (this.isViewing()) {
             parts.push(this.bottomEditorForItem(panelBuilder, this.selectedItem, "view"));
@@ -357,7 +357,7 @@ class GridWithItemPanel {
     private tableConfigurationWithSortingOnHeaderClick() {
         return {
             onclick: (e) => {
-                var sortBy = e.target.getAttribute("data-sort-by");
+                const sortBy = e.target.getAttribute("data-sort-by");
                 if (sortBy) {
                     // Sorting derived from: http://lhorie.github.io/mithril-blog/vanilla-table-sorting.htm
                     // Don't sort if have move up/down buttons
@@ -381,7 +381,7 @@ class GridWithItemPanel {
                 }
             },
             ondblclick: (e) => {
-                var prop = e.target.getAttribute("data-sort-by");
+                const prop = e.target.getAttribute("data-sort-by");
                 if (!prop) {
                     if (this.selectedItem && this.doubleClickAction) {
                         this.doubleClickAction(this.selectedItem);
@@ -394,8 +394,8 @@ class GridWithItemPanel {
     
     private selectItemInList(e) {
         if (this.isEditing()) return;
-        var itemID = e.target.getAttribute("data-item-index");
-        var item = this.dataStore.itemForId(itemID);
+        const itemID = e.target.getAttribute("data-item-index");
+        const item = this.dataStore.itemForId(itemID);
         if (item !== undefined) {
             this.setSelectedItem(item);
             if (this.gridConfiguration.viewButton) {
@@ -425,14 +425,14 @@ class GridWithItemPanel {
     }
     
     private validateItem(item) {
-        var validationMethodIdentifier = this.gridConfiguration.validateEdit;
+        let validationMethodIdentifier = this.gridConfiguration.validateEdit;
         if (this.displayMode === "adding") validationMethodIdentifier = this.gridConfiguration.validateAdd || validationMethodIdentifier;
         if (validationMethodIdentifier) {
-            var fakeFieldSpecification = {
+            const fakeFieldSpecification = {
                 displayConfiguration: validationMethodIdentifier,
                 value: item
            };
-            var errors = this.panelBuilder.calculateFunctionResult(null, fakeFieldSpecification);
+            const errors = this.panelBuilder.calculateFunctionResult(null, fakeFieldSpecification);
             if (!errors) return [];
             return errors;
         }
@@ -449,7 +449,7 @@ class GridWithItemPanel {
     // Event handlers
     
     private addItem() {
-        var newItem = this.dataStore.makeNewItem();
+        const newItem = this.dataStore.makeNewItem();
         this.setSelectedItem(newItem);
         this.displayMode = "adding";
     }
@@ -460,7 +460,7 @@ class GridWithItemPanel {
         // TODO: Translate
         if (!confirm("Are you sure you want to delete this item?")) return;
 
-        var index = this.dataStore.deleteItem(item);
+        let index = this.dataStore.deleteItem(item);
         
         if (item === this.selectedItem) {
             this.setSelectedItem(null);
@@ -506,7 +506,7 @@ class GridWithItemPanel {
             return;
         }
         
-        var newItem = this.dataStore.makeCopyOfItemWithNewId(item);
+        const newItem = this.dataStore.makeCopyOfItemWithNewId(item);
         this.setSelectedItem(newItem);
         this.displayMode = "adding";
     }
@@ -524,7 +524,7 @@ class GridWithItemPanel {
     private doneClicked(item) {
         // TODO: Should ensure the data is saved
         if (this.isEditing()) {
-            var errors = this.validateItem(item);
+            const errors = this.validateItem(item);
             if (errors.length) {
                 // TODO: Translate
                 alert("There are validation errors:\n\n" + errors);
@@ -537,7 +537,7 @@ class GridWithItemPanel {
     
     navigateClicked(direction: string) {
         if (this.dataStore.isEmpty()) return;
-        var newPosition;
+        let newPosition;
         switch (direction) {
             case "start":
                 newPosition = 0;
@@ -562,52 +562,51 @@ class GridWithItemPanel {
     }
     
     private createButtons(item = undefined) {
-        var buttons = [];
+        const buttons = [];
        
-        var unavailable = this.isEditing() || (!item && !this.selectedItem) || undefined;
-        var disabled = this.readOnly || unavailable;
+        const unavailable = this.isEditing() || (!item && !this.selectedItem) || undefined;
+        const disabled = this.readOnly || unavailable;
         
         if (this.gridConfiguration.removeButton) {
-            var removeButton = m("button", {onclick: this.deleteItem.bind(this, item), disabled: disabled, "class": "fader"}, translate("#button_Remove|Remove"));
+            const removeButton = m("button", {onclick: this.deleteItem.bind(this, item), disabled: disabled, "class": "fader"}, translate("#button_Remove|Remove"));
             buttons.push(removeButton);
         }
 
         if (this.gridConfiguration.editButton) {
-            var editButton = m("button", {onclick: this.editItem.bind(this, item), disabled: disabled, "class": "fader"}, translate("#button_Edit|Edit"));
+            const editButton = m("button", {onclick: this.editItem.bind(this, item), disabled: disabled, "class": "fader"}, translate("#button_Edit|Edit"));
             buttons.push(editButton);
         }
         
         if (this.gridConfiguration.viewButton) {
-            var viewButton = m("button", {onclick: this.viewItem.bind(this, item), disabled: unavailable || this.isViewing(), "class": "fader"}, translate("#button_View|View"));
+            const viewButton = m("button", {onclick: this.viewItem.bind(this, item), disabled: unavailable || this.isViewing(), "class": "fader"}, translate("#button_View|View"));
             buttons.push(viewButton); 
         }
         
         if (this.gridConfiguration.duplicateButton) {
-            var duplicateButton = m("button", {onclick: this.duplicateItem.bind(this, item), disabled: disabled}, translate("#button_Duplicate|Duplicate"));
+            const duplicateButton = m("button", {onclick: this.duplicateItem.bind(this, item), disabled: disabled}, translate("#button_Duplicate|Duplicate"));
             buttons.push(duplicateButton);
         }
              
         if (this.gridConfiguration.moveUpDownButtons) {
-            var upButton = m("button", {onclick: this.moveItemUp.bind(this, item), disabled: disabled}, translate("#button_Up|Up"));
+            const upButton = m("button", {onclick: this.moveItemUp.bind(this, item), disabled: disabled}, translate("#button_Up|Up"));
             buttons.push(upButton);
-            var downButton = m("button", {onclick: this.moveItemDown.bind(this, item), disabled: disabled}, translate("#button_Down|Down"));
+            const downButton = m("button", {onclick: this.moveItemDown.bind(this, item), disabled: disabled}, translate("#button_Down|Down"));
             buttons.push(downButton);
         }
         
         if (this.gridConfiguration.customButton) {
-            var options = this.gridConfiguration.customButton;
-            var customButtonClickedPartial;
+            const options = this.gridConfiguration.customButton;
+            let customButtonClickedPartial;
             if (_.isString(options.callback)) {
-                var fakeFieldSpecification = {id: this.fieldSpecification.id, displayConfiguration: options.callback, grid: this, item: item};
+                const fakeFieldSpecification = {id: this.fieldSpecification.id, displayConfiguration: options.callback, grid: this, item: item};
                 customButtonClickedPartial = this.panelBuilder.buttonClicked.bind(this.panelBuilder, this.model, fakeFieldSpecification);
             } else {
                 customButtonClickedPartial = (event) => { options.callback(this, item); };
             }
-            var doubleClickFunction;
             if (!this.gridConfiguration.viewButton) {
                 this.doubleClickAction = customButtonClickedPartial;
             }
-            var customButton = m("button", {onclick: customButtonClickedPartial, disabled: disabled}, translate(options.customButtonLabel));
+            const customButton = m("button", {onclick: customButtonClickedPartial, disabled: disabled}, translate(options.customButtonLabel));
             buttons.push(customButton);
         }
         
@@ -615,9 +614,9 @@ class GridWithItemPanel {
     }
 
     private rowForItem(item, index) {
-        var selected = (item === this.selectedItem);
+        const selected = (item === this.selectedItem);
 
-        var selectionClass = "";
+        let selectionClass = "";
         if (selected) {
             if (index % 2 === 0) {
                 selectionClass = "narrafirma-grid-row-selected-even";
@@ -632,18 +631,18 @@ class GridWithItemPanel {
             }
         }
         
-        var fields = this.columns.map((column) => {
-            var value = this.dataStore.valueForField(item, column.field);
+        let fields = this.columns.map((column) => {
+            let value = this.dataStore.valueForField(item, column.field);
             if (value && typeof value == "string") {
-                var find = "\n";
-                var re = new RegExp(find, 'g');
+                const find = "\n";
+                const re = new RegExp(find, 'g');
                 value = value.replace(re, " / ");
             }
             return m("td", {"text-overflow": "ellipsis", "data-item-index": this.dataStore.idForItem(item), id: this.makeHtmlIdForItem(item)}, value);
         });
         
         if (this.gridConfiguration.inlineButtons) {
-            var buttons = this.createButtons(item);
+            const buttons = this.createButtons(item);
             
             fields = fields.concat(m("td", {nowrap: true}, buttons));
         }
@@ -654,7 +653,7 @@ class GridWithItemPanel {
         // Ensure the selected item is visible in the table
         // TODO: Could improve this so when navigating down the item is still near the bottom
         if (this.selectedItem && this.isNavigationalScrollingNeeded) {
-            var rowElement = document.getElementById(this.makeHtmlIdForItem(this.selectedItem));
+            const rowElement = document.getElementById(this.makeHtmlIdForItem(this.selectedItem));
             if (rowElement && !isElementInViewport(tableElement, rowElement)) {
                 if (this.isNavigationalScrollingNeeded === "next" || this.isNavigationalScrollingNeeded === "end") {
                     tableElement.scrollTop = rowElement.offsetTop - tableElement.clientHeight + rowElement.offsetHeight;
@@ -672,7 +671,7 @@ class GridWithItemPanel {
     
     useTriples() {
         if (typeof this.model === "string") return true;
-        var storage = this.valueProperty(); 
+        const storage = this.valueProperty(); 
         return typeof storage === "string";
     }
 }
@@ -698,7 +697,7 @@ class DataStore {
     }
     
    getDataArrayFromModel() {
-        var data = this.valueProperty();
+        let data = this.valueProperty();
         if (!data) {
             data = [];
             this.valueProperty(data);
@@ -711,7 +710,7 @@ class DataStore {
     makeCopyOfItemWithNewId(item) {
         // TODO: This needs to create an action that affects original list
         // Make a copy of the selected item
-        var newItem = JSON.parse(JSON.stringify(item));
+        const newItem = JSON.parse(JSON.stringify(item));
                   
         // Set new id for copy
         // TODO: Will not work right if item is an object with some class
@@ -725,7 +724,7 @@ class DataStore {
     
     makeNewItem(): any {
         // TODO: This needs to create an action that affects original list
-        var newItem = {};
+        const newItem = {};
         // TODO: Will not work right if item is an object with some class
         newItem[this.idProperty] = this.newIdForItem();
         this.data.push(newItem);
@@ -736,7 +735,7 @@ class DataStore {
     
     deleteItem(item) {
         // TODO: This needs to create an action that affects original list
-        var index = this.data.indexOf(item);
+        const index = this.data.indexOf(item);
         this.data.splice(index, 1);
         
         return index;
@@ -744,7 +743,7 @@ class DataStore {
     
     moveItemUp(item) {
         // TODO: How to move this change back to project data???
-        var index = this.data.indexOf(item);
+        const index = this.data.indexOf(item);
         if (index <= 0) return;
         this.data[index] = this.data[index - 1];
         this.data[index - 1] = item;
@@ -752,14 +751,14 @@ class DataStore {
     
     moveItemDown(item) {
         // TODO: How to move this change back to project data???
-        var index = this.data.indexOf(item);
+        const index = this.data.indexOf(item);
         if (index === -1 || index === this.data.length - 1) return;
         this.data[index] = this.data[index + 1];
         this.data[index + 1] = item;
     }
     
     idForItem(item) {
-        var value = item[this.idProperty];
+        let value = item[this.idProperty];
         if (typeof value === "function") {
             value = value.bind(item)();
         }
@@ -767,8 +766,8 @@ class DataStore {
     }
     
     itemForId(itemID: string) {
-        for (var i = 0; i < this.data.length; i++) {
-            var item = this.data[i];
+        for (let i = 0; i < this.data.length; i++) {
+            const item = this.data[i];
             if (this.idForItem(item) === itemID) {
                 return item;
             }
@@ -777,7 +776,7 @@ class DataStore {
     }
     
     valueForField(item, fieldName: string) {
-        var value = item[fieldName];
+        let value = item[fieldName];
         // Resolve accessing functions
         if (typeof value === "function") value = value.bind(item)();
         if (this.valueTransform) value = this.valueTransform(value, fieldName);
@@ -799,10 +798,10 @@ class DataStore {
     sortData(fieldIdentifier: string, sortDirection: string) {
         // TODO: This may need work for set???
         this.data.sort((a, b) => {
-            var aValue: string = this.valueForField(a, fieldIdentifier);
+            let aValue: string = this.valueForField(a, fieldIdentifier);
             if (aValue === null || aValue === undefined) aValue = "";
             if (typeof aValue === "string") aValue = aValue.toLowerCase();
-            var bValue: string = this.valueForField(b, fieldIdentifier);
+            let bValue: string = this.valueForField(b, fieldIdentifier);
             if (bValue === null || bValue === undefined) bValue = "";
             if (typeof bValue === "string") bValue = bValue.toLowerCase();
 
@@ -858,7 +857,7 @@ class TripleSetDataStore extends DataStore {
         // TODO: This needs to create an action that affects original list
         // Make a copy of the selected item
         this.ensureSetExists();
-        var newId = this.tripleStore.makeCopyOfSetItemWithNewId(this.setIdentifier, this.itemClassName, item);
+        const newId = this.tripleStore.makeCopyOfSetItemWithNewId(this.setIdentifier, this.itemClassName, item);
         this.data.push(newId);
         return newId;
     }
@@ -866,7 +865,7 @@ class TripleSetDataStore extends DataStore {
     makeNewItem(): any {
         // TODO: This needs to create an action that affects original list
         this.ensureSetExists();
-        var newId = this.tripleStore.makeNewSetItem(this.setIdentifier, this.itemClassName);
+        const newId = this.tripleStore.makeNewSetItem(this.setIdentifier, this.itemClassName);
         this.data.push(newId);
         return newId;
     }
@@ -875,7 +874,7 @@ class TripleSetDataStore extends DataStore {
         // TODO: This needs to create an action that affects original list
         // TODO: Should the C be undefined instead of null?
         this.tripleStore.deleteSetItem(this.setIdentifier, item);
-        var index = this.data.indexOf(item);
+        const index = this.data.indexOf(item);
         this.data.splice(index, 1);
         return index;
     }
@@ -893,7 +892,7 @@ class TripleSetDataStore extends DataStore {
     }
     
     valueForField(item, fieldName: string) {
-        var value = this.tripleStore.queryLatestC(item, fieldName);
+        let value = this.tripleStore.queryLatestC(item, fieldName);
         if (this.valueTransform) value = this.valueTransform(value, fieldName);
         return value;
     }

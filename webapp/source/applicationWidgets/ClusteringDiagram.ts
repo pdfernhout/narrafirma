@@ -20,22 +20,22 @@ const defaultSurfaceHeightInPixels = 500;
 // Only straightforward way (without Dojo gfx) to get the text width, given the page may be hidden while making this, which causes text width to return 0 for SVG
 // Could not get other approaches of adding measuring div to dom to work, perhaps because top level body CSS styling
 // From: http://stackoverflow.com/questions/118241/calculate-text-width-with-javascript
-var measuringCanvas;
+let measuringCanvas;
 function getTextWidth(text, textStyle) {
     // re-use canvas object for better performance
-    var canvas = measuringCanvas || (measuringCanvas = document.createElement("canvas"));
-    var context = canvas.getContext("2d");
+    const canvas = measuringCanvas || (measuringCanvas = document.createElement("canvas"));
+    const context = canvas.getContext("2d");
     context.font = "normal normal " + textStyle.weight + " " + textStyle.size + " " + textStyle.family;
-    var metrics = context.measureText(text);
-    var result = metrics.width;
+    const metrics = context.measureText(text);
+    const result = metrics.width;
     return result;
 }
 
 function myWrap(text, itemText, textStyle, textColor, maxWidth) {
-    var lineHeight_em = 1.1;
-    var words = itemText.split(/\s+/);
-    var lines = [];
-    var line = "";
+    const lineHeight_em = 1.1;
+    const words = itemText.split(/\s+/);
+    const lines = [];
+    let line = "";
     forEach(words, function (index, word) {
         if (lines.length >= 5) {
             line = "...";
@@ -51,9 +51,9 @@ function myWrap(text, itemText, textStyle, textColor, maxWidth) {
         }
     });
     if (line !== "") lines.push(line);
-    var lineNumber = (Math.round(-lines.length / 2 + 0.5));
+    let lineNumber = (Math.round(-lines.length / 2 + 0.5));
     forEach(lines, function (index, line) {
-        var tspan = text.append("tspan")
+        const tspan = text.append("tspan")
             .attr("x", 0)
             .attr("y", 0)
             .attr("dy", (lineNumber++) * lineHeight_em  + "em")
@@ -67,7 +67,7 @@ function forEach(theArray, theFunction) {
     if (!theArray) {
         console.log("theArray is invalid", theArray);
     }
-    for (var index = 0, length = theArray.length; index < length; ++index) {
+    for (let index = 0, length = theArray.length; index < length; ++index) {
         theFunction(index, theArray[index], theArray);
     }
 }
@@ -133,7 +133,7 @@ class ClusteringDiagram {
     }
     
     static newItem(itemType = "item", name = "", notes = "", x = ClusteringDiagram.initialDisplacement, y = ClusteringDiagram.initialDisplacement): ClusteringDiagramItem {
-        var item: ClusteringDiagramItem = {
+        const item: ClusteringDiagramItem = {
             uuid: generateRandomUuid("ClusteringDiagramItem"),
             "type": itemType,
             name: name,
@@ -158,7 +158,7 @@ class ClusteringDiagram {
     }
     
     static addNewItemToDiagram(diagram: ClusteringDiagramModel, itemType: string, name: string, notes: string = "") {
-        var item = ClusteringDiagram.newItem(itemType, name, notes);
+        const item = ClusteringDiagram.newItem(itemType, name, notes);
         ClusteringDiagram.bumpXYOfItem(item);
         diagram.items.push(item);
         diagram.changesCount++;
@@ -174,15 +174,15 @@ class ClusteringDiagram {
     }
     
     static calculateClusteringForDiagram(clusteringDiagram: any) {
-        var result = [];
+        const result = [];
         
         if (!clusteringDiagram) return result;
         
-        var clusters = clusteringDiagram.items.filter(function (item) {
+        const clusters = clusteringDiagram.items.filter(function (item) {
             return item.type === "cluster";
         });
         
-        var items = clusteringDiagram.items.filter(function (item) {
+        const items = clusteringDiagram.items.filter(function (item) {
             return item.type === "item";
         });
         
@@ -190,9 +190,9 @@ class ClusteringDiagram {
             item.clusterDistance = Number.MAX_VALUE;
             item.cluster = null;
             clusters.forEach((cluster) => {
-                var dx = item.x - cluster.x;
-                var dy = item.y - cluster.y;
-                var distance = Math.sqrt(dx * dx + dy * dy);
+                const dx = item.x - cluster.x;
+                const dy = item.y - cluster.y;
+                const distance = Math.sqrt(dx * dx + dy * dy);
                 if (distance < item.clusterDistance) {
                     item.clusterDistance = distance;
                     item.cluster = cluster;
@@ -258,15 +258,15 @@ class ClusteringDiagram {
     }
 
     setupMainSurface() {
-        var divForResizing = document.createElement("div");
+        const divForResizing = document.createElement("div");
         this.divForResizing = divForResizing;
-        var divUUID = generateRandomUuid("ResizeableCanvasHolder"); 
+        const divUUID = generateRandomUuid("ResizeableCanvasHolder"); 
         divForResizing.setAttribute("id", divUUID);
         //divForResizing.setAttribute("style", "width: " + this.diagram.surfaceWidthInPixels + "px; height: " + this.diagram.surfaceHeightInPixels + "px; border: solid 1px; position: relative");
         //divForResizing.setAttribute("style", "resize: auto; border: solid 1px");
     
-        var width = this.model.surfaceWidthInPixels;
-        var height = this.model.surfaceHeightInPixels;
+        const width = this.model.surfaceWidthInPixels;
+        const height = this.model.surfaceHeightInPixels;
         
         this.d3DivForResizing = d3.select(divForResizing);
         
@@ -286,8 +286,8 @@ class ClusteringDiagram {
                 this.shiftKeyIsBeingHeldDownWhileRubberBanding = d3.event.shiftKey;
             });
 
-        var drag = d3.behavior.drag();
-        var self = this;
+        const drag = d3.behavior.drag();
+        const self = this;
         
         drag.on("dragstart", function () {
             let position = d3.mouse(this);
@@ -344,7 +344,7 @@ class ClusteringDiagram {
         this.recreateDisplayObjectsForAllItems();
 
         /* TODO: What to do about handle?
-        var handle = new ResizeHandle({
+        const handle = new ResizeHandle({
             targetId: divUUID,
             // Need either activeResize true or animateSizing false so that onResize will only be called when totally done resizing
             // and not with animation still running and node not quite the final size
@@ -360,17 +360,17 @@ class ClusteringDiagram {
     }
 
     setupMainButtons() {
-        var mainButtons = [];
+        const mainButtons = [];
         
         if (this.configuration !== "interpretations" && this.configuration !== "observations") {
             this.newButton("newItemButton", "New item", () => {
-                var aNewItem = this.newItem("item");
+                const aNewItem = this.newItem("item");
                 this.openEntryDialog(aNewItem, false);
             });
         }
         
         this.newButton("newClusterButton", "New cluster", () => {
-            var aNewItem = this.newItem("cluster");
+            const aNewItem = this.newItem("cluster");
             this.openEntryDialog(aNewItem, false);
         });
         
@@ -459,7 +459,7 @@ class ClusteringDiagram {
     }
 
     newButton(name, label, callback) {
-        var button = m("button", {onclick: callback, "class": name}, label);
+        const button = m("button", {onclick: callback, "class": name}, label);
         this.mainButtons.push(button);
         return button;
     }
@@ -469,7 +469,7 @@ class ClusteringDiagram {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     
     newItem(itemType = "item", name = "", notes = "") {
-        var newItem = ClusteringDiagram.newItem(itemType, name, notes);
+        const newItem = ClusteringDiagram.newItem(itemType, name, notes);
         ClusteringDiagram.bumpXYOfItem(newItem);
         return newItem;
     }
@@ -487,7 +487,7 @@ class ClusteringDiagram {
         // this seems wasteful but there is no other way to be sure you have the latest data
         this.updateDiagram(this.storageFunction());
 
-        var entryDialog = [];
+        const entryDialog = [];
         if (this.showEntryDialog) {
             entryDialog.push(this.buildEntryDialog());
         }
@@ -497,7 +497,7 @@ class ClusteringDiagram {
         }
         
         this.model.items.forEach(function(item) {
-            var displayObject = this.itemToDisplayObjectMap[item.uuid];
+            const displayObject = this.itemToDisplayObjectMap[item.uuid];
             if (displayObject) {
                 const borderWidth =  (this.selectedItems.indexOf(item) >= 0) ? displayObject.borderWidth * 5 : displayObject.borderWidth;
                 displayObject.circle.style("stroke-width", borderWidth);
@@ -513,7 +513,7 @@ class ClusteringDiagram {
     }
     
     addDisplayObjectForItem(surface, item: ClusteringDiagramItem) {
-        var bodyColor = item.bodyColor;
+        let bodyColor = item.bodyColor;
         if (!bodyColor || !this.showStrengthColors) {
             if (item.type === "cluster") {
                 bodyColor = ClusteringDiagram.defaultClusterBodyColor;
@@ -525,23 +525,23 @@ class ClusteringDiagram {
             bodyColor = "white";
         }
 
-        var textColor = item.textColor;
+        let textColor = item.textColor;
         if (!textColor) textColor = ClusteringDiagram.defaultTextColor;
         
-        var borderColor = item.borderColor;
+        let borderColor = item.borderColor;
         if (!borderColor) borderColor = ClusteringDiagram.defaultBorderColor;
 
-        var borderWidth = item.borderWidth;
+        let borderWidth = item.borderWidth;
         if (!borderWidth) borderWidth = ClusteringDiagram.defaultBorderWidth;
         // if (item.type === "cluster") borderWidth = borderWidth * 2;
         
-        var radius = item.radius;
+        let radius = item.radius;
         if (!radius) radius = ClusteringDiagram.defaultRadius;
         
-        var textStyle = item.textStyle;
+        let textStyle = item.textStyle;
         if (!textStyle) textStyle = ClusteringDiagram.defaultTextStyle;
     
-        var group;
+        let group;
         if (item.type === "cluster") {
             group = surface.insert('g', ':first-child')
                 .attr('transform', 'translate(' + item.x + ',' + item.y + ')')
@@ -556,7 +556,7 @@ class ClusteringDiagram {
         group.item = item;
     
         if (item.type === "cluster") {
-            var clusterRectangleOuter = group.append("circle")
+            const clusterRectangleOuter = group.append("circle")
                 .attr("r", radius * 3)
                 .attr("cx", 0)
                 .attr("cy", 0)
@@ -566,7 +566,7 @@ class ClusteringDiagram {
                 .style("stroke-width", borderWidth * 2);
             group.circle = clusterRectangleOuter;
         } else {
-            var itemCircle = group.append("circle")
+            const itemCircle = group.append("circle")
                 .attr("r", radius)
                 .attr("cx", 0)
                 .attr("cy", 0)
@@ -577,7 +577,7 @@ class ClusteringDiagram {
             group.circle = itemCircle;
         }
         
-        var hoverText = item.name;
+        let hoverText = item.name;
         if (item.notes) hoverText += " -- " + item.notes;
         if (item.notesExtra) hoverText += "\n----------\n" + item.notesExtra;
         if (item.strength) hoverText += " [Strength: " + item.strength + "]"; 
@@ -598,9 +598,9 @@ class ClusteringDiagram {
             this.selectItem(item, d3.event.shiftKey);
         });
 
-        var self = this;
-        var drag = d3.behavior.drag();
-        var moved = false;
+        const self = this;
+        const drag = d3.behavior.drag();
+        let moved = false;
         
         drag.on("dragstart", function () {
             if (!item) {
@@ -619,7 +619,7 @@ class ClusteringDiagram {
             self.selectedItems.forEach(function(item) {
                 item.x = Math.min(self.model.surfaceWidthInPixels, Math.max(0, Math.round(item.x + (<any>d3.event).dx)));
                 item.y = Math.min(self.model.surfaceHeightInPixels, Math.max(0, Math.round(item.y + (<any>d3.event).dy)));
-                var displayObject = self.itemToDisplayObjectMap[item.uuid];
+                const displayObject = self.itemToDisplayObjectMap[item.uuid];
                 if (displayObject) {
                     displayObject.attr('transform', 'translate(' + item.x + ',' + item.y + ')');
                 }
@@ -650,7 +650,7 @@ class ClusteringDiagram {
 
     addText(group, itemText, maxWidth, textStyle, textColor) {
         if (itemText === undefined) itemText = "[missing text]";
-        var text = group.append("text")
+        const text = group.append("text")
             .style("font-family", textStyle.family)
             .style("font-size", textStyle.size)
             .style("font-weight", textStyle.weight)
@@ -756,14 +756,14 @@ class ClusteringDiagram {
             console.log("updateDisplayForChangedItem item is null", typeOfChange);
             return;
         }
-        var displayObject = this.itemToDisplayObjectMap[item.uuid];
+        const displayObject = this.itemToDisplayObjectMap[item.uuid];
         if (typeOfChange === "delete") {
             delete this.itemToDisplayObjectMap[item.uuid];
             displayObject.remove();
             return;
         }
         displayObject.remove();
-        var newDisplayObject = this.addDisplayObjectForItem(this.mainSurface, item);
+        const newDisplayObject = this.addDisplayObjectForItem(this.mainSurface, item);
         this.itemToDisplayObjectMap[item.uuid] = newDisplayObject;
     }
     
@@ -903,7 +903,7 @@ class ClusteringDiagram {
     }
     
     updateSourceClicked(text, hideDialogMethod) {     
-        var newDiagram;
+        let newDiagram;
         try {
             newDiagram = JSON.parse(text);
         } catch (e) {
@@ -924,8 +924,8 @@ class ClusteringDiagram {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         
     updateSizeOfSurfaceFromResizeHandle() {
-        var newWidth = this.divForResizing.clientWidth;
-        var newHeight = this.divForResizing.clientHeight;
+        const newWidth = this.divForResizing.clientWidth;
+        const newHeight = this.divForResizing.clientHeight;
         
         this._mainSurface.attr("width", newWidth).attr("height", newHeight);
         this.background.attr('width', newWidth).attr('height', newHeight);
@@ -937,8 +937,8 @@ class ClusteringDiagram {
     }
 
     updateSizeOfSurfaceFromModel() {
-        var newWidth = this.model.surfaceWidthInPixels;
-        var newHeight = this.model.surfaceHeightInPixels;
+        const newWidth = this.model.surfaceWidthInPixels;
+        const newHeight = this.model.surfaceHeightInPixels;
         
         this.divForResizing.setAttribute("style", "width: " + this.model.surfaceWidthInPixels + "px; height: " + this.model.surfaceHeightInPixels + "px; border: solid 1px; position: relative");
         this._mainSurface.attr("width", newWidth).attr("height", newHeight);

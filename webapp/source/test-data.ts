@@ -3,13 +3,13 @@
 import kludgeForUseStrict = require("./kludgeForUseStrict");
 "use strict";
 
-var testDataItemsToMake = 100;
+const testDataItemsToMake = 100;
 
 // Some test data
   
-export var testSurveyResponses = [];
+export const testSurveyResponses = [];
 
-var lorumText = ": Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, " +
+const lorumText = ": Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, " +
 "totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. " +
 "Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores " +
 "eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur," +
@@ -20,7 +20,7 @@ var lorumText = ": Sed ut perspiciatis unde omnis iste natus error sit voluptate
 
 // TODO: Using older survey format, including with options instead of valueOptions and displayConfiguration
     
-export var testSurvey = {
+export const testSurvey = {
     "__type": "org.pointrel.pointrel20141201.PointrelContentEnvelope",
     "tags": [
         "questionnaire-test-003"
@@ -189,7 +189,7 @@ function makeResponse(responseNumber) {
 }
   
 console.log("making test stories");
-for (var i = 0; i < testDataItemsToMake; i++) {
-    var testResponse = makeResponse(i);
+for (let i = 0; i < testDataItemsToMake; i++) {
+    const testResponse = makeResponse(i);
     testSurveyResponses.push(testResponse);
 }

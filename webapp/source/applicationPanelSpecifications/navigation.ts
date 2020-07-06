@@ -81,7 +81,7 @@ import panel_enterFeedbackPiece = require("./return/panel_enterFeedbackPiece");
 import panel_addPresentationElement = require("./return/panel_addPresentationElement");
 import panel_addNewReturnRequest = require("./return/panel_addNewReturnRequest");
 
-var navigationModules = {};
+const navigationModules = {};
 navigationModules["page_dashboard"] = page_dashboard;
 navigationModules["page_administration"] = page_administration;
 navigationModules["page_projectOptions"] = page_projectOptions;
@@ -165,7 +165,7 @@ navigationModules["panel_enterFeedbackPiece"] = panel_enterFeedbackPiece;
 navigationModules["panel_addPresentationElement"] = panel_addPresentationElement;
 navigationModules["panel_addNewReturnRequest"] = panel_addNewReturnRequest;
 
-var sections = [
+const sections = [
     {
         section: "dashboard",
         sectionName: "Dashboard",
@@ -316,7 +316,7 @@ sections["navigationModules"] = navigationModules;
 
 /*
 function generateImports() {
-    var result = "";
+    const result = "";
     
     function output(text) {
         result += text + "\n";
@@ -333,7 +333,7 @@ function generateImports() {
     
     output("");
     
-    output("var navigationModules = {};");
+    output("const navigationModules = {};");
     sections.forEach((section) => {
         section.pages.forEach((page) => {
             output('navigationModules["' + page + '"] = ' + page + ';');

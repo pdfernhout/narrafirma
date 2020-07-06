@@ -1,7 +1,7 @@
 import Globals = require("../../Globals");
 "use strict";
 
-var panel: Panel = {
+const panel: Panel = {
     id: "page_configureCatalysisReport",
     displayName: "Configure Catalysis Report",
     tooltipText: "Decide what questions you want to consider as you build your catalysis report.",

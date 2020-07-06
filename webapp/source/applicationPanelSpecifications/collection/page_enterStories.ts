@@ -2,7 +2,7 @@ import Globals = require("../../Globals");
 import kludgeForUseStrict = require("../../kludgeForUseStrict");
 "use strict";
 
-var panel: Panel = {
+const panel: Panel = {
     id: "page_enterStories",
     displayName: "Enter or import stories",
     tooltipText: "Add stories you collected off-line.",

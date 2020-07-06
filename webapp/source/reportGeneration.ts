@@ -10,13 +10,13 @@ export function calculate_report(panelSpecificationCollection, model, headerPage
     
     /*
     if (!panelSpecificationCollection) return "ERROR: in calculate_report, panelSpecificationCollection is not set";
-    var report = "<br><br>";
-    var pageList = panelSpecificationCollection.getChildPageIDListForHeaderID(headerPageID);
-    for (var pageIndex in pageList) {
+    const report = "<br><br>";
+    const pageList = panelSpecificationCollection.getChildPageIDListForHeaderID(headerPageID);
+    for (const pageIndex in pageList) {
         // Skip last report page in a section
         if (pageIndex === pageList.length - 1) break;
-        var pageID = pageList[pageIndex];
-        var panelDefinition = panelSpecificationCollection.getPanelSpecificationForPanelID(pageID);
+        const pageID = pageList[pageIndex];
+        const panelDefinition = panelSpecificationCollection.getPanelSpecificationForPanelID(pageID);
         if (!panelDefinition) {
             console.log("ERROR: Missing panelDefinition for pageID:", pageID);
             continue;
@@ -24,20 +24,20 @@ export function calculate_report(panelSpecificationCollection, model, headerPage
         if (panelDefinition.displayType !== "page") continue;
         report += "<div>";
         report += "<i> *** " + translate(pageID + "::title", panelDefinition.displayName) + "</i>  ***<br><br>";
-        var questionsAnsweredCount = 0;
-        var questions = panelDefinition.panelFields;
-        for (var questionIndex in questions) {
-            var question = questions[questionIndex];
-            var value = domain.projectAnswers.get(question.id);
+        const questionsAnsweredCount = 0;
+        const questions = panelDefinition.panelFields;
+        for (const questionIndex in questions) {
+            const question = questions[questionIndex];
+            const value = domain.projectAnswers.get(question.id);
             if (question.displayType === "quizScoreResult") {
-                var dependsOn = question.displayConfiguration;
+                const dependsOn = question.displayConfiguration;
                 value = add_quizScoreResult.calculate_quizScoreResult(panelSpecificationCollection, domain.projectAnswers, dependsOn);
                 // Don't count these as answered questions
                 questionsAnsweredCount--;
             }
             if (value && value.length !== 0) {
-                var valueToDisplay = displayStringForValue(question, value, 4);
-                var label = labelForQuestion(question);
+                const valueToDisplay = displayStringForValue(question, value, 4);
+                const label = labelForQuestion(question);
                 report += label + " " + valueToDisplay + "</br><br>";
                 questionsAnsweredCount++;
             }
@@ -51,7 +51,7 @@ export function calculate_report(panelSpecificationCollection, model, headerPage
 }
 
  function labelForQuestion(question) {
-     var shortName = translate(question.id + "::shortName", "");
+     let shortName = translate(question.id + "::shortName", "");
      if (!shortName) shortName = translate(question.id + "::prompt", "");
      if (!shortName) shortName = question.displayName;
      if (!shortName) shortName = question.displayPrompt;
@@ -59,8 +59,8 @@ export function calculate_report(panelSpecificationCollection, model, headerPage
          console.log("Missing translation of label for question", question.id, question);
          shortName = question.id;
      }
-     var separator = ":";
-     var lastQuestionCharacter = shortName[shortName.length - 1];
+     let separator = ":";
+     const lastQuestionCharacter = shortName[shortName.length - 1];
      if (lastQuestionCharacter === "?" || lastQuestionCharacter === "." || lastQuestionCharacter === ")") {
          separator = "<br>";
      } else if (lastQuestionCharacter === ":") {
@@ -70,8 +70,8 @@ export function calculate_report(panelSpecificationCollection, model, headerPage
  }
 
 function indent(level) {
-    var result = "";
-    for (var i = 0; i < level; i++) {
+    let result = "";
+    for (let i = 0; i < level; i++) {
         result += "&nbsp;";
     }
     return result;
@@ -80,13 +80,13 @@ function indent(level) {
 // Recursively calls itself
 function displayStringForValue(question, value, level) {
     // TODO: Translate -- Should translate some answers for some types... But how to know which when when nested?
-    var valueToDisplay = "";
-    var item;
-    var itemDisplay;
-    var indentChars;
+    let valueToDisplay = "";
+    let item;
+    let itemDisplay;
+    let indentChars;
     if (value instanceof Array) {
         //valueToDisplay += "<br>";
-        for (var index in value) {
+        for (const index in value) {
             item = value[index];
             // if (index !== "0") valueToDisplay += "<br>";
             indentChars = indent(level);
@@ -95,15 +95,15 @@ function displayStringForValue(question, value, level) {
         }
         valueToDisplay += "<br>";
     } else if (value.id) {
-        for (var key in value) {
+        for (const key in value) {
             if (!value.hasOwnProperty(key)) continue;
             if (key === "watchCallbacks") continue;
             if (key === "id") continue;
             item = value[key];
             // TODO: improve how label is calculated when no question, as underscores may not be used consistently in naming fields
-            var label = key;
+            let label = key;
             if (question === null) {
-                var underscorePosition = label.indexOf("_");
+                const underscorePosition = label.indexOf("_");
                 if (underscorePosition > -1) {
                     label = label.substring(underscorePosition + 1);
                 }

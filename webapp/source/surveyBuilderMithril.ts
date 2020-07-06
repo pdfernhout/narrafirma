@@ -32,8 +32,8 @@ import sanitizeHTML = require("./sanitizeHTML");
  X Accessibility [at least the basics]
  */
  
-var idsMade = {};
-var idCount = 0;
+const idsMade = {};
+let idCount = 0;
 
 function getIdForText(text) {
     if (!idsMade["$" + text]) {
@@ -44,7 +44,7 @@ function getIdForText(text) {
 }
 
 export function loadCSS(document, cssText) {
-    var styleElement = document.createElement("style");
+    const styleElement = document.createElement("style");
     styleElement.type = "text/css";
     document.getElementsByTagName("head")[0].appendChild(styleElement);
 
@@ -57,7 +57,7 @@ export function loadCSS(document, cssText) {
   
 // Redrawing
 
-var globalRedrawCallback;
+let globalRedrawCallback;
 
 export function setGlobalRedrawFunction(callback) {
     globalRedrawCallback = callback;
@@ -69,7 +69,7 @@ function globalRedraw(source = undefined) {
 
 function addAllowedHTMLToPrompt(text) {
     try {
-        var result = sanitizeHTML.generateSanitizedHTMLForMithril(text);
+        const result = sanitizeHTML.generateSanitizedHTMLForMithril(text);
         return result;
     } catch (error) {
         alert(error);
@@ -87,13 +87,13 @@ function buildQuestionLabel(fieldSpecification) {
 
 // Builder is used by main application, and is passed in for compatibility
 function displayQuestion(builder, model, fieldSpecification, questionnaire) {
-    var fieldID = fieldSpecification.id;
+    let fieldID = fieldSpecification.id;
     if (model) {
         fieldID = (model.storyID || model.participantID) + "__" + fieldID;
     }
 
-    var displayType = fieldSpecification.displayType;
-    var questionLabel = buildQuestionLabel(fieldSpecification);
+    const displayType = fieldSpecification.displayType;
+    let questionLabel = buildQuestionLabel(fieldSpecification);
     
     function makeLabel() {
         // The for attribute of the label element must refer to a form control.
@@ -101,14 +101,14 @@ function displayQuestion(builder, model, fieldSpecification, questionnaire) {
         questionLabel[0].tag = "label";
     }
     
-    var parts: any = [];
+    let parts: any = [];
     function makeLegend() {
         // Do nothing for now
         parts.unshift(m("legend", questionLabel[0]));
         questionLabel = [];
     }
     
-    var value = null;
+    let value = null;
     if (model) value = model[fieldSpecification.id];
     if (value === undefined) value = "";
     
@@ -127,7 +127,7 @@ function displayQuestion(builder, model, fieldSpecification, questionnaire) {
         return value === undefined || value === null || value === "";
     }
     
-    var standardValueOptions = {
+    const standardValueOptions = {
         value: value,
         id: getIdForText(fieldID),
         onchange: change
@@ -151,7 +151,7 @@ function displayQuestion(builder, model, fieldSpecification, questionnaire) {
         ];
     } else if (displayType === "checkbox") {
         makeLabel();
-        var checkboxText = "";
+        let checkboxText = "";
         if (fieldSpecification.displayConfiguration) {
             checkboxText = fieldSpecification.displayConfiguration;
         }
@@ -172,8 +172,8 @@ function displayQuestion(builder, model, fieldSpecification, questionnaire) {
         }
         parts = [
             fieldSpecification.valueOptions.map(function (option, index) {
-                var optionName;
-                var optionValue;
+                let optionName;
+                let optionValue;
                 if (typeof option === "string") {
                     optionName = option;
                     optionValue = option;
@@ -181,7 +181,7 @@ function displayQuestion(builder, model, fieldSpecification, questionnaire) {
                     optionName = option.name;
                     optionValue = option.value;                    
                 }
-                var optionID = getIdForText(fieldID + "_" + option);
+                const optionID = getIdForText(fieldID + "_" + option);
                 return [
                     m("input[type=checkbox]", {
                         id: optionID, 
@@ -203,8 +203,8 @@ function displayQuestion(builder, model, fieldSpecification, questionnaire) {
         delete questionLabel[0].attrs["for"];
         parts = [
             fieldSpecification.valueOptions.map(function (option, index) {
-                var optionName;
-                var optionValue;
+                let optionName;
+                let optionValue;
                 if (typeof option === "string") {
                     optionName = option;
                     optionValue = option;
@@ -212,7 +212,7 @@ function displayQuestion(builder, model, fieldSpecification, questionnaire) {
                     optionName = option.name;
                     optionValue = option.value;                    
                 }
-                var optionID = getIdForText(fieldID + "_" + optionValue);
+                const optionID = getIdForText(fieldID + "_" + optionValue);
                 return [
                     m("input[type=radio]", {id: optionID, value: optionValue, name: fieldSpecification.id, checked: value === optionValue, onchange: change.bind(null, null, optionValue) }),
                     m("label", {"for": optionID}, sanitizeHTML.generateSmallerSetOfSanitizedHTMLForMithril(optionName)), 
@@ -237,8 +237,8 @@ function displayQuestion(builder, model, fieldSpecification, questionnaire) {
         parts = [m("fieldset", parts)];
     } else if (displayType === "select") {
         makeLabel();
-        var selectOptions = [];
-        var defaultOptions = {
+        let selectOptions = [];
+        const defaultOptions = {
             name: '',
             value: '',
             selected: undefined
@@ -247,8 +247,8 @@ function displayQuestion(builder, model, fieldSpecification, questionnaire) {
         selectOptions.push(m("option", defaultOptions, '-- select --'));
         selectOptions = selectOptions.concat(
             fieldSpecification.valueOptions.map(function (option, index) {
-                var optionName;
-                var optionValue;
+                let optionName;
+                let optionValue;
                 if (typeof option === "string") {
                     optionName = option;
                     optionValue = option;
@@ -256,7 +256,7 @@ function displayQuestion(builder, model, fieldSpecification, questionnaire) {
                     optionName = option.name;
                     optionValue = option.value;                    
                 }
-                var optionOptions = {value: optionValue, selected: undefined};
+                const optionOptions = {value: optionValue, selected: undefined};
                 if (optionValue === value) optionOptions.selected = 'selected';
                 return m("option", optionOptions, optionName);
             })
@@ -268,8 +268,8 @@ function displayQuestion(builder, model, fieldSpecification, questionnaire) {
         ];
     } else if (displayType === "slider") {
         makeLabel();
-        var checkboxID = getIdForText(fieldID) + "_doesNotApply";
-        var sliderValueOptions = {
+        const checkboxID = getIdForText(fieldID) + "_doesNotApply";
+        const sliderValueOptions = {
             value: value,
             id: getIdForText(fieldID),
             onchange: change,
@@ -278,9 +278,9 @@ function displayQuestion(builder, model, fieldSpecification, questionnaire) {
             step: 1
         };
         
-        var leftSideText = "";
-        var rightSideText = "";
-        var doesNotApplyText = "Does not apply";
+        let leftSideText = "";
+        let rightSideText = "";
+        let doesNotApplyText = "Does not apply";
         if (fieldSpecification.displayConfiguration) {
             if (fieldSpecification.displayConfiguration.length > 1) {
                 leftSideText = fieldSpecification.displayConfiguration[0];
@@ -301,8 +301,8 @@ function displayQuestion(builder, model, fieldSpecification, questionnaire) {
             m('span', {"class": "narrafirma-survey-high"}, rightSideText),
             m('span', {"class": "narrafirma-survey-high-arrow"}, " ▶"),
             m("span", {"class": "narrafirma-survey-value", onclick: function(event) {
-                var newValueText = prompt(valuePrompt, value);
-                var newValue = parseInt(newValueText);
+                const newValueText = prompt(valuePrompt, value);
+                const newValue = parseInt(newValueText);
                 if (newValue && newValue >= 0 && newValue <= 100) { 
                     sliderValueOptions.value = newValue;
                     model[fieldSpecification.id] = "" + newValue; 
@@ -315,7 +315,7 @@ function displayQuestion(builder, model, fieldSpecification, questionnaire) {
                 id: checkboxID,
                 checked: isEmpty(sliderValueOptions.value),
                 onclick: function(event) { 
-                    var isChecked = event.target.checked; 
+                    const isChecked = event.target.checked; 
                     if (isChecked) { 
                         model[fieldSpecification.id] = ""; 
                         globalRedraw();
@@ -342,7 +342,7 @@ function displayQuestion(builder, model, fieldSpecification, questionnaire) {
         parts = questionLabel.concat(parts);
     }
     
-    var classString = "narrafirma-survey-question-external narrafirma-survey-question-type-" + displayType;
+    let classString = "narrafirma-survey-question-external narrafirma-survey-question-type-" + displayType;
     if (fieldSpecification.displayClass) {
         classString += " " + fieldSpecification.displayClass;
     }
@@ -358,7 +358,7 @@ interface SurveyOptions {
 export function buildSurveyForm(surveyDiv, questionnaire, doneCallback, surveyOptions: SurveyOptions = {}) {  
     console.log("buildSurveyForm questions", questionnaire);
     
-    var startQuestions = [];
+    const startQuestions = [];
     
     if (surveyOptions.previewMode) {
         startQuestions.push({id: "previewMode_header", displayName: "previewMode", displayClass: "narrafirma-preview", displayPrompt: "Previewing story form; results will not be saved.", displayType: "header", valueOptions: []});
@@ -369,26 +369,26 @@ export function buildSurveyForm(surveyDiv, questionnaire, doneCallback, surveyOp
         if (!surveyOptions.ignoreTitleChange) document.title = sanitizeHTML.removeHTMLTags(questionnaire.title);
     }
     
-    var startText = questionnaire.startText || 'Please help by taking a short survey. The data you enter will be sent to the server only at the end when you press the "submit survey" button.';
+    const startText = questionnaire.startText || 'Please help by taking a short survey. The data you enter will be sent to the server only at the end when you press the "submit survey" button.';
     startQuestions.push({id: "startText_label", displayName: "startText", displayPrompt: startText, displayType: "label", valueOptions: [], displayClass: "narrafirma-survey-start-text"});
 
-    var endText = questionnaire.endText || "Thank you for taking the survey.";
-    var thankYouPopupText = questionnaire.thankYouPopupText || "Your contribution has been added to the story collection. Thank you.";
-    var endQuestions = [];
+    const endText = questionnaire.endText || "Thank you for taking the survey.";
+    const thankYouPopupText = questionnaire.thankYouPopupText || "Your contribution has been added to the story collection. Thank you.";
+    const endQuestions = [];
     endQuestions.push({id: "endText_label", displayName: "endText", displayPrompt: endText, displayType: "label", valueOptions: [], displayClass: "narrafirma-survey-end-text"});
 
     // TODO: What about idea of having IDs that go with eliciting questions so store reference to ID not text prompt?
-    var elicitingQuestionOptions = [];
-    for (var elicitingQuestionIndex in questionnaire.elicitingQuestions) {
-        var elicitingQuestionSpecification = questionnaire.elicitingQuestions[elicitingQuestionIndex];
-        var value = elicitingQuestionSpecification.id || elicitingQuestionSpecification.text;
-        var option = {name: elicitingQuestionSpecification.text, value: value};
+    const elicitingQuestionOptions = [];
+    for (const elicitingQuestionIndex in questionnaire.elicitingQuestions) {
+        const elicitingQuestionSpecification = questionnaire.elicitingQuestions[elicitingQuestionIndex];
+        const value = elicitingQuestionSpecification.id || elicitingQuestionSpecification.text;
+        const option = {name: elicitingQuestionSpecification.text, value: value};
         elicitingQuestionOptions.push(option);
     }
     
     // TODO: What if these IDs for storyText and storyName are not unique?
-    var initialStoryQuestions = [];
-    var singlePrompt = null;
+    const initialStoryQuestions = [];
+    let singlePrompt = null;
 
     if (elicitingQuestionOptions.length !== 1) {
         const chooseQuestionText = questionnaire.chooseQuestionText || "Please choose a question to which you would like to respond.";
@@ -402,18 +402,18 @@ export function buildSurveyForm(surveyDiv, questionnaire, doneCallback, surveyOp
     const nameStoryText = questionnaire.nameStoryText || "Please give your story a name.";
     initialStoryQuestions.push({id: "storyName", displayName: "storyName", displayPrompt: nameStoryText, displayType: "text", valueOptions: [], displayClass: "narrafirma-story-name"});
     
-    var allStoryQuestions = initialStoryQuestions.concat(questionnaire.storyQuestions);
+    const allStoryQuestions = initialStoryQuestions.concat(questionnaire.storyQuestions);
             
     const aboutYouText = questionnaire.aboutYouText || "About you";
-    var participantQuestions = [];
+    let participantQuestions = [];
     if (questionnaire.participantQuestions.length > 0) {
         participantQuestions = [{id: "participantHeader", displayName: "participantHeader", displayPrompt: aboutYouText, displayType: "header", valueOptions: [], displayClass: "narrafirma-participant-header"}];
         participantQuestions = participantQuestions.concat(questionnaire.participantQuestions);
     }
 
-    var timestampStart = new Date();
+    const timestampStart = new Date();
     
-    var surveyResult = {
+    const surveyResult = {
         __type: "org.workingwithstories.QuestionnaireResponse",
         // TODO: Think about whether to include entire questionnaire or something else perhaps
         questionnaire: questionnaire,
@@ -423,8 +423,8 @@ export function buildSurveyForm(surveyDiv, questionnaire, doneCallback, surveyOp
         timestampStart: "" + timestampStart.toISOString()
     };
     
-    var participantID = generateRandomUuid("Participant");
-    var participantDataModel = {
+    const participantID = generateRandomUuid("Participant");
+    const participantDataModel = {
         __type: "org.workingwithstories.ParticipantData",
         participantID: participantID
     };
@@ -433,10 +433,10 @@ export function buildSurveyForm(surveyDiv, questionnaire, doneCallback, surveyOp
 
     // m.render(surveyDiv, m("div", ["Hello survey ============== b", "More!!"]));
     
-    var stories = surveyResult.stories;
+    const stories = surveyResult.stories;
     
     function addStory() {
-        var storyQuestionsModel = {
+        const storyQuestionsModel = {
             __type: "org.workingwithstories.Story",
             storyID: generateRandomUuid("Story"),
             participantID: participantID,
@@ -450,7 +450,7 @@ export function buildSurveyForm(surveyDiv, questionnaire, doneCallback, surveyOp
     addStory();
     
     function makeLabelForStory(story, index) {
-        var storyLabel = story.storyName;
+        let storyLabel = story.storyName;
         if (storyLabel) storyLabel = storyLabel.trim();
         if (!storyLabel) {
             storyLabel = 'Untitled story #' + (index + 1);
@@ -461,12 +461,12 @@ export function buildSurveyForm(surveyDiv, questionnaire, doneCallback, surveyOp
     }
          
     // submitted can be one of: "never", "pending", "failed", "success"
-    var submitted = "never";
+    let submitted = "never";
     
     function submitSurvey(surveyResult, wizardPane, doneCallback) {
         console.log("submitting survey...");
 
-        var timestampEnd = new Date();
+        const timestampEnd = new Date();
         
         surveyResult.timestampEnd = timestampEnd.toISOString();
         surveyResult.timeDuration_ms = timestampEnd.getTime() - timestampStart.getTime(); 
@@ -477,26 +477,26 @@ export function buildSurveyForm(surveyDiv, questionnaire, doneCallback, surveyOp
     }
 
     function validateStoryQuestionsModel(storyQuestionsModel, index) {
-        var elicitingQuestion = storyQuestionsModel.elicitingQuestion;
-        var storyName = storyQuestionsModel.storyName;
-        var storyText = storyQuestionsModel.storyText;
+        const elicitingQuestion = storyQuestionsModel.elicitingQuestion;
+        const storyName = storyQuestionsModel.storyName;
+        const storyText = storyQuestionsModel.storyText;
 
         if (!elicitingQuestion) {
-            var prompt = questionnaire.errorMessage_noElicitationQuestionChosen || "Please select the question to which story # is a response.";
+            let prompt = questionnaire.errorMessage_noElicitationQuestionChosen || "Please select the question to which story # is a response.";
             prompt = prompt.replace("#", index + 1);
             alert(prompt);
             return false;
         }
 
         if (!storyText) {
-            var prompt = questionnaire.errorMessage_noStoryText || "Please enter some text for story #.";
+            let prompt = questionnaire.errorMessage_noStoryText || "Please enter some text for story #.";
             prompt = prompt.replace("#", index + 1);
             alert(prompt);
             return false;
         }
 
         if (!storyName) {
-            var prompt = questionnaire.errorMessage_noStoryName || "Please give story # a name.";
+            let prompt = questionnaire.errorMessage_noStoryName || "Please give story # a name.";
             prompt = prompt.replace("#", index + 1);
             alert(prompt);
             return false;
@@ -506,14 +506,14 @@ export function buildSurveyForm(surveyDiv, questionnaire, doneCallback, surveyOp
     }
     
     function displayStoryQuestions(story, index) {
-        var storylabel = makeLabelForStory(story, index);
-        var storyQuestionsPart = allStoryQuestions.map(function(question, index) {
+        const storylabel = makeLabelForStory(story, index);
+        const storyQuestionsPart = allStoryQuestions.map(function(question, index) {
             return displayQuestion(null, story, question, questionnaire)
         });
 
         const deleteStoryButtonText = questionnaire.deleteStoryButtonText || "Delete this story";
         const deleteStoryPrompt = questionnaire.deleteStoryDialogPrompt || "Are you sure you want to delete this story?";
-        var result = [
+        const result = [
             m("button", {
                 "class": "narrafirma-survey-delete-story-button",
                 onclick: function () {
@@ -526,7 +526,7 @@ export function buildSurveyForm(surveyDiv, questionnaire, doneCallback, surveyOp
             storyQuestionsPart
         ];
         
-        var evenOrOdd = (index % 2 === 1) ? "narrafirma-survey-story-odd" : "narrafirma-survey-story-even";
+        const evenOrOdd = (index % 2 === 1) ? "narrafirma-survey-story-odd" : "narrafirma-survey-story-even";
         // A locally unique key needs to be defined so Mithril can track deletions and inserts without rebuilding DOM nodes
         return m("div", {key: story.storyID, "class": "narrafirma-survey-story " + evenOrOdd}, <any>result); 
     }
@@ -537,8 +537,8 @@ export function buildSurveyForm(surveyDiv, questionnaire, doneCallback, surveyOp
             alert("Please add at least one story before proceeding."); // this is never used?
             return false;
         }
-        for (var i = 0; i < stories.length; i++) {
-            var story = stories[i];
+        for (let i = 0; i < stories.length; i++) {
+            const story = stories[i];
             if (!validateStoryQuestionsModel(story, i)) return false;
         }
         return true;
@@ -558,7 +558,7 @@ export function buildSurveyForm(surveyDiv, questionnaire, doneCallback, surveyOp
         console.log("Submit survey validated");
         
         // TODO: Fix no-longer-correct name from Dojo version
-        var wizardPane = {
+        const wizardPane = {
             forward: function () {
                 console.log("survey sending success" + (surveyOptions.previewMode ? " (preview)" : ""));
                 submitted = "success";
@@ -615,7 +615,7 @@ export function buildSurveyForm(surveyDiv, questionnaire, doneCallback, surveyOp
     }
 
     function questionNameForResultsPane(question) {
-        var questionName = "";
+        let questionName = "";
         if (question.displayType !== "header" && question.displayType !== "label") {
             questionName = "* " + question.displayPrompt;
         }
@@ -634,15 +634,15 @@ export function buildSurveyForm(surveyDiv, questionnaire, doneCallback, surveyOp
     }
 
     function surveyResultPane() {
-        var parts = [];
+        const parts = [];
         stories.forEach((story) => {
             allStoryQuestions.forEach((question) => {
-                var questionName = questionNameForResultsPane(question);
+                const questionName = questionNameForResultsPane(question);
                 if (questionName) parts.push(questionName);
                 if (question.id in story) {
-                    var response = story[question.id];
+                    const response = story[question.id];
                     if (typeof response == "object") {
-                        var answers = Object.keys(response);
+                        const answers = Object.keys(response);
                         for (const answer of answers) {
                             if (response[answer]) parts.push(answer);
                         }
@@ -654,12 +654,12 @@ export function buildSurveyForm(surveyDiv, questionnaire, doneCallback, surveyOp
             parts.push("");
         });
         participantQuestions.forEach((question) => {
-            var questionName = questionNameForResultsPane(question);
+            const questionName = questionNameForResultsPane(question);
             if (questionName) parts.push(questionName);
             if (question.id in surveyResult.participantData) {
-                var response = surveyResult.participantData[question.id];
+                const response = surveyResult.participantData[question.id];
                 if (typeof response == "object") {
-                    var answers = Object.keys(response);
+                    const answers = Object.keys(response);
                     for (const answer of answers) {
                         if (response[answer]) parts.push(answer);
                     }
@@ -678,7 +678,7 @@ export function buildSurveyForm(surveyDiv, questionnaire, doneCallback, surveyOp
         redraw();
     }
     
-    var tagsToMakeReadOnly = {
+    const tagsToMakeReadOnly = {
         "input": true,
         "select": true,
         "textarea": true,
@@ -693,7 +693,7 @@ export function buildSurveyForm(surveyDiv, questionnaire, doneCallback, surveyOp
         } 
        
         if (root instanceof Array) {
-            for (var i = 0; i < root.length; i++) {
+            for (let i = 0; i < root.length; i++) {
                 makeReadOnly(root[i], parent);
             }
             return;
@@ -724,12 +724,12 @@ export function buildSurveyForm(surveyDiv, questionnaire, doneCallback, surveyOp
         ]);
     }
 
-    var view = function() {
-        var imageHTML;
+    const view = function() {
+        let imageHTML;
         if (questionnaire.image) {
             imageHTML = "img[src='" + questionnaire.image + "'][class='narrafirma-survey-image']";
         }
-        var showSurveyResultPane = false;
+        let showSurveyResultPane = false;
         if (submitted === "success") {
             switch (questionnaire.showSurveyResultPane) {
                 case "never":
@@ -746,7 +746,7 @@ export function buildSurveyForm(surveyDiv, questionnaire, doneCallback, surveyOp
                     break;
             }
         }
-        var result = m("div", [
+        const result = m("div", [
             m(imageHTML || ""),
             startQuestions.map(function(question, index) {
                 return displayQuestion(null, null, question, questionnaire);

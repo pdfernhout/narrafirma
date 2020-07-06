@@ -4,7 +4,7 @@ import kludgeForUseStrict = require("../../kludgeForUseStrict");
 // TODO: Maybe store one set of diagrams for each type of question?
 // TODO: Maybe remove storiesList use and also supporting code?
 
-var panel: Panel = {
+const panel: Panel = {
     id: "page_createProjectStoryElements",
     displayName: "Create project story elements",
     tooltipText: "Work with your stories to think about how you should plan your project.",

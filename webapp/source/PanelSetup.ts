@@ -5,10 +5,10 @@ import m = require("mithril");
 "use strict";
 
 // The home page -- should be a constant
-var _startPage = "page_dashboard";
+const _startPage = "page_dashboard";
 
 // This will hold information about all the panels used
-var _panelSpecificationCollection = new PanelSpecificationCollection();
+const _panelSpecificationCollection = new PanelSpecificationCollection();
 
 export function startPage(): string {
     return _startPage;
@@ -22,12 +22,12 @@ function addExtraFieldSpecificationsForPageSpecification(pageID, pageSpecificati
     function addPageChangeButton(newPageID, idExtra, prompt, displayIconClass) {
         // TODO: Translate
         if (displayIconClass !== "homeButtonImage") {
-            var sectionPageSpecification = _panelSpecificationCollection.getPageSpecificationForPageID(newPageID);
+            const sectionPageSpecification = _panelSpecificationCollection.getPageSpecificationForPageID(newPageID);
             prompt += ": " + sectionPageSpecification.displayName;
         }
-        var iconPosition = "left";
+        let iconPosition = "left";
         if (displayIconClass === "rightButtonImage") iconPosition = "right";
-        var returnToDashboardButtonSpecification = {
+        const returnToDashboardButtonSpecification = {
             "id": pageID + idExtra,
             "valueType": "none",
             "displayPrompt": prompt,
@@ -48,8 +48,8 @@ function addExtraFieldSpecificationsForPageSpecification(pageID, pageSpecificati
         if (!pageSpecification.isHeader) {
             // TODO: Change the id of this field to have notes or reminder
             // Regular page -- add a footer where the page status can be set
-            var statusEntryID = pageID + "_reminders";
-            var completionStatusEntryFieldSpecification = {
+            const statusEntryID = pageID + "_reminders";
+            const completionStatusEntryFieldSpecification = {
                 id: statusEntryID,
                 valueType: "string",
                 displayType: "textarea",
@@ -64,19 +64,19 @@ function addExtraFieldSpecificationsForPageSpecification(pageID, pageSpecificati
         } else {
             // Dashboard page
             // Put in dashboard
-            var childPageIDs = _panelSpecificationCollection.getChildPageIDListForHeaderID(pageID);
+            let childPageIDs = _panelSpecificationCollection.getChildPageIDListForHeaderID(pageID);
             if (!childPageIDs) childPageIDs = [];
             // Add a display to this page for each child page in the same section
-            for (var childPageIndex = 0; childPageIndex < childPageIDs.length; childPageIndex++) {
-                var childPageID = childPageIDs[childPageIndex];
-                var statusViewID = childPageID + "_reminders_dashboard";
-                var childPageSpecification = _panelSpecificationCollection.getPageSpecificationForPageID(childPageID);
+            for (let childPageIndex = 0; childPageIndex < childPageIDs.length; childPageIndex++) {
+                const childPageID = childPageIDs[childPageIndex];
+                const statusViewID = childPageID + "_reminders_dashboard";
+                const childPageSpecification = _panelSpecificationCollection.getPageSpecificationForPageID(childPageID);
                 if (!childPageSpecification) console.log("Error: problem finding page definition for", childPageID);
                 if (childPageSpecification && childPageSpecification.displayType === "page") {
-                    var prompt = translate(childPageID + "::title", childPageSpecification.displayName);
-                    var tooltip = childPageSpecification.tooltipText || null;
+                    let prompt = translate(childPageID + "::title", childPageSpecification.displayName);
+                    const tooltip = childPageSpecification.tooltipText || null;
                     // Wrap the prompt as a link to the page
-                    var properties: any = {
+                    const properties: any = {
                         href: "javascript:narrafirma_openPage('" + childPageID + "')"
                     }
                     if (childPageSpecification.tooltipText) {
@@ -88,7 +88,7 @@ function addExtraFieldSpecificationsForPageSpecification(pageID, pageSpecificati
                     }
                     // + " " + translate("#dashboard_status_label", "reminders:")
                     // prompt = prompt  + " ";
-                    var completionStatusDisplayFieldSpecification = {
+                    const completionStatusDisplayFieldSpecification = {
                         id: statusViewID,
                         valueType: "none",
                         displayType: "questionAnswer",
@@ -119,11 +119,11 @@ function addExtraFieldSpecificationsForPageSpecification(pageID, pageSpecificati
 }
 
 export function processAllPanels() {
-    var panels = _panelSpecificationCollection.buildListOfPanels();
+    const panels = _panelSpecificationCollection.buildListOfPanels();
     
-    var lastPageID = null;
-    var panelIndex;
-    var panel;
+    let lastPageID = null;
+    let panelIndex;
+    let panel;
     
     // Loop to setup navigation
     for (panelIndex = 0; panelIndex < panels.length; panelIndex++) {
@@ -133,7 +133,7 @@ export function processAllPanels() {
         if (panel.displayType === "page") {
             // Make it easy to lookup previous and next pages from a page
             if (!panel.isHeader) {
-                var previousPage = _panelSpecificationCollection.getPageSpecificationForPageID(lastPageID);
+                const previousPage = _panelSpecificationCollection.getPageSpecificationForPageID(lastPageID);
                 previousPage.nextPageID = panel.id;
                 panel.previousPageID = lastPageID;
             }
@@ -141,8 +141,8 @@ export function processAllPanels() {
         }
     }
     
-    var lastHeader = null;
-    var lastSection = null;
+    let lastHeader = null;
+    let lastSection = null;
     
     // A separate loop is needed here to ensure page navigation links have been set up when determining additional buttons for pages
     for (panelIndex = 0; panelIndex < panels.length; panelIndex++) {
@@ -162,8 +162,8 @@ export function processAllPanels() {
         panel.helpPage = panel.id;
         panel.sectionHeaderPageID = lastHeader;
         
-        for (var fieldIndex = 0; fieldIndex < panel.panelFields.length; fieldIndex++) {
-            var fieldSpec = panel.panelFields[fieldIndex];
+        for (let fieldIndex = 0; fieldIndex < panel.panelFields.length; fieldIndex++) {
+            const fieldSpec = panel.panelFields[fieldIndex];
             fieldSpec.helpSection = lastSection;
             fieldSpec.helpPage = panel.id;
         }
@@ -172,10 +172,10 @@ export function processAllPanels() {
 
 // TODO: Temporary for generating JSON navigation data from AMD module
 function generateNavigationDataInJSON() {
-    var sections = [];
-    var sectionBeingProcessed;
-    var pageBeingProcessed;
-    var allPanels = _panelSpecificationCollection.buildListOfPanels();
+    const sections = [];
+    let sectionBeingProcessed;
+    let pageBeingProcessed;
+    const allPanels = _panelSpecificationCollection.buildListOfPanels();
     allPanels.forEach(function(panel) {
         if (panel.isHeader) {
             if (sectionBeingProcessed) sections.push(sectionBeingProcessed);
@@ -185,7 +185,7 @@ function generateNavigationDataInJSON() {
                 pages: []
             };
         }
-        var navigationInfo = {
+        const navigationInfo = {
             panelID: panel.id,
             panelName: panel.displayName
         };
@@ -206,7 +206,7 @@ function printModels() {
     
     console.log("models", _panelSpecificationCollection.modelClassToModelFieldSpecificationsMap);
     
-    var allModels = JSON.stringify(_panelSpecificationCollection.modelClassToModelFieldSpecificationsMap, null, 4);
+    const allModels = JSON.stringify(_panelSpecificationCollection.modelClassToModelFieldSpecificationsMap, null, 4);
     
     console.log("models JSON", allModels);
     

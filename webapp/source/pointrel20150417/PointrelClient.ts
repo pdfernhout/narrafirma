@@ -13,7 +13,7 @@
 
 // Ideally (future work), messages should be signed in the trace by the originator and/or
 // other certifying authorities as to the authenticity.
-// The signature process is intented in part to identify potentially unwanted messages from unknown or unauthenticated users).
+// The signature process is intended in part to identify potentially unwanted messages from unknown or unauthenticated users).
 
 // PCE in stored server files stands for "Pointrel Collected Event". :-)
 
@@ -24,12 +24,12 @@ import topic = require("./topic");
 
 "use strict";
 
-var defaultCheckFrequency_ms = 15000;
+const defaultCheckFrequency_ms = 15000;
 
-var shortTimeout_ms = 10000;
-var longTimeout_ms = 30000;
+const shortTimeout_ms = 10000;
+const longTimeout_ms = 30000;
 
-var debugMessaging = false;
+const debugMessaging = false;
 
 // TODO: Think more deeply about what server status can be, like states it transitions through
 // (perhaps startup, polling, loading, storing, waiting-to-poll, timed-out, recovering, etc.)
@@ -73,7 +73,7 @@ class PointrelClient {
     // This field is used to ensure only one request at a time is sent to the server
     outstandingServerRequestSentAtTimestamp = null;
     
-    // TODO: This flag may no longer be needed on the client libary side; app should implement something like it somehow?
+    // TODO: This flag may no longer be needed on the client library side; app should implement something like it somehow?
     serverResponseWarningIssued = false;
     
     lastReceivedTimestampConsidered = null;
@@ -119,7 +119,7 @@ class PointrelClient {
         this.userIdentifier = userCredentials.userIdentifier;
         
         // private variable to protect against access by other code; see: http://javascript.crockford.com/private.html
-        var _userCredentials = userCredentials;
+        const _userCredentials = userCredentials;
         
         // privileged method that can access private variable
         this["_prepareApiRequestForSending"] = function(apiRequest) {
@@ -168,7 +168,7 @@ class PointrelClient {
     
     /*
     createAndSendAddTriplesMessage(topicIdentifier, triples) {
-        var change = {
+        const change = {
             action: "addTriples",
             triples: triples
         };
@@ -178,13 +178,13 @@ class PointrelClient {
     */
     
     apiRequestSend(apiRequest, timeout_ms, successCallback, errorCallback) {
-        var httpRequest = new XMLHttpRequest();
+        const httpRequest = new XMLHttpRequest();
         
         httpRequest.onreadystatechange = function() {
             if (httpRequest.readyState === 4) {
                 if (httpRequest.status >= 200 && httpRequest.status < 300) {
                     if (successCallback) {
-                        var response = JSON.parse(httpRequest.responseText);
+                        const response = JSON.parse(httpRequest.responseText);
                         successCallback(response);
                     }
                 } else {
@@ -198,11 +198,11 @@ class PointrelClient {
              errorCallback({status: 0, message: "Timeout"});
         };
         
-        var isWordPressAJAX = !!window["ajaxurl"];
+        const isWordPressAJAX = !!window["ajaxurl"];
            
-        var apiURL = this.apiURL;
-        var contentType = 'application/json; charset=utf-8';
-        var data = JSON.stringify(apiRequest);
+        let apiURL = this.apiURL;
+        const contentType = 'application/json; charset=utf-8';
+        const data = JSON.stringify(apiRequest);
         
         if (isWordPressAJAX) {
             apiURL = apiURL + "?action=pointrel20150417";
@@ -218,9 +218,9 @@ class PointrelClient {
     }
     
     createChangeMessage(topicIdentifier, messageType, change, other): Message {
-        var timestamp = this.getCurrentUniqueTimestamp();
+        const timestamp = this.getCurrentUniqueTimestamp();
         
-        var message: Message = {
+        const message: Message = {
             // TODO: Simplify redundancy in timestamps
             _topicIdentifier: topicIdentifier,
             _topicTimestamp: timestamp,
@@ -233,7 +233,7 @@ class PointrelClient {
         };
         
         if (other) {
-            for (var key in other) {
+            for (const key in other) {
                 message[key] = other[key];
             }
         }
@@ -242,7 +242,7 @@ class PointrelClient {
     }
     
     createAndSendChangeMessage(topicIdentifier, messageType, change, other, callback) {
-        var message = this.createChangeMessage(topicIdentifier, messageType, change, other);
+        const message = this.createChangeMessage(topicIdentifier, messageType, change, other);
         this.sendMessage(message, callback);
      
         return message;
@@ -254,7 +254,7 @@ class PointrelClient {
         
         // Calculate the sha256AndLength without the pointrel fields
         delete message.__pointrel_sha256AndLength;
-        var oldTrace = message.__pointrel_trace;
+        let oldTrace = message.__pointrel_trace;
         delete message.__pointrel_trace;
         message.__pointrel_sha256AndLength = PointrelClient.makeSHA256AndLength(PointrelClient.calculateCanonicalSHA256AndLengthForObject(message));
         // TODO: Maybe should put in local sender information here?
@@ -262,7 +262,7 @@ class PointrelClient {
         message.__pointrel_trace = oldTrace;
         
         // TODO: What should really go in this trace entry if anything???
-        var traceEntry = {
+        const traceEntry = {
             // TODO: Should sentBy be used???
             sentByClient: this.userIdentifier,
             // TODO: Should the journalIdentifier really be split from the URL?
@@ -272,7 +272,7 @@ class PointrelClient {
         };
         message.__pointrel_trace.push(traceEntry);
         
-        var previouslySent = this.sha256AndLengthToMessageMap[message.__pointrel_sha256AndLength];
+        const previouslySent = this.sha256AndLengthToMessageMap[message.__pointrel_sha256AndLength];
         if (previouslySent) {
             console.log("A message with the same sha256AndLength was previously received (supplied/existing)", message, previouslySent);
             throw new Error("Trying to send a message with the same sha256AndLength of a message previously received");
@@ -298,7 +298,7 @@ class PointrelClient {
     }
     
     fetchLatestMessageForTopic(topicIdentifier, callback) {
-        var self = this;
+        const self = this;
         if (this.apiURL === "loopback") {
             callback(null, {
                 success: true, 
@@ -319,7 +319,7 @@ class PointrelClient {
         } else {
             // Send to a real server immediately
     
-            var apiRequest = {
+            const apiRequest = {
                 action: "pointrel20150417_queryForLatestMessage",
                 journalIdentifier: this.journalIdentifier,
                 topicIdentifier: topicIdentifier
@@ -363,7 +363,7 @@ class PointrelClient {
         } else {
             // Send to a real server immediately
     
-            var apiRequest = {
+            const apiRequest = {
                 action: "pointrel20150417_createJournal",
                 journalIdentifier: journalIdentifier
             };
@@ -373,7 +373,7 @@ class PointrelClient {
             // Do not set outstandingServerRequestSentAtTimestamp as this is an immediate request that does not block polling
             this.serverStatus("waiting", "requesting createJournal " + new Date().toISOString());
             
-            var self = this;
+            const self = this;
             this.apiRequestSend(apiRequest, shortTimeout_ms, function(response) {
                 if (debugMessaging) console.log("Got createJournal response", response);
                 if (!response.success) {
@@ -407,7 +407,7 @@ class PointrelClient {
         } else {
             // Send to a real server immediately
     
-            var apiRequest = {
+            const apiRequest = {
                 action: "pointrel20150417_resetJournal",
                 journalIdentifier: journalIdentifier
             };
@@ -417,7 +417,7 @@ class PointrelClient {
             // Do not set outstandingServerRequestSentAtTimestamp as this is an immediate request that does not block polling
             this.serverStatus("waiting", "requesting resetJournal " + new Date().toISOString());
             
-            var self = this;
+            const self = this;
             this.apiRequestSend(apiRequest, shortTimeout_ms, function(response) {
                 if (debugMessaging) console.log("Got resetJournal response", response);
                 if (!response.success) {
@@ -452,7 +452,7 @@ class PointrelClient {
         } else {
             // Send to a real server immediately
     
-            var apiRequest = {
+            const apiRequest = {
                 action: "pointrel20150417_hideJournal",
                 journalIdentifier: journalIdentifier
             };
@@ -462,7 +462,7 @@ class PointrelClient {
             // Do not set outstandingServerRequestSentAtTimestamp as this is an immediate request that does not block polling
             this.serverStatus("waiting", "requesting hideJournal " + new Date().toISOString());
             
-            var self = this;
+            const self = this;
             this.apiRequestSend(apiRequest, shortTimeout_ms, function(response) {
                 if (debugMessaging) console.log("Got hideJournal response", response);
                 if (!response.success) {
@@ -508,7 +508,7 @@ class PointrelClient {
         } else {
             // Send to a real server immediately
     
-            var apiRequest = {
+            const apiRequest = {
                 action: "pointrel20150417_reportJournalStatus",
                 journalIdentifier: this.journalIdentifier
             };
@@ -518,7 +518,7 @@ class PointrelClient {
             // Do not set outstandingServerRequestSentAtTimestamp as this is an immediate request that does not block polling
             this.serverStatus("waiting", "requesting journal status " + new Date().toISOString());
             
-            var self = this;
+            const self = this;
             this.apiRequestSend(apiRequest, shortTimeout_ms, function(response) {
                 if (debugMessaging) console.log("Got journal status response", response);
                 if (!response.success) {
@@ -550,7 +550,7 @@ class PointrelClient {
         } else {
             // Send to a real server immediately
     
-            var apiRequest = {
+            const apiRequest = {
                 action: "pointrel20150417_currentUserInformation"
             };
             if (debugMessaging) console.log("sending currentUserInformation request", apiRequest);
@@ -559,7 +559,7 @@ class PointrelClient {
             // Do not set outstandingServerRequestSentAtTimestamp as this is an immediate request that does not block polling
             this.serverStatus("waiting", "requesting current user information " + new Date().toISOString());
             
-            var self = this;
+            const self = this;
             this.apiRequestSend(apiRequest, shortTimeout_ms, function(response) {
                 if (debugMessaging) console.log("Got currentUserInformation response", response);
                 if (!response.success) {
@@ -580,9 +580,9 @@ class PointrelClient {
     
     latestMessageForTopic(topicIdentifier) {
         // TODO: Inefficient to search all messages; keep sorted message list per topic or just track latest for each topic?
-        var messages = this.messagesSortedByReceivedTimeArray;
-        for (var i = messages.length - 1; i >= 0; i--) {
-            var message = messages[i];
+        const messages = this.messagesSortedByReceivedTimeArray;
+        for (let i = messages.length - 1; i >= 0; i--) {
+            const message = messages[i];
             if (message._topicIdentifier === topicIdentifier) {
                 return message;
             }
@@ -616,10 +616,10 @@ class PointrelClient {
     
     static copyObjectWithSortedKeys(object) {
         if (PointrelClient.isObject(object)) {
-            var newObj = {};
-            var keysSorted = Object.keys(object).sort();
-            var key;
-            for (var i = 0, len = keysSorted.length; i < len; i++) {
+            const newObj = {};
+            const keysSorted = Object.keys(object).sort();
+            let key;
+            for (let i = 0, len = keysSorted.length; i < len; i++) {
                 key = keysSorted[i];
                 newObj[key] = PointrelClient.copyObjectWithSortedKeys(object[key]);
             }
@@ -641,34 +641,34 @@ class PointrelClient {
     
     static calculateCanonicalSHA256AndLengthForObject(someObject, doNotSortFlag = false) {
         if (!doNotSortFlag) someObject = PointrelClient.copyObjectWithSortedKeys(someObject);
-        var minimalJSON = JSON.stringify(someObject);
-        // var buffer = new Buffer(minimalJSON, "utf8");
+        const minimalJSON = JSON.stringify(someObject);
+        // const buffer = new Buffer(minimalJSON, "utf8");
         // console.log("minimalJSON", minimalJSON);
         
-        //var max = 0;
-        //for (var i = 0; i < minimalJSON.length; i++) {
-        //    var c = minimalJSON.charAt(i);
+        //const max = 0;
+        //for (const i = 0; i < minimalJSON.length; i++) {
+        //    const c = minimalJSON.charAt(i);
         //    if (minimalJSON.charCodeAt(i) > 127) console.log("i # c", i, minimalJSON.charCodeAt(i), c);
         //    if (minimalJSON.charCodeAt(i) > max) max = minimalJSON.charCodeAt(i);
         //}
         //console.log("max", max);
         
-        var utf8String = stringToUtf8(minimalJSON);
+        const utf8String = stringToUtf8(minimalJSON);
         //console.log("utf8String", utf8String);
         // console.log("match?", minimalJSON === utf8String, "minimal length", minimalJSON.length, "utf8 length", utf8String.length);
-        //for (var i = 0; i < minimalJSON.length; i++) {
+        //for (const i = 0; i < minimalJSON.length; i++) {
         //    console.log("char at i", i, minimalJSON[i]);
         //}
         
         /*
-        var shaObj = new JS_SHA("SHA-256", "TEXT");
+        const shaObj = new JS_SHA("SHA-256", "TEXT");
         shaObj.update(minimalJSON);
         // console.log("Without string conversion", shaObj.getHash("HEX"));
         */
         
-        var sha256 = PointrelClient.calculateSHA256(minimalJSON);
-        var length = utf8String.length;
-        var sha256AndLength = "" + sha256 + "_" + length;
+        const sha256 = PointrelClient.calculateSHA256(minimalJSON);
+        const length = utf8String.length;
+        const sha256AndLength = "" + sha256 + "_" + length;
         return {sha256: "" + sha256, length: length};
     }
     
@@ -681,10 +681,10 @@ class PointrelClient {
     // In theory, if the server were to be stopped and be restarted in the same millisecond, these values could overlap for a millisecond in the new session
     static getCurrentUniqueTimestamp() {
         // TODO: Add random characters at end of number part of timestamp before Z
-        var currentTimestamp = new Date().toISOString();
+        let currentTimestamp = new Date().toISOString();
         
-        var randomNumber = Math.floor(Math.random() * 1000);
-        var randomPadding = (PointrelClient.timestampRandomPadding + randomNumber).slice(-(PointrelClient.timestampRandomPadding.length));
+        const randomNumber = Math.floor(Math.random() * 1000);
+        const randomPadding = (PointrelClient.timestampRandomPadding + randomNumber).slice(-(PointrelClient.timestampRandomPadding.length));
         
         if (PointrelClient.lastTimestamp !== currentTimestamp) {
             PointrelClient.lastTimestamp = currentTimestamp;
@@ -704,7 +704,7 @@ class PointrelClient {
             // to the next millisecond before the timestamp's final text value is determined
             console.log("getCurrentUniqueTimestamp: failure with timestamp padding from fast CPU -- add more timestamp padding");
         }
-        var extraDigits = (PointrelClient.timestampIncrementPadding + PointrelClient.lastTimestampIncrement).slice(-(PointrelClient.timestampIncrementPadding.length));
+        const extraDigits = (PointrelClient.timestampIncrementPadding + PointrelClient.lastTimestampIncrement).slice(-(PointrelClient.timestampIncrementPadding.length));
         currentTimestamp = currentTimestamp.replace("Z", extraDigits +  randomPadding + "Z");
         return currentTimestamp;
     }
@@ -714,16 +714,16 @@ class PointrelClient {
     // ------------- Internal methods below not meant to be called by users
     
     private sendOutgoingMessage() {
-        var callback;
+        let callback;
         if (debugMessaging) console.log("sendOutgoingMessage");
         if (this.outgoingMessageQueue.length === 0) return;
         if (debugMessaging) console.log("sendOutgoingMessage proceeding");
         
-        var self = this;
+        const self = this;
         if (this.apiURL === "loopback" || this.areOutgoingMessagesSuspended) {
             // Pretend to send all the outgoing messages we have
             while (this.outgoingMessageQueue.length) {
-                var loopbackMessage = this.outgoingMessageQueue.shift();
+                const loopbackMessage = this.outgoingMessageQueue.shift();
                 callback = loopbackMessage.__pointrel_callback;
                 if (callback !== undefined) delete loopbackMessage.__pointrel_callback;
                 this.messageSentCount++;
@@ -739,11 +739,11 @@ class PointrelClient {
 
             // If this fails, and there is no callback, this will leave message on outgoing queue (unless it was rejected for some reason)
             // If there is a callback, the message will be discarded as presumably the caller will handle resending it
-            var message = this.outgoingMessageQueue[0];
+            const message = this.outgoingMessageQueue[0];
             callback = message.__pointrel_callback;
             if (callback !== undefined) delete message.__pointrel_callback;
            
-            var apiRequest = {
+            const apiRequest = {
                 action: "pointrel20150417_storeMessage",
                 journalIdentifier: this.journalIdentifier,
                 message: message
@@ -775,7 +775,7 @@ class PointrelClient {
                     
                     // TODO: Should we not discard messages for an internal server error (500)?
                     if (response.statusCode !== "403") {
-                        // Discard all problematical messages except for ones that are not authenticated and might succeed if resent after (re)authetication
+                        // Discard all problematical messages except for ones that are not authenticated and might succeed if resent after (re)authentication
                         self.outgoingMessageQueue.shift();
                         self.serverStatus("failure-loss", "Data loss from message store failure: " + response.statusCode + " :: " + response.description);
                     }
@@ -788,7 +788,7 @@ class PointrelClient {
     
                 // Keep sending outgoing messages if there are any more, or do other task as needed
                 // Do this as a timeout so the event loop can finish its cycle first
-                // Only do this if polling has been started; otherwis just assume user is sending individual messages
+                // Only do this if polling has been started; otherwise just assume user is sending individual messages
                 if (callback) callback(null, response);
                 if (self.started) {
                     setTimeout(function () {
@@ -830,7 +830,7 @@ class PointrelClient {
         if (!message.__pointrel_trace) message.__pointrel_trace = [];
         
         // TODO: Still unsure about how to implement trace???
-        var traceEntry = {
+        const traceEntry = {
            // TODO: Should receivedBy be used???
             receivedByClient: this.userIdentifier,
             // TODO: Should the journalIdentifier really be split from the URL?
@@ -870,7 +870,7 @@ class PointrelClient {
         }
     }
     
-    // In addition to doing polling if there are no other messages to send or recieve,
+    // In addition to doing polling if there are no other messages to send or receive,
     // the timer will give everything a kick to get going again shortly after something errors out
     private timerSentSignal() {
         // if (debugMessaging) console.log(new Date().toISOString(), "should do check now for new messages", this);
@@ -909,13 +909,13 @@ class PointrelClient {
         if (this.outstandingServerRequestSentAtTimestamp) {
             // TODO: Warn if connection seems to have failed
             console.log("Still waiting on previous server request");
-            var waiting_ms = new Date().getTime() - this.outstandingServerRequestSentAtTimestamp.getTime();
+            const waiting_ms = new Date().getTime() - this.outstandingServerRequestSentAtTimestamp.getTime();
             console.log("Have been waiting on server for waiting_ms", waiting_ms);
             if (waiting_ms > 10000) {
                 // Should never get here if timeout is 2000ms and timers get the process restarted
                 if (!this.serverResponseWarningIssued) {
                     console.log("Server not responding");
-                    this.serverStatus("falure", "The server is not responding...");
+                    this.serverStatus("failure", "The server is not responding...");
                     this.serverResponseWarningIssued = true;
                 }
             }
@@ -923,7 +923,7 @@ class PointrelClient {
         }
         
         if (debugMessaging) console.log("Polling server for changes...");
-        var apiRequest = {
+        const apiRequest = {
             action: "pointrel20150417_queryForNextMessage",
             journalIdentifier: this.journalIdentifier,
             fromTimestampExclusive: this.lastReceivedTimestampConsidered,
@@ -942,7 +942,7 @@ class PointrelClient {
         this.outstandingServerRequestSentAtTimestamp = new Date();
         this.serverStatus("waiting", "polling " + this.outstandingServerRequestSentAtTimestamp);
         
-        var self = this;
+        const self = this;
          // Use longer timeout to account for reading multiple records on server
         this.apiRequestSend(apiRequest, longTimeout_ms, function(response) {
             if (debugMessaging) console.log("Got query response", response);
@@ -951,8 +951,8 @@ class PointrelClient {
                 self.serverStatus("failure", "Polling response failure: " + response.statusCode + " :: " + response.description);
             } else {
                 self.okStatus();
-                for (var i = 0; i < response.receivedRecords.length; i++) {
-                    var receivedRecord = response.receivedRecords[i];
+                for (let i = 0; i < response.receivedRecords.length; i++) {
+                    const receivedRecord = response.receivedRecords[i];
                     // if (debugMessaging) console.log("New message", receivedRecord);
                     if (receivedRecord.messageContents !== undefined) {
                         /// console.log("got contents directly", receivedRecord);
@@ -978,7 +978,7 @@ class PointrelClient {
                 }, 0);
             } else {
                 if (self.idleCallback) {
-                    var callback = self.idleCallback;
+                    const callback = self.idleCallback;
                     self.idleCallback = null;
                     console.log("Doing one-time idle callback");
                     callback();
@@ -999,7 +999,7 @@ class PointrelClient {
         }
         if (this.outstandingServerRequestSentAtTimestamp) return;
         if (debugMessaging) console.log("Trying to fetch incoming message");
-        var incomingMessageRecord = this.incomingMessageRecords[0];
+        const incomingMessageRecord = this.incomingMessageRecords[0];
         
         if (incomingMessageRecord.messageContents) {
             this.incomingMessageRecords.shift();
@@ -1010,7 +1010,7 @@ class PointrelClient {
         
         if (debugMessaging) console.log("Retrieving new message...");
         
-        var apiRequest = {
+        const apiRequest = {
             action: "pointrel20150417_loadMessage",
             journalIdentifier: this.journalIdentifier,
             sha256AndLength: incomingMessageRecord.sha256AndLength,
@@ -1026,7 +1026,7 @@ class PointrelClient {
         this.outstandingServerRequestSentAtTimestamp = new Date();
         this.serverStatus("waiting", "loading " + this.outstandingServerRequestSentAtTimestamp);
         
-        var self = this;
+        const self = this;
         this.apiRequestSend(apiRequest, shortTimeout_ms, function(response) {
             self.okStatus();
             if (debugMessaging) console.log("Got load response", response);
@@ -1038,7 +1038,7 @@ class PointrelClient {
                 self.serverStatus("failure", "Message retrieval failure: " + response.statusCode + " :: " + response.description);
                 // TODO: Just assuming that this was an error that the item is not available, as opposed to authentication error or other
                 // TODO: so assuming it is OK to discard it from incomingMessageRecords
-                // TODO: maybe also want to move record to an unavalible records list?
+                // TODO: maybe also want to move record to an unavailable records list?
             } else {
                 self.messageReceived(response.message);
             }

@@ -20,18 +20,18 @@ function closeCopyCollisionTextDialogClicked(text, hideDialogMethod) {
 }
 
 function optionsForSelect(panelBuilder: PanelBuilder, model, fieldSpecification, currentValue, addNoSelectionOption) {
-    var specifiedChoices = fieldSpecification.valueOptions;
-    var choices = specifiedChoices;
+    const specifiedChoices = fieldSpecification.valueOptions;
+    let choices = specifiedChoices;
     
     if (_.isString(specifiedChoices)) {
         choices = valuePathResolver.newValuePath(model, specifiedChoices)();
         if (_.isString(choices)) {
-            // Build choices by making items using tripelStore set
-            var choiceItems = [];
-            var choiceSet = Globals.project().tripleStore.getListForSetIdentifier(choices);
-            for (var i = 0; i < choiceSet.length; i++) {
-                var choiceIdentifier = choiceSet[i];
-                var item = Globals.project().tripleStore.makeObject(choiceIdentifier, true);
+            // Build choices by making items using tripleStore set
+            const choiceItems = [];
+            const choiceSet = Globals.project().tripleStore.getListForSetIdentifier(choices);
+            for (let i = 0; i < choiceSet.length; i++) {
+                const choiceIdentifier = choiceSet[i];
+                const item = Globals.project().tripleStore.makeObject(choiceIdentifier, true);
                 choiceItems.push(item);
             }
             choices = choiceItems;
@@ -43,17 +43,17 @@ function optionsForSelect(panelBuilder: PanelBuilder, model, fieldSpecification,
         return [];
     }
 
-    var isValueInChoices = false;
+    let isValueInChoices = false;
     
-    var options = [];
+    const options = [];
     
     // '-- select --'
     if (addNoSelectionOption) options.push({name: translate("#selection_has_not_been_made|(no selection)"), value: "", selected: !currentValue});
     
     choices.forEach(function(each) {
-        var label;
-        var value;
-        var selected;
+        let label;
+        let value;
+        let selected;
         if (_.isString(each)) {
             label = translate(fieldSpecification.id + "::selection:" + each, each);
             options.push({name: label, value: each});
@@ -91,18 +91,18 @@ function optionsForSelect(panelBuilder: PanelBuilder, model, fieldSpecification,
     return options;
 }
 
-var displayTypesWithoutValues = {
+const displayTypesWithoutValues = {
     label: true,
     header: true
 };
 
 export function displayQuestion(panelBuilder: PanelBuilder, model, fieldSpecification) {
-    var fieldID = fieldSpecification.id;
+    const fieldID = fieldSpecification.id;
 
-    var displayType = fieldSpecification.displayType;
-    var questionLabel = panelBuilder.buildQuestionLabel(fieldSpecification);
+    const displayType = fieldSpecification.displayType;
+    let questionLabel = panelBuilder.buildQuestionLabel(fieldSpecification);
 
-    var useNormalDivs = typeof fieldSpecification.displayWithoutQuestionDivs === "undefined" || !fieldSpecification.displayWithoutQuestionDivs;
+    const useNormalDivs = typeof fieldSpecification.displayWithoutQuestionDivs === "undefined" || !fieldSpecification.displayWithoutQuestionDivs;
     
     function makeLabel() {
         // The for attribute of the label element must refer to a form control.
@@ -110,23 +110,23 @@ export function displayQuestion(panelBuilder: PanelBuilder, model, fieldSpecific
         questionLabel[0].tag = "label";
     }
     
-    var parts: any = [];
+    let parts: any = [];
     function makeLegend() {
         // Do nothing for now
         parts.unshift(m("legend", questionLabel[0]));
         questionLabel = [];
     }
     
-    var valueProperty = valuePathResolver.newValuePathForFieldSpecification(model, fieldSpecification);
+    const valueProperty = valuePathResolver.newValuePathForFieldSpecification(model, fieldSpecification);
 
     // Only fetch value if the field needs it
-    var value;
+    let value;
     if (!displayTypesWithoutValues[displayType]) {
         value = valueProperty();
     }
     if (value === undefined) value = "";
 
-    // if someone has been working in a textarea and has written a lot of text, and it is about to be ovewritten because somebody else was doing the same thing,
+    // if someone has been working in a textarea and has written a lot of text, and it is about to be overwritten because somebody else was doing the same thing,
     // show them both texts so they can resolve the conflict
     if (displayType === "textarea") {
         if (clientState.anHTMLElementValueIsBeingSetBecauseOfAnIncomingMessage()) {
@@ -158,11 +158,11 @@ export function displayQuestion(panelBuilder: PanelBuilder, model, fieldSpecific
         return value === undefined || value === null || value === "";
     }
     
-    var readOnly = panelBuilder.readOnly || fieldSpecification.displayReadOnly || (fieldSpecification.valueImmutable && value) || undefined;
-    // var disabled = (readOnly && displayType === "select") || undefined;
-    var disabled = readOnly || undefined;
+    const readOnly = panelBuilder.readOnly || fieldSpecification.displayReadOnly || (fieldSpecification.valueImmutable && value) || undefined;
+    // const disabled = (readOnly && displayType === "select") || undefined;
+    const disabled = readOnly || undefined;
 
-    var standardValueOptions = {
+    const standardValueOptions = {
         value: value,
         id: getIdForText(fieldID),
         onchange: change,
@@ -211,7 +211,7 @@ export function displayQuestion(panelBuilder: PanelBuilder, model, fieldSpecific
         ];
     } else if (displayType === "checkbox") {
         makeLabel();
-        var checkboxText = "";
+        let checkboxText = "";
         if (fieldSpecification.displayConfiguration) {
             checkboxText = fieldSpecification.displayConfiguration;
         }
@@ -237,14 +237,14 @@ export function displayQuestion(panelBuilder: PanelBuilder, model, fieldSpecific
         // to be stored as strings instead of dictionaries
         // this will convert the string to a dictionary without losing the (one) value that was set
         } else if (typeof(value) === "string") {
-            var option = value;
+            const option = value;
             value = {}
             value[option] = true;
             change(null, value);
         }
         parts = [
             fieldSpecification.valueOptions.map(function (option, index) {
-                var optionID = getIdForText(fieldID + "_" + option);
+                const optionID = getIdForText(fieldID + "_" + option);
                 return [
                     m("input[type=checkbox]", {
                         id: optionID, 
@@ -267,7 +267,7 @@ export function displayQuestion(panelBuilder: PanelBuilder, model, fieldSpecific
         delete questionLabel[0].attrs["for"];
         parts = [
             fieldSpecification.valueOptions.map(function (option, index) {
-                var optionID = getIdForText(fieldID + "_" + option);
+                const optionID = getIdForText(fieldID + "_" + option);
                 return [
                     m("input[type=radio]", {
                         id: optionID, 
@@ -311,9 +311,9 @@ export function displayQuestion(panelBuilder: PanelBuilder, model, fieldSpecific
         parts = [m("fieldset", parts)];
     } else if (displayType === "select") {
         makeLabel();
-        var selectOptionsRaw = optionsForSelect(panelBuilder, model, fieldSpecification, value, true);
-        var selectOptions = selectOptionsRaw.map(function (option, index) {
-            var optionOptions = {value: option.value, selected: undefined};
+        const selectOptionsRaw = optionsForSelect(panelBuilder, model, fieldSpecification, value, true);
+        const selectOptions = selectOptionsRaw.map(function (option, index) {
+            const optionOptions = {value: option.value, selected: undefined};
             if (option.selected) optionOptions.selected = 'selected';
             return m("option", optionOptions, option.name);
         });
@@ -324,8 +324,8 @@ export function displayQuestion(panelBuilder: PanelBuilder, model, fieldSpecific
         ];
     } else if (displayType === "slider") {
         makeLabel();
-        var checkboxID = getIdForText(fieldID) + "_doesNotApply";
-        var sliderValueOptions = {
+        const checkboxID = getIdForText(fieldID) + "_doesNotApply";
+        const sliderValueOptions = {
             value: value,
             id: getIdForText(fieldID),
             onchange: change,
@@ -336,9 +336,9 @@ export function displayQuestion(panelBuilder: PanelBuilder, model, fieldSpecific
             step: 1
         };
         
-        var leftSideText = "";
-        var rightSideText = "";
-        var doesNotApplyText = "Does not apply";
+        let leftSideText = "";
+        let rightSideText = "";
+        let doesNotApplyText = "Does not apply";
         if (fieldSpecification.displayConfiguration) {
             if (fieldSpecification.displayConfiguration.length > 1) {
                 leftSideText = fieldSpecification.displayConfiguration[0];
@@ -357,8 +357,8 @@ export function displayQuestion(panelBuilder: PanelBuilder, model, fieldSpecific
             m('span', {"class": "narrafirma-survey-high"}, rightSideText + " ▶"),
             m("br"),
             m("span", {"class": "narrafirma-survey-value", onclick: function(event) {
-                var newValueText = prompt("Type a new value", value);
-                var newValue = parseInt(newValueText);
+                const newValueText = prompt("Type a new value", value);
+                const newValue = parseInt(newValueText);
                 if (newValue && newValue >= 0 && newValue <= 100) { 
                     sliderValueOptions.value = newValue;
                     valueProperty("" + newValue); 
@@ -369,7 +369,7 @@ export function displayQuestion(panelBuilder: PanelBuilder, model, fieldSpecific
                 id: checkboxID,
                 checked: isEmpty(sliderValueOptions.value),
                 onclick: function(event) { 
-                    var isChecked = event.target.checked; 
+                    const isChecked = event.target.checked; 
                     if (isChecked) { 
                         valueProperty(""); 
                     } else {
@@ -394,8 +394,8 @@ export function displayQuestion(panelBuilder: PanelBuilder, model, fieldSpecific
         parts = questionLabel.concat(parts);
     }
     
-    var classString = "questionExternal";
-    var isAnnotationQuestion = fieldSpecification.id.indexOf("A_") >= 0;
+    let classString = "questionExternal";
+    const isAnnotationQuestion = fieldSpecification.id.indexOf("A_") >= 0;
     if (isAnnotationQuestion) classString += "-annotation"; 
     classString += " narrafirma-question-type-" + displayType;
     

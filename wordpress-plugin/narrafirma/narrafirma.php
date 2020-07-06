@@ -683,7 +683,7 @@ function pointrel20150417_queryForNextMessage($apiRequest) {
     // messageContents
     
     /*
-    var receivedRecordForClient = {
+    const receivedRecordForClient = {
         receivedTimestamp: receivedRecord.receivedTimestamp,
         sha256AndLength: receivedRecord.sha256AndLength,
         topicSHA256: receivedRecord.topicSHA256,

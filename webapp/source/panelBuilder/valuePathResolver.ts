@@ -5,7 +5,7 @@ import Globals = require("../Globals");
 
 /*
 ValuePathResolver helps with getting and setting values that are nested inside multiple objects.
-It also helps with getting and setting valeus stores in a triple store.
+It also helps with getting and setting values in a triple store.
 
 ValuePathResolver will start from a supplied baseModel and sequentially move along a series of fields
 defined in a valuePath string and separated by slashes.
@@ -13,8 +13,8 @@ It resolves the object at each position in the path and uses that to resolve the
 
 If the baseModel is a string instead of a JavaScript objects,
 it uses that as the "A" field of a triple to use with a triple store lookup.
-In that case, the "B" field of the tripel is the field in the value path.
-If a value is beign set, the "C" field in the triple is the new value being set, and A and B are the same as for the lookup.
+In that case, the "B" field of the triple is the field in the value path.
+If a value is being set, the "C" field in the triple is the new value being set, and A and B are the same as for the lookup.
 
 If part of a path is a function, it uses that function to get the field's value -- or set the value, if it is the final field.
 
@@ -43,14 +43,14 @@ class ValuePathResolver {
     }
     
     resolveModelAndField() {
-        var currentModel = this.baseModel;
-        var currentKey: string;
+        let currentModel = this.baseModel;
+        let currentKey: string;
         
         // Parse the dependency path
-        var pathParts = this.valuePath.split("/");
+        const pathParts = this.valuePath.split("/");
         
-        var isGlobalReference = false;
-        var useTripleStore = false;
+        let isGlobalReference = false;
+        let useTripleStore = false;
         
         // If the path starts with "/", use the context as the model
         if (pathParts[0] === "") {
@@ -73,9 +73,9 @@ class ValuePathResolver {
                 useTripleStore = true;
             }
             
-            var nextModel;
-            var currentModelDirectFieldValue = currentModel[currentKey];
-            var useAccessorFunction = !useTripleStore && typeof currentModelDirectFieldValue === "function";
+            let nextModel;
+            const currentModelDirectFieldValue = currentModel[currentKey];
+            const useAccessorFunction = !useTripleStore && typeof currentModelDirectFieldValue === "function";
             
             if (useTripleStore) {
                 this.failIfAccessFunctionRequired();
@@ -104,8 +104,8 @@ class ValuePathResolver {
             useTripleStore = true;
         }
         
-        var field = pathParts[0];
-        var result = {
+        const field = pathParts[0];
+        const result = {
             model: currentModel,
             field: field,
             isGlobalReference: isGlobalReference,
@@ -116,13 +116,13 @@ class ValuePathResolver {
     }
     
     resolve(value = undefined): any {
-        var modelAndField = this.resolveModelAndField();
+        const modelAndField = this.resolveModelAndField();
         if (!modelAndField) {
             console.log("ERROR: modelAndField is undefined or null", this);
             return null;
         }
-        var modelFieldDirectValue = modelAndField.model[modelAndField.field];
-        var useAccessorFunction = !modelAndField.useTripleStore && typeof modelFieldDirectValue === "function";
+        const modelFieldDirectValue = modelAndField.model[modelAndField.field];
+        const useAccessorFunction = !modelAndField.useTripleStore && typeof modelFieldDirectValue === "function";
         
         if (value !== undefined) {
             if (modelAndField === undefined) {
@@ -168,12 +168,12 @@ class ValuePathResolver {
 }
 
 export function newValuePathForFieldSpecification(model, fieldSpecification) {
-    var valuePath: string = fieldSpecification.valuePath;
+    let valuePath: string = fieldSpecification.valuePath;
     if (!valuePath) valuePath = fieldSpecification.id;
     return newValuePath(model, valuePath);
 }
 
 export function newValuePath(model, valuePath: string): Function {
-    var valuePathResolver = new ValuePathResolver(model, valuePath);
+    const valuePathResolver = new ValuePathResolver(model, valuePath);
     return valuePathResolver.resolve.bind(valuePathResolver);
 }

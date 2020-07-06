@@ -12,7 +12,7 @@ Permission from Cynthia F. Kurtz is required to use the NarraFirma name or logo 
 
 We will grant permission to use the NarraFirma name and logo for projects that meet the following criteria:
 
-    The primary purpose of your project is to promote the spread and improvement of the NarraFirma software. This includes creating versions of NarraFirma hosted on GitHub and which clearly represent the origins and original authorship of the software (inlcuding a link back to the main narrafirma.com site) and which are substantially similar in purpose and scope.
+    The primary purpose of your project is to promote the spread and improvement of the NarraFirma software. This includes creating versions of NarraFirma hosted on GitHub and which clearly represent the origins and original authorship of the software (including a link back to the main narrafirma.com site) and which are substantially similar in purpose and scope.
 
     Your project is non-commercial in nature (it can make money to cover its costs or contribute to non-profit entities, but it cannot be run as a for-profit project or business).
 

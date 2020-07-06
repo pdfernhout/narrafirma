@@ -6,7 +6,7 @@ import kludgeForUseStrict = require("../kludgeForUseStrict");
 
 // TODO: Note everything has a shortName; id currently being used in those cases; do we really need both id and shortName?
 
-var templates = [
+const templates = [
     {
         "id": "elicitationQuestions",
         "name": "Elicitation questions",
@@ -1461,7 +1461,7 @@ var templates = [
             	  "id": "resonance",
                   "shortName": "Resonance",
                   "type": "encountering stories (simple task)",
-                  "plan": "Give each small group some stories to consider. As they encounter eacy story, " +
+                  "plan": "Give each small group some stories to consider. As they encounter each story, " +
                   		"ask each person to choose some number of stories (perhaps three, five, or seven) they will take " +
                   		"special care to represent in later exercises during the session. They should choose " +
                   		"stories that resonate with their own experiences; stories they want to make sure are " +
@@ -1540,7 +1540,7 @@ var templates = [
                   		"8. (10 min). Finishing. Ask each group to finish their timeline, taking into consideration things visitors said about it. " +
                   		"9. (10 min). Discussion. Bring everyone together into a discussion of all the timelines.",
                   "optionalParts": "Use whole stories instead of story titles; use vertical space to annotate stories; " +
-                  		"distinuguish multiple perspectives; mark multiple types of turning point; etc. (See WWS for details.)",
+                  		"distinguish multiple perspectives; mark multiple types of turning point; etc. (See WWS for details.)",
                   "duration": "90 minutes",
 	              "recording": "None required",
                   "materials": "Sticky notes",
@@ -1548,7 +1548,7 @@ var templates = [
                         "listening to recordings don't overlap); spaces to work on (tables, walls, floor)",
                   "facilitation": "Watch out for people paying more attention to when things happened than to " +
                   		"what that might mean. Especially when they are finding turning points and looking for larger " +
-                  		"patterns, eople should be negotiating meaning, " +
+                  		"patterns, people should be negotiating meaning, " +
                   		"not just mapping events."
                },
                {
@@ -1574,7 +1574,7 @@ var templates = [
                          "listening to recordings don't overlap); spaces to work on (tables, walls, floor)",
                    "facilitation": "Watch out for people paying more attention to when things happened than to " +
                    		"what that might mean. Especially when they are finding turning points and looking for larger " +
-                   		"patterns, eople should be negotiating meaning, " +
+                   		"patterns, people should be negotiating meaning, " +
                    		"not just mapping events."
                 },
                 {
@@ -1758,9 +1758,9 @@ var templates = [
 ];
   
 function convertSemicolonsToNewlinesForOptions(section) {
-    var questions = section.questions;
-    for (var questionIndex in questions) {
-        var question = questions[questionIndex];
+    const questions = section.questions;
+    for (const questionIndex in questions) {
+        const question = questions[questionIndex];
         if (question.options) {
             question.options = question.options.replace(/;/g, "\n");
         }
@@ -1768,9 +1768,9 @@ function convertSemicolonsToNewlinesForOptions(section) {
     return section;
 }
 
-export var elicitationQuestions = convertSemicolonsToNewlinesForOptions(templates[0]);
-export var storyQuestions = convertSemicolonsToNewlinesForOptions(templates[1]);
-export var participantQuestions = convertSemicolonsToNewlinesForOptions(templates[2]);
-export var storyCollectionActivities = convertSemicolonsToNewlinesForOptions(templates[3]);
-export var sensemakingActivities = convertSemicolonsToNewlinesForOptions(templates[4]);
+export const elicitationQuestions = convertSemicolonsToNewlinesForOptions(templates[0]);
+export const storyQuestions = convertSemicolonsToNewlinesForOptions(templates[1]);
+export const participantQuestions = convertSemicolonsToNewlinesForOptions(templates[2]);
+export const storyCollectionActivities = convertSemicolonsToNewlinesForOptions(templates[3]);
+export const sensemakingActivities = convertSemicolonsToNewlinesForOptions(templates[4]);
 

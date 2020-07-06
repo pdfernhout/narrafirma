@@ -2,7 +2,7 @@ import Globals = require("../../Globals");
 import kludgeForUseStrict = require("../../kludgeForUseStrict");
 "use strict";
 
-var panel: Panel = {
+const panel: Panel = {
     id: "page_exportStories",
     displayName: "Export stories or story forms",
     tooltipText: "Save your stories to a CSV file for backup or use elsewhere.",

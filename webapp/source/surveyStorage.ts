@@ -4,24 +4,24 @@ import PointrelClient = require("./pointrel20150417/PointrelClient");
 "use strict";
 
 export function makeSurveyResultMessage(pointrelClient: PointrelClient, projectIdentifier, storyCollectionName, completedSurvey) {
-    var surveyResultWrapper  = {
+    const surveyResultWrapper  = {
         projectIdentifier: projectIdentifier,
         // TODO: Mismatch of stored string's intent and the field name
         storyCollectionIdentifier: storyCollectionName,
         surveyResult: completedSurvey
     };
     
-    var message = pointrelClient.createChangeMessage("surveyResults", "surveyResult", surveyResultWrapper, null);
+    const message = pointrelClient.createChangeMessage("surveyResults", "surveyResult", surveyResultWrapper, null);
     
     return message; 
 }
 
 export function storeSurveyResult(pointrelClient: PointrelClient, projectIdentifier, storyCollectionName, completedSurvey, wizardPane) {
 
-    var message = makeSurveyResultMessage(pointrelClient, projectIdentifier, storyCollectionName, completedSurvey);
+    const message = makeSurveyResultMessage(pointrelClient, projectIdentifier, storyCollectionName, completedSurvey);
     console.log("storeSurveyResult", message);
 
-    var thankYouPopupText = "Your contribution has been added to the story collection. Thank you.";
+    let thankYouPopupText = "Your contribution has been added to the story collection. Thank you.";
     if (completedSurvey && completedSurvey.questionnaire && completedSurvey.questionnaire.thankYouPopupText) thankYouPopupText = completedSurvey.questionnaire.thankYouPopupText;
 
     pointrelClient.sendMessage(message, function(error, result) {

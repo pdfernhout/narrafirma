@@ -4,14 +4,14 @@ import questionnaireGeneration = require("./questionnaireGeneration");
 
 "use strict";
     
-var project: Project;
+let project: Project;
 
 export function setProject(theProject) {
     project = theProject;
 }
 
 function getStoryField(storyID, fieldName, defaultValue) {
-    var result = project.tripleStore.queryLatestC(storyID, fieldName);
+    let result = project.tripleStore.queryLatestC(storyID, fieldName);
     if (result === undefined || result === null) result = defaultValue;
     return result;
 }
@@ -21,7 +21,7 @@ function setStoryField(storyID, fieldName, value) {
     return value;
 }
 
-// A Story class where data can be overriden
+// A Story class where data can be overridden
 export class Story {
     constructor(public model) {
     }
@@ -86,31 +86,31 @@ export class Story {
 }
 
 export function getStoriesForStoryCollection(storyCollectionIdentifier, includeIgnored = false): Story[] {
-    var result = [];
-    var surveyMessages = project.pointrelClient.filterMessages(function (message) {
-        var match = (message._topicIdentifier === "surveyResults" &&
+    const result = [];
+    const surveyMessages = project.pointrelClient.filterMessages(function (message) {
+        const match = (message._topicIdentifier === "surveyResults" &&
             message.messageType === "surveyResult" &&
             message.change.projectIdentifier === project.projectIdentifier &&
             message.change.storyCollectionIdentifier === storyCollectionIdentifier);
         return match;
     });
     
-    var numStoriesAddedForCollection = 0;
+    let numStoriesAddedForCollection = 0;
     surveyMessages.forEach(function (message) {
         // Now add stories in survey to results, with extra participant information
         try {
-            var surveyResult = message.change.surveyResult;
-            var stories = surveyResult.stories;
-            for (var storyIndex in stories) {
+            const surveyResult = message.change.surveyResult;
+            const stories = surveyResult.stories;
+            for (const storyIndex in stories) {
                 // calculate derived count of number of stories told in each survey session (to be shown in graphs)
                 stories[storyIndex].numStoriesTold = "" + stories.length;
                 stories[storyIndex].storyLength = "" + stories[storyIndex].length;
                 // Make a copy of the story so as not to modify original in message
-                var story = JSON.parse(JSON.stringify(stories[storyIndex]));
+                const story = JSON.parse(JSON.stringify(stories[storyIndex]));
                 
                 // Add participant info for story
-                var participantData = surveyResult.participantData;
-                for (var key in participantData) {
+                const participantData = surveyResult.participantData;
+                for (const key in participantData) {
                     if (key !== "__type") {
                         story[key] = participantData[key];
                     }
@@ -120,7 +120,7 @@ export function getStoriesForStoryCollection(storyCollectionIdentifier, includeI
                 story.questionnaire = surveyResult.questionnaire;
                 story.indexInStoryCollection = ++numStoriesAddedForCollection;
                 story.storyCollectionIdentifier = storyCollectionIdentifier;
-                var wrappedStory = new Story(story);
+                const wrappedStory = new Story(story);
                 if (includeIgnored || !wrappedStory.isIgnored()) { 
                     result.push(wrappedStory);
                 }
@@ -134,7 +134,7 @@ export function getStoriesForStoryCollection(storyCollectionIdentifier, includeI
 }
 
 export function getQuestionnaireForStoryCollection(storyCollectionName: string, alertIfProblem = false) {
-    var storyCollection = project.findStoryCollection(storyCollectionName);
+    const storyCollection = project.findStoryCollection(storyCollectionName);
   
     if (!storyCollection) {
         // TODO: translate
@@ -142,7 +142,7 @@ export function getQuestionnaireForStoryCollection(storyCollectionName: string, 
         return null;
     }
     
-    var questionnaireName = project.tripleStore.queryLatestC(storyCollection, "storyCollection_questionnaireIdentifier");
+    const questionnaireName = project.tripleStore.queryLatestC(storyCollection, "storyCollection_questionnaireIdentifier");
     
     if (!questionnaireName) {
         // TODO: translate
@@ -150,7 +150,7 @@ export function getQuestionnaireForStoryCollection(storyCollectionName: string, 
         return null;
     }
     
-    var questionnaire = project.tripleStore.queryLatestC(storyCollection, "questionnaire");
+    const questionnaire = project.tripleStore.queryLatestC(storyCollection, "questionnaire");
     
     if (!questionnaire) {
         // TODO: translate
@@ -163,44 +163,44 @@ export function getQuestionnaireForStoryCollection(storyCollectionName: string, 
 
 
 export function urlForSurvey(storyCollectionIdentifier) {
-    var href = window.location.href;
-    var baseURL = href.substring(0, href.lastIndexOf("/"));
+    const href = window.location.href;
+    const baseURL = href.substring(0, href.lastIndexOf("/"));
     // TODO: Duplicated project prefix; should refactor to have it in one place
-    var projectName = project.journalIdentifier.substring("NarraFirmaProject-".length);
-    var shortName = project.tripleStore.queryLatestC(storyCollectionIdentifier, "storyCollection_shortName");
-    var url = baseURL + "/survey.html#project=" + projectName + "&survey=" + shortName;
-    var result = m("a[id=narrafirma-survey-url]", {href: url, title: url, target: "_blank"}, url)
+    const projectName = project.journalIdentifier.substring("NarraFirmaProject-".length);
+    const shortName = project.tripleStore.queryLatestC(storyCollectionIdentifier, "storyCollection_shortName");
+    const url = baseURL + "/survey.html#project=" + projectName + "&survey=" + shortName;
+    const result = m("a[id=narrafirma-survey-url]", {href: url, title: url, target: "_blank"}, url)
     return result;
 }
 
 export function urlForSurveyAsString(storyCollectionIdentifier) {
-    var href = window.location.href;
-    var baseURL = href.substring(0, href.lastIndexOf("/"));
+    const href = window.location.href;
+    const baseURL = href.substring(0, href.lastIndexOf("/"));
     // TODO: Duplicated project prefix; should refactor to have it in one place
-    var projectName = project.journalIdentifier.substring("NarraFirmaProject-".length);
-    var shortName = project.tripleStore.queryLatestC(storyCollectionIdentifier, "storyCollection_shortName");
-    var url = baseURL + "/survey.html#project=" + projectName + "&survey=" + shortName;
+    const projectName = project.journalIdentifier.substring("NarraFirmaProject-".length);
+    const shortName = project.tripleStore.queryLatestC(storyCollectionIdentifier, "storyCollection_shortName");
+    const url = baseURL + "/survey.html#project=" + projectName + "&survey=" + shortName;
     return url;
 }
 
 export function urlForStoryCollectionReview(storyCollectionIdentifier, pageName: string) {
-    var href = window.location.href;
-    var baseURL = href.substring(0, href.lastIndexOf("/"));
+    const href = window.location.href;
+    const baseURL = href.substring(0, href.lastIndexOf("/"));
     // TODO: Duplicated project prefix; should refactor to have it in one place
-    var projectName = project.journalIdentifier.substring("NarraFirmaProject-".length);
-    var shortName = project.tripleStore.queryLatestC(storyCollectionIdentifier, "storyCollection_shortName");
-    var url = baseURL + "/narrafirma.html#project=" + projectName + "&page=" +  pageName + "&storyCollection=" + shortName;
+    const projectName = project.journalIdentifier.substring("NarraFirmaProject-".length);
+    const shortName = project.tripleStore.queryLatestC(storyCollectionIdentifier, "storyCollection_shortName");
+    const url = baseURL + "/narrafirma.html#project=" + projectName + "&page=" +  pageName + "&storyCollection=" + shortName;
     return url;
 }
 
 export function toggleWebActivationOfSurvey(model: string, fieldSpecification, value) {
     // TODO: Fix this for mover to using triples for projectModel
-    var grid = fieldSpecification.grid;
-    var selectedItem: string = grid.getSelectedItem();
+    const grid = fieldSpecification.grid;
+    const selectedItem: string = grid.getSelectedItem();
     console.log("toggleWebActivationOfSurvey selectedItem", selectedItem, model, fieldSpecification); 
     
-    var shortName = project.tripleStore.queryLatestC(selectedItem, "storyCollection_shortName");
-    var activeOnWeb = project.tripleStore.queryLatestC(selectedItem, "storyCollection_activeOnWeb");
+    const shortName = project.tripleStore.queryLatestC(selectedItem, "storyCollection_shortName");
+    let activeOnWeb = project.tripleStore.queryLatestC(selectedItem, "storyCollection_activeOnWeb");
     activeOnWeb = !activeOnWeb;
     if (activeOnWeb) {
         // urlForSurvey(shortName)
@@ -211,15 +211,15 @@ export function toggleWebActivationOfSurvey(model: string, fieldSpecification, v
     
     // TODO: Potential window of vulnerability here because not making both changes (to item and survey questionnaires) as a single transaction
     
-    var questionnaires = {};
-    for (var key in project.activeQuestionnaires) {
+    const questionnaires = {};
+    for (const key in project.activeQuestionnaires) {
         questionnaires[key] = project.activeQuestionnaires[key];
     }
    
-    var questionnaire = project.tripleStore.queryLatestC(selectedItem, "questionnaire");
+    const questionnaire = project.tripleStore.queryLatestC(selectedItem, "questionnaire");
     if (!questionnaire) {
-        var questionnaireName = project.tripleStore.queryLatestC(selectedItem, "storyCollection_questionnaireIdentifier");
-        console.log("Could not find questionnnaire for", questionnaireName);
+        const questionnaireName = project.tripleStore.queryLatestC(selectedItem, "storyCollection_questionnaireIdentifier");
+        console.log("Could not find questionnaire for", questionnaireName);
         return;
     }
     if (activeOnWeb) {
@@ -241,13 +241,13 @@ export function updateActiveQuestionnaires(questionnaires, sendMessage, activeOn
     project.pointrelClient.createAndSendChangeMessage("questionnaires", "questionnairesMessage", questionnaires, null, function(error, result) {
        if (error) {
            // TODO: Translate
-           var errorMessage = "Problem activating web form";
+           let errorMessage = "Problem activating web form";
            if (!activeOnWeb) errorMessage = "Problem deactivating web form";
            alert(errorMessage);
            return;
        }
        // TODO: Translate
-       var message = "The web form has been activated.";
+       let message = "The web form has been activated.";
        if (!activeOnWeb) message = "The web form has been deactivated.";
        alert(message);
     });
@@ -261,9 +261,9 @@ export function storyCollectionStop() {
         return;
     }
     if (!confirm("Deactivate all story collection via the web?")) return;
-    var storyCollections = project.getListForField("project_storyCollections");
-    for (var i = 0; i < storyCollections.length; i++) {
-        var storyCollectionIdentifier = storyCollections[i];
+    const storyCollections = project.getListForField("project_storyCollections");
+    for (let i = 0; i < storyCollections.length; i++) {
+        const storyCollectionIdentifier = storyCollections[i];
         if (project.tripleStore.queryLatestC(storyCollectionIdentifier, "storyCollection_activeOnWeb")) {
             project.tripleStore.addTriple(storyCollectionIdentifier, "storyCollection_activeOnWeb", false);
         }
@@ -274,7 +274,7 @@ export function storyCollectionStop() {
 }
    
 export function isStoryCollectingEnabled() {
-    for (var key in project.activeQuestionnaires) {
+    for (const key in project.activeQuestionnaires) {
         return true;
     }
     return false;
@@ -282,8 +282,8 @@ export function isStoryCollectingEnabled() {
 
 export function collectQuestionsForQuestionnaire(questionnaire) {
     if (!questionnaire) return [];
-    var leadingStoryQuestions = questionnaireGeneration.getLeadingStoryQuestions(questionnaire.elicitingQuestions);
-    var questions = [].concat(leadingStoryQuestions, questionnaire.storyQuestions);
+    const leadingStoryQuestions = questionnaireGeneration.getLeadingStoryQuestions(questionnaire.elicitingQuestions);
+    let questions = [].concat(leadingStoryQuestions, questionnaire.storyQuestions);
     questions.push({
         id: "participantData_header",
         displayName: "Participant Data",
@@ -301,15 +301,15 @@ export function collectQuestionsForQuestionnaire(questionnaire) {
 }
    
 // Types of questions that have data associated with them for filters and graphs
-var filterableQuestionTypes = ["select", "slider", "boolean", "text", "checkbox", "checkboxes", "radiobuttons"];
+const filterableQuestionTypes = ["select", "slider", "boolean", "text", "checkbox", "checkboxes", "radiobuttons"];
 
 // function updateFilterPaneForCurrentQuestions(questions) {
 export function optionsForAllQuestions(questions, excludeTextQuestionsFlag = null) {
-    var questionOptions = [];
+    const questionOptions = [];
     questions.forEach(function (question) {
         if (filterableQuestionTypes.indexOf(question.displayType) !== -1) {
             if (!excludeTextQuestionsFlag || question.displayType !== "text") {
-                var defaultText = question.displayName;
+                let defaultText = question.displayName;
                 if (!defaultText) defaultText = question.displayPrompt;
                 questionOptions.push({label: translate(question.id + "::shortName", defaultText), value: question.id});
             }

@@ -8,7 +8,7 @@ import m = require("mithril");
 // For example: <span.narrafirma-special-warning>Warning!!!<span>
 
 // 1 is normal tag that needs to be closed; 2 is self-closing tag (br and hr)
-var allowedHTMLTags = {
+const allowedHTMLTags = {
     // a
     address: 1,
     article: 1,
@@ -54,7 +54,7 @@ var allowedHTMLTags = {
     ul: 1
 };
 
-var smallerSubsetOfAllowedHTMLTags = {
+const smallerSubsetOfAllowedHTMLTags = {
     b: 1,
     big: 1,
     em: 1,
@@ -68,7 +68,7 @@ var smallerSubsetOfAllowedHTMLTags = {
     u: 1
 };
 
-var allowedCSSClasses = {
+const allowedCSSClasses = {
     "narrafirma-special-warning": 1,
     "narrafirma-centered-label": 1
 };
@@ -90,16 +90,16 @@ export function generateSpecificTypeOfSanitizedHTMLForMithril(html, specifiedHTM
     // Handle case where is already a Mithril object
     if (html.tag) return html;
     
-    var hasMarkup = html.indexOf("<") !== -1;
+    const hasMarkup = html.indexOf("<") !== -1;
     if (!hasMarkup) return html;
     
     // Use a fake div tag as a conceptual placeholder
-    var tags = [{tagName: "div", cssClass: undefined}];
-    var output = [[]];
-    var text = ""; 
+    const tags = [{tagName: "div", cssClass: undefined}];
+    const output = [[]];
+    let text = ""; 
     
-    for (var i = 0, l = html.length; i < l; i++) {
-        var c = html.charAt(i);
+    for (let i = 0, l = html.length; i < l; i++) {
+        const c = html.charAt(i);
 
         if (c === "<") {
             if (text !== "") {
@@ -107,20 +107,21 @@ export function generateSpecificTypeOfSanitizedHTMLForMithril(html, specifiedHTM
                 text = "";
             }
             
-            var closing = html.charAt(i + 1) === "/";
+            let closing = html.charAt(i + 1) === "/";
             if (closing) i++;
             
+            let pos;
             if (i < l-1) {
-                var pos = html.indexOf(">", i + 1);
+                pos = html.indexOf(">", i + 1);
                 if (pos < 0) {
                     throw new Error('For the text "' + html + '", no closing angle bracket was found after position: ' + i);
                 }
             }
-            var tagName = html.substring(i + 1, pos);
+            let tagName = html.substring(i + 1, pos);
             i = pos;
             
-            var cssClass;
-            var parts = tagName.split(".");
+            let cssClass;
+            const parts = tagName.split(".");
             if (parts.length > 1) {
                 tagName = parts[0];
                 cssClass = parts[1];
@@ -137,7 +138,7 @@ export function generateSpecificTypeOfSanitizedHTMLForMithril(html, specifiedHTM
             }
             
             if (closing) {
-                var startTag = tags.pop();
+                const startTag = tags.pop();
                 if (startTag.tagName !== tagName) {
                     throw new Error("Closing tag does not match opening tag for: " + tagName);
                 }
@@ -155,7 +156,7 @@ export function generateSpecificTypeOfSanitizedHTMLForMithril(html, specifiedHTM
             }
             
             if (closing) {
-                var newTag;
+                let newTag;
                 if (cssClass) {
                     newTag = m(tagName, {"class": cssClass}, output.pop());
                 } else {
@@ -182,9 +183,9 @@ export function generateSpecificTypeOfSanitizedHTMLForMithril(html, specifiedHTM
 }
 
 export function removeHTMLTags(text) {
-    var cleanedText = "";
-    var inTag = false;
-    for (var i = 0; i< text.length; i++) {
+    let cleanedText = "";
+    let inTag = false;
+    for (let i = 0; i< text.length; i++) {
         if (text[i] === "<") {
             inTag = true;
         } else if (text[i] === ">") {

@@ -1,7 +1,7 @@
 import kludgeForUseStrict = require("../../kludgeForUseStrict");
 "use strict";
 
-var panel: Panel = {
+const panel: Panel = {
     id: "page_designStoryForms",
     displayName: "Design, generate, or import story forms",
     tooltipText: "Bring your questions together into a structured conversation.",

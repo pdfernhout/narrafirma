@@ -8,7 +8,7 @@ import Globals = require("../Globals");
 "use strict";
 
 function add_templateList(panelBuilder: PanelBuilder, model, fieldSpecification) {
-    var dialogConfiguration = {
+    const dialogConfiguration = {
         dialogModel: model,
         dialogTitle: "#title_chooseATemplate|Choose a template",
         dialogStyle: undefined, // "height: 1000px; width: 800px",
@@ -20,19 +20,19 @@ function add_templateList(panelBuilder: PanelBuilder, model, fieldSpecification)
     return dialogSupport.addButtonThatLaunchesDialog(fieldSpecification, dialogConfiguration);
 }
 
-var add_templateList_elicitationQuestions = [
+const add_templateList_elicitationQuestions = [
     {id: "category", valueType: "string", displayType: "text"},
     {id: "text", valueType: "string", displayType: "textarea"}
 ];
 
-var add_templateList_storyOrParticipantQuestions = [
+const add_templateList_storyOrParticipantQuestions = [
     {id: "category", valueType: "string", displayType: "text"},
     {id: "text", valueType: "string", displayType: "textarea"},
     {id: "type", valueType: "string", displayType: "text"}, 
     {id: "options", valueType: "string", displayType: "textarea"}
 ];
 
-var add_templateList_activityQuestions = [
+const add_templateList_activityQuestions = [
     {id: "shortName", valueType: "string", displayType: "text"},
     {id: "type", valueType: "string", displayType: "text"}, 
     {id: "duration", valueType: "string", displayType: "text"},
@@ -40,14 +40,14 @@ var add_templateList_activityQuestions = [
 ];
 
 function useButtonClicked(panelBuilder: PanelBuilder, templateListChoice, model, hideDialogCallback, gridWithItemPanel: GridWithItemPanel) {
-   var selectedTemplate = gridWithItemPanel.getSelectedItem();
-    var storeValueInModel = Globals.project().tripleStore.makeModelFunction(model);
+   const selectedTemplate = gridWithItemPanel.getSelectedItem();
+    const storeValueInModel = Globals.project().tripleStore.makeModelFunction(model);
    
    if (selectedTemplate) {
        // TODO: not sure whether to confirm?
        // TODO: Translate
        dialogSupport.confirm("Copy selected template '" + selectedTemplate.shortName + "' into question definition?", function () {
-           var uniqueName = selectedTemplate.shortName || selectedTemplate.id || "";
+           const uniqueName = selectedTemplate.shortName || selectedTemplate.id || "";
            if (templateListChoice === "elicitationQuestions") {
                storeValueInModel("elicitingQuestion_text", selectedTemplate.text || "");
                storeValueInModel("elicitingQuestion_shortName", uniqueName);
@@ -85,7 +85,7 @@ function useButtonClicked(panelBuilder: PanelBuilder, templateListChoice, model,
                storeValueInModel("sensemakingSessionPlan_activity_spaces", selectedTemplate.spaces || "");
                storeValueInModel("sensemakingSessionPlan_activity_facilitation", selectedTemplate.facilitation || "");
            } else {
-               var message = "ERROR: unsupported template type:" +  templateListChoice;
+               const message = "ERROR: unsupported template type:" +  templateListChoice;
                console.log(message);
                alert(message);
            }
@@ -98,15 +98,15 @@ function useButtonClicked(panelBuilder: PanelBuilder, templateListChoice, model,
 }
 
 function makeTemplateListChooser(panelBuilder: PanelBuilder, dialogConfiguration, hideDialogCallback) {
-    var fieldSpecification = dialogConfiguration.fieldSpecification;
+    const fieldSpecification = dialogConfiguration.fieldSpecification;
    
-    var prompt = panelBuilder.buildQuestionLabel(fieldSpecification);
+    const prompt = panelBuilder.buildQuestionLabel(fieldSpecification);
     
     // TODO: questionContentPane.set("style", "min-height: 400px; min-width: 600px; max-width: 900px");
     
-    var templateListChoice = fieldSpecification.displayConfiguration;
-    var templateCollection = templates[templateListChoice];
-    var templateQuestions;
+    const templateListChoice = fieldSpecification.displayConfiguration;
+    const templateCollection = templates[templateListChoice];
+    let templateQuestions;
     if (templateCollection) {
         templateQuestions = templateCollection.questions;
     } else {
@@ -115,7 +115,7 @@ function makeTemplateListChooser(panelBuilder: PanelBuilder, dialogConfiguration
         templateQuestions = [];
     }
     
-    var pageQuestions;
+    let pageQuestions;
     
     if (templateListChoice === "elicitationQuestions") {
         pageQuestions = add_templateList_elicitationQuestions;
@@ -124,7 +124,7 @@ function makeTemplateListChooser(panelBuilder: PanelBuilder, dialogConfiguration
     } else if (templateListChoice === "storyCollectionActivities" || templateListChoice === "sensemakingActivities") {
         pageQuestions = add_templateList_activityQuestions;
     } else {
-        var message = "ERROR: unsupported template type:" +  templateListChoice;
+        const message = "ERROR: unsupported template type:" +  templateListChoice;
         console.log(message);
         alert(message);
         pageQuestions = [];
@@ -134,7 +134,7 @@ function makeTemplateListChooser(panelBuilder: PanelBuilder, dialogConfiguration
          return builder.buildFields(pageQuestions, model);
      }
      
-     var itemPanelSpecification = {
+     const itemPanelSpecification = {
          id: "panel_template",
          modelClass: "Template",
          displayType: "panel",
@@ -143,15 +143,15 @@ function makeTemplateListChooser(panelBuilder: PanelBuilder, dialogConfiguration
          buildPanel: buildPanel
      };
     
-    var customButtonDefinition = {
+    const customButtonDefinition = {
         id: "useTemplate",
         customButtonLabel: "#button_UseTemplate|Use template",
         callback: useButtonClicked.bind(null, panelBuilder, templateListChoice, dialogConfiguration.dialogModel, hideDialogCallback)
     };
     
-    var model = {templates: templateQuestions};
+    const model = {templates: templateQuestions};
     
-    var gridFieldSpecification = {
+    const gridFieldSpecification = {
         id: "templates",
         displayConfiguration: {
             itemPanelSpecification: itemPanelSpecification,

@@ -3,7 +3,7 @@ import Globals = require("./Globals");
 
 "use strict";
 
-var displayTypeToValueTypeMap = {
+const displayTypeToValueTypeMap = {
     // Used in questionnaire and other parts of the application
     boolean: 'boolean',
     label: "none",
@@ -35,45 +35,45 @@ var displayTypeToValueTypeMap = {
 };
 
 export function convertEditorQuestions(editorQuestions, prefixQPA) {
-    var adjustedQuestions = [];
-    var valueOptions;
-    var displayConfiguration;
+    const adjustedQuestions = [];
+    let valueOptions;
+    let displayConfiguration;
     
-    for (var questionIndex = 0; questionIndex < editorQuestions.length; questionIndex++) {
-        var question = editorQuestions[questionIndex];
-        var shortName = question.storyQuestion_shortName || question.participantQuestion_shortName || question.annotationQuestion_shortName;
+    for (let questionIndex = 0; questionIndex < editorQuestions.length; questionIndex++) {
+        const question = editorQuestions[questionIndex];
+        const shortName = question.storyQuestion_shortName || question.participantQuestion_shortName || question.annotationQuestion_shortName;
         // Including "S_" or "P_" or "A_" prefix for user-supplied question ID to prevent collisions with application fields like storyText and JavaScript functions and __proto__
-        var id = prefixQPA + shortName;
-        var questionType = question.storyQuestion_type || question.participantQuestion_type || question.annotationQuestion_type;
-        var prompt = question.storyQuestion_text || question.participantQuestion_text || question.annotationQuestion_text;
+        const id = prefixQPA + shortName;
+        const questionType = question.storyQuestion_type || question.participantQuestion_type || question.annotationQuestion_type;
+        const prompt = question.storyQuestion_text || question.participantQuestion_text || question.annotationQuestion_text;
 
-        var options = [];
-        var optionsString = question.storyQuestion_options || question.participantQuestion_options || question.annotationQuestion_options;
+        const options = [];
+        const optionsString = question.storyQuestion_options || question.participantQuestion_options || question.annotationQuestion_options;
         
         if (optionsString) {
             // TODO: Improve option handling so can have standard IDs for options
-            var splitOptions = optionsString.split("\n");
+            const splitOptions = optionsString.split("\n");
             // Make sure options don't have leading or trailing space and are not otherwise blank
-            for (var index in splitOptions) {
-                var trimmedOption = splitOptions[index].trim();
+            for (const index in splitOptions) {
+                const trimmedOption = splitOptions[index].trim();
                 if (trimmedOption) {
                     options.push(trimmedOption);
                 }
             }
         }
 
-        var import_columnName = question.storyQuestion_import_columnName || question.participantQuestion_import_columnName || question.storyQuestion_shortName || question.participantQuestion_shortName;
-        var import_valueType = question.storyQuestion_import_valueType || question.participantQuestion_import_valueType;
-        var import_minScaleValue = question.storyQuestion_import_minScaleValue || question.participantQuestion_import_minScaleValue;
-        var import_maxScaleValue = question.storyQuestion_import_maxScaleValue || question.participantQuestion_import_maxScaleValue;
+        const import_columnName = question.storyQuestion_import_columnName || question.participantQuestion_import_columnName || question.storyQuestion_shortName || question.participantQuestion_shortName;
+        const import_valueType = question.storyQuestion_import_valueType || question.participantQuestion_import_valueType;
+        const import_minScaleValue = question.storyQuestion_import_minScaleValue || question.participantQuestion_import_minScaleValue;
+        const import_maxScaleValue = question.storyQuestion_import_maxScaleValue || question.participantQuestion_import_maxScaleValue;
 
-        var importOptions = [];
-        var importOptionsString = question.storyQuestion_import_answerNames || question.participantQuestion_import_answerNames;
+        let importOptions = [];
+        const importOptionsString = question.storyQuestion_import_answerNames || question.participantQuestion_import_answerNames;
         if (importOptionsString && typeof importOptionsString === "string") {
-            var splitImportOptions = importOptionsString.split("\n");
+            const splitImportOptions = importOptionsString.split("\n");
             // Make sure options don't have leading or trailing space and are not otherwise blank
-            for (var index in splitImportOptions) {
-                var trimmedImportOption = splitImportOptions[index].trim();
+            for (const index in splitImportOptions) {
+                const trimmedImportOption = splitImportOptions[index].trim();
                 if (trimmedImportOption) {
                     importOptions.push(trimmedImportOption);
                 }
@@ -83,7 +83,7 @@ export function convertEditorQuestions(editorQuestions, prefixQPA) {
         }
 
         // TODO: valueType might be a number or boolean sometimes
-        var valueType = displayTypeToValueTypeMap[questionType];
+        const valueType = displayTypeToValueTypeMap[questionType];
         // Set these two vars to undefined so no object fields will appear set for these if not otherwise set
         valueOptions = undefined;
         displayConfiguration = undefined;
@@ -118,13 +118,13 @@ export function convertEditorQuestions(editorQuestions, prefixQPA) {
 }
 
 function convertElicitingQuestions(elicitingQuestions) {
-    var result = [];
-    for (var elicitingQuestionIndex = 0; elicitingQuestionIndex < elicitingQuestions.length; elicitingQuestionIndex++) {
-        var storySolicitationQuestionText = elicitingQuestions[elicitingQuestionIndex].elicitingQuestion_text;
-        var storySolicitationQuestionShortName = elicitingQuestions[elicitingQuestionIndex].elicitingQuestion_shortName;
-        var storySolicitationQuestionType = elicitingQuestions[elicitingQuestionIndex].elicitingQuestion_type;
-        var storySolicitationQuestionImportName = elicitingQuestions[elicitingQuestionIndex].elicitingQuestion_dataColumnName;
-        var elicitingQuestionInfo = {
+    const result = [];
+    for (let elicitingQuestionIndex = 0; elicitingQuestionIndex < elicitingQuestions.length; elicitingQuestionIndex++) {
+        const storySolicitationQuestionText = elicitingQuestions[elicitingQuestionIndex].elicitingQuestion_text;
+        const storySolicitationQuestionShortName = elicitingQuestions[elicitingQuestionIndex].elicitingQuestion_shortName;
+        const storySolicitationQuestionType = elicitingQuestions[elicitingQuestionIndex].elicitingQuestion_type;
+        const storySolicitationQuestionImportName = elicitingQuestions[elicitingQuestionIndex].elicitingQuestion_dataColumnName;
+        const elicitingQuestionInfo = {
             text: storySolicitationQuestionText,
             id: storySolicitationQuestionShortName,
             "type": storySolicitationQuestionType,
@@ -140,11 +140,11 @@ export function ensureAtLeastOneElicitingQuestion(elicitingQuestions) {
     // TODO: How to prevent this potential problem of no eliciting questions during questionnaire design in GUI?
     if (elicitingQuestions.length === 0) {
         // TODO: Translate
-        var defaultElicitingQuestion = "What happened?";
-        var message = 'No eliciting questions were defined! Adding "' + defaultElicitingQuestion + '".';
+        const defaultElicitingQuestion = "What happened?";
+        const message = 'No eliciting questions were defined! Adding "' + defaultElicitingQuestion + '".';
         console.log("PROBLEM", message);
         console.log("Adding eliciting question: ", defaultElicitingQuestion);
-        var testElicitingQuestionInfo = {
+        const testElicitingQuestionInfo = {
             text: defaultElicitingQuestion,
             id: defaultElicitingQuestion,
             type: {"what happened": true}
@@ -154,7 +154,7 @@ export function ensureAtLeastOneElicitingQuestion(elicitingQuestions) {
 }
 
 export function getStoryNameAndTextQuestions() {
-    var leadingStoryQuestions = [];
+    const leadingStoryQuestions = [];
     leadingStoryQuestions.unshift({
         id: "storyName",
         displayName: "Story title",
@@ -173,12 +173,12 @@ export function getStoryNameAndTextQuestions() {
 }
 
 export function getLeadingStoryQuestions(elicitingQuestions) {  
-    var leadingStoryQuestions = getStoryNameAndTextQuestions();
+    const leadingStoryQuestions = getStoryNameAndTextQuestions();
 
     // TODO: What about idea of having IDs that go with eliciting questions so store reference to ID not text prompt?
-    var elicitingQuestionValues = [];
-    for (var elicitingQuestionIndex = 0; elicitingQuestionIndex < elicitingQuestions.length; elicitingQuestionIndex++) {
-        var elicitingQuestionSpecification = elicitingQuestions[elicitingQuestionIndex];
+    const elicitingQuestionValues = [];
+    for (let elicitingQuestionIndex = 0; elicitingQuestionIndex < elicitingQuestions.length; elicitingQuestionIndex++) {
+        const elicitingQuestionSpecification = elicitingQuestions[elicitingQuestionIndex];
         // elicitingQuestionValues.push({value: elicitingQuestionSpecification.id, text: elicitingQuestionSpecification.label});
         elicitingQuestionValues.push(elicitingQuestionSpecification.id || elicitingQuestionSpecification.shortName || elicitingQuestionSpecification.text);
     }
@@ -195,28 +195,28 @@ export function getLeadingStoryQuestions(elicitingQuestions) {
 }
 
 function buildIdToItemMap(itemListField, idField: string) {
-    var project = Globals.project();
-    var itemList = project.getListForField(itemListField);
-    var result = {};
+    const project = Globals.project();
+    const itemList = project.getListForField(itemListField);
+    const result = {};
     itemList.forEach(function (item) {
-        var id = project.tripleStore.queryLatestC(item, idField);
+        const id = project.tripleStore.queryLatestC(item, idField);
         result[id] = item;
     });
     return result;
 }
 
 function buildItemListFromIdList(idToItemMap, idItemList, idField) {
-    var project = Globals.project();
-    var result = [];
+    const project = Globals.project();
+    const result = [];
     idItemList.forEach(function (idItem) {
         // TODO: Fix access here for tripleStore use
-        var id = project.tripleStore.queryLatestC(idItem, idField);
-        var order = project.tripleStore.queryLatestC(idItem, "order");
-        var item = idToItemMap[id];
+        const id = project.tripleStore.queryLatestC(idItem, idField);
+        const order = project.tripleStore.queryLatestC(idItem, "order");
+        const item = idToItemMap[id];
         if (item) {
             // Retrieve the latest for all the fields of the object (which will include deleted/null fields)
             // TODO: Remove any deleted/null fields
-            var itemObject = project.tripleStore.makeObject(item, true);
+            const itemObject = project.tripleStore.makeObject(item, true);
             itemObject.order = order;
             itemObject.id = id;
             result.push(itemObject);
@@ -235,22 +235,22 @@ function buildItemListFromIdList(idToItemMap, idItemList, idField) {
 // TODO: How to save the fact we have exported this in the project? Make a copy??? Or keep original in document somewhere? Versus what is returned from server for surveys?
 export function buildQuestionnaire(shortName) {
     // TODO: Redo for if questionnaire template is made of triples
-    var project = Globals.project();
+    const project = Globals.project();
     
-    var questionnaireTemplate = project.findQuestionnaireTemplate(shortName);
+    const questionnaireTemplate = project.findQuestionnaireTemplate(shortName);
     if (!questionnaireTemplate) return null;
     
     return buildQuestionnaireFromTemplate(questionnaireTemplate, shortName);
 }
 
 export function buildQuestionnaireFromTemplate(storyFormTemplate: string, shortName) {
-    var project = Globals.project();
+    const project = Globals.project();
     
-    var usedIDs = {
+    const usedIDs = {
         __createdIDCount: 0
     };
     
-    var storyForm = {
+    const storyForm = {
         __type: "org.workingwithstories.Questionnaire",
         shortName: shortName,
         title: "",
@@ -359,20 +359,20 @@ export function buildQuestionnaireFromTemplate(storyFormTemplate: string, shortN
     storyForm.errorMessage_noStoryName = project.tripleStore.queryLatestC(storyFormTemplate, "questionForm_errorMessage_noStoryName");
     
     // TODO: Should maybe ensure unique IDs for eliciting questions?
-    var allElicitingQuestions = buildIdToItemMap("project_elicitingQuestionsList", "elicitingQuestion_shortName");
-    var elicitingQuestionIdentifiers = project.tripleStore.getListForSetIdentifier(project.tripleStore.queryLatestC(storyFormTemplate, "questionForm_elicitingQuestions"));
-    var elicitingQuestions = buildItemListFromIdList(allElicitingQuestions, elicitingQuestionIdentifiers, "elicitingQuestion");       
+    const allElicitingQuestions = buildIdToItemMap("project_elicitingQuestionsList", "elicitingQuestion_shortName");
+    const elicitingQuestionIdentifiers = project.tripleStore.getListForSetIdentifier(project.tripleStore.queryLatestC(storyFormTemplate, "questionForm_elicitingQuestions"));
+    const elicitingQuestions = buildItemListFromIdList(allElicitingQuestions, elicitingQuestionIdentifiers, "elicitingQuestion");       
     storyForm.elicitingQuestions = convertElicitingQuestions(elicitingQuestions);
     
-    var allStoryQuestions = buildIdToItemMap("project_storyQuestionsList", "storyQuestion_shortName");
-    var storyQuestionIdentifiers = project.tripleStore.getListForSetIdentifier(project.tripleStore.queryLatestC(storyFormTemplate, "questionForm_storyQuestions"));
-    var storyQuestions = buildItemListFromIdList(allStoryQuestions, storyQuestionIdentifiers, "storyQuestion");       
+    const allStoryQuestions = buildIdToItemMap("project_storyQuestionsList", "storyQuestion_shortName");
+    const storyQuestionIdentifiers = project.tripleStore.getListForSetIdentifier(project.tripleStore.queryLatestC(storyFormTemplate, "questionForm_storyQuestions"));
+    const storyQuestions = buildItemListFromIdList(allStoryQuestions, storyQuestionIdentifiers, "storyQuestion");       
     ensureUniqueQuestionIDs(usedIDs, storyQuestions);
     storyForm.storyQuestions = convertEditorQuestions(storyQuestions, "S_");
     
-    var allParticipantQuestions = buildIdToItemMap("project_participantQuestionsList", "participantQuestion_shortName");
-    var participantQuestionIdentifiers = project.tripleStore.getListForSetIdentifier(project.tripleStore.queryLatestC(storyFormTemplate, "questionForm_participantQuestions"));
-    var participantQuestions = buildItemListFromIdList(allParticipantQuestions, participantQuestionIdentifiers, "participantQuestion");       
+    const allParticipantQuestions = buildIdToItemMap("project_participantQuestionsList", "participantQuestion_shortName");
+    const participantQuestionIdentifiers = project.tripleStore.getListForSetIdentifier(project.tripleStore.queryLatestC(storyFormTemplate, "questionForm_participantQuestions"));
+    const participantQuestions = buildItemListFromIdList(allParticipantQuestions, participantQuestionIdentifiers, "participantQuestion");       
     ensureUniqueQuestionIDs(usedIDs, participantQuestions);      
     storyForm.participantQuestions = convertEditorQuestions(participantQuestions, "P_");
     
@@ -381,8 +381,8 @@ export function buildQuestionnaireFromTemplate(storyFormTemplate: string, shortN
 
 function ensureUniqueQuestionIDs(usedIDs, editorQuestions) {
     // Validate the survey ids to prevent duplicates and missing ones; ideally this should be done in GUI somehow
-    for (var index in editorQuestions) {
-        var editorQuestion = editorQuestions[index];
+    for (const index in editorQuestions) {
+        const editorQuestion = editorQuestions[index];
         if (!editorQuestion.id) {
             editorQuestion.id = "question " + (++(usedIDs.__createdIDCount));
             console.log("SURVEY DESIGN ERROR: question had missing ID and one was assigned", editorQuestion);

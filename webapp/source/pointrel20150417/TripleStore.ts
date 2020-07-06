@@ -48,19 +48,19 @@ class TripleStore {
             throw new Error("Triple should not have undefined fields");
         }
         
-        var triple = {
+        const triple = {
             a: a,
             b: b,
             c: c
         };
         
-        var change = {
+        const change = {
             action: "addTriple",
             triple: triple
         };
         
-        var timestamp = this.pointrelClient.getCurrentUniqueTimestamp();
-        var message = {
+        const timestamp = this.pointrelClient.getCurrentUniqueTimestamp();
+        const message = {
             _topicIdentifier: this.topicIdentifier,
             _topicTimestamp: timestamp,
             change: change,
@@ -74,7 +74,7 @@ class TripleStore {
     addTriple(a, b, c, callback = undefined) {
         // console.log("TripleStore addTriple", a, b, c);
 
-        var message = this.makeAddTripleMessage(a, b, c);
+        const message = this.makeAddTripleMessage(a, b, c);
 
         this.pointrelClient.sendMessage(message, callback);
         
@@ -93,20 +93,20 @@ class TripleStore {
         this.tripleMessagesBySHA256AndLength[message.__pointrel_sha256AndLength] = message;
         
         if (message.change.action === "addTriple") {
-            var triple = message.change.triple;
-            var aKey = JSON.stringify(triple.a);
-            var aIndex = this.indexABC[aKey];
+            const triple = message.change.triple;
+            const aKey = JSON.stringify(triple.a);
+            let aIndex = this.indexABC[aKey];
             if (!aIndex) {
                 aIndex = {};
                 this.indexABC[aKey] = aIndex;
             }
-            var bKey = JSON.stringify(triple.b);
-            var bIndex = aIndex[bKey];
+            const bKey = JSON.stringify(triple.b);
+            let bIndex = aIndex[bKey];
             if (!bIndex) {
                 bIndex = {};
                 aIndex[bKey] = bIndex;
             }
-            var versions = bIndex.versions;
+            let versions = bIndex.versions;
             if (!versions) {
                 versions = [];
                 bIndex.versions = versions;
@@ -121,12 +121,12 @@ class TripleStore {
     
     private getIndexEntries(a, b = undefined) {
         if (a === undefined) throw ("a should not be undefined");
-        var aKey = JSON.stringify(a);
-        var aIndex = this.indexABC[aKey];
+        const aKey = JSON.stringify(a);
+        const aIndex = this.indexABC[aKey];
         if (!aIndex) return null;
         if (b === undefined) return aIndex;
-        var bKey = JSON.stringify(b);
-        var bIndex = aIndex[bKey];
+        const bKey = JSON.stringify(b);
+        const bIndex = aIndex[bKey];
         if (!bIndex) return null;
         return bIndex;
     }
@@ -148,7 +148,7 @@ class TripleStore {
             
             this.processTripleStoreMessage(message);
             
-            var triple = message.change.triple;
+            const triple = message.change.triple;
             
             // console.log("TripleStore: About to publish changes...");
             
@@ -156,7 +156,7 @@ class TripleStore {
             
             // TODO: Improve this dispatching so don't have to do JSON string conversion
             // Some other common events. Other variations would need to be listened for using the more general event above
-            // TODO: Maybe want to distinguish when a later C value is put in that superceeds an old C value
+            // TODO: Maybe want to distinguish when a later C value is put in that supersedes an old C value
             // console.log("publish", makeTopicKey({type: "TripleStore.addForAB", a: triple.a, b: triple.b}));
             topic.publish(makeTopicKey({type: "TripleStore.addForA", a: triple.a}), triple, message);
             topic.publish(makeTopicKey({type: "TripleStore.addForAB", a: triple.a, b: triple.b}), triple, message);
@@ -196,11 +196,11 @@ class TripleStore {
     /*
     // TODO: Optimize with indexes
     // TODO: Ignoring actual timestamps, so only "latest" by receipt is considered, but that is not correct
-    // TODO: need to use actual timestamp in sorted comparison to deal with collissions
+    // TODO: need to use actual timestamp in sorted comparison to deal with collisions
     queryLatest(a, b, c) {
         // console.log("queryLatest", a, b, c);
-        for (var i = this.tripleMessages.length - 1; i >= 0; i--) {
-            var tripleMessage = this.tripleMessages[i];
+        for (const i = this.tripleMessages.length - 1; i >= 0; i--) {
+            const tripleMessage = this.tripleMessages[i];
             // console.log("queryLatest loop", i, tripleMessage);
             if ((a === undefined || tripleMessage.change.triple.a === a) &&
                 (b === undefined || tripleMessage.change.triple.b === b) &&
@@ -223,7 +223,7 @@ class TripleStore {
         if (b === undefined) {
             throw new Error("b should not be undefined; a: " + a);
         }    
-        var bIndex = this.getIndexEntries(a, b);
+        const bIndex = this.getIndexEntries(a, b);
         if (!bIndex) return undefined;
         // console.log("queryLatestC result", a, b, bIndex.latestC);
         return defensiveCopy(bIndex.latestC);
@@ -236,7 +236,7 @@ class TripleStore {
         if (b === undefined) {
             throw new Error("b should not be undefined; a: " + a);
         }    
-        var bIndex = this.getIndexEntries(a, b);
+        const bIndex = this.getIndexEntries(a, b);
         if (!bIndex) return [];
         return defensiveCopy(bIndex.versions);
     }
@@ -246,13 +246,13 @@ class TripleStore {
         if (a === undefined) {
             throw new Error("a should not be undefined");
         }
-        var result = {};
+        const result = {};
         
-        var aIndex = this.getIndexEntries(a);
+        const aIndex = this.getIndexEntries(a);
         if (!aIndex) return result;
         
-        for (var bKey in aIndex) {
-            var bIndex = aIndex[bKey];
+        for (const bKey in aIndex) {
+            const bIndex = aIndex[bKey];
             if (bIndex && bIndex.latestC !== undefined) {
                 result[bKey] = defensiveCopy(bIndex.latestC);
             }
@@ -292,15 +292,15 @@ class TripleStore {
         if (a === undefined) {
             throw new Error("expected a to be defined");
         }
-        var result = {};
+        const result = {};
        
-        var latestBC = this.queryAllLatestBCForA(a);
-        for (var bKey in latestBC) {
-            var b = bKey;
+        const latestBC = this.queryAllLatestBCForA(a);
+        for (const bKey in latestBC) {
+            let b = bKey;
             if (isKeyJSON) {
                 b = JSON.parse(bKey);
             }
-            var c = latestBC[bKey];
+            const c = latestBC[bKey];
             if (typeof b === "string") {
                 if (c !== undefined) {
                     result[b] = defensiveCopy(c);
@@ -318,8 +318,8 @@ class TripleStore {
     // TODO: Id does not have to be restricted to a string, but doing it for now to catch errors
 
     newIdForSet(setClassName: string): string {
-        // var setIdentifier = {"type": "set", "id":  generateRandomUuid(setClassName)};
-        var setIdentifier = generateRandomUuid(setClassName);
+        // const setIdentifier = {"type": "set", "id":  generateRandomUuid(setClassName)};
+        const setIdentifier = generateRandomUuid(setClassName);
         return setIdentifier;
     }
     
@@ -333,7 +333,7 @@ class TripleStore {
             throw new Error("expected setIdentifier to be defined");
         }
         
-        var newId;
+        let newId;
         
         if (template) {
             newId = template[idProperty];
@@ -346,12 +346,12 @@ class TripleStore {
         }
         
        if (template) {
-            for (var key in template) {
+            for (const key in template) {
                 this.addTriple(newId, key, template[key]);
             }
         }
         
-        // TODO: Should there be another layer of indirection with a UUID for the "item" different from idPropery?
+        // TODO: Should there be another layer of indirection with a UUID for the "item" different from idProperty?
         // this.tripleStore.addTriple(newId????, this.idProperty, newId);
         this.addTriple(setIdentifier, {setItem: newId}, newId);
         
@@ -366,15 +366,15 @@ class TripleStore {
             throw new Error("expected existingItemId to be defined");
         }
         
-        var newId = this.newIdForSetItem(itemClassName);
+        const newId = this.newIdForSetItem(itemClassName);
         
         this.addTriple(setIdentifier, {setItem: newId}, newId);
         
-        var latestBC = this.queryAllLatestBCForA(existingItemId);
-        for (var bKey in latestBC) {
+        const latestBC = this.queryAllLatestBCForA(existingItemId);
+        for (const bKey in latestBC) {
             // For every field, copy it...
-            var b = JSON.parse(bKey);
-            var c = latestBC[bKey];
+            const b = JSON.parse(bKey);
+            const c = latestBC[bKey];
             if (c !== undefined) {
                 this.addTriple(newId, b, c);
             } else {
@@ -397,20 +397,20 @@ class TripleStore {
     }
 
     getListForSetIdentifier(setIdentifier): Array<string> {
-        var result = [];
+        const result = [];
  
         if (!setIdentifier) return result;
         
-        var aIndex = this.getIndexEntries(setIdentifier);
+        const aIndex = this.getIndexEntries(setIdentifier);
         if (!aIndex) return result;
         
-        for (var bKey in aIndex) {
-            var b = JSON.parse(bKey);
+        for (const bKey in aIndex) {
+            const b = JSON.parse(bKey);
             // Set items should have a "setItem" field in b key as a "standard"; possible collision with other usages though
             if (b.setItem) {
-                var bIndex = aIndex[bKey];
+                const bIndex = aIndex[bKey];
                 if (bIndex) {
-                    var c = bIndex.latestC;
+                    const c = bIndex.latestC;
                     if (c !== undefined && c !== null) {
                         result.push(defensiveCopy(c));
                     }

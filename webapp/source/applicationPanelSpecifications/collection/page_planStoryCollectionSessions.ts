@@ -1,7 +1,7 @@
 import kludgeForUseStrict = require("../../kludgeForUseStrict");
 "use strict";
 
-var panel: Panel = {
+const panel: Panel = {
     id: "page_planStoryCollectionSessions",
     displayName: "Plan story collection sessions",
     tooltipText: "Create agendas for any group story sessions you want to hold.",

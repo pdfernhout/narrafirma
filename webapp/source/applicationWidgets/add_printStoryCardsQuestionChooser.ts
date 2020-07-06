@@ -10,19 +10,19 @@ import questionnaireGeneration = require("../questionnaireGeneration");
 
 function add_printStoryCardsQuestionChooser(panelBuilder: PanelBuilder, model, fieldSpecification) {
     
-    var project = Globals.project();
-    var storyCollectionName = Globals.clientState().storyCollectionName();
+    const project = Globals.project();
+    const storyCollectionName = Globals.clientState().storyCollectionName();
     if (!storyCollectionName) return m("div", "Please select a story collection.");
-    var prompt = panelBuilder.buildQuestionLabel(fieldSpecification);
-    var storageFunction = valuePathResolver.newValuePathForFieldSpecification(model, fieldSpecification);
+    const prompt = panelBuilder.buildQuestionLabel(fieldSpecification);
+    const storageFunction = valuePathResolver.newValuePathForFieldSpecification(model, fieldSpecification);
 
-    var allStoryQuestions = project.storyQuestionsForStoryCollection(storyCollectionName);
-    var elicitingQuestions = [project.elicitingQuestionForStoryCollection(storyCollectionName)];
-    var allParticipantQuestions = project.participantQuestionsForStoryCollection(storyCollectionName);
-    var allAnnotationQuestions = questionnaireGeneration.convertEditorQuestions(project.collectAllAnnotationQuestions(), "A_");
+    const allStoryQuestions = project.storyQuestionsForStoryCollection(storyCollectionName);
+    const elicitingQuestions = [project.elicitingQuestionForStoryCollection(storyCollectionName)];
+    const allParticipantQuestions = project.participantQuestionsForStoryCollection(storyCollectionName);
+    const allAnnotationQuestions = questionnaireGeneration.convertEditorQuestions(project.collectAllAnnotationQuestions(), "A_");
     
     function isChecked(shortName, value = undefined) {
-        var map = storageFunction() || {};
+        const map = storageFunction() || {};
         if (value === undefined) {
             return !!map[shortName];
         }
@@ -31,7 +31,7 @@ function add_printStoryCardsQuestionChooser(panelBuilder: PanelBuilder, model, f
     }
     
     function buildQuestionCheckbox(shortName, questionType, questionCategory): any {
-        var id = questionCategory + shortName;
+        const id = questionCategory + shortName;
         if (questionType === "label" || (questionType === "header")) return [];
         
         return m("div", [
@@ -42,7 +42,7 @@ function add_printStoryCardsQuestionChooser(panelBuilder: PanelBuilder, model, f
     }
     
     function buildQuestionCheckboxSpecialForElicitingQuestion(): any {
-        var id = "elicitingQuestion";
+        const id = "elicitingQuestion";
         return m("div", [
             m("input[type=checkbox]", {id: id, checked: isChecked(id), onchange: function(event) { isChecked(id, event.target.checked); }}),
             m("label", {"for": id}, "Eliciting question"),
@@ -51,7 +51,7 @@ function add_printStoryCardsQuestionChooser(panelBuilder: PanelBuilder, model, f
     }
     
     function buildQuestionCheckboxSpecialForNumStoriesTold(): any {
-        var id = "numStoriesTold";
+        const id = "numStoriesTold";
         return m("div", [
             m("input[type=checkbox]", {id: id, checked: isChecked(id), onchange: function(event) { isChecked(id, event.target.checked); }}),
             m("label", {"for": id}, "Number of stories told"),
@@ -60,7 +60,7 @@ function add_printStoryCardsQuestionChooser(panelBuilder: PanelBuilder, model, f
     }
 
     function buildQuestionCheckboxSpecialForStoryLength(): any {
-        var id = "storyLength";
+        const id = "storyLength";
         return m("div", [
             m("input[type=checkbox]", {id: id, checked: isChecked(id), onchange: function(event) { isChecked(id, event.target.checked); }}),
             m("label", {"for": id}, "Story length"),
@@ -69,7 +69,7 @@ function add_printStoryCardsQuestionChooser(panelBuilder: PanelBuilder, model, f
     }
     
     function selectElements(displayTypes: any = null) {
-        var map = {};
+        const map = {};
         if (elicitingQuestions) {
             elicitingQuestions.forEach((question) => {
                 if (!displayTypes) map["elicitingQuestion"] = true;
@@ -106,7 +106,7 @@ function add_printStoryCardsQuestionChooser(panelBuilder: PanelBuilder, model, f
     }
 
     function selectAllStoryQuestions() {
-        var map = {};
+        const map = {};
         allStoryQuestions.forEach((question) => {
             map["S_" + question.displayName] = true;
         });
@@ -114,7 +114,7 @@ function add_printStoryCardsQuestionChooser(panelBuilder: PanelBuilder, model, f
     }
     
     function selectAllParticipantQuestions() {
-        var map = {};
+        const map = {};
         allParticipantQuestions.forEach((question) => {
             map["P_" + question.displayName] = true;
         });
@@ -122,7 +122,7 @@ function add_printStoryCardsQuestionChooser(panelBuilder: PanelBuilder, model, f
     }
 
     function selectAllAnnotationQuestions() {
-        var map = {};
+        const map = {};
         allAnnotationQuestions.forEach((question) => {
             map["A_" + question.displayName] = true;
         });
@@ -136,11 +136,11 @@ function add_printStoryCardsQuestionChooser(panelBuilder: PanelBuilder, model, f
     // TODO: Translate
 
     // show questions by type
-    var nominalQuestionTypes = ["select", "boolean", "checkbox", "checkboxes", "radiobuttons"];
+    const nominalQuestionTypes = ["select", "boolean", "checkbox", "checkboxes", "radiobuttons"];
 
-    var storyRatioQuestions = [];
-    var storyTextQuestions = [];
-    var storyNominalQuestions = [];
+    const storyRatioQuestions = [];
+    const storyTextQuestions = [];
+    const storyNominalQuestions = [];
     allStoryQuestions.forEach((question) => {
         if (question.displayType === "slider") {
             storyRatioQuestions.push(question);
@@ -151,9 +151,9 @@ function add_printStoryCardsQuestionChooser(panelBuilder: PanelBuilder, model, f
         }
     });
 
-    var participantRatioQuestions = [];
-    var participantTextQuestions = [];
-    var participantNominalQuestions = [];
+    const participantRatioQuestions = [];
+    const participantTextQuestions = [];
+    const participantNominalQuestions = [];
     allParticipantQuestions.forEach((question) => {
         if (question.displayType === "slider") {
             participantRatioQuestions.push(question);

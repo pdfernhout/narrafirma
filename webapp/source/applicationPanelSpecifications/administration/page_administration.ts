@@ -1,7 +1,7 @@
 import versions = require("../../versions");
 "use strict";
 
-var panel: Panel = {
+const panel: Panel = {
     id: "page_administration",
     displayName: "Administration",
     panelFields: [

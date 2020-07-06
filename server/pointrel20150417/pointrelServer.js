@@ -220,7 +220,7 @@ function indexAllJournals() {
     
     if (!isUsingFiles()) return;
         
-    var fileNames;
+    var fileNames = [];
     try {
         fileNames = fs.readdirSync(journalsDirectory);
     } catch (error) {

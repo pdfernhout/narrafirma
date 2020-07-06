@@ -9,9 +9,9 @@ function add_questionsTable(panelBuilder: PanelBuilder, model, fieldSpecificatio
     
     // TODO: Fix for Mithril
     /*
-    var questionContentPane = panelBuilder.createQuestionContentPaneWithPrompt(fieldSpecification);
+    const questionContentPane = panelBuilder.createQuestionContentPaneWithPrompt(fieldSpecification);
     
-    var label = panelBuilder.newContentPane({
+    const label = panelBuilder.newContentPane({
         // content: translate(id + "::prompt", fieldSpecification.displayPrompt)
         content: "<b>UNFINISHED add_questionsTable: " + fieldSpecification.id + "</b>"             
     });

@@ -11,8 +11,8 @@ import m = require("mithril");
 
 function questionForID(questions, id) {
     if (!id) return null;
-    for (var index in questions) {
-        var question = questions[index];
+    for (const index in questions) {
+        const question = questions[index];
         if (question.id === id) return question;
     }
     console.log("ERROR: question not found for id", id, questions);
@@ -69,7 +69,7 @@ class GraphBrowser {
     
     calculateView(args) {
         // Handling of caching of questions and stories
-        var storyCollectionIdentifier = valuePathResolver.newValuePathForFieldSpecification(args.model, args.fieldSpecification)();
+        const storyCollectionIdentifier = valuePathResolver.newValuePathForFieldSpecification(args.model, args.fieldSpecification)();
         
         if (storyCollectionIdentifier !== this.storyCollectionIdentifier) {
             // TODO: Maybe need to handle tracking if list changed so can keep sorted list?
@@ -77,7 +77,7 @@ class GraphBrowser {
             this.currentStoryCollectionChanged(this.storyCollectionIdentifier);
         }
         
-        var parts;
+        let parts;
         
         if (!this.storyCollectionIdentifier) {
             parts = [m("div", "Please select a story collection to view")];
@@ -104,10 +104,10 @@ class GraphBrowser {
         
         /*
         // TODO: Should provide copy of item?
-        var panelBuilder: PanelBuilder = args.panelBuilder;
+        const panelBuilder: PanelBuilder = args.panelBuilder;
         // Possible recursion if the panels contain a table
         
-        var theClass = "narrafirma-griditempanel-viewing";
+        const theClass = "narrafirma-griditempanel-viewing";
         if (args.mode === "edit") {
             theClass = "narrafirma-griditempanel-editing";  
         }
@@ -127,12 +127,12 @@ class GraphBrowser {
     }
     
     calculateOptionsForChoices(currentValue) {
-        var options = this.choices.map((option) => {
-            var optionOptions = {value: option.value, selected: undefined};
+        const options = this.choices.map((option) => {
+            const optionOptions = {value: option.value, selected: undefined};
             if (currentValue === option.value) optionOptions.selected = 'selected';
             return m("option", optionOptions, option.label);
         });
-        var hasNoSelection = (currentValue === null || currentValue === undefined || currentValue === "") || undefined;
+        const hasNoSelection = (currentValue === null || currentValue === undefined || currentValue === "") || undefined;
         options.unshift(m("option", {value: "", selected: hasNoSelection}, "--- select ---"));
         return options;
     }
@@ -141,15 +141,15 @@ class GraphBrowser {
         this.questions = [];
         this.storyCollectionIdentifier = storyCollectionIdentifier;
         
-        var elicitingQuestion = this.project.elicitingQuestionForStoryCollection(this.storyCollectionIdentifier);
+        const elicitingQuestion = this.project.elicitingQuestionForStoryCollection(this.storyCollectionIdentifier);
         if (elicitingQuestion) this.questions.push(elicitingQuestion);
-        var numStoriesToldQuestions = this.project.numStoriesToldQuestionForStoryCollection(this.storyCollectionIdentifier);
-        var storyLengthQuestions = this.project.storyLengthQuestionForStoryCollection(this.storyCollectionIdentifier);
+        const numStoriesToldQuestions = this.project.numStoriesToldQuestionForStoryCollection(this.storyCollectionIdentifier);
+        const storyLengthQuestions = this.project.storyLengthQuestionForStoryCollection(this.storyCollectionIdentifier);
 
-        var storyQuestions = this.project.storyQuestionsForStoryCollection(this.storyCollectionIdentifier);
-        var participantQuestions = this.project.participantQuestionsForStoryCollection(this.storyCollectionIdentifier);
+        const storyQuestions = this.project.storyQuestionsForStoryCollection(this.storyCollectionIdentifier);
+        const participantQuestions = this.project.participantQuestionsForStoryCollection(this.storyCollectionIdentifier);
         // annotations are not per collection/questionnaire
-        var annotationQuestions = questionnaireGeneration.convertEditorQuestions(this.project.collectAllAnnotationQuestions(), "A_");
+        const annotationQuestions = questionnaireGeneration.convertEditorQuestions(this.project.collectAllAnnotationQuestions(), "A_");
         
         this.questions = this.questions.concat(storyQuestions, participantQuestions, annotationQuestions, numStoriesToldQuestions, storyLengthQuestions);
 
@@ -164,12 +164,12 @@ class GraphBrowser {
     }
     
     updateGraph() {
-        var xAxisQuestionID = this.xAxisSelectValue;
-        var yAxisQuestionID = this.yAxisSelectValue;
+        const xAxisQuestionID = this.xAxisSelectValue;
+        const yAxisQuestionID = this.yAxisSelectValue;
         
         // Remove old graph(s)
         while (this.graphHolder.chartPanes.length) {
-            var chartPane = this.graphHolder.chartPanes.pop();
+            const chartPane = this.graphHolder.chartPanes.pop();
             this.graphHolder.graphResultsPane.removeChild(chartPane);
             // TODO: Do these need to be destroyed or freed somehow?
         }
@@ -184,8 +184,8 @@ class GraphBrowser {
         // TODO: Translated or improve checking or provide alternate handling if only one selected
         if (!xAxisQuestionID && !yAxisQuestionID) return; // alert("Please select a question for one or both graph axes");
           
-        var xAxisQuestion = questionForID(this.questions, xAxisQuestionID);
-        var yAxisQuestion = questionForID(this.questions, yAxisQuestionID);
+        let xAxisQuestion = questionForID(this.questions, xAxisQuestionID);
+        let yAxisQuestion = questionForID(this.questions, yAxisQuestionID);
         
         // Ensure xAxisQuestion is always defined
         if (!xAxisQuestion) {
@@ -195,8 +195,8 @@ class GraphBrowser {
         
         if (!xAxisQuestion) return;
         
-        var xType = "choice";
-        var yType = null;
+        let xType = "choice";
+        let yType = null;
         if (xAxisQuestion.displayType === "slider") {
             xType = "scale";
         }

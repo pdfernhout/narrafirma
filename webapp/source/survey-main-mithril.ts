@@ -15,14 +15,14 @@ import surveyStorage = require("./surveyStorage");
 // TODO: Progress when sending to server 
 
 // TODO: Should refactor code so this prefix is not also duplicated in application and buttonActions
-var narrafirmaProjectPrefix = "NarraFirmaProject-";
+const narrafirmaProjectPrefix = "NarraFirmaProject-";
 
-var serverURL = "/api/pointrel20150417";
-var pointrelClient: PointrelClient;
+const serverURL = "/api/pointrel20150417";
+let pointrelClient: PointrelClient;
 
-var preview;
-var projectIdentifier;
-var storyCollectionIdentifier;
+let preview;
+let projectIdentifier;
+let storyCollectionIdentifier;
     
 function loadQuestionnaire(callback) {
     // Decided on how to load data: Either can get latest with one or more questionnaires, or can query all messages and filter. Went with get latest.
@@ -40,7 +40,7 @@ function loadQuestionnaire(callback) {
         console.log("request got data", data);
         if (data.success) {
             console.log("storyCollectionIdentifier", storyCollectionIdentifier, data.latestRecord.messageContents.change);
-            var questionnaire = data.latestRecord.messageContents.change[storyCollectionIdentifier];
+            const questionnaire = data.latestRecord.messageContents.change[storyCollectionIdentifier];
             if (questionnaire) {
                 callback(null, questionnaire);
             } else {
@@ -77,7 +77,7 @@ function createLayout() {
         }
         console.log("got questionnaire from server", projectIdentifier, storyCollectionIdentifier, questionnaire);
         
-        var surveyDiv = document.getElementById("surveyDiv");
+        const surveyDiv = document.getElementById("surveyDiv");
         // m.render(surveyDiv, m("div", ["Hello survey ============== b"]));
         
         surveyBuilder.buildSurveyForm(surveyDiv, questionnaire, finishedSurvey);
@@ -101,13 +101,13 @@ function updateServerStatus(status, message) {
 
 // getHashParameters derived from: http://stackoverflow.com/questions/4197591/parsing-url-hash-fragment-identifier-with-javascript
 function getHashParameters() {
-    var hash = window.location.hash.substr(1);
-    var result = {};
-    var match;
+    const hash = window.location.hash.substr(1);
+    const result = {};
+    let match;
     // Regex for replacing addition symbol with a space
-    var plusMatcher = /\+/g;
-    var parameterSplitter = /([^&;=]+)=?([^&;]*)/g;
-    var decode = function (s) {return decodeURIComponent(s.replace(plusMatcher, " ")); };
+    const plusMatcher = /\+/g;
+    const parameterSplitter = /([^&;=]+)=?([^&;]*)/g;
+    const decode = function (s) {return decodeURIComponent(s.replace(plusMatcher, " ")); };
     while (true) {
         match = parameterSplitter.exec(hash);
         if (!match) break;
@@ -132,14 +132,14 @@ function finishedPreview(status, surveyResult, wizardPane) {
 }
 
 function initialize() {
-    var configuration = getHashParameters();
+    const configuration = getHashParameters();
     console.log("configuration", configuration);
 
     preview = configuration["preview"];
     
     if (preview) {
         console.log("Preview mode");
-        var surveyDiv = document.getElementById("surveyDiv");
+        const surveyDiv = document.getElementById("surveyDiv");
         // m.render(surveyDiv, m("div", ["Hello survey ============== b"]));
         
         // turn off initial "please wait" display
@@ -151,7 +151,7 @@ function initialize() {
         }
 
         
-        var questionnaire = window.opener["narraFirma_previewQuestionnaire"];     
+        const questionnaire = window.opener["narraFirma_previewQuestionnaire"];     
         if (questionnaire.customCSS) surveyBuilder.loadCSS(document, questionnaire.customCSS);
 
         surveyBuilder.buildSurveyForm(surveyDiv, questionnaire, finishedPreview, {previewMode: true});
@@ -174,7 +174,7 @@ function initialize() {
     
     // TODO: Should ping server to get current user identifier in case logged in
     // TODO: Should check with server if have read and write permissions for the specific topics
-    var userIdentifier = "anonymous";
+    const userIdentifier = "anonymous";
     pointrelClient = new PointrelClient(serverURL, projectIdentifier, userIdentifier, receivedMessage, updateServerStatus);
     
     createLayout();

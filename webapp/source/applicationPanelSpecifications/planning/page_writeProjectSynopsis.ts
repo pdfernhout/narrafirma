@@ -1,7 +1,7 @@
 import kludgeForUseStrict = require("../../kludgeForUseStrict");
 "use strict";
 
-var panel: Panel = {
+const panel: Panel = {
     id: "page_writeProjectSynopsis",
     displayName: "Write project synopsis",
     tooltipText: "Summarize your project planning with a brief description you can show to other people.",

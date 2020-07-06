@@ -6,19 +6,19 @@ import saveAs = require("FileSaver");
 
 "use strict";
 
-var allMessagesExportType = "NarraFirma_allMessages";
-var allMessagesExportFormat = "0.1.0";
+const allMessagesExportType = "NarraFirma_allMessages";
+const allMessagesExportFormat = "0.1.0";
 
-var currentProjectStateExportType = "NarraFirma_currentProjectState";
-var currentProjectStateExportFormat = "0.1.1";
+const currentProjectStateExportType = "NarraFirma_currentProjectState";
+const currentProjectStateExportFormat = "0.1.1";
 
 // ----------------------------------------------------------------------------------------------------
 // IMPORT
 // ----------------------------------------------------------------------------------------------------
 
 export function importProject() {
-    var project = Globals.project();
-    var tripleStore = project.tripleStore;
+    const project = Globals.project();
+    const tripleStore = project.tripleStore;
 
     if (!project.currentUserHasAdminAccess) {
         alert("You must have administrative permission to import into the project.");
@@ -37,21 +37,21 @@ export function importProject() {
         "project_annotationQuestionsList", "project_storyForms", "project_storyCollections", "project_catalysisReports", ];
     const sayAbout = ["eliciting questions", "questions about stories", "questions about participants", 
         "annotation questions", "story forms", "story collections", "catalysis reports"]; 
-    var foundItemsIn = [];
-    for (var i = 0; i < lookIn.length; i++) {
-        var ids = Globals.project().getListForField(lookIn[i]);
+    const foundItemsIn = [];
+    for (let i = 0; i < lookIn.length; i++) {
+        const ids = Globals.project().getListForField(lookIn[i]);
         if (ids && ids.length) {
             foundItemsIn.push(sayAbout[i]);
         }
     }
     console.log("foundItemsIn", foundItemsIn);
-    var importWhat;
+    let importWhat;
     if (importType === "project history with stories") {
         importWhat = "a project history";
     } else {
         importWhat = "a project snapshot";
     }
-    var confirmText = "";
+    let confirmText = "";
     if (foundItemsIn.length) {
         confirmText = "Are you ABSOLUTELY sure you want to import " + importWhat + "?\n\nThis should only be done with an empty project, " +
             "and there are \n\n    " + foundItemsIn.join("\n    ") + "\n\n in this project.";
@@ -60,7 +60,6 @@ export function importProject() {
     }
     if (!confirm(confirmText)) return;
 
-    var tripleStore = project.tripleStore;
     if (importType === "project history with stories") {
         importEntireProject();
     } else {
@@ -69,11 +68,11 @@ export function importProject() {
 }
 
 export function importEntireProject() {
-    var project = Globals.project();
+    const project = Globals.project();
     
     console.log("importEntireProject");
     chooseProjectFileToImport((contents) => {
-        var importObject = JSON.parse(contents);
+        const importObject = JSON.parse(contents);
         // importObject.messages.forEach((message) => {
         //    // if (message._topicIdentifier === "surveyResults")
         //    console.log("message", message._topicIdentifier);
@@ -92,14 +91,14 @@ export function importEntireProject() {
             }
         }
         
-        var progressModel = dialogSupport.openProgressDialog("Importing project messages...", "Progress importing project messsages", "Cancel", dialogCancelled);
+        const progressModel = dialogSupport.openProgressDialog("Importing project messages...", "Progress importing project messages", "Cancel", dialogCancelled);
   
         function dialogCancelled(dialogConfiguration, hideDialogMethod) {
             progressModel.cancelled = true;
             hideDialogMethod();
         }
         
-        var messageIndexToSend = 0;
+        let messageIndexToSend = 0;
     
         function sendNextMessage() {
             if (progressModel.cancelled) {
@@ -109,7 +108,7 @@ export function importEntireProject() {
                 progressModel.hideDialogMethod();
                 progressModel.redraw();
             } else {
-                var message = importObject.messages[messageIndexToSend++];
+                const message = importObject.messages[messageIndexToSend++];
                 
                 // Rewrite project references in triples, but not in survey results
                 // TODO: The message trace is no longer valid if do rewrite
@@ -133,10 +132,10 @@ export function importEntireProject() {
 }
 
 export function importProjectCurrentState() {
-    var project = Globals.project();
+    const project = Globals.project();
     console.log("importProjectCurrentState");
     chooseProjectFileToImport((contents) => {
-        var importObject = JSON.parse(contents);
+        const importObject = JSON.parse(contents);
         // TODO: Similar to what is in csvImportExport -- could any duplication be refactored out?
         
         if (importObject.exportType !== currentProjectStateExportType) {
@@ -150,54 +149,54 @@ export function importProjectCurrentState() {
             }
         }
         
-        var progressModel = dialogSupport.openProgressDialog("Importing current project state...", "Progress importing current project state", "Cancel", dialogCancelled);
+        const progressModel = dialogSupport.openProgressDialog("Importing current project state...", "Progress importing current project state", "Cancel", dialogCancelled);
   
         function dialogCancelled(dialogConfiguration, hideDialogMethod) {
             progressModel.cancelled = true;
             hideDialogMethod();
         }
         
-        var messagesToSend = [];
+        const messagesToSend = [];
         
         // Prepare triples for adding
-        var aKeys = Object.keys(importObject.projectCurrentState);
-        for (var aKeyIndex = 0; aKeyIndex < aKeys.length; aKeyIndex++) {
-            var aKey = aKeys[aKeyIndex];
-            var aKeyObject = JSON.parse(aKey);
-            var aObject = importObject.projectCurrentState[aKey];
+        const aKeys = Object.keys(importObject.projectCurrentState);
+        for (let aKeyIndex = 0; aKeyIndex < aKeys.length; aKeyIndex++) {
+            const aKey = aKeys[aKeyIndex];
+            let aKeyObject = JSON.parse(aKey);
+            const aObject = importObject.projectCurrentState[aKey];
             // Rewrite project references in triples
             if (aKeyObject === importObject.projectIdentifier) {
                 aKeyObject = project.projectIdentifier;
             }
             
-            var bKeys = Object.keys(aObject);
-            for (var bKeyIndex = 0; bKeyIndex < bKeys.length; bKeyIndex++) {
-                var bKey = bKeys[bKeyIndex];
-                var bKeyObject = JSON.parse(bKey);
-                var cValue = aObject[bKey];
+            const bKeys = Object.keys(aObject);
+            for (let bKeyIndex = 0; bKeyIndex < bKeys.length; bKeyIndex++) {
+                const bKey = bKeys[bKeyIndex];
+                const bKeyObject = JSON.parse(bKey);
+                const cValue = aObject[bKey];
                 messagesToSend.push([aKeyObject, bKeyObject, cValue]);
             }
         }
         
         // Prepare activeQuestionnaires for adding
         if (importObject.activeQuestionnaires) {
-            var questionnaireMessage = project.pointrelClient.createChangeMessage("questionnaires", "questionnairesMessage", importObject.activeQuestionnaires, null);
+            const questionnaireMessage = project.pointrelClient.createChangeMessage("questionnaires", "questionnairesMessage", importObject.activeQuestionnaires, null);
             messagesToSend.push(questionnaireMessage);
         }
         
         // Prepare surveyResults for adding
         if (importObject.storyCollections) {
-            for (var storyCollectionName in importObject.storyCollections) {
-                var surveyResults = importObject.storyCollections[storyCollectionName];
+            for (const storyCollectionName in importObject.storyCollections) {
+                const surveyResults = importObject.storyCollections[storyCollectionName];
                 surveyResults.forEach((surveyResult) => {
-                    //var questionnaireMessage = project.pointrelClient.createChangeMessage("questionnaires", "questionnairesMessage", importObject.activeQuestionnaires, null);
-                    var surveyResultMessage = surveyStorage.makeSurveyResultMessage(project.pointrelClient, project.projectIdentifier, storyCollectionName, surveyResult);
+                    //const questionnaireMessage = project.pointrelClient.createChangeMessage("questionnaires", "questionnairesMessage", importObject.activeQuestionnaires, null);
+                    const surveyResultMessage = surveyStorage.makeSurveyResultMessage(project.pointrelClient, project.projectIdentifier, storyCollectionName, surveyResult);
                     messagesToSend.push(surveyResultMessage);
                 });
             }
         }
         
-        var messagesSentCount = 0;
+        let messagesSentCount = 0;
         
         function sendNextMessage() {
             if (progressModel.cancelled) {
@@ -207,8 +206,8 @@ export function importProjectCurrentState() {
                 progressModel.hideDialogMethod();
                 progressModel.redraw();
             } else {
-                var message = messagesToSend[messagesSentCount++];
-                var triple = null;
+                const message = messagesToSend[messagesSentCount++];
+                let triple = null;
                 if (Array.isArray(message)) {
                     triple = message;
                 }
@@ -232,15 +231,15 @@ export function importProjectCurrentState() {
 }
 
 function chooseProjectFileToImport(callback) {
-    var projectFileUploader = <HTMLInputElement>document.getElementById("projectFileUploader");
+    const projectFileUploader = <HTMLInputElement>document.getElementById("projectFileUploader");
     projectFileUploader.onchange = function() {
-        var file = projectFileUploader.files[0];
+        const file = projectFileUploader.files[0];
         if (!file) {
             return;
         }
-        var reader = new FileReader();
+        const reader = new FileReader();
         reader.onload = function(e: Event) {
-            var contents = (<FileReader>e.target).result;
+            const contents = (<FileReader>e.target).result;
             callback(contents);
         };
         reader.readAsText(file);
@@ -253,7 +252,7 @@ function chooseProjectFileToImport(callback) {
 // ----------------------------------------------------------------------------------------------------
 
 export function resetProject() {
-    var project = Globals.project();
+    const project = Globals.project();
     if (!project.currentUserHasAdminAccess) {
         alert("You must have administrative permission to reset the project.");
         return;
@@ -263,7 +262,7 @@ export function resetProject() {
         project.pointrelClient.resetJournal(journalIdentifier, function(error, response) {
             if (error || !response.success) {
                 console.log("Error resetting project", journalIdentifier, error, response);
-                var message = "error";
+                let message = "error";
                 if (response) message = response.description;
                 if (error) message = error.description;
                 if (error && typeof error.error === "string") message += "\n" + error.error.split("\n")[0];
@@ -279,14 +278,14 @@ export function resetProject() {
 }
 
 export function listOfRemovedStoryCollections() {
-    var result = [];
-    var project = Globals.project();
+    const result = [];
+    const project = Globals.project();
     const storyCollectionsIDsInUse = project.getListForField("project_storyCollections");
-    var storyCollectionNamesInUse = [];
-    for (var i = 0; i < storyCollectionsIDsInUse.length; i++) {
+    const storyCollectionNamesInUse = [];
+    for (let i = 0; i < storyCollectionsIDsInUse.length; i++) {
         storyCollectionNamesInUse.push(project.tripleStore.queryLatestC(storyCollectionsIDsInUse[i], "storyCollection_shortName"));
     }
-    var storyCollectionNamesAndCounts = {};
+    const storyCollectionNamesAndCounts = {};
     project.pointrelClient.filterMessages((message) => {
         if (message._topicIdentifier === "surveyResults") {
             const id = message.change.storyCollectionIdentifier;
@@ -296,8 +295,8 @@ export function listOfRemovedStoryCollections() {
             storyCollectionNamesAndCounts[id] += 1;
         }
     });
-    var keys = Object.keys(storyCollectionNamesAndCounts);
-    for (i = 0; i < keys.length; i++) {
+    const keys = Object.keys(storyCollectionNamesAndCounts);
+    for (let i = 0; i < keys.length; i++) {
         const collectionName = keys[i];
         if (storyCollectionNamesInUse.indexOf(collectionName) < 0 && result.indexOf(collectionName) < 0) {
             result.push(collectionName + ": " + storyCollectionNamesAndCounts[collectionName] + " stories");
@@ -312,8 +311,8 @@ export function listOfRemovedStoryCollections() {
 // ----------------------------------------------------------------------------------------------------
 
 export function exportProject() {
-    var project = Globals.project();
-    var tripleStore = project.tripleStore;
+    const project = Globals.project();
+    const tripleStore = project.tripleStore;
 
     // valueOptions: ["project snapshot without stories", "project snapshot with stories", "project history with stories"],
     const exportType = tripleStore.queryLatestC(project.projectIdentifier, "importExport_exportType");
@@ -332,10 +331,10 @@ export function exportProject() {
 export function exportEntireProject() {
     if (!confirm("Are you sure you want to export a project history with stories?")) return;
     
-    var project = Globals.project();
+    const project = Globals.project();
     
-    // var json = JSON.stringify(project.tripleStore.tripleMessages, null, 4);
-    var exportObject =  {
+    // const json = JSON.stringify(project.tripleStore.tripleMessages, null, 4);
+    const exportObject =  {
         projectIdentifier: project.projectIdentifier,
         timestamp: new Date().toISOString(),
         exportType: allMessagesExportType,
@@ -344,48 +343,48 @@ export function exportEntireProject() {
         messages: project.pointrelClient.messagesSortedByReceivedTimeArray
     };
     
-    var json = JSON.stringify(exportObject, null, 4);
+    const json = JSON.stringify(exportObject, null, 4);
     
-    // var printItems = m("pre", json);
-    // var htmlForPage = generateHTMLForPage("NarraFirma project export for " + project.projectIdentifier + " on " + new Date().toISOString(), null, printItems);
+    // const printItems = m("pre", json);
+    // const htmlForPage = generateHTMLForPage("NarraFirma project export for " + project.projectIdentifier + " on " + new Date().toISOString(), null, printItems);
     // printHTML(htmlForPage);
     
-    var questionnaireBlob = new Blob([json], {type: "application/json;charset=utf-8"});
+    const questionnaireBlob = new Blob([json], {type: "application/json;charset=utf-8"});
     saveAs(questionnaireBlob, exportObject.projectIdentifier + " with history exported at " + exportObject.timestamp + ".json");
 }
 
 function exportProjectCurrentState(includeSurveyResults) {
     // TODO: Translate
-    var promptMessage = includeSurveyResults ?
+    const promptMessage = includeSurveyResults ?
         "Are you sure you want to export a project snapshot with stories?" :
         "Are you sure you want to export a project snapshot WITHOUT stories? No stories will be saved.";
     if (!confirm(promptMessage)) return;
     
-    var project = Globals.project();
-    var tripleStore = project.tripleStore;
+    const project = Globals.project();
+    const tripleStore = project.tripleStore;
     
-    var projectCurrentState = {};
+    const projectCurrentState = {};
     
-    var aKeys = Object.keys(tripleStore.indexABC);
+    const aKeys = Object.keys(tripleStore.indexABC);
     aKeys.sort();
-    for (var aKeyIndex = 0; aKeyIndex < aKeys.length; aKeyIndex++) {
-        var aKey = aKeys[aKeyIndex];
-        var aObject = tripleStore.indexABC[aKey];
-        var bResult = {};
+    for (let aKeyIndex = 0; aKeyIndex < aKeys.length; aKeyIndex++) {
+        const aKey = aKeys[aKeyIndex];
+        const aObject = tripleStore.indexABC[aKey];
+        const bResult = {};
         projectCurrentState[aKey] = bResult;
-        var bKeys = Object.keys(aObject);
+        const bKeys = Object.keys(aObject);
         bKeys.sort();
-        for (var bKeyIndex = 0; bKeyIndex < bKeys.length; bKeyIndex++) {
-            var bKey = bKeys[bKeyIndex];
+        for (let bKeyIndex = 0; bKeyIndex < bKeys.length; bKeyIndex++) {
+            const bKey = bKeys[bKeyIndex];
             bResult[bKey] = aObject[bKey].latestC;
         }
     }
     
-    var activeQuestionnaires = null;
-    var storyCollections = null;
+    let activeQuestionnaires = null;
+    let storyCollections = null;
   
     if (includeSurveyResults) {
-        var questionnaireMessages = project.pointrelClient.filterMessages((message) => {
+        const questionnaireMessages = project.pointrelClient.filterMessages((message) => {
             return message._topicIdentifier === "questionnaires";
         });
 
@@ -394,12 +393,12 @@ function exportProjectCurrentState(includeSurveyResults) {
         const storyCollectionIDsInUse = project.getListForField("project_storyCollections");
         let storyCollectionNamesInuse = [];
         storyCollectionIDsInUse.forEach(function(id) {
-            var aName = tripleStore.queryLatestC(id, "storyCollection_shortName");
+            const aName = tripleStore.queryLatestC(id, "storyCollection_shortName");
             storyCollectionNamesInuse.push(aName);
         });
 
-        var surveyResultMessages = project.pointrelClient.filterMessages((message) => {
-            var result = false;
+        const surveyResultMessages = project.pointrelClient.filterMessages((message) => {
+            let result = false;
             if (message._topicIdentifier === "surveyResults") {
                 // message.change.storyCollectionIdentifier is the story collection name
                 if (storyCollectionNamesInuse.indexOf(message.change.storyCollectionIdentifier) >= 0) {
@@ -414,8 +413,8 @@ function exportProjectCurrentState(includeSurveyResults) {
         storyCollections = {};
 
         surveyResultMessages.forEach((message) => {
-            var storyCollectionName = message.change.storyCollectionIdentifier;
-            var storyCollection = storyCollections[storyCollectionName];
+            const storyCollectionName = message.change.storyCollectionIdentifier;
+            let storyCollection = storyCollections[storyCollectionName];
             if (!storyCollection) {
                 storyCollection = [];
                 storyCollections[storyCollectionName] = storyCollection;
@@ -424,7 +423,7 @@ function exportProjectCurrentState(includeSurveyResults) {
         });
     }
               
-    var exportObject =  {
+    const exportObject =  {
         projectIdentifier: project.projectIdentifier,
         timestamp: new Date().toISOString(),
         exportType: currentProjectStateExportType,
@@ -435,12 +434,12 @@ function exportProjectCurrentState(includeSurveyResults) {
         storyCollections: storyCollections
     };
     
-    var json = JSON.stringify(exportObject, null, 4);
+    const json = JSON.stringify(exportObject, null, 4);
 
     //console.log("json", json);
     
-    var questionnaireBlob = new Blob([json], {type: "application/json;charset=utf-8"});
-    var withOrWithoutStories = includeSurveyResults ? "with stories" : "without stories";
+    const questionnaireBlob = new Blob([json], {type: "application/json;charset=utf-8"});
+    const withOrWithoutStories = includeSurveyResults ? "with stories" : "without stories";
     saveAs(questionnaireBlob, exportObject.projectIdentifier + " current state " + withOrWithoutStories + " exported at " + exportObject.timestamp + ".json");
 }
 

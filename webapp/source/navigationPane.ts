@@ -5,20 +5,20 @@ import versions = require("./versions");
 
 "use strict";
 
-var panelSpecificationCollection;
+let panelSpecificationCollection;
 
-var currentSectionID;
-var currentPageSpecification;
-var userIdentifier;
+let currentSectionID;
+let currentPageSpecification;
+let userIdentifier;
 
-var navigationController = null;
+let navigationController = null;
 
 /* jshint scripturl:true */
-var launchHelpCommand = "javascript:narrafirma_helpClicked()";
-var logoutCommand = "javascript:narrafirma_logoutClicked()";
-var loginCommand = "javascript:narrafirma_loginClicked()";
+const launchHelpCommand = "javascript:narrafirma_helpClicked()";
+const logoutCommand = "javascript:narrafirma_logoutClicked()";
+const loginCommand = "javascript:narrafirma_loginClicked()";
 
-var Navigation: any = {
+const Navigation: any = {
     panelBuilder: null,
     
     controller: function(args) {
@@ -54,7 +54,7 @@ var Navigation: any = {
 
 function previousPageTitle() {
     if (!currentPageSpecification || !currentPageSpecification.previousPageID) return "No previous page";
-    var previousPage = panelSpecificationCollection.getPageSpecificationForPageID(currentPageSpecification.previousPageID);
+    const previousPage = panelSpecificationCollection.getPageSpecificationForPageID(currentPageSpecification.previousPageID);
     if (previousPage) return "Previous page (" + previousPage.displayName + ")";
     return "Previous page";
 }
@@ -71,7 +71,7 @@ function previousPageLink() {
 
 function nextPageTitle() {
     if (!currentPageSpecification || !currentPageSpecification.nextPageID) return "No next page";
-    var nextPage = panelSpecificationCollection.getPageSpecificationForPageID(currentPageSpecification.nextPageID);
+    const nextPage = panelSpecificationCollection.getPageSpecificationForPageID(currentPageSpecification.nextPageID);
     if (nextPage) return "Next page (" + nextPage.displayName + ")";
     return "Next page";
 }
@@ -102,20 +102,20 @@ export function setCurrentPageSpecification(pageID, pageSpecification) {
 }
 
 function buildBreadcrumbs(controller) {
-    var pageID = controller.pageID;
-    var pageSpecification = controller.pageSpecification;
+    const pageID = controller.pageID;
+    const pageSpecification = controller.pageSpecification;
     
     currentPageSpecification = pageSpecification;
     
     if (!pageSpecification) return ["Starting up..."];
 
-    var breadcrumbs = [];
+    const breadcrumbs = [];
     if (pageID !== PanelSetup.startPage()) {
         breadcrumbs.push(htmlForBreadcrumb(PanelSetup.startPage(), "Home"));
         breadcrumbs .push(" > ");
         // TODO: Should lookup name of section
         if (!pageSpecification.isHeader) {
-            var sectionPageSpecification = panelSpecificationCollection.getPageSpecificationForPageID("page_" + pageSpecification.section);
+            const sectionPageSpecification = panelSpecificationCollection.getPageSpecificationForPageID("page_" + pageSpecification.section);
             if (sectionPageSpecification) {
                 breadcrumbs.push(htmlForBreadcrumb(sectionPageSpecification.id, sectionPageSpecification.displayName));
                 breadcrumbs.push(" > ");

@@ -7,28 +7,28 @@ import questionnaireGeneration = require("../questionnaireGeneration");
 "use strict";
 
 function add_catalysisReportQuestionChooser(panelBuilder: PanelBuilder, model, fieldSpecification) {
-    var project = Globals.project();
-    var catalysisReportIdentifier = Globals.clientState().catalysisReportIdentifier();
+    const project = Globals.project();
+    const catalysisReportIdentifier = Globals.clientState().catalysisReportIdentifier();
     if (!catalysisReportIdentifier) return m("div", "Please select a catalysis report");
     
-    var prompt = panelBuilder.buildQuestionLabel(fieldSpecification);
-    var storageFunction = valuePathResolver.newValuePathForFieldSpecification(model, fieldSpecification);
-    var allStories = project.storiesForCatalysisReport(catalysisReportIdentifier, true);
-    var allStoryQuestions = project.storyQuestionsForCatalysisReport(catalysisReportIdentifier);
-    var elicitingQuestions = project.elicitingQuestionsForCatalysisReport(catalysisReportIdentifier);
-    var allParticipantQuestions = project.participantQuestionsForCatalysisReport(catalysisReportIdentifier);
+    const prompt = panelBuilder.buildQuestionLabel(fieldSpecification);
+    const storageFunction = valuePathResolver.newValuePathForFieldSpecification(model, fieldSpecification);
+    const allStories = project.storiesForCatalysisReport(catalysisReportIdentifier, true);
+    const allStoryQuestions = project.storyQuestionsForCatalysisReport(catalysisReportIdentifier);
+    const elicitingQuestions = project.elicitingQuestionsForCatalysisReport(catalysisReportIdentifier);
+    const allParticipantQuestions = project.participantQuestionsForCatalysisReport(catalysisReportIdentifier);
 
     // annotation questions are not per questionnaire but global to the project (which is maybe not good?)
     // because annotation questions are global, they are not in the form the other questions are in (which are in the questionnaire)
     // so they must be converted
-    var allAnnotationQuestions = questionnaireGeneration.convertEditorQuestions(project.collectAllAnnotationQuestions(), "A_");
+    const allAnnotationQuestions = questionnaireGeneration.convertEditorQuestions(project.collectAllAnnotationQuestions(), "A_");
 
     // show questions by type
-    var nominalQuestionTypes = ["select", "boolean", "checkbox", "checkboxes", "radiobuttons"];
+    const nominalQuestionTypes = ["select", "boolean", "checkbox", "checkboxes", "radiobuttons"];
 
-    var storyRatioQuestions = [];
-    var storyTextQuestions = [];
-    var storyNominalQuestions = [];
+    const storyRatioQuestions = [];
+    const storyTextQuestions = [];
+    const storyNominalQuestions = [];
     allStoryQuestions.forEach((question) => {
         if (question.displayType === "slider") {
             storyRatioQuestions.push(question);
@@ -39,9 +39,9 @@ function add_catalysisReportQuestionChooser(panelBuilder: PanelBuilder, model, f
         }
     });
 
-    var participantRatioQuestions = [];
-    var participantTextQuestions = [];
-    var participantNominalQuestions = [];
+    const participantRatioQuestions = [];
+    const participantTextQuestions = [];
+    const participantNominalQuestions = [];
     allParticipantQuestions.forEach((question) => {
         if (question.displayType === "slider") {
             participantRatioQuestions.push(question);
@@ -53,7 +53,7 @@ function add_catalysisReportQuestionChooser(panelBuilder: PanelBuilder, model, f
     });
     
     function isChecked(shortName, value = undefined) {
-        var map = storageFunction() || {};
+        const map = storageFunction() || {};
         if (map === undefined) {
             return false;
         }
@@ -65,28 +65,28 @@ function add_catalysisReportQuestionChooser(panelBuilder: PanelBuilder, model, f
     }
     
     function increment(theObject, fieldName) {
-        var count = theObject[fieldName] || 0;
+        let count = theObject[fieldName] || 0;
         count++;
         theObject[fieldName] = count;
     }
     
     function bin(value) {
-        var bin = Math.floor(value / 10);
-        var high = bin * 10 + 9;
+        let bin = Math.floor(value / 10);
+        let high = bin * 10 + 9;
         if (bin >= 9) {
             bin = 9;
             high = 100;
         }
-        var low = bin * 10;
+        const low = bin * 10;
         return "" + low + " - " + high;
     }
     
     function countAnswers(id, questionType) {
-        var answerCounts = {};
-        var answeredQuestionsCount = 0;
-        var naCount = 0;
+        const answerCounts = {};
+        let answeredQuestionsCount = 0;
+        let naCount = 0;
         allStories.forEach((story) => {
-            var value = story.fieldValue(id);
+            const value = story.fieldValue(id);
             if (questionType == "boolean") {
                 if (value) {
                     increment(answerCounts, "yes");
@@ -109,7 +109,7 @@ function add_catalysisReportQuestionChooser(panelBuilder: PanelBuilder, model, f
                 } else if (typeof value === "string" || typeof value === "number") {
                     increment(answerCounts, value);
                 } else {
-                    for (var key in value) {
+                    for (const key in value) {
                         if (value[key]) {
                             increment(answerCounts, key);
                         }                   
@@ -121,7 +121,7 @@ function add_catalysisReportQuestionChooser(panelBuilder: PanelBuilder, model, f
         });
         if (naCount) answerCounts["{N/A}"] = naCount;
         
-        var sortedAnswerCounts = {};
+        const sortedAnswerCounts = {};
         Object.keys(answerCounts).sort().forEach((key) => {
             sortedAnswerCounts[key] = answerCounts[key];
         });
@@ -133,13 +133,13 @@ function add_catalysisReportQuestionChooser(panelBuilder: PanelBuilder, model, f
     }
     
     function buildQuestionCheckbox(shortName, questionType, questionCategory): any {
-        var id = questionCategory + shortName;
+        const id = questionCategory + shortName;
         // now including text questions
         if (questionType === "label" || (questionType === "header")) return [];
         
         // if (questionType === "textarea" || (questionCategory !== "A_" && questionType === "text")) return [];
-        var counts = countAnswers(id, questionType);
-        var answersHover = shortName + " (" + questionType + ") has " + counts.answeredQuestionsCount + " answers:\n" + JSON.stringify(counts.answerCounts, null, 2);
+        const counts = countAnswers(id, questionType);
+        const answersHover = shortName + " (" + questionType + ") has " + counts.answeredQuestionsCount + " answers:\n" + JSON.stringify(counts.answerCounts, null, 2);
         
         return m("div", {title: answersHover}, [
             m("input[type=checkbox]", {id: id, checked: isChecked(id), onchange: function(event) { isChecked(id, event.target.checked); }}),
@@ -157,9 +157,9 @@ function add_catalysisReportQuestionChooser(panelBuilder: PanelBuilder, model, f
     }
     
     function buildQuestionCheckboxSpecialForElicitingQuestion(): any {
-        var id = "elicitingQuestion";
-        var counts = countAnswers(id, "select");
-        var answersHover = id + " has " + counts.answeredQuestionsCount + " answers:\n" + JSON.stringify(counts.answerCounts, null, 2);
+        const id = "elicitingQuestion";
+        const counts = countAnswers(id, "select");
+        const answersHover = id + " has " + counts.answeredQuestionsCount + " answers:\n" + JSON.stringify(counts.answerCounts, null, 2);
         
         return m("div", {title: answersHover}, [
             m("input[type=checkbox]", {id: id, checked: isChecked(id), onchange: function(event) { isChecked(id, event.target.checked); }}),
@@ -169,9 +169,9 @@ function add_catalysisReportQuestionChooser(panelBuilder: PanelBuilder, model, f
     }
     
     function buildQuestionCheckboxSpecialForNumStoriesTold(): any {
-        var id = "numStoriesTold";
-        var counts = countAnswers(id, "select");
-        var answersHover = id + " has " + counts.answeredQuestionsCount + " answers:\n" + JSON.stringify(counts.answerCounts, null, 2);
+        const id = "numStoriesTold";
+        const counts = countAnswers(id, "select");
+        const answersHover = id + " has " + counts.answeredQuestionsCount + " answers:\n" + JSON.stringify(counts.answerCounts, null, 2);
         
         return m("div", {title: answersHover}, [
             m("input[type=checkbox]", {id: id, checked: isChecked(id), onchange: function(event) { isChecked(id, event.target.checked); }}),
@@ -181,7 +181,7 @@ function add_catalysisReportQuestionChooser(panelBuilder: PanelBuilder, model, f
     }
     
     function buildQuestionCheckboxSpecialForStoryLength(): any {
-        var id = "storyLength";
+        const id = "storyLength";
         
         return m("div", [
             m("input[type=checkbox]", {id: id, checked: isChecked(id), onchange: function(event) { isChecked(id, event.target.checked); }}),
@@ -191,7 +191,7 @@ function add_catalysisReportQuestionChooser(panelBuilder: PanelBuilder, model, f
     }
 
     function selectElements(displayTypes: any = null) {
-        var map = {};
+        const map = {};
         if (elicitingQuestions) {
             elicitingQuestions.forEach((question) => {
                 if (!displayTypes) map["elicitingQuestion"] = true;
@@ -228,7 +228,7 @@ function add_catalysisReportQuestionChooser(panelBuilder: PanelBuilder, model, f
     }
 
     function selectAllStoryQuestions() {
-        var map = {};
+        const map = {};
         allStoryQuestions.forEach((question) => {
             map["S_" + question.displayName] = true;
         });
@@ -236,7 +236,7 @@ function add_catalysisReportQuestionChooser(panelBuilder: PanelBuilder, model, f
     }
     
     function selectAllParticipantQuestions() {
-        var map = {};
+        const map = {};
         allParticipantQuestions.forEach((question) => {
             map["P_" + question.displayName] = true;
         });
@@ -244,7 +244,7 @@ function add_catalysisReportQuestionChooser(panelBuilder: PanelBuilder, model, f
     }
 
     function selectAllAnnotationQuestions() {
-        var map = {};
+        const map = {};
         allAnnotationQuestions.forEach((question) => {
             map["A_" + question.displayName] = true;
         });

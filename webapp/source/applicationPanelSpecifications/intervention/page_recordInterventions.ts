@@ -1,7 +1,7 @@
 import kludgeForUseStrict = require("../../kludgeForUseStrict");
 "use strict";
 
-var panel: Panel = {
+const panel: Panel = {
     id: "page_recordInterventions",
     displayName: "Enter intervention records",
     tooltipText: "Reflect on the interventions you carried out to capture what happened and what you learned.",

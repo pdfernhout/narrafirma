@@ -18,8 +18,8 @@ import ClusteringDiagram = require("./applicationWidgets/ClusteringDiagram");
 
 "use strict";
 
-var project: Project;
-var clientState: ClientState;
+let project: Project;
+let clientState: ClientState;
 
 // Call this to set up the project or other needed data
 export function initialize(theProject: Project, theClientState: ClientState) {
@@ -28,13 +28,13 @@ export function initialize(theProject: Project, theClientState: ClientState) {
 }
 
 export function helpButtonClicked() {
-    var pageSpecification = navigationPane.getCurrentPageSpecification();
+    const pageSpecification = navigationPane.getCurrentPageSpecification();
     if (!pageSpecification) {
         console.log("no pageSpecification for current page");
         return;
     }
     
-    var helpURL = 'help/' + pageSpecification.section + "/help_" + pageSpecification.id + '.html';
+    const helpURL = 'help/' + pageSpecification.section + "/help_" + pageSpecification.id + '.html';
     
     browser.launchApplication(helpURL, 'help');
 }
@@ -46,7 +46,7 @@ export function helpButtonClicked() {
 export function logoutButtonClicked() {
     // TODO: Warn if have any read-only changes that would be lost
     if (confirm("Are you sure you want to log out?")) {
-        var isWordPressAJAX = !!window["ajaxurl"];
+        const isWordPressAJAX = !!window["ajaxurl"];
         if (isWordPressAJAX) {
             window.location.href = window.location.href.split("wp-content")[0] + "wp-login.php?action=logout";
         } else {
@@ -57,7 +57,7 @@ export function logoutButtonClicked() {
 
 export function loginButtonClicked() {
 // TODO: Warn if have any read-only changes that would be lost
-    var isWordPressAJAX = !!window["ajaxurl"];
+    const isWordPressAJAX = !!window["ajaxurl"];
     if (isWordPressAJAX) {
         window.location.href = window.location.href.split("wp-content")[0] + "wp-login.php?action=login";
     } else {
@@ -66,10 +66,10 @@ export function loginButtonClicked() {
 }
 
 export function guiOpenSection(model, fieldSpecification, value) {
-    var section = fieldSpecification.displayConfiguration.section;
+    const section = fieldSpecification.displayConfiguration.section;
     
     // Don't queue an extra redraw as one is already queued since this code get called by a button press
-    var isRedrawAlreadyQueued = true;
+    const isRedrawAlreadyQueued = true;
     pageDisplayer.showPage(section, false, isRedrawAlreadyQueued);
     // document.body.scrollTop = 0;
     // document.documentElement.scrollTop = 0;
@@ -85,10 +85,10 @@ export function showOrHideAdvancedOptions() {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 function copyClusteringDiagramElements(fromDiagramField: string, fromType: string, toDiagramField: string, toType: string) {
-    var fromDiagram: ClusteringDiagramModel = project.getFieldValue(fromDiagramField);
+    const fromDiagram: ClusteringDiagramModel = project.getFieldValue(fromDiagramField);
     if (!fromDiagram || !fromDiagram.items.length) return;
-    var toDiagram: ClusteringDiagramModel = project.getFieldValue(toDiagramField) || ClusteringDiagram.newDiagramModel();
-    var addedItemCount = 0;
+    const toDiagram: ClusteringDiagramModel = project.getFieldValue(toDiagramField) || ClusteringDiagram.newDiagramModel();
+    let addedItemCount = 0;
     
     fromDiagram.items.forEach((item) => {
         if (item.type === fromType) {
@@ -108,16 +108,16 @@ function copyClusteringDiagramElements(fromDiagramField: string, fromType: strin
 }
 
 export function copyPlanningStoriesToClusteringDiagram(model) {
-    var list = project.getListForField("project_projectStoriesList");
-    var toDiagramField = "project_storyElements_answersClusteringDiagram";
-    var toDiagram: ClusteringDiagramModel = project.getFieldValue(toDiagramField) || ClusteringDiagram.newDiagramModel();
-    var addedItemCount = 0;
+    const list = project.getListForField("project_projectStoriesList");
+    const toDiagramField = "project_storyElements_answersClusteringDiagram";
+    const toDiagram: ClusteringDiagramModel = project.getFieldValue(toDiagramField) || ClusteringDiagram.newDiagramModel();
+    let addedItemCount = 0;
         
     list.forEach((projectStoryIdentifier) => {
-        var projectStory = project.tripleStore.makeObject(projectStoryIdentifier);
+        const projectStory = project.tripleStore.makeObject(projectStoryIdentifier);
         
-        var storyName = projectStory.projectStory_name;
-        var storyText = projectStory.projectStory_text;
+        const storyName = projectStory.projectStory_name;
+        const storyText = projectStory.projectStory_text;
         
         if (!isNamedItemInDiagram(toDiagram, storyName, "cluster")) {
             ClusteringDiagram.addNewItemToDiagram(toDiagram, "cluster", storyName, storyText);
@@ -135,7 +135,7 @@ export function copyPlanningStoriesToClusteringDiagram(model) {
 }
 
 function isNamedItemInDiagram(diagram: ClusteringDiagramModel, name: string, itemType: string = null) {
-    // Array.some returns true or false depending on whether there is soem item that tests true 
+    // Array.some returns true or false depending on whether there is some item that tests true 
     return diagram.items.some((item) => {
         if (!itemType || item.type === itemType) {
             if (item.name === name) {
@@ -163,7 +163,7 @@ export function copyAttributesToClusteringDiagram(model) {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 function copyDraftPNIQuestionVersionsIntoAnswers_Basic() {
-    var finalQuestionIDs = [
+    const finalQuestionIDs = [
         "project_pniQuestions_goal_final",
         "project_pniQuestions_relationships_final",
         "project_pniQuestions_focus_final",
@@ -172,14 +172,14 @@ function copyDraftPNIQuestionVersionsIntoAnswers_Basic() {
         "project_pniQuestions_emphasis_final"
     ];
 
-    var copiedAnswersCount = 0;
+    let copiedAnswersCount = 0;
 
-    for (var index in finalQuestionIDs) {
-        var finalQuestionID = finalQuestionIDs[index];
-        var draftQuestionID = finalQuestionID.replace("_final", "_draft");
-        var finalValue = project.tripleStore.queryLatestC(project.projectIdentifier, finalQuestionID);
+    for (const index in finalQuestionIDs) {
+        const finalQuestionID = finalQuestionIDs[index];
+        const draftQuestionID = finalQuestionID.replace("_final", "_draft");
+        const finalValue = project.tripleStore.queryLatestC(project.projectIdentifier, finalQuestionID);
         if (!finalValue) {
-            var draftValue = project.tripleStore.queryLatestC(project.projectIdentifier, draftQuestionID);
+            const draftValue = project.tripleStore.queryLatestC(project.projectIdentifier, draftQuestionID);
             if (draftValue) {
                 project.tripleStore.addTriple(project.projectIdentifier, finalQuestionID, draftValue);
                 copiedAnswersCount++;
@@ -191,9 +191,9 @@ function copyDraftPNIQuestionVersionsIntoAnswers_Basic() {
 }
 
 export function copyDraftPNIQuestionVersionsIntoAnswers() {
-    var copiedAnswersCount = copyDraftPNIQuestionVersionsIntoAnswers_Basic();
-    var template = translate("#copyDraftPNIQuestion_template", "Copied {{copiedAnswersCount}} answers.\n\n(Note that blank draft answers are not copied, and non-blank final answers are not replaced.)");
-    var message = template.replace("{{copiedAnswersCount}}", copiedAnswersCount);
+    const copiedAnswersCount = copyDraftPNIQuestionVersionsIntoAnswers_Basic();
+    const template = translate("#copyDraftPNIQuestion_template", "Copied {{copiedAnswersCount}} answers.\n\n(Note that blank draft answers are not copied, and non-blank final answers are not replaced.)");
+    const message = template.replace("{{copiedAnswersCount}}", copiedAnswersCount);
     alert(message);
 }
 
@@ -204,10 +204,10 @@ export function copyDraftPNIQuestionVersionsIntoAnswers() {
 // Caller should call wizard.forward() on successful save to see the last page, and provide a retry message otherwise
 // Caller may also want to call (the returned) surveyDialog.hide() to close the window, or let the user do it.
 function openMithrilSurveyDialog(questionnaire, callback, previewModeTitleText = null) {  
-    var surveyDiv = document.createElement("div");
-    var surveyViewFunction = surveyBuilder.buildSurveyForm(null, questionnaire, callback, {previewMode: !!previewModeTitleText, ignoreTitleChange: true, dataEntry: true});
+    const surveyDiv = document.createElement("div");
+    const surveyViewFunction = surveyBuilder.buildSurveyForm(null, questionnaire, callback, {previewMode: !!previewModeTitleText, ignoreTitleChange: true, dataEntry: true});
     
-    var dialogConfiguration = {
+    const dialogConfiguration = {
         dialogModel: null,
         dialogTitle: "Enter Story" + (previewModeTitleText || ""),
         dialogStyle: undefined,
@@ -220,7 +220,7 @@ function openMithrilSurveyDialog(questionnaire, callback, previewModeTitleText =
 }
 
 function openSurveyDialog() {
-    var storyCollectionName: string = clientState.storyCollectionName();
+    const storyCollectionName: string = clientState.storyCollectionName();
     
     if (!storyCollectionName) {
         // TODO: translate
@@ -228,10 +228,10 @@ function openSurveyDialog() {
         return null;
     }
 
-    var questionnaire = surveyCollection.getQuestionnaireForStoryCollection(storyCollectionName, true);
+    const questionnaire = surveyCollection.getQuestionnaireForStoryCollection(storyCollectionName, true);
     if (!questionnaire) return;
 
-    var surveyDialog = openMithrilSurveyDialog(questionnaire, finished);
+    const surveyDialog = openMithrilSurveyDialog(questionnaire, finished);
     
     function finished(status, surveyResult, wizardPane) {
         console.log("surveyResult", status, surveyResult);
@@ -248,9 +248,9 @@ export function copyStoryFormURL() {
 /*
 function previewQuestionForm(model, fieldSpecification) {
     console.log("previewQuestionForm", model);
-    var questionnaire = questionnaireGeneration.buildQuestionnaireFromTemplate(project, model);
+    const questionnaire = questionnaireGeneration.buildQuestionnaireFromTemplate(project, model);
     
-    var surveyDialog = openMithrilSurveyDialog(questionnaire, finished, true);
+    const surveyDialog = openMithrilSurveyDialog(questionnaire, finished, true);
     
     function finished(status, surveyResult, wizardPane) {
         console.log("surveyResult", status, surveyResult);
@@ -260,31 +260,31 @@ function previewQuestionForm(model, fieldSpecification) {
 */
 
 export function previewQuestionForm(model, fieldSpecification) {
-    var questionnaire = questionnaireGeneration.buildQuestionnaireFromTemplate(model, "");
+    const questionnaire = questionnaireGeneration.buildQuestionnaireFromTemplate(model, "");
     window["narraFirma_previewQuestionnaire"] = questionnaire;
     
-    var w = window.open("survey.html#preview=" + (new Date().toISOString()), "_blank");
+    const w = window.open("survey.html#preview=" + (new Date().toISOString()), "_blank");
 }
 
 export function checkCSVDataFileWhileEditingStoryForm(model, fieldSpecification) {
-    var questionnaire = questionnaireGeneration.buildQuestionnaireFromTemplate(model, "");
+    const questionnaire = questionnaireGeneration.buildQuestionnaireFromTemplate(model, "");
     csvImportExport.checkCSVStoriesWithStoryForm(questionnaire);
 }
 
 export function exportStoryFormWhileEditingIt_NativeFormat(model, fieldSpecification) {
-    var questionnaire = questionnaireGeneration.buildQuestionnaireFromTemplate(model, "");
+    const questionnaire = questionnaireGeneration.buildQuestionnaireFromTemplate(model, "");
     csvImportExport.exportQuestionnaire(questionnaire);
 }
 
 export function exportStoryFormWhileEditingIt_ExternalFormat(model, fieldSpecification) {
-    var questionnaire = questionnaireGeneration.buildQuestionnaireFromTemplate(model, "");
+    const questionnaire = questionnaireGeneration.buildQuestionnaireFromTemplate(model, "");
     csvImportExport.exportQuestionnaireForImport(questionnaire);
 }
 
 export function setQuestionnaireForStoryCollection(storyCollectionIdentifier): boolean {
     if (!storyCollectionIdentifier) return false;
-    var questionnaireName = project.tripleStore.queryLatestC(storyCollectionIdentifier, "storyCollection_questionnaireIdentifier");
-    var questionnaire = questionnaireGeneration.buildQuestionnaire(questionnaireName);
+    const questionnaireName = project.tripleStore.queryLatestC(storyCollectionIdentifier, "storyCollection_questionnaireIdentifier");
+    const questionnaire = questionnaireGeneration.buildQuestionnaire(questionnaireName);
     if (!questionnaire) return false;
     project.tripleStore.addTriple(storyCollectionIdentifier, "questionnaire", questionnaire);
     return true;
@@ -296,17 +296,17 @@ export function updateQuestionnaireForStoryCollection(storyCollectionIdentifier)
         return;
     }
     
-    var storyCollectionName = project.tripleStore.queryLatestC(storyCollectionIdentifier, "storyCollection_shortName");
+    const storyCollectionName = project.tripleStore.queryLatestC(storyCollectionIdentifier, "storyCollection_shortName");
     if (!storyCollectionName) {
         alert("Problem: No storyCollectionName");
         return;
     }
     
     // TODO: Translate
-    var confirmResult = confirm('Update story form for story collection "' + storyCollectionName + '"?"\n(Updating is not recommended once data collection has begun.)');
+    const confirmResult = confirm('Update story form for story collection "' + storyCollectionName + '"?"\n(Updating is not recommended once data collection has begun.)');
     if (!confirmResult) return;
     
-    var updateResult = setQuestionnaireForStoryCollection(storyCollectionIdentifier);
+    const updateResult = setQuestionnaireForStoryCollection(storyCollectionIdentifier);
 
     if (!updateResult) {
         alert("Problem: No questionnaire could be created");
@@ -323,36 +323,36 @@ export function updateQuestionnaireForStoryCollection(storyCollectionIdentifier)
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 export function copyInterpretationsToClusteringDiagram() {
-    var shortName = clientState.catalysisReportName();
+    const shortName = clientState.catalysisReportName();
     if (!shortName) {
         alert("Please pick a catalysis report to work with.");
         return;
     }
     
-    var catalysisReportIdentifier = project.findCatalysisReport(shortName);
+    const catalysisReportIdentifier = project.findCatalysisReport(shortName);
     if (!catalysisReportIdentifier) {
         alert("Problem finding catalysis report identifier.");
         return;
     }
     
-    var allInterpretations = [];
-    var observationSetIdentifier = project.tripleStore.queryLatestC(catalysisReportIdentifier, "catalysisReport_observations");
+    const allInterpretations = [];
+    const observationSetIdentifier = project.tripleStore.queryLatestC(catalysisReportIdentifier, "catalysisReport_observations");
     if (!observationSetIdentifier) {
         alert("No observations have been made on the Explore Patterns page.");
         return;
     }
-    var observationIDs = project.tripleStore.getListForSetIdentifier(observationSetIdentifier);
-    var observations = project.tripleStore.queryAllLatestBCForA(observationSetIdentifier);
+    const observationIDs = project.tripleStore.getListForSetIdentifier(observationSetIdentifier);
+    const observations = project.tripleStore.queryAllLatestBCForA(observationSetIdentifier);
     
-    for (var key in observations) {
-        var observationIdentifier = observations[key];
-        var interpretationsSetIdentifier = project.tripleStore.queryLatestC(observationIdentifier, "observationInterpretations");
+    for (const key in observations) {
+        const observationIdentifier = observations[key];
+        const interpretationsSetIdentifier = project.tripleStore.queryLatestC(observationIdentifier, "observationInterpretations");
         if (interpretationsSetIdentifier) {
-            var interpretations = project.tripleStore.getListForSetIdentifier(interpretationsSetIdentifier);
-            for (var i = 0; i < interpretations.length; i++) {
-                var interpretationIdentifier = interpretations[i];
-                var interpretationName = project.tripleStore.queryLatestC(interpretationIdentifier, "interpretation_name");
-                var interpretationText = project.tripleStore.queryLatestC(interpretationIdentifier, "interpretation_text");
+            const interpretations = project.tripleStore.getListForSetIdentifier(interpretationsSetIdentifier);
+            for (let i = 0; i < interpretations.length; i++) {
+                const interpretationIdentifier = interpretations[i];
+                const interpretationName = project.tripleStore.queryLatestC(interpretationIdentifier, "interpretation_name");
+                const interpretationText = project.tripleStore.queryLatestC(interpretationIdentifier, "interpretation_text");
                 if (interpretationName) {
                     allInterpretations.push({
                         "type": "Interpretation",
@@ -370,13 +370,13 @@ export function copyInterpretationsToClusteringDiagram() {
         return;
     }
     
-    var clusteringDiagram: ClusteringDiagramModel = project.tripleStore.queryLatestC(catalysisReportIdentifier, "interpretationsClusteringDiagram");
+    let clusteringDiagram: ClusteringDiagramModel = project.tripleStore.queryLatestC(catalysisReportIdentifier, "interpretationsClusteringDiagram");
     if (!clusteringDiagram) {
         clusteringDiagram = ClusteringDiagram.newDiagramModel();
     }
 
     function findUUIDForInterpretationName(name: string) {
-        for (var index = 0; index < allInterpretations.length; index++) {
+        for (let index = 0; index < allInterpretations.length; index++) {
             const interpretation = allInterpretations[index];
             if (interpretation.name === name) {
                 return interpretation.id;
@@ -386,17 +386,17 @@ export function copyInterpretationsToClusteringDiagram() {
     }
 
     function findObservationForInterpretation(observationIDs, id, name) {
-        for (var i = 0; i < observationIDs.length; i++) {
+        for (let i = 0; i < observationIDs.length; i++) {
             const observationID = observationIDs[i];
-            var interpretationsListIdentifier = project.tripleStore.queryLatestC(observationID, "observationInterpretations");
-            var interpretationsList = project.tripleStore.getListForSetIdentifier(interpretationsListIdentifier);
-            for (var j = 0; j < interpretationsList.length; j++) {
+            const interpretationsListIdentifier = project.tripleStore.queryLatestC(observationID, "observationInterpretations");
+            const interpretationsList = project.tripleStore.getListForSetIdentifier(interpretationsListIdentifier);
+            for (let j = 0; j < interpretationsList.length; j++) {
                 if (id) {
                     if (interpretationsList[j] === id) {
                         return observationID;
                     }
                 } else {
-                    var interpretation = project.tripleStore.makeObject(interpretationsList[j], true);
+                    const interpretation = project.tripleStore.makeObject(interpretationsList[j], true);
                     if (name === interpretation.interpretation_name) {
                         return observationID;
                     }
@@ -417,7 +417,7 @@ export function copyInterpretationsToClusteringDiagram() {
             // will be mapped to the correct interpretation
             // the second one will be left unconnected to anything
             if (!uuid) {
-                console.log("No UUID found for intepretation name", item.name);
+                console.log("No UUID found for interpretation name", item.name);
             } else {
                 if (existingReferenceUUIDs[uuid]) {
                     console.log("Two interpretations with same name", item.name, uuid);
@@ -431,7 +431,7 @@ export function copyInterpretationsToClusteringDiagram() {
 
     // Update name and notes on existing items
 
-    var updatedItemCount = 0;
+    let updatedItemCount = 0;
     clusteringDiagram.items.forEach((item) => {
         if (item.type === "item") {
             if (item.referenceUUID) {
@@ -482,7 +482,7 @@ export function copyInterpretationsToClusteringDiagram() {
     });
 
     // add items for interpretations not represented in the space
-    var addedItemCount = 0;
+    let addedItemCount = 0;
     allInterpretations.forEach((interpretation) => {
         if (!existingReferenceUUIDs[interpretation.id]) {
             // check that this interpretation is attached to an observation; if not, it should not be added to the diagram
@@ -516,31 +516,31 @@ export function copyInterpretationsToClusteringDiagram() {
 }
 
 export function copyObservationsToClusteringDiagram() {
-    var shortName = clientState.catalysisReportName();
+    const shortName = clientState.catalysisReportName();
     if (!shortName) {
         alert("Please pick a catalysis report to work with.");
         return;
     }
     
-    var catalysisReportIdentifier = project.findCatalysisReport(shortName);
+    const catalysisReportIdentifier = project.findCatalysisReport(shortName);
     if (!catalysisReportIdentifier) {
         alert("Problem finding catalysis report identifier.");
         return;
     }
     
-    var observationSetIdentifier = project.tripleStore.queryLatestC(catalysisReportIdentifier, "catalysisReport_observations");
+    const observationSetIdentifier = project.tripleStore.queryLatestC(catalysisReportIdentifier, "catalysisReport_observations");
     if (!observationSetIdentifier) {
         alert("No observations have been made on the Explore Patterns page.");
         return;
     }
-    var observationIDs = project.tripleStore.getListForSetIdentifier(observationSetIdentifier);
+    const observationIDs = project.tripleStore.getListForSetIdentifier(observationSetIdentifier);
 
     if (observationIDs.length === 0) {
         alert("No observations have been found for this catalysis report.");
         return;
     }
     
-    var clusteringDiagram: ClusteringDiagramModel = project.tripleStore.queryLatestC(catalysisReportIdentifier, "observationsClusteringDiagram");
+    let clusteringDiagram: ClusteringDiagramModel = project.tripleStore.queryLatestC(catalysisReportIdentifier, "observationsClusteringDiagram");
     if (!clusteringDiagram) {
         clusteringDiagram = ClusteringDiagram.newDiagramModel();
     }
@@ -553,9 +553,9 @@ export function copyObservationsToClusteringDiagram() {
             if (item.referenceUUID) {
                 let itemChanged = false;
                 existingReferenceUUIDs[item.referenceUUID] = item;
-                var newName = project.tripleStore.queryLatestC(item.referenceUUID, "observationTitle") || "";
-                var newNotes = project.tripleStore.queryLatestC(item.referenceUUID, "observationDescription") || "";
-                var newStrength = project.tripleStore.queryLatestC(item.referenceUUID, "observationStrength") || "";
+                let newName = project.tripleStore.queryLatestC(item.referenceUUID, "observationTitle") || "";
+                let newNotes = project.tripleStore.queryLatestC(item.referenceUUID, "observationDescription") || "";
+                const newStrength = project.tripleStore.queryLatestC(item.referenceUUID, "observationStrength") || "";
 
                 // if they filled only one in, use it for both
                 if (newName === "" || newName === "Deleted observation") {
@@ -584,12 +584,12 @@ export function copyObservationsToClusteringDiagram() {
     });
 
     // add items for observations not represented in the space
-    var addedItemCount = 0;
+    let addedItemCount = 0;
     observationIDs.forEach((id) => {
         if (!existingReferenceUUIDs[id]) {
-                var observationName = project.tripleStore.queryLatestC(id, "observationTitle");
-                var observationDescription = project.tripleStore.queryLatestC(id, "observationDescription");
-                var observationStrength = project.tripleStore.queryLatestC(id, "observationStrength") || "";
+                const observationName = project.tripleStore.queryLatestC(id, "observationTitle");
+                const observationDescription = project.tripleStore.queryLatestC(id, "observationDescription");
+                const observationStrength = project.tripleStore.queryLatestC(id, "observationStrength") || "";
                 if (observationName || observationDescription) {
                     addedItemCount++;
                     const item = ClusteringDiagram.addNewItemToDiagram(clusteringDiagram, "item", observationName, observationDescription);
@@ -615,7 +615,7 @@ export function copyObservationsToClusteringDiagram() {
 
 export function showListOfRemovedStoryCollections() {
     const removedCollections = projectImportExport.listOfRemovedStoryCollections();
-    var message = "";
+    let message = "";
     if (!removedCollections.length) {
         message = "There are no stories in the project connected to deleted story collections.";
     } else {
@@ -623,7 +623,7 @@ export function showListOfRemovedStoryCollections() {
         message += "the stories associated with them have not been removed. ";
         message += "You can access any of these collections ";
         message += "by creating a new story collection with the same name.\n\n";
-        for (var i = 0; i < removedCollections.length; i++) {
+        for (let i = 0; i < removedCollections.length; i++) {
             message += removedCollections[i] + "\n";
         }
     }
@@ -634,29 +634,29 @@ export function showListOfRemovedStoryCollections() {
 // button actions in other places
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-export var enterSurveyResult = openSurveyDialog;
-export var toggleWebActivationOfSurvey = surveyCollection.toggleWebActivationOfSurvey;
-export var storyCollectionStop = surveyCollection.storyCollectionStop;
+export const enterSurveyResult = openSurveyDialog;
+export const toggleWebActivationOfSurvey = surveyCollection.toggleWebActivationOfSurvey;
+export const storyCollectionStop = surveyCollection.storyCollectionStop;
 
-export var importCSVQuestionnaire = csvImportExport.importCSVQuestionnaire;
-export var importCSVStories = csvImportExport.importCSVStories;
-export var checkCSVStories = csvImportExport.checkCSVStories;
-export var exportQuestionnaire = csvImportExport.exportQuestionnaire;
-export var exportQuestionnaireForImport = csvImportExport.exportQuestionnaireForImport;
-export var exportStoryCollection = csvImportExport.exportStoryCollection;
-export var autoFillStoryForm = csvImportExport.autoFillStoryForm;
+export const importCSVQuestionnaire = csvImportExport.importCSVQuestionnaire;
+export const importCSVStories = csvImportExport.importCSVStories;
+export const checkCSVStories = csvImportExport.checkCSVStories;
+export const exportQuestionnaire = csvImportExport.exportQuestionnaire;
+export const exportQuestionnaireForImport = csvImportExport.exportQuestionnaireForImport;
+export const exportStoryCollection = csvImportExport.exportStoryCollection;
+export const autoFillStoryForm = csvImportExport.autoFillStoryForm;
 
-export var exportProject = projectImportExport.exportProject;
-export var importProject = projectImportExport.importProject;
-export var resetProject = projectImportExport.resetProject;
+export const exportProject = projectImportExport.exportProject;
+export const importProject = projectImportExport.importProject;
+export const resetProject = projectImportExport.resetProject;
 
-export var printStoryForm = printing.printStoryForm;
-export var printStoryCards = printing.printStoryCards;
-export var printCatalysisReport = printing.printCatalysisReport;
-export var importCatalysisReportElements = csvImportExport.importCSVCatalysisElements;
-export var exportCatalysisReportElements = csvImportExport.exportCatalysisReportElements;
-export var exportPresentationOutline = printing.exportPresentationOutline;
-export var exportCollectionSessionAgenda = printing.exportCollectionSessionAgenda;
-export var printSensemakingSessionAgenda = printing.printSensemakingSessionAgenda;
+export const printStoryForm = printing.printStoryForm;
+export const printStoryCards = printing.printStoryCards;
+export const printCatalysisReport = printing.printCatalysisReport;
+export const importCatalysisReportElements = csvImportExport.importCSVCatalysisElements;
+export const exportCatalysisReportElements = csvImportExport.exportCatalysisReportElements;
+export const exportPresentationOutline = printing.exportPresentationOutline;
+export const exportCollectionSessionAgenda = printing.exportCollectionSessionAgenda;
+export const printSensemakingSessionAgenda = printing.printSensemakingSessionAgenda;
 
-export var printProjectReport = printing.printProjectReport;
+export const printProjectReport = printing.printProjectReport;

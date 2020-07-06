@@ -25,8 +25,8 @@ import topic = require("./pointrel20150417/topic");
 
 // TODO: Add page validation
 
-var narrafirmaProjectPrefix = "NarraFirmaProject-";
-var loadingBase = "js/applicationPanelSpecifications/";
+const narrafirmaProjectPrefix = "NarraFirmaProject-";
+const loadingBase = "js/applicationPanelSpecifications/";
 
 class Application {
     // Singleton instance variables
@@ -43,7 +43,7 @@ class Application {
     
     private lastServerError: string = "";
     
-    // The runningAfterIdle falg is used to limit redraws for new project messages until after initial set recevied
+    // The runningAfterIdle flag is used to limit redraws for new project messages until after initial set received
     private runningAfterInitialIdle: boolean = false;
     
     private pendingRedraw = null;
@@ -62,12 +62,12 @@ class Application {
         // The serverStatusPane may be created only after we start talking to the server
         // if (!serverStatusPane) return;
         
-        var nameDiv = document.getElementById("narrafirma-name");
+        const nameDiv = document.getElementById("narrafirma-name");
         if (!nameDiv) return;
         
         // TODO: Translate
         
-        var statusText = "Version: " + versions.narrafirmaApplication;
+        let statusText = "Version: " + versions.narrafirmaApplication;
         statusText += " Project: " + Globals.project().journalIdentifier.substring(narrafirmaProjectPrefix.length) + "; Server status: (" + status + ") " + text;
     
         if (status === "ok") {
@@ -111,7 +111,7 @@ class Application {
     
     // dispatch the button click
     buttonClicked(panelBuilder: PanelBuilder, model, fieldSpecification, value) {
-         var functionName = fieldSpecification.id;
+         let functionName = fieldSpecification.id;
          if (fieldSpecification.displayConfiguration) {
              if (_.isString(fieldSpecification.displayConfiguration)) {
                  functionName = fieldSpecification.displayConfiguration;
@@ -120,9 +120,9 @@ class Application {
              }
          }
          
-         var actualFunction = buttonActions[functionName];
+         const actualFunction = buttonActions[functionName];
          if (!actualFunction) {
-             var message = "Unfinished handling for: " + fieldSpecification.id + " with functionName: " + functionName;
+             const message = "Unfinished handling for: " + fieldSpecification.id + " with functionName: " + functionName;
              console.log(message, model, fieldSpecification, value);
              alert(message);
          } else {
@@ -135,8 +135,8 @@ class Application {
         if (functionName === "isStoryCollectingEnabled") {
             return surveyCollection.isStoryCollectingEnabled();
         } else if (functionName === "storeQuestionnaireInStoryCollection") {
-            var storyCollectionIdentifier = fieldSpecification.value;
-            var success = buttonActions.setQuestionnaireForStoryCollection(storyCollectionIdentifier);
+            const storyCollectionIdentifier = fieldSpecification.value;
+            const success = buttonActions.setQuestionnaireForStoryCollection(storyCollectionIdentifier);
             return success ? null : ["Questionnaire could not be created for story collection"];
         } else {
             console.log("TODO: calculateFunctionResultForGUI ", functionName, fieldSpecification);
@@ -189,7 +189,7 @@ class Application {
         dialogSupport.initialize();
         
         // Throwaway single-use pointrel client instance which does not access a specific journal and for which polling is not started
-        var singleUsePointrelClient = new PointrelClient("/api/pointrel20150417", "unused", {});
+        const singleUsePointrelClient = new PointrelClient("/api/pointrel20150417", "unused", {});
         singleUsePointrelClient.getCurrentUserInformation((error, response) => {
             if (error) {
                 console.log("error", error, response);
@@ -200,15 +200,15 @@ class Application {
                 return;
             }
             console.log("initialize response", response);
-            var userIdentifier = response.userIdentifier;
+            let userIdentifier = response.userIdentifier;
             if (userIdentifier === undefined || userIdentifier === null || userIdentifier === false) {
                 userIdentifier = "anonymous";
             }  
             this.userIdentifier = userIdentifier;
-            var projects = [];
-            for (var key in response.journalPermissions) {
+            const projects = [];
+            for (const key in response.journalPermissions) {
                 if (!_.startsWith(key, narrafirmaProjectPrefix)) continue;
-                var permissions = response.journalPermissions[key];
+                const permissions = response.journalPermissions[key];
                 projects.push({
                     id: key,
                     name: key.substring(narrafirmaProjectPrefix.length),
@@ -221,8 +221,8 @@ class Application {
             
             if (!projects.length) {
                 document.getElementById("pleaseWaitDiv").style.display = "none";
-                var recoveryText = "Please contact your NarraFirma project administrator.";
-                var loginText = "";
+                let recoveryText = "Please contact your NarraFirma project administrator.";
+                let loginText = "";
                 if (this.userIdentifier === "anonymous") {
                     recoveryText = "Please try logging in.";
                     loginText = this.loginLink();
@@ -244,11 +244,11 @@ class Application {
         
         document.getElementById("pleaseWaitDiv").style.display = "none";
         
-        var userCredentials = {
+        const userCredentials = {
             userIdentifier: this.userIdentifier
         };
         
-        var projectIdentifierSupplied = Globals.clientState().projectIdentifier();
+        const projectIdentifierSupplied = Globals.clientState().projectIdentifier();
         console.log("projectIdentifierSupplied", projectIdentifierSupplied);
         
         if (projectIdentifierSupplied) {
@@ -256,9 +256,9 @@ class Application {
             this.openProject(userCredentials, narrafirmaProjectPrefix + projectIdentifierSupplied, projects);
         } else {
             // TODO: Translate
-            var columns = {name: "Project name", id: "Project journal", write: "Editable"};
+            const columns = {name: "Project name", id: "Project journal", write: "Editable"};
             // TODO: Only allow new project button for admins
-            var isNewAllowed = false;
+            const isNewAllowed = false;
 
             let loginLink;
             let message;
@@ -297,8 +297,8 @@ class Application {
     }
 
     loginLink(hrefOrLink = "link") {
-        var isWordPressAJAX = !!window["ajaxurl"];
-        var loginURL;
+        const isWordPressAJAX = !!window["ajaxurl"];
+        let loginURL;
         if (isWordPressAJAX) {
             loginURL = "wordpress/wp-login.php";
         } else {
@@ -314,12 +314,12 @@ class Application {
     makeNewProject() {
         console.log("add-journal", this.journalIdentifier);
         
-        var singleUsePointrelClient = new PointrelClient("/api/pointrel20150417", "unused", {});
+        const singleUsePointrelClient = new PointrelClient("/api/pointrel20150417", "unused", {});
         
         singleUsePointrelClient.createJournal(this.journalIdentifier, (error, response) => {
             if (error || !response.success) {
                 console.log("Error creating project", this.journalIdentifier, error, response);
-                var message = "error";
+                let message = "error";
                 if (response) message = response.description;
                 if (error) message = error.description;
                 toaster.toast("Error: creating project: " + this.journalIdentifier + " :: " + message);
@@ -391,7 +391,7 @@ class Application {
     }
     
     loadApplicationDesign() {
-        var panelSpecificationCollection = PanelSetup.panelSpecificationCollection();
+        const panelSpecificationCollection = PanelSetup.panelSpecificationCollection();
         Globals.panelSpecificationCollection(panelSpecificationCollection);
         
         // Load the application design
@@ -466,7 +466,7 @@ class Application {
                 /* TODO: Need to check for unsaved changes in any grids
                 if (!hasUnsavedChangesForCurrentPage()) return null;
                     
-                var confirmationMessage = "You have unsaved changes";
+                const confirmationMessage = "You have unsaved changes";
     
                 (e || window.event).returnValue = confirmationMessage;     // Gecko and Trident
                 return confirmationMessage;  
@@ -479,12 +479,12 @@ class Application {
     // TODO: this is not needed by apps that only use application-specific server APIs directly
     setup() {
         console.log("Using pointrel20141201");
-        var currentLocalTimestamp = new Date().toISOString();
-        var currentLocalTimestampMinusTenSeconds = new Date(new Date().getTime() - 10000).toISOString();
+        const currentLocalTimestamp = new Date().toISOString();
+        const currentLocalTimestampMinusTenSeconds = new Date(new Date().getTime() - 10000).toISOString();
         pointrel20141201Client.getServerStatus((error, serverResponse) => {
             if (error) {
                 // TODO: translate
-                var message = "Problem checking server status so application may not work correctly if server is unavailable: " + error;
+                const message = "Problem checking server status so application may not work correctly if server is unavailable: " + error;
                 console.log("ERROR", error);
                 console.log(message);
                 alert(message);

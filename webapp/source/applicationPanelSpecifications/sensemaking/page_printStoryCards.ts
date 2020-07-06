@@ -2,7 +2,7 @@ import kludgeForUseStrict = require("../../kludgeForUseStrict");
 import Globals = require("../../Globals");
 "use strict";
 
-var panel: Panel = {
+const panel: Panel = {
     id: "page_printStoryCards",
     displayName: "Print story cards",
     tooltipText: "Print out the stories you collected so people can use them during sensemaking sessions.",
