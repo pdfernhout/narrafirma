@@ -44,6 +44,7 @@
     "build": "tsc"
   },
   "devDependencies": {
+    "cypress": "4.9.0",
     "typescript": "2.4.2"
   }
 }
