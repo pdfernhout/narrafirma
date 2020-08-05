@@ -144,11 +144,26 @@ var panel: Panel = {
             id: "configureCatalysisReport_DrawingGraphsHeader",
             valueType: "none",
             displayType: "header",
-            displayPrompt: "Drawing graphs",
+            displayPrompt: "Drawing graphs (in general)",
             displayVisible: function(panelBuilder, model) {
                 return !!Globals.clientState().haveCatalysisReportAndShowingAdvancedOptions();
             }
         },
+        {
+            id: "configureCatalysisReport_minimumStoryCountRequiredForGraph",
+            valuePath: "/clientState/catalysisReportIdentifier/minimumStoryCountRequiredForGraph",
+            valueType: "string",
+            valueOptions: ["1", "5", "10", "15", "20", "25", "30", "35", "40", "45", "50", "60", "70", "80", "90", "100", "120", "140", "160", "180", "200", "250", "300", "350", "400", "450", "500"],
+            displayType: "select",
+            displayName: "Minimum story count for graph",
+            displayPrompt: `<strong>How many stories should a subset have</strong> to draw a graph? 
+                    (This choice affects multiple histograms and multiple scatterplots in the application and the printed report.
+                    If no selection is made here, graphs will be drawn if at there is least one story in the subset.
+                    Note that a high number here could create patterns with no graphs in them.)`,
+            displayVisible: function(panelBuilder, model) {
+                return !!Globals.clientState().haveCatalysisReportAndShowingAdvancedOptions();
+            }
+        },  
         {
             id: "configureCatalysisReport_hideNoAnswerValues",
             valueType: "boolean",
@@ -177,6 +192,22 @@ var panel: Panel = {
             }
         },
         {
+            id: "configureCatalysisReport_customGraphPadding",
+            valuePath: "/clientState/catalysisReportIdentifier/customGraphPadding",
+            valueType: "string",
+            displayType: "select",
+            valueOptions: ["5", "10", "15", "20", "25", "30", "35", "40", "45", "50", "60", "70", "80", "90", "100", "110", "120", "130", "140", "150", "160", "170", "180", "190", "200", "210", "220", "230", "240", "250", "260", "270", "280", "290", "300"],
+            displayName: "Custom graph padding",
+            displayPrompt: `Do you want to <strong>add extra pixels</strong> 
+                to bar graphs (below) and contingency tables (below and left) 
+                to accommodate larger font sizes you set using CSS?
+                (This setting affects bar graphs and contingency tables in the application and the printed report.
+                If no selection is made here, no padding will be added.)`,
+            displayVisible: function(panelBuilder, model) {
+                return !!Globals.clientState().haveCatalysisReportAndShowingAdvancedOptions();
+            }
+        },
+        {
             id: "configureCatalysisReport_customLabelLengthLimit",
             valuePath: "/clientState/catalysisReportIdentifier/customLabelLengthLimit",
             valueType: "string",
@@ -191,49 +222,30 @@ var panel: Panel = {
             }
         },
         {
-            id: "configureCatalysisReport_minimumStoryCountRequiredForGraph",
-            valuePath: "/clientState/catalysisReportIdentifier/minimumStoryCountRequiredForGraph",
+            id: "catalysisReport_customGraphCSS",
+            valuePath: "/clientState/catalysisReportIdentifier/catalysisReport_customGraphCSS",
             valueType: "string",
-            valueOptions: ["1", "5", "10", "15", "20", "25", "30", "35", "40", "45", "50", "60", "70", "80", "90", "100", "120", "140", "160", "180", "200", "250", "300", "350", "400", "450", "500"],
-            displayType: "select",
-            displayName: "Minimum story count for graph",
-            displayPrompt: `<strong>How many stories should a subset have</strong> to draw a graph? 
-                    (This choice affects multiple histograms and multiple scatterplots in the application and the printed report.
-                    If no selection is made here, graphs will be drawn if at there is least one story in the subset.
-                    Note that a high number here could create patterns with no graphs in them.)`,
+            displayType: "textarea",
+            displayName: "Custom Graph CSS",
+            displayPrompt: `You can enter <strong>custom CSS</strong> to change how graphs are drawn. 
+                (This choice affects graphs in the application and the printed report.
+                For details see the help system.)`,
             displayVisible: function(panelBuilder, model) {
                 return !!Globals.clientState().haveCatalysisReportAndShowingAdvancedOptions();
             }
+        },
 
-        },  
+
+        ////////////////////////////////////////////////////// histograms
         {
-            id: "configureCatalysisReport_numStoryLengthBins",
-            valuePath: "/clientState/catalysisReportIdentifier/numStoryLengthBins",
-            valueType: "string",
-            valueOptions: ["2", "3", "4", "5", "6", "7", "8", "9", "10"],
-            displayType: "select",
-            displayName: "Number of story length bins",
-            displayPrompt: `<strong>How many story length categories</strong> do you want to graph? 
-                (This choice affects graphs in the application and the printed report.
-                If no selection is made here, four categories will be used.)`,
+            id: "configureCatalysisReport_DrawingHistogramsHeader",
+            valueType: "none",
+            displayType: "header",
+            displayPrompt: "Histograms",
             displayVisible: function(panelBuilder, model) {
                 return !!Globals.clientState().haveCatalysisReportAndShowingAdvancedOptions();
             }
-        },    
-        {
-            id: "configureCatalysisReport_maxStoryLengthToShow",
-            valuePath: "/clientState/catalysisReportIdentifier/maxStoryLengthToShow",
-            valueType: "string",
-            valueOptions: ["100", "200", "300", "400", "500", "600", "700", "800", "900", "1000", "1100", "1200", "1300", "1400", "1500", "1600", "1700", "1800", "1900", "2000", "2500", "3000", "3500", "4000", "4500", "5000", "6000", "7000", "8000", "9000", "10000"],
-            displayType: "select",
-            displayName: "Maximum story length to show",
-            displayPrompt: `In the story length graph, above what character length do you want to <strong>lump all remaining stories into the last bin</strong>? 
-                (This choice affects graphs in the application and the printed report.
-                If no selection is made here, the maximum story length will be drawn from the stories themselves.)`,
-            displayVisible: function(panelBuilder, model) {
-                return !!Globals.clientState().haveCatalysisReportAndShowingAdvancedOptions();
-            }
-        },   
+        },
         {
             id: "configureCatalysisReport_numHistogramBins",
             valuePath: "/clientState/catalysisReportIdentifier/numHistogramBins",
@@ -248,6 +260,17 @@ var panel: Panel = {
                 return !!Globals.clientState().haveCatalysisReportAndShowingAdvancedOptions();
             }
         },
+
+        ////////////////////////////////////////////////////// contingency tables
+        {
+            id: "configureCatalysisReport_DrawingContingencyTablesHeader",
+            valueType: "none",
+            displayType: "header",
+            displayPrompt: "Contingency tables",
+            displayVisible: function(panelBuilder, model) {
+                return !!Globals.clientState().haveCatalysisReportAndShowingAdvancedOptions();
+            }
+        },
         {
             id: "configureCatalysisReport_hideNumbersOnContingencyGraphs",
             valueType: "boolean",
@@ -256,6 +279,17 @@ var panel: Panel = {
             displayConfiguration: "Hide numbers on contingency graphs",
             displayPrompt: `To <strong>hide observed/expected story counts</strong> on continency tables, check this box. 
                 (This choice affects graphs in the application and the printed report.)`,
+            displayVisible: function(panelBuilder, model) {
+                return !!Globals.clientState().haveCatalysisReportAndShowingAdvancedOptions();
+            }
+        },
+
+        ////////////////////////////////////////////////////// scatter plots
+        {
+            id: "configureCatalysisReport_DrawingScatterPlotsHeader",
+            valueType: "none",
+            displayType: "header",
+            displayPrompt: "Scatter plots",
             displayVisible: function(panelBuilder, model) {
                 return !!Globals.clientState().haveCatalysisReportAndShowingAdvancedOptions();
             }
@@ -308,6 +342,17 @@ var panel: Panel = {
                 return !!Globals.clientState().haveCatalysisReportAndShowingAdvancedOptions();
             }
         },
+
+        ////////////////////////////////////////////////////// correlation maps
+        {
+            id: "configureCatalysisReport_DrawingCorrelationMapsHeader",
+            valueType: "none",
+            displayType: "header",
+            displayPrompt: "Correlation maps",
+            displayVisible: function(panelBuilder, model) {
+                return !!Globals.clientState().haveCatalysisReportAndShowingAdvancedOptions();
+            }
+        },
         {
             id: "configureCatalysisReport_correlationMapShape",
             valuePath: "/clientState/catalysisReportIdentifier/correlationMapShape",
@@ -353,19 +398,45 @@ var panel: Panel = {
                 return !!Globals.clientState().haveCatalysisReportAndShowingAdvancedOptions();
             }
         },
+
+        ////////////////////////////////////////////////////// story lengths
         {
-            id: "catalysisReport_customGraphCSS",
-            valuePath: "/clientState/catalysisReportIdentifier/catalysisReport_customGraphCSS",
-            valueType: "string",
-            displayType: "textarea",
-            displayName: "Custom Graph CSS",
-            displayPrompt: `You can enter <strong>custom CSS</strong> to change how graphs are drawn. 
-                (This choice affects graphs in the application and the printed report.
-                For details see the help system.)`,
+            id: "configureCatalysisReport_DrawingStoryLengthsHeader",
+            valueType: "none",
+            displayType: "header",
+            displayPrompt: "Story lengths",
             displayVisible: function(panelBuilder, model) {
                 return !!Globals.clientState().haveCatalysisReportAndShowingAdvancedOptions();
             }
         },
+        {
+            id: "configureCatalysisReport_numStoryLengthBins",
+            valuePath: "/clientState/catalysisReportIdentifier/numStoryLengthBins",
+            valueType: "string",
+            valueOptions: ["2", "3", "4", "5", "6", "7", "8", "9", "10"],
+            displayType: "select",
+            displayName: "Number of story length bins",
+            displayPrompt: `<strong>How many story length categories</strong> do you want to graph? 
+                (This choice affects graphs in the application and the printed report.
+                If no selection is made here, four categories will be used.)`,
+            displayVisible: function(panelBuilder, model) {
+                return !!Globals.clientState().haveCatalysisReportAndShowingAdvancedOptions();
+            }
+        },    
+        {
+            id: "configureCatalysisReport_maxStoryLengthToShow",
+            valuePath: "/clientState/catalysisReportIdentifier/maxStoryLengthToShow",
+            valueType: "string",
+            valueOptions: ["100", "200", "300", "400", "500", "600", "700", "800", "900", "1000", "1100", "1200", "1300", "1400", "1500", "1600", "1700", "1800", "1900", "2000", "2500", "3000", "3500", "4000", "4500", "5000", "6000", "7000", "8000", "9000", "10000"],
+            displayType: "select",
+            displayName: "Maximum story length to show",
+            displayPrompt: `In the story length graph, above what character length do you want to <strong>lump all remaining stories into the last bin</strong>? 
+                (This choice affects graphs in the application and the printed report.
+                If no selection is made here, the maximum story length will be drawn from the stories themselves.)`,
+            displayVisible: function(panelBuilder, model) {
+                return !!Globals.clientState().haveCatalysisReportAndShowingAdvancedOptions();
+            }
+        },   
 
         ////////////////////////////////////////////////////// other options
         {
@@ -406,7 +477,7 @@ var panel: Panel = {
                 return !!Globals.clientState().haveCatalysisReportAndShowingAdvancedOptions();
             }
         },
-        
+
         ////////////////////////////////////////////////////// export import
 
         {

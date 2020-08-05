@@ -49,6 +49,7 @@ class GraphBrowser {
             correlationLineChoice: Project.default_correlationLineChoice,
             customLabelLengthLimit: Project.default_customLabelLengthLimit,
             customGraphWidth: Project.default_customDisplayGraphWidth,
+            customGraphPadding: Project.default_customGraphPadding,
             hideNumbersOnContingencyGraphs: false,
             patternDisplayConfiguration: {hideNoAnswerValues: false},
             graphTypesToCreate: {}

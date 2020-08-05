@@ -952,8 +952,12 @@ export function d3BarChartForValues(graphHolder: GraphHolder, plotItems, xLabels
 
     var maxItemsPerBar = d3.max(plotItems, function(plotItem: PlotItem) { return plotItem.value; });
 
-    var letterSize = 6; // it would be better to get this from the DOM - but it would decrease performance...
-    var margin = {top: 20, right: 15, bottom: 90 + longestLabelTextLength * letterSize, left: 70};
+    var letterSize = 8; // it would be better to get this from the DOM - but it would decrease performance...
+    var margin = {
+        top: 20, 
+        right: 15, 
+        bottom: 30 + longestLabelTextLength * letterSize + graphHolder.customGraphPadding, 
+        left: 70};
     if (maxItemsPerBar >= 100) margin.left += letterSize;
     if (maxItemsPerBar >= 1000) margin.left += letterSize;
     
@@ -1916,12 +1920,12 @@ export function d3ContingencyTable(graphHolder: GraphHolder, xAxisQuestion, yAxi
     }
     addTitlePanelForChart(chartPane, chartTitle);
 
-    var letterSize = 6; // it would be better to get this from the DOM - but it would decrease performance...
+    var letterSize = 8; // it would be better to get this from the DOM - but it would decrease performance...
     var margin = {
         top: 20, 
         right: 30, // more space on right for possible extending numbers
-        bottom: 20 + longestColumnTextLength * (letterSize + 1), // more space on bottom for diagonal names
-        left: 20 + longestRowTextLength * letterSize
+        bottom: 20 + longestColumnTextLength * (letterSize + 1) + graphHolder.customGraphPadding, // more space on bottom for diagonal names
+        left: 20 + longestRowTextLength * letterSize + graphHolder.customGraphPadding
     };
 
     // deal with questions that have LOTS of answers (not so much of a problem in the columns)

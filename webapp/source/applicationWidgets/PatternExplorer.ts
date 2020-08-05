@@ -240,6 +240,7 @@ class PatternExplorer {
             correlationLineChoice: Project.default_correlationLineChoice,
             customLabelLengthLimit: Project.default_customLabelLengthLimit,
             customGraphWidth: Project.default_customDisplayGraphWidth,
+            customGraphPadding: Project.default_customGraphPadding,
             hideNumbersOnContingencyGraphs: false,
             graphTypesToCreate: Project.default_graphTypesToCreate,
             patternDisplayConfiguration: {hideNoAnswerValues: false},
@@ -687,6 +688,8 @@ class PatternExplorer {
         this.graphHolder.correlationLineChoice = this.project.tripleStore.queryLatestC(this.catalysisReportIdentifier, "correlationLineChoice") || Project.default_correlationLineChoice; 
         this.graphHolder.customLabelLengthLimit = this.project.tripleStore.queryLatestC(this.catalysisReportIdentifier, "customLabelLengthLimit") || Project.default_customLabelLengthLimit; 
         this.graphHolder.customGraphWidth = parseInt(this.project.tripleStore.queryLatestC(this.catalysisReportIdentifier, "customDisplayGraphWidth")) || Project.default_customDisplayGraphWidth; 
+        this.graphHolder.customGraphPadding = parseInt(this.project.tripleStore.queryLatestC(this.catalysisReportIdentifier, "customGraphPadding")) || Project.default_customGraphPadding; 
+        
         this.graphHolder.hideNumbersOnContingencyGraphs = this.project.tripleStore.queryLatestC(this.catalysisReportIdentifier, "hideNumbersOnContingencyGraphs"); 
         this.updateStyleSheetForCustomGraphCSS();
 
