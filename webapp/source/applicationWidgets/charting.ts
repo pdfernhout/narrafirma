@@ -340,6 +340,7 @@ interface AxisOptions {
     isSmallFormat?: boolean;
     drawLongAxisLines?: boolean;
     rotateAxisLabels?: boolean;
+    placeAxisNamesInUpperRight?: boolean;
     graphType?: string;
     textAnchor?: string;
     namesAndTotals?: {};
@@ -470,22 +471,31 @@ function addXAxisLabel(chart, label, options: AxisOptions) {
     if (!options.labelLengthLimit) options.labelLengthLimit = 64;
     if (!options.textAnchor) options.textAnchor = "middle";
     
-    var shortenedLabel = limitLabelLength(label, options.labelLengthLimit);
-    var xPosition;
-    var yPosition = chart.fullHeight - 16;
-    const className = 'x-axis-label ' + (options.graphType || "") + (options.isSmallFormat ? " small" : "") + (options.textAnchor ? " " + options.textAnchor : "");
-     
-    if (options.textAnchor === "middle") {
-        xPosition = chart.margin.left + chart.width / 2;
-    } else if (options.textAnchor === "start") {
-        xPosition = chart.margin.left;
-        yPosition -= 25;
-    } else if (options.textAnchor === "end") {
-        xPosition = chart.margin.left + chart.width;
-        yPosition -= 25;
+    const shortenedLabel = limitLabelLength(label, options.labelLengthLimit);
+    let xPosition;
+    let yPosition;
+    let className;
+
+    if (options.placeAxisNamesInUpperRight) {
+        options.textAnchor = "end";
+        xPosition = chart.fullWidth - chart.margin.right;
+        yPosition = chart.margin.top - 6;
+        className = 'x-axis-label ' + (options.graphType || "") + (options.isSmallFormat ? " small" : "") + " upper-corner";
+    } else {
+        yPosition = chart.fullHeight - 16;
+        if (options.textAnchor === "middle") {
+            xPosition = chart.margin.left + chart.width / 2;
+        } else if (options.textAnchor === "start") {
+            xPosition = chart.margin.left;
+            yPosition -= 25;
+        } else if (options.textAnchor === "end") {
+            xPosition = chart.margin.left + chart.width;
+            yPosition -= 25;
+        }
+        className = 'x-axis-label ' + (options.graphType || "") + (options.isSmallFormat ? " small" : "") + (options.textAnchor ? " " + options.textAnchor : "");
     }
     
-    var shortenedLabelSVG = chart.chart.append("text")
+    const shortenedLabelSVG = chart.chart.append("text")
         .attr("class", className)
         .attr("text-anchor", options.textAnchor) 
         .attr("x", xPosition)
@@ -503,29 +513,41 @@ function addYAxisLabel(chart, label, options: AxisOptions) {
     if (!options.labelLengthLimit) options.labelLengthLimit = 64;
     if (!options.textAnchor) options.textAnchor = "middle";
 
-    var shortenedLabel = limitLabelLength(label, options.labelLengthLimit); 
-    const className = 'y-axis-label ' + (options.graphType || "") + (options.isSmallFormat ? " small" : "") + (options.textAnchor ? " " + options.textAnchor : "");
-    
-    var xPosition;
-    var yPosition = 16;
-    
-    if (options.textAnchor === "middle") {
-        xPosition = -(chart.margin.top + chart.height / 2);
-    } else if (options.textAnchor === "start") {
-        xPosition = -(chart.margin.top + chart.height);
-        yPosition += 25;
-    } else if (options.textAnchor === "end") {
-        xPosition = -chart.margin.top;
-        yPosition += 25;
+    const shortenedLabel = limitLabelLength(label, options.labelLengthLimit); 
+    let xPosition;
+    let yPosition;
+    let className;
+    let rotateAngle;
+
+    // Y and X are flipped because of the rotate
+    if (options.placeAxisNamesInUpperRight) {
+        options.textAnchor = "start";
+        yPosition = -(chart.fullWidth - chart.margin.right + 6); // negative because of rotation
+        xPosition = chart.margin.top;
+        rotateAngle = 90;
+        className = 'y-axis-label ' + (options.graphType || "") + (options.isSmallFormat ? " small" : "") + " upper-corner";
+    } else {
+        yPosition = 16;
+        if (options.textAnchor === "middle") {
+            xPosition = -(chart.margin.top + chart.height / 2);
+        } else if (options.textAnchor === "start") {
+            xPosition = -(chart.margin.top + chart.height);
+            yPosition += 25;
+        } else if (options.textAnchor === "end") {
+            xPosition = -chart.margin.top;
+            yPosition += 25;
+        }
+        rotateAngle = -90;
+        className = 'y-axis-label ' + (options.graphType || "") + (options.isSmallFormat ? " small" : "") + (options.textAnchor ? " " + options.textAnchor : "");
     }
     
-    var shortenedLabelSVG = chart.chart.append("text")
+    const shortenedLabelSVG = chart.chart.append("text")
         .attr("class", className)
         .attr("text-anchor", options.textAnchor)
         // Y and X are flipped because of the rotate
         .attr("y", yPosition)
         .attr("x", xPosition)
-        .attr("transform", "rotate(-90)")
+        .attr("transform", "rotate(" + rotateAngle + ")")
         .text(shortenedLabel);
     
     if (label.length > options.labelLengthLimit) {
@@ -952,7 +974,8 @@ export function d3BarChartForValues(graphHolder: GraphHolder, plotItems, xLabels
 
     var xAxis = addXAxis(chart, xScale, {labelLengthLimit: labelLengthLimit, rotateAxisLabels: true, graphType: "barChart"});
     
-    addXAxisLabel(chart, xAxisLabel, {graphType: "barChart"});
+    // cfk hiding x axis label on bar chart - too far away if texts are long and redundant so not necessary
+    // addXAxisLabel(chart, xAxisLabel, {graphType: "barChart"});
     
     // draw the y axis
     
@@ -1894,7 +1917,12 @@ export function d3ContingencyTable(graphHolder: GraphHolder, xAxisQuestion, yAxi
     addTitlePanelForChart(chartPane, chartTitle);
 
     var letterSize = 6; // it would be better to get this from the DOM - but it would decrease performance...
-    var margin = {top: 20, right: 15, bottom: 90 + longestColumnTextLength * letterSize, left: 90 + longestRowTextLength * letterSize};
+    var margin = {
+        top: 20, 
+        right: 30, // more space on right for possible extending numbers
+        bottom: 20 + longestColumnTextLength * (letterSize + 1), // more space on bottom for diagonal names
+        left: 20 + longestRowTextLength * letterSize
+    };
 
     // deal with questions that have LOTS of answers (not so much of a problem in the columns)
     var graphSize = "large";
@@ -1923,16 +1951,32 @@ export function d3ContingencyTable(graphHolder: GraphHolder, xAxisQuestion, yAxi
         });
     }
 
+    // ordinal.rangeRoundBands(interval[, padding[, outerPadding]])
+    // the outerPadding prevents any numbers from overwriting the right margin and into the label
+    // these numbers were arrived at by trial and error
+    let outerPadding;
+    if (!graphHolder.hideNumbersOnContingencyGraphs) {
+        outerPadding = 1.0;
+    } else {
+        outerPadding = 0.5;
+    }
     var xScale = d3.scale.ordinal()
         .domain(columnLabelsArray)
-        .rangeRoundBands([0, chart.width], 0.1);
+        .rangeRoundBands([0, chart.width], 0.1, outerPadding);
 
     chart.xScale = xScale;
     chart.xQuestion = xAxisQuestion;
     
-    var xAxis = addXAxis(chart, xScale, {labelLengthLimit: labelLengthLimit, drawLongAxisLines: true, rotateAxisLabels: true, graphType: "table", namesAndTotals: columnNamesAndTotals});
+    var xAxis = addXAxis(chart, xScale, 
+        {
+            labelLengthLimit: labelLengthLimit, 
+            drawLongAxisLines: true, 
+            rotateAxisLabels: true, 
+            graphType: "table", 
+            namesAndTotals: columnNamesAndTotals
+        });
     
-    addXAxisLabel(chart, nameForQuestion(xAxisQuestion), {graphType: "table"});
+    addXAxisLabel(chart, nameForQuestion(xAxisQuestion), {graphType: "table", placeAxisNamesInUpperRight: true});
     
     // Y axis and label
 
@@ -1950,9 +1994,15 @@ export function d3ContingencyTable(graphHolder: GraphHolder, xAxisQuestion, yAxi
     chart.yScale = yScale;
     chart.yQuestion = yAxisQuestion;
     
-    var yAxis = addYAxis(chart, yScale, {labelLengthLimit: labelLengthLimit, drawLongAxisLines: true, graphType: "table", namesAndTotals: rowNamesAndTotals});
+    var yAxis = addYAxis(chart, yScale, 
+        {
+            labelLengthLimit: labelLengthLimit, 
+            drawLongAxisLines: true, 
+            graphType: "table", 
+            namesAndTotals: rowNamesAndTotals
+        });
     
-    addYAxisLabel(chart, nameForQuestion(yAxisQuestion), {graphType: "table"});
+    addYAxisLabel(chart, nameForQuestion(yAxisQuestion), {graphType: "table", placeAxisNamesInUpperRight: true});
     
     // Append brush before data to ensure titles are drown
     chart.brush = createBrush(chartBody, xScale, yScale, brushend);

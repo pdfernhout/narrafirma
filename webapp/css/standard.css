@@ -1503,6 +1503,10 @@ td.narrafirma-mw-nested-title, td.narrafirma-mw-nested-stats {
     font-size: 1.1em;
 }
 
+.table.x-axis-label.upper-corner, .table.y-axis-label.upper-corner {
+    font-size: 1em;
+}
+
 /* scatter plot */
 
 .scatterPlot-story {
