@@ -196,7 +196,7 @@ var panel: Panel = {
             valuePath: "/clientState/catalysisReportIdentifier/customGraphPadding",
             valueType: "string",
             displayType: "select",
-            valueOptions: ["5", "10", "15", "20", "25", "30", "35", "40", "45", "50", "60", "70", "80", "90", "100", "110", "120", "130", "140", "150", "160", "170", "180", "190", "200", "210", "220", "230", "240", "250", "260", "270", "280", "290", "300"],
+            valueOptions: ["0", "5", "10", "15", "20", "25", "30", "35", "40", "45", "50", "60", "70", "80", "90", "100", "110", "120", "130", "140", "150", "160", "170", "180", "190", "200", "210", "220", "230", "240", "250", "260", "270", "280", "290", "300"],
             displayName: "Custom graph padding",
             displayPrompt: `Do you want to <strong>add extra pixels</strong> 
                 to bar graphs (below) and contingency tables (below and left) 

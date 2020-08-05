@@ -1921,11 +1921,12 @@ export function d3ContingencyTable(graphHolder: GraphHolder, xAxisQuestion, yAxi
     addTitlePanelForChart(chartPane, chartTitle);
 
     var letterSize = 8; // it would be better to get this from the DOM - but it would decrease performance...
+
     var margin = {
         top: 20, 
-        right: 30, // more space on right for possible extending numbers
-        bottom: 20 + longestColumnTextLength * (letterSize + 1) + graphHolder.customGraphPadding, // more space on bottom for diagonal names
-        left: 20 + longestRowTextLength * letterSize + graphHolder.customGraphPadding
+        right: 20, 
+        bottom: longestColumnTextLength * letterSize + graphHolder.customGraphPadding, 
+        left: longestRowTextLength * letterSize + graphHolder.customGraphPadding
     };
 
     // deal with questions that have LOTS of answers (not so much of a problem in the columns)
