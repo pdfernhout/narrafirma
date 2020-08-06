@@ -522,7 +522,7 @@ function addYAxisLabel(chart, label, options: AxisOptions) {
     // Y and X are flipped because of the rotate
     if (options.placeAxisNamesInUpperRight) {
         options.textAnchor = "start";
-        yPosition = -(chart.fullWidth - chart.margin.right + 6); // negative because of rotation
+        yPosition = -(chart.fullWidth - chart.margin.right + 8); // negative because of rotation
         xPosition = chart.margin.top;
         rotateAngle = 90;
         className = 'y-axis-label ' + (options.graphType || "") + (options.isSmallFormat ? " small" : "") + " upper-corner";
