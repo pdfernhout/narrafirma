@@ -32,7 +32,7 @@ function mannWhitneyU(x: number[], y: number[]) {
     var smallu = Math.min(u1, u2);
     
     // correction factor for tied scores
-    var T = Math.sqrt(tiecorrect(ranked));
+    var T = tiecorrect(ranked);
     if (T === 0) {
         throw new Error("All numbers are identical.");
     }
