@@ -9,7 +9,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Requires at least: 4.3.1
 Tested up to: 5.2.3
 Stable tag: trunk
-Version: 1.4.1
+Version: 1.4.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -105,6 +105,20 @@ We strongly suggest that you set up any web site on which you intend to install 
 12. Here the NarraFirma user is reflecting on the entire project, to learn from it and to keep good records for the future.
 
 == Changelog ==
+
+= 1.4.2 =
+
+Added: Option to limit number of multi-choice answers participants can choose in survey
+Added: Option to "pad" bottom of bar graphs and left/bottom of contingency tables to accommodate large fonts specified in CSS
+Changed: On bar graphs, removed X axis label - was redundant (same as graph name)
+Changed: On contingency tables, moved X and Y axis labels to upper-right corner (so they are no longer floating in space)
+Changed: Improved responsive css styling on slider widget
+Changed: Made slider value display (to right of slider) tabbable and editable (with Enter) as well as clickable (for accessibility)
+Changed: Added CSS variables to make it easier to set colors in different survey areas (with custom CSS)
+Changed: Improved story card display when one or both scale labels are missing
+Changed: Set resizing on text boxes to vertical only (in survey and in NarraFirma interface) to avoid conflicts with window resizing
+Fixed: Bug where "Print story cards" button was hidden when advanced options were turned off
+Fixed: Bug where right arrow on survey, when seen on small (phone) screen, could wrap to next line
 
 = 1.4.1 =
 
@@ -436,6 +450,9 @@ loading application, getting user information, or retrieving project data.
 change logs, see the [GitHub repository](https://github.com/pdfernhout/narrafirma).
 
 == Upgrade Notice ==
+
+= 1.4.2 =
+This minor upgrade makes some usability changes, improves survey usability and accessibility, and fixes a few small bugs. 
  
 = 1.4.1 =
 This minor upgrade fixes a bug in contingency diagram drawing, plus a few other small fixes.

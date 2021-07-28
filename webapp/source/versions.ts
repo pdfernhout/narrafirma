@@ -3,7 +3,7 @@ import kludgeForUseStrict = require("./kludgeForUseStrict");
 
 // Return current versions used by application  
 var versions = {
-    narrafirmaApplication: "1.4.1",
+    narrafirmaApplication: "1.4.2",
     
     questionnaireContentType: "org.workingwithstories.NarraFirmaQuestionnaire",
     questionnaireContentVersion: "0.2.0",
