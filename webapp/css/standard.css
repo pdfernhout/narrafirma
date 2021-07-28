@@ -458,6 +458,7 @@ button:disabled {
 
 textarea.narrafirma-textbox {
     min-height: 5em;
+    resize: vertical;
 }
 
 .questionExternal.narrafirma-question-type-questionAnswer {
