@@ -384,13 +384,17 @@ so most of them don't apply to imported data. Choose one of these types:</p>
     <li>text: things people said or typed in</li>
 </ul>
 
-<p>Next, give the question a short name to be used on graphs.
-    Then enter the answer names (if there are any) you want to display on your graphs. 
-    This is how the screen should look
-    for the "LongAgo" question in our example data file.
+<p>Next, give the question a <b>short name</b> to be used on graphs.
+    Then enter the <b>choices</b> you want to display on your graphs. 
+    This is how the screen should look for the "LongAgo" single-choice question.
 </p>
 
 <img src="help_importGuide_questionDisplay.png">
+
+<p>
+   If you gathered your data outside NarraFirma, you can ignore the "maximum number of checkboxes" choice.
+   It only affects the way NarraFirma displays its <i>own</i> survey. 
+</p>
 
 <p>Now scroll down to the <b>Import options</b> part of the question description. This is where you need to tell NarraFirma 
 what to expect in your data file.</p>
@@ -841,6 +845,7 @@ In the first row of the new spreadsheet, <b>type (or paste in) these header colu
         <td>About</td>	
         <td>Short name</td>	
         <td>Long name</td>	
+        <td>Max</td>	
         <td>Answers</td>
     </tr>
 </table>
@@ -901,12 +906,14 @@ Let's go through the columns in our example data file one at a time.
             <td>About</td>	
             <td>Short name</td>	
             <td>Long name</td>	
+            <td>Max</td>	
             <td>Answers</td>
         </tr>
         <tr>
             <td></td>
             <td>Participant ID column name</td>
             <td>import</td>
+            <td></td>
             <td></td>
             <td></td>
             <td>Respondent</td>
@@ -946,6 +953,7 @@ Let's go through the columns in our example data file one at a time.
             <td>About</td>	
             <td>Short name</td>	
             <td>Long name</td>	
+            <td>Max</td>	
             <td>Answers</td>
             <td></td>
             <td></td>
@@ -956,6 +964,7 @@ Let's go through the columns in our example data file one at a time.
             <td>eliciting</td>
             <td>Eliciting question</td>
             <td>Please choose a question to which you would like to respond.</td>
+            <td></td>
             <td>Surprise|Surprise|What has been your biggest surprise in the past year?</td>
             <td>ReallyLike|Really like|What experience comes to mind when you think about what success is really like?</td>
             <td>Discovered|Discovery|What was your biggest discovery at work in the past year?</td>
@@ -1012,12 +1021,14 @@ you must use an import option to tell NarraFirma how to read this column. Enter 
             <td>About</td>	
             <td>Short name</td>	
             <td>Long name</td>	
+            <td>Max</td>	
             <td>Answers</td>
         </tr>
         <tr>
             <td></td>
             <td>Story text column name</td>
             <td>import</td>
+            <td></td>
             <td></td>
             <td></td>
             <td>SText</td>
@@ -1055,12 +1066,14 @@ you must use an import option to tell NarraFirma how to read this column. Enter 
             <td>About</td>	
             <td>Short name</td>	
             <td>Long name</td>	
+            <td>Max</td>	
             <td>Answers</td>
         </tr>
         <tr>
             <td></td>
             <td>Story title column name</td>
             <td>import</td>
+            <td></td>
             <td></td>
             <td></td>
             <td>STitle</td>
@@ -1100,6 +1113,7 @@ To describe this type of question to NarraFirma, write a row in your story form 
             <td>About</td>	
             <td>Short name</td>
             <td>Long name</td>
+            <td>Max</td>	
             <td>Answers</td>
             <td></td>
             <td></td>
@@ -1111,6 +1125,7 @@ To describe this type of question to NarraFirma, write a row in your story form 
             <td>story</td>
             <td>How long ago</td>
             <td>How long ago did this story take place?</td>
+            <td></td>
             <td>Last week|In the past week</td>
             <td>3 months|Within the past 3 months</td>
             <td>6 months|From 3 to 6 months ago</td>
@@ -1184,6 +1199,7 @@ use the annotation system instead.
             <td>About</td>	
             <td>Short name</td>
             <td>Long name</td>
+            <td>Max</td>	
             <td>Answers</td>
             <td></td>
             <td></td>
@@ -1195,6 +1211,7 @@ use the annotation system instead.
             <td>story</td>
             <td>Where story came from</td>
             <td>Where did this story come from?</td>
+            <td></td>
             <td>first-person</td>
             <td>second-hand</td>
             <td>rumor and I believe it</td>
@@ -1237,6 +1254,7 @@ use the annotation system instead.
             <td>About</td>	
             <td>Short name</td>
             <td>Long name</td>
+            <td>Max</td>	
             <td>Answers</td>
             <td></td>
             <td></td>
@@ -1248,6 +1266,7 @@ use the annotation system instead.
             <td>story</td>
             <td>How long remember</td>
             <td>How long do you think you will remember this story?</td>
+            <td></td>
             <td>for a few minutes</td>
             <td>for the rest of my life</td>
             <td>1</td>
@@ -1267,6 +1286,7 @@ use the annotation system instead.
             <td>About</td>	
             <td>Short name</td>	
             <td>Long name</td>	
+            <td>Max</td>	
             <td>Answers</td>
             <td></td>
         </tr>
@@ -1274,6 +1294,7 @@ use the annotation system instead.
             <td></td>
             <td>Scale range</td>
             <td>import</td>
+            <td></td>
             <td></td>
             <td></td>
             <td>1</td>
@@ -1313,6 +1334,7 @@ use the annotation system instead.
             <td>About</td>	
             <td>Short name</td>
             <td>Long name</td>
+            <td>Max</td>	
             <td>Answers</td>
         </tr>
         <tr>
@@ -1321,6 +1343,7 @@ use the annotation system instead.
             <td>story</td>
             <td>Comment</td>
             <td>If you would like to say anything else, please type it here.</td>
+            <td></td>
             <td></td>
         </tr>
     </table>
@@ -1361,6 +1384,7 @@ Specify this type of column thus:</p>
             <td>About</td>	
             <td>Short name</td>
             <td>Long name</td>
+            <td>Max</td>	
             <td>Answers</td>
             <td></td>
         </tr>
@@ -1370,6 +1394,7 @@ Specify this type of column thus:</p>
             <td>story</td>
             <td>Feel about</td>
             <td>How do you feel about this story?</td>
+            <td></td>
             <td>happy|positive</td>
             <td>sad|negative</td>
         </tr>
@@ -1378,6 +1403,12 @@ Specify this type of column thus:</p>
     <p>In the "Answers" column, and to the right, enter one answer per column, in the order you would like them displayed in your graphs.
         If you want to use a different name for the answer in your graphs, use
         a pipe separator to specify two sets of names. First write what it says in your data file, then a pipe, then what you want it to say on the graphs.
+    </p>
+
+    <p>If you gathered your stories outside NarraFirma, you can ignore the "Max" column. 
+        It is only used within NarraFirma.
+        Why is there a "Max" column? 
+        Because you might want to export a story form from one NarraFirma project so you can import it into another one.
     </p>
 
 <h2 id="csv_multicolumnyesno">Multi-choice multi-column yes/no questions</h2>
@@ -1414,6 +1445,7 @@ Specify this type of column thus:</p>
             <td>About</td>	
             <td>Short name</td>
             <td>Long name</td>
+            <td>Max</td>	
             <td>Answers</td>
             <td></td>
         </tr>
@@ -1423,6 +1455,7 @@ Specify this type of column thus:</p>
             <td>story</td>
             <td>Needed</td>
             <td>What did the people in this story need?</td>
+            <td></td>
             <td>help|to be helped</td>
             <td>understanding|to be understood</td>
         </tr>
@@ -1444,12 +1477,14 @@ Specify this type of column thus:</p>
                 <td>About</td>	
                 <td>Short name</td>
                 <td>Long name</td>
+                <td>Max</td>	
                 <td>Answers</td>
             </tr>
             <tr>
                 <td></td>
                 <td>Yes no questions yes indicator</td>
                 <td>import</td>
+                <td></td>
                 <td></td>
                 <td></td>
                 <td>Yes</td>
@@ -1460,12 +1495,14 @@ Specify this type of column thus:</p>
                 <td>import</td>
                 <td></td>
                 <td></td>
+                <td></td>
                 <td> [</td>
             </tr>
         <tr>
                 <td></td>
                 <td>Yes no questions Q-A ending</td>
                 <td>import</td>
+                <td></td>
                 <td></td>
                 <td></td>
                 <td>]</td>
@@ -1528,6 +1565,7 @@ Tell NarraFirma about this kind of question like this:
             <td>About</td>	
             <td>Short name</td>
             <td>Long name</td>
+            <td>Max</td>	
             <td>Answers</td>
             <td></td>
             <td></td>
@@ -1540,6 +1578,7 @@ Tell NarraFirma about this kind of question like this:
             <td>story</td>
             <td>People who helped</td>
             <td>Who helped the main person in this story get what they needed?</td>
+            <td></td>
             <td>manager|A manager</td>
             <td>colleague|A colleague</td>
             <td>friend|A friend</td>
@@ -1559,12 +1598,14 @@ For this data type you need to tell NarraFirma how the answers in your data cell
                 <td>About</td>	
                 <td>Short name</td>
                 <td>Long name</td>
+                <td>Max</td>	
                 <td>Answers</td>
             </tr>
             <tr>
                 <td></td>
                 <td>Multi choice single column delimiter</td>
                 <td>import</td>
+                <td></td>
                 <td></td>
                 <td></td>
                 <td>,</td>
@@ -1607,6 +1648,7 @@ This question type is just like the "Single choice indexed" question type, excep
             <td>About</td>	
             <td>Short name</td>
             <td>Long name</td>
+            <td>Max</td>	
             <td>Answers</td>
             <td></td>
             <td></td>
@@ -1619,6 +1661,7 @@ This question type is just like the "Single choice indexed" question type, excep
             <td>story</td>
             <td>Who would be surprised</td>
             <td>Who be surprised to hear this story?</td>
+            <td></td>
             <td>the people at the head office</td>
             <td>our customers</td>
             <td>the people I work with</td>
@@ -1641,12 +1684,14 @@ This question type is just like the "Single choice indexed" question type, excep
                         <td>About</td>	
                         <td>Short name</td>
                         <td>Long name</td>
+                        <td>Max</td>	
                         <td>Answers</td>
                     </tr>
                     <tr>
                         <td></td>
                         <td>Multi choice single column delimiter</td>
                         <td>import</td>
+                        <td></td>
                         <td></td>
                         <td></td>
                         <td>space</td>
@@ -1694,6 +1739,7 @@ This question type is just like the "Single choice indexed" question type, excep
                 <td>About</td>	
                 <td>Short name</td>
                 <td>Long name</td>
+                <td>Max</td>	
                 <td>Answers</td>
                 <td></td>
             </tr>
@@ -1701,6 +1747,7 @@ This question type is just like the "Single choice indexed" question type, excep
                 <td></td>
                 <td>Scale range</td>
                 <td>import</td>
+                <td></td>
                 <td></td>
                 <td></td>
                 <td>1</td>
@@ -1718,12 +1765,14 @@ This question type is just like the "Single choice indexed" question type, excep
                     <td>About</td>	
                     <td>Short name</td>
                     <td>Long name</td>
+                    <td>Max</td>	
                     <td>Answers</td>
                 </tr>
                 <tr>
                     <td></td>
                     <td>Story title column name</td>
                     <td>import</td>
+                    <td></td>
                     <td></td>
                     <td></td>
                     <td>SName</td>
@@ -1739,12 +1788,14 @@ This question type is just like the "Single choice indexed" question type, excep
                     <td>About</td>	
                     <td>Short name</td>
                     <td>Long name</td>
+                    <td>Max</td>	
                     <td>Answers</td>
                 </tr>
                 <tr>
                     <td></td>
                     <td>Story text column name</td>
                     <td>import</td>
+                    <td></td>
                     <td></td>
                     <td></td>
                     <td>TStory</td>
@@ -1767,12 +1818,14 @@ This question type is just like the "Single choice indexed" question type, excep
                     <td>About</td>	
                     <td>Short name</td>
                     <td>Long name</td>
+                    <td>Max</td>	
                     <td>Answers</td>
                 </tr>
                 <tr>
                     <td></td>
                     <td>Participant ID column name</td>
                     <td>import</td>
+                    <td></td>
                     <td></td>
                     <td></td>
                     <td>Participant</td>
@@ -1797,6 +1850,7 @@ This question type is just like the "Single choice indexed" question type, excep
             <td>About</td>	
             <td>Short name</td>
             <td>Long name</td>
+            <td>Max</td>	
             <td>Answers</td>
             <td></td>
         </tr>
@@ -1804,6 +1858,7 @@ This question type is just like the "Single choice indexed" question type, excep
             <td></td>
             <td>Data columns to append to story text</td>
             <td>import</td>
+            <td></td>
             <td></td>
             <td></td>
             <td>More|[More about the story]</td>
@@ -1851,12 +1906,14 @@ This question type is just like the "Single choice indexed" question type, excep
             <td>About</td>	
             <td>Short name</td>
             <td>Long name</td>
+            <td>Max</td>	
             <td>Answers</td>
         </tr>
         <tr>
             <td></td>
             <td>Minimum words to include story</td>
             <td>import</td>
+            <td></td>
             <td></td>
             <td></td>
             <td>10</td>
@@ -1881,6 +1938,7 @@ This question type is just like the "Single choice indexed" question type, excep
             <td>About</td>	
             <td>Short name</td>
             <td>Long name</td>
+            <td>Max</td>	
             <td>Answers</td>
             <td></td>
             <td></td>
@@ -1889,6 +1947,7 @@ This question type is just like the "Single choice indexed" question type, excep
             <td></td>
             <td>Data columns to ignore</td>
             <td>import</td>
+            <td></td>
             <td></td>
             <td></td>
             <td>Start date</td>
@@ -1918,12 +1977,14 @@ In the LimeSurvey example, you would ask NarraFirma to strip out "[SLIDER]" and 
             <td>About</td>	
             <td>Short name</td>
             <td>Long name</td>
+            <td>Max</td>	
             <td>Answers</td>
         </tr>
         <tr>
             <td></td>
             <td>Texts to remove from column headers</td>
             <td>import</td>
+            <td></td>
             <td></td>
             <td></td>
             <td>[SLIDER]</td>
@@ -1956,6 +2017,7 @@ NarraFirma will ignore that row of data.</p>
         <li><b>Tell another story text</b>: what to say other than "Would you like to tell another story?"</li>
         <li><b>Tell another story button</b>: what the button should say other than "Yes, I'd like to tell another story."</li>
         <li><b>Max num stories</b>: how many stories people can tell (before the "tell another story" page element stops appearing)</li>
+        <li><b>Max number of answers prompt</b>: a message telling people how many checkboxes they can check (for questions that have a limit)</li>
         <li><b>Custom CSS</b>: text that changes the formatting of elements on the page</li>
         <li><b>Custom CSS for Printing</b>: text that changes the formatting of elements in the printed story form</li>
         </ul>
@@ -1976,8 +2038,12 @@ NarraFirma will ignore that row of data.</p>
     <li>You can include comment lines in your story form file. Place a semicolon (;) as the very first character on the line. Everything else on that line 
     will be ignored. Empty lines will also be ignored. </li>
     <li>You can include extra or comment columns in your story form CSV file. Any columns with names other than <b>Data column name</b>, <b>Type</b>, <b>About</b>, 
-    <b>Short name</b>, <b>Long name</b>, and <b>Answers</b> will be ignored. However, place your extra columns <i>to the left</i> of
+    <b>Short name</b>, <b>Long name</b>, <b>Max</b>, and <b>Answers</b> will be ignored. However, place your extra columns <i>to the left</i> of
     the <b>Answers</b> column. All texts in cells to the right of that column will be treated as answers. </li>
+    <li>The "Max" column was added to the story-form CSV format in NarraFirma 1.4.2. 
+        It is backward compatible (newer versions of NarraFirma do not require the "Max" column to appear in older data)
+        and forward compatible (older versions of NarraFirma ignore the "Max" column when they find it in newer data). 
+    </li>
     <li>Watch out for encoding problems. If you import a CSV file and then have problems reading your story data, look for special characters
         that are different in the story form CSV file and data CSV file. Make sure both files are being saved using UTF-8 encoding.
     </li>
@@ -2006,6 +2072,7 @@ Then you will be ready to create a story collection and import your stories to i
             <td>About</td>	
             <td>Short name</td>
             <td>Long name</td>
+            <td>Max</td>	
             <td>Answers</td>
             <td></td>
             <td></td>
@@ -2017,6 +2084,7 @@ Then you will be ready to create a story collection and import your stories to i
                 <td></td>
                 <td>Participant ID column name</td>
                 <td>import</td>
+                <td></td>
                 <td></td>
                 <td></td>
                 <td>Respondent</td>
@@ -2031,6 +2099,7 @@ Then you will be ready to create a story collection and import your stories to i
                 <td>eliciting</td>
                 <td>Eliciting question</td>
                 <td>Please choose a question to which you would like to respond.</td>
+                <td></td>
                 <td>Surprise|Surprise|What has been your biggest surprise in the past year?</td>
                 <td>ReallyLike|Really like|What experience comes to mind when you think about what success is really like?</td>
                 <td>Discovered|Discovery|What was your biggest discovery at work in the past year?</td>
@@ -2041,6 +2110,7 @@ Then you will be ready to create a story collection and import your stories to i
                 <td></td>
                 <td>Story text column name</td>
                 <td>import</td>
+                <td></td>
                 <td></td>
                 <td></td>
                 <td>SText</td>
@@ -2055,6 +2125,7 @@ Then you will be ready to create a story collection and import your stories to i
                 <td>import</td>
                 <td></td>
                 <td></td>
+                <td></td>
                 <td>STitle</td>
                 <td></td>
                 <td></td>
@@ -2067,6 +2138,7 @@ Then you will be ready to create a story collection and import your stories to i
                 <td>story</td>
                 <td>How long ago</td>
                 <td>How long ago did this story take place?</td>
+                <td></td>
                 <td>Last week|In the past week</td>
                 <td>3 months|Within the past 3 months</td>
                 <td>6 months|From 3 to 6 months ago</td>
@@ -2079,6 +2151,7 @@ Then you will be ready to create a story collection and import your stories to i
                 <td>story</td>
                 <td>Where story came from</td>
                 <td>Where did this story come from?</td>
+                <td></td>
                 <td>first-person</td>
                 <td>second-hand</td>
                 <td>rumor and I believe it</td>
@@ -2091,6 +2164,7 @@ Then you will be ready to create a story collection and import your stories to i
                 <td>story</td>
                 <td>How long remember</td>
                 <td>How long do you think you will remember this story?</td>
+                <td></td>
                 <td>for a few minutes</td>
                 <td>for the rest of my life</td>
                 <td>1</td>
@@ -2101,6 +2175,7 @@ Then you will be ready to create a story collection and import your stories to i
                 <td></td>
                 <td>Scale range</td>
                 <td>import</td>
+                <td></td>
                 <td></td>
                 <td></td>
                 <td>1</td>
@@ -2115,6 +2190,7 @@ Then you will be ready to create a story collection and import your stories to i
                 <td>story</td>
                 <td>Feel about</td>
                 <td>How do you feel about this story?</td>
+                <td></td>
                 <td>happy|positive</td>
                 <td>sad|negative</td>
                 <td></td>
@@ -2127,6 +2203,7 @@ Then you will be ready to create a story collection and import your stories to i
                 <td>story</td>
                 <td>Needed</td>
                 <td>What did the people in this story need?</td>
+                <td></td>
                 <td>help|to be helped</td>
                 <td>understanding|to be understood</td>
                 <td></td>
@@ -2137,6 +2214,7 @@ Then you will be ready to create a story collection and import your stories to i
                     <td></td>
                     <td>Yes no questions yes indicator</td>
                     <td>import</td>
+                    <td></td>
                     <td></td>
                     <td></td>
                     <td>Yes</td>
@@ -2151,6 +2229,7 @@ Then you will be ready to create a story collection and import your stories to i
                     <td>import</td>
                     <td></td>
                     <td></td>
+                    <td></td>
                     <td> [</td>
                     <td></td>
                     <td></td>
@@ -2161,6 +2240,7 @@ Then you will be ready to create a story collection and import your stories to i
                     <td></td>
                     <td>Yes no questions Q-A ending</td>
                     <td>import</td>
+                    <td></td>
                     <td></td>
                     <td></td>
                     <td>]</td>
@@ -2175,6 +2255,7 @@ Then you will be ready to create a story collection and import your stories to i
                 <td>story</td>
                 <td>People who helped</td>
                 <td>Who helped the main person in this story get what they needed?</td>
+                <td></td>
                 <td>manager|A manager</td>
                 <td>colleague|A colleague</td>
                 <td>friend|A friend</td>
@@ -2185,6 +2266,7 @@ Then you will be ready to create a story collection and import your stories to i
                     <td></td>
                     <td>Multi choice single column delimiter</td>
                     <td>import</td>
+                    <td></td>
                     <td></td>
                     <td></td>
                     <td>,</td>
@@ -2199,6 +2281,7 @@ Then you will be ready to create a story collection and import your stories to i
                 <td>story</td>
                 <td>Who would be surprised</td>
                 <td>Who be surprised to hear this story?</td>
+                <td></td>
                 <td>the people at the head office</td>
                 <td>our customers</td>
                 <td>the people I work with</td>
@@ -2211,6 +2294,7 @@ Then you will be ready to create a story collection and import your stories to i
             <td>participant</td>
             <td>Comment</td>
             <td>If you would like to say anything else, please type it here.</td>
+            <td></td>
             <td></td>
             <td></td>
             <td></td>
