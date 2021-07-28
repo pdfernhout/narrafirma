@@ -5,6 +5,62 @@ M - medium priority
 L - low priority
 W - wish list
 
+----------- new to-dos for next pulse of work - summer/fall 2021
+
+GENERAL
+do:
+- replace rawgit with jsDelivr
+- docker LATEST connection
+- check possible bug related to mann whitney square root (see pull request)
+- deal with all issues raised on github
+- change nav buttons at end of page to make it clear you are going to a page, not doing a thing
+- add project nickname field user can easily change (shows on all pages, reports etc)
+- add a way to delete/archive projects/data in WP version
+consider:
+- upgrade to later node.js version?
+- upgrade to later d3 library version?
+- fix all vars?
+- cypress testing?
+- improve slow reading of large projects in WP version?
+
+COLLECTION / SURVEYING / IMPORT
+do:
+  DONE - support specified limit on how many check boxes you can check on a survey
+  DONE allow user to change colors used in survey for better accessibility
+  DONE fix mobile phone arrangement of slider (see example screenshot) where slider labels were badly wrapped
+  DONE evaluate accessibility of surveys using published standard(s)
+  DONE number to right of slider should be in tab order (enter to popup dialog) for better accessibility
+- make sure short name IDs entered by user when defining questions are unique
+- add support for multi-language surveys - for all texts, questions, answers - use delimiter plus language question
+- change so case does NOT matter in codes (question types, etc) in csv input in story form file (but first check effect on existing data)
+consider
+- implement "other" text box on choice questions? - what to do with "other" texts? generate companion text question? 
+- display images (via links) as answers (with names for graphs)?
+- display videos (via links) for survey introduction and question texts?
+- add support for uploading, storing, displaying images?
+- add support for recording, storing, playing audio stories?
+
+CATALYSIS
+do:
+  DONE - improve graph labels 
+- real time lumping using textarea specification (as with filters)
+- in help, add mention of how to set cluster order number (plus mention on clustering page itself)
+consider:
+- add theming page, where user reads each story, gives it 1-3 themes, merges themes into smaller numbers, becomes "theme" question
+- write ODT version of catalysis report
+- see if there is any way to avoid so much scrolling on the explore patterns page - tabs? split into two pages?
+
+SENSEMAKING
+do:
+- filters in print-story-cards not working correctly (how? check email from user)
+- the "eliciting question" question shows up on the story cards even when not selected (check email)
+
+probably not going to do on this pulse 
+- look at whether/how to add date/time of collection to info about stories to graph (similar to story length)
+- consider time of collection graph - this just seems to be lower priority to me
+
+=============== OLDER TODOS LIST ===================
+
 ------------- Infrastructure -------------
 
 BUILD
@@ -23,10 +79,9 @@ W Think through logging in the client, perhaps using a library
 W Support for socket.io to track recently added survey results and whether survey is enabled
 W Support for socket.io to replace the need for polling for changes
 
-TRANSLATION
+TRANSLATION (INTERNATIONALIZATION)
 W Translate report answers as needed for those types like selections
 W Final review of all strings in code looking for TODO translate items or similar
-W Add support for surveys that can be in multiple languages
 
 TESTING
 W Unit tests
@@ -64,7 +119,7 @@ W Validation of page data as progress through a step
 W Validation in general when progress through tabs and error reporting
 W Validation of text fields for empty
 W Validation of text fields for length
-W Validation for checkBoxes limited by maximum number of choices as validation error
+DONE Validation for checkBoxes limited by maximum number of choices as validation error
 
 DATA ENTRY
 W Autosave for current textarea or input text based on timer even if you don't leave it
@@ -101,7 +156,7 @@ W Story list using dgrid with accordion for story
 W Add templates for annotation questions (re-add "Copy a question from a template" button, removed in commit 2dde70086198417d2d005e3a6707045c18823d22 2015-09-20 19:09:57)
 W Consider supporting mass annotation - export stories with uuids, create new annotation question, import story uuids with new data in CSV file
 W Consider adding support for floating point scale values in CSV import
-W Consider adding support for semicolon instead of comma (and comma instead of dot for decimals) for CSV import/export
+DONE Consider adding support for semicolon instead of comma (and comma instead of dot for decimals) for CSV import/export
 
 CATALYSIS
 W Need a flip axis for slider for catalysis when graphing? 
@@ -110,8 +165,8 @@ W Show percentages for question answers in title hover over questions in catalys
 W Support storyThemer -- a widget where people look at each story, give it 1-3 themes, then merge the themes into smaller numbers of themes --> yes but time consuming
 W Support an excerpt list somehow --> copy and paste from story list is good enough
 W Need to be able to select text in existing story to AddToExcerpts
-W Support storiesList -- for choosing a resonant story
-W Consider drawing contingency graphs with side plots showing shapes of distributions (bar graphs) for each question
+W Support storiesList -- for choosing a resonant story -> not important, can copy and paste texts
+W Consider drawing contingency graphs with side plots showing shapes of distributions (bar graphs) for each question -> not important
 W Make interpretations have link back to (single) observation, but retain search function for legacy data
 
 SENSEMAKING
@@ -125,7 +180,7 @@ RETURN
 
 GENERAL
 W Support Undo (including multi-user aspects with log)
-W User should be able to duplicate a project
+W User should be able to duplicate a project -> can do with export/import
 W Consider in "Print project report" checkboxes for different parts of the report
 
 CONFIGURATION
@@ -148,6 +203,20 @@ M Improve reporting on startup for loading project data with some kind of progre
 M When import story form, hundreds of triples can be generated which take minutes to send to the server (with no progress feedback, even though done in background) -- may be related to console logging
 
 ==== DONE
+
+--- Release 1.4.2 
+
+Added: Option to limit number of multi-choice answers participants can choose in survey
+Added: Option to "pad" bottom of bar graphs and left/bottom of contingency tables to accommodate large fonts specified in CSS
+Changed: On bar graphs, removed X axis label - was redundant (same as graph name)
+Changed: On contingency tables, moved X and Y axis labels to upper-right corner (so they are no longer floating in space)
+Changed: Improved responsive css styling on slider widget
+Changed: Made slider value display (to right of slider) tabbable and editable (with Enter) as well as clickable (for accessibility)
+Changed: Added CSS variables to make it easier to set colors in different survey areas (with custom CSS)
+Changed: Improved story card display when one or both scale labels are missing
+Changed: Set resizing on text boxes to vertical only (in survey and in NarraFirma interface) to avoid conflicts with window resizing
+Fixed: Bug where "Print story cards" button was hidden when advanced options were turned off
+Fixed: Bug where right arrow on survey, when seen on small (phone) screen, could wrap to next line
 
 --- Release 1.4.1
 
