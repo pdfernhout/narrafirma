@@ -920,6 +920,7 @@ function processCSVContentsForQuestionnaire(contents) {
         questionForm_tellAnotherStoryButtonText: "",
         questionForm_maxNumStories: "no limit",
         questionForm_sliderValuePrompt: "",
+        questionForm_maxNumAnswersPrompt: "",
 
         questionForm_submitSurveyButtonText: "",
         questionForm_sendingSurveyResultsText: "",
@@ -1174,6 +1175,10 @@ function processCSVContentsForQuestionnaire(contents) {
                         template.questionForm_sliderValuePrompt = text;
                         project.tripleStore.addTriple(template.id, "questionForm_sliderValuePrompt", text);
                         break;
+                    case "Max number of answers prompt":
+                        template.questionForm_maxNumAnswersPrompt = text;
+                        project.tripleStore.addTriple(template.id, "questionForm_maxNumAnswersPrompt", text);
+                        break;
 
                     case "Submit survey button":
                         template.questionForm_submitSurveyButtonText = text;
@@ -1396,6 +1401,12 @@ function questionForItem(item, questionCategory) {
     var itemType = item["Type"].trim();
     var answers = item["Answers"];
 
+    var maxNumAnswers = item["Max"] || "";
+    if (maxNumAnswers && isNaN(maxNumAnswers)) {
+        alert('Import error: For the Multiple choice question "' + item["Short name"] + '," the maximum number of answers ("' + maxNumAnswers + '") is not a number.');
+        maxNumAnswers = "";
+    }
+
     // legacy - old name for "Multi-choice multi-column texts" was "Multiple choice"
     if (itemType === "Multiple choice") {
         itemType = "Multi-choice multi-column texts";
@@ -1470,6 +1481,7 @@ function questionForItem(item, questionCategory) {
     question[questionCategory + "_shortName"] = item["Short name"];
     question[questionCategory + "_text"] = item["Long name"];
     if (valueOptions) question[questionCategory + "_options"] = valueOptions.join("\n");
+    if (maxNumAnswers) question[questionCategory + "_maxNumAnswers"] = maxNumAnswers;
 
     question[questionCategory + "_import_columnName"] = item["Data column name"] || item["Short name"];
     question[questionCategory + "_import_valueType"] = itemType;
@@ -1600,7 +1612,7 @@ export function exportQuestionnaire(questionnaire = null) {
         output = addCSVOutputLine(output, line, delimiter);
     }
     
-    var header = ["Data column name", "Type", "About", "Short name", "Long name", "Answers"];
+    var header = ["Data column name", "Type", "About", "Short name", "Long name", "Max", "Answers"];
     addOutputLine(header);
     
     var elicitingLine = ["Eliciting question", "eliciting", "eliciting", "Eliciting question", "Eliciting question"];
@@ -1634,6 +1646,9 @@ export function exportQuestionnaire(questionnaire = null) {
             // long name
             outputLine.push(question.displayPrompt || ""); 
 
+            // max num answers
+            outputLine.push(question.maxNumAnswers || "");
+
             // answers
             if (question.displayType === "slider") {
                 if (question.displayConfiguration) {
@@ -1663,36 +1678,37 @@ export function exportQuestionnaire(questionnaire = null) {
     var adjustedAnnotationQuestions = questionnaireGeneration.convertEditorQuestions(annotationQuestions, "A_");
     outputQuestions(adjustedAnnotationQuestions, "annotation");
 
-    addOutputLine(["", "Title", "form", "", "", questionnaire.title || ""]);
-    addOutputLine(["", "Start text", "form", "", "", questionnaire.startText || ""]);
-    addOutputLine(["", "Image", "form", "", "", questionnaire.image || ""]);
-    addOutputLine(["", "End text", "form", "", "", questionnaire.endText || ""]);
-    addOutputLine(["", "About you text", "form", "", "", questionnaire.aboutYouText || ""]);
-    addOutputLine(["", "Thank you text", "form", "", "", questionnaire.thankYouPopupText || ""]);
-    addOutputLine(["", "Custom CSS", "form", "", "", questionnaire.customCSS || ""]);
-    addOutputLine(["", "Custom CSS for Printing", "form", "", "", questionnaire.customCSSForPrint || ""]);
+    addOutputLine(["", "Title", "form", "", "", "", questionnaire.title || ""]);
+    addOutputLine(["", "Start text", "form", "", "", "", questionnaire.startText || ""]);
+    addOutputLine(["", "Image", "form", "", "", "", questionnaire.image || ""]);
+    addOutputLine(["", "End text", "form", "", "", "", questionnaire.endText || ""]);
+    addOutputLine(["", "About you text", "form", "", "", "", questionnaire.aboutYouText || ""]);
+    addOutputLine(["", "Thank you text", "form", "", "", "", questionnaire.thankYouPopupText || ""]);
+    addOutputLine(["", "Custom CSS", "form", "", "", "", questionnaire.customCSS || ""]);
+    addOutputLine(["", "Custom CSS for Printing", "form", "", "", "", questionnaire.customCSSForPrint || ""]);
 
-    addOutputLine(["", "Choose question text", "form", "", "", questionnaire.chooseQuestionText || ""]);
-    addOutputLine(["", "Enter story text", "form", "", "", questionnaire.enterStoryText || ""]);
-    addOutputLine(["", "Name story text", "form", "", "", questionnaire.nameStoryText || ""]);
-    addOutputLine(["", "Tell another story text", "form", "", "", questionnaire.tellAnotherStoryText || ""]);
-    addOutputLine(["", "Tell another story button", "form", "", "", questionnaire.tellAnotherStoryButtonText || ""]);
-    addOutputLine(["", "Max num stories", "form", "", "", questionnaire.maxNumStories || ""]);
-    addOutputLine(["", "Slider value prompt", "form", "", "", questionnaire.sliderValuePrompt || ""]);
+    addOutputLine(["", "Choose question text", "form", "", "", "", questionnaire.chooseQuestionText || ""]);
+    addOutputLine(["", "Enter story text", "form", "", "", "", questionnaire.enterStoryText || ""]);
+    addOutputLine(["", "Name story text", "form", "", "", "", questionnaire.nameStoryText || ""]);
+    addOutputLine(["", "Tell another story text", "form", "", "", "", questionnaire.tellAnotherStoryText || ""]);
+    addOutputLine(["", "Tell another story button", "form", "", "", "", questionnaire.tellAnotherStoryButtonText || ""]);
+    addOutputLine(["", "Max num stories", "form", "", "", "", questionnaire.maxNumStories || ""]);
+    addOutputLine(["", "Slider value prompt", "form", "", "", "", questionnaire.sliderValuePrompt || ""]);
+    addOutputLine(["", "Max number of answers prompt", "form", "", "", "", questionnaire.maxNumAnswersPrompt || ""]);
 
-    addOutputLine(["", "Submit survey button", "form", "", "", questionnaire.submitSurveyButtonText || ""]);
-    addOutputLine(["", "Sending survey text", "form", "", "", questionnaire.questionForm_sendingSurveyResultsText || ""]);
-    addOutputLine(["", "Could not save survey text", "form", "", "", questionnaire.questionForm_couldNotSaveSurveyText || ""]);
-    addOutputLine(["", "Resubmit survey button", "form", "", "", questionnaire.resubmitSurveyButtonText || ""]);
+    addOutputLine(["", "Submit survey button", "form", "", "", "", questionnaire.submitSurveyButtonText || ""]);
+    addOutputLine(["", "Sending survey text", "form", "", "", "", questionnaire.questionForm_sendingSurveyResultsText || ""]);
+    addOutputLine(["", "Could not save survey text", "form", "", "", "", questionnaire.questionForm_couldNotSaveSurveyText || ""]);
+    addOutputLine(["", "Resubmit survey button", "form", "", "", "", questionnaire.resubmitSurveyButtonText || ""]);
     
-    addOutputLine(["", "Delete story button", "form", "", "", questionnaire.deleteStoryButtonText || ""]);
-    addOutputLine(["", "Delete story prompt", "form", "", "", questionnaire.deleteStoryDialogPrompt || ""]);
-    addOutputLine(["", "Survey stored message", "form", "", "", questionnaire.surveyStoredText || ""]);
-    addOutputLine(["", "Show survey result", "form", "", "", questionnaire.showSurveyResultPane || ""]);
-    addOutputLine(["", "Survey result header", "form", "", "", questionnaire.surveyResultPaneHeader || ""]);
+    addOutputLine(["", "Delete story button", "form", "", "", "", questionnaire.deleteStoryButtonText || ""]);
+    addOutputLine(["", "Delete story prompt", "form", "", "", "", questionnaire.deleteStoryDialogPrompt || ""]);
+    addOutputLine(["", "Survey stored message", "form", "", "", "", questionnaire.surveyStoredText || ""]);
+    addOutputLine(["", "Show survey result", "form", "", "", "", questionnaire.showSurveyResultPane || ""]);
+    addOutputLine(["", "Survey result header", "form", "", "", "", questionnaire.surveyResultPaneHeader || ""]);
     
-    addOutputLine(["", "Error message no elicitation question chosen", "form", "", "", questionnaire.errorMessage_noElicitationQuestionChosen || ""]);
-    addOutputLine(["", "Error message no story text", "form", "", "", questionnaire.errorMessage_noStoryText || ""]);
+    addOutputLine(["", "Error message no elicitation question chosen", "form", "", "", "", questionnaire.errorMessage_noElicitationQuestionChosen || ""]);
+    addOutputLine(["", "Error message no story text", "form", "", "", "", questionnaire.errorMessage_noStoryText || ""]);
 
     // do not need to write "Scale range" because scale data was converted to 0-100 scale during import
     // do not need to write "Yes no questions Q-A separator" or "Yes no questions Q-A ending" or "Yes no questions yes indicator" or "Multi choice single column delimiter"
@@ -1778,7 +1794,7 @@ export function exportQuestionnaireForImport(questionnaire = null) { // to prese
         output = addCSVOutputLine(output, line, delimiter);
     }
     
-    var header = ["Data column name", "Type", "About", "Short name", "Long name", "Answers"];
+    var header = ["Data column name", "Type", "About", "Short name", "Long name", "Max", "Answers"];
     addOutputLine(header);
 
     if (questionnaire.import_elicitingQuestionColumnName) {
@@ -1802,6 +1818,7 @@ export function exportQuestionnaireForImport(questionnaire = null) { // to prese
             outputLine.push(about || "");
             outputLine.push(question.displayName || ""); 
             outputLine.push(question.displayPrompt || ""); 
+            outputLine.push(question.maxNumAnswers || "");
 
             // answers
             if (question.displayType === "slider") {
@@ -1839,49 +1856,50 @@ export function exportQuestionnaireForImport(questionnaire = null) { // to prese
     outputQuestions(questionnaire.storyQuestions, "story");
     outputQuestions(questionnaire.participantQuestions, "participant");
     
-    if (questionnaire.title) addOutputLine(["", "Title", "form", "", "", questionnaire.title || ""]);
-    if (questionnaire.startText) addOutputLine(["", "Start text", "form", "", "", questionnaire.startText || ""]);
-    if (questionnaire.image) addOutputLine(["", "Image", "form", "", "", questionnaire.image || ""]);
-    if (questionnaire.endText) addOutputLine(["", "End text", "form", "", "", questionnaire.endText || ""]);
-    if (questionnaire.aboutYouText) addOutputLine(["", "About you text", "form", "", "", questionnaire.aboutYouText || ""]);
-    if (questionnaire.thankYouPopupText) addOutputLine(["", "Thank you text", "form", "", "", questionnaire.thankYouPopupText || ""]);
-    if (questionnaire.customCSS) addOutputLine(["", "Custom CSS", "form", "", "", questionnaire.customCSS || ""]);
-    if (questionnaire.customCSSForPrint) addOutputLine(["", "Custom CSS for Printing", "form", "", "", questionnaire.customCSSForPrint || ""]);
+    if (questionnaire.title) addOutputLine(["", "Title", "form", "", "", "", questionnaire.title || ""]);
+    if (questionnaire.startText) addOutputLine(["", "Start text", "form", "", "", "", questionnaire.startText || ""]);
+    if (questionnaire.image) addOutputLine(["", "Image", "form", "", "", "", questionnaire.image || ""]);
+    if (questionnaire.endText) addOutputLine(["", "End text", "form", "", "", "", questionnaire.endText || ""]);
+    if (questionnaire.aboutYouText) addOutputLine(["", "About you text", "form", "", "", "", questionnaire.aboutYouText || ""]);
+    if (questionnaire.thankYouPopupText) addOutputLine(["", "Thank you text", "form", "", "", "", questionnaire.thankYouPopupText || ""]);
+    if (questionnaire.customCSS) addOutputLine(["", "Custom CSS", "form", "", "", "", questionnaire.customCSS || ""]);
+    if (questionnaire.customCSSForPrint) addOutputLine(["", "Custom CSS for Printing", "form", "", "", "", questionnaire.customCSSForPrint || ""]);
 
-    if (questionnaire.chooseQuestionText) addOutputLine(["", "Choose question text", "form", "", "", questionnaire.chooseQuestionText || ""]);
-    if (questionnaire.enterStoryText) addOutputLine(["", "Enter story text", "form", "", "", questionnaire.enterStoryText || ""]);
-    if (questionnaire.nameStoryText) addOutputLine(["", "Name story text", "form", "", "", questionnaire.nameStoryText || ""]);
-    if (questionnaire.tellAnotherStoryText) addOutputLine(["", "Tell another story text", "form", "", "", questionnaire.tellAnotherStoryText || ""]);
-    if (questionnaire.tellAnotherStoryButtonText) addOutputLine(["", "Tell another story button", "form", "", "", questionnaire.tellAnotherStoryButtonText || ""]);
-    if (questionnaire.maxNumStories) addOutputLine(["", "Max num stories", "form", "", "", questionnaire.maxNumStories || ""]);
-    if (questionnaire.sliderValuePrompt) addOutputLine(["", "Slider value prompt", "form", "", "", questionnaire.sliderValuePrompt || ""]);
+    if (questionnaire.chooseQuestionText) addOutputLine(["", "Choose question text", "form", "", "", "", questionnaire.chooseQuestionText || ""]);
+    if (questionnaire.enterStoryText) addOutputLine(["", "Enter story text", "form", "", "", "", questionnaire.enterStoryText || ""]);
+    if (questionnaire.nameStoryText) addOutputLine(["", "Name story text", "form", "", "", "", questionnaire.nameStoryText || ""]);
+    if (questionnaire.tellAnotherStoryText) addOutputLine(["", "Tell another story text", "form", "", "", "", questionnaire.tellAnotherStoryText || ""]);
+    if (questionnaire.tellAnotherStoryButtonText) addOutputLine(["", "Tell another story button", "form", "", "", "", questionnaire.tellAnotherStoryButtonText || ""]);
+    if (questionnaire.maxNumStories) addOutputLine(["", "Max num stories", "form", "", "", "", questionnaire.maxNumStories || ""]);
+    if (questionnaire.sliderValuePrompt) addOutputLine(["", "Slider value prompt", "form", "", "", "", questionnaire.sliderValuePrompt || ""]);
+    if (questionnaire.maxNumAnswersPrompt) addOutputLine(["", "Max number of answers prompt", "form", "", "", "", questionnaire.maxNumAnswersPrompt || ""]);
 
-    if (questionnaire.submitSurveyButtonText) addOutputLine(["", "Submit survey button", "form", "", "", questionnaire.submitSurveyButtonText || ""]);
-    if (questionnaire.questionForm_sendingSurveyResultsText) addOutputLine(["", "Sending survey text", "form", "", "", questionnaire.questionForm_sendingSurveyResultsText || ""]);
-    if (questionnaire.questionForm_couldNotSaveSurveyText) addOutputLine(["", "Could not save survey text", "form", "", "", questionnaire.questionForm_couldNotSaveSurveyText || ""]);
-    if (questionnaire.resubmitSurveyButtonText) addOutputLine(["", "Resubmit survey button", "form", "", "", questionnaire.resubmitSurveyButtonText || ""]);
+    if (questionnaire.submitSurveyButtonText) addOutputLine(["", "Submit survey button", "form", "", "", "", questionnaire.submitSurveyButtonText || ""]);
+    if (questionnaire.questionForm_sendingSurveyResultsText) addOutputLine(["", "Sending survey text", "form", "", "", "", questionnaire.questionForm_sendingSurveyResultsText || ""]);
+    if (questionnaire.questionForm_couldNotSaveSurveyText) addOutputLine(["", "Could not save survey text", "form", "", "", "", questionnaire.questionForm_couldNotSaveSurveyText || ""]);
+    if (questionnaire.resubmitSurveyButtonText) addOutputLine(["", "Resubmit survey button", "form", "", "", "", questionnaire.resubmitSurveyButtonText || ""]);
     
-    if (questionnaire.deleteStoryButtonText) addOutputLine(["", "Delete story button", "form", "", "", questionnaire.deleteStoryButtonText || ""]);
-    if (questionnaire.deleteStoryDialogPrompt) addOutputLine(["", "Delete story prompt", "form", "", "", questionnaire.deleteStoryDialogPrompt || ""]);
-    if (questionnaire.surveyStoredText) addOutputLine(["", "Survey stored message", "form", "", "", questionnaire.surveyStoredText || ""]);
-    if (questionnaire.showSurveyResultPane) addOutputLine(["", "Show survey result", "form", "", "", questionnaire.showSurveyResultPane || ""]);
-    if (questionnaire.surveyResultPaneHeader) addOutputLine(["", "Survey result header", "form", "", "", questionnaire.surveyResultPaneHeader || ""]);
+    if (questionnaire.deleteStoryButtonText) addOutputLine(["", "Delete story button", "form", "", "", "", questionnaire.deleteStoryButtonText || ""]);
+    if (questionnaire.deleteStoryDialogPrompt) addOutputLine(["", "Delete story prompt", "form", "", "", "", questionnaire.deleteStoryDialogPrompt || ""]);
+    if (questionnaire.surveyStoredText) addOutputLine(["", "Survey stored message", "form", "", "", "", questionnaire.surveyStoredText || ""]);
+    if (questionnaire.showSurveyResultPane) addOutputLine(["", "Show survey result", "form", "", "", "", questionnaire.showSurveyResultPane || ""]);
+    if (questionnaire.surveyResultPaneHeader) addOutputLine(["", "Survey result header", "form", "", "", "", questionnaire.surveyResultPaneHeader || ""]);
     
-    if (questionnaire.errorMessage_noElicitationQuestionChosen) addOutputLine(["", "Error message no elicitation question chosen", "form", "", "", questionnaire.errorMessage_noElicitationQuestionChosen || ""]);
-    if (questionnaire.errorMessage_noStoryText) addOutputLine(["", "Error message no story text", "form", "", "", questionnaire.errorMessage_noStoryText || ""]);
+    if (questionnaire.errorMessage_noElicitationQuestionChosen) addOutputLine(["", "Error message no elicitation question chosen", "form", "", "", "", questionnaire.errorMessage_noElicitationQuestionChosen || ""]);
+    if (questionnaire.errorMessage_noStoryText) addOutputLine(["", "Error message no story text", "form", "", "", "", questionnaire.errorMessage_noStoryText || ""]);
 
-    if (questionnaire.import_minScaleValue || questionnaire.import_maxScaleValue) addOutputLine(["", "Scale range", "import", "", "", "" + questionnaire.import_minScaleValue || "", "" + questionnaire.import_maxScaleValue || ""]);
-    if (questionnaire.import_multiChoiceYesQASeparator) addOutputLine(["", "Yes no questions Q-A separator", "import", "", "", questionnaire.import_multiChoiceYesQASeparator || ""]);
-    if (questionnaire.import_multiChoiceYesQAEnding) addOutputLine(["", "Yes no questions Q-A ending", "import", "", "", questionnaire.import_multiChoiceYesQAEnding || ""]);
-    if (questionnaire.import_multiChoiceYesIndicator) addOutputLine(["", "Yes no questions yes indicator", "import", "", "", questionnaire.import_multiChoiceYesIndicator || ""]);
-    if (questionnaire.import_multiChoiceDelimiter) addOutputLine(["", "Multi choice single column delimiter", "import", "", "", questionnaire.import_multiChoiceDelimiter || ""]);
-    if (questionnaire.import_storyTitleColumnName) addOutputLine(["", "Story title column name", "import", "", "", questionnaire.import_storyTitleColumnName || ""]);
-    if (questionnaire.import_storyTextColumnName) addOutputLine(["", "Story text column name", "import", "", "", questionnaire.import_storyTextColumnName || ""]);
-    if (questionnaire.import_participantIDColumnName) addOutputLine(["", "Participant ID column name", "import", "", "", questionnaire.import_participantIDColumnName || ""]);
-    if (questionnaire.import_minWordsToIncludeStory) addOutputLine(["", "Minimum words to include story", "import", "", "", questionnaire.import_minWordsToIncludeStory || ""]);
+    if (questionnaire.import_minScaleValue || questionnaire.import_maxScaleValue) addOutputLine(["", "Scale range", "import", "", "", "", "" + questionnaire.import_minScaleValue || "", "" + questionnaire.import_maxScaleValue || ""]);
+    if (questionnaire.import_multiChoiceYesQASeparator) addOutputLine(["", "Yes no questions Q-A separator", "import", "", "", "", questionnaire.import_multiChoiceYesQASeparator || ""]);
+    if (questionnaire.import_multiChoiceYesQAEnding) addOutputLine(["", "Yes no questions Q-A ending", "import", "", "", "", questionnaire.import_multiChoiceYesQAEnding || ""]);
+    if (questionnaire.import_multiChoiceYesIndicator) addOutputLine(["", "Yes no questions yes indicator", "import", "", "", "", questionnaire.import_multiChoiceYesIndicator || ""]);
+    if (questionnaire.import_multiChoiceDelimiter) addOutputLine(["", "Multi choice single column delimiter", "import", "", "", "", questionnaire.import_multiChoiceDelimiter || ""]);
+    if (questionnaire.import_storyTitleColumnName) addOutputLine(["", "Story title column name", "import", "", "", "", questionnaire.import_storyTitleColumnName || ""]);
+    if (questionnaire.import_storyTextColumnName) addOutputLine(["", "Story text column name", "import", "", "", "", questionnaire.import_storyTextColumnName || ""]);
+    if (questionnaire.import_participantIDColumnName) addOutputLine(["", "Participant ID column name", "import", "", "", "", questionnaire.import_participantIDColumnName || ""]);
+    if (questionnaire.import_minWordsToIncludeStory) addOutputLine(["", "Minimum words to include story", "import", "", "", "", questionnaire.import_minWordsToIncludeStory || ""]);
 
     if (questionnaire.import_stringsToRemoveFromHeaders) {
-        var textsToRemoveOutputLine = ["", "Texts to remove from column headers", "import", "", ""];
+        var textsToRemoveOutputLine = ["", "Texts to remove from column headers", "import", "", "", ""];
         var textsList = questionnaire.import_stringsToRemoveFromHeaders.split("\n");
         if (textsList) {
             textsList.forEach(function(item) {
@@ -1892,7 +1910,7 @@ export function exportQuestionnaireForImport(questionnaire = null) { // to prese
     }
     
     if (questionnaire.import_columnsToIgnore) {
-        var columnsToIgnoreOutputLine = ["", "Data columns to ignore", "import", "", ""];
+        var columnsToIgnoreOutputLine = ["", "Data columns to ignore", "import", "", "", ""];
         var columnList = questionnaire.import_columnsToIgnore.split("\n");
         if (columnList) {
             columnList.forEach(function(item) {
@@ -1904,7 +1922,7 @@ export function exportQuestionnaireForImport(questionnaire = null) { // to prese
     
     
     if (questionnaire.import_columnsToAppendToStoryText) {
-        var columnsToAppendOutputLine = ["", "Data columns to append to story text", "import", "", ""];
+        var columnsToAppendOutputLine = ["", "Data columns to append to story text", "import", "", "", ""];
         var columnsToAppend = questionnaire.import_columnsToAppendToStoryText.split("\n");
         if (columnsToAppend) {
             var textsBeforeColumns = [];

@@ -96,6 +96,17 @@ var displayTypesWithoutValues = {
     header: true
 };
 
+function setSliderValueWithPopup(value, sliderValueOptions) {
+    var newValueText = prompt("Type a new value", value);
+    var newValue = parseInt(newValueText);
+    if (newValue && newValue >= 0 && newValue <= 100) { 
+        sliderValueOptions.value = newValue;
+        return "" + newValue;
+    } else {
+        return "";
+    }
+}
+
 export function displayQuestion(panelBuilder: PanelBuilder, model, fieldSpecification) {
     var fieldID = fieldSpecification.id;
 
@@ -356,14 +367,18 @@ export function displayQuestion(panelBuilder: PanelBuilder, model, fieldSpecific
             m('span', {"class": "narrafirma-survey-slider"}, m('input[type="range"]', sliderValueOptions)),
             m('span', {"class": "narrafirma-survey-high"}, rightSideText + " ▶"),
             m("br"),
-            m("span", {"class": "narrafirma-survey-value", onclick: function(event) {
-                var newValueText = prompt("Type a new value", value);
-                var newValue = parseInt(newValueText);
-                if (newValue && newValue >= 0 && newValue <= 100) { 
-                    sliderValueOptions.value = newValue;
-                    valueProperty("" + newValue); 
-                }
-            }}, value),
+            m("span", {"class": "narrafirma-survey-value", "tabindex": "0", 
+                onclick: function(event) {
+                   const newValue = setSliderValueWithPopup(value, sliderValueOptions);
+                   if (newValue) valueProperty(newValue);
+                },
+                onkeypress: function(event) {
+                    if (event.keyCode == 13) {
+                        const newValue = setSliderValueWithPopup(value, sliderValueOptions);
+                        if (newValue) valueProperty(newValue);
+                    }
+                },
+            }, value),
             m('input[type="checkbox"]', {
                 "class": "narrafirma-survey-does-not-apply",
                 id: checkboxID,

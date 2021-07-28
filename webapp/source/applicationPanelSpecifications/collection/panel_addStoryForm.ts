@@ -153,6 +153,20 @@ var panel: Panel = {
                 What do you want the popup dialog to say if the participant clicks on a <b>slider value</b> to change it? 
                 If this box is left blank, the popup dialog will say, \"Enter a new value\".`
         },
+        {
+            id: "questionForm_maxNumAnswersPrompt",
+            valueType: "string",
+            displayType: "text",
+            displayName: "Max number of answers prompt",
+            displayPrompt: `
+                For <b>multi-choice questions with a maximum number of answers</b>, 
+                how do you want to <i>tell</i> participants how many answers they can choose?
+                Enter what you want the story form to say <i>after</i> each limited-answer question text.
+                Include a hashtag sign (#) where you want the number to appear.
+                If this box is left blank, \"(Please choose up to # answers.)\" will be added to each limited-answer question text.`
+        },
+
+
 
         // tell another story, delete story
         {

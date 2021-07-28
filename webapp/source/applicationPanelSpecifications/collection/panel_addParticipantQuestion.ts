@@ -46,11 +46,30 @@ var panel: Panel = {
             displayPrompt: `
                 If your question requires <strong>choices</strong>, enter them here. 
                 Write each choice on a separate line.
-                <br><br>
                 For a slider, enter the texts to place on the left and right sides of the slider, 
                 then the text to show on the \"Does not apply\" checkbox (or leave the third line blank
                 to use \"Does not apply\"). 
             `
+        },
+        {
+            id: "participantQuestion_maxNumAnswers",
+            valueType: "string",
+            valueOptions: [
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "7",
+                "8",
+                "9",
+                "10"
+            ],
+            displayType: "select",
+            displayName: "Max number of answers",
+            displayPrompt: `
+                If this question has multiple checkboxes, what is the <strong>maximum number of checkboxes</strong> 
+                a participant can check? (Leave blank for no limit.)`
         },
 
         {

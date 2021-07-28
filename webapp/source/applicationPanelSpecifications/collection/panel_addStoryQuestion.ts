@@ -51,6 +51,26 @@ var panel: Panel = {
                 to use \"Does not apply\"). 
             `
         },
+        {
+            id: "storyQuestion_maxNumAnswers",
+            valueType: "string",
+            valueOptions: [
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "7",
+                "8",
+                "9",
+                "10"
+            ],
+            displayType: "select",
+            displayName: "Max number of answers",
+            displayPrompt: `
+                If this question has multiple checkboxes, what is the <strong>maximum number of checkboxes</strong> 
+                a participant can check? (Leave blank for no limit.)`
+        },
 
         {
             id: "storyQuestions_import_header",

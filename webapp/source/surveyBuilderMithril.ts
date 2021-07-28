@@ -77,23 +77,43 @@ function addAllowedHTMLToPrompt(text) {
     }
 }
 
-function buildQuestionLabel(fieldSpecification) {
+function buildQuestionLabel(fieldSpecification, questionnaire) {
+
+    let displayPrompt = fieldSpecification.displayPrompt;
+
+    if (fieldSpecification.displayType === "checkboxes" && fieldSpecification.maxNumAnswers) {
+        if (questionnaire.maxNumAnswersPrompt) {
+            displayPrompt += " " + questionnaire.maxNumAnswersPrompt.replace("#", fieldSpecification.maxNumAnswers);
+        } else { 
+            displayPrompt += " " + "(Please choose up to # answers.)".replace("#", fieldSpecification.maxNumAnswers);
+        }
+    }
+    
     return [
         // TODO: Generalize this css class name
-        m("span", {"class": "narrafirma-survey-prompt"}, addAllowedHTMLToPrompt(fieldSpecification.displayPrompt)),
+        m("span", {"class": "narrafirma-survey-prompt"}, addAllowedHTMLToPrompt(displayPrompt)),
         m("br")
     ];
 }
 
+function setSliderValueWithPopup(event, valuePrompt, value, sliderValueOptions, fieldSpecification, model) {
+    let newValueText = prompt(valuePrompt, value);
+    let newValue = parseInt(newValueText);
+    if (newValue && newValue >= 0 && newValue <= 100) { 
+        sliderValueOptions.value = newValue;
+        model[fieldSpecification.id] = "" + newValue; 
+        globalRedraw();
+    }}
+
 // Builder is used by main application, and is passed in for compatibility
 function displayQuestion(builder, model, fieldSpecification, questionnaire) {
-    var fieldID = fieldSpecification.id;
+    let fieldID = fieldSpecification.id;
     if (model) {
         fieldID = (model.storyID || model.participantID) + "__" + fieldID;
     }
 
-    var displayType = fieldSpecification.displayType;
-    var questionLabel = buildQuestionLabel(fieldSpecification);
+    const displayType = fieldSpecification.displayType;
+    let questionLabel = buildQuestionLabel(fieldSpecification, questionnaire);
     
     function makeLabel() {
         // The for attribute of the label element must refer to a form control.
@@ -101,14 +121,14 @@ function displayQuestion(builder, model, fieldSpecification, questionnaire) {
         questionLabel[0].tag = "label";
     }
     
-    var parts: any = [];
+    let parts: any = [];
     function makeLegend() {
         // Do nothing for now
         parts.unshift(m("legend", questionLabel[0]));
         questionLabel = [];
     }
     
-    var value = null;
+    let value = null;
     if (model) value = model[fieldSpecification.id];
     if (value === undefined) value = "";
     
@@ -127,7 +147,7 @@ function displayQuestion(builder, model, fieldSpecification, questionnaire) {
         return value === undefined || value === null || value === "";
     }
     
-    var standardValueOptions = {
+    const standardValueOptions = {
         value: value,
         id: getIdForText(fieldID),
         onchange: change
@@ -151,7 +171,7 @@ function displayQuestion(builder, model, fieldSpecification, questionnaire) {
         ];
     } else if (displayType === "checkbox") {
         makeLabel();
-        var checkboxText = "";
+        let checkboxText = "";
         if (fieldSpecification.displayConfiguration) {
             checkboxText = fieldSpecification.displayConfiguration;
         }
@@ -170,26 +190,50 @@ function displayQuestion(builder, model, fieldSpecification, questionnaire) {
             value = {};
             model[fieldSpecification.id] = value;
         }
+        const checkBoxIDsForThisQuestion = [];
+        if (fieldSpecification.displayType === "checkboxes" && fieldSpecification.maxNumAnswers) {
+            fieldSpecification.valueOptions.map(function (option, index) {
+                const optionID = getIdForText(fieldID + "_" + option);
+                checkBoxIDsForThisQuestion.push(optionID);
+            })
+        }
         parts = [
             fieldSpecification.valueOptions.map(function (option, index) {
-                var optionName;
-                var optionValue;
+                let optionName;
+                let optionValue;
                 if (typeof option === "string") {
-                    optionName = option;
+                      optionName = option;
                     optionValue = option;
                 } else {
                     optionName = option.name;
                     optionValue = option.value;                    
                 }
-                var optionID = getIdForText(fieldID + "_" + option);
+                const optionID = getIdForText(fieldID + "_" + option);
                 return [
                     m("input[type=checkbox]", {
                         id: optionID, 
                         checked: !!value[optionValue], 
                         onchange: function(event) {
+
                             value[optionValue] = event.target.checked; 
                             change(null, value); 
-                        } 
+
+                            if (fieldSpecification.maxNumAnswers) {
+                                let numOptionsChecked = 0;
+                                checkBoxIDsForThisQuestion.map(function (anOptionID, index) {
+                                    if (document.querySelector('#' + anOptionID + ':checked')) numOptionsChecked++;
+                                })
+                                const disableUncheckedBoxes = (numOptionsChecked >= fieldSpecification.maxNumAnswers);
+                                checkBoxIDsForThisQuestion.map(function (anOptionID, index) {
+                                    const element = document.querySelector('#' + anOptionID) as HTMLInputElement;
+                                    if (element && !element.checked) {
+                                        element.disabled = disableUncheckedBoxes;
+                                        const label = document.querySelector('label[for="' + anOptionID + '"]');
+                                        if (label) label.setAttribute("style", "opacity: " + (disableUncheckedBoxes ? "0.5" : "1.0"));
+                                    }
+                                })
+                            }
+                        }
                     }),
                     m("label", {"for": optionID}, sanitizeHTML.generateSmallerSetOfSanitizedHTMLForMithril(optionName)),
                     m("br")
@@ -203,8 +247,8 @@ function displayQuestion(builder, model, fieldSpecification, questionnaire) {
         delete questionLabel[0].attrs["for"];
         parts = [
             fieldSpecification.valueOptions.map(function (option, index) {
-                var optionName;
-                var optionValue;
+                let optionName;
+                let optionValue;
                 if (typeof option === "string") {
                     optionName = option;
                     optionValue = option;
@@ -212,7 +256,7 @@ function displayQuestion(builder, model, fieldSpecification, questionnaire) {
                     optionName = option.name;
                     optionValue = option.value;                    
                 }
-                var optionID = getIdForText(fieldID + "_" + optionValue);
+                const optionID = getIdForText(fieldID + "_" + optionValue);
                 return [
                     m("input[type=radio]", {id: optionID, value: optionValue, name: fieldSpecification.id, checked: value === optionValue, onchange: change.bind(null, null, optionValue) }),
                     m("label", {"for": optionID}, sanitizeHTML.generateSmallerSetOfSanitizedHTMLForMithril(optionName)), 
@@ -237,8 +281,8 @@ function displayQuestion(builder, model, fieldSpecification, questionnaire) {
         parts = [m("fieldset", parts)];
     } else if (displayType === "select") {
         makeLabel();
-        var selectOptions = [];
-        var defaultOptions = {
+        let selectOptions = [];
+        let defaultOptions = {
             name: '',
             value: '',
             selected: undefined
@@ -247,8 +291,8 @@ function displayQuestion(builder, model, fieldSpecification, questionnaire) {
         selectOptions.push(m("option", defaultOptions, '-- select --'));
         selectOptions = selectOptions.concat(
             fieldSpecification.valueOptions.map(function (option, index) {
-                var optionName;
-                var optionValue;
+                let optionName;
+                let optionValue;
                 if (typeof option === "string") {
                     optionName = option;
                     optionValue = option;
@@ -256,7 +300,7 @@ function displayQuestion(builder, model, fieldSpecification, questionnaire) {
                     optionName = option.name;
                     optionValue = option.value;                    
                 }
-                var optionOptions = {value: optionValue, selected: undefined};
+                let optionOptions = {value: optionValue, selected: undefined};
                 if (optionValue === value) optionOptions.selected = 'selected';
                 return m("option", optionOptions, optionName);
             })
@@ -268,8 +312,8 @@ function displayQuestion(builder, model, fieldSpecification, questionnaire) {
         ];
     } else if (displayType === "slider") {
         makeLabel();
-        var checkboxID = getIdForText(fieldID) + "_doesNotApply";
-        var sliderValueOptions = {
+        const checkboxID = getIdForText(fieldID) + "_doesNotApply";
+        let sliderValueOptions = {
             value: value,
             id: getIdForText(fieldID),
             onchange: change,
@@ -278,9 +322,9 @@ function displayQuestion(builder, model, fieldSpecification, questionnaire) {
             step: 1
         };
         
-        var leftSideText = "";
-        var rightSideText = "";
-        var doesNotApplyText = "Does not apply";
+        let leftSideText = "";
+        let rightSideText = "";
+        let doesNotApplyText = "Does not apply";
         if (fieldSpecification.displayConfiguration) {
             if (fieldSpecification.displayConfiguration.length > 1) {
                 leftSideText = fieldSpecification.displayConfiguration[0];
@@ -300,22 +344,22 @@ function displayQuestion(builder, model, fieldSpecification, questionnaire) {
             m('span', {"class": "narrafirma-survey-slider"}, m('input[type="range"]', sliderValueOptions)),
             m('span', {"class": "narrafirma-survey-high"}, rightSideText),
             m('span', {"class": "narrafirma-survey-high-arrow"}, " ▶"),
-            m("span", {"class": "narrafirma-survey-value", onclick: function(event) {
-                var newValueText = prompt(valuePrompt, value);
-                var newValue = parseInt(newValueText);
-                if (newValue && newValue >= 0 && newValue <= 100) { 
-                    sliderValueOptions.value = newValue;
-                    model[fieldSpecification.id] = "" + newValue; 
-                    globalRedraw();
+            m("span", {"class": "narrafirma-survey-value", "tabindex": "0", 
+                onclick: function(event) {
+                    setSliderValueWithPopup(event, valuePrompt, value, sliderValueOptions, fieldSpecification, model)
+                }, 
+                onkeypress: function(event) {
+                    if (event.keyCode == 13) 
+                        setSliderValueWithPopup(event, valuePrompt, value, sliderValueOptions, fieldSpecification, model);
                 }
-            }}, value),
+            }, value),
             m("br"),
             m('input[type="checkbox"]', {
                 "class": "narrafirma-survey-does-not-apply",
                 id: checkboxID,
                 checked: isEmpty(sliderValueOptions.value),
                 onclick: function(event) { 
-                    var isChecked = event.target.checked; 
+                    const isChecked = event.target.checked; 
                     if (isChecked) { 
                         model[fieldSpecification.id] = ""; 
                         globalRedraw();
@@ -342,7 +386,7 @@ function displayQuestion(builder, model, fieldSpecification, questionnaire) {
         parts = questionLabel.concat(parts);
     }
     
-    var classString = "narrafirma-survey-question-external narrafirma-survey-question-type-" + displayType;
+    let classString = "narrafirma-survey-question-external narrafirma-survey-question-type-" + displayType;
     if (fieldSpecification.displayClass) {
         classString += " " + fieldSpecification.displayClass;
     }
@@ -502,6 +546,9 @@ export function buildSurveyForm(surveyDiv, questionnaire, doneCallback, surveyOp
             return false;
         }
 
+        console.log("storyQuestionsModel", storyQuestionsModel);
+        console.log("allStoryQuestions", allStoryQuestions);
+        console.log("participantQuestions", participantQuestions);
         return true;
     }
     
@@ -526,7 +573,8 @@ export function buildSurveyForm(surveyDiv, questionnaire, doneCallback, surveyOp
             storyQuestionsPart
         ];
         
-        var evenOrOdd = (index % 2 === 1) ? "narrafirma-survey-story-odd" : "narrafirma-survey-story-even";
+        // invert even and odd to match up with numbers starting at 1, not zero
+        var evenOrOdd = (index % 2 === 1) ? "narrafirma-survey-story-even" : "narrafirma-survey-story-odd";
         // A locally unique key needs to be defined so Mithril can track deletions and inserts without rebuilding DOM nodes
         return m("div", {key: story.storyID, "class": "narrafirma-survey-story " + evenOrOdd}, <any>result); 
     }
@@ -756,9 +804,11 @@ export function buildSurveyForm(surveyDiv, questionnaire, doneCallback, surveyOp
                 return displayStoryQuestions(story, index);
             }),
             (!questionnaire.maxNumStories || questionnaire.maxNumStories === "no limit" || stories.length < questionnaire.maxNumStories) ? anotherStoryButton(questionnaire) : "",
-            participantQuestions.map(function(question, index) {
-                return displayQuestion(null, surveyResult.participantData, question, questionnaire);
-            }),
+            // A locally unique key needs to be defined so Mithril can track deletions and inserts without rebuilding DOM nodes
+            m("div", {key: "participant", "class": "narrafirma-survey-participant"}, 
+                participantQuestions.map(function(question, index) {
+                    return displayQuestion(null, surveyResult.participantData, question, questionnaire);
+                })),
             submitButtonOrWaitOrFinal(),
             showSurveyResultPane ? surveyResultPane() : ""
             /* 

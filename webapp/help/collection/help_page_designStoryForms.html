@@ -118,7 +118,7 @@ you don't <i>need</i> to customize them; but you can. Here are some ways to phra
 	<li>Choose the best question for your experiences. (Asking people to rank questions may cause them to think 
 				that you will be ranking their story. You can use the word "best," but use it to describe connection or fit, not quality.
 				Never even hint that quality is what you are looking for.)</li>
-				<li>Does any of these questions relate to your experiences? (Sometimes the answer will just be "no".)</li>
+				<li>Do any of these questions relate to your experiences? (Sometimes the answer will just be "no".)</li>
 				</ul>
 </li>
 </ul>
@@ -237,6 +237,59 @@ you don't <i>need</i> to customize them; but you can. Here are some ways to phra
 			set the display tag to "none" (display: none) for that class or ID, and it won't appear on the page.
 		</li>
 		</div>
+
+<div class="question">
+How can I make my survey more accessible?
+</div>
+<div class="question-answer">
+<p>
+	We have tested three aspects of accessibility in NarraFirma's survey forms: scaling, keyboard access, and contrast.
+</p>
+<p><b>Scaling</b>. Participants can scale up all elements of the survey form using the Zoom function (usually Control- or Command- plus)
+	on any modern browser.
+	</p>
+<p><b>Keyboard access</b>. Each element of the survey can be accessed without a mouse
+	by using the <b>Tab</b> key to move between elements. Slider values can be changed using the left and right arrow keys.
+</p>
+<p>
+	There is one slightly out-of-the-way interaction that you might want to tell
+	your participants about. To the right of each slider there is a little number that shows the chosen value. 
+	The number is invisible until the participant has chosen an initial value for the slider. 
+</p>
+<img src="help_designStoryForm_sliderValue.png" width="600">
+<p>
+	When you click (with a mouse) on that little number, a popup dialog appears on which you can type in a new number. 
+	This is to help people set a specific number even if the slider is tiny on their (possibly tiny) screen. 
+	Participants who are using a keyboard cannot click on that little number, but they can <b>Tab to it and press Enter</b> to get the same popup dialog. 
+</p>
+<p>Also note that participants who are using (at least some versions of) Safari must <i>turn on tabbing between items</i> in the Preferences window. 
+</p>
+<p><b>Contrast</b>. The default colors in the NarraFirma survey meet 
+	<a href="https://www.w3.org/WAI/standards-guidelines/wcag/">WCAG</a> AAA standards for accessible text.
+	If you like, however, you can change the colors in your survey to make it more readable (or just nicer looking).
+	As of version 1.4.2, NarraFirma uses CSS variables to make it easier to set the colors of the various areas on the survey page. 
+	To override the default colors, copy and paste the following "root" element into the "custom CSS" field, then change the hex color values.
+	</p>
+<pre style="background-color:white">
+
+:root {
+	--color-background-question-odd-story: #e1ebff; 
+	--color-background-question-even-story: #e9f7ea; 
+	--color-background-tell-another-story: #faf1d9;
+	--color-background-question-participant: #faf1d9;
+
+	--color-button-remove-story: #646262;
+	--color-button-remove-story-text: white;
+	--color-button-tell-another-story: #fde5a1;
+	--color-button-tell-another-story-text: black;
+	--color-button-submit-survey: #2c2cbd;
+	--color-button-submit-survey-text: white;
+}
+
+</pre>
+<p>You can of course remove any lines that define colors you don't want to override.
+</p>
+</div>
 
 <div class="question">
 How do you import a story form? What is the correct format?

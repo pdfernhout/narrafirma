@@ -62,6 +62,8 @@ export function convertEditorQuestions(editorQuestions, prefixQPA) {
             }
         }
 
+        var maxNumAnswers = question.storyQuestion_maxNumAnswers || question.participantQuestion_maxNumAnswers;
+
         var import_columnName = question.storyQuestion_import_columnName || question.participantQuestion_import_columnName || question.storyQuestion_shortName || question.participantQuestion_shortName;
         var import_valueType = question.storyQuestion_import_valueType || question.participantQuestion_import_valueType;
         var import_minScaleValue = question.storyQuestion_import_minScaleValue || question.participantQuestion_import_minScaleValue;
@@ -103,6 +105,7 @@ export function convertEditorQuestions(editorQuestions, prefixQPA) {
             displayType: questionType,
             id: id, 
             valueOptions: valueOptions, 
+            maxNumAnswers: maxNumAnswers,
             displayName: shortName, 
             displayPrompt: prompt,
             displayConfiguration: displayConfiguration,
@@ -290,6 +293,7 @@ export function buildQuestionnaireFromTemplate(storyFormTemplate: string, shortN
         tellAnotherStoryButtonText: "",
         maxNumStories: "no limit",
         sliderValuePrompt: "",
+        maxNumAnswersPrompt: "",
 
         submitSurveyButtonText: "",
         sendingSurveyResultsText: "",
@@ -342,6 +346,7 @@ export function buildQuestionnaireFromTemplate(storyFormTemplate: string, shortN
     storyForm.tellAnotherStoryButtonText = project.tripleStore.queryLatestC(storyFormTemplate, "questionForm_tellAnotherStoryButtonText");
     storyForm.maxNumStories = project.tripleStore.queryLatestC(storyFormTemplate, "questionForm_maxNumStories");
     storyForm.sliderValuePrompt = project.tripleStore.queryLatestC(storyFormTemplate, "questionForm_sliderValuePrompt");
+    storyForm.maxNumAnswersPrompt = project.tripleStore.queryLatestC(storyFormTemplate, "questionForm_maxNumAnswersPrompt");
 
     storyForm.submitSurveyButtonText = project.tripleStore.queryLatestC(storyFormTemplate, "questionForm_submitSurveyButtonText");
     storyForm.sendingSurveyResultsText = project.tripleStore.queryLatestC(storyFormTemplate, "questionForm_sendingSurveyResultsText");
