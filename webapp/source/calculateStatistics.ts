@@ -51,6 +51,7 @@ export function getChoiceValueForQuestionAndStory(question, story, unansweredTex
 }
 
 export function getScaleValueForQuestionAndStory(question, story, unansweredText) {
+    if (question.displayType !== "slider") return undefined;
     var value = story.fieldValue(question.id);
     if (value === undefined || value === null || value === "") return unansweredText;
     if (typeof value === "string") value = parseInt(value);

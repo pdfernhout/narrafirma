@@ -86,7 +86,7 @@ function makeItemPanelSpecificationForQuestions(questions) {
     return storyItemPanelSpecification;
 }
 
-function decodeBraces(optionText) {
+function decodeCurlyBraces(optionText) {
     return optionText.replace("&#123;", "{").replace("&#125;", "}"); 
 }
 
@@ -1766,7 +1766,7 @@ class PatternExplorer {
                 alert("No choice of sub-graph was specified in in the stored graph selection.");
                 return;
             }
-            optionText = decodeBraces(optionText);
+            optionText = decodeCurlyBraces(optionText);
             var graphs = this.graphHolder.currentGraph;
             graphs.forEach(function (subgraph) {
                 if (subgraph.subgraphChoice === optionText) {
@@ -1775,7 +1775,7 @@ class PatternExplorer {
             });
         }
         
-        charting.restoreSelection(graph, selection);
+        charting.restoreChartSelection(graph, selection);
     }
 
     //------------------------------------------------------------------------------------------------------------------------------------------
