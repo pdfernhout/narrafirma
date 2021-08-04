@@ -244,6 +244,7 @@ class PatternExplorer {
             hideNumbersOnContingencyGraphs: false,
             graphTypesToCreate: Project.default_graphTypesToCreate,
             patternDisplayConfiguration: {hideNoAnswerValues: false},
+            lumpingCommands: {}
         };
         
         this.setUpEditingPanels(args);
@@ -708,6 +709,7 @@ class PatternExplorer {
         this.questions = [];
         this.questions = this.questions.concat(leadingStoryQuestions, elicitingQuestions, numStoriesToldQuestions, storyLengthQuestions, storyQuestions, participantQuestions, annotationQuestions);
         this.questionsToInclude = this.project.tripleStore.queryLatestC(this.catalysisReportIdentifier, "questionsToInclude"); 
+        this.graphHolder.lumpingCommands = this.project.lumpingCommandsForCatalysisReport(this.catalysisReportIdentifier); 
 
         // adjust patterns grid for showing or hiding columns
         const columnIDsToShow = this.project.tripleStore.queryLatestC(this.catalysisReportIdentifier, "columnIDsToShowInPatternsTable");
@@ -810,8 +812,9 @@ class PatternExplorer {
                 m.redraw();
             } else {
                 const hideNoAnswerValues = PatternExplorer.getOrSetWhetherNoAnswerValuesShouldBeHiddenForPattern(project, this.catalysisReportIdentifier, result[patternIndex]);
+                const lumpingCommands = this.project.tripleStore.queryLatestC(this.catalysisReportIdentifier, "lumpingCommands") || ""; 
                 calculateStatistics.calculateStatisticsForPattern(result[patternIndex], stories, 
-                    minimumStoryCountRequiredForTest, "No answer", !hideNoAnswerValues, 
+                    minimumStoryCountRequiredForTest, "No answer", !hideNoAnswerValues, lumpingCommands,
                     progressUpdater, patternIndex, result.length, howOftenToUpdateProgressMessage);
                 patternIndex += 1;
                 if (!self.calculationsCanceled) {
@@ -1123,8 +1126,9 @@ class PatternExplorer {
         this.graphHolder.patternDisplayConfiguration.hideNoAnswerValues = newHideNoAnswerValuesChoice; 
         if (oldHideNoAnswerValuesChoice !== newHideNoAnswerValuesChoice) {
             calculateStatistics.calculateStatisticsForPattern(pattern, this.graphHolder.allStories, 
-                this.graphHolder.minimumStoryCountRequiredForTest, "No answer", !newHideNoAnswerValuesChoice, null, 0, 0, 0);
+                this.graphHolder.minimumStoryCountRequiredForTest, "No answer", !newHideNoAnswerValuesChoice, this.graphHolder.lumpingCommands, null, 0, 0, 0);
         }
+
 
         this.graphHolder.statisticalInfo = "";
         this.graphHolder.currentGraph = PatternExplorer.makeGraph(pattern, this.graphHolder, this.updateStoriesPane.bind(this), this.hideStatsPanels);

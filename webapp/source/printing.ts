@@ -304,6 +304,7 @@ export function printCatalysisReport() {
     options["observationLabel"] = getAndCleanUserText(project, catalysisReportIdentifier, "catalysisReport_observationLabel", "observation label");
     options["customCSS"] = project.tripleStore.queryLatestC(catalysisReportIdentifier, "catalysisReport_customCSS");
     options["customGraphCSS"] = project.tripleStore.queryLatestC(catalysisReportIdentifier, "catalysisReport_customGraphCSS");
+    options["lumpingCommands"] = project.lumpingCommandsForCatalysisReport(catalysisReportIdentifier); 
     
     let statsTextReplacementsAsString = project.tripleStore.queryLatestC(catalysisReportIdentifier, "customStatsTextReplacements");
     let statsTextReplacements = {};
@@ -495,21 +496,24 @@ function printCatalysisReportWithObservationGraphsOnly(project, catalysisReportI
                 let graphTitle = observation.pattern.patternName;
                 graphTitle = graphTitle.replace("/", " "); // jszip interprets a forward slash as a folder designation 
 
-                let graphHolder = initializedGraphHolder(allStories, options);
+                const graphHolder = initializedGraphHolder(allStories, options);
                 const hideNoAnswerValues = PatternExplorer.getOrSetWhetherNoAnswerValuesShouldBeHiddenForPattern(project, options.catalysisReportIdentifier, observation.pattern);
                 graphHolder.patternDisplayConfiguration.hideNoAnswerValues = hideNoAnswerValues;
                 const selectionCallback = function() { return this; };
+
                 const graph = PatternExplorer.makeGraph(observation.pattern, graphHolder, selectionCallback, !options.showStatsPanelsInReport);
 
                 if (graphHolder.chartPanes.length > 1) {
                     for (let graphIndex = 1; graphIndex < graphHolder.chartPanes.length; graphIndex++) { // start at 1 to skip over title pane
                         const graphNode = graphHolder.chartPanes[graphIndex];
-                        const subGraphTitle = graphTitle + " " + graph[graphIndex-1].subgraphChoice; // subtract 1 because 1 is title pane
-                        printGraphToZipFile(zipFile, graphHolder, graphNode, subGraphTitle, options);
+                        if (graphNode) {
+                            const subGraphTitle = graphTitle + " " + graph[graphIndex-1].subgraphChoice; // subtract 1 because 1 is title pane
+                            printGraphToZipFile(zipFile, graphHolder, graphNode, subGraphTitle, options);
+                        }
                     } 
                 } else {
                     const graphNode = <HTMLElement>graphHolder.graphResultsPane.firstChild;
-                    printGraphToZipFile(zipFile, graphHolder, graphNode, graphTitle, options);
+                    if (graphNode) printGraphToZipFile(zipFile, graphHolder, graphNode, graphTitle, options);
                 }
             }
 
@@ -579,7 +583,7 @@ function printCatalysisReportWithCSVOnly(project, catalysisReportIdentifier, cat
                 let graphTitle = observation.pattern.patternName;
                 graphTitle = graphTitle.replace("/", " "); // jszip interprets a forward slash as a folder designation 
 
-                let graphHolder = initializedGraphHolder(allStories, options);
+                const graphHolder = initializedGraphHolder(allStories, options);
                 const hideNoAnswerValues = PatternExplorer.getOrSetWhetherNoAnswerValuesShouldBeHiddenForPattern(project, options.catalysisReportIdentifier, observation.pattern);
                 graphHolder.patternDisplayConfiguration.hideNoAnswerValues = hideNoAnswerValues;
                 const selectionCallback = function() { return this; };
@@ -904,7 +908,7 @@ function printObservation(observationID, observationIndex, clusterIndex, idTagSt
     } else {
         var pattern = observation.pattern;
         var selectionCallback = function() { return this; };
-        let graphHolder = initializedGraphHolder(allStories, options);
+        const graphHolder = initializedGraphHolder(allStories, options);
         
         const hideNoAnswerValues = PatternExplorer.getOrSetWhetherNoAnswerValuesShouldBeHiddenForPattern(project, options.catalysisReportIdentifier, pattern);
         graphHolder.patternDisplayConfiguration.hideNoAnswerValues = hideNoAnswerValues;
@@ -940,7 +944,7 @@ function printObservation(observationID, observationIndex, clusterIndex, idTagSt
                 if (questions.length > 0) {
                     const graphType = graphTypeForListOfQuestions(questions);
                     const extraPattern = {"graphType": graphType, "questions": questions};
-                    let extraGraphHolder = initializedGraphHolder(allStories, options);
+                    const extraGraphHolder = initializedGraphHolder(allStories, options);
 
                     // the "show no answer values" option is whatever was set on the OTHER pattern that is being referenced here
                     const hideNoAnswerValues = PatternExplorer.getOrSetWhetherNoAnswerValuesShouldBeHiddenForPattern(project, options.catalysisReportIdentifier, extraPattern);
@@ -1016,6 +1020,7 @@ function initializedGraphHolder(allStories, options) {
         customGraphWidth: options.customGraphWidth,
         patternDisplayConfiguration: {hideNoAnswerValues: false},
         adjustedCSS: options.adjustedCSS,
+        lumpingCommands: options.lumpingCommands,
         graphTypesToCreate: {}
     };
     return graphHolder;

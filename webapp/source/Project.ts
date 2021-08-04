@@ -781,6 +781,31 @@ class Project {
         return this.numStoriesToldQuestion(maxNumStoriesTold);
     }
 
+    lumpingCommandsForCatalysisReport(catalysisReportIdentifier) {
+        // example: Come from == second hand || rumor == not first hand
+        const lumpingCommandsString = this.tripleStore.queryLatestC(catalysisReportIdentifier, "lumpingCommands") || ""; 
+        const lumpingCommands = {};
+        if (lumpingCommandsString) {
+            const lines = lumpingCommandsString.split("\n");
+            for (let lineIndex = 0; lineIndex < lines.length; lineIndex++) {
+                const lineParts = lines[lineIndex].split("==");
+                if (lineParts.length == 3) { // line must have 3 parts: question name, answers to lump, lumped answer
+                    const answersToLump = lineParts[1].split("||").map(function(part) {return part.trim()});
+                    if (answersToLump.length >= 2) { // must have at least two answers to lump
+                        const questionName = lineParts[0].trim();
+                        const lumpedAnswer = lineParts[2].trim();
+                        if (!lumpingCommands.hasOwnProperty(questionName)) lumpingCommands[questionName] = {};
+                        for (let answerIndex = 0; answerIndex < answersToLump.length; answerIndex++) {
+                            const key = answersToLump[answerIndex];
+                            lumpingCommands[questionName][key] = lumpedAnswer;
+                        }
+                    }
+                }
+            }
+        }
+        return lumpingCommands;
+    }
+
 }
 
 export = Project;

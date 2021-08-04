@@ -12,41 +12,58 @@ function isValidNumber(value) {
     return value !== "" && !isNaN(value);
 }
 
-export function getChoiceValueForQuestionAndStory(question, story, unansweredText, includeNAValues) {
+export function getChoiceValueForQuestionAndStory(question, story, unansweredText, includeNAValues, lumpingCommands) {
     if (!question) return null;
-    let value;
+    if (question.id === "storyLength") 
+        return getStoryLengthValueForStory(story, question, unansweredText, includeNAValues);
+    
+    let value = story.fieldValue(question.id);
 
-    if (question.id === "storyLength") {
-        value = getStoryLengthValueForStory(story, question, unansweredText, includeNAValues);
-    } else {
-        value = story.fieldValue(question.id);
+    if (question.displayType === "checkbox") {
+        if (value) {
+            return "true"
+        } else {
+            return "false"
+        }
+    } else if (question.displayType === "boolean") {
+        if (value) {
+            return "yes"
+        } else {
+            return "no"
+        }
+    } else if (value === undefined || value === null || value === "") {
+        if (includeNAValues) {
+            if (question.displayType === "checkboxes") {
+                let result = {};
+                result[unansweredText] = true;
+                return result;
+            } else {
+                return unansweredText;
+            }
+        } else {
+            return null;
+        }
+    }
 
-        if (question.displayType === "checkbox") {
-            if (value) {
-                return "true"
-            } else {
-                return "false"
-            }
-        } else if (question.displayType === "boolean") {
-            if (value) {
-                return "yes"
-            } else {
-                return "no"
-            }
-        } else if (value === undefined || value === null || value === "") {
-            if (includeNAValues) {
-                if (question.displayType === "checkboxes") {
-                    let result = {};
-                    result[unansweredText] = true;
-                    return result;
-                } else {
-                    return unansweredText;
+    if (["radiobuttons", "checkboxes", "select"].indexOf(question.displayType) >= 0) {
+        if (lumpingCommands.hasOwnProperty(question.displayName)) {
+            if (question.displayType === "checkboxes") { 
+                const answersToLump = Object.keys(lumpingCommands[question.displayName]);
+                for (let i = 0; i < answersToLump.length; i++) {
+                    const answerToLump = answersToLump[i];
+                    const lumpedAnswer = lumpingCommands[question.displayName][answerToLump];
+                    if (value.hasOwnProperty(answerToLump)) {
+                        delete value[answerToLump];
+                        value[lumpedAnswer] = true;
+                    }
                 }
             } else {
-                return null;
+                if (lumpingCommands[question.displayName].hasOwnProperty(value)) 
+                    value = lumpingCommands[question.displayName][value];
             }
         }
     }
+
     return value;
 }
 
@@ -101,7 +118,7 @@ export function choiceValueMatchesQuestionOption(value, question, option) {
     return true;
 }
 
-function collectValuesForTwoScalesAndMaybeOneChoiceOption(stories: surveyCollection.Story[], xFieldName, yFieldName, choiceQuestion, option, unansweredText, includeNAValues) {
+function collectValuesForTwoScalesAndMaybeOneChoiceOption(stories: surveyCollection.Story[], xFieldName, yFieldName, choiceQuestion, option, unansweredText, includeNAValues, lumpingCommands) {
     var xResult = [];
     var yResult = [];
     var unansweredCount = 0;
@@ -109,7 +126,7 @@ function collectValuesForTwoScalesAndMaybeOneChoiceOption(stories: surveyCollect
         var xValue = stories[i].fieldValue(xFieldName);
         var yValue = stories[i].fieldValue(yFieldName);
         if (choiceQuestion) {
-            var choiceValue = getChoiceValueForQuestionAndStory(choiceQuestion, stories[i], unansweredText, includeNAValues);
+            var choiceValue = getChoiceValueForQuestionAndStory(choiceQuestion, stories[i], unansweredText, includeNAValues, lumpingCommands);
             if (choiceValueMatchesQuestionOption(choiceValue, choiceQuestion, option)) {
                 if (!isValidNumber(xValue) || !isValidNumber(yValue)) {
                     unansweredCount += 1;
@@ -126,7 +143,7 @@ function collectValuesForTwoScalesAndMaybeOneChoiceOption(stories: surveyCollect
     return {x: xResult, y: yResult, unansweredCount: unansweredCount};
 }
 
-export function collectValuesForOneScaleAndOneOrTwoChoices(stories: surveyCollection.Story[], unansweredText, includeNAValues, scaleQuestion, choiceQuestion, secondChoiceQuestion = null) {
+export function collectValuesForOneScaleAndOneOrTwoChoices(stories: surveyCollection.Story[], unansweredText, includeNAValues, lumpingCommands, scaleQuestion, choiceQuestion, secondChoiceQuestion = null) {
 
     function addValue(arrayHolder, fieldName, value, secondFieldName = null) {
         var key = fieldName;
@@ -143,12 +160,12 @@ export function collectValuesForOneScaleAndOneOrTwoChoices(stories: surveyCollec
         var scaleValue = stories[i].fieldValue(scaleQuestion.id);
         if (scaleValue === null || scaleValue === undefined || scaleValue === "") continue; 
 
-        const choiceValue = getChoiceValueForQuestionAndStory(choiceQuestion, story, unansweredText, includeNAValues);
+        const choiceValue = getChoiceValueForQuestionAndStory(choiceQuestion, story, unansweredText, includeNAValues, lumpingCommands);
         if (choiceValue === null || Object.keys(choiceValue).length === 0) continue;
 
         let secondChoiceValue = null;
         if (secondChoiceQuestion) {
-            secondChoiceValue = getChoiceValueForQuestionAndStory(secondChoiceQuestion, story, unansweredText, includeNAValues);
+            secondChoiceValue = getChoiceValueForQuestionAndStory(secondChoiceQuestion, story, unansweredText, includeNAValues, lumpingCommands);
             if (secondChoiceValue === null) continue;
         }
         addValue(values, choiceValue, scaleValue, secondChoiceValue);
@@ -163,7 +180,7 @@ function valueTag(field1, field2) {
     return result;
 }
 
-function collectValuesForTwoChoices(stories: surveyCollection.Story[], field1, field2, unansweredText, includeNAValues) {
+function collectValuesForTwoChoices(stories: surveyCollection.Story[], field1, field2, unansweredText, includeNAValues, lumpingCommands) {
 
     function increment(countHolder, fieldName) {
         var count = countHolder[fieldName];
@@ -178,8 +195,8 @@ function collectValuesForTwoChoices(stories: surveyCollection.Story[], field1, f
     var total = 0;
     for (var i = 0; i < stories.length; i++) {
         // in this case the value cannot be an object, because stats are not run when either question is checkboxes 
-        var value1 = getChoiceValueForQuestionAndStory(field1, stories[i], unansweredText, includeNAValues);
-        var value2 = getChoiceValueForQuestionAndStory(field2, stories[i], unansweredText, includeNAValues);
+        var value1 = getChoiceValueForQuestionAndStory(field1, stories[i], unansweredText, includeNAValues, lumpingCommands);
+        var value2 = getChoiceValueForQuestionAndStory(field2, stories[i], unansweredText, includeNAValues, lumpingCommands);
         increment(counts, valueTag(value1, value2));
         increment(field1Options, "" + value1);
         increment(field2Options, "" + value2);
@@ -189,24 +206,24 @@ function collectValuesForTwoChoices(stories: surveyCollection.Story[], field1, f
     return result;
 }
 
-export function calculateStatisticsForPattern(pattern, stories, minimumStoryCountRequiredForTest, unansweredText, includeNAValues, progressUpdater, patternNumber, numPatterns, howOftenToUpdateProgressMessage) {
+export function calculateStatisticsForPattern(pattern, stories, minimumStoryCountRequiredForTest, unansweredText, includeNAValues, lumpingCommands, progressUpdater, patternNumber, numPatterns, howOftenToUpdateProgressMessage) {
     var graphType = pattern.graphType;
     var statistics = null;
 
     if (graphType === "bar") {
         statistics = {statsSummary: "None", statsDetailed: []};
     } else if (graphType === "table") {
-        statistics = calculateStatisticsForTable(pattern.questions[0], pattern.questions[1], stories, minimumStoryCountRequiredForTest, unansweredText, includeNAValues);
+        statistics = calculateStatisticsForTable(pattern.questions[0], pattern.questions[1], stories, minimumStoryCountRequiredForTest, unansweredText, includeNAValues, lumpingCommands);
     } else if (graphType === "contingency-histogram") {
-        statistics = calculateStatisticsForMiniHistograms(pattern.questions[2], pattern.questions[0], pattern.questions[1], stories, minimumStoryCountRequiredForTest, unansweredText, includeNAValues); 
+        statistics = calculateStatisticsForMiniHistograms(pattern.questions[2], pattern.questions[0], pattern.questions[1], stories, minimumStoryCountRequiredForTest, unansweredText, includeNAValues, lumpingCommands); 
     } else if (graphType === "histogram") {
         statistics = calculateStatisticsForHistogram(pattern.questions[0], stories, minimumStoryCountRequiredForTest, unansweredText);
     } else if (graphType === "multiple histogram") {
-        statistics = calculateStatisticsForMultipleHistogram(pattern.questions[0], pattern.questions[1], stories, minimumStoryCountRequiredForTest, unansweredText, includeNAValues);
+        statistics = calculateStatisticsForMultipleHistogram(pattern.questions[0], pattern.questions[1], stories, minimumStoryCountRequiredForTest, unansweredText, includeNAValues, lumpingCommands);
     } else if (graphType === "scatter") {
-        statistics = calculateStatisticsForScatterPlot(pattern.questions[0], pattern.questions[1], null, null, stories, minimumStoryCountRequiredForTest, unansweredText, includeNAValues);
+        statistics = calculateStatisticsForScatterPlot(pattern.questions[0], pattern.questions[1], null, null, stories, minimumStoryCountRequiredForTest, unansweredText, includeNAValues, lumpingCommands);
     } else if (graphType ===  "multiple scatter") {
-        statistics = calculateStatisticsForMultipleScatterPlot(pattern.questions[0], pattern.questions[1], pattern.questions[2], stories, minimumStoryCountRequiredForTest, unansweredText, includeNAValues);
+        statistics = calculateStatisticsForMultipleScatterPlot(pattern.questions[0], pattern.questions[1], pattern.questions[2], stories, minimumStoryCountRequiredForTest, unansweredText, includeNAValues, lumpingCommands);
     } else if (graphType == "data integrity") {
         statistics = {statsSummary: "None", statsDetailed: []};
     } else if (graphType == "texts") {
@@ -261,13 +278,13 @@ export function calculateStatisticsForHistogramValues(values, unansweredCount, u
 }
 
 export function calculateStatisticsForMiniHistograms(scaleQuestion, firstChoiceQuestion, secondChoiceQuestion, stories: surveyCollection.Story[], 
-        minimumStoryCountRequiredForTest: number, unansweredText, includeNAValues): any {
+        minimumStoryCountRequiredForTest: number, unansweredText, includeNAValues, lumpingCommands): any {
     // Can't calculate a statistic if one or both are mutiple answer checkboxes
     if (firstChoiceQuestion.displayType === "checkboxes" || secondChoiceQuestion.displayType === "checkboxes") {
         return {statsSummary: "None (choices not mutually exclusive)", statsDetailed: []};
     }
 
-    var values = collectValuesForOneScaleAndOneOrTwoChoices(stories, unansweredText, includeNAValues, scaleQuestion, firstChoiceQuestion, secondChoiceQuestion);
+    var values = collectValuesForOneScaleAndOneOrTwoChoices(stories, unansweredText, includeNAValues, lumpingCommands, scaleQuestion, firstChoiceQuestion, secondChoiceQuestion);
     var options = Object.keys(values);
 
     // For every pair, compute test, and take best p score
@@ -319,14 +336,15 @@ export function calculateStatisticsForMiniHistograms(scaleQuestion, firstChoiceQ
     return {statsSummary: significance, statsDetailed: ["p", "U", "n"], p: pLowest, U: uLowest, n: n, allResults: allResults};
 }
 
-export function calculateStatisticsForMultipleHistogram(scaleQuestion, choiceQuestion, stories: surveyCollection.Story[], minimumStoryCountRequiredForTest: number, unansweredText, includeNAValues): any {
+export function calculateStatisticsForMultipleHistogram(scaleQuestion, choiceQuestion, stories: surveyCollection.Story[], 
+    minimumStoryCountRequiredForTest: number, unansweredText, includeNAValues, lumpingCommands): any {
     
     // Can't calculate a statistic if one or both are mutiple answer checkboxes
     if (choiceQuestion.displayType === "checkboxes") {
         return {statsSummary: "None (choices not mutually exclusive)", statsDetailed: []};
     }
     
-    var values = collectValuesForOneScaleAndOneOrTwoChoices(stories, unansweredText, includeNAValues, scaleQuestion, choiceQuestion);
+    var values = collectValuesForOneScaleAndOneOrTwoChoices(stories, unansweredText, includeNAValues, lumpingCommands, scaleQuestion, choiceQuestion);
     var options = Object.keys(values);
 
     // For every pair, compute test, and take best p score
@@ -378,9 +396,10 @@ export function calculateStatisticsForMultipleHistogram(scaleQuestion, choiceQue
 }
 
 export function calculateStatisticsForScatterPlot(ratioQuestion1, ratioQuestion2, choiceQuestion, option, stories: surveyCollection.Story[], 
-        minimumStoryCountRequiredForTest: number, unansweredText, includeNAValues): any {
+        minimumStoryCountRequiredForTest: number, unansweredText, includeNAValues, lumpingCommands): any {
     // TODO: both continuous -- look for correlation with Pearson's R (if normal distribution) or Spearman's R / Kendall's Tau (if not normal distribution)"
-    var data = collectValuesForTwoScalesAndMaybeOneChoiceOption(stories, ratioQuestion1.id, ratioQuestion2.id, choiceQuestion, option, unansweredText, includeNAValues);
+    var data = collectValuesForTwoScalesAndMaybeOneChoiceOption(stories, ratioQuestion1.id, ratioQuestion2.id, 
+        choiceQuestion, option, unansweredText, includeNAValues, lumpingCommands);
     
     if (data.x.length < minimumStoryCountRequiredForTest) {
         return {statsSummary: "None (count of " + data.x.length + " below threshold)", statsDetailed: ["n", unansweredText], n: data.x.length, "No answer": data.unansweredCount};
@@ -411,7 +430,7 @@ export function calculateStatisticsForScatterPlot(ratioQuestion1, ratioQuestion2
 }
 
 export function calculateStatisticsForMultipleScatterPlot(ratioQuestion1, ratioQuestion2, choiceQuestion, stories: surveyCollection.Story[], 
-        minimumStoryCountRequiredForTest: number, unansweredText, includeNAValues): any {
+        minimumStoryCountRequiredForTest: number, unansweredText, includeNAValues, lumpingCommands): any {
     var options = [];
     var index;
     if (choiceQuestion.displayType !== "checkbox" && choiceQuestion.displayType !== "checkboxes") {
@@ -430,7 +449,7 @@ export function calculateStatisticsForMultipleScatterPlot(ratioQuestion1, ratioQ
     var maxSignificance = 0;
     for (index in options) {
         var option = options[index];
-        var optionStats = calculateStatisticsForScatterPlot(ratioQuestion1, ratioQuestion2, choiceQuestion, option, stories, minimumStoryCountRequiredForTest, unansweredText, includeNAValues);
+        var optionStats = calculateStatisticsForScatterPlot(ratioQuestion1, ratioQuestion2, choiceQuestion, option, stories, minimumStoryCountRequiredForTest, unansweredText, includeNAValues, lumpingCommands);
         if (optionStats.p && optionStats.p > maxSignificance) {
             maxSignificance = optionStats.p;
         }
@@ -450,7 +469,8 @@ export function calculateStatisticsForMultipleScatterPlot(ratioQuestion1, ratioQ
     return minSignificanceOptionStats;
 }
 
-export function calculateStatisticsForTable(nominalQuestion1, nominalQuestion2, stories: surveyCollection.Story[], minimumStoryCountRequiredForTest: number, unansweredText, includeNAValues): any {
+export function calculateStatisticsForTable(nominalQuestion1, nominalQuestion2, stories: surveyCollection.Story[], 
+        minimumStoryCountRequiredForTest: number, unansweredText, includeNAValues, lumpingCommands): any {
     // both not continuous -- look for a 'correspondence' between counts using Chi-squared test
     // Can't calculate a statistic if one or both are mutiple answer checkboxes
     
@@ -458,7 +478,7 @@ export function calculateStatisticsForTable(nominalQuestion1, nominalQuestion2, 
         return {statsSummary: "None (choices not mutually exclusive)", statsDetailed: []};
     }
     
-    var counts = collectValuesForTwoChoices(stories, nominalQuestion1, nominalQuestion2, unansweredText, includeNAValues);
+    var counts = collectValuesForTwoChoices(stories, nominalQuestion1, nominalQuestion2, unansweredText, includeNAValues, lumpingCommands);
     var observed = [];
     var expected = [];
     

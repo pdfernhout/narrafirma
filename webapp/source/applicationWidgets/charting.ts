@@ -159,7 +159,7 @@ function saveCountOfStoriesForChoiceCombination(map, key, value) {
     map[key] = values;
 }
 
-function createEmptyDataStructureForAnswerCountsUsingDictionary(structure, question, unansweredText, showNoAnswerValues = true) {
+function createEmptyDataStructureForAnswerCountsUsingDictionary(structure, question, unansweredText, showNoAnswerValues = true, lumpingCommands) {
     const type = question.displayType;
     if (type === "boolean") {
         structure["yes"] = 0;
@@ -169,7 +169,11 @@ function createEmptyDataStructureForAnswerCountsUsingDictionary(structure, quest
         structure["false"] = 0;
     } else if (question.valueOptions) {
         for (let i = 0; i < question.valueOptions.length; i++) {
-            const value = String(question.valueOptions[i]);
+            let value = String(question.valueOptions[i]);
+            if (lumpingCommands.hasOwnProperty(question.displayName)) {
+                if (lumpingCommands[question.displayName].hasOwnProperty(value))
+                    value = lumpingCommands[question.displayName][value];
+            }
             if (!(value in structure)) { // this is in case there are duplicate answers
                 structure[value] = 0;
             }
@@ -178,7 +182,7 @@ function createEmptyDataStructureForAnswerCountsUsingDictionary(structure, quest
     if (type !== "checkbox" && showNoAnswerValues) structure[unansweredText] = 0;
 }
 
-function createEmptyDataStructureForAnswerCountsUsingArray(structure, question, unansweredText, showNoAnswerValues = true) {
+function createEmptyDataStructureForAnswerCountsUsingArray(structure, question, unansweredText, showNoAnswerValues = true, lumpingCommands) {
     const type = question.displayType;
     if (type === "boolean") {
         structure.push("yes");
@@ -188,7 +192,11 @@ function createEmptyDataStructureForAnswerCountsUsingArray(structure, question, 
         structure.push("false");
     } else if (question.valueOptions) {
         for (let i = 0; i < question.valueOptions.length; i++) {
-            const value = String(question.valueOptions[i]);
+            let value = String(question.valueOptions[i]);
+            if (lumpingCommands.hasOwnProperty(question.displayName)) {
+                if (lumpingCommands[question.displayName].hasOwnProperty(value))
+                    value = lumpingCommands[question.displayName][value];
+            }
             if (structure.indexOf(value) < 0) { // this is in case there are duplicate answers
                 structure.push(value);
             }
@@ -233,7 +241,8 @@ export function initializedGraphHolder(allStories, options) {
         customGraphWidth: options.customGraphWidth,
         patternDisplayConfiguration: {hideNoAnswerValues: false},
         adjustedCSS: options.adjustedCSS,
-        graphTypesToCreate: {}
+        graphTypesToCreate: {},
+        lumpingCommands: {}
     };
     return graphHolder;
 }
@@ -269,7 +278,7 @@ function makeChartFramework(chartPane: HTMLElement, chartType, size, margin, cus
 
     const width = fullWidth - margin.left - margin.right;
     const height = fullHeight - margin.top - margin.bottom;
-   
+
     const chart = d3.select(chartPane).append('svg')
         .attr('width', width + margin.right + margin.left)
         .attr('height', height + margin.top + margin.bottom)
@@ -407,7 +416,7 @@ function addStatisticsPanelForChart(chartPane: HTMLElement, graphHolder: GraphHo
         } else if (chartSize === "large") {
             statsPane.className = "narrafirma-statistics-panel";
         } else {
-            console.log("No chart size specified");
+            console.log("addStatisticsPanelForChart: No chart size specified");
             alert("ERROR: No chart size specified for addStatisticsPanelForChart")
         }
     } 
@@ -644,7 +653,7 @@ function addYAxisLabel(chart, label, options: AxisOptions) {
 function htmlForLabelAndValue(key, object, graphHolder: GraphHolder, html = true) {
     let value = object[key];
     if (value === undefined) {
-        console.log("value is undefined");
+        console.log("htmlForLabelAndValue: value is undefined");
     }
     const unansweredText = customStatLabel("unanswered", graphHolder);
 
@@ -832,19 +841,20 @@ export function d3BarChartForQuestion(graphHolder: GraphHolder, question, storie
     let key;
     
     const showNAs = showNAValues(graphHolder);
+    const lumpingCommands = graphHolder.lumpingCommands;
     const unansweredText = customStatLabel("unanswered", graphHolder);
     graphHolder.dataForCSVExport = {};
 
     const results = {};
-    createEmptyDataStructureForAnswerCountsUsingDictionary(results, question, unansweredText, showNAs);
-    createEmptyDataStructureForAnswerCountsUsingArray(xLabels, question, unansweredText, showNAs);
+    createEmptyDataStructureForAnswerCountsUsingDictionary(results, question, unansweredText, showNAs, lumpingCommands);
+    createEmptyDataStructureForAnswerCountsUsingArray(xLabels, question, unansweredText, showNAs, lumpingCommands);
     // change 0 to [] for preloaded results
     for (key in results) results[key] = [];
     
     const stories = graphHolder.allStories;
     for (let storyIndex in stories) {
         let story = stories[storyIndex];
-        const xValue = calculateStatistics.getChoiceValueForQuestionAndStory(question, story, unansweredText, showNAs);
+        const xValue = calculateStatistics.getChoiceValueForQuestionAndStory(question, story, unansweredText, showNAs, lumpingCommands);
         if (xValue !== null) {
             const xHasCheckboxes = _.isObject(xValue);
             if (!xHasCheckboxes) {
@@ -931,14 +941,14 @@ export function d3BarChartForValues(graphHolder: GraphHolder, plotItems, xLabels
     const margin = {
         top: 20, 
         right: 15, 
-        bottom: 30 + longestLabelTextLength * letterSize + graphHolder.customGraphPadding, 
+        bottom: 30 + longestLabelTextLength * letterSize + (graphHolder.customGraphPadding || 0), 
         left: 70};
     if (maxItemsPerBar >= 100) margin.left += letterSize;
     if (maxItemsPerBar >= 1000) margin.left += letterSize;
     
     const chart = makeChartFramework(chartPane, "barChart", "large", margin, graphHolder.customGraphWidth);
     const chartBody = chart.chartBody;
-    
+
     const statistics = calculateStatistics.calculateStatisticsForBarGraphValues(function(plotItem) { return plotItem.value; });
     graphHolder.statisticalInfo += addStatisticsPanelForChart(chartPane, graphHolder, statistics, chartTitle, "large", hideStatsPanel); 
     
@@ -1069,6 +1079,7 @@ export function d3HistogramChartForQuestion(graphHolder: GraphHolder, scaleQuest
 
     const unansweredText = customStatLabel("unanswered", graphHolder);
     const showNAs = showNAValues(graphHolder);
+    const lumpingCommands = graphHolder.lumpingCommands;
     if (choiceQuestion) {
         graphHolder.dataForCSVExport[choice] = [];
     } else {
@@ -1082,7 +1093,7 @@ export function d3HistogramChartForQuestion(graphHolder: GraphHolder, scaleQuest
         const scaleValue = calculateStatistics.getScaleValueForQuestionAndStory(scaleQuestion, story, unansweredText);
 
         if (choiceQuestion) {
-            const choiceValue = calculateStatistics.getChoiceValueForQuestionAndStory(choiceQuestion, story, unansweredText, showNAs);
+            const choiceValue = calculateStatistics.getChoiceValueForQuestionAndStory(choiceQuestion, story, unansweredText, showNAs, lumpingCommands);
             if (!calculateStatistics.choiceValueMatchesQuestionOption(choiceValue, choiceQuestion, choice)) continue;
         }
 
@@ -1421,8 +1432,9 @@ export function d3HistogramChartForValues(graphHolder: GraphHolder, plotItems, c
 // TODO: Also need to track the most recent histogram with an actual selection so can save and restore that from patterns browser
 export function multipleHistograms(graphHolder: GraphHolder, choiceQuestion, scaleQuestion, storiesSelectedCallback, hideStatsPanel = false) {
     const unansweredText = customStatLabel("unanswered", graphHolder);
+    const lumpingCommands = graphHolder.lumpingCommands;
     const options = [];
-    createEmptyDataStructureForAnswerCountsUsingArray(options, choiceQuestion, unansweredText, showNAValues(graphHolder));
+    createEmptyDataStructureForAnswerCountsUsingArray(options, choiceQuestion, unansweredText, showNAValues(graphHolder), lumpingCommands);
     graphHolder.dataForCSVExport = {};
 
     // TODO: Could push extra options based on actual data choices (in case question changed at some point
@@ -1451,7 +1463,7 @@ export function multipleHistograms(graphHolder: GraphHolder, choiceQuestion, sca
     
     // Add these statistics at the bottom after all other graphs
     const statistics = calculateStatistics.calculateStatisticsForMultipleHistogram(scaleQuestion, choiceQuestion, graphHolder.allStories, 
-        graphHolder.minimumStoryCountRequiredForTest, unansweredText, showNAValues(graphHolder));
+        graphHolder.minimumStoryCountRequiredForTest, unansweredText, showNAValues(graphHolder), graphHolder.lumpingCommands);
     graphHolder.statisticalInfo += addStatisticsPanelForChart(graphHolder.graphResultsPane, graphHolder, statistics, chartTitle, "large", hideStatsPanel);
   
     return subCharts;
@@ -1472,6 +1484,8 @@ export function d3ScatterPlot(graphHolder: GraphHolder, xAxisQuestion, yAxisQues
     const stories = graphHolder.allStories;
     const unansweredText = customStatLabel("unanswered", graphHolder);
     const showNAs = showNAValues(graphHolder);
+    const lumpingCommands = graphHolder.lumpingCommands;
+
     const delimiter = Globals.clientState().csvDelimiter();
     if (choiceQuestion) {
         graphHolder.dataForCSVExport[option] = [];
@@ -1487,7 +1501,7 @@ export function d3ScatterPlot(graphHolder: GraphHolder, xAxisQuestion, yAxisQues
         if (xValue === unansweredText || yValue === unansweredText) continue;
 
         if (choiceQuestion) {
-            const choiceValue = calculateStatistics.getChoiceValueForQuestionAndStory(choiceQuestion, story, unansweredText, showNAs);
+            const choiceValue = calculateStatistics.getChoiceValueForQuestionAndStory(choiceQuestion, story, unansweredText, showNAs, lumpingCommands);
             if (!calculateStatistics.choiceValueMatchesQuestionOption(choiceValue, choiceQuestion, option)) continue;
         }
 
@@ -1536,7 +1550,7 @@ export function d3ScatterPlot(graphHolder: GraphHolder, xAxisQuestion, yAxisQues
     chart.subgraphChoice = option;
 
     const statistics = calculateStatistics.calculateStatisticsForScatterPlot(xAxisQuestion, yAxisQuestion, choiceQuestion, option, stories, 
-        graphHolder.minimumStoryCountRequiredForTest, unansweredText, showNAs);
+        graphHolder.minimumStoryCountRequiredForTest, unansweredText, showNAs, lumpingCommands);
     graphHolder.statisticalInfo += addStatisticsPanelForChart(chartPane, graphHolder, statistics, chartTitle, isSmallFormat ? "small" : "large", hideStatsPanel);
     
     // draw the x axis
@@ -1687,8 +1701,10 @@ export function d3ScatterPlot(graphHolder: GraphHolder, xAxisQuestion, yAxisQues
 export function multipleScatterPlot(graphHolder: GraphHolder, xAxisQuestion, yAxisQuestion, choiceQuestion, storiesSelectedCallback, hideStatsPanel = false) {
     
     const unansweredText = customStatLabel("unanswered", graphHolder);
+    const lumpingCommands = graphHolder.lumpingCommands;
+    
     const options = [];
-    createEmptyDataStructureForAnswerCountsUsingArray(options, choiceQuestion, unansweredText, showNAValues(graphHolder));
+    createEmptyDataStructureForAnswerCountsUsingArray(options, choiceQuestion, unansweredText, showNAValues(graphHolder), lumpingCommands);
     graphHolder.dataForCSVExport = {};
     
     const chartPane = newChartPane(graphHolder, "singleChartStyleWithChildren");
@@ -1717,17 +1733,18 @@ export function d3ContingencyTable(graphHolder: GraphHolder, xAxisQuestion, yAxi
     
     const unansweredText = customStatLabel("unanswered", graphHolder);
     const showNAs = showNAValues(graphHolder);
+    const lumpingCommands = graphHolder.lumpingCommands;
     
     const columnLabels = {};
     const columnLabelsArray = [];
-    createEmptyDataStructureForAnswerCountsUsingDictionary(columnLabels, xAxisQuestion, unansweredText, showNAs);
-    createEmptyDataStructureForAnswerCountsUsingArray(columnLabelsArray, xAxisQuestion, unansweredText, showNAs);
+    createEmptyDataStructureForAnswerCountsUsingDictionary(columnLabels, xAxisQuestion, unansweredText, showNAs, lumpingCommands);
+    createEmptyDataStructureForAnswerCountsUsingArray(columnLabelsArray, xAxisQuestion, unansweredText, showNAs, lumpingCommands);
     const xHasCheckboxes = xAxisQuestion.displayType === "checkboxes";
 
     const rowLabels = {};
     const rowLabelsArray = [];
-    createEmptyDataStructureForAnswerCountsUsingDictionary(rowLabels, yAxisQuestion, unansweredText, showNAs);
-    createEmptyDataStructureForAnswerCountsUsingArray(rowLabelsArray, yAxisQuestion, unansweredText, showNAs);
+    createEmptyDataStructureForAnswerCountsUsingDictionary(rowLabels, yAxisQuestion, unansweredText, showNAs, lumpingCommands);
+    createEmptyDataStructureForAnswerCountsUsingArray(rowLabelsArray, yAxisQuestion, unansweredText, showNAs, lumpingCommands);
     rowLabelsArray.reverse(); // because otherwise the Y axis labels come out bottom to top
     const yHasCheckboxes = yAxisQuestion.displayType === "checkboxes";
     
@@ -1739,8 +1756,8 @@ export function d3ContingencyTable(graphHolder: GraphHolder, xAxisQuestion, yAxi
 
     for (let index in stories) {
         const story = stories[index];
-        const xValue = calculateStatistics.getChoiceValueForQuestionAndStory(xAxisQuestion, story, unansweredText, showNAs);
-        const yValue = calculateStatistics.getChoiceValueForQuestionAndStory(yAxisQuestion, story, unansweredText, showNAs);
+        const xValue = calculateStatistics.getChoiceValueForQuestionAndStory(xAxisQuestion, story, unansweredText, showNAs, lumpingCommands);
+        const yValue = calculateStatistics.getChoiceValueForQuestionAndStory(yAxisQuestion, story, unansweredText, showNAs, lumpingCommands);
         if (xValue !== null && yValue !== null) {
             // fast path - if neither axis has multiple-choice answers; can more quickly assign values, since they are single
             if (!xHasCheckboxes && !yHasCheckboxes) {
@@ -1893,8 +1910,8 @@ export function d3ContingencyTable(graphHolder: GraphHolder, xAxisQuestion, yAxi
     const margin = {
         top: 20, 
         right: 20, 
-        bottom: longestColumnTextLength * letterSize + graphHolder.customGraphPadding, 
-        left: longestRowTextLength * letterSize + graphHolder.customGraphPadding
+        bottom: longestColumnTextLength * letterSize + (graphHolder.customGraphPadding || 0), 
+        left: longestRowTextLength * letterSize + (graphHolder.customGraphPadding || 0)
     };
 
     // deal with questions that have LOTS of answers (not so much of a problem in the columns)
@@ -1908,10 +1925,10 @@ export function d3ContingencyTable(graphHolder: GraphHolder, xAxisQuestion, yAxi
     let statistics;
     if (scaleQuestion) {
         statistics = calculateStatistics.calculateStatisticsForMiniHistograms(scaleQuestion, xAxisQuestion, yAxisQuestion, stories, 
-            graphHolder.minimumStoryCountRequiredForTest, unansweredText, showNAs);
+            graphHolder.minimumStoryCountRequiredForTest, unansweredText, showNAs, lumpingCommands);
     } else {
         statistics = calculateStatistics.calculateStatisticsForTable(xAxisQuestion, yAxisQuestion, stories, 
-            graphHolder.minimumStoryCountRequiredForTest, unansweredText, showNAs);
+            graphHolder.minimumStoryCountRequiredForTest, unansweredText, showNAs, lumpingCommands);
     }
     graphHolder.statisticalInfo += addStatisticsPanelForChart(chartPane, graphHolder, statistics, chartTitle, "large", hideStatsPanel);
   
@@ -2125,10 +2142,7 @@ export function d3ContingencyTable(graphHolder: GraphHolder, xAxisQuestion, yAxi
         let tooltipText = 
         "X (" + nameForQuestion(xAxisQuestion) + "): " + plotItem.x +
         "\nY (" + nameForQuestion(yAxisQuestion) + "): " + plotItem.y;
-        if (plotItem.expectedValue) {
-            //console.log("plotItem.expectedValue ", plotItem.expectedValue);
-            tooltipText += "\nObserved: " + plotItem.value.toFixed(0) + "\nExpected: " + plotItem.expectedValue.toFixed(0);
-        }
+        if (plotItem.expectedValue) {tooltipText += "\nObserved: " + plotItem.value.toFixed(0) + "\nExpected: " + plotItem.expectedValue.toFixed(0);}
         if (scaleQuestion) {
             if (plotItem.mean !== undefined) tooltipText += "\nMean: " + plotItem.mean.toFixed(2);
             if (plotItem.sd !== undefined ) tooltipText += "\nStandard deviation: " + plotItem.sd.toFixed(2);
@@ -2219,13 +2233,14 @@ function nodeInfoForScalesWithOrWithoutChoiceQuestion(graphHolder, questions) {
     const stories = graphHolder.allStories;
     const unansweredText = customStatLabel("unanswered", graphHolder);
     const showNAs = showNAValues(graphHolder);
+    const lumpingCommands = graphHolder.lumpingCommands;
 
     let choiceQuestion = null;
     let scaleQuestions = null;
     const options = [];
     if (questions[0].displayType !== "slider") { 
         choiceQuestion = questions[0];
-        createEmptyDataStructureForAnswerCountsUsingArray(options, choiceQuestion, unansweredText, showNAs);
+        createEmptyDataStructureForAnswerCountsUsingArray(options, choiceQuestion, unansweredText, showNAs, lumpingCommands);
         scaleQuestions = questions.slice(1);
     } else {
         options.push("ALL");
@@ -2247,7 +2262,7 @@ function nodeInfoForScalesWithOrWithoutChoiceQuestion(graphHolder, questions) {
                 if (scaleValue !== undefined && scaleValue !== unansweredText) {
                     if (choiceQuestion) {
                         const choiceValue = calculateStatistics.getChoiceValueForQuestionAndStory(choiceQuestion, stories[storyIndex], 
-                            unansweredText, showNAs);
+                            unansweredText, showNAs, lumpingCommands);
                         if (!calculateStatistics.choiceValueMatchesQuestionOption(choiceValue, choiceQuestion, option)) continue;
                     }
                     count++;
@@ -2304,14 +2319,17 @@ export function d3CorrelationMap(graphHolder: GraphHolder, scaleQuestions, choic
     const stories = graphHolder.allStories;
     const unansweredText = customStatLabel("unanswered", graphHolder);
     const showNAs = showNAValues(graphHolder);
+    const lumpingCommands = graphHolder.lumpingCommands;
+
     const statsInfo = [];
     const usedQuestionIndexes = [];
+
     for (let scaleIndex1 = 0; scaleIndex1 < scaleQuestions.length; scaleIndex1++) {
         usedQuestionIndexes.push(scaleIndex1);
         for (let scaleIndex2 = 0; scaleIndex2 < scaleQuestions.length; scaleIndex2++) {
             if (usedQuestionIndexes.indexOf(scaleIndex2) === -1) {
                 const pairStats = calculateStatistics.calculateStatisticsForScatterPlot(scaleQuestions[scaleIndex1], scaleQuestions[scaleIndex2], 
-                    choiceQuestion, option, stories, graphHolder.minimumStoryCountRequiredForTest, unansweredText, showNAs);
+                    choiceQuestion, option, stories, graphHolder.minimumStoryCountRequiredForTest, unansweredText, showNAs, lumpingCommands);
                 const pToShowLink = parseFloat(graphHolder.correlationLineChoice);
                 if (pairStats.p <= pToShowLink && pairStats.n >= graphHolder.minimumStoryCountRequiredForGraph) {
                     const link: MapLink = {source: scaleIndex1, target: scaleIndex2, value: pairStats.rho, p: pairStats.p, n: pairStats.n};
@@ -2706,13 +2724,15 @@ export function d3ScatterPlotForPopup(graphHolder: GraphHolder, parentNode, xAxi
     const stories = graphHolder.allStories;
     const unansweredText = customStatLabel("unanswered", graphHolder);
     const showNAs = showNAValues(graphHolder);
+    const lumpingCommands = graphHolder.lumpingCommands;
+
     for (let index in stories) {
         const story = stories[index];
         const xValue = calculateStatistics.getScaleValueForQuestionAndStory(xAxisQuestion, story, unansweredText);
         const yValue = calculateStatistics.getScaleValueForQuestionAndStory(yAxisQuestion, story, unansweredText);
         if (xValue === unansweredText || yValue === unansweredText) continue;
         if (choiceQuestion) {
-            const choiceValue = calculateStatistics.getChoiceValueForQuestionAndStory(choiceQuestion, story, unansweredText, showNAs);
+            const choiceValue = calculateStatistics.getChoiceValueForQuestionAndStory(choiceQuestion, story, unansweredText, showNAs, lumpingCommands);
             if (!calculateStatistics.choiceValueMatchesQuestionOption(choiceValue, choiceQuestion, option)) continue;
         }
         const newPlotItem = plotItemForScatterPlot(xAxisQuestion, yAxisQuestion, xValue, yValue, story, unansweredText);
@@ -2751,6 +2771,7 @@ export function d3ScatterPlotForPopup(graphHolder: GraphHolder, parentNode, xAxi
 export function d3HistogramChartForPopup(graphHolder: GraphHolder, parentNode, scaleQuestion, choiceQuestion, option) {
     const unansweredText = customStatLabel("unanswered", graphHolder);
     const showNAs = showNAValues(graphHolder);
+    const lumpingCommands = graphHolder.lumpingCommands;
 
     const plotItems = [];
     const stories = graphHolder.allStories;
@@ -2758,7 +2779,7 @@ export function d3HistogramChartForPopup(graphHolder: GraphHolder, parentNode, s
         const story = stories[storyIndex];
         const scaleValue = calculateStatistics.getScaleValueForQuestionAndStory(scaleQuestion, story, unansweredText);
         if (choiceQuestion) {
-            const choiceValue = calculateStatistics.getChoiceValueForQuestionAndStory(choiceQuestion, story, unansweredText, showNAs);
+            const choiceValue = calculateStatistics.getChoiceValueForQuestionAndStory(choiceQuestion, story, unansweredText, showNAs, lumpingCommands);
             if (!calculateStatistics.choiceValueMatchesQuestionOption(choiceValue, choiceQuestion, option)) continue;
         }
         const newPlotItem = {story: story, value: scaleValue};

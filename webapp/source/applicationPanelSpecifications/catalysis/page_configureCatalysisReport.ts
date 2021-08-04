@@ -132,8 +132,22 @@ var panel: Panel = {
             valueType: "string",
             displayType: "text",
             displayPrompt: `
-            If you want to <strong>filter the stories</strong> used in this report, enter your filter here.
-            (For details, click Help.)`,
+            To <strong>filter the stories</strong> used in this report, enter your filter here, 
+            using the format [question] == [answer].
+            For details, see the help system.`,
+            displayVisible: function(panelBuilder, model) {
+                return !!Globals.clientState().haveCatalysisReportAndShowingAdvancedOptions();
+            }
+        },
+        {
+            id: "configureCatalysisReport_lumpingCommands",
+            valuePath: "/clientState/catalysisReportIdentifier/lumpingCommands",
+            valueType: "string",
+            displayType: "textarea",
+            displayPrompt: `
+            To use <strong>display lumping</strong>, enter your lumping commands here, one per line,
+            using the format [question] == [answer] || [answer] == [lumped answer].
+            For details, see the help system.`,
             displayVisible: function(panelBuilder, model) {
                 return !!Globals.clientState().haveCatalysisReportAndShowingAdvancedOptions();
             }
