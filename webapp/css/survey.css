@@ -166,9 +166,16 @@ textarea:read-only, input:read-only {
     white-space: nowrap;
 }
 
-.narrafirma-survey-question-type-slider .narrafirma-survey-value {
+.narrafirma-survey-value {
+	text-align: left;
+	font-size: 0.9em;
     margin-left: 0.5em;
-    font-size: 0.9em;
+    white-space: nowrap;
+}
+
+.narrafirma-survey-value:focus {
+    background-color: white;
+    border: 1px solid black;
 }
 
 input[type='range']{
@@ -207,18 +214,6 @@ input[type='range']::-webkit-slider-thumb{
     height: 0.5em;
     width: 0.5em;
     border-radius: 0.5em;
-}
-
-.narrafirma-survey-value {
-	text-align: left;
-	font-size: 75%;
-	margin-top: 8px;
-    padding: 1px;
-}
-
-.narrafirma-survey-value:focus {
-    background-color: white;
-    border: 1px solid black;
 }
 
 .narrafirma-survey-does-not-apply {

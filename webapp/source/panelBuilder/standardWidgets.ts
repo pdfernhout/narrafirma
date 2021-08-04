@@ -363,11 +363,12 @@ export function displayQuestion(panelBuilder: PanelBuilder, model, fieldSpecific
        // Could suggest 0-100 to support <IE10 that don't have range input -- or could do polyfill
         // if (fieldSpecification.displayPrompt) questionLabel[0].children = fieldSpecification.displayPrompt + " (0-100)";
         parts = [
-            m("span", {"class": "narrafirma-survey-low"}, "◀ " + leftSideText),
-            m('span', {"class": "narrafirma-survey-slider"}, m('input[type="range"]', sliderValueOptions)),
-            m('span', {"class": "narrafirma-survey-high"}, rightSideText + " ▶"),
-            m("br"),
-            m("span", {"class": "narrafirma-survey-value", "tabindex": "0", 
+            m("span", {"class": "narrafirma-slider-low-arrow"}, "◀"),
+            m("span", {"class": "narrafirma-slider-low"}, leftSideText),
+            m('span', {"class": "narrafirma-slider"}, m('input[type="range"]', sliderValueOptions)),
+            m('span', {"class": "narrafirma-slider-high"}, rightSideText),
+            m('span', {"class": "narrafirma-slider-high-arrow"}, "▶"),
+            m("span", {"class": "narrafirma-slider-value", "tabindex": "0", 
                 onclick: function(event) {
                    const newValue = setSliderValueWithPopup(value, sliderValueOptions);
                    if (newValue) valueProperty(newValue);
@@ -379,8 +380,9 @@ export function displayQuestion(panelBuilder: PanelBuilder, model, fieldSpecific
                     }
                 },
             }, value),
+            m("br"),
             m('input[type="checkbox"]', {
-                "class": "narrafirma-survey-does-not-apply",
+                "class": "narrafirma-slider-does-not-apply",
                 id: checkboxID,
                 checked: isEmpty(sliderValueOptions.value),
                 onclick: function(event) { 
