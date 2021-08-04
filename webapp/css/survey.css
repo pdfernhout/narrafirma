@@ -179,24 +179,24 @@ input[type='range']{
 /* mobile */
 @media screen and (max-width: 600px) { 
     input[type='range']{
-        max-width: 40%;
-        min-width: 20%;
+        max-width: 30%;
+        min-width: 10%;
     }
  }
 
 /* tablet */
 @media screen and (min-width: 600px) { 
     input[type='range']{
-        max-width: 60%;
-        min-width: 40%;
+        max-width: 50%;
+        min-width: 20%;
     }
  }
 
 /* desktop */
 @media screen and (min-width: 768px) { 
     input[type='range']{
-        max-width: 80%;
-        min-width: 60%;
+        max-width: 70%;
+        min-width: 40%;
     }
  }
 
