@@ -63,7 +63,7 @@ var panel: Panel = {
             displayName: "Max number of answers",
             displayPrompt: `
                 If this question has multiple checkboxes, what is the <strong>maximum number of checkboxes</strong> 
-                a participant can check? (Leave blank for no limit.)`
+                you can check? (Leave blank for no limit.)`
         },
     ]
 };
