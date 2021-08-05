@@ -44,7 +44,27 @@ var panel: Panel = {
             displayType: "textarea",
             displayName: "Options",
             displayPrompt: "If your question requires <strong>choices</strong>, enter them here (one per line). For a slider, enter the texts to place on the left and right sides (on separate lines)."
-        }
+        },
+        {
+            id: "annotationQuestion_maxNumAnswers",
+            valueType: "string",
+            valueOptions: [
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "7",
+                "8",
+                "9",
+                "10"
+            ],
+            displayType: "select",
+            displayName: "Max number of answers",
+            displayPrompt: `
+                If this question has multiple checkboxes, what is the <strong>maximum number of checkboxes</strong> 
+                a participant can check? (Leave blank for no limit.)`
+        },
     ]
 };
 

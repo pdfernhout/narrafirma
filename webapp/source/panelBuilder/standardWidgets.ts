@@ -10,7 +10,7 @@ import dialogSupport = require("../panelBuilder/dialogSupport");
 "use strict";
 
 function getIdForText(text) {
-    return text;
+    return text.replaceAll(" ", "_");
 }
 
 let clientState = Globals.clientState();
@@ -253,9 +253,16 @@ export function displayQuestion(panelBuilder: PanelBuilder, model, fieldSpecific
             value[option] = true;
             change(null, value);
         }
+        const checkBoxIDsForThisQuestion = [];
+        if (fieldSpecification.displayType === "checkboxes" && fieldSpecification.maxNumAnswers) {
+            fieldSpecification.valueOptions.map(function (option, index) {
+                const optionID = getIdForText(fieldID + "_" + option);
+                checkBoxIDsForThisQuestion.push(optionID);
+            })
+        }
         parts = [
             fieldSpecification.valueOptions.map(function (option, index) {
-                var optionID = getIdForText(fieldID + "_" + option);
+                let optionID = getIdForText(fieldID + "_" + option);
                 return [
                     m("input[type=checkbox]", {
                         id: optionID, 
@@ -264,6 +271,25 @@ export function displayQuestion(panelBuilder: PanelBuilder, model, fieldSpecific
                         onchange: function(event) {
                             value[option] = event.target.checked; 
                             change(null, value); 
+
+                            value[option] = event.target.checked; 
+                            change(null, value); 
+
+                            if (fieldSpecification.maxNumAnswers) {
+                                let numOptionsChecked = 0;
+                                checkBoxIDsForThisQuestion.map(function (anOptionID, index) {
+                                    if (document.querySelector('#' + anOptionID + ':checked')) numOptionsChecked++;
+                                })
+                                const disableUncheckedBoxes = (numOptionsChecked >= fieldSpecification.maxNumAnswers);
+                                checkBoxIDsForThisQuestion.map(function (anOptionID, index) {
+                                    const element = document.querySelector('#' + anOptionID) as HTMLInputElement;
+                                    if (element && !element.checked) {
+                                        element.disabled = disableUncheckedBoxes;
+                                        const label = document.querySelector('label[for="' + anOptionID + '"]');
+                                        if (label) label.setAttribute("style", "opacity: " + (disableUncheckedBoxes ? "0.5" : "1.0"));
+                                    }
+                                })
+                            }
                         } 
                     }),
                     m("label", {"for": optionID}, sanitizeHTML.generateSmallerSetOfSanitizedHTMLForMithril(option)), 

@@ -62,7 +62,7 @@ export function convertEditorQuestions(editorQuestions, prefixQPA) {
             }
         }
 
-        var maxNumAnswers = question.storyQuestion_maxNumAnswers || question.participantQuestion_maxNumAnswers;
+        var maxNumAnswers = question.storyQuestion_maxNumAnswers || question.participantQuestion_maxNumAnswers || question.annotationQuestion_maxNumAnswers;
 
         var import_columnName = question.storyQuestion_import_columnName || question.participantQuestion_import_columnName || question.storyQuestion_shortName || question.participantQuestion_shortName;
         var import_valueType = question.storyQuestion_import_valueType || question.participantQuestion_import_valueType;
