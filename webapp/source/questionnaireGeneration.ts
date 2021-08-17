@@ -35,63 +35,56 @@ var displayTypeToValueTypeMap = {
 };
 
 export function convertEditorQuestions(editorQuestions, prefixQPA) {
-    var adjustedQuestions = [];
-    var valueOptions;
-    var displayConfiguration;
+    const adjustedQuestions = [];
+    let valueOptions;
+    let displayConfiguration;
     
     for (var questionIndex = 0; questionIndex < editorQuestions.length; questionIndex++) {
         var question = editorQuestions[questionIndex];
-        var shortName = question.storyQuestion_shortName || question.participantQuestion_shortName || question.annotationQuestion_shortName;
-        // Including "S_" or "P_" or "A_" prefix for user-supplied question ID to prevent collisions with application fields like storyText and JavaScript functions and __proto__
-        var id = prefixQPA + shortName;
-        var questionType = question.storyQuestion_type || question.participantQuestion_type || question.annotationQuestion_type;
-        var prompt = question.storyQuestion_text || question.participantQuestion_text || question.annotationQuestion_text;
 
-        var options = [];
-        var optionsString = question.storyQuestion_options || question.participantQuestion_options || question.annotationQuestion_options;
+        // Including "S_" or "P_" or "A_" prefix for user-supplied question ID to prevent collisions with application fields like storyText and JavaScript functions and __proto__
+        const prefixToKeyPrefixMap = {"S_": "storyQuestion_", "P_": "participantQuestion_", "A_": "annotationQuestion_"}
+        const keyPrefix = prefixToKeyPrefixMap[prefixQPA];
+        
+        const shortName = question[keyPrefix + "shortName"];
+        const id = prefixQPA + shortName;
+        const questionType = question[keyPrefix + "type"];
+        const prompt = question[keyPrefix + "text"];
+
+        const options = [];
+        const optionsString = question[keyPrefix + "options"];
         
         if (optionsString) {
             // TODO: Improve option handling so can have standard IDs for options
-            var splitOptions = optionsString.split("\n");
-            // Make sure options don't have leading or trailing space and are not otherwise blank
-            for (var index in splitOptions) {
-                var trimmedOption = splitOptions[index].trim();
-                if (trimmedOption) {
-                    options.push(trimmedOption);
-                }
-            }
+            const splitOptions = optionsString.split("\n");
+            splitOptions.map(function(option) { if (option.trim()) options.push(option.trim()); })
         }
 
-        var maxNumAnswers = question.storyQuestion_maxNumAnswers || question.participantQuestion_maxNumAnswers || question.annotationQuestion_maxNumAnswers;
+        const maxNumAnswers = question[keyPrefix + "maxNumAnswers"];
 
-        var import_columnName = question.storyQuestion_import_columnName || question.participantQuestion_import_columnName || question.storyQuestion_shortName || question.participantQuestion_shortName;
-        var import_valueType = question.storyQuestion_import_valueType || question.participantQuestion_import_valueType;
-        var import_minScaleValue = question.storyQuestion_import_minScaleValue || question.participantQuestion_import_minScaleValue;
-        var import_maxScaleValue = question.storyQuestion_import_maxScaleValue || question.participantQuestion_import_maxScaleValue;
+        const import_columnName = question[keyPrefix + "import_columnName"] || question[keyPrefix + "shortName"];
+        const import_valueType = question[keyPrefix + "import_valueType"];
+        const import_minScaleValue = question[keyPrefix + "import_minScaleValue"];
+        const import_maxScaleValue = question[keyPrefix + "import_maxScaleValue"];
 
-        var importOptions = [];
-        var importOptionsString = question.storyQuestion_import_answerNames || question.participantQuestion_import_answerNames;
+        let importOptions = [];
+        const importOptionsString = question[keyPrefix + "import_answerNames"];
         if (importOptionsString && typeof importOptionsString === "string") {
-            var splitImportOptions = importOptionsString.split("\n");
-            // Make sure options don't have leading or trailing space and are not otherwise blank
-            for (var index in splitImportOptions) {
-                var trimmedImportOption = splitImportOptions[index].trim();
-                if (trimmedImportOption) {
-                    importOptions.push(trimmedImportOption);
-                }
-            }
+            const splitImportOptions = importOptionsString.split("\n");
+            splitImportOptions.map(function(option) { if (option.trim()) importOptions.push(option.trim()); })
         } else {
-            importOptions = question.storyQuestion_import_answerNames || question.participantQuestion_import_answerNames;
+            importOptions = question[keyPrefix + "import_answerNames"];
         }
 
         // TODO: valueType might be a number or boolean sometimes
-        var valueType = displayTypeToValueTypeMap[questionType];
+        const valueType = displayTypeToValueTypeMap[questionType];
+        
         // Set these two vars to undefined so no object fields will appear set for these if not otherwise set
         valueOptions = undefined;
         displayConfiguration = undefined;
         
         if (!valueType) console.log("ERROR: Could not resolve valueType for ", question);
-        if (questionType === "select" || questionType === "checkboxes" || questionType === "radiobuttons") {
+        if (["select", "radiobuttons", "checkboxes"].indexOf(questionType) >= 0) {
             valueOptions = options;
         } else {
             if (options.length === 1) {
