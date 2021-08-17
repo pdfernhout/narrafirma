@@ -80,6 +80,10 @@ export function showOrHideAdvancedOptions() {
     clientState.showAdvancedOptions(!clientState.showAdvancedOptions());
 }
 
+export function showOrHideImportOptions() {
+    clientState.showImportOptions(!clientState.showImportOptions());
+}
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // overall - clustering diagram
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -649,6 +653,7 @@ export var autoFillStoryForm = csvImportExport.autoFillStoryForm;
 export var exportProject = projectImportExport.exportProject;
 export var importProject = projectImportExport.importProject;
 export var resetProject = projectImportExport.resetProject;
+export var exportEntireProject = projectImportExport.exportEntireProject;
 
 export var printStoryForm = printing.printStoryForm;
 export var printStoryCards = printing.printStoryCards;

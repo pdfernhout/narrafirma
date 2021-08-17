@@ -44,6 +44,7 @@ class ClientState {
     private _anHTMLElementValueIsBeingSetBecauseOfAnIncomingMessage: boolean = null;
     private _cachedOverwrittenTexts = {};
     private _showAdvancedOptions: boolean = false;
+    private _showImportOptions: boolean = false;
     
     // This should only be set by Globals
     _project: Project = null;
@@ -161,6 +162,13 @@ class ClientState {
             this._showAdvancedOptions = newValue;
         }
         return this._showAdvancedOptions;
+    }
+
+    showImportOptions(newValue: boolean = undefined) {
+        if (newValue !== undefined) {
+            this._showImportOptions = newValue;
+        }
+        return this._showImportOptions;
     }
 
     debugMode(newValue: string = undefined): string {
