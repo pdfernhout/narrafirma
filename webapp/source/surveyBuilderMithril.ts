@@ -546,9 +546,6 @@ export function buildSurveyForm(surveyDiv, questionnaire, doneCallback, surveyOp
             return false;
         }
 
-        console.log("storyQuestionsModel", storyQuestionsModel);
-        console.log("allStoryQuestions", allStoryQuestions);
-        console.log("participantQuestions", participantQuestions);
         return true;
     }
     
