@@ -176,32 +176,44 @@ class Project {
         var questionIdentifiers: Array<string> = this.getListForField(questionListName);
         var questions = [];
         questionIdentifiers.forEach((questionIdentifier) => {
-            var question = this.tripleStore.makeObject(questionIdentifier, true);
+            const question = this.tripleStore.makeObject(questionIdentifier, true);
+            if (!question.id) question.id = questionIdentifier;
             questions.push(question);
         });
         return questions;
     }
     
     collectAllElicitingQuestions() {
-        var questions = this.collectAllQuestionsForQuestionList("project_elicitingQuestionsList");
+        const questions = this.collectAllQuestionsForQuestionList("project_elicitingQuestionsList");
         return questions;
     }
     
     collectAllStoryQuestions() {
-        var questions = this.collectAllQuestionsForQuestionList("project_storyQuestionsList");
+        const questions = this.collectAllQuestionsForQuestionList("project_storyQuestionsList");
         return questions;
     }
     
     collectAllParticipantQuestions() {
-        var questions = this.collectAllQuestionsForQuestionList("project_participantQuestionsList");
+        const questions = this.collectAllQuestionsForQuestionList("project_participantQuestionsList");
         return questions;
     }
     
     collectAllAnnotationQuestions() {
-        var questions = this.collectAllQuestionsForQuestionList("project_annotationQuestionsList");
+        const questions = this.collectAllQuestionsForQuestionList("project_annotationQuestionsList");
         return questions;
     }
-    
+
+    collectAllQuestionsOfAnyKind() {
+        let questions = [];
+        questions = questions.concat(
+            this.collectAllElicitingQuestions(), 
+            this.collectAllStoryQuestions(), 
+            this.collectAllParticipantQuestions(), 
+            this.collectAllAnnotationQuestions()
+        )
+        return questions;
+    }
+
     questionsForCategory(questionCategory: string) {
         switch (questionCategory) {
             case "elicitingQuestion":
@@ -216,7 +228,7 @@ class Project {
                 throw new Error("Unexpected question category: " + questionCategory);
         }
     }
-    
+
     addQuestionForCategory(question, questionCategory: string) {
         var questionListName;
         var questionClass;
@@ -290,6 +302,24 @@ class Project {
             this.setFieldValue(questionListName, setIdentifier);
         }
         this.tripleStore.deleteSetItem(setIdentifier, question.id);
+    }
+
+    addOptionToAnnotationChoiceQuestion(questionID, newAnswer) {
+        const annotationQuestions = this.collectAllAnnotationQuestions();
+        for (let i = 0; i < annotationQuestions.length; i++) {
+            const aQuestion = annotationQuestions[i];
+            if ("A_" + aQuestion.annotationQuestion_shortName == questionID) {
+                if (!aQuestion.annotationQuestion_options) aQuestion.annotationQuestion_options = "";
+                const parts = aQuestion.annotationQuestion_options.split("\n");
+                if (parts.indexOf(newAnswer) < 0) {
+                    parts.push(newAnswer);
+                    aQuestion.annotationQuestion_options = parts.join("\n");
+                    if (aQuestion.id) {
+                        this.tripleStore.addTriple(aQuestion.id, "annotationQuestion_options", aQuestion.annotationQuestion_options);
+                    }
+                }
+            }
+        }
     }
 
     allQuestionsThatCouldBeGraphedForCatalysisReport(catalysisReportIdentifier, considerExclusions = true) {
@@ -469,6 +499,24 @@ class Project {
             }
             result = result.concat(storiesThatMatchFilter);
         } // if question
+        return result;
+    }
+
+    allStoriesInProject() {
+        let result = [];
+        const storyCollectionsIdentifier = this.tripleStore.queryLatestC(this.projectIdentifier, "project_storyCollections");
+        const storyCollectionItems = this.tripleStore.getListForSetIdentifier(storyCollectionsIdentifier);
+        if (storyCollectionItems.length === 0) return [];
+
+        storyCollectionItems.forEach((storyCollectionPointer) => {
+            if (!storyCollectionPointer) {
+                console.log("ERROR: null or undefined story collection pointer");
+            } else {
+                const storyCollectionName = this.tripleStore.queryLatestC(storyCollectionPointer, "storyCollection_shortName");
+                const storiesForThisCollection = surveyCollection.getStoriesForStoryCollection(storyCollectionName);
+                result = result.concat(storiesForThisCollection);
+            }
+        });
         return result;
     }
 

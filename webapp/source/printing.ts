@@ -1921,7 +1921,7 @@ export function printProjectReport() {
     const clientState = Globals.clientState();
     const panelSpecificationCollection = Globals.panelSpecificationCollection();
     const allPages = panelSpecificationCollection.buildListOfPages();
-    const displayTypesNotToShow = ["button", "html", "recommendationTable", "templateList", "storyBrowser", "graphBrowser", "functionResult"];
+    const displayTypesNotToShow = ["button", "html", "recommendationTable", "templateList", "storyBrowser", "storyAnnotationBrowser", "graphBrowser", "functionResult"];
     const pagesNeverToPrint = ["page_startStoryCollection", "page_printQuestionForms", "page_enterStories", "page_importExportStories", "page_removeData", "page_reviewIncomingStories", "page_browseGraphs",
         "page_stopStoryCollection", "page_startCatalysisReport", "page_printCatalysisReport"];
 

@@ -59,6 +59,7 @@ interface PatternDisplayConfiguration {
 // Possible Grid configuration options
 interface GridConfiguration {
     idProperty?: string;
+    maxColumnCount?: number;
     inlineButtons?: boolean;
     viewButton?: boolean;
     addButton?: boolean;
@@ -67,6 +68,7 @@ interface GridConfiguration {
     duplicateButton?: boolean;
     moveUpDownButtons?: boolean;
     navigationButtons?: boolean;
+    randomButton?: boolean;
     // For next field, Array could be ["fieldName1", "fieldName2", ...]
     columnsToDisplay?: boolean | Array<String>;
     customButton?: any;
@@ -75,6 +77,7 @@ interface GridConfiguration {
     shouldNextItemBeSelectedAfterItemRemoved?: boolean;
     selectCallback?: Function;
     transformDisplayedValues?: Function;
+    massEditingMode?: boolean;
 }
 
 interface GridDisplayConfiguration {

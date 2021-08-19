@@ -287,7 +287,7 @@ How can I make my survey more accessible?
 }
 
 </pre>
-<p>You can of course remove any lines that define colors you don't want to override.
+<p>You can of course leave out any lines that define colors you don't want to override.
 </p>
 </div>
 
@@ -299,83 +299,6 @@ How do you import a story form? What is the correct format?
 	You can read all about importing data in our <a href="help_page_importGuide.html">Guide to importing data</a>.
 	</p>
 	</div>
-
-	<div class="question">
-			I have a question with some really low answer counts. Is there a way to consolidate answers?
-		</div>
-		<div class="question-answer">
-		<p>
-		Yes. There are two ways to consolidate answers in NarraFirma: with annotations or using export and import. 
-			<a href="help_page_writeAnnotationsAboutStories.html">Annotation lumping</a> works when
-			you have a small number of stories and/or you want to lump things carefully by hand. 
-		</p>
-		<p>
-			More commonly, you are going to want to consolidate answers more quickly, so you will want to use the export-import option.
-			To do this:
-		</p>
-		<ul>
-			<li>Go to the "Export stories or story forms" page in NarraFirma. <b>Export your story form and story collection</b> to separate CSV files.
-				(Unless you are consolidating data while importing it, use the "NarraFirma-native" button to export the story form.)</li>
-			<li>Now you have a choice. You can set up data consolidation in the NarraFirma interface, or you can set it up by editing your story form CSV file.
-			</li>
-			<li>If you want to <b>specify consolidation by using NarraFirma</b>:
-			<ul>
-				<li>Go to the "Write questions about stories" (or participants, depending on the question) page in NarraFirma.</li>
-				<li>Click on the question whose answers you want to consolidate.</li>
-				<li>Click Edit.</li>
-				<li>Scroll down to the box labeled "If your question requires choices, enter them here."
-					These are the answer names NarraFirma will use in its graphs.
-				</li>
-				<li>Copy the list of answers into your clipboard.</li>
-				<li>Scroll down to the box in the "Import options" section 
-						labeled "If your data file has choices for this question, either in the column headers or in the data cells, what are those choices?"
-						Paste the list you copied above. This is so NarraFirma will still recognize the (unchanged) answers in your data file.
-						(If you are importing data and you already have something listed here, leave this box alone.) 
-					</li>
-				<li>Now scroll back up to the box labeled "If your question requires choices, enter them here."
-					For each answer you want to consolidate, <b>replace the answer with a new combined answer</b>. 
-					Do this for every answer you want to combine.
-					<i>Do not remove any entries from the list, and do not change the order of the entries.
-					Just put the same name in multiple times</i>. 
-				</li><li>
-					As an example, say your answers are "happy," "satisfied," "sad," and "angry," and you want
-					to lump those four answers together into just two answers, "positive" and "negative." You would replace "happy" and "satisfied" with "positive,"
-					and replace "sad" and "angry" with "negative." So your list would read "positive," "positive," "negative," "negative."
-					And your graphs would show only two options, positive and negative.
-				</li>
-			</ul>
-		</li>
-			<li>If you want to <b>specify consolidation by editing your story form CSV file</b>:
-				<ul>
-					<li>Open your story form CSV file in a spreadsheet.</li>
-					<li><b>Find the row that describes the question</b> whose answers you want to consolidate.</li>
-					<li>Look at the cells in that row under and to the right of the "Answers" header.</li>
-					<li>For each answer, there might be only one text entry (e.g., "happy"), or there might be two entries separated by a pipe character (e.g., "happy|positive").
-						If there are two answers with a pipe character, that means you want NarraFirma to write something different on graphs (the thing on the right) than is
-						written in your data file (the thing on the left). This name-replacement facility is what makes it possible to consolidate answers.
-					</li>
-					<li>Find the answers you want to consolidate. <b>For each answer, write a new combined answer name to the right of the pipe character</b>. 
-						<i>Write the exact same name</i> for all of the answers you want to consolidate.</li>
-					<li>
-					As an example, say you want to lump the answers "happy" and "satisfied." You would change those answers in the story form CSV file to 
-					"happy|positive" and "satisfied|positive". Then, when NarraFirma reads this, it would record all "happy" or "satisfied" answers as "positive". 
-					And on your graphs, you would see <i>only</i> the answer "satisfied".
-					</li>
-					 <li>Make sure you <b>save your CSV file with UTF-8 encoding</b>.</li>
-					 <li>Once you are sure you have your answers correct, <b>import the new story form</b>. When NarraFirma asks you if you want to
-						 overwrite existing questions, say yes. 
-					 </li>
-				</ul>
-			<li>Once you have specified your lumped answers, <b>create a new story collection</b> and link it to your newly imported or changed story form.
-					Then go to the "Enter or import stories" page and 
-					<b>check your new answer counts</b> using the "Check Stories in CSV file" button. Make sure the consolidated answer counts match what you see in your data file.
-					If everything matches up, you are ready to import your stories and look at your new consolidated graphs.
-				</li>
-			<li>Be careful doing this! Consolidating answers during import changes how your data looks throughout NarraFirma, in all lists and graphs and story cards.
-					The original data is lost during import and is not retained. If you want to lump data and still preserve the original values,
-				use the annotation system instead. </li>
-		</ul>
-		</div>
 
 <div class="question">
 Do you have any advice for putting together story forms?

@@ -14,8 +14,8 @@ var panel: Panel = {
         },
         {
             id: "elicitingQuestion_shortName",
-            valueType: "string",
-            displayType: "text",
+            valueType: "object",
+            displayType: "shortNameQuestionConfigurationPanel",
             displayName: "Short Name",
             displayPrompt: "Enter a short <strong>name</strong> for this question, to use as a reference."
         },

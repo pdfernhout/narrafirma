@@ -1,0 +1,254 @@
+<!DOCTYPE html> 
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>NarraFirma Help: Catalysis: Write annotation questions</title>
+    <link rel="stylesheet" href="../../css/help.css">
+</head>
+<body>
+<div class="header">
+	<span class="narrafirma-name">NarraFirma&trade; Help</span>
+	<span class="breadcrumb">
+	<a href="../dashboard/help_page_dashboard.html">Home</a> &gt; 
+	<a href="help_page_catalysis.html">Catalysis</a> &gt; 
+	Write annotation questions
+	</span>
+</div>
+
+<div id="page-write-annotations" class="page">
+
+<div class="page-title">Write annotation questions</div>
+<div class="text">
+<p>
+On this page you can create <b></b>annotation questions</b> you will use (on <a href="help_page_annotateStories.html">the next page</a>) to tag your stories with qualitative research codes.
+</p>
+<p>
+Annotation questions differ from survey questions in four important ways.
+</p>
+<ol>
+	<li>Annotation questions are <b>observations about stories</b>. They are never interpretations or perspectives.</li>
+	<li>Annotation questions are (almost) never answered by the people who told the stories. They are (almost) always <b>answered by
+	 	researchers</b> who are carrying out the qualitative (text-based) portion of a mixed-methods research project.
+	</li>
+	<li>Annotation questions <b>can be changed</b> (in most aspects) after you have started using them. 
+		This is so you can draw the answers to the questions from the stories
+		themselves (instead of coming up with them beforehand).</li>
+	<li>
+		Annotation questions <b>belong to your entire project</b>. You can use them across multiple 
+		story collections and catalysis reports.
+	</li>
+</ol>
+</div>
+
+<div class="heading">What to do here</div>
+
+<div class="text">
+<p>
+For each annotation question you want to create, write the question itself, give it a short name, choose a question type, and fill in its options or choices. 
+For question types that have options, you can leave the list of options empty at the start and add options later, as you read your stories.
+</p>
+</div>
+
+<div class="heading">Frequently-asked questions</div>
+
+<div class="question">
+	Why should I annotate stories?
+	</div>
+	<div class="question-answer">
+	<p>
+		Reading your story texts and compiling observations about them is a good way to draw
+		more patterns out of the data you collected. Mixed-methods data analysis combines qualitative (text-based) and quantitative (numbers-based) techniques. 
+		Annotation questions help you with the qualitative part of that equation. 
+		For every project there are bound to be some annotation questions that can provide useful insights. 
+		It's usually worth spending at least a little of your time exploring what annotation can add to your project.
+	</p>
+</div>
+
+<div class="question">
+	How can I draw the answers to my annotation questions from the stories themselves?
+	</div>
+	<div class="question-answer">
+		<p>
+		You can start out a choice-type annotation question (of the types "select," "radiobuttons," or "checkboxes") with an empty answer list.
+		Just start reading stories (on the <a href="help_page_annotateStories.html">Annotate stories</a> page). 
+		When you read a story, if you don't see a good answer to the question in the list, click the "Add New Answer" button under the list. 
+		Keep doing this. As you read each story, look through your growing list to see if you already have a matching answer for that story. 
+		</p>
+		<p>
+			After a while, you will notice that your list is getting long. Stop and go back to this page (Write annotation questions).
+			Select the question and look at your answer list.
+			Look for answers that are substantially similar to each other. 
+			For example, say you're marking themes. 
+			You might have added "the system is rigged" for one story and "you can't trust the system" for another. 
+			Use the Change button next to both answers to merge them into a new, common answer. 
+		</p>
+		<p>
+			<b>Be careful doing this.
+			You are changing the tags on the stories as well as in the question</b>. After you merge two answers, you will lose the distinction
+			between them. See below for more information on using this bulk-change feature.
+		</p>
+	</div>
+
+<div class="question">
+I'm confused about what I can and cannot change after I start using an annotation question. 
+</div>
+<div class="question-answer">
+	<p>Let's go through each field on the page.</p>
+	<p><b>Question text: not connected to the stories</b>. The <i>text</i> of an annotation question isn't connected to your stories
+		in any way. It is only used to display the question to you. Changing it won't have any effect on your stories.</p>
+		
+<p>
+	<b>Question short name: connected, but you can change it</b>. For each story, 
+	answers to questions are stored using each question's short name
+	as a lookup index. When you change the "Short name" field for an annotation question,
+	NarraFirma <i>reaches into each story</i> and changes each lookup index that links it to that question.
+	So you can go ahead and change a question's short name. Just be aware that you are also changing your stories when you do this.
+</p>
+				
+	<p><b>Question type: connected, and you can't change it (usually)</b>. The type of a question determines how the data connected to that question
+		is stored for each story.
+	</p>
+<ul>
+	<li>boolean - a single answer, "yes" or "no"</li>
+	<li>checkbox - a single value, true or false</li>
+	<li>checkboxes - a series of answers from a fixed list, each with a value of true or false</li>
+	<li>text or textarea - a single free-form text</li>
+	<li>select or radiobuttons - a single answer from a fixed list</li>
+	<li>slider - a single number</li>
+</ul>
+<p>
+	There are a few type changes that will not lose any data. You can change a "text" question to a "textarea" question and back.
+	You can change a "select" question to a "radiobuttons" question and back. Most other type changes will result in data being lost.
+	<b>It is best to set a question's type at the start of your annotation and not change it.</b>
+</p>
+
+<p><b>Checkbox label, slider labels: not connected to the stories.</b> As with the question text, these labels are only for you
+to see. They have no effect on your stored data.</p>
+
+<p><b>Choice question answers: connected, but you can change them</b>. 
+	For each story, 
+	answers to questions with fixed answer lists (of the types "select", "radiobuttons",
+	and "checkboxes") are stored using the answer names in the list (e.g., "positive experience" or "first-hand story").
+	When you change any of the answers for these questions, NarraFirma <i>reaches into each story</i> and changes the answers that are stored there.
+	</p>
+	<p>
+	This bulk-change feature is powerful but dangerous. 
+	You can use it to develop sets of answers that grow and change as you read your stories.
+	But be careful. When you merge two answers into one, for example, you can't easily un-merge them later.
+	You might want to backup your story collection (which will include all of your annotations) before you 
+	make any far-reaching changes.
+	That's why there are "Export story collection" and "Export project" buttons at the bottom of this page.
+	</p>
+
+	<p><b>Maximum number of checkbox choices: only affects new answers</b>. For a "checkboxes" question, if you change the maximum
+number of checkboxes allowed <i>after</i> you start answering your questions, the new maximum will be used from then on,
+but it won't affect any of your previous answers.</p>
+</div>	
+
+<div class="question">
+	What sorts of annotation questions should I use?
+	</div>
+	<div class="question-answer">
+	<p>
+		When you edit an annotation question, at the bottom of the panel you will find a button that says <b>Copy a question from a template</b>.
+		Click that button to see some annotation questions that have been used on PNI projects in the past.
+		(You can find more annotation questions in <i>Working with Stories</i>.)
+	</p><p> 
+	But those are just <i>ideas</i> for questions. <b>The best place to find good annotation questions is in the stories you collected</b>. First, read through your stories without any questions in mind. 
+	After a while, you'll start to notice that some words, concepts, and topics keep coming up. 
+	Or you might notice that certain things vary among the stories you read -- people keep mentioning varying degrees of trust, for example.
+	When you begin to see trends in the texts of your stories, consider whether any of those trends might make a good annotation question. 
+	When you find yourself wanting to mark the appearances of words or concepts you keep seeing in your stories, you've found a good candidate for an annotation question.
+	</p><p>
+	For example, the "Scope" annotation question often works well with stories about communities or organizations. 
+	Some storytellers focus on small scopes (themselves and one or two other people) while other storytellers talk about larger scopes (dozens or hundreds of people).
+	Thus the question "How many people are mentioned in this story?" can sometimes create useful patterns when it is juxtaposed 
+	with questions your storytellers answered, like "Did the people in this story behave responsibly?"
+	</p>
+	</div>
+
+<div class="question">
+Are there any types of questions that should <b>not</b> be annotation questions?
+</div>
+<div class="question-answer">
+<p>
+	Yes. An annotation question should be <b>a question whose answers anyone can see and agree with</b>. 
+	A question whose answers are likely to represent one person's <i>perspective</i> or <i>opinion</i> won't make a good annotation question. 
+	Consider, for example, these three questions: 
+</p>
+<ol>
+	<li>What does this story say to you about trust?</li>
+	<li>How much trust is evident in this story?</li>
+	<li>To what extent did the storyteller mention trust?</li>
+</ol>
+	<p>
+		The first question is clearly a question of perspective, because the same story might say
+		two very different things about trust to two different people. The second question <i>sounds</i> better, with its "evidence,"
+		but it's still a question of interpretation. The third question is a good annotation question.
+		Anyone who answers it should be able to <i>justify</i> and <i>defend</i> their 
+		answer by showing <i>evidence drawn from the story itself</i>. 
+	</p>
+	<p>
+		One way to test annotation questions is to pretend that the people
+		who <i>told</i> the stories are being presented with a report based on those
+		questions. Would they feel that the questions fairly and objectively
+		represent what they said? Or might they feel that their words could be twisted by the use of the question?
+	</p>
+	<p>Here's another set of questions. Which of these would make good annotation questions?</p>
+	<ol>
+		<li>Do you agree with the perspective of the person who told this story?</li>
+		<li>Who do you think would agree with the perspective put forth in this story?</li>
+		<li>To what extent do the views put forth in this story align with this community's official policy?</li>
+	</ol>
+	<p>Again, only the third question would make a good annotation question, because its answer could be 
+		explained by juxtaposing the words of the story with the words of the community's official policy.
+		There might be some interpretation involved in deciding how well those words aligned,
+		but at least it would be <i>possible</i> to make the comparison.
+	</p>
+</div>
+
+<div class="question">
+Who should answer annotation questions?
+</div>
+<div class="question-answer">
+<p>
+Whoever is doing the catalysis part of your project. That might be you, or it might be you plus a group of people
+who are helping you to do catalysis, or it might be you plus a group of people <i>you</i> are helping to do catalysis. 
+</p>
+<p>
+	In any case, answering annotation questions is part of the catalysis process (not the collection process), so it is a form of qualitative research. 
+This means that whoever is answering the annotation questions should 
+<b>follow standard guidelines for doing sound qualitative research</b>. Ask yourself these questions about the process you are using to answer your annotation questions:
+</p>
+<ul>
+	<li>Is your process <b>credible</b>? Is it repeatable? Is it transferable? Is it connected to you and your way of seeing things, or is it independent of your influence?
+		<ul>
+			<li>One way to ensure credibility is to have two or three people answer each annotation question. If you have a lot of stories, choose a subset and have 
+				two or three people answer the questions for just that subset. Then compare their answers. If the answers are very different, why is that? Can you see a pattern?</li>
+			<li>If you are doing catalysis by yourself, show ten or twenty of your stories to someone who knows nothing about your project. Then show them how you answered
+				your annotation questions about those stories. Ask them how <i>they</i> would answer the questions. Would their answers be the same as yours? If not, why not?
+				What would happen if you changed the questions?</li>
+			<li>If you can't show your stories and answers to anyone, <i>pretend</i> to show them to someone. Pick out someone in your mind who
+				often disagrees with you. What would that person say about your answers? Would they agree?</li>
+		</ul>
+	</li>
+	<li>Is your process <b>transparent</b>? Can you explain it in detail? 
+		Can you provide <i>proof</i> that it is grounded in what people actually said? 
+		One way to ensure transparency is to avoid using your own words to describe what people said. 
+		Instead, rely on verbatim exerpts from your stories. You can use verbatim excerpts to check your process as you go.
+		If you can't point to a place where someone said something that explains each answer, don't mark that answer.
+		Better yet, take notes on why you answered the questions the way you did. Be ready to show your work to anyone who wants to know how you answered the questions.
+	</li>
+	
+</ul>
+<p>
+If you look on the internet for "qualitative research standards"
+you can find additional guidelines for making sure your process is rigorous (credible, dependable, reliable, transferable), ethical, and transparent. 
+The last thing you want to do is give people a voice and then distort what they say.
+</p>
+</div>
+		
+</div>
+
+</body>
+</html>

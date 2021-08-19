@@ -78,7 +78,6 @@ function displayHTMLForCheckboxes(fieldSpecification, fieldName, value) {
         var option = fieldSpecification.valueOptions[i];
         if (optionsAlreadyConsidered.indexOf(option) >= 0) continue; // hide duplicate options, if any, due to lumping during import
         optionsAlreadyConsidered.push(option);
-        //console.log("checkboxes", option, fieldSpecification, value);
         if (options.length-1) options.push(wrap("span", answerClass + "-comma", ", "));
         if (value && value[option]) {
             options.push(wrap("span", "narrafirma-story-card-checkboxes-selected " + answerClass + "-selected", option));
@@ -101,7 +100,6 @@ function displayHTMLForRadioButtons(fieldSpecification, fieldName, value) {
         var option = fieldSpecification.valueOptions[i];
         if (optionsAlreadyConsidered.indexOf(option) >= 0) continue; // hide duplicate options, if any, due to lumping during import
         optionsAlreadyConsidered.push(option);
-        //console.log("checkboxes", option, fieldSpecification, value);
         if (options.length-1) options.push(wrap("span", answerClass + "-comma", ", "));
         if (value && value === option) {
             options.push(wrap("span", "narrafirma-story-card-radiobuttons-selected " + answerClass + "-selected", option));
@@ -243,8 +241,10 @@ export function generateStoryCardContent(storyModel, questionsToInclude, options
 
     var allQuestions = [];
     if (questionnaire) {
-        allQuestions = allQuestions.concat(questionnaire.storyQuestions);
-        allQuestions = allQuestions.concat(questionnaire.participantQuestions);
+        if (options["location"] || options["location"] !== "storyAnnotationBrowser") {
+            allQuestions = allQuestions.concat(questionnaire.storyQuestions);
+            allQuestions = allQuestions.concat(questionnaire.participantQuestions);
+        }
         var allAnnotationQuestions = questionnaireGeneration.convertEditorQuestions(Globals.project().collectAllAnnotationQuestions(), "A_");
         if (allAnnotationQuestions) allQuestions = allQuestions.concat(allAnnotationQuestions);
     }
@@ -348,6 +348,8 @@ export function generateStoryCardContent(storyModel, questionsToInclude, options
     var storyTextClass = "";
     if (options["location"] && options["location"] === "storyBrowser") {
         storyTextClass = "narrafirma-story-card-story-text-in-story-browser";
+    } else if (options["location"] && options["location"] === "storyAnnotationBrowser") {
+        storyTextClass = "narrafirma-story-card-story-text-in-story-annotation-browser";
     } else {
         storyTextClass = "narrafirma-story-card-story-text-in-printed-story-cards";
     }

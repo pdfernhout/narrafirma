@@ -5,6 +5,7 @@ var panel: Panel = {
     id: "page_configureCatalysisReport",
     displayName: "Configure catalysis report",
     tooltipText: "Decide what questions you want to consider as you build your catalysis report.",
+    headerAbove: "Work with Quantitative Patterns",
     panelFields: [
         {
             id: "configureCatalysisReport_label",

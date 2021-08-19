@@ -26,7 +26,8 @@ import page_startStoryCollection = require("./collection/page_startStoryCollecti
 import page_printQuestionForms = require("./collection/page_printQuestionForms");
 import page_enterStories = require("./collection/page_enterStories");
 import page_exportStories = require("./collection/page_exportStories");
-import page_writeAnnotationsAboutStories = require("./collection/page_writeAnnotationsAboutStories");
+import page_writeAnnotationsAboutStories = require("./catalysis/page_writeAnnotationsAboutStories");
+import page_annotateStories = require("./catalysis/page_annotateStories");
 import page_reviewIncomingStories = require("./collection/page_reviewIncomingStories");
 import page_browseGraphs = require("./collection/page_browseGraphs");
 import page_stopStoryCollection = require("./collection/page_stopStoryCollection");
@@ -42,7 +43,7 @@ import panel_chooseElicitingQuestion = require("./collection/panel_chooseEliciti
 import panel_chooseStoryQuestion = require("./collection/panel_chooseStoryQuestion");
 import panel_chooseParticipantQuestion = require("./collection/panel_chooseParticipantQuestion");
 import panel_addStoryCollection = require("./collection/panel_addStoryCollection");
-import panel_addAnnotationQuestion = require("./collection/panel_addAnnotationQuestion");
+import panel_addAnnotationQuestion = require("./catalysis/panel_addAnnotationQuestion");
 import panel_addCollectionSessionRecord = require("./collection/panel_addCollectionSessionRecord");
 import panel_newCollectionSessionConstruction = require("./collection/panel_newCollectionSessionConstruction");
 import page_catalysis = require("./catalysis/page_catalysis");
@@ -111,6 +112,7 @@ navigationModules["page_printQuestionForms"] = page_printQuestionForms;
 navigationModules["page_enterStories"] = page_enterStories;
 navigationModules["page_exportStories"] = page_exportStories;
 navigationModules["page_writeAnnotationsAboutStories"] = page_writeAnnotationsAboutStories;
+navigationModules["page_annotateStories"] = page_annotateStories;
 navigationModules["page_reviewIncomingStories"] = page_reviewIncomingStories;
 navigationModules["page_browseGraphs"] = page_browseGraphs;
 navigationModules["page_stopStoryCollection"] = page_stopStoryCollection;
@@ -219,7 +221,6 @@ var sections = [
             "page_startStoryCollection",
             "page_printQuestionForms",
             "page_enterStories",
-            "page_writeAnnotationsAboutStories",
             "page_reviewIncomingStories",
             "page_browseGraphs",
             "page_stopStoryCollection",
@@ -238,7 +239,6 @@ var sections = [
             "panel_chooseStoryQuestion",
             "panel_chooseParticipantQuestion",
             "panel_addStoryCollection",
-            "panel_addAnnotationQuestion",
             "panel_addCollectionSessionRecord",
             "panel_newCollectionSessionConstruction"
         ]
@@ -249,6 +249,8 @@ var sections = [
         pages: [
             "page_catalysis",
             "page_startCatalysisReport",
+            "page_writeAnnotationsAboutStories",
+            "page_annotateStories",
             "page_configureCatalysisReport",
             "page_explorePatterns",
             "page_clusterInterpretations",
@@ -256,6 +258,7 @@ var sections = [
         ],
         panels: [
             "panel_addCatalysisReport",
+            "panel_addAnnotationQuestion",
             "panel_chooseStoryCollection",
             "panel_addInterpretation"
         ]

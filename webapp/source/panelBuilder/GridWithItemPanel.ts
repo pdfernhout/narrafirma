@@ -17,20 +17,22 @@ var gridsMade = 0;
 var displayTypesToDisplayAsColumns = {
    text: true,
    textarea: true,
+   boolean: true,
+   checkbox: true,
    select: true,
-   radiobuttons: true
+   radiobuttons: true,
+   checkboxes: true,
+   slider: true
 };
 
 function computeColumnsForItemPanelSpecification(itemPanelSpecification, gridConfiguration: GridConfiguration) {
-    // var self = this;
-    
     var columns = [];
     
     var panelFields = itemPanelSpecification.panelFields;
     
     if (!panelFields || !gridConfiguration) return columns;
-    
-    var maxColumnCount = 5;
+
+    if (gridConfiguration.maxColumnCount == undefined) gridConfiguration.maxColumnCount = 5;
     var columnCount = 0;
     
     var fieldsToInclude = [];
@@ -53,7 +55,7 @@ function computeColumnsForItemPanelSpecification(itemPanelSpecification, gridCon
                     fieldsToInclude.push(fieldSpecification);
                 }
             } else {
-                if (columnCount < maxColumnCount) {
+                if (columnCount < gridConfiguration.maxColumnCount) {
                     if (displayTypesToDisplayAsColumns[fieldSpecification.displayType]) fieldsToInclude.push(fieldSpecification);
                     columnCount++;
                 }
@@ -66,7 +68,7 @@ function computeColumnsForItemPanelSpecification(itemPanelSpecification, gridCon
         // this is for one particular case (the patterns table in PatternExplorer) 
         // where the string to translate is literally "id" 
         // this causes the translate function to show "ID" instead of fieldSpecification.displayName 
-        // because the "messages" data structure in applicationMessages thing has the lookup string "id::shortname"
+        // because the "messages" data structure in applicationMessages has the lookup string "id::shortname"
         // this was a mistake that can't be changed because the "id" field is saved in the data for patterns
         let columnLabel = "";
         if (fieldSpecification.id === "id") {
@@ -77,7 +79,8 @@ function computeColumnsForItemPanelSpecification(itemPanelSpecification, gridCon
 
         var newColumn =  {
             field: fieldSpecification.id,
-            label: columnLabel
+            label: columnLabel,
+            displayType: fieldSpecification.displayType
         };
         columns.push(newColumn);
     });
@@ -286,13 +289,15 @@ class GridWithItemPanel {
     
     addNavigationButtons(buttons) {
         // TODO: Improve navigation enabling
-        var navigationDisabled = this.isEditing() || this.dataStore.isEmpty() || undefined;
+        const navigationDisabled = (this.isEditing() && !this.gridConfiguration.massEditingMode) || this.dataStore.isEmpty() || undefined;
         buttons.push(m("button", {onclick: this.navigateClicked.bind(this, "start"), disabled: navigationDisabled}, translate("#button_navigateStart|[<<")));
         buttons.push(m("button", {onclick: this.navigateClicked.bind(this, "previous"), disabled: navigationDisabled}, translate("#button_navigatePrevious|<")));
         buttons.push(m("button", {onclick: this.navigateClicked.bind(this, "next"), disabled: navigationDisabled}, translate("#button_navigateNext|>")));
         buttons.push(m("button", {onclick: this.navigateClicked.bind(this, "end"), disabled: navigationDisabled}, translate("#button_navigateEnd|>>]")));
+        if (this.gridConfiguration.randomButton)
+            buttons.push(m("button", {onclick: this.navigateClicked.bind(this, "random"), disabled: navigationDisabled}, translate("#button_navigateRandom|>>]")));
     }
-    
+
     calculateView() {
         // Deal with the fact that new items might be added at any time by other users
         // TODO: This is very inefficient. Alternatives include: listening for changes that add or remove items; or determing nature of change prompting redraw
@@ -345,12 +350,12 @@ class GridWithItemPanel {
         
         if (this.isViewing()) {
             parts.push(this.bottomEditorForItem(panelBuilder, this.selectedItem, "view"));
-        }
-        
+        } 
+
         if (this.isEditing()) {
             parts.push(this.bottomEditorForItem(panelBuilder, this.selectedItem, "edit"));
         }
-        
+
         return m("div", {"class": "questionExternal narrafirma-question-type-grid"}, parts);
     }
 
@@ -393,12 +398,12 @@ class GridWithItemPanel {
     }
     
     private selectItemInList(e) {
-        if (this.isEditing()) return;
+        if (this.isEditing() && !this.gridConfiguration.massEditingMode) return;
         var itemID = e.target.getAttribute("data-item-index");
         var item = this.dataStore.itemForId(itemID);
         if (item !== undefined) {
             this.setSelectedItem(item);
-            if (this.gridConfiguration.viewButton) {
+            if (this.gridConfiguration.viewButton && !this.gridConfiguration.massEditingMode) {
                 this.displayMode = "viewing";
             }
         }
@@ -534,7 +539,7 @@ class GridWithItemPanel {
         // Leave item selected: this.setSelection(null);
         this.displayMode = null;
     }
-    
+
     navigateClicked(direction: string) {
         if (this.dataStore.isEmpty()) return;
         var newPosition;
@@ -554,6 +559,9 @@ class GridWithItemPanel {
             case "end":
                 newPosition = this.dataStore.length() - 1;
                 break;
+            case "random":
+                newPosition = Math.round(Math.random() * (this.dataStore.length() - 1));
+                break;
             default:
                throw new Error("Unexpected direction: " + direction);
         }
@@ -564,7 +572,7 @@ class GridWithItemPanel {
     private createButtons(item = undefined) {
         var buttons = [];
        
-        var unavailable = this.isEditing() || (!item && !this.selectedItem) || undefined;
+        var unavailable = (this.isEditing() && !this.gridConfiguration.massEditingMode) || (!item && !this.selectedItem) || undefined;
         var disabled = this.readOnly || unavailable;
         
         if (this.gridConfiguration.removeButton) {
@@ -573,7 +581,9 @@ class GridWithItemPanel {
         }
 
         if (this.gridConfiguration.editButton) {
-            var editButton = m("button", {onclick: this.editItem.bind(this, item), disabled: disabled, "class": "fader"}, translate("#button_Edit|Edit"));
+            let editButtonDisabled = disabled;
+            if (this.gridConfiguration.massEditingMode && this.isEditing()) editButtonDisabled = true;
+            var editButton = m("button", {onclick: this.editItem.bind(this, item), disabled: editButtonDisabled, "class": "fader"}, translate("#button_Edit|Edit"));
             buttons.push(editButton);
         }
         
@@ -633,13 +643,36 @@ class GridWithItemPanel {
         }
         
         var fields = this.columns.map((column) => {
-            var value = this.dataStore.valueForField(item, column.field);
-            if (value && typeof value == "string") {
-                var find = "\n";
-                var re = new RegExp(find, 'g');
-                value = value.replace(re, " / ");
+            let value = this.dataStore.valueForField(item, column.field);
+            let reformattedValue = undefined;
+            if (value !== undefined && value !== "") {
+                if (column.field === "indexInStoryCollection") { // value is a number
+                    reformattedValue = value.toString();
+                } else if (column.displayType == "boolean") { // value is true or false
+                    reformattedValue = value ? "yes" : "no";
+                } else if (column.displayType == "checkbox") { // value is true or false
+                    reformattedValue = value ? "checked" : "unchecked";
+                } else if (column.displayType == "checkboxes") { // value is a dictionary; some values could be false
+                    const positiveValues = [];
+                    Object.keys(value).forEach(function(key, index) { if (key && value[key]) positiveValues.push(key); });
+                    reformattedValue = positiveValues.join(" / ");
+
+                // everything else is (probably) a string
+                // if there are carriage returns, convert them to slashes to fit into the table cell
+                } else { 
+                    if (typeof value == "string") {
+                        var find = "\n";
+                        var re = new RegExp(find, 'g');
+                        value = value.replace(re, " / ");
+                        reformattedValue = value;
+                    } else {
+                        reformattedValue = value;
+                    }
+                }
             }
-            return m("td", {"text-overflow": "ellipsis", "data-item-index": this.dataStore.idForItem(item), id: this.makeHtmlIdForItem(item)}, value);
+            if (reformattedValue == undefined) reformattedValue = "";
+            
+            return m("td", {"text-overflow": "ellipsis", "data-item-index": this.dataStore.idForItem(item), id: this.makeHtmlIdForItem(item)}, reformattedValue);
         });
         
         if (this.gridConfiguration.inlineButtons) {
@@ -777,8 +810,8 @@ class DataStore {
     }
     
     valueForField(item, fieldName: string) {
-        var value = item[fieldName];
-        // Resolve accessing functions
+        let value = item[fieldName];
+        if (typeof item === "object" && item.model) value = item.fieldValue(fieldName);
         if (typeof value === "function") value = value.bind(item)();
         if (this.valueTransform) value = this.valueTransform(value, fieldName);
         return value;
@@ -799,18 +832,30 @@ class DataStore {
     sortData(fieldIdentifier: string, sortDirection: string) {
         // TODO: This may need work for set???
         this.data.sort((a, b) => {
+
             var aValue: string = this.valueForField(a, fieldIdentifier);
             if (aValue === null || aValue === undefined) aValue = "";
             if (typeof aValue === "string") aValue = aValue.toLowerCase();
+
             var bValue: string = this.valueForField(b, fieldIdentifier);
             if (bValue === null || bValue === undefined) bValue = "";
             if (typeof bValue === "string") bValue = bValue.toLowerCase();
 
             // always sort empty values at the end, even if reversing the sort order
-            if (sortDirection !== "descending") {
+            if (sortDirection === "ascending") {
                 if (aValue === "" && bValue !== "") return 1;
                 if (aValue !== "" && bValue === "") return -1;
+            } else {
+                if (aValue === "" && bValue !== "") return -1;
+                if (aValue !== "" && bValue === "") return 1;
             }
+
+            // deal with special case of sider values, which are numbers converted to text
+            // and will sort alphabetically if not converted back to numbers before sorting
+            if (!isNaN(Number(aValue)) && !isNaN(Number(bValue))) {
+                return Number(aValue) > Number(bValue) ? 1 : Number(aValue) < Number(bValue) ? -1 : 0;
+            }
+
             return aValue > bValue ? 1 : aValue < bValue ? -1 : 0;
         });
         

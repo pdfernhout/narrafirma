@@ -1053,6 +1053,230 @@ var templates = [
         ]
     },
     {
+        "id": "annotationQuestions",
+        "name": "Annotation questions",
+        "questions": [
+            {
+                "id": "typeOfText",
+                "text": "Was this story a recounting of events? If not, what was it?",
+                "shortName": "Type of text",
+                "category": "Narrative analysis",
+                "type": "select",
+                "options": "recounting;situation;scenario;fact;explanation;argument;opinion"
+            },
+            {
+                "id": "greimas_subject",
+                "text": `The actantial model of narrative analysis (by A.J. Greimas) proposes that every story has six facets, called actants, divided into axial pairs. 
+                    On the axis of desire are the subject (who the story is about) and the object (what that person wants).
+                    Who or what did the storyteller represent as the subject in this story? (fill in answers as you go)`,
+                "shortName": "Subject",
+                "category": "Narrative analysis",
+                "type": "select",
+                "options": ""
+            },
+            {
+                "id": "greimas_object",
+                "text": `The actantial model of narrative analysis (by A.J. Greimas) proposes that every story has six facets, called actants, divided into axial pairs. 
+                    On the axis of desire are the subject (who the story is about) and the object (what that person wants).
+                    Who or what did the storyteller represent as the object in this story? (fill in answers as you go)`,
+                "shortName": "Object",
+                "category": "Narrative analysis",
+                "type": "select",
+                "options": ""
+            },
+            {
+                "id": "greimas_sender",
+                "text": `The actantial model of narrative analysis (by A.J. Greimas) proposes that every story has six facets, called actants, divided into axial pairs. 
+                    On the axis of knowledge are the sender (who initiates the action of the story) and the receiver (who profits from the action of the story).
+                    Who or what did the storyteller represent as the sender in this story? (fill in answers as you go)`,
+                "shortName": "Sender",
+                "category": "Narrative analysis",
+                "type": "select",
+                "options": ""
+            },
+            {
+                "id": "greimas_receiver",
+                "text": `The actantial model of narrative analysis (by A.J. Greimas) proposes that every story has six facets, called actants, divided into axial pairs. 
+                    On the axis of knowledge are the sender (who initiates the action of the story) and the receiver (who profits from the action of the story).
+                    Who or what did the storyteller represent as the receiver in this story? (fill in answers as you go)`,
+                "shortName": "Receiver",
+                "category": "Narrative analysis",
+                "type": "select",
+                "options": ""
+            },
+            {
+                "id": "greimas_helper",
+                "text": `The actantial model of narrative analysis (by A.J. Greimas) proposes that every story has six facets, called actants, divided into axial pairs. 
+                    On the axis of power are the helper (who helps the subject achieve or obtain the object) and the opponent (who tries to prevent this).
+                    Who or what did the storyteller represent as the helper in this story? (fill in answers as you go)`,
+                "shortName": "Helper",
+                "category": "Narrative analysis",
+                "type": "select",
+                "options": ""
+            },
+            {
+                "id": "greimas_opponent",
+                "text": `The actantial model of narrative analysis (by A.J. Greimas) proposes that every story has six facets, called actants, divided into axial pairs. 
+                    On the axis of power are the helper (who helps the subject achieve or obtain the object) and the opponent (who tries to prevent this).
+                    Who or what did the storyteller represent as the opponent in this story? (fill in answers as you go)`,
+                "shortName": "Opponent",
+                "category": "Narrative analysis",
+                "type": "select",
+                "options": ""
+            },
+
+
+            {
+                "id": "scope",
+                "text": "How many people were mentioned in this story?",
+                "shortName": "Scope",
+                "category": "Facts",
+                "type": "select",
+                "options": "individual;pair;team;group;department;division;organization;industry;street;neighborhood;community;society"
+            },
+            {
+                "id": "roles",
+                "text": "What sorts of official roles were mentioned in this story? (fill in answers as you go)",
+                "shortName": "Roles",
+                "category": "Facts",
+                "type": "checkboxes",
+                "options": ""
+            },
+            {
+                "id": "leaders",
+                "text": "What leaders were mentioned in this story? (fill in answers as you go)",
+                "shortName": "Leaders",
+                "category": "Facts",
+                "type": "checkboxes",
+                "options": ""
+            },
+            {
+                "id": "groups",
+                "text": "What groups of people were mentioned in this story?  (fill in answers as you go)",
+                "shortName": "Groups",
+                "category": "Facts",
+                "type": "checkboxes",
+                "options": ""
+            },
+            {
+                "id": "locations",
+                "text": "What locations were mentioned in this story?  (fill in answers as you go)",
+                "shortName": "Locations",
+                "category": "Facts",
+                "type": "checkboxes",
+                "options": ""
+            },
+            {
+                "id": "rules",
+                "text": "What rules or procedures were mentioned in this story?  (fill in answers as you go)",
+                "shortName": "Rules",
+                "category": "Facts",
+                "type": "checkboxes",
+                "options": ""
+            },
+            {
+                "id": "forces",
+                "text": "What forces or factors were mentioned in this story?  (fill in answers as you go)",
+                "shortName": "Forces",
+                "category": "Facts",
+                "type": "checkboxes",
+                "options": ""
+            },
+
+
+
+            {
+                "id": "formality",
+                "text": "How formal or informal was the wording in this story?",
+                "shortName": "Formality",
+                "category": "Affect",
+                "type": "slider",
+                "options": "extremely formal;casual, slang"
+            },
+            {
+                "id": "emotion",
+                "text": "How strongly worded was this story?",
+                "shortName": "Emotion",
+                "category": "Affect",
+                "type": "slider",
+                "options": "dull, bland;very strongly worded"
+            },
+            {
+                "id": "evaluation",
+                "text": "To what extent did the storyteller include meta-level proof or evaluation statements in the story?",
+                "shortName": "Evaluation",
+                "category": "Affect",
+                "type": "select",
+                "options": "not at all;a little;some;a lot;an extreme amount"
+            },
+            {
+                "id": "value",
+                "text": "Did the storyteller seem to think the story turned out well or poorly?",
+                "shortName": "Value",
+                "category": "Affect",
+                "type": "slider",
+                "options": "horribly;perfectly"
+            },
+            {
+                "id": "hesitation",
+                "text": "To what extent did it seem like the storyteller struggled with how they wanted to tell the story? How often or much did they seem to rephrase or rethink what they said?",
+                "shortName": "Hesitation",
+                "category": "Affect",
+                "type": "select",
+                "options": "not at all;a little;some;a lot;an extreme amount"
+            },
+            {
+                "id": "importantWords",
+                "text": "Were there any words in the story that seemed especially important to the storyteller?",
+                "shortName": "Important words",
+                "category": "Affect",
+                "type": "text",
+                "options": ""
+            },
+
+            {
+                "id": "themes",
+                "text": "What overall themes seemed to be important to the storyteller?  (fill in answers as you go)",
+                "shortName": "Themes",
+                "category": "Emergent characteristics",
+                "type": "checkboxes",
+                "options": ""
+            },
+            {
+                "id": "behaviors",
+                "text": "What sorts of behaviors seemed to be important to the storyteller? (fill in answers as you go)",
+                "shortName": "Behaviors",
+                "category": "Emergent characteristics",
+                "type": "checkboxes",
+                "options": ""
+            },
+            {
+                "id": "situations",
+                "text": "What sorts of situations seemed to be important to the storyteller? (fill in answers as you go)",
+                "shortName": "Situations",
+                "category": "Emergent characteristics",
+                "type": "checkboxes",
+                "options": ""
+            },
+            {
+                "id": "values",
+                "text": "What sorts of values seemed to be important to the storyteller? (fill in answers as you go)",
+                "shortName": "Values",
+                "category": "Emergent characteristics",
+                "type": "checkboxes",
+                "options": ""
+            },
+            {
+                "id": "conflicts",
+                "text": "What sorts of conflicts seemed to be important to the storyteller? (fill in answers as you go)",
+                "shortName": "Conflicts",
+                "category": "Emergent characteristics",
+                "type": "checkboxes",
+                "options": ""
+            }
+        ]
+    },
+    {
         "id": "storyCollectionActivities",
         "name": "Story Collection Activities",
         "questions": [
@@ -1771,6 +1995,7 @@ function convertSemicolonsToNewlinesForOptions(section) {
 export var elicitationQuestions = convertSemicolonsToNewlinesForOptions(templates[0]);
 export var storyQuestions = convertSemicolonsToNewlinesForOptions(templates[1]);
 export var participantQuestions = convertSemicolonsToNewlinesForOptions(templates[2]);
-export var storyCollectionActivities = convertSemicolonsToNewlinesForOptions(templates[3]);
-export var sensemakingActivities = convertSemicolonsToNewlinesForOptions(templates[4]);
+export var annotationQuestions = convertSemicolonsToNewlinesForOptions(templates[3]);
+export var storyCollectionActivities = convertSemicolonsToNewlinesForOptions(templates[4]);
+export var sensemakingActivities = convertSemicolonsToNewlinesForOptions(templates[5]);
 

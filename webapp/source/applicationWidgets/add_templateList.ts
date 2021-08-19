@@ -25,7 +25,7 @@ var add_templateList_elicitationQuestions = [
     {id: "text", valueType: "string", displayType: "textarea"}
 ];
 
-var add_templateList_storyOrParticipantQuestions = [
+var add_templateList_storyOrParticipantOrAnnotationQuestions = [
     {id: "category", valueType: "string", displayType: "text"},
     {id: "text", valueType: "string", displayType: "textarea"},
     {id: "type", valueType: "string", displayType: "text"}, 
@@ -64,6 +64,11 @@ function useButtonClicked(panelBuilder: PanelBuilder, templateListChoice, model,
                storeValueInModel("participantQuestion_type", selectedTemplate.type || "");
                storeValueInModel("participantQuestion_shortName", uniqueName);
                storeValueInModel("participantQuestion_options", selectedTemplate.options || "");
+            } else if (templateListChoice === "annotationQuestions") {
+                storeValueInModel("annotationQuestion_text", selectedTemplate.text || "");
+                storeValueInModel("annotationQuestion_type", selectedTemplate.type || "");
+                storeValueInModel("annotationQuestion_shortName", uniqueName);
+                storeValueInModel("annotationQuestion_options", selectedTemplate.options || "");
            } else if (templateListChoice === "storyCollectionActivities") {
                storeValueInModel("collectionSessionActivity_name", uniqueName);
                storeValueInModel("collectionSessionActivity_type", selectedTemplate.type || "");
@@ -119,8 +124,8 @@ function makeTemplateListChooser(panelBuilder: PanelBuilder, dialogConfiguration
     
     if (templateListChoice === "elicitationQuestions") {
         pageQuestions = add_templateList_elicitationQuestions;
-    } else if (templateListChoice === "storyQuestions" || templateListChoice === "participantQuestions") {
-        pageQuestions = add_templateList_storyOrParticipantQuestions;
+    } else if (templateListChoice === "storyQuestions" || templateListChoice === "participantQuestions" || templateListChoice === "annotationQuestions") {
+        pageQuestions = add_templateList_storyOrParticipantOrAnnotationQuestions;
     } else if (templateListChoice === "storyCollectionActivities" || templateListChoice === "sensemakingActivities") {
         pageQuestions = add_templateList_activityQuestions;
     } else {

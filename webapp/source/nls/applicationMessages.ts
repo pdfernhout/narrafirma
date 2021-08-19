@@ -37,6 +37,7 @@ var messages = {
     button_navigatePrevious: "<",
     button_navigateNext: ">",
     button_navigateEnd: ">>]",
+    button_navigateRandom: "Random",
     
     // Story browser button
     button_Filter: "Filter -- show only stories where both questions have the selected values",

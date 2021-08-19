@@ -112,6 +112,7 @@ export function displayQuestion(panelBuilder: PanelBuilder, model, fieldSpecific
 
     var displayType = fieldSpecification.displayType;
     var questionLabel = panelBuilder.buildQuestionLabel(fieldSpecification);
+    const isAnnotationQuestion = fieldSpecification.id.indexOf("A_") >= 0;
 
     var useNormalDivs = typeof fieldSpecification.displayWithoutQuestionDivs === "undefined" || !fieldSpecification.displayWithoutQuestionDivs;
     
@@ -119,6 +120,15 @@ export function displayQuestion(panelBuilder: PanelBuilder, model, fieldSpecific
         // The for attribute of the label element must refer to a form control.
         questionLabel[0].attrs["for"] = getIdForText(fieldID);
         questionLabel[0].tag = "label";
+    }
+
+    function addAnnotationAnswer(event) {
+        const newAnswer = prompt('Type a new answer to add to the list of available answers for the annotation question "' + fieldSpecification.displayName + '."');
+        if (newAnswer) {
+            fieldSpecification.valueOptions.push(newAnswer);
+            Globals.project().addOptionToAnnotationChoiceQuestion(fieldSpecification.id, newAnswer);
+            m.redraw();
+        }
     }
     
     var parts: any = [];
@@ -181,16 +191,27 @@ export function displayQuestion(panelBuilder: PanelBuilder, model, fieldSpecific
         disabled: disabled
     };
     
+    /////////////////////// LABEL
+
     if (displayType === "label") {
         // Nothing to do
+
+    ///////////////////////////////////////////////////////////////////// HEADER /////////////////////////////////////////////////////////////////////
+
     } else if (displayType === "header") {
         // Nothing to do; bolding done using style
+    
+    ///////////////////////////////////////////////////////////////////// TEXT /////////////////////////////////////////////////////////////////////
+
     } else if (displayType === "text") {
         makeLabel();
         parts = [
             m("input[class=narrafirma-textbox]", standardValueOptions),
             m("br")
         ];
+
+    ///////////////////////////////////////////////////////////////////// TEXTAREA /////////////////////////////////////////////////////////////////////
+
     } else if (displayType === "textarea") {
         makeLabel();
         parts = [
@@ -220,6 +241,9 @@ export function displayQuestion(panelBuilder: PanelBuilder, model, fieldSpecific
 
             m("br")
         ];
+
+    ///////////////////////////////////////////////////////////////////// CHECKBOX /////////////////////////////////////////////////////////////////////
+
     } else if (displayType === "checkbox") {
         makeLabel();
         var checkboxText = "";
@@ -238,6 +262,9 @@ export function displayQuestion(panelBuilder: PanelBuilder, model, fieldSpecific
              m("label", {"for": getIdForText(fieldID)}, checkboxText),
              m("br")
          ];
+    
+    ///////////////////////////////////////////////////////////////////// CHECKBOXES /////////////////////////////////////////////////////////////////////
+
     } else if (displayType === "checkboxes") {
         // The for attribute of the label element must refer to a form control.
         delete questionLabel[0].attrs["for"];
@@ -293,12 +320,16 @@ export function displayQuestion(panelBuilder: PanelBuilder, model, fieldSpecific
                         } 
                     }),
                     m("label", {"for": optionID}, sanitizeHTML.generateSmallerSetOfSanitizedHTMLForMithril(option)), 
-                    m("br")
+                    m("br"),
                 ];
             })
         ];
         makeLegend();
         parts = [m("fieldset", parts)];
+        if (isAnnotationQuestion) parts.push(m("button.narrafirma-add-annotation-choice", {style: "margin-left: 1.5em", onclick: addAnnotationAnswer}, "Add New Answer"));
+
+    ///////////////////////////////////////////////////////////////////// RADIO BUTTONS /////////////////////////////////////////////////////////////////////
+
     } else if (displayType === "radiobuttons") {
         // The for attribute of the label element must refer to a form control.
         delete questionLabel[0].attrs["for"];
@@ -321,6 +352,10 @@ export function displayQuestion(panelBuilder: PanelBuilder, model, fieldSpecific
         ];
         makeLegend();
         parts = [m("fieldset", parts)];
+        if (isAnnotationQuestion) parts.push(m("button.narrafirma-add-annotation-choice", {style: "margin-left: 1.5em", onclick: addAnnotationAnswer}, "Add New Answer"));
+
+    ///////////////////////////////////////////////////////////////////// BOOLEAN /////////////////////////////////////////////////////////////////////
+
     } else if (displayType === "boolean") {
         // The for attribute of the label element must refer to a form control.
         delete questionLabel[0].attrs["for"];
@@ -346,6 +381,9 @@ export function displayQuestion(panelBuilder: PanelBuilder, model, fieldSpecific
         ];
         makeLegend();
         parts = [m("fieldset", parts)];
+    
+    ///////////////////////////////////////////////////////////////////// SELECT /////////////////////////////////////////////////////////////////////
+
     } else if (displayType === "select") {
         makeLabel();
         var selectOptionsRaw = optionsForSelect(panelBuilder, model, fieldSpecification, value, true);
@@ -355,10 +393,11 @@ export function displayQuestion(panelBuilder: PanelBuilder, model, fieldSpecific
             return m("option", optionOptions, option.name);
         });
 
-        parts = [
-            m("select", standardValueOptions, selectOptions),
-            fieldSpecification.displayWithoutQuestionDivs ? "" : m("br")
-        ];
+        parts = [m("select", standardValueOptions, selectOptions), (fieldSpecification.displayWithoutQuestionDivs || isAnnotationQuestion) ? "" : m("br")];
+        if (isAnnotationQuestion) parts.push(m("button.narrafirma-add-annotation-choice", {onclick: addAnnotationAnswer}, "Add New Answer"));
+    
+    ///////////////////////////////////////////////////////////////////// SLIDER /////////////////////////////////////////////////////////////////////
+
     } else if (displayType === "slider") {
         makeLabel();
         var checkboxID = getIdForText(fieldID) + "_doesNotApply";
@@ -438,7 +477,6 @@ export function displayQuestion(panelBuilder: PanelBuilder, model, fieldSpecific
     }
     
     var classString = "questionExternal";
-    var isAnnotationQuestion = fieldSpecification.id.indexOf("A_") >= 0;
     if (isAnnotationQuestion) classString += "-annotation"; 
     classString += " narrafirma-question-type-" + displayType;
     
