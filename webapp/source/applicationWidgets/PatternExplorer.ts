@@ -126,7 +126,6 @@ function transposeCSVData(data, delimiter) {
     return result;
 }
 
-
 //------------------------------------------------------------------------------------------------------------------------------------------
 // PatternExplorer
 //------------------------------------------------------------------------------------------------------------------------------------------
@@ -596,6 +595,10 @@ class PatternExplorer {
                     this.currentPattern ?
                         [
                             m("div.narrafirma-graph-results-panel", {config: this.insertGraphResultsPaneConfig.bind(this)}),
+                            this.graphHolder.currentGraph ? "" : m("div.narrafirma-pattern-browser-no-graph-message", 
+                                "The number of stories for this pattern falls below the minimum count of " + this.graphHolder.minimumStoryCountRequiredForGraph 
+                                + ", which you set on the Configure catalysis report page"
+                                + ". To see this graph, choose a lower minimum story count."),
                             (this.modelForStoryGrid.storiesSelectedInGraph.length > 0) ? 
                                 m("div", {"class": "narrafirma-pattern-browser-selected-stories-header"}, selectedStoriesText) : m("div"),
                             (this.modelForStoryGrid.storiesSelectedInGraph.length > 0) ? this.storyGrid.calculateView() : m("div"),
