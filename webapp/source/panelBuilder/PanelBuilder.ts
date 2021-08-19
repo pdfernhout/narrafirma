@@ -379,10 +379,15 @@ class PanelBuilder {
     }
     
     buildQuestionLabel(fieldSpecification) {
-        return [
-            // TODO: Generalize this css class name
-            m("span", {"class": "questionPrompt", "style": fieldSpecification.displayPrompt ? "display: block" : "display: none"}, this.addAllowedHTMLToPrompt(fieldSpecification.displayPrompt))
-        ];
+        // TODO: Generalize this css class name
+        let prompt = fieldSpecification.displayPrompt;
+        prompt = this.addAllowedHTMLToPrompt(prompt);
+
+        let displayClass = "questionPrompt";
+        if (fieldSpecification.displayClass) displayClass += " " + fieldSpecification.displayClass;
+
+        const result = [m("span", {"class": displayClass, "style": prompt ? "display: block" : "display: none"}, prompt)];
+        return result;
     }
 }
 
