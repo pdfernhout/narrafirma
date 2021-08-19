@@ -20,13 +20,25 @@ export function getChoiceValueForQuestionAndStory(question, story, unansweredTex
     let value = story.fieldValue(question.id);
 
     if (question.displayType === "checkbox") {
-        if (value) {
+        if (value === undefined || value === null || value === "") {
+            if (includeNAValues) {
+                return unansweredText;
+            } else {
+                return null;
+            }
+        } else if (value) {
             return "true"
         } else {
             return "false"
         }
     } else if (question.displayType === "boolean") {
-        if (value) {
+        if (value === undefined || value === null || value === "") {
+            if (includeNAValues) {
+                return unansweredText;
+            } else {
+                return null;
+            }
+        } else if (value) {
             return "yes"
         } else {
             return "no"
