@@ -19,31 +19,7 @@ export function getChoiceValueForQuestionAndStory(question, story, unansweredTex
     
     let value = story.fieldValue(question.id);
 
-    if (question.displayType === "checkbox") {
-        if (value === undefined || value === null || value === "") {
-            if (includeNAValues) {
-                return unansweredText;
-            } else {
-                return null;
-            }
-        } else if (value) {
-            return "true"
-        } else {
-            return "false"
-        }
-    } else if (question.displayType === "boolean") {
-        if (value === undefined || value === null || value === "") {
-            if (includeNAValues) {
-                return unansweredText;
-            } else {
-                return null;
-            }
-        } else if (value) {
-            return "yes"
-        } else {
-            return "no"
-        }
-    } else if (value === undefined || value === null || value === "") {
+    if (value === undefined || value === null || value === "") {
         if (includeNAValues) {
             if (question.displayType === "checkboxes") {
                 let result = {};
@@ -57,8 +33,22 @@ export function getChoiceValueForQuestionAndStory(question, story, unansweredTex
         }
     }
 
-    if (["radiobuttons", "checkboxes", "select"].indexOf(question.displayType) >= 0) {
+    if (question.displayType === "checkbox") {
+        if (value) {
+            return "true"
+        } else {
+            return "false"
+        }
+    } else if (question.displayType === "boolean") {
+       if (value) {
+            return "yes"
+        } else {
+            return "no"
+        }
+    } else if (["radiobuttons", "checkboxes", "select"].indexOf(question.displayType) >= 0) {
+
         if (lumpingCommands.hasOwnProperty(question.displayName)) {
+            
             if (question.displayType === "checkboxes") { 
                 const answersToLump = Object.keys(lumpingCommands[question.displayName]);
                 for (let i = 0; i < answersToLump.length; i++) {
@@ -74,8 +64,7 @@ export function getChoiceValueForQuestionAndStory(question, story, unansweredTex
                     value = lumpingCommands[question.displayName][value];
             }
         }
-    }
-
+    } 
     return value;
 }
 
@@ -239,6 +228,8 @@ export function calculateStatisticsForPattern(pattern, stories, minimumStoryCoun
     } else if (graphType == "data integrity") {
         statistics = {statsSummary: "None", statsDetailed: []};
     } else if (graphType == "texts") {
+        statistics = {statsSummary: "None", statsDetailed: []};   
+    } else if (graphType == "write-in texts") {
         statistics = {statsSummary: "None", statsDetailed: []};   
     } else if (graphType == "correlation map") {
         statistics = {statsSummary: "None", statsDetailed: []};           
