@@ -79,7 +79,7 @@ function add_catalysisReportPatternTableColumnsChooser(panelBuilder: PanelBuilde
 
     // TODO: Translate
 
-    return m("div.questionExternal", [prompt, m("div", checkboxes)]);
+    return m("div.questionExternal", [prompt, m("fieldset", checkboxes)]);
 }
 
 

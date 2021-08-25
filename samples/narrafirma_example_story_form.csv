@@ -1,13 +1,13 @@
 ; NarraFirma example story form - See the help system for instructions on formatting files of this type.,,,,,,,,,,
 ,,,,,,,,,,
-Data column name,Type,About,Short name,Long name,Max,Answers,,,,
+Data column name,Type,About,Short name,Long name,Options,Answers,,,,
 Eliciting question answered,eliciting,eliciting,Eliciting question,,,Best or worst moment|What was your best or worst moment?,"Responsibility|When you think of the word ""responsibility,"" what moment comes to mind?",Surprise|What happened that surprised you?,,
-Feel about,Multi-choice multi-column texts,story,Feel about,How do you feel about this story?,2,satisfied,frustrated,supported,disappointed,
+Feel about,Multi-choice multi-column texts,story,Feel about,How do you feel about this story?,maxNumAnswers=2|writeInTextBoxLabel=Other,satisfied,frustrated,supported,disappointed,
 Scope,Single choice,story,Scope,How many people were involved in this story?,,Individual,Pair,Team,System,
 Scope custom answer name,Single choice,story,Scope custom answer name,How many people were involved in this story?,,Indv|Individual,Pair,Team,System,
 Scope index,Single choice indexed,story,Scope index,How many people were involved in this story?,,Individual,Pair,Team,System,
 Come from,Multi-choice multi-column texts,story,Come from,Where did this story come from?,,first hand,second hand,rumor,,
-Needed,Multi-choice multi-column texts,story,Needed,What did the main character of this story want or need?,3,help|help,to be heard|to be heard,respect|respect,trust|trust,options|options
+Needed,Multi-choice multi-column texts,story,Needed,What did the main character of this story want or need?,maxNumAnswers=3,help|help,to be heard|to be heard,respect|respect,trust|trust,options|options
 Needed delimited,Multi-choice single-column delimited,story,Needed delimited,What did the main character of this story want or need?,,help|help,to be heard|to be heard,respect|respect,trust|trust,options|options
 Needed index delimited,Multi-choice single-column delimited indexed,story,Needed index delimited,What did the main character of this story want or need?,,help,to be heard,respect,trust,options
 Needed yes/no,Multi-choice multi-column yes/no,story,Needed yes/no,What did the main character of this story want or need?,,help|help,to be heard|to be heard,respect|respect,trust|trust,options|options

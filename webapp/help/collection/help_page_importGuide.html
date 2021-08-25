@@ -102,6 +102,9 @@ NarraFirma assumes that any file of story data you import has these features:
     <li>The first row of the file is a <b>header</b> in which each cell describes the contents of the cells beneath it.</li>
     <li>All the cells in all the rows beneath the header contain data that match both the <b>descriptions</b> in the header cells
         and the <b>data types</b> NarraFirma knows how to read (see below).</li>
+    <li>If a column header starts with "WRITEIN_" (and then the question name), it means that the column contains write-in free-text answers for the specified question.
+         In the story form CSV file, that question must have the "writeInTextBoxLabel" option set in the "Options" cell of its row.
+    </li>
     <li>Any rows that are not the header or data are marked as <b>comments</b> because the very first character in the very first cell of the row is a semicolon (;).</li>
     <li>Each data row contains the data for <b>one story</b> only.</li>
     <li>There are no rows that describe only participants. <b>Participant data is repeated</b> on each row that represents a story they told.</li>
@@ -391,12 +394,9 @@ so most of them don't apply to imported data. Choose one of these types:</p>
 
 <img src="help_importGuide_questionDisplay.png">
 
-<p>
-   If you gathered your data outside NarraFirma, you can ignore the "maximum number of checkboxes" choice.
-   It only affects the way NarraFirma displays its <i>own</i> survey. 
-</p>
-
-<p>Now scroll down to the <b>Import options</b> part of the question description. This is where you need to tell NarraFirma 
+<p>Now scroll down to the <b>Import options</b> part of the question description. 
+    (If you can't see the import options, click the "Show import options" button.)
+    This is where you need to tell NarraFirma 
 what to expect in your data file.</p>
 
 <p>First enter <b>the <i>exact</i> header name</b>, as you see it in your data file, for the question. Then choose an <b>import question type</b>. The "LongAgo" question
@@ -845,7 +845,7 @@ In the first row of the new spreadsheet, <b>type (or paste in) these header colu
         <td>About</td>	
         <td>Short name</td>	
         <td>Long name</td>	
-        <td>Max</td>	
+        <td>Options</td>	
         <td>Answers</td>
     </tr>
 </table>
@@ -906,7 +906,7 @@ Let's go through the columns in our example data file one at a time.
             <td>About</td>	
             <td>Short name</td>	
             <td>Long name</td>	
-            <td>Max</td>	
+            <td>Options</td>	
             <td>Answers</td>
         </tr>
         <tr>
@@ -953,7 +953,7 @@ Let's go through the columns in our example data file one at a time.
             <td>About</td>	
             <td>Short name</td>	
             <td>Long name</td>	
-            <td>Max</td>	
+            <td>Options</td>	
             <td>Answers</td>
             <td></td>
             <td></td>
@@ -1021,7 +1021,7 @@ you must use an import option to tell NarraFirma how to read this column. Enter 
             <td>About</td>	
             <td>Short name</td>	
             <td>Long name</td>	
-            <td>Max</td>	
+            <td>Options</td>	
             <td>Answers</td>
         </tr>
         <tr>
@@ -1066,7 +1066,7 @@ you must use an import option to tell NarraFirma how to read this column. Enter 
             <td>About</td>	
             <td>Short name</td>	
             <td>Long name</td>	
-            <td>Max</td>	
+            <td>Options</td>	
             <td>Answers</td>
         </tr>
         <tr>
@@ -1113,7 +1113,7 @@ To describe this type of question to NarraFirma, write a row in your story form 
             <td>About</td>	
             <td>Short name</td>
             <td>Long name</td>
-            <td>Max</td>	
+            <td>Options</td>	
             <td>Answers</td>
             <td></td>
             <td></td>
@@ -1199,7 +1199,7 @@ use <a href="../catalysis/help_page_configureCatalysisReport.html">display lumpi
             <td>About</td>	
             <td>Short name</td>
             <td>Long name</td>
-            <td>Max</td>	
+            <td>Options</td>	
             <td>Answers</td>
             <td></td>
             <td></td>
@@ -1254,7 +1254,7 @@ use <a href="../catalysis/help_page_configureCatalysisReport.html">display lumpi
             <td>About</td>	
             <td>Short name</td>
             <td>Long name</td>
-            <td>Max</td>	
+            <td>Options</td>	
             <td>Answers</td>
             <td></td>
             <td></td>
@@ -1286,7 +1286,7 @@ use <a href="../catalysis/help_page_configureCatalysisReport.html">display lumpi
             <td>About</td>	
             <td>Short name</td>	
             <td>Long name</td>	
-            <td>Max</td>	
+            <td>Options</td>	
             <td>Answers</td>
             <td></td>
         </tr>
@@ -1334,7 +1334,7 @@ use <a href="../catalysis/help_page_configureCatalysisReport.html">display lumpi
             <td>About</td>	
             <td>Short name</td>
             <td>Long name</td>
-            <td>Max</td>	
+            <td>Options</td>	
             <td>Answers</td>
         </tr>
         <tr>
@@ -1384,7 +1384,7 @@ Specify this type of column thus:</p>
             <td>About</td>	
             <td>Short name</td>
             <td>Long name</td>
-            <td>Max</td>	
+            <td>Options</td>	
             <td>Answers</td>
             <td></td>
         </tr>
@@ -1405,10 +1405,10 @@ Specify this type of column thus:</p>
         a pipe separator to specify two sets of names. First write what it says in your data file, then a pipe, then what you want it to say on the graphs.
     </p>
 
-    <p>If you gathered your stories outside NarraFirma, you can ignore the "Max" column. 
+    <p>If you gathered your stories outside NarraFirma, you can ignore the "Options" column. 
         It is only used within NarraFirma.
-        Why is there a "Max" column? 
-        Because you might want to export a story form from one NarraFirma project so you can import it into another one.
+        Why is there an "Options" column? 
+        Because you might want to export a story form from one NarraFirma project and import it into another one.
     </p>
 
 <h2 id="csv_multicolumnyesno">Multi-choice multi-column yes/no questions</h2>
@@ -1445,7 +1445,7 @@ Specify this type of column thus:</p>
             <td>About</td>	
             <td>Short name</td>
             <td>Long name</td>
-            <td>Max</td>	
+            <td>Options</td>	
             <td>Answers</td>
             <td></td>
         </tr>
@@ -1477,7 +1477,7 @@ Specify this type of column thus:</p>
                 <td>About</td>	
                 <td>Short name</td>
                 <td>Long name</td>
-                <td>Max</td>	
+                <td>Options</td>	
                 <td>Answers</td>
             </tr>
             <tr>
@@ -1565,7 +1565,7 @@ Tell NarraFirma about this kind of question like this:
             <td>About</td>	
             <td>Short name</td>
             <td>Long name</td>
-            <td>Max</td>	
+            <td>Options</td>	
             <td>Answers</td>
             <td></td>
             <td></td>
@@ -1598,7 +1598,7 @@ For this data type you need to tell NarraFirma how the answers in your data cell
                 <td>About</td>	
                 <td>Short name</td>
                 <td>Long name</td>
-                <td>Max</td>	
+                <td>Options</td>	
                 <td>Answers</td>
             </tr>
             <tr>
@@ -1648,7 +1648,7 @@ This question type is just like the "Single choice indexed" question type, excep
             <td>About</td>	
             <td>Short name</td>
             <td>Long name</td>
-            <td>Max</td>	
+            <td>Options</td>	
             <td>Answers</td>
             <td></td>
             <td></td>
@@ -1684,7 +1684,7 @@ This question type is just like the "Single choice indexed" question type, excep
                         <td>About</td>	
                         <td>Short name</td>
                         <td>Long name</td>
-                        <td>Max</td>	
+                        <td>Options</td>	
                         <td>Answers</td>
                     </tr>
                     <tr>
@@ -1739,7 +1739,7 @@ This question type is just like the "Single choice indexed" question type, excep
                 <td>About</td>	
                 <td>Short name</td>
                 <td>Long name</td>
-                <td>Max</td>	
+                <td>Options</td>	
                 <td>Answers</td>
                 <td></td>
             </tr>
@@ -1765,7 +1765,7 @@ This question type is just like the "Single choice indexed" question type, excep
                     <td>About</td>	
                     <td>Short name</td>
                     <td>Long name</td>
-                    <td>Max</td>	
+                    <td>Options</td>	
                     <td>Answers</td>
                 </tr>
                 <tr>
@@ -1788,7 +1788,7 @@ This question type is just like the "Single choice indexed" question type, excep
                     <td>About</td>	
                     <td>Short name</td>
                     <td>Long name</td>
-                    <td>Max</td>	
+                    <td>Options</td>	
                     <td>Answers</td>
                 </tr>
                 <tr>
@@ -1818,7 +1818,7 @@ This question type is just like the "Single choice indexed" question type, excep
                     <td>About</td>	
                     <td>Short name</td>
                     <td>Long name</td>
-                    <td>Max</td>	
+                    <td>Options</td>	
                     <td>Answers</td>
                 </tr>
                 <tr>
@@ -1850,7 +1850,7 @@ This question type is just like the "Single choice indexed" question type, excep
             <td>About</td>	
             <td>Short name</td>
             <td>Long name</td>
-            <td>Max</td>	
+            <td>Options</td>	
             <td>Answers</td>
             <td></td>
         </tr>
@@ -1892,6 +1892,41 @@ This question type is just like the "Single choice indexed" question type, excep
     " Advice to other parents ".
 </p>
 
+
+<h3>Your single- or multi-choice answers include "other" write-in answers.</h3>
+
+<p>In many surveying packages, you can display an "other" write-in answer field in which a participant 
+    can fill in their own answer to the question, like this:
+</p>
+
+<img src="help_importGuide_otherAnswers.png" width="400">
+
+<p>
+    Most of the time, surveying packages export write-in answers to a separate column for each question that has them.
+    In that case, you can import your write-in answers into NarraFirma. Here's how to do it.
+</p>
+<ol>
+    <li>In your story form file, for each question that has write-in answers, 
+        go to the "Options" column of that question's row and type (exactly) <strong>writeInTextBoxLabel=other</strong>. 
+</li>
+    <li>In your data file, for each question that has write-in answers, edit the header for the write-in answers column for that question
+        so that it starts with <strong>WRITEIN_</strong>. For example, if you have a question called "Needed," and that question has write-in answers,
+        the header for the column with the write-in answers should be called "WRITEIN_Needed." 
+        Make sure that:
+        <ul>
+            <li>the tag (WRITEIN_) is exactly as shown here</li>
+            <li>there are no spaces around the underscore</li>
+            <li>the question name after the underscore exactly matches the question name in its other (non-write-in) column</li>
+        </ul>
+    </li>
+</ol>
+
+<p>In the unlikely case that your surveying package exports data with fixed-list and write-in answers mixed together in the same column, 
+    you will have to separate the fixed and write-in answers into two columns yourself. 
+    Create a new column and move any answers that don't match the original list into that column.
+    Then follow the two steps above.
+    </p>
+
 <h3>You have a lot of incomplete survey results you want to ignore.</h3>
 
 <p>Sometimes you end up with a lot of survey results where people didn't tell stories, or they just typed in a few words and then quit. You can
@@ -1906,7 +1941,7 @@ This question type is just like the "Single choice indexed" question type, excep
             <td>About</td>	
             <td>Short name</td>
             <td>Long name</td>
-            <td>Max</td>	
+            <td>Options</td>	
             <td>Answers</td>
         </tr>
         <tr>
@@ -1938,7 +1973,7 @@ This question type is just like the "Single choice indexed" question type, excep
             <td>About</td>	
             <td>Short name</td>
             <td>Long name</td>
-            <td>Max</td>	
+            <td>Options</td>	
             <td>Answers</td>
             <td></td>
             <td></td>
@@ -1977,7 +2012,7 @@ In the LimeSurvey example, you would ask NarraFirma to strip out "[SLIDER]" and 
             <td>About</td>	
             <td>Short name</td>
             <td>Long name</td>
-            <td>Max</td>	
+            <td>Options</td>	
             <td>Answers</td>
         </tr>
         <tr>
@@ -2038,19 +2073,19 @@ NarraFirma will ignore that row of data.</p>
     <li>You can include comment lines in your story form file. Place a semicolon (;) as the very first character on the line. Everything else on that line 
     will be ignored. Empty lines will also be ignored. </li>
     <li>You can include extra or comment columns in your story form CSV file. Any columns with names other than <b>Data column name</b>, <b>Type</b>, <b>About</b>, 
-    <b>Short name</b>, <b>Long name</b>, <b>Max</b>, and <b>Answers</b> will be ignored. However, place your extra columns <i>to the left</i> of
+    <b>Short name</b>, <b>Long name</b>, <b>Options</b>, and <b>Answers</b> will be ignored. However, place your extra columns <i>to the left</i> of
     the <b>Answers</b> column. All texts in cells to the right of that column will be treated as answers. </li>
-    <li>The "Max" column was added to the story-form CSV format in NarraFirma 1.4.2. 
-        It is backward compatible (newer versions of NarraFirma do not require the "Max" column to appear in older data)
-        and forward compatible (older versions of NarraFirma ignore the "Max" column when they find it in newer data). 
-    </li>
     <li>Watch out for encoding problems. If you import a CSV file and then have problems reading your story data, look for special characters
         that are different in the story form CSV file and data CSV file. Make sure both files are being saved using UTF-8 encoding.
     </li>
     <li>Remember that a CSV file is not the same thing as a spreadsheet file. You can work in a spreadsheet format (like XLSX), but be aware that any
         special formatting will be lost when you convert the file to CSV. It's usually better to edit the file directly in the CSV format
         so you don't put anything into it that will be lost when you convert to CSV.</li>
-    <li>Example story form CSV files can be found in the <b>samples</b> folder in your NarraFirma installation.</li>
+        <li>The "Options" column was added to the story-form CSV format in NarraFirma 1.5.0. 
+            It is backward compatible (newer versions of NarraFirma do not require the "Options" column to appear in older data)
+            and forward compatible (older versions of NarraFirma ignore the "Options" column when they find it in newer data). 
+        </li>
+        <li>Example story form CSV files can be found in the <b>samples</b> folder in your NarraFirma installation.</li>
 </ul>
 
 <h2 id="csv_importfile">Import your story form CSV file</h2>
@@ -2072,7 +2107,7 @@ Then you will be ready to create a story collection and import your stories to i
             <td>About</td>	
             <td>Short name</td>
             <td>Long name</td>
-            <td>Max</td>	
+            <td>Options</td>	
             <td>Answers</td>
             <td></td>
             <td></td>

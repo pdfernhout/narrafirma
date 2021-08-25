@@ -192,6 +192,11 @@ function displayHTMLForField(storyModel: surveyCollection.Story, fieldSpecificat
         result.push(wrap("div", "narrafirma-story-card-question-line-without-selected-item", thisBit));
     }
 
+    const writeInEntry = storyModel.fieldValueWriteIn(fieldSpecification.id);
+    if (writeInEntry) {
+        result.push(wrap("span", "narrafirma-story-card-write-in-answer", writeInEntry));
+    }
+
     if (isAnnotationQuestion) {
         return wrap("div", "narrafirma-story-card-annotation", result);
     } else {

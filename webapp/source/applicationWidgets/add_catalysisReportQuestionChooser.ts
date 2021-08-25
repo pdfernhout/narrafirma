@@ -273,15 +273,15 @@ function add_catalysisReportQuestionChooser(panelBuilder: PanelBuilder, model, f
     firstColumn.push(m("br"));
     firstColumn.push(m("br"));
     firstColumn.push(m("i", "Scales"));
-    firstColumn.push(storyRatioQuestions.map((question) => {return buildQuestionCheckbox(question.displayName, question.displayType, "S_");}));
+    firstColumn.push(m("fieldset", storyRatioQuestions.map((question) => {return buildQuestionCheckbox(question.displayName, question.displayType, "S_");})));
     firstColumn.push(storyRatioQuestions.length ? [] : [m("i", " - none"), m("br")]);
     firstColumn.push(m("br"));
     firstColumn.push(m("i", "Choices"));
-    firstColumn.push(storyNominalQuestions.map((question) => {return buildQuestionCheckbox(question.displayName, question.displayType, "S_");}));
+    firstColumn.push(m("fieldset", storyNominalQuestions.map((question) => {return buildQuestionCheckbox(question.displayName, question.displayType, "S_");})));
     firstColumn.push(storyNominalQuestions.length ? [] : [m("i", " - none"), m("br")]);
     firstColumn.push(m("br"));
     firstColumn.push(m("i", "Texts"));
-    firstColumn.push(storyTextQuestions.map((question) => {return buildQuestionCheckbox(question.displayName, question.displayType, "S_");}));
+    firstColumn.push(m("fieldset", storyTextQuestions.map((question) => {return buildQuestionCheckbox(question.displayName, question.displayType, "S_");})));
     firstColumn.push(storyTextQuestions.length ? [] : [m("i", " - none"), m("br")]);
     let firstColumnTD = m("td", {"class": "narrafirma-questions-chooser-table-td"}, firstColumn);
 
@@ -290,15 +290,15 @@ function add_catalysisReportQuestionChooser(panelBuilder: PanelBuilder, model, f
     secondColumn.push(m("br"));
     secondColumn.push(m("br"));
     secondColumn.push(m("i", "Scales"));
-    secondColumn.push(participantRatioQuestions.map((question) => {return buildQuestionCheckbox(question.displayName, question.displayType, "P_");}));
+    secondColumn.push(m("fieldset", participantRatioQuestions.map((question) => {return buildQuestionCheckbox(question.displayName, question.displayType, "P_");})));
     secondColumn.push(participantRatioQuestions.length ? [] : [m("i", " - none"), m("br")]);
     secondColumn.push(m("br"));
     secondColumn.push(m("i", "Choices"));
-    secondColumn.push(participantNominalQuestions.map((question) => {return buildQuestionCheckbox(question.displayName, question.displayType, "P_");}));
+    secondColumn.push(m("fieldset", participantNominalQuestions.map((question) => {return buildQuestionCheckbox(question.displayName, question.displayType, "P_");})));
     secondColumn.push(participantNominalQuestions.length ? [] : [m("i", " - none"), m("br")]);
     secondColumn.push(m("br"));
     secondColumn.push(m("i", "Texts"));
-    secondColumn.push(participantTextQuestions.map((question) => {return buildQuestionCheckbox(question.displayName, question.displayType, "P_");}));
+    secondColumn.push(m("fieldset", participantTextQuestions.map((question) => {return buildQuestionCheckbox(question.displayName, question.displayType, "P_");})));
     secondColumn.push(participantTextQuestions.length ? [] : [m("i", " - none"), m("br")]);
     let secondColumnTD = m("td", {"class": "narrafirma-questions-chooser-table-td"}, secondColumn);
 
@@ -306,15 +306,14 @@ function add_catalysisReportQuestionChooser(panelBuilder: PanelBuilder, model, f
     thirdColumn.push(m("b", "Annotation questions")); 
     thirdColumn.push(m("br"));
     thirdColumn.push(m("br"));
-    thirdColumn.push(allAnnotationQuestions.map((question) => {return buildQuestionCheckbox(question.displayName, question.displayType, "A_");}));
+    thirdColumn.push(m("fieldset", allAnnotationQuestions.map((question) => {return buildQuestionCheckbox(question.displayName, question.displayType, "A_");})));
     thirdColumn.push(allAnnotationQuestions.length ? [] : [m("i", " - none"), m("br")]);
     thirdColumn.push(m("br"));
     thirdColumn.push(m("b", "Additional information"));
     thirdColumn.push(m("br"));
     thirdColumn.push(m("br"));
-    if (elicitingQuestions) thirdColumn.push(elicitingQuestions.map((question) => {return buildQuestionCheckboxSpecialForElicitingQuestion();}));
-    thirdColumn.push(buildQuestionCheckboxSpecialForNumStoriesTold());
-    thirdColumn.push(buildQuestionCheckboxSpecialForStoryLength());
+    if (elicitingQuestions) thirdColumn.push(m("fieldset", elicitingQuestions.map((question) => {return buildQuestionCheckboxSpecialForElicitingQuestion();})));
+    thirdColumn.push(m("fieldset", [buildQuestionCheckboxSpecialForNumStoriesTold(), buildQuestionCheckboxSpecialForStoryLength()]));
     let thirdColumnTD = m("td", {"class": "narrafirma-questions-chooser-table-td"}, thirdColumn);
 
     let table = m("table", {"class": "narrafirma-questions-chooser-table"}, m("tr", [firstColumnTD, secondColumnTD, thirdColumnTD]));

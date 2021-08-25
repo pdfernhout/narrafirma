@@ -16,16 +16,16 @@ import GridWithItemPanel = require("../panelBuilder/GridWithItemPanel");
 // TODO: Need to update answer counts in filters if change value in story that affectes selected filter question
 
 // TODO: Translate
-var unansweredIndicator = "No answer";
+const unansweredIndicator = "No answer";
 
 function isMatch(story: surveyCollection.Story, questionChoice, selectedAnswerChoices) {
     if (!questionChoice) return true;
-    var questionAnswer = story.fieldValue(questionChoice.id);
+    let questionAnswer = story.fieldValue(questionChoice.id);
     if (questionAnswer === undefined || questionAnswer === null || questionAnswer === "") {
         questionAnswer = unansweredIndicator;
     } else if (typeof questionAnswer === "object") {
         // checkboxes
-        for (var key in questionAnswer) {
+        for (let key in questionAnswer) {
             if (selectedAnswerChoices[key] && questionAnswer[key]) return true;
         }
         return false;
@@ -36,20 +36,20 @@ function isMatch(story: surveyCollection.Story, questionChoice, selectedAnswerCh
 
 function optionsFromQuestion(question, stories) {
     // TODO: Translate text for options, at least booleans?
-    var options = [];
+    const options = [];
     if (!question) return options;
     
     // Compute how many of each answer -- assumes typically less than 200-1000 stories
-    var totals = {};
+    const totals = {};
     stories.forEach(function(story: surveyCollection.Story) {
-        var choice = story.fieldValue(question.id);
+        let choice = story.fieldValue(question.id);
         if (choice === undefined || choice === null || choice === "") {
             // Do not include "0" as unanswered
             choice = unansweredIndicator;
         }
-        var oldValue;
+        let oldValue;
         if (question.displayType === "checkboxes") {
-            for (var key in choice) {
+            for (let key in choice) {
                 oldValue = totals[key];
                 if (!oldValue) oldValue = 0;
                 if (choice[key]) totals[key] = oldValue + 1; 
@@ -61,12 +61,12 @@ function optionsFromQuestion(question, stories) {
         }
     });
     
-    var count;
+    let count;
     
     if (["select", "radiobuttons", "checkboxes"].indexOf(question.displayType) >= 0) {
-        var answersAlreadyConsidered = [];
-        for (var i = 0; i < question.valueOptions.length; i++) {
-            var answer = question.valueOptions[i];
+        const answersAlreadyConsidered = [];
+        for (let i = 0; i < question.valueOptions.length; i++) {
+            const answer = question.valueOptions[i];
             if (answersAlreadyConsidered.indexOf(answer) >= 0) continue; // hide duplicate options, if any, due to lumping during import
             answersAlreadyConsidered.push(answer);
             count = totals[answer];
@@ -74,10 +74,10 @@ function optionsFromQuestion(question, stories) {
             options.push({label: answer + " - " +  count, value: answer});
         }
     } else if (question.displayType === "slider") {
-        for (var sliderTick = 0; sliderTick <= 100; sliderTick++) {
+        for (let sliderTick = 0; sliderTick <= 100; sliderTick++) {
             count = totals[sliderTick];
             if (!count) count = 0;
-            var sliderTickText = "" + sliderTick;
+            const sliderTickText = "" + sliderTick;
             options.push({label: sliderTickText + " - " +  count, value: sliderTick});
         }
     } else if (question.displayType === "boolean") {
@@ -93,7 +93,7 @@ function optionsFromQuestion(question, stories) {
             options.push({label: each + " - " +  count, value: each});
         });
     } else if (question.displayType === "text") {
-        for (var eachTotal in totals) {
+        for (let eachTotal in totals) {
             if (totals.hasOwnProperty(eachTotal)) {
                 count = totals[eachTotal];
                 if (!count) count = 0;
@@ -113,10 +113,10 @@ function optionsFromQuestion(question, stories) {
 }
 
 function getSelectedOptions(select) {
-    var selectedOptions = {};
+    const selectedOptions = {};
     // select.selectedOptions is probably not implemented widely enough, so use this looping code instead over all options
-    for (var i = 0; i < select.options.length; i++) {
-        var option = select.options[i];
+    for (let i = 0; i < select.options.length; i++) {
+        const option = select.options[i];
         if (option.selected) {
             selectedOptions[option.value] = option;
         }
@@ -125,10 +125,10 @@ function getSelectedOptions(select) {
 }
 
 function getQuestionDataForSelection(questions, event) {
-    var newValue = event.target.value;
-    var question = null;
-    for (var index = 0; index < questions.length; index++) {
-        var questionToCheck = questions[index];
+    const newValue = event.target.value;
+    let question = null;
+    for (let index = 0; index < questions.length; index++) {
+        const questionToCheck = questions[index];
         if (questionToCheck.id === newValue) {
             question = questionToCheck;
             break;
@@ -167,7 +167,7 @@ class Filter {
     }
 
     displayInformation() {
-        var result = "";
+        let result = "";
         if (this.hasQuestionAndAnswers()) {
             result += "[ " + this.selectedQuestion.displayName + ": ";
             result += Object.keys(this.selectedAnswers).join(", ") + " ]";
@@ -178,24 +178,24 @@ class Filter {
     }
         
     calculateView() {
-        var choices = this.storyBrowser.choices || [];
-        var selectOptions = choices.map((option) => {
-            var optionOptions = {value: option.value, selected: undefined};
+        const choices = this.storyBrowser.choices || [];
+        const selectOptions = choices.map((option) => {
+            const optionOptions = {value: option.value, selected: undefined};
             if (this.selectedQuestion === option.value) optionOptions.selected = 'selected';
             return m("option", optionOptions, option.label);
         });
         
-        var isNoSelection = (this.selectedQuestion === null) || undefined;
+        const isNoSelection = (this.selectedQuestion === null) || undefined;
         selectOptions.unshift(m("option", {value: "", selected: isNoSelection}, "--- no filter ---"));
         
-        var multiselectOptions = this.answerOptionsForSelectedQuestion.map((option) => {
-            var optionOptions = {value: option.value, selected: undefined};
+        const multiselectOptions = this.answerOptionsForSelectedQuestion.map((option) => {
+            const optionOptions = {value: option.value, selected: undefined};
             if (this.selectedAnswers[option.value]) optionOptions.selected = 'selected';
             return m("option", optionOptions, option.label);
         });
         
-        var isClearButtonDisabled = (this.selectedQuestion === null) || undefined;
-        var displayOrNotText = (multiselectOptions.length > 0) ? "" : "[style='display:none']";
+        const isClearButtonDisabled = (this.selectedQuestion === null) || undefined;
+        const displayOrNotText = (multiselectOptions.length > 0) ? "" : "[style='display:none']";
          
         return m("div.filter", [
             this.name,
@@ -208,7 +208,7 @@ class Filter {
     }
     
     filterPaneQuestionChoiceChanged(event) {
-        var question = getQuestionDataForSelection(this.storyBrowser.questions, event);
+        const question = getQuestionDataForSelection(this.storyBrowser.questions, event);
         
         this.selectedQuestion = question;
         this.answerOptionsForSelectedQuestion = optionsFromQuestion(this.selectedQuestion, this.storyBrowser.allStories);
@@ -281,10 +281,10 @@ export class StoryBrowser {
     }
     
     calculateView(args) {
-        var panelBuilder = args.panelBuilder;
+        const panelBuilder = args.panelBuilder;
         
         // Handling of caching of questions and stories
-        var storyCollectionIdentifier = valuePathResolver.newValuePathForFieldSpecification(args.model, args.fieldSpecification)();
+        const storyCollectionIdentifier = valuePathResolver.newValuePathForFieldSpecification(args.model, args.fieldSpecification)();
         if (storyCollectionIdentifier !== this.storyCollectionIdentifier) {
             // TODO: Maybe need to handle tracking if list changed so can keep sorted list?
             this.storyCollectionIdentifier = storyCollectionIdentifier;
@@ -300,22 +300,22 @@ export class StoryBrowser {
             this.grid.updateDisplayConfigurationAndData(this.gridFieldSpecification.displayConfiguration);
         }
         
-        var promptText = panelBuilder.addAllowedHTMLToPrompt(args.fieldSpecification.displayPrompt) + " (" + this.allStories.length + ")";
-        var prompt =  m("span", {"class": "questionPrompt"}, promptText);
+        const promptText = panelBuilder.addAllowedHTMLToPrompt(args.fieldSpecification.displayPrompt) + " (" + this.allStories.length + ")";
+        const prompt =  m("span", {"class": "questionPrompt"}, promptText);
         
-        var parts;
+        let parts;
         
         if (!this.storyCollectionIdentifier) {
             parts = [m("div", "Please select a story collection to view")];
         } else {
-            var filter = m("table.filterTable", m("tr", [
+            const filter = m("table.filterTable", m("tr", [
                 m("td", this.filter1.calculateView()),
                 m("td", this.filter2.calculateView())
             ]));
 
-            var filterInfoString = "Stories (" + this.filteredStories.length + ")";
-            var filter1HasSelectedQuestion = this.filter1.hasQuestion();
-            var filter2HasSelectedQuestion = this.filter2.hasQuestion();
+            let filterInfoString = "Stories (" + this.filteredStories.length + ")";
+            const filter1HasSelectedQuestion = this.filter1.hasQuestion();
+            const filter2HasSelectedQuestion = this.filter2.hasQuestion();
 
             if (filter1HasSelectedQuestion || filter2HasSelectedQuestion) filterInfoString += " filtered by ";
             if (filter1HasSelectedQuestion) filterInfoString += this.filter1.displayInformation();
@@ -323,7 +323,7 @@ export class StoryBrowser {
             if (filter2HasSelectedQuestion) filterInfoString += this.filter2.displayInformation();
 
             // TODO: Translation
-            var filteredCountText = m("div.narrafirma-story-browser-filtered-stories-count", filterInfoString);
+            const filteredCountText = m("div.narrafirma-story-browser-filtered-stories-count", filterInfoString);
 
             parts = [prompt, filter, filteredCountText, this.grid.calculateView()];
         }
@@ -341,16 +341,28 @@ export class StoryBrowser {
         this.storyCollectionIdentifier = storyCollectionIdentifier;
         this.questionnaire = surveyCollection.getQuestionnaireForStoryCollection(storyCollectionIdentifier);
 
-        var storyNameAndTextQuestions = questionnaireGeneration.getStoryNameAndTextQuestions()
+        const storyNameAndTextQuestions = questionnaireGeneration.getStoryNameAndTextQuestions();
         
-        var elicitingQuestion = this.project.elicitingQuestionForStoryCollection(this.storyCollectionIdentifier);
-        var numStoriesToldQuestions = this.project.numStoriesToldQuestionForStoryCollection(this.storyCollectionIdentifier);
-        var storyLengthQuestions = this.project.storyLengthQuestionForStoryCollection(this.storyCollectionIdentifier);
+        const elicitingQuestion = this.project.elicitingQuestionForStoryCollection(this.storyCollectionIdentifier);
+        const numStoriesToldQuestion = {
+            id: "numStoriesTold",
+            displayName: "Number of stories told",
+            displayReadOnly: true,
+            displayPrompt: "Number of stories told by this participant",
+            displayType: "text",
+        }
+        const storyLengthQuestion = {
+            id: "storyLength",
+            displayName: "Story length",
+            displayReadOnly: true,
+            displayPrompt: "Story length (in characters)",
+            displayType: "text"
+        }
 
-        var storyQuestions = this.project.storyQuestionsForStoryCollection(this.storyCollectionIdentifier);
-        var participantQuestions = this.project.participantQuestionsForStoryCollection(this.storyCollectionIdentifier);
+        const storyQuestions = this.project.storyQuestionsForStoryCollection(this.storyCollectionIdentifier);
+        const participantQuestions = this.project.participantQuestionsForStoryCollection(this.storyCollectionIdentifier);
         
-        this.questions = this.questions.concat(storyNameAndTextQuestions, [elicitingQuestion], storyQuestions, participantQuestions, numStoriesToldQuestions, storyLengthQuestions);
+        this.questions = this.questions.concat(storyNameAndTextQuestions, [elicitingQuestion], storyQuestions, participantQuestions, [numStoriesToldQuestion], [storyLengthQuestion]);
 
         this.choices = surveyCollection.optionsForAllQuestions(this.questions);
         this.allStories = surveyCollection.getStoriesForStoryCollection(storyCollectionIdentifier, true);
@@ -358,20 +370,21 @@ export class StoryBrowser {
         this.itemPanelSpecification = this.makeItemPanelSpecificationForQuestions(this.questions);
         
         this.itemPanelSpecification.panelFields.push({
+            id: "indexInStoryCollection",
+            valueType: "string",
+            displayReadOnly: true,
+            displayType: "text",
+            displayName: "Index",
+            displayPrompt: "Index of story in collection",
+            displayClass: "narrafirma-index-in-story-collection"
+        });
+        this.itemPanelSpecification.panelFields.push({
             id: "ignore",
             valueType: "string",
             displayType: "text",
             displayName: "Ignore",
             displayPrompt: "Reason to ignore story (enter any text here to leave this story out of all graphs and reports)",
             displayClass: "narrafirma-ignore-story"
-        });
-        this.itemPanelSpecification.panelFields.push({
-            id: "indexInStoryCollection",
-            valueType: "string",
-            displayType: "text",
-            displayName: "Index",
-            displayPrompt: "Index in story collection",
-            displayClass: "narrafirma-index-in-story-collection"
         });
         
         /*
@@ -387,7 +400,7 @@ export class StoryBrowser {
     }
     
     buildStoryDisplayPanel(panelBuilder: PanelBuilder, storyModel: surveyCollection.Story) {
-        var storyDisplay;
+        let storyDisplay;
         if (panelBuilder.readOnly) {
             // override questionnaire pointed to by storyModel because it may have been updated using the "update story form" button
             storyDisplay = storyCardDisplay.generateStoryCardContent(storyModel, undefined, {"location": "storyBrowser", "questionnaire": this.questionnaire});
@@ -401,7 +414,7 @@ export class StoryBrowser {
     makeItemPanelSpecificationForQuestions(questions) {
         // TODO: add more participant and survey info, like timestamps and participant ID
         
-        var itemPanelSpecification = {
+        const itemPanelSpecification = {
             id: "storyBrowserQuestions",
             modelClass: "Story",
             panelFields: questions,
@@ -411,22 +424,22 @@ export class StoryBrowser {
     }
     
     getFilteredStoryList() {
-        var question1Choice = this.filter1.selectedQuestion;
-        var answers1Choices = this.filter1.selectedAnswers;
-        var question2Choice = this.filter2.selectedQuestion;
-        var answers2Choices = this.filter2.selectedAnswers;
-        var filterFunction = function (item) {
-            var match1 = isMatch(item, question1Choice, answers1Choices);
-            var match2 = isMatch(item, question2Choice, answers2Choices);
+        const question1Choice = this.filter1.selectedQuestion;
+        const answers1Choices = this.filter1.selectedAnswers;
+        const question2Choice = this.filter2.selectedQuestion;
+        const answers2Choices = this.filter2.selectedAnswers;
+        const filterFunction = function (item) {
+            const match1 = isMatch(item, question1Choice, answers1Choices);
+            const match2 = isMatch(item, question2Choice, answers2Choices);
             return match1 && match2;
         };
         
-        var filteredResults = this.allStories.filter(filterFunction);
+        const filteredResults = this.allStories.filter(filterFunction);
         return filteredResults;
     }
     
     setStoryListForCurrentFilters() {
-        var filteredResults = this.getFilteredStoryList();
+        const filteredResults = this.getFilteredStoryList();
         this.filteredStories = filteredResults;
         this.grid.updateData();
     }

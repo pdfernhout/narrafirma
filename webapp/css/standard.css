@@ -36,7 +36,10 @@ a:active {
 textarea, input, select { /* override because expanded in survey */
     margin-top: 0;
     border: 1px solid black;
-    margin-left: 0.5em;
+}
+
+input[type="text"] {
+    width: 18em;
 }
 
 select[multiple] {
@@ -288,6 +291,10 @@ input[type="submit"].narrafirma-login-button:hover {
 
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Buttons bottom of page (and elsewhere) ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
+form {
+    padding-left: 0.7em;
+ }
+ 
 .narrafirma-page-change-button {
     font-size: 1em;
     min-width: 10em;
@@ -364,7 +371,27 @@ button:disabled {
     vertical-align: middle;
 }
 
-/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Pages with entry fields ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+ .narrafirma-reminder {
+     background-color: #ffe1aa;
+     border-radius: 3px;
+ }
+
+ .questionExternal.narrafirma-reminder {
+    background-color: #ffe1aa;
+ }
+
+ .functionResult { /* used on "stop story collection" page */
+     margin: 0.4em 0 1em 0.6em;
+ }
+
+ /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Pages with entry fields ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
+.htmlWidget, .narrafirma-image {
+    margin-bottom: 4px;
+    border-radius: 12px;
+    padding: 8px;
+    margin: 8px; 
+}
 
 .narrafirma-page-name {
     font-weight: 700;
@@ -380,6 +407,10 @@ button:disabled {
     margin: 0.2em;
 }
 
+.questionExternal.narrafirma-question-type-questionAnswer {
+    background-color: white;
+}
+
 .questionExternal-annotation {
 	background-color: #d7dce4;
 	margin-bottom: 0.2em;
@@ -387,6 +418,26 @@ button:disabled {
     padding: 0.2em;
     margin: 0.2em;
 }
+
+.questionPrompt {
+    padding: 0.4em 0.4em 0.1em 0.4em;
+    display: block;
+}
+
+.questionInternal {
+    padding: 0.4em;
+    margin-left: 0.6em;
+}
+
+.questionExternal.narrafirma-question-type-filterNotice {
+    background-color: #d7dce4;
+    margin-bottom: 4px;
+    padding: 4px 4px 4px 8px;
+    border-radius: 2px;
+    font-style: italic;
+}
+
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Question type: Header ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 .questionExternal.narrafirma-question-type-header {
 	display: block;
@@ -406,15 +457,43 @@ button:disabled {
     background-color: white; 
     color: #979696;
 }
- 
-.questionExternal.narrafirma-question-type-grid { /* no background for grid */
+
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Question type: Label ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
+.questionExternal.narrafirma-question-type-label {
     background-color: white;
-    margin-top: 0;
+    margin-bottom: 4px;
+    border-radius: 3px;
 }
 
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Question type: Header: Text, Textarea ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
 .questionExternal.narrafirma-question-type-text.narrafirma-ignore-story {
-	background-color: #d7dce4;
+	background-color: #b0d4d4;
 }
+
+.narrafirma-textbox {
+    width: 98%;
+    border: 1px solid black;
+}
+
+.narrafirma-textbox-short {
+    width: 24em;
+    border: 1px solid black;
+}
+
+textarea.narrafirma-textbox {
+    min-height: 5em;
+    resize: vertical;
+}
+
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Question type: Checkbox ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
+.questionInternal.narrafirma-question-type-checkbox {
+    margin: 0.3em 0 0.3em 0.5em;
+}
+
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Question type: Slider ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 .questionInternal.narrafirma-question-type-slider {
     text-align: center;
@@ -457,72 +536,65 @@ button:disabled {
     margin-top: 12px;
 }
 
-.questionExternal.narrafirma-question-type-label {
-    background-color: white;
-    margin-bottom: 4px;
-    border-radius: 3px;
-}
-
-.questionExternal.narrafirma-question-type-filterNotice {
-    background-color: #d7dce4;
-    margin-bottom: 4px;
-    padding: 4px 4px 4px 8px;
-    border-radius: 2px;
-    font-style: italic;
-}
-
-.htmlWidget, .narrafirma-image {
-    margin-bottom: 4px;
-    border-radius: 12px;
-    padding: 8px;
-    margin: 8px; 
-}
-
-.questionPrompt {
-    padding: 0.4em 0.4em 0.1em 0.4em;
-    display: block;
-}
-
-.questionInternal {
-    padding: 0.4em;
-    margin-left: 0.6em;
-}
-
-.narrafirma-textbox {
-    width: 98%;
-    border: 1px solid black;
-}
-
-.narrafirma-textbox-short {
-    width: 10em;
-    border: 1px solid black;
-}
-
-textarea.narrafirma-textbox {
-    min-height: 5em;
-    resize: vertical;
-}
-
-.questionExternal.narrafirma-question-type-questionAnswer {
-    background-color: white;
-}
-
 .narrafirma-survey-link {
     display: block;
     padding: 1em 0 0 1em;
 }
 
-form {
-   padding-left: 0.7em;
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ write-in "other" text box ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
+.narrafirma-question-type-text .narrafirma-write-in-div {
+    margin: 0.5em 0.5em 0.3em 0;
 }
 
-.narrafirma-reminder {
-    background-color: #ffe1aa;
-	border-radius: 3px;
+.narrafirma-question-type-textarea .narrafirma-write-in-div {
+    margin: 0.5em 0.5em 0.3em 0;
 }
 
-.functionResult { /* apparently used on "stop story collection" page */
-    margin: 0.4em 0 1em 0.6em;
+.narrafirma-question-type-select .narrafirma-write-in-div {
+    margin: 0.5em 0.5em 0.3em 0;
+}
+
+.narrafirma-question-type-boolean .narrafirma-write-in-div {
+    margin: 0.5em 0.5em 0.3em 1em;
+}
+
+.narrafirma-question-type-checkbox .narrafirma-write-in-div {
+    margin: 0.5em 0 0.3em 0.4em;
+}
+
+.narrafirma-question-type-radiobuttons .narrafirma-write-in-div {
+    margin: 0.5em 0.5em 0.3em 1em;
+}
+
+.narrafirma-question-type-checkboxes .narrafirma-write-in-div {
+    margin: 0.5em 0.5em 0.3em 1em;
+}
+
+.narrafirma-question-type-slider .narrafirma--write-in-div {
+    text-align: left;
+    margin: 0.5em 0.5em 0.3em 0;
+}
+
+.narrafirma-write-in-prompt {
+    margin: 0;
+}
+
+input[type='text'].narrafirma-write-in-input {
+    width: 24em;
+    margin-left: 0.5em;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+}
+
+input[type='textarea'].narrafirma-write-in-textarea {
+    width: 90%;
+    margin-left: 0.5em;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    resize: vertical;
 }
 
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Adjustments for particular pages ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
@@ -530,6 +602,8 @@ form {
 .narrafirma-page_reviewIncomingStories .questionInternal {
 	padding-top: 0;
 }
+
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Annotation pages ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 .narrafirma-annotation-counts-graph {
     margin: 1em 0 0 4em;
@@ -549,7 +623,12 @@ button.narrafirma-add-annotation-choice {
     cursor: pointer;
 }
 
-/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Grid item panel (spreadsheet like table) ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Grid item panel (spreadsheet like table) ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
+.questionExternal.narrafirma-question-type-grid { /* no background for grid */
+    background-color: white;
+    margin-top: 0;
+}
 
 .narrafirma-griditem-form {
 	width: 800px;
@@ -597,6 +676,10 @@ button.narrafirma-griditempanel-close-button {
 .narrafirma-griditempanel-viewing .questionExternal {
     background-color: white;
     color: #6d6c6c;
+}
+
+.questionExternal .read-only { 
+    background-color: #f2f3f4;
 }
 
 /* hides "copy from template" button when viewing grid item */
@@ -738,7 +821,7 @@ table.scrolling-small {
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Story browser ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 table.filterTable {
-    width: 100%;
+    width: 90%;
     margin-left: 1.4em;
 }
 
@@ -750,7 +833,7 @@ table.filterTable td {
 	margin: 0.5em 0 0 1.4em;
 }
 
-/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ graph browser ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Graph browser ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 .graphBrowserSelect {
     width: 40%;
@@ -868,6 +951,12 @@ table.filterTable td {
     font-weight: bold; 
 }
 
+.narrafirma-story-card-write-in-answer {
+    margin-left: 1em;
+    font-size: 1em;
+    font-style: italic;
+}
+
 .narrafirma-story-card-select-unselected, .narrafirma-story-card-checkboxes-unselected, .narrafirma-story-card-radiobuttons-unselected {
     font-size: 0.75em;
 }
@@ -910,7 +999,7 @@ table.filterTable td {
     font-size: 1em;
 }
 
-/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ story card printing ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Story card printing ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 .storyCardForPrinting {
     page-break-after: always;
@@ -1062,6 +1151,18 @@ table.filterTable td {
     margin-left: 0.5em;
     margin-top: 0.5em;
     border-collapse: collapse;
+}
+
+fieldset input[type='checkbox'], input[type='radio'] {
+    margin: 0.3em 0 0 0.3em;
+}
+
+input[type="checkbox"] {
+    margin: 1.2em 0.3em 0.3em 0.3em;
+}
+
+label {
+    margin-left: 0.3em;
 }
 
 .narrafirma-questions-chooser-table-td, .narrafirma-graph-types-chooser-table-td {
@@ -1740,13 +1841,15 @@ td.narrafirma-mw-nested-title, td.narrafirma-mw-nested-stats {
     z-index: 10001;
     margin: 5% auto 0;
     padding: 1em 2em;
-    width: 90%;
-    max-width: 700px;
+    width: 80%;
+    min-width: 300px;
+    max-width: 80%;
+    height: 80%;
     min-height: 100px;
-    max-height: 600px;
+    max-height: 80%;
     background-color: #b0d4d4; 
     border: 1px groove black;
-    border-radius: 16px;
+    border-radius: 8px;
 }
 
 .modal-content.wide {
@@ -1754,10 +1857,10 @@ td.narrafirma-mw-nested-title, td.narrafirma-mw-nested-stats {
 }
 
 .modal-internal {
-    margin: 10px;
-    padding: 10px;
+    margin: 1em;
+    padding: 1em;
     overflow: auto;
-    max-height: 400px;
+    max-height: 85%;
     background-color: white; 
     border: 1px solid black;
 }

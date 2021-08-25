@@ -40,6 +40,7 @@ class Project {
     static default_graphTypesToCreate = {
         "data integrity graphs": false,
         "texts": false,
+        "write-in texts": false,
         "bar graphs": false,
         "histograms": false,
         "tables": false,

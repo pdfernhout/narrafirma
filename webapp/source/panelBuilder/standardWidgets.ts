@@ -9,6 +9,8 @@ import dialogSupport = require("../panelBuilder/dialogSupport");
 
 "use strict";
 
+const writeInTag = "WriteInEntry_";
+
 function getIdForText(text) {
     return text.replaceAll(" ", "_");
 }
@@ -20,18 +22,18 @@ function closeCopyCollisionTextDialogClicked(text, hideDialogMethod) {
 }
 
 function optionsForSelect(panelBuilder: PanelBuilder, model, fieldSpecification, currentValue, addNoSelectionOption) {
-    var specifiedChoices = fieldSpecification.valueOptions;
-    var choices = specifiedChoices;
+    const specifiedChoices = fieldSpecification.valueOptions;
+    let choices = specifiedChoices;
     
     if (_.isString(specifiedChoices)) {
         choices = valuePathResolver.newValuePath(model, specifiedChoices)();
         if (_.isString(choices)) {
             // Build choices by making items using tripelStore set
-            var choiceItems = [];
-            var choiceSet = Globals.project().tripleStore.getListForSetIdentifier(choices);
-            for (var i = 0; i < choiceSet.length; i++) {
-                var choiceIdentifier = choiceSet[i];
-                var item = Globals.project().tripleStore.makeObject(choiceIdentifier, true);
+            const choiceItems = [];
+            const choiceSet = Globals.project().tripleStore.getListForSetIdentifier(choices);
+            for (let i = 0; i < choiceSet.length; i++) {
+                const choiceIdentifier = choiceSet[i];
+                const item = Globals.project().tripleStore.makeObject(choiceIdentifier, true);
                 choiceItems.push(item);
             }
             choices = choiceItems;
@@ -43,17 +45,17 @@ function optionsForSelect(panelBuilder: PanelBuilder, model, fieldSpecification,
         return [];
     }
 
-    var isValueInChoices = false;
+    let isValueInChoices = false;
     
-    var options = [];
+    const options = [];
     
     // '-- select --'
     if (addNoSelectionOption) options.push({name: translate("#selection_has_not_been_made|(no selection)"), value: "", selected: !currentValue});
     
     choices.forEach(function(each) {
-        var label;
-        var value;
-        var selected;
+        let label;
+        let value;
+        let selected;
         if (_.isString(each)) {
             label = translate(fieldSpecification.id + "::selection:" + each, each);
             options.push({name: label, value: each});
@@ -91,14 +93,14 @@ function optionsForSelect(panelBuilder: PanelBuilder, model, fieldSpecification,
     return options;
 }
 
-var displayTypesWithoutValues = {
+const displayTypesWithoutValues = {
     label: true,
     header: true
 };
 
 function setSliderValueWithPopup(value, sliderValueOptions) {
-    var newValueText = prompt("Type a new value", value);
-    var newValue = parseInt(newValueText);
+    const newValueText = prompt("Type a new value", value);
+    const newValue = parseInt(newValueText);
     if (newValue && newValue >= 0 && newValue <= 100) { 
         sliderValueOptions.value = newValue;
         return "" + newValue;
@@ -108,48 +110,60 @@ function setSliderValueWithPopup(value, sliderValueOptions) {
 }
 
 export function displayQuestion(panelBuilder: PanelBuilder, model, fieldSpecification) {
-    var fieldID = fieldSpecification.id;
 
-    var displayType = fieldSpecification.displayType;
-    var questionLabel = panelBuilder.buildQuestionLabel(fieldSpecification);
-    const isAnnotationQuestion = fieldSpecification.id.indexOf("A_") >= 0;
+    const fieldID = fieldSpecification.id;
+    const displayType = fieldSpecification.displayType;
+    let questionLabel = panelBuilder.buildQuestionLabel(fieldSpecification);
 
-    var useNormalDivs = typeof fieldSpecification.displayWithoutQuestionDivs === "undefined" || !fieldSpecification.displayWithoutQuestionDivs;
-    
-    function makeLabel() {
-        // The for attribute of the label element must refer to a form control.
-        questionLabel[0].attrs["for"] = getIdForText(fieldID);
-        questionLabel[0].tag = "label";
-    }
+    const valueProperty = valuePathResolver.newValuePathForFieldSpecification(model, fieldSpecification);
 
-    function addAnnotationAnswer(event) {
-        const newAnswer = prompt('Type a new answer to add to the list of available answers for the annotation question "' + fieldSpecification.displayName + '."');
-        if (newAnswer) {
-            fieldSpecification.valueOptions.push(newAnswer);
-            Globals.project().addOptionToAnnotationChoiceQuestion(fieldSpecification.id, newAnswer);
-            m.redraw();
+    let writeInValue = undefined;
+    let writeInValueProperty = undefined;
+    if (fieldSpecification.writeInTextBoxLabel) {
+        writeInValueProperty = valuePathResolver.newValuePath(model, writeInTag + fieldSpecification.id);
+        if (!displayTypesWithoutValues[displayType]) {
+            writeInValue = writeInValueProperty();
         }
     }
-    
-    var parts: any = [];
-    function makeLegend() {
-        // Do nothing for now
-        parts.unshift(m("legend", questionLabel[0]));
-        questionLabel = [];
-    }
-    
-    var valueProperty = valuePathResolver.newValuePathForFieldSpecification(model, fieldSpecification);
 
-    // Only fetch value if the field needs it
-    var value;
+    let value;
     if (!displayTypesWithoutValues[displayType]) {
         value = valueProperty();
     }
     if (value === undefined) value = "";
 
-    // if someone has been working in a textarea and has written a lot of text, and it is about to be ovewritten because somebody else was doing the same thing,
-    // show them both texts so they can resolve the conflict
-    if (displayType === "textarea") {
+    const isAnnotationQuestion = fieldSpecification.id.indexOf("A_") >= 0;
+    const useNormalDivs = typeof fieldSpecification.displayWithoutQuestionDivs === "undefined" || !fieldSpecification.displayWithoutQuestionDivs;
+    const readOnly = panelBuilder.readOnly || fieldSpecification.displayReadOnly || (fieldSpecification.valueImmutable && value) || undefined;
+    const disabled = readOnly || undefined;
+
+    let parts: any = [];
+
+    function standardChangeMethod(event, value) {
+        if (event) value = event.target.value;
+        valueProperty(value);
+    }
+
+    const standardValueOptions = {
+        value: value,
+        id: getIdForText(fieldID),
+        onchange: standardChangeMethod,
+        readOnly: readOnly,
+        disabled: disabled
+    };
+    
+    ///////////////////////////////////////////////////////////////////// text /////////////////////////////////////////////////////////////////////
+    function displayTextQuestion() {
+        questionLabel[0].attrs["for"] = getIdForText(fieldID);
+        questionLabel[0].tag = "label";
+        return [m("input[class=narrafirma-textbox]", standardValueOptions), m("br")];
+    }
+
+    ///////////////////////////////////////////////////////////////////// textarea /////////////////////////////////////////////////////////////////////
+    function displayTextareaQuestion() {
+
+        // if someone has been working in a textarea and has written a lot of text, and it is about to be ovewritten because somebody else was doing the same thing,
+        // show them both texts so they can resolve the conflict
         if (clientState.anHTMLElementValueIsBeingSetBecauseOfAnIncomingMessage()) {
             const element = <HTMLTextAreaElement>document.getElementById(fieldID);
             const activeElement = <HTMLTextAreaElement>document.activeElement;
@@ -168,59 +182,16 @@ export function displayQuestion(panelBuilder: PanelBuilder, model, fieldSpecific
                 }
             }
         }
-    }
-    
-    function change(event, value) {
-        if (event) value = event.target.value;
-        valueProperty(value);
-    }
 
-    function isEmpty(value) {
-        return value === undefined || value === null || value === "";
-    }
-    
-    var readOnly = panelBuilder.readOnly || fieldSpecification.displayReadOnly || (fieldSpecification.valueImmutable && value) || undefined;
-    // var disabled = (readOnly && displayType === "select") || undefined;
-    var disabled = readOnly || undefined;
+        questionLabel[0].attrs["for"] = getIdForText(fieldID);
+        questionLabel[0].tag = "label";
 
-    var standardValueOptions = {
-        value: value,
-        id: getIdForText(fieldID),
-        onchange: change,
-        readOnly: readOnly,
-        disabled: disabled
-    };
-    
-    /////////////////////// LABEL
-
-    if (displayType === "label") {
-        // Nothing to do
-
-    ///////////////////////////////////////////////////////////////////// HEADER /////////////////////////////////////////////////////////////////////
-
-    } else if (displayType === "header") {
-        // Nothing to do; bolding done using style
-    
-    ///////////////////////////////////////////////////////////////////// TEXT /////////////////////////////////////////////////////////////////////
-
-    } else if (displayType === "text") {
-        makeLabel();
-        parts = [
-            m("input[class=narrafirma-textbox]", standardValueOptions),
-            m("br")
-        ];
-
-    ///////////////////////////////////////////////////////////////////// TEXTAREA /////////////////////////////////////////////////////////////////////
-
-    } else if (displayType === "textarea") {
-        makeLabel();
-        parts = [
+        return [
             m("textarea[class=narrafirma-textbox]", standardValueOptions),
-
             clientState.cachedOverwrittenTexts(fieldID) ? 
-            
                 m("div.narrafirma-collision-message", 
-                    m("div.narrafirma-collision-header", m("b", "Collision alert!"), " Another user has changed the contents of this text box. This is your version. It will remain here until you click one of the buttons below (or reload the page)."), 
+                    m("div.narrafirma-collision-header", m("b", "Collision alert!"), 
+                        " Another user has changed the contents of this text box. This is your version. It will remain here until you click one of the buttons below (or reload the page)."), 
                     m("textarea[class=narrafirma-textbox]", {value: clientState.cachedOverwrittenTexts(fieldID), id: fieldID + "_cached"}),
                     m("div.narrafirma-collision-buttons", [
                         m("button.narrafirma-collision-button", {onclick: function () {
@@ -238,104 +209,100 @@ export function displayQuestion(panelBuilder: PanelBuilder, model, fieldSpecific
                         }}, "I have resolved the conflict myself (delete this version)"),]),
                     m("div.narrafirma-collision-explanation", "You can also find both versions of the text in your browser's development console (until you reload the page).")
                 ) : [],
-
             m("br")
         ];
+    }
 
-    ///////////////////////////////////////////////////////////////////// CHECKBOX /////////////////////////////////////////////////////////////////////
-
-    } else if (displayType === "checkbox") {
-        makeLabel();
-        var checkboxText = "";
-        if (fieldSpecification.displayConfiguration) {
-            checkboxText = fieldSpecification.displayConfiguration;
-        }
-        parts = [
+    ///////////////////////////////////////////////////////////////////// one checkbox /////////////////////////////////////////////////////////////////////
+    function displayCheckboxQuestion() {
+        questionLabel[0].attrs["for"] = getIdForText(fieldID);
+        questionLabel[0].tag = "label";
+        return [
              m("input[type=checkbox]", {
                 id: getIdForText(fieldID), 
                 disabled: disabled, 
                 checked: value, 
-                onchange: function(event) {
-                    change(null, event.target.checked); 
-                }
+                onchange: function(event) { standardChangeMethod(null, event.target.checked); }
              }),
-             m("label", {"for": getIdForText(fieldID)}, checkboxText),
+             m("label", {"for": getIdForText(fieldID)}, fieldSpecification.displayConfiguration || ""),
              m("br")
          ];
-    
-    ///////////////////////////////////////////////////////////////////// CHECKBOXES /////////////////////////////////////////////////////////////////////
+    }
 
-    } else if (displayType === "checkboxes") {
-        // The for attribute of the label element must refer to a form control.
+    ///////////////////////////////////////////////////////////////////// set of checkboxes /////////////////////////////////////////////////////////////////////
+    function displayCheckboxesQuestion() {
+
+        function disableUncheckedBoxesIfReachedMaxNumAnswers(checkBoxIDs) {
+            let numOptionsChecked = 0;
+            checkBoxIDs.map(function (anOptionID, index) {
+                if (document.querySelector('#' + anOptionID + ':checked')) numOptionsChecked++;
+            })
+            const disableUncheckedBoxes = (numOptionsChecked >= fieldSpecification.maxNumAnswers);
+            checkBoxIDs.map(function (anOptionID, index) {
+                const element = document.querySelector('#' + anOptionID) as HTMLInputElement;
+                if (element && !element.checked) {
+                    element.disabled = disableUncheckedBoxes;
+                    const label = document.querySelector('label[for="' + anOptionID + '"]');
+                    if (label) label.setAttribute("style", "opacity: " + (disableUncheckedBoxes ? "0.5" : "1.0"));
+                }
+            })
+        }
+
         delete questionLabel[0].attrs["for"];
         if (!value) {
             value = {};
-            change(null, value);
+            standardChangeMethod(null, value);
         // this else is here because of a bug (fixed) in the survey code that caused checkbox answers
         // to be stored as strings instead of dictionaries
         // this will convert the string to a dictionary without losing the (one) value that was set
         } else if (typeof(value) === "string") {
-            var option = value;
+            const option = value;
             value = {}
             value[option] = true;
-            change(null, value);
+            standardChangeMethod(null, value);
         }
+    
         const checkBoxIDsForThisQuestion = [];
-        if (fieldSpecification.displayType === "checkboxes" && fieldSpecification.maxNumAnswers) {
+        if (fieldSpecification.maxNumAnswers) {
             fieldSpecification.valueOptions.map(function (option, index) {
                 const optionID = getIdForText(fieldID + "_" + option);
                 checkBoxIDsForThisQuestion.push(optionID);
-            })
+            });
         }
-        parts = [
+
+        const questionParts = [
             fieldSpecification.valueOptions.map(function (option, index) {
-                let optionID = getIdForText(fieldID + "_" + option);
+                const optionName = (typeof option === "string") ? option : option.name;
+                const optionValue = (typeof option === "string") ? option : option.value;
+                const optionID = getIdForText(fieldID + "_" + option);
                 return [
                     m("input[type=checkbox]", {
                         id: optionID, 
-                        disabled: disabled, 
-                        checked: !!value[option], 
+                        checked: !!value[optionValue], 
                         onchange: function(event) {
-                            value[option] = event.target.checked; 
-                            change(null, value); 
-
-                            value[option] = event.target.checked; 
-                            change(null, value); 
-
+                            value[optionValue] = event.target.checked; 
+                            standardChangeMethod(null, value); 
                             if (fieldSpecification.maxNumAnswers) {
-                                let numOptionsChecked = 0;
-                                checkBoxIDsForThisQuestion.map(function (anOptionID, index) {
-                                    if (document.querySelector('#' + anOptionID + ':checked')) numOptionsChecked++;
-                                })
-                                const disableUncheckedBoxes = (numOptionsChecked >= fieldSpecification.maxNumAnswers);
-                                checkBoxIDsForThisQuestion.map(function (anOptionID, index) {
-                                    const element = document.querySelector('#' + anOptionID) as HTMLInputElement;
-                                    if (element && !element.checked) {
-                                        element.disabled = disableUncheckedBoxes;
-                                        const label = document.querySelector('label[for="' + anOptionID + '"]');
-                                        if (label) label.setAttribute("style", "opacity: " + (disableUncheckedBoxes ? "0.5" : "1.0"));
-                                    }
-                                })
+                                disableUncheckedBoxesIfReachedMaxNumAnswers(checkBoxIDsForThisQuestion);
                             }
-                        } 
+                        }
                     }),
-                    m("label", {"for": optionID}, sanitizeHTML.generateSmallerSetOfSanitizedHTMLForMithril(option)), 
-                    m("br"),
+                    m("label", {"for": optionID}, sanitizeHTML.generateSmallerSetOfSanitizedHTMLForMithril(optionName)),
+                    m("br")
                 ];
             })
         ];
-        makeLegend();
-        parts = [m("fieldset", parts)];
-        if (isAnnotationQuestion) parts.push(m("button.narrafirma-add-annotation-choice", {style: "margin-left: 1.5em", onclick: addAnnotationAnswer}, "Add New Answer"));
+        questionParts.unshift(m("legend", questionLabel[0]));
+        questionLabel = [];
+        return questionParts;     
+    }
 
-    ///////////////////////////////////////////////////////////////////// RADIO BUTTONS /////////////////////////////////////////////////////////////////////
-
-    } else if (displayType === "radiobuttons") {
-        // The for attribute of the label element must refer to a form control.
+    ///////////////////////////////////////////////////////////////////// radio buttons /////////////////////////////////////////////////////////////////////
+    function displayRadioButtonsQuestion() {
         delete questionLabel[0].attrs["for"];
-        parts = [
+        const questionParts = [
             fieldSpecification.valueOptions.map(function (option, index) {
-                var optionID = getIdForText(fieldID + "_" + option);
+                const optionID = getIdForText(fieldID + "_" + option);
                 return [
                     m("input[type=radio]", {
                         id: optionID, 
@@ -343,30 +310,29 @@ export function displayQuestion(panelBuilder: PanelBuilder, model, fieldSpecific
                         name: fieldSpecification.id, 
                         disabled: disabled, 
                         checked: value === option, 
-                        onchange: change.bind(null, null, option) 
+                        onchange: standardChangeMethod.bind(null, null, option) 
                     }),
                     m("label", {"for": optionID}, sanitizeHTML.generateSmallerSetOfSanitizedHTMLForMithril(option)),
                     m("br")
                 ];
             })
         ];
-        makeLegend();
-        parts = [m("fieldset", parts)];
-        if (isAnnotationQuestion) parts.push(m("button.narrafirma-add-annotation-choice", {style: "margin-left: 1.5em", onclick: addAnnotationAnswer}, "Add New Answer"));
+        questionParts.unshift(m("legend", questionLabel[0]));
+        questionLabel = [];
+        return questionParts;
+    }
 
-    ///////////////////////////////////////////////////////////////////// BOOLEAN /////////////////////////////////////////////////////////////////////
-
-    } else if (displayType === "boolean") {
-        // The for attribute of the label element must refer to a form control.
+    ///////////////////////////////////////////////////////////////////// boolean /////////////////////////////////////////////////////////////////////
+    function displayBooleanQuestion() {
         delete questionLabel[0].attrs["for"];
-        parts = [
+        const questionParts = [
             m("input[type=radio]", {
                 id: getIdForText(fieldID + "_yes"), 
                 value: true, 
                 name: fieldSpecification.id, 
                 disabled: disabled, 
                 checked: value === true, 
-                onchange: change.bind(null, null, true) }),
+                onchange: standardChangeMethod.bind(null, null, true) }),
             m("label", {"for": getIdForText(fieldID + "_yes")}, "yes"),
             m("br"),
             m("input[type=radio]", {
@@ -375,46 +341,45 @@ export function displayQuestion(panelBuilder: PanelBuilder, model, fieldSpecific
                 name: fieldSpecification.id, 
                 disabled: disabled, 
                 checked: value === false, 
-                onchange: change.bind(null, null, false) }),
+                onchange: standardChangeMethod.bind(null, null, false) }),
             m("label", {"for": getIdForText(fieldID + "_no")}, "no"),
             m("br")
         ];
-        makeLegend();
-        parts = [m("fieldset", parts)];
-    
-    ///////////////////////////////////////////////////////////////////// SELECT /////////////////////////////////////////////////////////////////////
+        questionParts.unshift(m("legend", questionLabel[0]));
+        questionLabel = [];
+        return questionParts;
+    }
 
-    } else if (displayType === "select") {
-        makeLabel();
-        var selectOptionsRaw = optionsForSelect(panelBuilder, model, fieldSpecification, value, true);
-        var selectOptions = selectOptionsRaw.map(function (option, index) {
-            var optionOptions = {value: option.value, selected: undefined};
+    ///////////////////////////////////////////////////////////////////// select /////////////////////////////////////////////////////////////////////
+    function displaySelectQuestion() {
+        questionLabel[0].attrs["for"] = getIdForText(fieldID);
+        questionLabel[0].tag = "label";
+
+        const selectOptionsRaw = optionsForSelect(panelBuilder, model, fieldSpecification, value, true);
+        const selectOptions = selectOptionsRaw.map(function (option, index) {
+            const optionOptions = {value: option.value, selected: undefined};
             if (option.selected) optionOptions.selected = 'selected';
             return m("option", optionOptions, option.name);
         });
+        return [m("select", standardValueOptions, selectOptions), (fieldSpecification.displayWithoutQuestionDivs || isAnnotationQuestion) ? "" : m("br")];
+    }
 
-        parts = [m("select", standardValueOptions, selectOptions), (fieldSpecification.displayWithoutQuestionDivs || isAnnotationQuestion) ? "" : m("br")];
-        if (isAnnotationQuestion) parts.push(m("button.narrafirma-add-annotation-choice", {onclick: addAnnotationAnswer}, "Add New Answer"));
-    
-    ///////////////////////////////////////////////////////////////////// SLIDER /////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////// slider /////////////////////////////////////////////////////////////////////
+    function displaySliderQuestion() {
 
-    } else if (displayType === "slider") {
-        makeLabel();
-        var checkboxID = getIdForText(fieldID) + "_doesNotApply";
-        var sliderValueOptions = {
-            value: value,
-            id: getIdForText(fieldID),
-            onchange: change,
-            readOnly: readOnly,
-            disabled: disabled,
-            min: 0,
-            max: 100,
-            step: 1
-        };
+        function isEmpty(value) {
+            return value === undefined || value === null || value === "";
+        }
         
-        var leftSideText = "";
-        var rightSideText = "";
-        var doesNotApplyText = "Does not apply";
+        questionLabel[0].attrs["for"] = getIdForText(fieldID);
+        questionLabel[0].tag = "label";
+
+        const checkboxID = getIdForText(fieldID) + "_doesNotApply";
+        const sliderValueOptions = { value: value, id: getIdForText(fieldID), onchange: standardChangeMethod, readOnly: readOnly, disabled: disabled, min: 0, max: 100, step: 1 };
+        
+        let leftSideText = "";
+        let rightSideText = "";
+        let doesNotApplyText = "Does not apply";
         if (fieldSpecification.displayConfiguration) {
             if (fieldSpecification.displayConfiguration.length > 1) {
                 leftSideText = fieldSpecification.displayConfiguration[0];
@@ -427,7 +392,8 @@ export function displayQuestion(panelBuilder: PanelBuilder, model, fieldSpecific
         
        // Could suggest 0-100 to support <IE10 that don't have range input -- or could do polyfill
         // if (fieldSpecification.displayPrompt) questionLabel[0].children = fieldSpecification.displayPrompt + " (0-100)";
-        parts = [
+
+        const questionParts = [
             m("span", {"class": "narrafirma-slider-low-arrow"}, "◀"),
             m("span", {"class": "narrafirma-slider-low"}, leftSideText),
             m('span', {"class": "narrafirma-slider"}, m('input[type="range"]', sliderValueOptions)),
@@ -451,8 +417,7 @@ export function displayQuestion(panelBuilder: PanelBuilder, model, fieldSpecific
                 id: checkboxID,
                 checked: isEmpty(sliderValueOptions.value),
                 onclick: function(event) { 
-                    var isChecked = event.target.checked; 
-                    if (isChecked) { 
+                    if (event.target.checked) { 
                         valueProperty(""); 
                     } else {
                         valueProperty("50");
@@ -461,11 +426,78 @@ export function displayQuestion(panelBuilder: PanelBuilder, model, fieldSpecific
             }),
             m("label", {"for": checkboxID}, doesNotApplyText)
         ];
+        return questionParts;
+    }
+
+    ///////////////////////////////////////////////////////////////////// write-in (extra) text box ///////////////////////////////////////////////////////////
+    function displayWriteInQuestion() {
+        let label = fieldSpecification.writeInTextBoxLabel;
+        let mString = "input[type=text].narrafirma-write-in-input";
+        if (label.indexOf("**") == 0) {
+            mString = "textarea.narrafirma-write-in-textarea";
+            label = label.replaceAll("**", "");
+        }
+        const writeInDivParts = [
+            m("span.narrafirma-write-in-prompt"), sanitizeHTML.generateSmallerSetOfSanitizedHTMLForMithril(label),
+            m(mString, {
+                id: getIdForText(fieldSpecification.id) + "_input",
+                value: writeInValue || "", 
+                onchange: function(event) { 
+                    if (event && event.target.value) {
+                        writeInValue = event.target.value; 
+                        writeInValueProperty(writeInValue);
+                    }
+                }
+            }),
+            m("br")
+        ];
+        return m("div.narrafirma-write-in-div", writeInDivParts);
+    }
+
+    function addAnnotationAnswer(event) {
+        const newAnswer = prompt('Type a new answer to add to the list of available answers for the annotation question "' + fieldSpecification.displayName + '."');
+        if (newAnswer) {
+            fieldSpecification.valueOptions.push(newAnswer);
+            Globals.project().addOptionToAnnotationChoiceQuestion(fieldSpecification.id, newAnswer);
+            m.redraw();
+        }
+    }
+
+    ///////////////////////////////////////////////////////////////////// now call the methods ///////////////////////////////////////////////////////////////
+
+    if (displayType === "label") {
+        // Nothing to do
+    } else if (displayType === "header") {
+        // Nothing to do; bolding done using style
+    } else if (displayType === "text") {
+        parts = displayTextQuestion();
+    } else if (displayType === "textarea") {
+        parts = displayTextareaQuestion();
+    } else if (displayType === "checkbox") {
+        parts = displayCheckboxQuestion();
+    } else if (displayType === "checkboxes") {
+        parts = [m("fieldset", displayCheckboxesQuestion())];
+        if (isAnnotationQuestion) parts.push(m("button.narrafirma-add-annotation-choice", {style: "margin-left: 1.5em", onclick: addAnnotationAnswer}, "Add New Answer"));
+    } else if (displayType === "radiobuttons") {
+        parts = [m("fieldset", displayRadioButtonsQuestion())];
+        if (isAnnotationQuestion) parts.push(m("button.narrafirma-add-annotation-choice", {style: "margin-left: 1.5em", onclick: addAnnotationAnswer}, "Add New Answer"));
+    } else if (displayType === "boolean") {
+        parts = [m("fieldset", displayBooleanQuestion())];
+    } else if (displayType === "select") {
+        parts = displaySelectQuestion();
+        if (isAnnotationQuestion) parts.push(m("button.narrafirma-add-annotation-choice", {onclick: addAnnotationAnswer}, "Add New Answer"));
+    } else if (displayType === "slider") {
+        parts = displaySliderQuestion();
+
     } else {
         parts = [
             m("span", {style: {"font-weight": "bold"}}, "UNFINISHED: " + fieldSpecification.displayType),
             m("br")
         ];
+    }
+
+    if (fieldSpecification.writeInTextBoxLabel) {
+        parts.push(displayWriteInQuestion());
     }
 
     if (parts.length && useNormalDivs) {
@@ -476,9 +508,11 @@ export function displayQuestion(panelBuilder: PanelBuilder, model, fieldSpecific
         parts = questionLabel.concat(parts);
     }
     
-    var classString = "questionExternal";
+    let classString = "questionExternal";
     if (isAnnotationQuestion) classString += "-annotation"; 
     classString += " narrafirma-question-type-" + displayType;
+
+    if (readOnly) classString += " read-only";
     
     if (fieldSpecification.displayClass) {
         classString += " " + fieldSpecification.displayClass;

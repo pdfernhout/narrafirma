@@ -1,4 +1,4 @@
-﻿Data column name,Type,About,Short name,Long name,Max,Answers,,,,
+﻿Data column name,Type,About,Short name,Long name,Options,Answers,,,,
 ,Participant ID column name,import,,,,Respondent,,,,
 EQuestion,eliciting,eliciting,Eliciting question,Please choose a question to which you would like to respond.,,Surprise|Surprise|What has been your biggest surprise in the past year?,ReallyLike|Really like|What experience comes to mind when you think about what success is really like?,Discovered|Discovery|What was your biggest discovery at work in the past year?,,
 ,Story text column name,import,,,,SText,,,,

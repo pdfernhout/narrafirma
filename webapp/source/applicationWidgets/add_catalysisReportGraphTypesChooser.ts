@@ -26,6 +26,7 @@ function add_catalysisReportGraphTypesChooser(panelBuilder: PanelBuilder, model,
         "correlation maps": true,
         "data integrity graphs": true,
         "texts": true,
+        "write-in texts": true
     }
 
     const allGraphTypesThumbnailNames = {
@@ -39,6 +40,7 @@ function add_catalysisReportGraphTypesChooser(panelBuilder: PanelBuilder, model,
         "correlation maps": "correlationMaps",
         "data integrity graphs": "dataIntegrity",
         "texts": "texts",
+        "write-in texts": "writeInTexts"
     }
     
     const graphTypesToDisplayNamesMap = {
@@ -52,6 +54,7 @@ function add_catalysisReportGraphTypesChooser(panelBuilder: PanelBuilder, model,
         "correlation maps": "correlation maps (all scales together + choices)",
         "data integrity graphs": "data integrity graphs",
         "texts": "text listings",
+        "write-in texts": "write-in text listings"
     }
 
     const graphTypesToSingularDisplayNamesMap = {
@@ -65,12 +68,13 @@ function add_catalysisReportGraphTypesChooser(panelBuilder: PanelBuilder, model,
         "correlation maps": "correlation map (all scales together)",
         "data integrity graphs": "data integrity graph",
         "texts": "text listing",
+        "write-in texts": "write-in text listing"
     }
     
     const columnNames = ["One question at a time", "Two-question combinations", "Three or more questions together"];
 
     const graphTypesInTableColumns = [
-        ["bar graphs", "histograms", "texts"],
+        ["bar graphs", "histograms", "texts", "write-in texts"],
         ["tables", "multiple histograms", "scatterplots"],
         ["contingency-histogram tables", "multiple scatterplots", "correlation maps", "data integrity graphs"]
     ]
@@ -133,7 +137,7 @@ function add_catalysisReportGraphTypesChooser(panelBuilder: PanelBuilder, model,
             column.push(checkbox);
             if (graphTypesToCreate && graphTypesToCreate[graphType]) totalGraphCount += count;
         })
-        columnTDs.push(m("td", {"class": "narrafirma-graph-types-chooser-table-td"}, column));
+        columnTDs.push(m("td", {"class": "narrafirma-graph-types-chooser-table-td"}, m("fieldset", column)));
     }
 
     // TODO: Translate
@@ -193,6 +197,15 @@ function graphCountForGraphType(graphType, questions, graphMultiChoiceQuestionsA
     if (graphType === "texts") {
         questions.forEach((question) => {
             if (question.displayType === "text" || question.displayType === "textarea") {
+                graphCount++;
+            }
+        });
+        return graphCount;
+    }
+
+    if (graphType === "write-in texts") {
+        questions.forEach((question) => {
+            if (question.writeInTextBoxLabel) {
                 graphCount++;
             }
         });

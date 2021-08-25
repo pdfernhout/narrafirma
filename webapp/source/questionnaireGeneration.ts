@@ -52,6 +52,7 @@ export function convertEditorQuestions(editorQuestions, prefixQPA) {
         const id = prefixQPA + shortName;
         const questionType = question[keyPrefix + "type"];
         const prompt = question[keyPrefix + "text"];
+        const writeInTextBoxLabel = question[keyPrefix + "writeInTextBoxLabel"];
 
         const options = [];
         const optionsString = question[keyPrefix + "options"];
@@ -101,6 +102,7 @@ export function convertEditorQuestions(editorQuestions, prefixQPA) {
             id: id, 
             valueOptions: valueOptions, 
             maxNumAnswers: maxNumAnswers,
+            writeInTextBoxLabel: writeInTextBoxLabel,
             displayName: shortName, 
             displayPrompt: prompt,
             displayConfiguration: displayConfiguration,

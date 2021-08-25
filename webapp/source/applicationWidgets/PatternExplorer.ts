@@ -143,6 +143,7 @@ class PatternExplorer {
     thingsYouCanDoPanelSpecification = null;
     thingsYouCanDoIfNoSelectionPanelSpecification = null;
     textAnswersPanelSpecification = null;
+    writeInTextAnswersPanelSpecification = null;
     observationsPanelSpecification = null;
     interpretationsPanelSpecification = null;
     
@@ -368,6 +369,18 @@ class PatternExplorer {
                     }
             ]
         };
+        this.writeInTextAnswersPanelSpecification = {
+            "id": "writeInTextAnswersPanel",
+            panelFields: [
+                {
+                    id: "writeInTextAnswersPanel_texts",
+                    valuePath: "currentWriteInTextAnswers",
+                    displayName: "Write-in text answers",
+                    displayPrompt: "These are the <strong>write-in texts</strong> your participants wrote for this question. They are sorted alphabetically. Answers with a number in parentheses were entered more than once. To include any of these answers in your catalysis report, copy and paste them into your observation.",
+                    displayType: "textarea",
+                    }
+            ]
+        };
 
         this.observationsPanelSpecification = {
             "id": "observationPanel",
@@ -585,6 +598,13 @@ class PatternExplorer {
                     panelBuilder.buildPanel(this.textAnswersPanelSpecification, this),
                     buildObservationsAndInterpretationsPanels(),
                 ];
+            } else if (this.currentPattern && this.currentPattern.graphType === "write-in texts") {
+                parts = [
+                    buildGridHeader(),
+                    this.patternsGrid.calculateView(),
+                    panelBuilder.buildPanel(this.writeInTextAnswersPanelSpecification, this),
+                    buildObservationsAndInterpretationsPanels(),
+                ];
             } else { 
                 const numStories = this.modelForStoryGrid.storiesSelectedInGraph.length;
                 const storyOrStoriesWord = (numStories > 1) ? "stories" : "story";
@@ -598,7 +618,7 @@ class PatternExplorer {
                             this.graphHolder.currentGraph ? "" : m("div.narrafirma-pattern-browser-no-graph-message", 
                                 "The number of stories for this pattern falls below the minimum count of " + this.graphHolder.minimumStoryCountRequiredForGraph 
                                 + ", which you set on the Configure catalysis report page"
-                                + ". To see this graph, choose a lower minimum story count."),
+                                + ". To display this graph, choose a lower minimum story count."),
                             (this.modelForStoryGrid.storiesSelectedInGraph.length > 0) ? 
                                 m("div", {"class": "narrafirma-pattern-browser-selected-stories-header"}, selectedStoriesText) : m("div"),
                             (this.modelForStoryGrid.storiesSelectedInGraph.length > 0) ? this.storyGrid.calculateView() : m("div"),
@@ -877,6 +897,21 @@ class PatternExplorer {
             scaleQuestions.forEach((question1) => {
                 if (build) {
                     result.push(this.makePattern(nextID(), "histogram", [question1], null));
+                } else {
+                    graphCount++;
+                }
+            });
+        };
+
+        // write-in texts
+        if (this.graphTypesToCreate["write-in texts"]) {
+            let allQuestionsWithAWriteInOption = [];
+            nominalQuestions.map((question) => { if (question.writeInTextBoxLabel) allQuestionsWithAWriteInOption.push(question); });
+            scaleQuestions.map((question) => { if (question.writeInTextBoxLabel) allQuestionsWithAWriteInOption.push(question); });
+            textQuestions.map((question) => { if (question.writeInTextBoxLabel) allQuestionsWithAWriteInOption.push(question); });
+            allQuestionsWithAWriteInOption.forEach((question1) => {
+                if (build) {
+                    result.push(this.makePattern(nextID(), "write-in texts", [question1], "Write-in texts"));
                 } else {
                     graphCount++;
                 }
@@ -1185,6 +1220,9 @@ class PatternExplorer {
             case "texts":
                 newGraph = null;
                 break;
+            case "write-in texts":
+                newGraph = null;
+                break;
            default:
                 console.log("ERROR: Unexpected graph type");
                 alert("ERROR: Unexpected graph type");
@@ -1213,6 +1251,39 @@ class PatternExplorer {
                     answerKeys.push(text);
                 }
                 answers[text] += 1;
+            }
+        });
+        answerKeys.sort();
+        
+        var sortedAndFormattedAnswers = "";
+        for (var i = 0; i < answerKeys.length; i++) {
+            var answer = answerKeys[i];
+            sortedAndFormattedAnswers += answer;
+            if (answers[answer] > 1) sortedAndFormattedAnswers += " (" + answers[answer] + ") ";
+            if (i < answerKeys.length - 1) sortedAndFormattedAnswers +=  "\n--------\n";
+        }
+        return sortedAndFormattedAnswers;
+    }
+
+    currentWriteInTextAnswers() {
+        if (!this.catalysisReportObservationSetIdentifier) throw new Error("currentWriteInTextAnswers: this.catalysisReportObservationSetIdentifier is undefined");
+        if (!this.currentPattern) return "";
+        if (!this.currentPattern.questions[0]) return "";
+        if (!this.graphHolder.allStories) return "";
+
+        var questionID = this.currentPattern.questions[0].id; 
+        var stories = this.graphHolder.allStories; 
+        var answers = {};
+        var answerKeys = [];
+
+        stories.forEach(function (story) {
+            var writeInText = story.fieldValueWriteIn(questionID);
+            if (writeInText) {
+                if (!answers[writeInText]) {
+                    answers[writeInText] = 0;
+                    answerKeys.push(writeInText);
+                }
+                answers[writeInText] += 1;
             }
         });
         answerKeys.sort();

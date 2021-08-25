@@ -64,6 +64,16 @@ var panel: Panel = {
             displayVisible: function(panelBuilder, model) { return matchQuestionType(model, ["select", "radiobuttons", "checkboxes"]); }
         },
         {
+            id: "participantQuestion_writeInTextBoxLabel",
+            valuePath: "participantQuestion_writeInTextBoxLabel",
+            valueType: "string",
+            displayType: "text",
+            displayName: "Write-in answer label",
+            displayPrompt: `If you want participants to be able to append an extra <strong>write-in answer</strong> for this question,
+                enter a label for the write-in text box here.`,
+            displayVisible: function(panelBuilder, model) { return matchQuestionType(model, ["boolean", "checkbox", "checkboxes", "text", "textarea", "select", "radiobuttons", "slider"]); }
+        },
+        {
             id: "participantQuestion_maxNumAnswers",
             valueType: "string",
             valueOptions: ["2", "3", "4", "5", "6", "7", "8", "9", "10"],

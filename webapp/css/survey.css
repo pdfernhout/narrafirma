@@ -44,21 +44,49 @@ legend {
 	margin-left: -2em;
 }
 
-textarea, input, select {
+textarea {
+    width: 100%;
+    height: auto;
+    margin-top: 0.5em;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 1em;
+    resize: vertical;
+}
+
+input, select {
     margin-top: 0.5em;
 	font-family: Arial, Helvetica, sans-serif;
 	font-size: 1em;
 }
 
-textarea:-moz-read-only, input:-moz-read-only { /* For Firefox */
+fieldset input[type='checkbox'], input[type='radio'] {
+    margin: 0.3em 0.5em 0.3em 0.3em;
+}
+
+input[type='checkbox']  { 
+    margin: 1.2em 0.5em 0.3em 0.3em;
+}
+
+input:read-only {
     border: 1px solid #979696;
-    background-color: white;
+    color: #979696;
+}
+
+textarea:read-only {
+    border: 1px solid #979696;
     color: #979696;
     resize: vertical;
 }
 
-textarea:read-only, input:read-only {
+input:-moz-read-only { /* For Firefox */
     border: 1px solid #979696;
+    background-color: white;
+    color: #979696;
+}
+
+textarea:-moz-read-only { /* For Firefox */
+    border: 1px solid #979696;
+    background-color: white;
     color: #979696;
     resize: vertical;
 }
@@ -74,19 +102,22 @@ textarea:read-only, input:read-only {
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ story areas ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 .narrafirma-survey-story {
-	margin: 0px 0px 30px 0px;
+	margin: 0 0 10em 0;
 }
 
-.narrafirma-survey-prompt {
-    margin: 4px 10px 4px 10px;
+label.narrafirma-survey-prompt {
+    margin: 0.3em 0 0 0.5em;
+}
+
+span.narrafirma-survey-prompt { /* used in "please choose a question" question */
+    margin: 0.3em 0 1em 0.5em;
 }
 
 .narrafirma-survey-question-external {
     border-radius: 3px;
     background-color: var(--color-background-question-even-story);
-    margin-bottom: 6px;
-    margin-top: 6px;
-    padding: 8px;
+    margin: 0.4em 0 0.4em 0;
+    padding: 0.6em;
 }
 
 .narrafirma-survey-story-odd .narrafirma-survey-question-external {
@@ -98,7 +129,7 @@ textarea:read-only, input:read-only {
 }
 
 .narrafirma-survey-question-internal {
-	margin: 0 20px;
+	margin: 0 1em 0 1em;
 }
 
 .narrafirma-survey-question-type-header {
@@ -120,20 +151,33 @@ textarea:read-only, input:read-only {
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ input areas ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 .narrafirma-survey-question-type-textarea textarea {
+    margin-top: 0.4em;
     width: 100%;
     box-sizing: border-box;
     -moz-box-sizing: border-box;
     -webkit-box-sizing: border-box;
-    min-height: 10em;
+    min-height: 8em;
     resize: vertical;
 }
 
 .narrafirma-survey-question-type-text input {
+    margin-top: 0.4em;
     width: 100%;
     box-sizing: border-box;
     -moz-box-sizing: border-box;
     -webkit-box-sizing: border-box;
 }
+
+.narrafirma-survey-question-type-select select {
+    margin-top: 0.5em;
+}
+
+label .narrafirma-survey-question-internal .narrafirma-survey-question-type-checkbox {
+    margin-left: 0.3em;
+}
+
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ slider ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
 
 .narrafirma-survey-question-type-slider table {
     min-width: 100%;
@@ -181,6 +225,7 @@ textarea:read-only, input:read-only {
 input[type='range']{
     height: 0.5em;
     border: none;
+    margin: 0 0.4em 0 0.4em;
 }
 
 /* mobile */
@@ -218,6 +263,62 @@ input[type='range']::-webkit-slider-thumb{
 
 .narrafirma-survey-does-not-apply {
 	margin-top: 12px;
+}
+
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ write-in "other" text box ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
+.narrafirma-survey-question-type-text .narrafirma-survey-write-in-div {
+    margin: 0.5em 0.5em 0.3em 0;
+}
+
+.narrafirma-survey-question-type-textarea .narrafirma-survey-write-in-div {
+    margin: 0.5em 0.5em 0.3em 0;
+}
+
+.narrafirma-survey-question-type-select .narrafirma-survey-write-in-div {
+    margin: 0.5em 0.5em 0.3em 0;
+}
+
+.narrafirma-survey-question-type-boolean .narrafirma-survey-write-in-div {
+    margin: 0.5em 0.5em 0.3em 1em;
+}
+
+.narrafirma-survey-question-type-checkbox .narrafirma-survey-write-in-div {
+    margin: 0.5em 0 0.3em 0.4em;
+}
+
+.narrafirma-survey-question-type-radiobuttons .narrafirma-survey-write-in-div {
+    margin: 0.5em 0.5em 0.3em 1em;
+}
+
+.narrafirma-survey-question-type-checkboxes .narrafirma-survey-write-in-div {
+    margin: 0.5em 0.5em 0.3em 1em;
+}
+
+.narrafirma-survey-question-type-slider .narrafirma-survey-write-in-div {
+    text-align: left;
+    margin: 0.5em 0.5em 0.3em 0;
+}
+
+.narrafirma-survey-write-in-prompt {
+    margin: 0;
+}
+
+input[type='text'].narrafirma-survey-write-in-input {
+    width: 20em;
+    margin-left: 0.5em;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+}
+
+input[type='textarea'].narrafirma-survey-write-in-textarea {
+    width: 90%;
+    margin-left: 0.5em;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    resize: vertical;
 }
 
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ tell another story ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
@@ -397,6 +498,10 @@ textarea.narrafirma-survey-result-summary {
 
 .narrafirma-survey-print-slider {
 	margin: 0 0 0.5em 24px;
+}
+
+.narrafirma-survey-print-question-write-in-line {
+    margin: 0 0 0.5em 24px;
 }
 
 .narrafirma-survey-print-blank-text-line {

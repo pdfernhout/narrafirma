@@ -21,7 +21,7 @@ function add_sliderQuestionConfigurationPanel(panelBuilder: PanelBuilder, model,
     } else {
         naPrompt += " participants a way to say they don't want to answer the question.";
     }
-    naPrompt += ' You can set the label for that checkbox here. To use the default label of "Does not apply," you can leave this field blank.';
+    naPrompt += ' You can set the label for that checkbox here. To use the default label of "Does not apply," leave this field blank.';
 
     function getValueForIndex(index) {
         const combinedTexts = storageFunction();
@@ -44,15 +44,15 @@ function add_sliderQuestionConfigurationPanel(panelBuilder: PanelBuilder, model,
         m("div.questionPrompt", sanitizeHTML.generateSanitizedHTMLForMithril(questionPrompt)),
 
         m("div.questionInternal", [
-            m("input", {id: ids[0], value: getValueForIndex(0), disabled: panelBuilder.readOnly, onchange: function(event) {setNewValues()}}),
+            m('input[type="text"]', {id: ids[0], value: getValueForIndex(0), disabled: panelBuilder.readOnly, onchange: function(event) {setNewValues()}}),
             m('input[type="range"]', {disabled: panelBuilder.readOnly}),
-            m("input", {id: ids[1], value: getValueForIndex(1), disabled: panelBuilder.readOnly, onchange: function(event) {setNewValues()}})
+            m('input[type="text"]', {id: ids[1], value: getValueForIndex(1), disabled: panelBuilder.readOnly, onchange: function(event) {setNewValues()}})
         ]),
         
         m("div.questionPrompt", sanitizeHTML.generateSanitizedHTMLForMithril(naPrompt)),
 
         m("div.questionInternal", [
-                m("input", {id: ids[2], value: getValueForIndex(2), disabled: panelBuilder.readOnly, onchange: function(event) {setNewValues()}})
+                m('input[type="text"]', {id: ids[2], value: getValueForIndex(2), disabled: panelBuilder.readOnly, onchange: function(event) {setNewValues()}})
             ])
     ];
     return m("div.questionExternal", parts);

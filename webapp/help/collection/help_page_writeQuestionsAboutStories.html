@@ -85,12 +85,13 @@ A <strong>header</strong> is the same as a label, only it's formatted as <strong
 </p>
 <p>
 A <strong>checkbox</strong> question has one solitary check box. It starts out unchecked. 
-To add a label to the checkbox (e.g., "Yes, I think so"), enter it into the <strong>choices</strong> box. 
+Enter a label for the checkbox.
 </p>
 <p>
 A <strong>checkboxes</strong> question has any number of check box answers. 
-Enter labels for your check boxes in the <strong>choices</strong> box.
-To limit the number of boxes people can check, select a <strong>maximum number of checkboxes</strong> in the drop-down box just after the list of choices. 
+Enter labels for your check boxes in the <strong>answers</strong> box.
+To limit the number of boxes participants can check, 
+select a <strong>maximum number of checkboxes</strong> in the drop-down box just after the list of choices. 
 </p>
 <p>
 A <strong>text</strong> question has a one-line text box, for short but free-text answers.
@@ -100,31 +101,51 @@ A <strong>textarea</strong> question has a multi-line, extendible text box, for 
 </p>
 <p>
 A <strong>select</strong> question has a single-choice drop-down list. Enter your list items
-in the <strong>choices</strong> box.
+in the <strong>answers</strong> box.
 </p>
 <p>
 A <strong>radiobuttons</strong> question has any number of answers,
 from which people can choose only one. These are like buttons on a radio: when you click one choice, 
-all the others "pop up." Enter the answers you want to make available in the <strong>choices</strong> box.
+all the others "pop up." Enter the answers you want to make available in the <strong>answers</strong> box.
 </p>
 <p>
 A <strong>slider</strong> question has a line with a button that you drag. Labels on the left
-and right show people what they are choosing between. In the <strong>choices</strong> box,
-enter first the left-side slider label, then (on the second line), the right-side slider label.
-If you want special text for the "Does not apply" checkbox under the slider (meaning, I don't
-want to set a value), write it in the third line of the <strong>choices</strong> box. For example,
-you might write:
+and right show people what they are choosing between. 
+When the <strong>Does not apply checkbox</strong> under the slider is checked, it means that the question has not been answered.
+All sliders start out with this checkbox checked. When a participant <i>moves</i> the slider (using the mouse or an arrow key), the box gets unchecked. 
+They can check the box again to decline to answer the question.
+If you want a different label to appear on the "Does not apply" checkbox (e.g., "Not sure" or "I don't see how this is relevant"), 
+enter your label here, under the (fake) slider. 
 </p>
-<table border="1" cellpadding="4" cellspacing="0">
-	<tr><td>a little</td></tr>
-	<tr><td>a lot</td></tr>
-	<tr><td>I don't know</td></tr>
-</table>
-<p>
-If you don't specify a third-line label, the checkbox will say "Does not apply." (Note that because the survey form starts 
-off with all the sliders set to "Does not apply," there is no functional difference between a "Does not apply" answer
-and no answer at all.)
-</p>
+</div>
+
+<div class="question">
+	Could you explain write-in answers?
+	</div>
+	<div class="question-answer"> 
+	<p>
+		A free-text write-in answer option can be:
+		</p>
+		<ul>
+			<li><strong>an "other" option</strong> under a list of fixed answers (e.g., "happy / sad / _______")</li>
+			<li><strong>a follow-up question</strong> asking for more detail (e.g., "Why do you think the story turned out the way it did?")</li>
+		</ul>
+	<p>
+		You can create a write-in answer option for every type of question (except "header" and "label," which are not really questions at all).
+		To create a write-in answer option, <strong>enter a label</strong> you want to appear before the text box. 
+		Some examples might be "other" (after a list of choices) or "Care to elaborate?" (after any type of question).
+		If you leave the write-in field blank, no write-in option will be shown.
+		</p><p>
+		If you want to give people more room to write, start your label with two asterisks (**). NarraFirma will trim off the asterisks and display a multi-line, expandable text box.
+	</p>
+	You can access your write-in answers in three places:</p>
+	<ul>
+		<li>On the <a href="help_page_reviewIncomingStories.html">Review incoming stories</a> page, you can see the write-in answers for each story. 
+			You can also <strong>change write-in answers</strong> on this page. Sometimes participants troll the survey by writing foul language 
+			or reveal too much private information. When that happens, you can (carefully) clean things up here.</li>
+		<li>On the <a href="../catalysis/help_page_explorePatterns.html">Explore patterns</a> page, you can read your write-in answers and create observations based on them.</li>
+		<li>On the <a href="../sensemaking/help_page_printStoryCards.html">Print story cards</a> page, you can show (or hide) your write-in answers on your story cards.</li>
+	</ul>
 </div>
 
 <div class="question">
@@ -132,7 +153,30 @@ What's the difference between a "boolean" and a "check box"?
 </div>
 <div class="question-answer">
 <p>
-A check box has only two possible answers: yes and no. It starts out unchecked, and you can't tell whether people meant to say "no" or didn't touch it. A boolean question, in contrast, has three possible answers: yes, no, and unanswered. It starts out with neither radio button clicked, and you can tell whether people clicked "no" or didn't click anything.
+The difference is in appearance only.
+</p>
+<ul>
+	<li>A check box question has one checkbox. It starts out unchecked. 
+	<ul>
+		<li>If a participant <i>never</i> checks the box, the story will be counted in the "No answer" column on the
+			bar graph for the question. </li>
+		<li>If they check the box, the story will be counted as "true." </li>
+		<li>If they check and then uncheck the box, the story will be counted as "false."</li>
+	</ul>
+	</li>
+		<li>A boolean question has two radio buttons labeled yes and no. It starts out with neither radio button clicked. 
+		<ul>
+		<li>If the participant never clicks either
+		radio button, the story will be counted in the "No answer" column on the
+		bar graph for the question. </li>
+		<li>If they click the "yes" radio buttion, the story will be counted as "yes." </li>
+		<li>If they check the "no" radio button, the story will be counted as "no."</li>
+	</ul>
+	</li>
+</ul>
+<p>
+Once a participant has clicked on either a checkbox or a boolean question, they cannot un-answer the question.
+(This is also true for radio button questions.)
 </p>
 </div>
 
