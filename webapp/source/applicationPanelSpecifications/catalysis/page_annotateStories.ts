@@ -21,7 +21,17 @@ var panel: Panel = {
             valueOptionsSubfield: "storyCollection_shortName",
             displayType: "select",
             displayName: "Story collection",
-            displayPrompt: `Choose a <strong>story collection</strong> to annotate.`
+            displayPrompt: `Choose a <strong>story collection</strong> to annotate.`,
+            displayVisible: function(panelBuilder, model) {
+                return !!Globals.clientState().atLeastOneAnnotationQuestionExists();}
+        },
+        {
+            id: "project_annotateStories_noAnnotationQuestionsLabel",
+            valueType: "none",
+            displayType: "label",
+            displayPrompt: `<em>You have not yet created any annotation questions for this project. Write at least one annotation question, then come back to this page and annotate your stories</em>.`,
+            displayVisible: function(panelBuilder, model) {
+                return !Globals.clientState().atLeastOneAnnotationQuestionExists();}
         },
         {
             id: "project_annotateStoriesList",
@@ -30,7 +40,7 @@ var panel: Panel = {
             displayType: "storyAnnotationBrowser",
             displayPrompt: "Stories in collection",
             displayVisible: function(panelBuilder, model) {
-                return !!Globals.clientState().storyCollectionIdentifier();}
+                return !!Globals.clientState().atLeastOneAnnotationQuestionExists() && !!Globals.clientState().storyCollectionIdentifier();}
         },
         {
             id: "annotationGraphBrowserDisplay",
@@ -39,7 +49,7 @@ var panel: Panel = {
             displayType: "annotationGraphBrowser",
             displayPrompt: "Choose an annotation question whose counts or values you want to <strong>graph</strong> (for the selected story collection).",
             displayVisible: function(panelBuilder, model) {
-                return !!Globals.clientState().storyCollectionIdentifier();}
+                return !!Globals.clientState().atLeastOneAnnotationQuestionExists() && !!Globals.clientState().storyCollectionIdentifier();}
         },
     ]
 };

@@ -84,6 +84,12 @@ class ClientState {
         return this._showAdvancedOptions;
     }
 
+    atLeastOneAnnotationQuestionExists() {
+        if (!this._project) return false;
+        const questions = this._project.collectAllAnnotationQuestions();
+        return questions.length > 0;
+    }
+
     csvDelimiter() {
         const defaultValue = ",";
         if (!this._project) return defaultValue;
