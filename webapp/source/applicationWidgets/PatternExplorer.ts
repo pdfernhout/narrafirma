@@ -57,7 +57,17 @@ const columnIDsToDisplayNamesMap = {
     "observation": "Observations",
     "strength": "Strengths",
     "interpretations": "Interpretations",
-}
+};
+
+const columnIDsToShowIfNoOptionsSaved = {
+    "patternName": "Name",
+    "remarkable": "Remarkable?",
+    "graphType": "Type",
+    "statsSummary": "Significance",
+    "observation": "Observations",
+    "strength": "Strengths",
+    "interpretations": "Interpretations",
+};
 
 function nameForQuestion(question) {
     if (question.displayName) return question.displayName;
@@ -735,17 +745,16 @@ class PatternExplorer {
         this.graphHolder.lumpingCommands = this.project.lumpingCommandsForCatalysisReport(this.catalysisReportIdentifier); 
 
         // adjust patterns grid for showing or hiding columns
-        const columnIDsToShow = this.project.tripleStore.queryLatestC(this.catalysisReportIdentifier, "columnIDsToShowInPatternsTable");
-        if (columnIDsToShow !== undefined) { // if undefined, may be legacy data - show all columns
-            const allColumnIDs = Object.keys(columnIDsToDisplayNamesMap);
-            this.patternsGridFieldSpecification.itemPanelSpecification.panelFields = [{id: "id", displayName: "Index", valueOptions: []}];
-            allColumnIDs.forEach( (columnID) => {
-                if (columnIDsToShow[columnID]) {
-                    const columnSpec = {id: columnID, displayName: columnIDsToDisplayNamesMap[columnID], valueOptions: []};
-                    this.patternsGridFieldSpecification.itemPanelSpecification.panelFields.push(columnSpec);
-                }
-            })
-        }
+        let columnIDsToShow = this.project.tripleStore.queryLatestC(this.catalysisReportIdentifier, "columnIDsToShowInPatternsTable");
+        if (columnIDsToShow === undefined) columnIDsToShow = columnIDsToShowIfNoOptionsSaved;
+        const allColumnIDs = Object.keys(columnIDsToDisplayNamesMap);
+        this.patternsGridFieldSpecification.itemPanelSpecification.panelFields = [{id: "id", displayName: "Index", valueOptions: []}];
+        allColumnIDs.forEach( (columnID) => {
+            if (columnIDsToShow[columnID]) {
+                const columnSpec = {id: columnID, displayName: columnIDsToDisplayNamesMap[columnID], valueOptions: []};
+                this.patternsGridFieldSpecification.itemPanelSpecification.panelFields.push(columnSpec);
+            }
+        })
         this.patternsGrid.updateDisplayConfigurationAndData(this.patternsGridFieldSpecification);
         this.modelForPatternsGrid.patterns = this.buildPatternList();
         this.patternsGrid.updateData();
