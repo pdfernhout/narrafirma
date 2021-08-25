@@ -121,7 +121,7 @@ export class StoryAnnotationBrowser {
             valueType: "string",
             displayType: "text",
             displayName: "Index",
-            displayPrompt: "Index in story collection",
+            displayPrompt: "Index of story in collection",
             displayClass: "narrafirma-index-in-story-collection"
         });
         panelFieldsToCreateForGridColumns = panelFieldsToCreateForGridColumns.concat(questions);
