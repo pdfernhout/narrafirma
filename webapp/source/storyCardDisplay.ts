@@ -167,19 +167,23 @@ function displayHTMLForField(storyModel: surveyCollection.Story, fieldSpecificat
     } else if (fieldSpecification.displayType === "boolean") {
         var thisBit = [];
         thisBit.push(m("span", {"class": "narrafirma-story-card-field-name-" + replaceSpacesWithDashes(fieldName)}, fieldName + ": "));
-        if (value) {
+        if (value === true) {
             thisBit.push(m("span", {"class": answerClass}, "yes"));
-        } else {
+        } else if (value === false) {
             thisBit.push(m("span", {"class": answerClass}, "no"));
+        } else {
+            thisBit.push(m("span", {"class": answerClass}, ""));
         }
         result.push(wrap("div", "narrafirma-story-card-question-line-without-selected-item", thisBit));
     } else if (fieldSpecification.displayType === "checkbox") {
         var thisBit = [];
         thisBit.push(m("span", {"class": "narrafirma-story-card-field-name-" + replaceSpacesWithDashes(fieldName)}, fieldName + ": "));
-        if (value) {
+        if (value === true) {
             thisBit.push(m("span", {"class": answerClass}, "true"));
-        } else {
+        } else if (value === false) {
             thisBit.push(m("span", {"class": answerClass}, "false"));
+        } else {
+            thisBit.push(m("span", {"class": answerClass}, ""));
         }
         result.push(wrap("div", "narrafirma-story-card-question-line-without-selected-item", thisBit));
     } else if (fieldSpecification.displayType === "label" || fieldSpecification.displayType === "header") {
