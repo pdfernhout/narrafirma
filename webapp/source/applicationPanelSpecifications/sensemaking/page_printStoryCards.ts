@@ -142,6 +142,18 @@ var panel: Panel = {
                 return !!Globals.clientState().haveStoryCollectionAndShowingAdvancedOptions();
             }
         },
+        {
+            id: "printStoryCards_includeWriteInTexts",
+            valueType: "boolean",
+            valuePath: "/clientState/storyCollectionName/printStoryCards_includeWriteInTexts",
+            displayType: "checkbox",
+            displayName: "Include write-in answers?",
+            displayConfiguration: "Yes, include write-in answers",
+            displayPrompt: "Do you want to <strong>print write-in answers</strong> to questions?",
+            displayVisible: function(panelBuilder, model) {
+                return !!Globals.clientState().haveStoryCollectionAndShowingAdvancedOptions();
+            }
+        },
 
         {
             id: "printStoryCards_CustomTextsHeader",

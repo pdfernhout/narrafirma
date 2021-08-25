@@ -70,7 +70,7 @@ function replaceAll(str: string, find: string, replace: string) {
 }
 
 function buildStoryDisplayPanel(panelBuilder: PanelBuilder, model) {
-    var storyCardDiv = storyCardDisplay.generateStoryCardContent(model, undefined);
+    var storyCardDiv = storyCardDisplay.generateStoryCardContent(model, undefined, {includeWriteInAnswers: true});
     return storyCardDiv;
 }
 

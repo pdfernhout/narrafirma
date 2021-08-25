@@ -106,7 +106,7 @@ export class StoryAnnotationBrowser {
             const questionsInDictionaryWithIDs = {};
             this.questions.map(function(question, index) {questionsInDictionaryWithIDs[question.id] = question;})
             storyDisplay = storyCardDisplay.generateStoryCardContent(storyModel, questionsInDictionaryWithIDs, 
-                {"location": "storyAnnotationBrowser", "questionnaire": this.questionnaire, "storyTextAtTop": true});
+                {location: "storyAnnotationBrowser", questionnaire: this.questionnaire, storyTextAtTop: true, includeWriteInAnswers: true});
         } else {
             storyDisplay = panelBuilder.buildFields(this.questions, storyModel);
         }

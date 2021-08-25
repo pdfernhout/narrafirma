@@ -192,9 +192,11 @@ function displayHTMLForField(storyModel: surveyCollection.Story, fieldSpecificat
         result.push(wrap("div", "narrafirma-story-card-question-line-without-selected-item", thisBit));
     }
 
-    const writeInEntry = storyModel.fieldValueWriteIn(fieldSpecification.id);
-    if (writeInEntry) {
-        result.push(wrap("span", "narrafirma-story-card-write-in-answer", writeInEntry));
+    if (options.includeWriteInAnswers) {
+        const writeInEntry = storyModel.fieldValueWriteIn(fieldSpecification.id);
+        if (writeInEntry) {
+            result.push(wrap("span", "narrafirma-story-card-write-in-answer", writeInEntry));
+        }
     }
 
     if (isAnnotationQuestion) {
@@ -216,6 +218,7 @@ interface Options {
     cutoff?: string,
     cutoffMessage?: string,
     includeIndex?: string,
+    includeWriteInAnswers?: boolean
 }
 
 export function generateStoryCardContent(storyModel, questionsToInclude, options: Options = {}) {
