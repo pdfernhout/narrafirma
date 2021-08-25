@@ -34,7 +34,7 @@ a:active {
 }
 
 textarea, input, select { /* override because expanded in survey */
-    margin-top: 0;
+    margin-top: 0.2em;
     border: 1px solid black;
 }
 
@@ -425,8 +425,7 @@ button:disabled {
 }
 
 .questionInternal {
-    padding: 0.4em;
-    margin-left: 0.6em;
+    padding: 0 0 0.4em 0.6em;
 }
 
 .questionExternal.narrafirma-question-type-filterNotice {
@@ -490,7 +489,7 @@ textarea.narrafirma-textbox {
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Question type: Checkbox ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 .questionInternal.narrafirma-question-type-checkbox {
-    margin: 0.3em 0 0.3em 0.5em;
+    margin: 0 0 0.3em 0.5em;
 }
 
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Question type: Slider ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
