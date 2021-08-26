@@ -102,7 +102,7 @@ textarea:-moz-read-only { /* For Firefox */
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ story areas ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 .narrafirma-survey-story {
-	margin: 0 0 10em 0;
+	margin: 0 0 1em 0;
 }
 
 label.narrafirma-survey-prompt {

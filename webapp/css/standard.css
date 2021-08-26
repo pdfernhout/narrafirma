@@ -424,6 +424,14 @@ button:disabled {
     display: block;
 }
 
+.narrafirma-question-type-header .questionPrompt  {
+    padding-left: 0;
+}
+
+.narrafirma-question-type-checkboxes .questionPrompt  {
+    padding-left: 0.8em;
+}
+
 .questionInternal {
     padding: 0 0 0.4em 0.6em;
 }
@@ -488,13 +496,13 @@ textarea.narrafirma-textbox {
 
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Question type: Checkbox ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-.questionInternal.narrafirma-question-type-checkbox {
+.narrafirma-question-type-checkbox.questionInternal {
     margin: 0 0 0.3em 0.5em;
 }
 
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Question type: Slider ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-.questionInternal.narrafirma-question-type-slider {
+narrafirma-question-type-slider.questionInternal. {
     text-align: center;
     min-width: 400px;
 }
@@ -642,7 +650,7 @@ button.narrafirma-add-annotation-choice {
 .narrafirma-griditempanel-divwithbutton-editing {
     background-color: #ffe9c4;
     border: 1px solid black;
-    border-radius: 8px;
+    border-radius: 3px;
     margin: 1em;
 }
 
@@ -651,7 +659,7 @@ button.narrafirma-add-annotation-choice {
     color: #6d6c6c;
 	margin: 1em;
 	border: 1px solid #6d6c6c;
-	border-radius: 8px;
+	border-radius: 3px;
 }
 
 button.narrafirma-griditempanel-close-button {
@@ -678,7 +686,7 @@ button.narrafirma-griditempanel-close-button {
 }
 
 .questionExternal .read-only { 
-    background-color: #f2f3f4;
+    background-color: white; 
 }
 
 /* hides "copy from template" button when viewing grid item */
@@ -888,16 +896,16 @@ table.filterTable td {
 
 .narrafirma-story-card-story-text-in-story-browser {
 	border: 1px solid black;
-	border-radius: 4px; 
-	padding: 10px;
-	margin: 10px;
+	border-radius: 3px; 
+	padding: 0.5em;
+	margin: 1em 0.5em 1em 0.5em;
 }
 
 .narrafirma-story-card-story-text-in-story-annotation-browser {
     border: 1px solid black;
-	border-radius: 4px; 
-	padding: 10px;
-	margin: 10px;
+	border-radius: 3px; 
+	padding: 0.5em;
+	margin: 1em 0.5em 1em 0.5em;
 }
 
 .narrafirma-story-card-story-text-in-printed-story-cards {
@@ -1848,7 +1856,7 @@ td.narrafirma-mw-nested-title, td.narrafirma-mw-nested-stats {
     max-height: 80%;
     background-color: #b0d4d4; 
     border: 1px groove black;
-    border-radius: 8px;
+    border-radius: 3px;
 }
 
 .modal-content.wide {
