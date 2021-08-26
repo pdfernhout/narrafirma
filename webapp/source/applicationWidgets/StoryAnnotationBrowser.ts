@@ -11,13 +11,15 @@ import GridWithItemPanel = require("../panelBuilder/GridWithItemPanel");
 "use strict";
 
 // TODO: Translate
-var unansweredIndicator = "No answer";
+const unansweredIndicator = "No answer";
 
 export class StoryAnnotationBrowser {
     project: Project = null;
     storyCollectionIdentifier: string = null;
     questionnaire: null;
-    questions = [];
+    annotationQuestions = [];
+    storyQuestions = [];
+    participantQuestions = [];
     allStories = [];
     itemPanelSpecification = {id: "temporary", modelClass: "Story", panelFields: []};
     gridFieldSpecification = null;
@@ -53,9 +55,9 @@ export class StoryAnnotationBrowser {
     }
     
     calculateView(args) {
-        var panelBuilder = args.panelBuilder;
+        const panelBuilder = args.panelBuilder;
         
-        var storyCollectionIdentifier = valuePathResolver.newValuePathForFieldSpecification(args.model, args.fieldSpecification)();
+        const storyCollectionIdentifier = valuePathResolver.newValuePathForFieldSpecification(args.model, args.fieldSpecification)();
         if (storyCollectionIdentifier !== this.storyCollectionIdentifier) {
             this.storyCollectionIdentifier = storyCollectionIdentifier;
             this.currentStoryCollectionChanged(this.storyCollectionIdentifier);
@@ -63,10 +65,10 @@ export class StoryAnnotationBrowser {
             this.grid.updateDisplayConfigurationAndData(this.gridFieldSpecification.displayConfiguration);
         }
         
-        var promptText = panelBuilder.addAllowedHTMLToPrompt(args.fieldSpecification.displayPrompt) + " (" + this.allStories.length + ")";
-        var prompt =  m("span", {"class": "questionPrompt"}, promptText);
+        const promptText = panelBuilder.addAllowedHTMLToPrompt(args.fieldSpecification.displayPrompt) + " (" + this.allStories.length + ")";
+        const prompt =  m("span", {"class": "questionPrompt"}, promptText);
         
-        var parts;
+        let parts;
         
         if (!this.storyCollectionIdentifier) {
             parts = [m("div", "Please select a story collection to annotate.")];
@@ -82,39 +84,52 @@ export class StoryAnnotationBrowser {
     }
     
     currentStoryCollectionChanged(storyCollectionIdentifier) {
-        this.questions = [];
         this.storyCollectionIdentifier = storyCollectionIdentifier;
-        this.buildQuestionsList();
+
+        this.annotationQuestions = [];
+        this.storyQuestions = [];
+        this.participantQuestions = [];
+        
+        this.annotationQuestions = questionnaireGeneration.convertEditorQuestions(this.project.collectAllAnnotationQuestions(), "A_");
+        this.storyQuestions = this.project.storyQuestionsForStoryCollection(this.storyCollectionIdentifier);
+        this.participantQuestions = this.project.participantQuestionsForStoryCollection(this.storyCollectionIdentifier);
+
         this.allStories = surveyCollection.getStoriesForStoryCollection(storyCollectionIdentifier, true);
-        this.itemPanelSpecification = this.makeItemPanelSpecificationForQuestions(this.questions);
+
+        this.itemPanelSpecification = this.makeItemPanelSpecificationForQuestions(this.annotationQuestions);
     }
 
-    buildQuestionsList() {
-        const storyNameAndTextQuestions = [];
-        storyNameAndTextQuestions.push({id: "storyName", displayName: "Story name", displayPrompt: "Story name", displayType: "text"});
-        storyNameAndTextQuestions.push({id: "storyText", displayName: "Story text", displayPrompt: "Story text", displayType: "textarea"});
-        const annotationQuestions = questionnaireGeneration.convertEditorQuestions(this.project.collectAllAnnotationQuestions(), "A_");
-        this.questions = [];
-        this.questions = this.questions.concat(storyNameAndTextQuestions, annotationQuestions);
-    }
-    
     buildStoryDisplayPanel(panelBuilder: PanelBuilder, storyModel: surveyCollection.Story) {
-        let storyDisplay;
+        let storyDisplayPanel;
+        let readOnlyDisplayPanel;
+
+        let questionsToEdit = [];
+        let questionsToDisplay = [];
+
         if (panelBuilder.readOnly) {
-            // override questionnaire pointed to by storyModel because it may have been updated using the "update story form" button
-            // generateStoryCardContent wants dictionary with ids as keys
-            const questionsInDictionaryWithIDs = {};
-            this.questions.map(function(question, index) {questionsInDictionaryWithIDs[question.id] = question;})
-            storyDisplay = storyCardDisplay.generateStoryCardContent(storyModel, questionsInDictionaryWithIDs, 
-                {location: "storyAnnotationBrowser", questionnaire: this.questionnaire, storyTextAtTop: true, includeWriteInAnswers: true});
+            questionsToEdit = [];
+            questionsToDisplay = questionsToDisplay.concat(this.annotationQuestions, this.storyQuestions, this.participantQuestions);
         } else {
-            storyDisplay = panelBuilder.buildFields(this.questions, storyModel);
+            questionsToEdit = this.annotationQuestions;
+            questionsToDisplay = questionsToDisplay.concat(this.storyQuestions, this.participantQuestions);
         }
-        return storyDisplay;
+
+        const questionsInDictionaryWithIDs = {};
+        questionsToDisplay.map(function(question, index) {questionsInDictionaryWithIDs[question.id] = question;})
+        readOnlyDisplayPanel = storyCardDisplay.generateStoryCardContent(storyModel, questionsInDictionaryWithIDs, 
+            {location: "storyAnnotationBrowser", questionnaire: this.questionnaire, storyTextAtTop: true, includeWriteInAnswers: true});
+
+        if (panelBuilder.readOnly) {
+            storyDisplayPanel = readOnlyDisplayPanel;
+        } else {
+            storyDisplayPanel = panelBuilder.buildFields(questionsToEdit, storyModel);
+            storyDisplayPanel.push(readOnlyDisplayPanel);
+        }
+        return storyDisplayPanel;
     }
     
     makeItemPanelSpecificationForQuestions(questions) {
-        // want indexInStoryCollection to appear as column, but don't want it to appear as editable field in panel display below grid
+        // I want these fields to appear as columns, but I don't want them to appear as editable fields 
         let panelFieldsToCreateForGridColumns = [];
         panelFieldsToCreateForGridColumns.push({
             id: "indexInStoryCollection",
@@ -123,6 +138,20 @@ export class StoryAnnotationBrowser {
             displayName: "Index",
             displayPrompt: "Index of story in collection",
             displayClass: "narrafirma-index-in-story-collection"
+        });
+        panelFieldsToCreateForGridColumns.push({
+            id: "storyName",
+            valueType: "string",
+            displayType: "text",
+            displayName: "Story name",
+            displayPrompt: "Name of story"
+        });
+        panelFieldsToCreateForGridColumns.push({
+            id: "storyText",
+            valueType: "string",
+            displayType: "text",
+            displayName: "Story text",
+            displayPrompt: "Text of story"
         });
         panelFieldsToCreateForGridColumns = panelFieldsToCreateForGridColumns.concat(questions);
         const itemPanelSpecification = {

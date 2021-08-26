@@ -16,7 +16,7 @@ function add_shortNameQuestionConfigurationPanel(panelBuilder: PanelBuilder, mod
     const isAnnotationQuestion = model.indexOf("AnnotationQuestion") >= 0;
     const storageFunction = valuePathResolver.newValuePathForFieldSpecification(model, fieldSpecification);
 
-    let questionPrompt =  `Enter a <strong>short name</strong> for the question. It will appear in lists and on graphs. <strong>It must be unique within the project.</strong>`;
+    let questionPrompt =  `Enter a <strong>short name</strong> for the question. It will appear in lists and on graphs. It must be unique within the project.`;
     if (isAnnotationQuestion) questionPrompt += " <em>Changing this question's short name here will change it in this question and in your stories.</em> "
     
     // methods that apply to all types of questions
@@ -96,7 +96,9 @@ function add_shortNameQuestionConfigurationPanel(panelBuilder: PanelBuilder, mod
                     onchange: function(event) { setNewShortName(event.target.value) }})]));
         } else { // name set already
             if (!changeAnnotationQuestionShortNamePanelIsOpen) {
-                parts.push(m("span", {style: "margin-left: 1em"}, sanitizeHTML.generateSanitizedHTMLForMithril(value)));
+                const readOnlyStyle = "display: block; margin: 0.5em 0 0 1em";
+                const editingStyle = "margin-left: 1em";
+                parts.push(m("span", {style: panelBuilder.readOnly ? readOnlyStyle : editingStyle}, sanitizeHTML.generateSanitizedHTMLForMithril(value)));
                 if (!panelBuilder.readOnly)
                     parts.push(m("button", {id: "openChangeShortNamePanel", onclick: function() {openChangeAnnotationQuestionShortNamePanel()}}, "Change")); 
             } else {

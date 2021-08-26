@@ -403,7 +403,7 @@ export class StoryBrowser {
         let storyDisplay;
         if (panelBuilder.readOnly) {
             // override questionnaire pointed to by storyModel because it may have been updated using the "update story form" button
-            storyDisplay = storyCardDisplay.generateStoryCardContent(storyModel, undefined, {location: "storyBrowser", questionnaire: this.questionnaire, includeWriteInAnswers: true});
+            storyDisplay = storyCardDisplay.generateStoryCardContent(storyModel, undefined, {location: "storyBrowser", questionnaire: this.questionnaire, storyTextAtTop: true, includeWriteInAnswers: true});
         } else {
             storyDisplay = panelBuilder.buildFields(this.questions, storyModel);
         }

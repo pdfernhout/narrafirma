@@ -178,7 +178,7 @@ function add_choiceQuestionAnswersManagementPanel(panelBuilder: PanelBuilder, mo
             const partsForThisAnswer = [];
             const storyCount = storyCountForAnswer(answer);
             const storyCountText = (storyCount == 1) ? " story" : " stories";
-            partsForThisAnswer.push(m("span", answer + " - " + storyCount + storyCountText));
+            partsForThisAnswer.push(m(panelBuilder.readOnly ? "div" : "span", {style: panelBuilder.readOnly ? "margin: 0.5em 0 0 0.5em" : "margin: 0"}, answer + " - " + storyCount + storyCountText));
 
             if (!panelBuilder.readOnly) { 
                 if (answersWithOpenChangePanels.indexOf(answer) < 0) {

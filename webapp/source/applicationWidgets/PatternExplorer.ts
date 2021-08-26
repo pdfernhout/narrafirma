@@ -80,7 +80,7 @@ function replaceAll(str: string, find: string, replace: string) {
 }
 
 function buildStoryDisplayPanel(panelBuilder: PanelBuilder, model) {
-    var storyCardDiv = storyCardDisplay.generateStoryCardContent(model, undefined, {includeWriteInAnswers: true});
+    var storyCardDiv = storyCardDisplay.generateStoryCardContent(model, undefined, {location: "storyBrowser", storyTextAtTop: true, includeWriteInAnswers: true});
     return storyCardDiv;
 }
 

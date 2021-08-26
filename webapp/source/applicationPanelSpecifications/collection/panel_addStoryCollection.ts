@@ -9,34 +9,37 @@ var panel: Panel = {
         {
             id: "storyCollection_shortName",
             valueType: "string",
-            // valueImmutable: true,
             displayType: "text",
             displayName: "Story collection name",
             displayPrompt: `
-                Please give this story collection a short <strong>name</strong>, so we can refer to it.<br><br>
-                <span.narrafirma-special-warning>A story collection must have a name. The name must not be changed after you start using the collection.
-                The name must be unique within the project.</span>
+                Please give this story collection a short <strong>name</strong>.
+                A story collection must have a name. 
+                The name must be unique within the project, and it must not be changed after you start using the collection.
             `
         },
         {
             id: "storyCollection_questionnaireIdentifier",
             valueType: "string",
-            // valueImmutable: true,
             valueOptions: "/project/project_storyForms",
             valueOptionsSubfield: "questionForm_shortName",
             displayType: "select",
             displayName: "Story form",
+            displayPrompt: `Please select a <strong>story form</strong> to use for this story collection. After you choose a story form, <strong>click the Close button</strong> to link 
+                the story form to your new story collection.`
+        },
+        {
+            id: "storyCollection_copyStoryFormWarning",
+            valueType: "string",
+            displayType: "label",
+            displayName: "Warning",
             displayPrompt: `
-                Please select a <strong>story form</strong> to use for this story collection.<br><br>
-                <span.narrafirma-special-warning>The first time you choose a story form here and click the Close button,
-                a <strong>copy</strong> of the story form, <em>as it is at that moment</em>, will be placed into the new story collection.
-                Any changes you make to the story form afterwards will <em>not</em> be automatically reflected in the copy stored in the story collection.
-                <br><br>
-                To start using new changes to a story form (such as during testing), press the "Update Story Form button" below.
-                We do not recommend that you update a story form after data collection has begun, except for minor typographical errors.
-                <br><br>
-                Also, you should not change which form is being used by an existing story collection.
-                To use a different or significantly revised story form after story collection has begun, create a new story collection.</span>
+                <span.narrafirma-special-warning>Note: The first time you choose a story form here and <strong>click the Close button</strong>,
+                a <em>copy</em> of the story form <em>as it exists at that moment</em> will be stored in the story collection.
+                Any changes you make to the form after that moment will not appear in the copy.
+                If you have changed a story form and want to update the copy in the story collection, press the "Update Story Form" button below.
+                However, <strong>we do not recommend that you update a story form after data collection has begun</strong>, except for minor typographical errors.
+                Also, you should not change <em>which</em> story form is being used by an existing story collection.
+                To use a different (or significantly revised) story form after story collection has begun, create a new story collection.</span>
             `
         },
         {
@@ -44,7 +47,7 @@ var panel: Panel = {
             valueType: "none",
             displayType: "button",
             displayConfiguration: "updateQuestionnaireForStoryCollection",
-            displayPrompt: "Update Story Form (see caution above)",
+            displayPrompt: "Update Story Form",
             displayVisible: function(panelBuilder, model) {
                 return panelBuilder.readOnly === false;
             }
@@ -53,13 +56,14 @@ var panel: Panel = {
             id: "storyCollection_note",
             valueType: "none",
             displayType: "label",
+            displayReadOnly: true,
             displayPrompt: `
-                Note: When you create a new story collection and click the <strong>Close</strong> button, the story form
-                you chose becomes associated with the new story collection. If you forget to click the <strong>Close</strong> button
-                (and, say, click on a link to go to another NarraFirma page), you will have created a story collection
-                that has no associated story form. This may lead you to see error messages when you try to do things
-                that use the story form. But don't worry! If that happens, come back to this panel, 
-                set the story form, and click the "Update Story Form" button.
+                <span.narrafirma-special-warning>Also note: After you give your new story collection a name and choose a story form to go with it, 
+                <strong>don't forget to click the Close button</strong>. If you leave this panel without clicking the Close button, 
+                you will have created a story collection with no associated story form. 
+                This may lead you to see error messages when you try to do things that use the story form. 
+                If that happens, come back to this panel, 
+                choose the story form again, and click the "Update Story Form" button.</span>
             `
         },
         {
@@ -76,6 +80,7 @@ var panel: Panel = {
             valueType: "none",
             displayType: "questionAnswer",
             displayName: "Web form address",
+            displayReadOnly: true,
             displayPrompt: "The <strong>web address</strong> (URL) of this story collection is:",
             displayConfiguration: "storyCollection_activeOnWeb",
             displayURLValue: function (value, model) {
