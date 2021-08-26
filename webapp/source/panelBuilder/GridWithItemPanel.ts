@@ -403,8 +403,14 @@ class GridWithItemPanel {
         var item = this.dataStore.itemForId(itemID);
         if (item !== undefined) {
             this.setSelectedItem(item);
-            if (this.gridConfiguration.viewButton && !this.gridConfiguration.massEditingMode) {
-                this.displayMode = "viewing";
+            if (this.gridConfiguration.viewButton) {
+                if (this.gridConfiguration.massEditingMode) {
+                    if (!this.displayMode) {
+                        this.displayMode = "viewing";
+                    }
+                } else {
+                    this.displayMode = "viewing";
+                }
             }
         }
     }
