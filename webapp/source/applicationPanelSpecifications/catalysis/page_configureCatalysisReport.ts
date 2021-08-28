@@ -95,7 +95,7 @@ var panel: Panel = {
         },
         {
             id: "configureCatalysisReport_columnIDsToShowInPatternsTable",
-            valueType: "boolean",
+            valueType: "none",
             valuePath: "/clientState/catalysisReportIdentifier/columnIDsToShowInPatternsTable",
             displayType: "catalysisReportPatternTableColumnsChooser",
             displayConfiguration: "Columns to show in the patterns table",
