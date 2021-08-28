@@ -28,7 +28,7 @@ function optionsForSelect(panelBuilder: PanelBuilder, model, fieldSpecification,
     if (_.isString(specifiedChoices)) {
         choices = valuePathResolver.newValuePath(model, specifiedChoices)();
         if (_.isString(choices)) {
-            // Build choices by making items using tripelStore set
+            // Build choices by making items using tripleStore set
             const choiceItems = [];
             const choiceSet = Globals.project().tripleStore.getListForSetIdentifier(choices);
             for (let i = 0; i < choiceSet.length; i++) {
@@ -156,7 +156,11 @@ export function displayQuestion(panelBuilder: PanelBuilder, model, fieldSpecific
     function displayTextQuestion() {
         questionLabel[0].attrs["for"] = getIdForText(fieldID);
         questionLabel[0].tag = "label";
-        return [m("input[class=narrafirma-textbox]", standardValueOptions), m("br")];
+        let inputClass = "narrafirma-textbox";
+        if (fieldSpecification.displayName === "Short name") {
+            inputClass += "-short";
+        }
+        return [m("input[class=" + inputClass + "]", standardValueOptions), m("br")];
     }
 
     ///////////////////////////////////////////////////////////////////// textarea /////////////////////////////////////////////////////////////////////
