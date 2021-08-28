@@ -6,6 +6,7 @@ import add_sliderQuestionConfigurationPanel = require("./add_sliderQuestionConfi
 import add_shortNameQuestionConfigurationPanel = require("./add_shortNameQuestionConfigurationPanel");
 import add_catalysisReportGraphTypesChooser = require("./add_catalysisReportGraphTypesChooser");
 import add_catalysisReportPatternTableColumnsChooser = require("./add_catalysisReportPatternTableColumnsChooser");
+import add_storyFormQuestionsChooser = require("./add_storyFormQuestionsChooser");
 import add_catalysisReportFilterNotice = require("./add_catalysisReportFilterNotice");
 import add_clusteringDiagram = require("./add_clusteringDiagram");
 import add_dashboardSectionStatusDisplay = require("./add_dashboardSectionStatusDisplay");
@@ -35,6 +36,7 @@ function loadAllApplicationWidgets(PanelBuilder) {
     PanelBuilder.addPlugin("catalysisReportFilterNotice", add_catalysisReportFilterNotice);
     PanelBuilder.addPlugin("catalysisReportGraphTypesChooser", add_catalysisReportGraphTypesChooser);
     PanelBuilder.addPlugin("catalysisReportPatternTableColumnsChooser", add_catalysisReportPatternTableColumnsChooser);
+    PanelBuilder.addPlugin("storyFormQuestionsChooser", add_storyFormQuestionsChooser);
     PanelBuilder.addPlugin("clusteringDiagram", add_clusteringDiagram);
     PanelBuilder.addPlugin("dashboardSectionStatusDisplay", add_dashboardSectionStatusDisplay);
     PanelBuilder.addPlugin("dashboardStoryCollectionStatusDisplay", add_dashboardStoryCollectionStatusDisplay);

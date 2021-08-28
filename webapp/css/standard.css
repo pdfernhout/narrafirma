@@ -468,6 +468,26 @@ button:disabled {
     margin-bottom: 0;
 }
 
+.narrafirma-story-form-questions-chooser-table-td {
+    border: none;
+    min-width: 20em;
+    text-align: center;
+    vertical-align: top;
+    padding: 0.5em;
+}
+
+.narrafirma-story-form-questions-chooser-table-td-middle {
+    border: none;
+    max-width: 1em;
+    text-align: center;
+    vertical-align: center;
+    padding: 0.5em;
+}
+
+.narrafirma-story-form-questions-chooser-list {
+    width: 90%;
+}
+
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Question type: Header ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 .questionExternal.narrafirma-question-type-header {
@@ -479,6 +499,10 @@ button:disabled {
     margin-top: 0.6em;
     margin-left: 0.15em;
     margin-right: 0.5em;
+}
+
+.questionExternal.narrafirma-question-type-header.read-only {
+    border-bottom: none;
 }
 
 .narrafirma-question-type-header .questionPrompt{
@@ -680,7 +704,7 @@ button.narrafirma-add-annotation-choice {
 }
 
 .narrafirma-griditempanel-divwithbutton-editing {
-    background-color: #ffe9c4;
+    background-color: white;
     border: 1px solid black;
     margin: 1em;
 }
@@ -793,8 +817,8 @@ table.scrolling-small {
     border-collapse: collapse;
   }
   
-.narrafirma-grid-row-unselected-odd {
-	background-color: #eff4ff;
+.narrafirma-grid-row-unselected-odd { 
+	background-color: #f2f7f7;
 }
 
 .narrafirma-grid-row-unselected-even {

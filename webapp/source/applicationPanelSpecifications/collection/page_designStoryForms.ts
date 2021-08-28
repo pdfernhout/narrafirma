@@ -10,17 +10,24 @@ var panel: Panel = {
             id: "storyForms_Label",
             valueType: "none",
             displayType: "label",
-            displayPrompt: `
-                On this page you will design one or more <strong>story forms</strong> for your project. 
+            displayPrompt: `On this page you will design one or more <strong>story forms</strong> for your project. 
                 Choose from the library of questions you already created to create the form your participants will use to tell their stories and answer questions about them.
-                You can also generate a story form using all existing questions or import one from a CSV file.
-                `
+                You can also generate a story form using all existing questions or import one from a CSV file.`
         },
         {
             id: "project_storyForms",
             valueType: "array",
             displayType: "grid",
-            displayConfiguration: "panel_addStoryForm",
+            displayConfiguration: {
+                itemPanelID: "panel_addStoryForm",
+                gridConfiguration: {
+                    viewButton: true,
+                    editButton: true,
+                    addButton: true,
+                    removeButton: true,
+                    columnsToDisplay: ["questionForm_shortName", "questionForm_title", "questionForm_startText"]
+                }
+            },
             displayName: "Story forms",
             displayPrompt: "These are the story forms you have created so far."
         },
