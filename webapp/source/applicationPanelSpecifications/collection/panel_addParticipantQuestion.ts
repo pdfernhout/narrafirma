@@ -23,11 +23,11 @@ var panel: Panel = {
         },
         {
             id: "participantQuestion_type",
-            valueType: "string",
-            valueOptions: ["boolean", "label", "header", "checkbox", "checkboxes", "text", "textarea", "select", "radiobuttons", "slider"],
-            displayType: "select",
+            valueType: "none",
+            displayType: "questionTypeChooser",
+            displayConfiguration: "participant",
             displayName: "Type",
-            displayPrompt: "What <strong>type</strong> of question is this? (For an explanation of the question types, click the Help button.)"
+            displayPrompt: "How do you want participants to <strong>answer</strong> this question?"
         },
         {
             id: "participantQuestion_shortName",

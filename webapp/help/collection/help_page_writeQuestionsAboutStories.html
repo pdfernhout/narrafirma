@@ -28,7 +28,8 @@ Here is where you can write questions to ask people about their stories. You'll 
 
 <div class="text">
 <p>
-Add some questions to your list. For each question, write what you want to ask people. Choose what type of question it is (see below for an explanation of the types). Also give each question a short name (so there's room to write the question name in tables and on graphs).
+Add some questions to your list. For each question, write what you want to ask people. Choose what type of answers you will collect (see below for an explanation of the types). 
+Also give each question a short name. <strong>Make sure the short name is actually short</strong>, so there's room to write it in tables and on graphs.
 </p>
 <p>
 You can copy questions from built-in templates (suggestions). Change the blank spaces (_____) in the question to suit your project and participants.
@@ -70,53 +71,95 @@ You don't set the question order here. You only create the questions here. You s
 </div>
 
 <div class="question">
-What do the question types mean?
+Can you explain the types of answers?
 </div>
 <div class="question-answer">
-<p>
-A <strong>boolean</strong> question shows the options "yes" and "no," of which people can choose only one.
-</p>
-<p>
-A <strong>label</strong> is just some plain text. It's not really a question. Nothing gets stored. 
-It's a way to talk to people between your questions.
-</p>
-<p>
-A <strong>header</strong> is the same as a label, only it's formatted as <strong>bold text</strong>.
-</p>
-<p>
-A <strong>checkbox</strong> question has one solitary check box. It starts out unchecked. 
-Enter a label for the checkbox.
-</p>
-<p>
-A <strong>checkboxes</strong> question has any number of check box answers. 
-Enter labels for your check boxes in the <strong>answers</strong> box.
-To limit the number of boxes participants can check, 
-select a <strong>maximum number of checkboxes</strong> in the drop-down box just after the list of choices. 
-</p>
-<p>
-A <strong>text</strong> question has a one-line text box, for short but free-text answers.
-</p>
-<p>
-A <strong>textarea</strong> question has a multi-line, extendible text box, for paragraph-length free-text answers.
-</p>
-<p>
-A <strong>select</strong> question has a single-choice drop-down list. Enter your list items
-in the <strong>answers</strong> box.
-</p>
-<p>
-A <strong>radiobuttons</strong> question has any number of answers,
-from which people can choose only one. These are like buttons on a radio: when you click one choice, 
-all the others "pop up." Enter the answers you want to make available in the <strong>answers</strong> box.
-</p>
-<p>
-A <strong>slider</strong> question has a line with a button that you drag. Labels on the left
-and right show people what they are choosing between. 
-When the <strong>Does not apply checkbox</strong> under the slider is checked, it means that the question has not been answered.
-All sliders start out with this checkbox checked. When a participant <i>moves</i> the slider (using the mouse or an arrow key), the box gets unchecked. 
-They can check the box again to decline to answer the question.
-If you want a different label to appear on the "Does not apply" checkbox (e.g., "Not sure" or "I don't see how this is relevant"), 
-enter your label here, under the (fake) slider. 
-</p>
+	<table border="0" cellspacing="12" cellpadding="4">
+		<tr>
+			<td colspan="2" style="border-bottom: 1px solid black"><i>Questions with no answers</i></td>
+		</tr>
+		<tr>
+			<td valign="top"><img src="questionTypeThumbnail_label.png" height="64px" alt="bar graph"></td>
+			<td valign="top">A <strong>label</strong> is just some plain text. It's not really a question. Nothing gets stored. 
+				It's a way to talk to people between your questions.
+			</td>
+		</tr>
+		<tr>
+			<td valign="top"><img src="questionTypeThumbnail_header.png" height="64px" alt="bar graph"></td>
+			<td valign="top">A <strong>header</strong> is the same thing as a label, only it's formatted as <strong>bold text</strong>.
+			</td>
+		</tr>
+		<tr>
+			<td colspan="2" style="border-bottom: 1px solid black"><i>Questions with a single yes/no answer</i></td>
+		</tr>
+		<tr>
+			<td valign="top"><img src="questionTypeThumbnail_boolean.png" height="64px" alt="bar graph"></td>
+			<td valign="top">A <strong>boolean</strong> question shows the options "yes" and "no," of which people can choose only one.
+				If the participant never checks either radio buttion, no answer is recorded. If they check either button, an answer is recorded.
+				There is no way to "uncheck" a radio buttion question after it has been touched.  
+			</td>
+		</tr>
+		<tr>
+			<td valign="top"><img src="questionTypeThumbnail_checkbox.png" height="64px" alt="bar graph"></td>
+			<td valign="top">A <strong>checkbox</strong> question has one solitary check box. It starts out unchecked. 
+				Enter a label for the checkbox. If the participant never checks the box, no answer is recorded.
+				If they check and then uncheck the box, their answer is recorded as "unchecked."
+			</td>
+		</tr>
+		<tr>
+			<td colspan="2" style="border-bottom: 1px solid black"><i>Questions with a single answer chosen from a list</i></td>
+		</tr>
+		<tr>
+			<td valign="top"><img src="questionTypeThumbnail_radiobuttons.png" height="64px" alt="bar graph"></td>
+			<td valign="top">A <strong>radiobuttons</strong> question has any number of answers,
+				from which people can choose only one. These are like buttons on a radio: when you click one choice, 
+				all the others "pop up." Enter the answers you want to make available in the <strong>answers</strong> box.
+				As with the boolean answer type, there is no way to "uncheck" a radio button selection once you have touched it.
+				(This is standard HTML radio-button behavior.)
+			</td>
+		</tr>
+		<tr>
+			<td valign="top"><img src="questionTypeThumbnail_select.png" height="64px" alt="bar graph"></td>
+			<td valign="top">A <strong>select</strong> question has a single-choice drop-down list. Enter your list items
+				in the <strong>answers</strong> box. You can also choose to show the list in full (without a drop-down) using the "rows" parameter.
+			</td>
+		</tr>
+		<tr>
+			<td valign="top"><img src="questionTypeThumbnail_slider.png" height="64px" alt="bar graph"></td>
+			<td valign="top">A <strong>slider</strong> question has a line with a button that you drag. 
+				Labels on the left and right show people what they are choosing between. 
+				When the <strong>Does not apply checkbox</strong> under the slider is checked, it means that the question has not been answered.
+				All sliders start out with this checkbox checked. When a participant <i>moves</i> the slider (using the mouse or an arrow key), the box gets unchecked. 
+				They can check the box again to decline to answer the question.
+				If you want a different label to appear on the "Does not apply" checkbox (e.g., "Not sure" or "I don't see how this is relevant"), 
+				enter your label here, under the (fake) slider. 
+			</td>
+		</tr>
+		<tr>
+			<td colspan="2" style="border-bottom: 1px solid black"><i>Questions with multiple answers chosen from a list</i></td>
+		</tr>
+		<tr>
+			<td valign="top"><img src="questionTypeThumbnail_checkboxes.png" height="64px" alt="bar graph"></td>
+			<td valign="top">A <strong>checkboxes</strong> question has any number of check box answers. 
+				Enter labels for your check boxes in the <strong>answers</strong> box.
+				To limit the number of boxes participants can check, 
+				select a <strong>maximum number of checkboxes</strong> in the drop-down box just after the list of choices. 
+			</td>
+		</tr>
+		<tr>
+			<td colspan="2" style="border-bottom: 1px solid black"><i>Questions with free text answers</i></td>
+		</tr>
+		<tr>
+			<td valign="top"><img src="questionTypeThumbnail_text.png" height="64px" alt="bar graph"></td>
+			<td valign="top">A <strong>text</strong> question has a one-line text box, for short but free-text answers.
+			</td>
+		</tr>
+		<tr>
+			<td valign="top"><img src="questionTypeThumbnail_textarea.png" height="64px" alt="bar graph"></td>
+			<td valign="top">A <strong>textarea</strong> question has a multi-line, resizeable text box, for paragraph-length free-text answers.
+			</td>
+		</tr>
+	</table>
 </div>
 
 <div class="question">
@@ -146,38 +189,6 @@ enter your label here, under the (fake) slider.
 		<li>On the <a href="../catalysis/help_page_explorePatterns.html">Explore patterns</a> page, you can read your write-in answers and create observations based on them.</li>
 		<li>On the <a href="../sensemaking/help_page_printStoryCards.html">Print story cards</a> page, you can show (or hide) your write-in answers on your story cards.</li>
 	</ul>
-</div>
-
-<div class="question">
-What's the difference between a "boolean" and a "check box"?
-</div>
-<div class="question-answer">
-<p>
-The difference is in appearance only.
-</p>
-<ul>
-	<li>A check box question has one checkbox. It starts out unchecked. 
-	<ul>
-		<li>If a participant <i>never</i> checks the box, the story will be counted in the "No answer" column on the
-			bar graph for the question. </li>
-		<li>If they check the box, the story will be counted as "true." </li>
-		<li>If they check and then uncheck the box, the story will be counted as "false."</li>
-	</ul>
-	</li>
-		<li>A boolean question has two radio buttons labeled yes and no. It starts out with neither radio button clicked. 
-		<ul>
-		<li>If the participant never clicks either
-		radio button, the story will be counted in the "No answer" column on the
-		bar graph for the question. </li>
-		<li>If they click the "yes" radio buttion, the story will be counted as "yes." </li>
-		<li>If they check the "no" radio button, the story will be counted as "no."</li>
-	</ul>
-	</li>
-</ul>
-<p>
-Once a participant has clicked on either a checkbox or a boolean question, they cannot un-answer the question.
-(This is also true for radio button questions.)
-</p>
 </div>
 
 <div class="question">

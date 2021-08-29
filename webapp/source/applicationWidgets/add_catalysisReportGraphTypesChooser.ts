@@ -98,13 +98,13 @@ function add_catalysisReportGraphTypesChooser(panelBuilder: PanelBuilder, model,
 
         return m("div", {style: "margin-bottom: 1em"}, [
             m("input[type=checkbox]", {id: id, checked: isChecked(id), onchange: function(event) { isChecked(id, event.target.checked); }}),
-            m("label", {"for": id}, 
+            m("label", {"for": id, "style": isChecked(id) ? "font-weight: bold" : "font-weight: normal"}, 
                 m("span", [
                 m("span", nameToDisplay),
                 m("br"),
                 m("img", {
                     src: 'help/catalysis/graphThumbnail_' + allGraphTypesThumbnailNames[id] + '.png', 
-                    class: "narrafirma-graph-thumbnail"
+                    class: isChecked(id) ? "narrafirma-graph-thumbnail-checked" : "narrafirma-graph-thumbnail-unchecked",
                 }),
             ])),
         ]);
@@ -128,7 +128,7 @@ function add_catalysisReportGraphTypesChooser(panelBuilder: PanelBuilder, model,
     let columnTDs = [];
     for (let i = 0; i < columnNames.length; i++) {
         let column = [];
-        column.push(m("b", columnNames[i]));
+        column.push(m("i", columnNames[i]));
         column.push(m("br"));
         column.push(m("br"));
         graphTypesInTableColumns[i].forEach(function(graphType) {

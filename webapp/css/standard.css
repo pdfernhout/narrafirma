@@ -488,6 +488,51 @@ button:disabled {
     width: 90%;
 }
 
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Choosing a question type ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
+.narrafirma-question-types-chooser-table-div {
+    margin-bottom: 1em;
+}
+
+.narrafirma-question-types-chooser-table {
+    margin: 1em 0.5em 1em 1em;
+    border-collapse: collapse;
+}
+
+.narrafirma-question-types-chooser-table-td {
+    vertical-align: top;
+    width: 200px;
+    max-width: 300px;
+    border: 1px dashed black;
+}
+
+.narrafirma-question-types-chooser-table-header {
+    font-style: italic;
+}
+
+.narrafirma-question-types-chooser-table-label-checked {
+    font-weight: bold;
+}
+
+.narrafirma-question-types-chooser-table-label-unchecked {
+    font-weight: normal;
+}
+
+.narrafirma-question-type-thumbnail-checked {
+    margin-top: 0.3em;
+    border: 2px solid black;
+}
+
+.narrafirma-question-type-thumbnail-checked-disabled {
+    margin-top: 0.3em;
+    border: 2px solid gray;
+}
+
+.narrafirma-question-type-thumbnail-unchecked {
+    margin-top: 0.3em;
+    border: none;
+}
+
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Question type: Header ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 .questionExternal.narrafirma-question-type-header {
@@ -1515,9 +1560,16 @@ td.narrafirma-mw-nested-title, td.narrafirma-mw-nested-stats {
 
 /* common to all graphs */
 
-.narrafirma-graph-thumbnail {
+.narrafirma-graph-thumbnail-checked {
     margin: 0.25em 0 0 2em;
     height: 64px;
+    border: 2px solid black;
+}
+
+.narrafirma-graph-thumbnail-unchecked {
+    margin: 0.25em 0 0 2em;
+    height: 64px;
+    border: none;
 }
 
 .narrafirma-graph-title {

@@ -30,11 +30,11 @@ var panel: Panel = {
         },
         {
             id: "annotationQuestion_type",
-            valueType: "string",
-            valueOptions: ["boolean", "checkbox", "checkboxes", "text", "textarea", "select", "radiobuttons", "slider"],
-            displayType: "select",
+            valueType: "none",
+            displayType: "questionTypeChooser",
+            displayConfiguration: "annotation",
             displayName: "Type",
-            displayPrompt: `What <strong>type</strong> of question is this?
+            displayPrompt: `How do you want to <strong>answer</strong> this question?
                 <em>If you change this question's type after you start using the question, you may lose any previously entered answers. See the help system for details.</em>`
         },
         {

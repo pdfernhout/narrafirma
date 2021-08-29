@@ -1,6 +1,8 @@
 import kludgeForUseStrict = require("../../kludgeForUseStrict");
 "use strict";
 
+// this is no longer being used
+
 var panel: Panel = {
     id: "panel_chooseParticipantQuestion",
     modelClass: "ParticipantQuestionChoice",
