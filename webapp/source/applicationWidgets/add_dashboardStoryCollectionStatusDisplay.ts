@@ -10,60 +10,62 @@ import Globals = require("../Globals");
 function mithrilArrayForListOfThingsAndLink(name, list, page) {
     if (!list || list.length == 0) return null;
     const count = list.length;
-    var text = "" + count + " " + name;
+    let text = "" + count + " " + name;
     if (count != 1) text += "s";
     return [m("a", {href: 'javascript:narrafirma_openPage("' + page + '")', title: text}, text), m("br")];  
 }
 
 function add_dashboardStoryCollectionStatusDisplay(panelBuilder: PanelBuilder, model, fieldSpecification): any {
-    var resultItems = [];
-    var tripleStore = Globals.project().tripleStore;
-    var newItems = null;
+    let resultItems = [];
+    const tripleStore = Globals.project().tripleStore;
+    let newItems = null;
 
     // eliciting questions
-    var elicitingQuestionIdentifiers = Globals.project().getListForField("project_elicitingQuestionsList");
+    const elicitingQuestionIdentifiers = Globals.project().getListForField("project_elicitingQuestionsList");
     newItems = mithrilArrayForListOfThingsAndLink("Eliciting question", elicitingQuestionIdentifiers, "page_writeStoryElicitingQuestions");
     if (newItems) resultItems = resultItems.concat(newItems);
 
     // questions about stories
-    var storyQuestionIdentifiers = Globals.project().getListForField("project_storyQuestionsList");
+    const storyQuestionIdentifiers = Globals.project().getListForField("project_storyQuestionsList");
     newItems = mithrilArrayForListOfThingsAndLink("Story question", storyQuestionIdentifiers, "page_writeQuestionsAboutStories");
     if (newItems) resultItems = resultItems.concat(newItems);
 
     // questions about participants
-    var participantQuestionIdentifiers = Globals.project().getListForField("project_participantQuestionsList");
+    const participantQuestionIdentifiers = Globals.project().getListForField("project_participantQuestionsList");
     newItems = mithrilArrayForListOfThingsAndLink("Participant question", participantQuestionIdentifiers, "page_writeQuestionsAboutParticipants");
     if (newItems) resultItems = resultItems.concat(newItems);
 
     // annotation questions
-    var annotationQuestionIdentifiers = Globals.project().getListForField("project_annotationQuestionsList");
+    const annotationQuestionIdentifiers = Globals.project().getListForField("project_annotationQuestionsList");
     newItems = mithrilArrayForListOfThingsAndLink("Annotation question", annotationQuestionIdentifiers, "page_writeAnnotationsAboutStories");
     if (newItems) resultItems = resultItems.concat(newItems);
 
     // story forms
-    var storyFormIdentifiers = Globals.project().getListForField("project_storyForms");
+    const storyFormIdentifiers = Globals.project().getListForField("project_storyForms");
     newItems = mithrilArrayForListOfThingsAndLink("Story form", storyFormIdentifiers, "page_designStoryForms");
     if (newItems) resultItems = resultItems.concat(newItems);
 
     // catalysis reports
-    var catalysisReportIdentifiers = Globals.project().getListForField("project_catalysisReports");
+    const catalysisReportIdentifiers = Globals.project().getListForField("project_catalysisReports");
     newItems = mithrilArrayForListOfThingsAndLink("Catalysis report", catalysisReportIdentifiers, "page_configureCatalysisReport");
     if (newItems) resultItems = resultItems.concat(newItems);
 
     // story collections
-    var storyCollectionsIdentifiers = Globals.project().getListForField("project_storyCollections");
+    const storyCollectionsIdentifiers = Globals.project().getListForField("project_storyCollections");
+    let storyCollectionItems =  [];
+
     if (storyCollectionsIdentifiers && storyCollectionsIdentifiers.length) {
-        var storyCollections = storyCollectionsIdentifiers.map(function(storyCollectionIdentifier) {
-            var shortName = tripleStore.queryLatestC(storyCollectionIdentifier, "storyCollection_shortName");
-            var allStoriesInStoryCollection = surveyCollection.getStoriesForStoryCollection(shortName);
-            var storyCount = allStoriesInStoryCollection.length;
-            var activeOnWeb = tripleStore.queryLatestC(storyCollectionIdentifier, "storyCollection_activeOnWeb");
+        const storyCollections = storyCollectionsIdentifiers.map(function(storyCollectionIdentifier) {
+            const shortName = tripleStore.queryLatestC(storyCollectionIdentifier, "storyCollection_shortName");
+            const allStoriesInStoryCollection = surveyCollection.getStoriesForStoryCollection(shortName);
+            const storyCount = allStoriesInStoryCollection.length;
+            const activeOnWeb = tripleStore.queryLatestC(storyCollectionIdentifier, "storyCollection_activeOnWeb");
             if (activeOnWeb) {
                 console.log("active on web: ", shortName, storyCollectionIdentifier);
             }
-            var surveyURL = activeOnWeb ? surveyCollection.urlForSurveyAsString(storyCollectionIdentifier) : "";
-            var reviewStoriesURL = surveyCollection.urlForStoryCollectionReview(storyCollectionIdentifier, "reviewIncomingStories");
-            var browseGraphsURL = surveyCollection.urlForStoryCollectionReview(storyCollectionIdentifier, "browseGraphs");
+            const surveyURL = activeOnWeb ? surveyCollection.urlForSurveyAsString(storyCollectionIdentifier) : "";
+            const reviewStoriesURL = surveyCollection.urlForStoryCollectionReview(storyCollectionIdentifier, "reviewIncomingStories");
+            const browseGraphsURL = surveyCollection.urlForStoryCollectionReview(storyCollectionIdentifier, "browseGraphs");
             
             return {
                 id: storyCollectionIdentifier,
@@ -77,12 +79,12 @@ function add_dashboardStoryCollectionStatusDisplay(panelBuilder: PanelBuilder, m
         });
         
         storyCollections.sort(function(a, b) {
-            var aName = a.shortName || "";
-            var bName = b.shortName || "";
+            const aName = a.shortName || "";
+            const bName = b.shortName || "";
             return aName.localeCompare(bName);
         });
         
-        var storyCollectionItems =  [
+        storyCollectionItems =  [
             m("br"),
             m("table", 
                 m("tr", [
@@ -91,11 +93,11 @@ function add_dashboardStoryCollectionStatusDisplay(panelBuilder: PanelBuilder, m
                     m("th", "active?") 
                 ]),
                 storyCollections.map(function(storyCollection) {
-                    var reviewStories = m("a[id=narrafirma-review-stories-url]", 
+                    const reviewStories = m("a[id=narrafirma-review-stories-url]", 
                         {href: storyCollection.reviewStoriesURL, title: "Click here to view the stories in this collection."}, storyCollection.shortName);
-                    var reviewGraphs = m("a[id=narrafirma-review-stories-url]", 
+                        const reviewGraphs = m("a[id=narrafirma-review-graphs-url]", 
                         {href: storyCollection.browseGraphsURL, title: "Click here to review graphs in this collection."}, <any>storyCollection.storyCount);
-                    var surveyActive = storyCollection.activeOnWeb ? m("a[id=narrafirma-survey-url]", 
+                        const surveyActive = storyCollection.activeOnWeb ? m("a[id=narrafirma-survey-url]", 
                         {href: storyCollection.surveyURL, target: "_blank", title: "Click here to launch the survey for this collection."}, "yes") : "no";
                     return m("tr", [
                         m("td", reviewStories),
@@ -108,21 +110,21 @@ function add_dashboardStoryCollectionStatusDisplay(panelBuilder: PanelBuilder, m
         resultItems = resultItems.concat(storyCollectionItems);
 
     if (resultItems.length && resultItems[0]) {
-        resultItems.unshift(m("p", "Quick links for: " + Globals.project().projectNameOrNickname()));
+        resultItems.unshift(m("p", {style: "margin-top: 0"}, "Quick links for: " + Globals.project().projectNameOrNickname()));
     }
     
     // project admin
-    resultItems = resultItems.concat([m("br"), m("a", {href: 'javascript:narrafirma_openPage("page_administration")', title: "Project administration"}, "Project administration"), m("br")]); 
+    resultItems = resultItems.concat([m("br"), m("a", {href: 'javascript:narrafirma_openPage("page_administration")', title: "Project administration"}, "Project administration")]); 
 
     // choose another project
-    var chooseProjectLink;
-    var isWordPressAJAX = !!window["ajaxurl"];
+    let chooseProjectLink;
+    const isWordPressAJAX = !!window["ajaxurl"];
     if (!isWordPressAJAX) {
         chooseProjectLink = "\\";
     } else {
         chooseProjectLink = "../webapp/narrafirma.html";
     }
-    resultItems = resultItems.concat([m("br"), m("a", {href: chooseProjectLink, title: "Choose another project"}, "Choose another project"), m("br")]); 
+    resultItems = resultItems.concat([m("br"), m("a", {href: chooseProjectLink, title: "Choose another project"}, "Choose another project")]); 
 
     // site admin
     if (Globals.project().currentUserIsSuperUser) {

@@ -201,7 +201,8 @@ input[type="submit"].narrafirma-login-button:hover {
 
 .narrafirma-pni-phases-image {
     float: left;
-	margin: 0.2em 1.2em 0.5em 0.2em;
+    /* long bottom margin to prevent admin links on right from popping over to left */
+	margin: 0.2em 1.2em 20em 0.2em;
 }
 
 .narrafirma-dashboardStatusButton {
