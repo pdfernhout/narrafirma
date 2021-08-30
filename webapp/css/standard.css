@@ -486,6 +486,7 @@ button:disabled {
 
 .narrafirma-story-form-questions-chooser-list {
     width: 90%;
+    background-color: white;
 }
 
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Choosing a question type ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
@@ -569,6 +570,10 @@ button:disabled {
 
 .questionExternal.narrafirma-question-type-label {
     background-color: white;
+}
+
+.questionExternal.narrafirma-question-type-label-not-white {
+    background-color: #c5d2eb;
 }
 
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Question type: Header: Text, Textarea ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
