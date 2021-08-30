@@ -112,6 +112,7 @@ var panel: Panel = {
             displayName: "Show/hide import options",
             displayPrompt: function(panelBuilder, model) { return Globals.clientState().showImportOptions() ? "Hide import options" : "Show import options"; },
             displayPreventBreak: false,
+            displayVisible: function(panelBuilder, model) { return !panelBuilder.readOnly; }
         },
         {
             id: "participantQuestions_import_header",
