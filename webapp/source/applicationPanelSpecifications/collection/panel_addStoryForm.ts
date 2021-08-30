@@ -24,7 +24,7 @@ var panel: Panel = {
             displayName: "Question form preview",
             displayPrompt: "Preview",
             displayPreventBreak: true,
-            displayVisible: function(panelBuilder, model) { return panelBuilder.readOnly === false; }
+            displayVisible: function(panelBuilder, model) { return !panelBuilder.readOnly; }
         },
         {
             id: "questionForm_showOrHideAdvancedOptions",
@@ -34,6 +34,7 @@ var panel: Panel = {
             displayName: "Show/hide advanced options",
             displayPrompt: function(panelBuilder, model) { return Globals.clientState().showAdvancedOptions() ? "Hide advanced options" : "Show advanced options"; },
             displayPreventBreak: true,
+            displayVisible: function(panelBuilder, model) { return !panelBuilder.readOnly; }
         },
         {
             id: "questionForm_showOrHideImportOptions",
@@ -43,6 +44,7 @@ var panel: Panel = {
             displayName: "Show/hide import options",
             displayPrompt: function(panelBuilder, model) { return Globals.clientState().showImportOptions() ? "Hide import options" : "Show import options"; },
             displayPreventBreak: false,
+            displayVisible: function(panelBuilder, model) { return !panelBuilder.readOnly; }
         },
 
         // start - basic
@@ -609,7 +611,7 @@ var panel: Panel = {
             displayName: "Question form preview",
             displayPrompt: "Preview",
             displayPreventBreak: true,
-            displayVisible: function(panelBuilder, model) { return panelBuilder.readOnly === false; }
+            displayVisible: function(panelBuilder, model) { return !panelBuilder.readOnly; }
         },
         {
             id: "questionForm_showOrHideAdvancedOptions_bottom",
@@ -619,6 +621,7 @@ var panel: Panel = {
             displayName: "Show/hide advanced options",
             displayPrompt: function(panelBuilder, model) { return Globals.clientState().showAdvancedOptions() ? "Hide advanced options" : "Show advanced options"; },
             displayPreventBreak: true,
+            displayVisible: function(panelBuilder, model) { return !panelBuilder.readOnly; }
         },
         {
             id: "questionForm_showOrHideImportOptions_bottom",
@@ -628,6 +631,7 @@ var panel: Panel = {
             displayName: "Show/hide import options",
             displayPrompt: function(panelBuilder, model) { return Globals.clientState().showImportOptions() ? "Hide import options" : "Show import options"; },
             displayPreventBreak: false,
+            displayVisible: function(panelBuilder, model) { return !panelBuilder.readOnly; }
         },
     ]
 };
