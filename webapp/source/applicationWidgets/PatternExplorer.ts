@@ -418,13 +418,24 @@ class PatternExplorer {
                     valueOptions: ["1 (weak)", "2 (medium)", "3 (strong)"]
                 },
                 {
+                    id: "observationPanel_showOrHideAdvancedOptions",
+                    valueType: "none",
+                    displayType: "button",
+                    displayConfiguration: "showOrHideAdvancedOptions",
+                    displayName: "Show/hide advanced options",
+                    displayPrompt: function(panelBuilder, model) { return Globals.clientState().showAdvancedOptions() ? "Hide advanced options" : "Show advanced options"; },
+                    displayPreventBreak: false,
+                    displayVisible: function(panelBuilder, model) { return !panelBuilder.readOnly; }
+                },
+                {
                     id: "observationPanel_linkingQuestion",
                     valuePath: "/clientState/observationAccessor/observationLinkingQuestion",
                     displayName: "Observation linking question",
                     displayPrompt: `You might want to enter a <strong>linking question</strong> that will connect this observation 
                         to its interpretations (e.g., "Why did people say ___?").
                         It will be printed in the report before the interpretations.`,
-                    displayType: "text"
+                    displayType: "text",
+                    displayVisible: function(panelBuilder, model) { return !!Globals.clientState().showAdvancedOptions(); }
                 },
                 {
                     id: "observationPanel_observationNote",
@@ -432,7 +443,8 @@ class PatternExplorer {
                     displayName: "Observation note",
                     displayPrompt: `You might want to save a <strong>note</strong> to yourself about this observation. 
                         It will not be printed in the report.`,
-                    displayType: "textarea"
+                    displayType: "textarea",
+                    displayVisible: function(panelBuilder, model) { return !!Globals.clientState().showAdvancedOptions(); }
                 },
                 {
                     id: "observationPanel_extraPatterns",
@@ -441,14 +453,17 @@ class PatternExplorer {
                     displayPrompt: `To <strong>include additional patterns</strong>, describe each pattern on a separate line. 
                         Enter its question names exactly as you see them in the table above, in the same order, separated by two equals signs.
                         (For details, see the help system.)`,
-                    displayType: "textarea"
+                    displayType: "textarea",
+                    displayVisible: function(panelBuilder, model) { return !!Globals.clientState().showAdvancedOptions(); }
+                    
                 },
                 {
                     id: "observationPanel_savedGraphSelections",
                     valuePath: "/clientState/observationAccessor/observationSavedGraphSelections",
                     displayName: "Graph selections",
                     displayPrompt: 'These are <strong>selections you have saved</strong> for this pattern. (For details, see the help system.)',
-                    displayType: "text",
+                    displayType: "textarea",
+                    displayVisible: function(panelBuilder, model) { return !!Globals.clientState().showAdvancedOptions(); }
                 },
             ]
         };
