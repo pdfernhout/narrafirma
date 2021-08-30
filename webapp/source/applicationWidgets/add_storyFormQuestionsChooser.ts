@@ -14,7 +14,7 @@ function add_storyFormQuestionsChooser(panelBuilder: PanelBuilder, model, fieldS
     if (!storyForm) return m("div");
     
     const prompt = panelBuilder.buildQuestionLabel(fieldSpecification);
-    const questionType = fieldSpecification.displayConfiguration.toLowerCase();
+    const questionCategory = fieldSpecification.displayConfiguration.toLowerCase();
 
     /////////////////// left side - questions chosen for form
     // these are not questions; they are "QuestionChoice" objects 
@@ -22,7 +22,7 @@ function add_storyFormQuestionsChooser(panelBuilder: PanelBuilder, model, fieldS
 
     const questionChoicesSelectBoxID = fieldSpecification.displayConfiguration + "_questions_chosen";
     let questionChoicesInForm = [];
-    const questionChoicesSetID = storyForm["questionForm_" + questionType + "Questions"];
+    const questionChoicesSetID = storyForm["questionForm_" + questionCategory + "Questions"];
     if (questionChoicesSetID) {
         const questionChoicesIDsList = project.tripleStore.getListForSetIdentifier(questionChoicesSetID);
         questionChoicesIDsList.forEach((id) => {
@@ -47,7 +47,7 @@ function add_storyFormQuestionsChooser(panelBuilder: PanelBuilder, model, fieldS
     // create mithril options for list box with question lookup ids
     const questionChoicesInFormSelectOptions = [];
     questionChoicesInForm.forEach((questionChoice, index) => {
-        questionChoicesInFormSelectOptions.push(m("option", {value: questionChoice.id, selected: undefined}, questionChoice[questionType + "Question"]));
+        questionChoicesInFormSelectOptions.push(m("option", {value: questionChoice.id, selected: undefined}, questionChoice[questionCategory + "Question"]));
     });
 
     /////////////////// right side - questions available to choose
@@ -68,7 +68,7 @@ function add_storyFormQuestionsChooser(panelBuilder: PanelBuilder, model, fieldS
     createdQuestions.forEach((createdQuestion) => {
         let questionIsAleadyInForm = false;
         questionChoicesInForm.forEach((questionChoice) => {
-            if (questionChoice[questionType + "Question"] === createdQuestion[questionType + "Question_shortName"]) {
+            if (questionChoice[questionCategory + "Question"] === createdQuestion[questionCategory + "Question_shortName"]) {
                 questionIsAleadyInForm = true;
                 return;
             }
@@ -81,7 +81,7 @@ function add_storyFormQuestionsChooser(panelBuilder: PanelBuilder, model, fieldS
     // create mithril options for list box with question lookup ids
     const createdQuestionsNotInFormSelectOptions = [];
     createdQuestionsNotInForm.forEach((question) => {
-        const name = question[questionType + "Question_shortName"];
+        let name = question[questionCategory + "Question_shortName"];
         createdQuestionsNotInFormSelectOptions.push(m("option", {value: question.id, selected: undefined}, name));
     });
 
@@ -156,11 +156,11 @@ function add_storyFormQuestionsChooser(panelBuilder: PanelBuilder, model, fieldS
         const newOrder = highestOrderInExistingQuestionChoices() + 1;
 
         const template = {"order": newOrder};
-        if (questionType === "eliciting") {
+        if (questionCategory === "eliciting") {
             template["elicitingQuestion"] = selectedOption.text;
-        } else if (questionType === "story") {
+        } else if (questionCategory === "story") {
             template["storyQuestion"] = selectedOption.text;
-        } else if (questionType === "participant") {
+        } else if (questionCategory === "participant") {
             template["participantQuestion"] = selectedOption.text;
         }
         const itemClassName = fieldSpecification.displayConfiguration + "QuestionChoice";
@@ -182,8 +182,8 @@ function add_storyFormQuestionsChooser(panelBuilder: PanelBuilder, model, fieldS
         m("div", fieldSpecification.displayConfiguration + " questions in this form"),
         m("select.narrafirma-story-form-questions-chooser-list", {size: 7, disabled: panelBuilder.readOnly, id: questionChoicesSelectBoxID}, questionChoicesInFormSelectOptions),
         m("br"),
-        m("button", {id: "move" + questionType + "QuestionChoiceUp", disabled: panelBuilder.readOnly, onclick: moveSelectedQuestionChoiceUp}, "↑"),
-        m("button", {id: "move" + questionType + "QuestionChoiceDown", disabled: panelBuilder.readOnly, onclick: moveSelectedQuestionChoiceDown}, "↓")
+        m("button", {id: "move" + questionCategory + "QuestionChoiceUp", disabled: panelBuilder.readOnly, onclick: moveSelectedQuestionChoiceUp}, "↑"),
+        m("button", {id: "move" + questionCategory + "QuestionChoiceDown", disabled: panelBuilder.readOnly, onclick: moveSelectedQuestionChoiceDown}, "↓")
         ])));
     
     // add, remove buttons
