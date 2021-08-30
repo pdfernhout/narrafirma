@@ -435,6 +435,10 @@ button:disabled {
     display: block;
 }
 
+.narrafirma-question-type-radiobuttons .questionPrompt  {
+    padding-left: 0.8em;
+}
+
 .narrafirma-question-type-checkboxes .questionPrompt  {
     padding-left: 0.8em;
 }
