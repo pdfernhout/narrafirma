@@ -1417,6 +1417,7 @@ function questionForItem(item, questionCategory) {
 
     let maxNumAnswers = undefined;
     let writeInTextBoxLabel = "";
+    let listBoxRows = undefined;
     const optionsString = item["Options"] || "";
     if (optionsString) {
         const optionParts = optionsString.split("|");
@@ -1430,6 +1431,13 @@ function questionForItem(item, questionCategory) {
             }
             if (part.indexOf("writeInTextBoxLabel=") >= 0) {
                 writeInTextBoxLabel = stringBeyond(part, "writeInTextBoxLabel=");
+            }
+            if (part.indexOf("listBoxRows=") >= 0) {
+                listBoxRows = stringBeyond(part, "listBoxRows=");
+                if (listBoxRows && isNaN(listBoxRows)) {
+                    alert('Import error: For the Multiple choice question "' + item["Short name"] + '," the number of list box rows ("' + listBoxRows + '") is not a number.');
+                    listBoxRows = "";
+                }
             }
         });
     }
@@ -1509,6 +1517,7 @@ function questionForItem(item, questionCategory) {
     question[questionCategory + "_text"] = item["Long name"];
     if (valueOptions) question[questionCategory + "_options"] = valueOptions.join("\n");
     if (maxNumAnswers) question[questionCategory + "_maxNumAnswers"] = maxNumAnswers;
+    if (listBoxRows) question[questionCategory + "_listBoxRows"] = listBoxRows;
     if (writeInTextBoxLabel) question[questionCategory + "_writeInTextBoxLabel"] = writeInTextBoxLabel;
 
     question[questionCategory + "_import_columnName"] = item["Data column name"] || item["Short name"];
@@ -1681,6 +1690,9 @@ export function exportQuestionnaire(questionnaire = null) {
             }
             if (question.writeInTextBoxLabel) {
                 options.push("writeInTextBoxLabel=" + question.writeInTextBoxLabel);
+            }
+            if (question.listBoxRows) {
+                options.push("listBoxRows=" + question.listBoxRows);
             }
             outputLine.push(options.join("|"));  
 
@@ -1861,6 +1873,9 @@ export function exportQuestionnaireForImport(questionnaire = null) { // to prese
             }
             if (question.writeInTextBoxLabel) {
                 options.push("writeInTextBoxLabel=" + question.writeInTextBoxLabel);
+            }
+            if (question.listBoxRows) {
+                options.push("listBoxRows=" + question.listBoxRows);
             }
             outputLine.push(options.join("|"));  
 

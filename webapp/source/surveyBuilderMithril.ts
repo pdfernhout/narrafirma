@@ -257,7 +257,7 @@ function displayQuestion(builder, model, fieldSpecification, questionnaire) {
         let selectOptions = [];
         let defaultOptions = {name: '', value: '', selected: undefined};
         if (!value) defaultOptions.selected = 'selected';
-        selectOptions.push(m("option", defaultOptions, '-- select --'));
+        if (!fieldSpecification.listBoxRows) { selectOptions.push(m("option", defaultOptions, '-- select --')); }
 
         selectOptions = selectOptions.concat(
             fieldSpecification.valueOptions.map(function (option, index) {
@@ -269,8 +269,20 @@ function displayQuestion(builder, model, fieldSpecification, questionnaire) {
             })
         );
         
+        
+        let selectDictionary = {};
+        if (fieldSpecification.listBoxRows) {
+            const keys = Object.keys(standardValueOptions);
+            for (let i = 0; i < keys.length; i++) { 
+                const key = keys[i];
+                selectDictionary[key] = standardValueOptions[key]; 
+            }
+            selectDictionary["size"] = fieldSpecification.listBoxRows;
+        } else {
+            selectDictionary = standardValueOptions;
+        }
         const questionParts = [
-            m("select", standardValueOptions, selectOptions),
+            m("select", selectDictionary, selectOptions),
             m("br")
         ];
         return questionParts;

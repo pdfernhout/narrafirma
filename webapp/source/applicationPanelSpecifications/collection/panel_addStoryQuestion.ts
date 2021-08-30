@@ -64,6 +64,24 @@ var panel: Panel = {
             displayVisible: function(panelBuilder, model) { return matchQuestionType(model, ["select", "radiobuttons", "checkboxes"]); }
         },
         {
+            id: "storyQuestion_listBoxRows",
+            valueType: "string",
+            valueOptions: ["2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20"],
+            displayType: "select",
+            displayName: "List box rows",
+            displayPrompt: `How many <strong>list box rows</strong> do you want to show for this question? Leave this field blank to show a drop-down list.`,
+            displayVisible: function(panelBuilder, model) { return matchQuestionType(model, ["select"]); }
+        },
+        {
+            id: "storyQuestion_maxNumAnswers",
+            valueType: "string",
+            valueOptions: ["2", "3", "4", "5", "6", "7", "8", "9", "10"],
+            displayType: "select",
+            displayName: "Max number of answers",
+            displayPrompt: `What is the <strong>maximum number of checkboxes</strong> a participant can check? (Leave blank for no limit.)`,
+            displayVisible: function(panelBuilder, model) { return matchQuestionType(model, ["checkboxes"]); }
+        },
+        {
             id: "storyQuestion_writeInTextBoxLabel",
             valuePath: "storyQuestion_writeInTextBoxLabel",
             valueType: "string",
@@ -73,16 +91,7 @@ var panel: Panel = {
                 enter a label for the write-in text box here.`,
             displayVisible: function(panelBuilder, model) { return matchQuestionType(model, ["boolean", "checkbox", "checkboxes", "text", "textarea", "select", "radiobuttons", "slider"]); }
         },
-        {
-            id: "storyQuestion_choice_maxNumAnswers",
-            valueType: "string",
-            valueOptions: ["2", "3", "4", "5", "6", "7", "8", "9", "10"],
-            displayType: "select",
-            displayName: "Max number of answers",
-            displayPrompt: `If this question has multiple checkboxes, what is the <strong>maximum number of checkboxes</strong> 
-            a participant can check? (Leave blank for no limit.)`,
-            displayVisible: function(panelBuilder, model) { return matchQuestionType(model, ["checkboxes"]); }
-        },
+        
 
         // notes and templates
 

@@ -62,6 +62,7 @@ export function convertEditorQuestions(editorQuestions, prefixQPA) {
             const splitOptions = optionsString.split("\n");
             splitOptions.map(function(option) { if (option.trim()) options.push(option.trim()); })
         }
+        const listBoxRows = question[keyPrefix + "listBoxRows"];
 
         const maxNumAnswers = question[keyPrefix + "maxNumAnswers"];
 
@@ -102,6 +103,7 @@ export function convertEditorQuestions(editorQuestions, prefixQPA) {
             id: id, 
             valueOptions: valueOptions, 
             maxNumAnswers: maxNumAnswers,
+            listBoxRows: listBoxRows,
             writeInTextBoxLabel: writeInTextBoxLabel,
             displayName: shortName, 
             displayPrompt: prompt,

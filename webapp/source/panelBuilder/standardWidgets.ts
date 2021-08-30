@@ -359,13 +359,26 @@ export function displayQuestion(panelBuilder: PanelBuilder, model, fieldSpecific
         questionLabel[0].attrs["for"] = getIdForText(fieldID);
         questionLabel[0].tag = "label";
 
-        const selectOptionsRaw = optionsForSelect(panelBuilder, model, fieldSpecification, value, true);
+        const selectOptionsRaw = optionsForSelect(panelBuilder, model, fieldSpecification, value, !fieldSpecification.listBoxRows);
         const selectOptions = selectOptionsRaw.map(function (option, index) {
             const optionOptions = {value: option.value, selected: undefined};
             if (option.selected) optionOptions.selected = 'selected';
             return m("option", optionOptions, option.name);
         });
-        return [m("select", standardValueOptions, selectOptions), (fieldSpecification.displayWithoutQuestionDivs || isAnnotationQuestion) ? "" : m("br")];
+        
+        let selectDictionary = {};
+        if (fieldSpecification.listBoxRows) {
+            const keys = Object.keys(standardValueOptions);
+            for (let i = 0; i < keys.length; i++) { 
+                const key = keys[i];
+                selectDictionary[key] = standardValueOptions[key]; 
+            }
+            selectDictionary["size"] = fieldSpecification.listBoxRows;
+        } else {
+            selectDictionary = standardValueOptions;
+        }
+
+        return [m("select", selectDictionary, selectOptions), (fieldSpecification.displayWithoutQuestionDivs || isAnnotationQuestion) ? "" : m("br")];
     }
 
     ///////////////////////////////////////////////////////////////////// slider /////////////////////////////////////////////////////////////////////
