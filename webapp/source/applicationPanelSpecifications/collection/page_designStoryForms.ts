@@ -10,7 +10,7 @@ var panel: Panel = {
             id: "storyForms_Label",
             valueType: "none",
             displayType: "label",
-            displayPrompt: `On this page you will design one or more <strong>story forms</strong> for your project. 
+            displayPrompt: `On this page you can design one or more <strong>story forms</strong> for your project. 
                 Choose from the library of questions you already created to create the form your participants will use to tell their stories and answer questions about them.
                 You can also generate a story form using all existing questions or import one from a CSV file.`
         },
@@ -31,6 +31,22 @@ var panel: Panel = {
             displayName: "Story forms",
             displayPrompt: "These are the story forms you have created so far."
         },
+
+
+        {
+            id: "storyForms_generate_Header",
+            valueType: "none",
+            displayType: "header",
+            displayPrompt: `Generate a story form`
+        },
+        {
+            id: "storyForms_generate_label",
+            valueType: "none",
+            displayType: "label",
+            displayClass: "narrafirma-question-type-label-not-white",
+            displayPrompt: `You can start your story form by filling it with <strong>all of the questions you have created</strong>. 
+                This will place it into the list above. Afterwards, you can fine-tune its appearance. `
+        },
         {
             id: "project_createStoryFormFromCreatedQuestions",
             valueType: "none",
@@ -40,11 +56,17 @@ var panel: Panel = {
             displayPrompt: "Generate story form using all existing questions..."
         },
         {
-            id: "project_importStoryFormAndDataFromCSV",
+            id: "storyForms_import_Header",
             valueType: "none",
-            displayType: "button",
-            displayConfiguration: "importCSVQuestionnaire",
-            displayPrompt: "Import CSV story form file..."
+            displayType: "header",
+            displayPrompt: `Import a story form`
+        },
+        {
+            id: "storyForms_import_label",
+            valueType: "none",
+            displayType: "label",
+            displayClass: "narrafirma-question-type-label-not-white",
+            displayPrompt: `You can <strong>import a story form</strong> you created in another project or in a spreadsheet. (For details on the import format, see the help system.) `
         },
         {
             id: "project_csvQuestionOverwriteOption",
@@ -58,15 +80,23 @@ var panel: Panel = {
                 "stop the import if any existing questions are found"],
             displayType: "select",
             displayName: "Question overwrite policy",
-            displayPrompt: `When you import questions from a CSV file, what do you want to do <strong>when a question already exists</strong> in the project? 
+            displayPrompt: `During the import process, what do you want to do <strong>when a question already exists</strong> in the project? 
                 (Questions match if their short names match. This only applies to story and participant questions. Eliciting questions are always overwritten.)`,
 
         },
         {
-            id: "storyForms_csvDelimiterLabel",
+            id: "storyForms_import_delimiter_label",
             valueType: "none",
             displayType: "label",
-            displayPrompt: `Note: You can change your CSV delimiter in the "Project options" page under "Project administration."`
+            displayClass: "narrafirma-question-type-label-not-white",
+            displayPrompt: `Also note: You can change your CSV delimiter in the "Project options" page under "Project administration.`
+        },
+        {
+            id: "project_importStoryFormAndDataFromCSV",
+            valueType: "none",
+            displayType: "button",
+            displayConfiguration: "importCSVQuestionnaire",
+            displayPrompt: "Import CSV story form file..."
         },
         {
             id: "project_csvFileUploaderForForm",
