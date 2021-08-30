@@ -248,9 +248,9 @@ var sections = [
         sectionName: "Catalysis",
         pages: [
             "page_catalysis",
-            "page_startCatalysisReport",
             "page_writeAnnotationsAboutStories",
             "page_annotateStories",
+            "page_startCatalysisReport",
             "page_configureCatalysisReport",
             "page_explorePatterns",
             "page_clusterInterpretations",

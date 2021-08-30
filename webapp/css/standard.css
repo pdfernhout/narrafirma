@@ -242,12 +242,12 @@ input[type="submit"].narrafirma-login-button:hover {
 .narrafirma-dashboard-header {
 	display: block;
 	font-weight: 700;
-	margin-bottom: 0.7em;
+	margin: 0.5em 0 0.7em 0;
 }
 
 .narrafirma-dashboard-page-link {
 	display: block;
-	margin: 0.1em 0 0.1em 1em;
+	margin: 0.1em 0 0 1em;
 }
 
 .narrafirma-questionAnswer { /* this is now used to display the reminder on the section page */

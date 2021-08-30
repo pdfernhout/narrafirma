@@ -6,7 +6,7 @@ var panel: Panel = {
     id: "page_writeAnnotationsAboutStories",
     displayName: "Write annotation questions",
     tooltipText: "Create questions to answer about the stories you collected.",
-    headerAbove: "Add Qualitative Codes",
+    headerAbove: "Annotate Stories with Qualitative Codes",
     panelFields: [
         {
             id: "project_annotationQuestionsLabel",
