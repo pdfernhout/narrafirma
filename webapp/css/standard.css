@@ -611,7 +611,7 @@ textarea.narrafirma-textbox {
 
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Question type: Slider ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-narrafirma-question-type-slider.questionInternal. {
+.narrafirma-question-type-slider.questionInternal {
     text-align: center;
     min-width: 400px;
 }
