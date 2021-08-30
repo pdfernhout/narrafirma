@@ -246,7 +246,7 @@ input[type="submit"].narrafirma-login-button:hover {
 
 .narrafirma-dashboard-page-link {
 	display: block;
-	margin-left: 1em;
+	margin: 0.1em 0 0.1em 1em;
 }
 
 .narrafirma-questionAnswer { /* this is now used to display the reminder on the section page */
@@ -301,6 +301,7 @@ form {
     border: none;
     box-shadow: 1px 1px 1px gray;
     margin-bottom: 0.5em;
+    margin-top: 1em;
     padding: 0.4em;
 }
 
@@ -806,12 +807,19 @@ button.narrafirma-griditempanel-close-button {
 	display: block;
     background-color: inherit;
     color: black;
+    /* using the box shadow makes it possible to place the border INSIDE the box instead of outside it */
+    -webkit-box-shadow: inset 0px 0px 0px 2px #c5d2eb;
+    -moz-box-shadow: inset 0px 0px 0px 2px #c5d2eb;
+    box-shadow: inset 0px 0px 0px 2px #c5d2eb;
 	padding: 0.5em;
-    margin: 0 10em 0 2em;
+    margin: 0 -0.5em 0.25em -0.5em; /* negative to make up for the fact that this span is inside a questionPrompt which is inset */
 }
 
 .narrafirma-griditempanel-viewing .narrafirma-special-warning {
     color: #6d6c6c;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
 }
 
 .narrafirma-centered-label {
