@@ -35,7 +35,7 @@ var Navigation: any = {
             }, "NarraFirma™"), // 
             //m("sup", {"class": "narrafirma-trademark"}, "TM"),
             //m("span[id=narrafirma-version]", "v" + versions.narrafirmaApplication),
-            m("span[id=narrafirma-project-name]", Globals.project().projectName()),
+            m("span[id=narrafirma-project-name]", Globals.project().projectNameOrNickname()),
             m("span[id=narrafirma-breadcrumbs]", buildBreadcrumbs(controller)),
             Globals.project().readOnly ? m("span[id=narrafirma-read-only]", 
                 {title: "Project is read-only for this user. Local changes can be made, but they will not be saved on the server and will be lost if the page is reloaded."}, 

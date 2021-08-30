@@ -108,7 +108,7 @@ function add_dashboardStoryCollectionStatusDisplay(panelBuilder: PanelBuilder, m
         resultItems = resultItems.concat(storyCollectionItems);
 
     if (resultItems.length && resultItems[0]) {
-        resultItems.unshift(m("p", "Quick links for " + Globals.project().projectName()));
+        resultItems.unshift(m("p", "Quick links for: " + Globals.project().projectNameOrNickname()));
     }
     
     // project admin

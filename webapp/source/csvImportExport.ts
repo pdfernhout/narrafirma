@@ -2114,7 +2114,7 @@ export function exportCatalysisReportElementsToCSV() {
     }  
     const observationIDs = project.tripleStore.getListForSetIdentifier(catalysisReportObservationSetIdentifier);
 
-    addOutputLine(["; Export of catalysis elements for catalysis report " + catalysisReportName + " in project " + project.projectIdentifier]);
+    addOutputLine(["; Export of catalysis elements for catalysis report " + catalysisReportName + " in project " + project.projectNameOrNickname()]);
     addOutputLine([""]);
     addOutputLine(["; Observation", "Name", "Description", "Strength", "Linking question", "Pattern", "Graph type", "Question 1", "Question 2", "Question 3", "Additional patterns", "X", "Y", "Interpretation name|description|idea|questions|x|y", "(repeat for each interpretation)"]);
 

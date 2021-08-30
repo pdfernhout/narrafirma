@@ -91,6 +91,24 @@ class Project {
     projectName() {
         return this.journalIdentifier.substring("NarraFirmaProject-".length);
     }
+
+    projectNameOrNickname() {
+        const nickname = this.tripleStore.queryLatestC(this.projectIdentifier, "projectOptions_projectNickname");
+        if (nickname) {
+            return nickname;
+        } else {
+            return this.projectName();
+        }
+    }
+
+    projectNameAndNickname() {
+        const nickname = this.tripleStore.queryLatestC(this.projectIdentifier, "projectOptions_projectNickname");
+        if (nickname) {
+            return this.projectName() + ' (' + nickname + ')';
+        } else {
+            return this.projectName();
+        }
+    }
     
     // TODO: Redundant code with what is in GridWithItemPanel
     getListForField(fieldName) {

@@ -157,7 +157,7 @@ export function displayQuestion(panelBuilder: PanelBuilder, model, fieldSpecific
         questionLabel[0].attrs["for"] = getIdForText(fieldID);
         questionLabel[0].tag = "label";
         let inputClass = "narrafirma-textbox";
-        if (fieldSpecification.displayName === "Short name") {
+        if (["Short name", "Nickname"].indexOf(fieldSpecification.displayName) >= 0) {
             inputClass += "-short";
         }
         return [m("input[class=" + inputClass + "]", standardValueOptions), m("br")];

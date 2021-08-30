@@ -271,7 +271,7 @@ export function resetProject() {
             } else {
                 console.log("Successfully reset project", journalIdentifier, response);
                 // Need to call redraw as event changing data was triggered by network
-                alert("The project " + project.projectName() + " was successfully reset and is now empty.");
+                alert("The project " + project.projectNameAndNickname() + " was successfully reset and is now empty.");
                 location.reload();
             }
         });
