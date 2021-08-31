@@ -72,7 +72,7 @@ export function linear_regression() {
             // value.
             //
             // In math notation, these would be SS_x, SS_y, SS_xx, and SS_xy
-            for (var i = 0; i < data_length; i++) {
+            for (let i = 0; i < data_length; i++) {
                 point = data[i];
                 x = point[0];
                 y = point[1];
@@ -142,7 +142,7 @@ export function r_squared(data, f) {
     // data set in order to compute the
     // _total sum of squares_
     var sum = 0, average;
-    for (var i = 0; i < data.length; i++) {
+    for (let i = 0; i < data.length; i++) {
         sum += data[i][1];
     }
     average = sum / data.length;
@@ -264,7 +264,7 @@ export function bayesian() {
 // This runs on `O(n)`, linear time in respect to the array
 export function sum(x) {
     var value = 0;
-    for (var i = 0; i < x.length; i++) {
+    for (let i = 0; i < x.length; i++) {
         value += x[i];
     }
     return value;
@@ -297,7 +297,7 @@ export function geometric_mean(x) {
     // the starting value.
     var value = 1;
 
-    for (var i = 0; i < x.length; i++) {
+    for (let i = 0; i < x.length; i++) {
         // the geometric mean is only valid for positive numbers
         if (x[i] <= 0) return null;
 
@@ -323,7 +323,7 @@ export function harmonic_mean(x) {
 
     var reciprocal_sum = 0;
 
-    for (var i = 0; i < x.length; i++) {
+    for (let i = 0; i < x.length; i++) {
         // the harmonic mean is only valid for positive numbers
         if (x[i] <= 0) return null;
 
@@ -347,7 +347,7 @@ export function root_mean_square(x) {
     if (x.length === 0) return null;
 
     var sum_of_squares = 0;
-    for (var i = 0; i < x.length; i++) {
+    for (let i = 0; i < x.length; i++) {
         sum_of_squares += Math.pow(x[i], 2);
     }
 
@@ -361,7 +361,7 @@ export function root_mean_square(x) {
 // This runs on `O(n)`, linear time in respect to the array
 export function min(x) {
     var value;
-    for (var i = 0; i < x.length; i++) {
+    for (let i = 0; i < x.length; i++) {
         // On the first iteration of this loop, min is
         // undefined and is thus made the minimum element in the array
         if (x[i] < value || value === undefined) value = x[i];
@@ -376,7 +376,7 @@ export function min(x) {
 // This runs on `O(n)`, linear time in respect to the array
 export function max(x) {
     var value;
-    for (var i = 0; i < x.length; i++) {
+    for (let i = 0; i < x.length; i++) {
         // On the first iteration of this loop, max is
         // undefined and is thus made the maximum element in the array
         if (x[i] > value || value === undefined) value = x[i];
@@ -397,7 +397,7 @@ export function variance(x) {
         deviations = [];
 
     // Make a list of squared deviations from the mean.
-    for (var i = 0; i < x.length; i++) {
+    for (let i = 0; i < x.length; i++) {
         deviations.push(Math.pow(x[i] - mean_value, 2));
     }
 
@@ -426,7 +426,7 @@ export function sum_nth_power_deviations(x, n) {
     var mean_value = mean(x),
         sum = 0;
 
-    for (var i = 0; i < x.length; i++) {
+    for (let i = 0; i < x.length; i++) {
         sum += Math.pow(x[i] - mean_value, n);
     }
 
@@ -486,7 +486,7 @@ export function sample_covariance(x, y) {
     // difference from the mean is associated - if both are well above
     // or if both are well below
     // the mean, the covariance increases significantly.
-    for (var i = 0; i < x.length; i++) {
+    for (let i = 0; i < x.length; i++) {
         sum += (x[i] - xmean) * (y[i] - ymean);
     }
 
@@ -788,7 +788,7 @@ export function quantile(sample, p) {
         // Initialize the result array
         var results = [];
         // For each requested quantile
-        for (var i = 0; i < p.length; i++) {
+        for (let i = 0; i < p.length; i++) {
             results[i] = quantile_sorted(sorted, p[i]);
         }
         return results;
@@ -852,7 +852,7 @@ export function mad(x) {
         median_absolute_deviations = [];
 
     // Make a list of absolute deviations from the median
-    for (var i = 0; i < x.length; i++) {
+    for (let i = 0; i < x.length; i++) {
         median_absolute_deviations.push(Math.abs(x[i] - median_value));
     }
 
@@ -879,7 +879,7 @@ export function jenksMatrices(data, n_classes) {
         variance = 0;
 
     // Initialize and fill each matrix with zeroes
-    for (i = 0; i < data.length + 1; i++) {
+    for (let i = 0; i < data.length + 1; i++) {
         var tmp1 = [], tmp2 = [];
         // despite these arrays having the same values, we need
         // to keep them separate so that changing one does not change
@@ -1407,7 +1407,7 @@ export function chi_squared_goodness_of_fit(data, distribution_type, significanc
     // Create an array holding a histogram from the sample data, of
     // the form `{ value: numberOfOcurrences }`
     var i: number;
-    for (i = 0; i < data.length; i++) {
+    for (let i = 0; i < data.length; i++) {
         if (observed_frequencies[data[i]] === undefined) {
             observed_frequencies[data[i]] = 0;
         }
@@ -1417,7 +1417,7 @@ export function chi_squared_goodness_of_fit(data, distribution_type, significanc
     // The histogram we created might be sparse - there might be gaps
     // between values. So we iterate through the histogram, making
     // sure that instead of undefined, gaps have 0 values.
-    for (i = 0; i < observed_frequencies.length; i++) {
+    for (let i = 0; i < observed_frequencies.length; i++) {
         if (observed_frequencies[i] === undefined) {
             observed_frequencies[i] = 0;
         }
@@ -1464,7 +1464,7 @@ export function chi_squared_goodness_of_fit(data, distribution_type, significanc
     }
     var keys = [0.995, 0.99, 0.975, 0.95, 0.9, 0.5, 0.1, 0.05, 0.025, 0.01, 0.005].reverse();
     var testSignificance = 1.0;
-    for (i = 0; i < keys.length; i++) {
+    for (let i = 0; i < keys.length; i++) {
         var value = row[keys[i]];
         if (value < chi_squared) {
             testSignificance = keys[i];
@@ -1523,7 +1523,7 @@ export function mixin(array): any {
     // because it allows these properties to be non-enumerable:
     // `for (var in x)` loops will not run into problems with this
     // implementation.
-    for (var i = 0; i < arrayMethods.length; i++) {
+    for (let i = 0; i < arrayMethods.length; i++) {
         Object.defineProperty(extending, arrayMethods[i], {
             value: wrap(arrayMethods[i]),
             configurable: true,

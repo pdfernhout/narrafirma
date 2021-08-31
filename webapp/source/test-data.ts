@@ -189,7 +189,7 @@ function makeResponse(responseNumber) {
 }
   
 console.log("making test stories");
-for (var i = 0; i < testDataItemsToMake; i++) {
+for (let i = 0; i < testDataItemsToMake; i++) {
     var testResponse = makeResponse(i);
     testSurveyResponses.push(testResponse);
 }

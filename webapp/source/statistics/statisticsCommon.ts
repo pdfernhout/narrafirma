@@ -1,7 +1,7 @@
 export function repeatCounts(array) {
     var values = {};
     
-    for (var i = 0; i < array.length; i++) {
+    for (let i = 0; i < array.length; i++) {
         var value = array[i];
         if (values[value] !== undefined) {
             values[value] += 1;
@@ -46,7 +46,7 @@ export function rankdata(a: number[]) {
     var j;
     
     var sortedArray = [];
-    for (i = 0; i < n; i++) {
+    for (let i = 0; i < n; i++) {
         sortedArray.push({originalPosition: i, value: a[i]});
     }
     
@@ -57,7 +57,7 @@ export function rankdata(a: number[]) {
     var sumranks = 0;
     var dupcount = 0;
     
-    for (i = 0; i < n; i++) {
+    for (let i = 0; i < n; i++) {
         sumranks += i;
         dupcount += 1;
         if (i === n - 1 || sortedArray[i].value !== sortedArray[i + 1].value) {
@@ -82,7 +82,7 @@ function rankdata_test() {
 
 export function newFilledArray(length: number, val: number = 0): number[] {
     var array = [];
-    for (var i = 0; i < length; i++) {
+    for (let i = 0; i < length; i++) {
         array[i] = val;
     }
     return array;

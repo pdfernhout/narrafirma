@@ -415,7 +415,7 @@ export function dataURItoBlob( dataURI ) {
     // Write the bytes of the string to an ArrayBuffer.
     var arrayBuffer = new ArrayBuffer(byteString.length);
     var uint8Array = new Uint8Array(arrayBuffer);
-    for (var i = 0; i < byteString.length; i++) {
+    for (let i = 0; i < byteString.length; i++) {
         uint8Array[i] = byteString.charCodeAt(i);
     }
 

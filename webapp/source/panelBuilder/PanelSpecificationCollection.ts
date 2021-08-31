@@ -54,7 +54,7 @@ class PanelSpecificationCollection {
             }
         }
         
-        for (var i = 0; i < panelSpecification.panelFields.length; i++) {
+        for (let i = 0; i < panelSpecification.panelFields.length; i++) {
             var fieldSpecification = panelSpecification.panelFields[i];
             this.addFieldSpecification(modelClass, fieldSpecification);
         }
@@ -96,7 +96,7 @@ class PanelSpecificationCollection {
             throw new Error("No model defined for model name: " + modelName);
         }
         
-        for (var i = 0; i < modelFieldSpecifications.length; i++) {
+        for (let i = 0; i < modelFieldSpecifications.length; i++) {
             var fieldSpecification = modelFieldSpecifications[i];
             if (!fieldSpecification.valueType) console.log("WARNING: Missing valueType for fieldSpecification", fieldSpecification);
             if (fieldSpecification.valueType && fieldSpecification.valueType !== "none") {
@@ -108,7 +108,7 @@ class PanelSpecificationCollection {
     
     // This ignores the model type for the page or panel and just puts all the model fields into the supplied model
     addFieldsToModel(model, fieldSpecifications) {
-        for (var i = 0; i < fieldSpecifications.length; i++) {
+        for (let i = 0; i < fieldSpecifications.length; i++) {
             var fieldSpecification = fieldSpecifications[i];
             if (!fieldSpecification.valueType) console.log("WARNING: Missing valueType for fieldSpecification", fieldSpecification);
             if (fieldSpecification.valueType && fieldSpecification.valueType !== "none") {

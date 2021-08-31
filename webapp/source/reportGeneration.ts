@@ -71,7 +71,7 @@ export function calculate_report(panelSpecificationCollection, model, headerPage
 
 function indent(level) {
     var result = "";
-    for (var i = 0; i < level; i++) {
+    for (let i = 0; i < level; i++) {
         result += "&nbsp;";
     }
     return result;

@@ -184,7 +184,7 @@ export function generateSpecificTypeOfSanitizedHTMLForMithril(html, specifiedHTM
 export function removeHTMLTags(text) {
     var cleanedText = "";
     var inTag = false;
-    for (var i = 0; i< text.length; i++) {
+    for (let i = 0; i< text.length; i++) {
         if (text[i] === "<") {
             inTag = true;
         } else if (text[i] === ">") {

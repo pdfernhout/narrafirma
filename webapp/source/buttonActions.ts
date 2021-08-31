@@ -353,7 +353,7 @@ export function copyInterpretationsToClusteringDiagram() {
         var interpretationsSetIdentifier = project.tripleStore.queryLatestC(observationIdentifier, "observationInterpretations");
         if (interpretationsSetIdentifier) {
             var interpretations = project.tripleStore.getListForSetIdentifier(interpretationsSetIdentifier);
-            for (var i = 0; i < interpretations.length; i++) {
+            for (let i = 0; i < interpretations.length; i++) {
                 var interpretationIdentifier = interpretations[i];
                 var interpretationName = project.tripleStore.queryLatestC(interpretationIdentifier, "interpretation_name");
                 var interpretationText = project.tripleStore.queryLatestC(interpretationIdentifier, "interpretation_text");
@@ -390,7 +390,7 @@ export function copyInterpretationsToClusteringDiagram() {
     }
 
     function findObservationForInterpretation(observationIDs, id, name) {
-        for (var i = 0; i < observationIDs.length; i++) {
+        for (let i = 0; i < observationIDs.length; i++) {
             const observationID = observationIDs[i];
             var interpretationsListIdentifier = project.tripleStore.queryLatestC(observationID, "observationInterpretations");
             var interpretationsList = project.tripleStore.getListForSetIdentifier(interpretationsListIdentifier);
@@ -627,7 +627,7 @@ export function showListOfRemovedStoryCollections() {
         message += "the stories associated with them have not been removed. ";
         message += "You can access any of these collections ";
         message += "by creating a new story collection with the same name.\n\n";
-        for (var i = 0; i < removedCollections.length; i++) {
+        for (let i = 0; i < removedCollections.length; i++) {
             message += removedCollections[i] + "\n";
         }
     }

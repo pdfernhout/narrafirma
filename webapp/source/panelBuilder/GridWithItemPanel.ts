@@ -806,7 +806,7 @@ class DataStore {
     }
     
     itemForId(itemID: string) {
-        for (var i = 0; i < this.data.length; i++) {
+        for (let i = 0; i < this.data.length; i++) {
             var item = this.data[i];
             if (this.idForItem(item) === itemID) {
                 return item;

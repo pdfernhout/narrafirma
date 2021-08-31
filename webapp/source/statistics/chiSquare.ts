@@ -19,7 +19,7 @@ export function chiSquare(observed: number[], expected: number[], degreesOfFreed
     var observedTotal = 0;
     var expectedTotal = 0;
     
-    for (var i = 0; i < observed.length; i++) {
+    for (let i = 0; i < observed.length; i++) {
         x2 += Math.pow(observed[i] - expected[i], 2) / expected[i];
         observedTotal += observed[i];
         expectedTotal += expected[i];

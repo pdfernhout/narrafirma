@@ -41,13 +41,13 @@ function friedmanchisquare(table: number[][]) {
     // Rank data
     var data = table;
     
-    for (i = 0; i < data.length; i++) {
+    for (let i = 0; i < data.length; i++) {
         data[i] = statisticsCommon.rankdata(data[i]);
     }
     
     // Handle ties
     var ties = 0;
-    for (i = 0; i < data.length; i++) {
+    for (let i = 0; i < data.length; i++) {
         var repnum = statisticsCommon.repeatCounts(data[i]);
         for (var y = 0; y <  repnum.length; y++) {
             var t = repnum[y];

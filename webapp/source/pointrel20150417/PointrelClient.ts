@@ -646,7 +646,7 @@ class PointrelClient {
         // console.log("minimalJSON", minimalJSON);
         
         //var max = 0;
-        //for (var i = 0; i < minimalJSON.length; i++) {
+        //for (let i = 0; i < minimalJSON.length; i++) {
         //    var c = minimalJSON.charAt(i);
         //    if (minimalJSON.charCodeAt(i) > 127) console.log("i # c", i, minimalJSON.charCodeAt(i), c);
         //    if (minimalJSON.charCodeAt(i) > max) max = minimalJSON.charCodeAt(i);
@@ -656,7 +656,7 @@ class PointrelClient {
         var utf8String = stringToUtf8(minimalJSON);
         //console.log("utf8String", utf8String);
         // console.log("match?", minimalJSON === utf8String, "minimal length", minimalJSON.length, "utf8 length", utf8String.length);
-        //for (var i = 0; i < minimalJSON.length; i++) {
+        //for (let i = 0; i < minimalJSON.length; i++) {
         //    console.log("char at i", i, minimalJSON[i]);
         //}
         
@@ -951,7 +951,7 @@ class PointrelClient {
                 self.serverStatus("failure", "Polling response failure: " + response.statusCode + " :: " + response.description);
             } else {
                 self.okStatus();
-                for (var i = 0; i < response.receivedRecords.length; i++) {
+                for (let i = 0; i < response.receivedRecords.length; i++) {
                     var receivedRecord = response.receivedRecords[i];
                     // if (debugMessaging) console.log("New message", receivedRecord);
                     if (receivedRecord.messageContents !== undefined) {

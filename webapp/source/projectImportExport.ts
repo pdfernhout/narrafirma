@@ -38,7 +38,7 @@ export function importProject() {
     const sayAbout = ["eliciting questions", "questions about stories", "questions about participants", 
         "annotation questions", "story forms", "story collections", "catalysis reports"]; 
     var foundItemsIn = [];
-    for (var i = 0; i < lookIn.length; i++) {
+    for (let i = 0; i < lookIn.length; i++) {
         var ids = Globals.project().getListForField(lookIn[i]);
         if (ids && ids.length) {
             foundItemsIn.push(sayAbout[i]);
@@ -283,7 +283,7 @@ export function listOfRemovedStoryCollections() {
     var project = Globals.project();
     const storyCollectionsIDsInUse = project.getListForField("project_storyCollections");
     var storyCollectionNamesInUse = [];
-    for (var i = 0; i < storyCollectionsIDsInUse.length; i++) {
+    for (let i = 0; i < storyCollectionsIDsInUse.length; i++) {
         storyCollectionNamesInUse.push(project.tripleStore.queryLatestC(storyCollectionsIDsInUse[i], "storyCollection_shortName"));
     }
     var storyCollectionNamesAndCounts = {};
@@ -297,7 +297,7 @@ export function listOfRemovedStoryCollections() {
         }
     });
     var keys = Object.keys(storyCollectionNamesAndCounts);
-    for (i = 0; i < keys.length; i++) {
+    for (let i = 0; i < keys.length; i++) {
         const collectionName = keys[i];
         if (storyCollectionNamesInUse.indexOf(collectionName) < 0 && result.indexOf(collectionName) < 0) {
             result.push(collectionName + ": " + storyCollectionNamesAndCounts[collectionName] + " stories");

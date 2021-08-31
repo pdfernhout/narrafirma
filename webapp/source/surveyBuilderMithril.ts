@@ -625,7 +625,7 @@ export function buildSurveyForm(surveyDiv, questionnaire, doneCallback, surveyOp
             alert("Please add at least one story before proceeding."); // this is never used?
             return false;
         }
-        for (var i = 0; i < stories.length; i++) {
+        for (let i = 0; i < stories.length; i++) {
             var story = stories[i];
             if (!validateStoryQuestionsModel(story, i)) return false;
         }
@@ -781,7 +781,7 @@ export function buildSurveyForm(surveyDiv, questionnaire, doneCallback, surveyOp
         } 
        
         if (root instanceof Array) {
-            for (var i = 0; i < root.length; i++) {
+            for (let i = 0; i < root.length; i++) {
                 makeReadOnly(root[i], parent);
             }
             return;

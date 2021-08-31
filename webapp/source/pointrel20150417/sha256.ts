@@ -203,13 +203,13 @@ var WordArray = Base.extend({
         // Concat
         if (thisSigBytes % 4) {
             // Copy one byte at a time
-            for (var i = 0; i < thatSigBytes; i++) {
+            for (let i = 0; i < thatSigBytes; i++) {
                 var thatByte = (thatWords[i >>> 2] >>> (24 - (i % 4) * 8)) & 0xff;
                 thisWords[(thisSigBytes + i) >>> 2] |= thatByte << (24 - ((thisSigBytes + i) % 4) * 8);
             }
         } else if (thatWords.length > 0xffff) {
             // Copy one word at a time
-            for (var i = 0; i < thatSigBytes; i += 4) {
+            for (let i = 0; i < thatSigBytes; i += 4) {
                 thisWords[(thisSigBytes + i) >>> 2] = thatWords[i >>> 2];
             }
         } else {
@@ -270,7 +270,7 @@ var WordArray = Base.extend({
      */
     random: function (nBytes) {
         var words = [];
-        for (var i = 0; i < nBytes; i += 4) {
+        for (let i = 0; i < nBytes; i += 4) {
             words.push((Math.random() * 0x100000000) | 0);
         }
 
@@ -302,7 +302,7 @@ var Hex = {
 
         // Convert
         var hexChars = [];
-        for (var i = 0; i < sigBytes; i++) {
+        for (let i = 0; i < sigBytes; i++) {
             var bite = (words[i >>> 2] >>> (24 - (i % 4) * 8)) & 0xff;
             hexChars.push((bite >>> 4).toString(16));
             hexChars.push((bite & 0x0f).toString(16));
@@ -330,7 +330,7 @@ var Hex = {
 
         // Convert
         var words = [];
-        for (var i = 0; i < hexStrLength; i += 2) {
+        for (let i = 0; i < hexStrLength; i += 2) {
             words[i >>> 3] |= parseInt(hexStr.substr(i, 2), 16) << (24 - (i % 8) * 4);
         }
 
@@ -362,7 +362,7 @@ var Latin1 = {
 
         // Convert
         var latin1Chars = [];
-        for (var i = 0; i < sigBytes; i++) {
+        for (let i = 0; i < sigBytes; i++) {
             var bite = (words[i >>> 2] >>> (24 - (i % 4) * 8)) & 0xff;
             latin1Chars.push(String.fromCharCode(bite));
         }
@@ -389,7 +389,7 @@ var Latin1 = {
 
         // Convert
         var words = [];
-        for (var i = 0; i < latin1StrLength; i++) {
+        for (let i = 0; i < latin1StrLength; i++) {
             words[i >>> 2] |= (latin1Str.charCodeAt(i) & 0xff) << (24 - (i % 4) * 8);
         }
 
@@ -738,7 +738,7 @@ var SHA256 = Hasher.extend({
         var h = H[7];
 
         // Computation
-        for (var i = 0; i < 64; i++) {
+        for (let i = 0; i < 64; i++) {
             if (i < 16) {
                 W[i] = M[offset + i] | 0;
             } else {

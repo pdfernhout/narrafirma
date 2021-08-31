@@ -37,7 +37,7 @@ function displayHTMLForSlider(fieldSpecification, fieldName, value, options) {
     var placed = false;
     var answerClass = "narrafirma-story-card-answer-for-" + replaceSpacesWithDashes(fieldName);
     if (value !== undefined && value !== "") {
-        for (var i = 0; i < bucketCount; i++) {
+        for (let i = 0; i < bucketCount; i++) {
             var bucketLow = i * bucketSize;
             var bucketHigh = i * bucketSize + bucketSize;
             if (!placed) {
@@ -74,7 +74,7 @@ function displayHTMLForCheckboxes(fieldSpecification, fieldName, value) {
     options.push(m("span", {"class": "narrafirma-story-card-field-name-" + replaceSpacesWithDashes(fieldName)}, fieldName + ": "));
     // TODO: What if value is not currently available option?
     var optionsAlreadyConsidered = [];
-    for (var i = 0; i < fieldSpecification.valueOptions.length; i++) {
+    for (let i = 0; i < fieldSpecification.valueOptions.length; i++) {
         var option = fieldSpecification.valueOptions[i];
         if (optionsAlreadyConsidered.indexOf(option) >= 0) continue; // hide duplicate options, if any, due to lumping during import
         optionsAlreadyConsidered.push(option);
@@ -96,7 +96,7 @@ function displayHTMLForRadioButtons(fieldSpecification, fieldName, value) {
     options.push(m("span", {"class": "narrafirma-story-card-field-name-" + replaceSpacesWithDashes(fieldName)}, fieldName + ": "));
     // TODO: What if value is not currently available option?
     var optionsAlreadyConsidered = [];
-    for (var i = 0; i < fieldSpecification.valueOptions.length; i++) {
+    for (let i = 0; i < fieldSpecification.valueOptions.length; i++) {
         var option = fieldSpecification.valueOptions[i];
         if (optionsAlreadyConsidered.indexOf(option) >= 0) continue; // hide duplicate options, if any, due to lumping during import
         optionsAlreadyConsidered.push(option);
@@ -118,7 +118,7 @@ function displayHTMLForSelect(fieldSpecification, fieldName, value) {
     options.push(m("span", {"class": "narrafirma-story-card-field-name-" + replaceSpacesWithDashes(fieldName)}, fieldName + ": "));
     // TODO: What if value is not currently available option?
     var optionsAlreadyConsidered = [];
-    for (var i = 0; i < fieldSpecification.valueOptions.length; i++) {
+    for (let i = 0; i < fieldSpecification.valueOptions.length; i++) {
         var option = fieldSpecification.valueOptions[i];
         if (optionsAlreadyConsidered.indexOf(option) >= 0) continue; // hide duplicate options, if any, due to lumping during import
         optionsAlreadyConsidered.push(option);
@@ -222,7 +222,8 @@ interface Options {
     cutoff?: string,
     cutoffMessage?: string,
     includeIndex?: string,
-    includeWriteInAnswers?: boolean
+    includeWriteInAnswers?: boolean,
+    monthDayOrder?: string
 }
 
 export function generateStoryCardContent(storyModel, questionsToInclude, options: Options = {}) {
@@ -230,9 +231,17 @@ export function generateStoryCardContent(storyModel, questionsToInclude, options
     var elicitingQuestion = storyModel.elicitingQuestion();
     var numStoriesTold = storyModel.numStoriesTold();
     var storyLength = storyModel.storyLength();
+    
     var storyName = storyModel.storyName();
     if (options.includeIndex) {
         storyName = storyModel.indexInStoryCollection() + ". " + storyName;
+    }
+
+    let storyCollectionDate = storyModel.storyCollectionYear();
+    if (options.monthDayOrder && options.monthDayOrder === "day before month") {
+        storyCollectionDate += "-" + storyModel.storyCollectionDayOfMonth() + "-" + storyModel.storyCollectionMonth();
+    } else {
+        storyCollectionDate += "-" + storyModel.storyCollectionMonth() + "-" + storyModel.storyCollectionDayOfMonth();
     }
 
     var storyText = storyModel.storyText();
@@ -309,7 +318,7 @@ export function generateStoryCardContent(storyModel, questionsToInclude, options
     
     // Put sliders in a table at the start, so loop twice with different conditions (but only if they chose that option)
     if (sortScalesSeparately) {
-        for (i = 0; i < questions.length; i++) {
+        for (let i = 0; i < questions.length; i++) {
             question = questions[i];
             if (question.displayType !== "slider") continue;
             var fieldHTML = displayHTMLForField(storyModel, question, options, "nobreak");
@@ -318,7 +327,7 @@ export function generateStoryCardContent(storyModel, questionsToInclude, options
         if (formattedFields.length) formattedFields = [m("table", {"class": "narrafirma-story-card-sliders-table"}, formattedFields)];
     }
     
-    for (i = 0; i < questions.length; i++) {
+    for (let i = 0; i < questions.length; i++) {
         question = questions[i];
         if (sortScalesSeparately && question.displayType === "slider") continue;
         var fieldHTML = displayHTMLForField(storyModel, question, options);
@@ -355,6 +364,15 @@ export function generateStoryCardContent(storyModel, questionsToInclude, options
             [wrap("span", "narrafirma-story-card-story-length-question-name", "Story length: "), 
             storyLength, " characters", m("br")]);
     }
+
+    var textForCollectionDate: any = [];
+    // if questionsToInclude is unspecified, it is not being called in the "print story cards" page, so include this
+    if (!questionsToInclude || Object.keys(questionsToInclude).indexOf("collectionDate") >= 0) {
+        textForCollectionDate = m(
+            ".narrafirma-story-card-collection-date-question", 
+            [wrap("span", "narrafirma-story-card-collection-date-question-name", "Collection date: "), 
+            storyCollectionDate, m("br")]);
+    }
     
     var storyTextAtTop: any = [];
     var storyTextClass = "";
@@ -380,6 +398,7 @@ export function generateStoryCardContent(storyModel, questionsToInclude, options
         textForElicitingQuestion,
         textForNumStoriesTold,
         textForStoryLength,
+        textForCollectionDate,
         m("hr.narrafirma-story-card-divider")
     ]);
     

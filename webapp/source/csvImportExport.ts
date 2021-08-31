@@ -2181,7 +2181,7 @@ export function exportCatalysisReportElementsToCSV() {
             observationLine.push(observation.observationExtraPatterns || "");
 
             let foundClusteredObservation = null;
-            for (i = 0; i < clusteredObservations.length; i++) {
+            for (let i = 0; i < clusteredObservations.length; i++) {
                 if (clusteredObservations[i].referenceUUID === observationID) {
                     foundClusteredObservation = clusteredObservations[i];
                     break;
@@ -2211,7 +2211,7 @@ export function exportCatalysisReportElementsToCSV() {
 
                     if (clusteredInterpretations.length) {
                         let foundClusteredInterpretation = null;
-                        for (i = 0; i < clusteredInterpretations.length; i++) {
+                        for (let i = 0; i < clusteredInterpretations.length; i++) {
                             if (clusteredInterpretations[i].referenceUUID === interpretationID) {
                                 foundClusteredInterpretation = clusteredInterpretations[i];
                                 break;
@@ -2236,7 +2236,7 @@ export function exportCatalysisReportElementsToCSV() {
         addOutputLine([""]);
         addOutputLine(["; Perspective", "Name", "Notes", "X", "Y", "Order"]);
 
-        for (i = 0; i < perspectives.length; i++) {
+        for (let i = 0; i < perspectives.length; i++) {
             const perspective = perspectives[i];
             addOutputLine(["Perspective", perspective.name || "", perspective.notes || "", perspective.x || "", perspective.y || "", perspective.order || ""]);
         }
@@ -2247,7 +2247,7 @@ export function exportCatalysisReportElementsToCSV() {
         addOutputLine([""]);
         addOutputLine(["; Theme", "Name", "Notes", "X", "Y", "Order"]);
 
-        for (i = 0; i < themes.length; i++) {
+        for (let i = 0; i < themes.length; i++) {
             const theme = themes[i];
             addOutputLine(["Theme", theme.name || "", theme.notes || "", theme.x || "", theme.y || "", theme.order || ""]);
         }

@@ -76,7 +76,7 @@ function str2binb(str, utfType, existingBin, existingBinLen)
 
     if ("UTF8" === utfType)
     {
-        for (i = 0; i < str.length; i += 1)
+        for (let i = 0; i < str.length; i += 1)
         {
             codePnt = str.charCodeAt(i);
             binArr = [];
@@ -125,7 +125,7 @@ function str2binb(str, utfType, existingBin, existingBinLen)
     }
     else if (("UTF16BE" === utfType) || "UTF16LE" === utfType)
     {
-        for (i = 0; i < str.length; i += 1)
+        for (let i = 0; i < str.length; i += 1)
         {
             codePnt = str.charCodeAt(i);
             /* Internally strings are UTF-16BE so only change if UTF-16LE */
@@ -175,7 +175,7 @@ function hex2binb(str, existingBin, existingBinLen)
         throw new Error("String of HEX type must be in byte increments");
     }
 
-    for (i = 0; i < length; i += 2)
+    for (let i = 0; i < length; i += 2)
     {
         num = parseInt(str.substr(i, 2), 16);
         if (!isNaN(num))
@@ -219,7 +219,7 @@ function bytes2binb(str, existingBin, existingBinLen)
     existingBinLen = existingBinLen || 0;
     existingByteLen = existingBinLen >>> 3;
 
-    for (i = 0; i < str.length; i += 1)
+    for (let i = 0; i < str.length; i += 1)
     {
         codePnt = str.charCodeAt(i);
 
@@ -269,7 +269,7 @@ function b642binb(str, existingBin, existingBinLen)
         throw new Error("Invalid '=' found in base-64 string");
     }
 
-    for (i = 0; i < str.length; i += 4)
+    for (let i = 0; i < str.length; i += 4)
     {
         strPart = str.substr(i, 4);
         tmpInt = 0;
@@ -313,7 +313,7 @@ function binb2hex(binarray, formatOpts)
     var hex_tab = "0123456789abcdef", str = "",
         length = binarray.length * 4, i, srcByte;
 
-    for (i = 0; i < length; i += 1)
+    for (let i = 0; i < length; i += 1)
     {
         /* The below is more than a byte but it gets taken care of later */
         srcByte = binarray[i >>> 2] >>> ((3 - (i % 4)) * 8);
@@ -340,7 +340,7 @@ function binb2b64(binarray, formatOpts)
     var str = "", length = binarray.length * 4, i, j, triplet, offset, int1, int2,
         b64Tab = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
 
-    for (i = 0; i < length; i += 3)
+    for (let i = 0; i < length; i += 3)
     {
         offset = (i + 1) >>> 2;
         int1 = (binarray.length <= offset) ? 0 : binarray[offset];
@@ -377,7 +377,7 @@ function binb2bytes(binarray)
 {
     var str = "", length = binarray.length * 4, i, srcByte;
 
-    for (i = 0; i < length; i += 1)
+    for (let i = 0; i < length; i += 1)
     {
         srcByte = (binarray[i >>> 2] >>> ((3 - (i % 4)) * 8)) & 0xFF;
         str += String.fromCharCode(srcByte);
@@ -1086,7 +1086,7 @@ function finalizeSHA1(remainder, remainderBinLen, processedBinLen, H)
     appendedMessageLength = remainder.length;
 
     /* This will always be at least 1 full chunk */
-    for (i = 0; i < appendedMessageLength; i += 16)
+    for (let i = 0; i < appendedMessageLength; i += 16)
     {
         H = roundSHA1(remainder.slice(i, i + 16), H);
     }
@@ -1330,7 +1330,7 @@ function finalizeSHA2(remainder, remainderBinLen, processedBinLen, H, variant)
     appendedMessageLength = remainder.length;
 
     /* This will always be at least 1 full chunk */
-    for (i = 0; i < appendedMessageLength; i += binaryStringInc)
+    for (let i = 0; i < appendedMessageLength; i += binaryStringInc)
     {
         H = roundSHA2(remainder.slice(i, i + binaryStringInc), H, variant);
     }
@@ -1528,7 +1528,7 @@ var jsSHA = function(variant, inputFormat, options = undefined)
         }
 
         /* Create ipad and opad */
-        for (i = 0; i <= lastArrayIndex; i += 1)
+        for (let i = 0; i <= lastArrayIndex; i += 1)
         {
             keyWithIPad[i] = keyToUse[i] ^ 0x36363636;
             keyWithOPad[i] = keyToUse[i] ^ 0x5C5C5C5C;
@@ -1557,7 +1557,7 @@ var jsSHA = function(variant, inputFormat, options = undefined)
         chunk = convertRet["value"];
 
         chunkIntLen = chunkBinLen >>> 5;
-        for (i = 0; i < chunkIntLen; i += variantBlockIntInc)
+        for (let i = 0; i < chunkIntLen; i += variantBlockIntInc)
         {
             if (updateProcessedLen + variantBlockSize <= chunkBinLen)
             {

@@ -445,7 +445,7 @@ function addUser(userIdentifier, password) {
 function findIndexForRole(roles, role) {
     var index = -1;
     var roleStringified = JSON.stringify(role);
-    for (var i = 0; i < roles.length; i++) {
+    for (let i = 0; i < roles.length; i++) {
         if (JSON.stringify(roles[i]) === roleStringified) {
             index = i;
             break;
