@@ -1029,6 +1029,8 @@ export function d3BarChartForValues(graphHolder: GraphHolder, plotItems, xLabels
                 if (question) {
                     if (question.id === "storyLength") {
                         questionText = xAxisLabel + ": " + story.storyLength();
+                    } else if (question.id === "collectionDate") {
+                        questionText = xAxisLabel + ": " + story.storyCollectionYear() + ", month " + story.storyCollectionMonth() + ", day " + story.storyCollectionDayOfMonth();
                     } else {
                         questionText = xAxisLabel + ": " + displayTextForAnswer(story.fieldValue(question.id));
                     }

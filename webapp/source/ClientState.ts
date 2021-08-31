@@ -110,6 +110,17 @@ class ClientState {
             return defaultValue;
         }
     }
+
+    monthDayOrder() {
+        const defaultValue = "month before day";
+        if (!this._project) return defaultValue;
+        const value = this._project.tripleStore.queryLatestC(this._project.projectIdentifier, "projectOptions_monthDayOrder");
+        if (value) {
+            return value
+        } else {
+            return defaultValue;
+        }
+    }
     
     catalysisReportName(newValue: string = undefined): string {
         if (newValue !== undefined) {
@@ -222,7 +233,7 @@ class ClientState {
             {id: "_debugMode", key: "debugMode"}
         ];
         
-        for (var i = 0; i < fields.length; i++) {
+        for (let i = 0; i < fields.length; i++) {
             var field = fields[i];
     
             var value = this[field.id];

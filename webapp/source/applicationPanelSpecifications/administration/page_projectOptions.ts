@@ -16,19 +16,27 @@ var panel: Panel = {
             valueType: "string",
             displayType: "text",
             displayName: "Nickname",
-            displayPrompt: `You can't change a project's name after it is created, 
-                but here you can enter a <strong>project nickname</strong>. 
-                It will appear on all within-the-project pages and reports.`
+            displayPrompt: `Enter a <strong>project nickname</strong> you want to appear on within-the-project pages and reports.
+                (Note that the project's real name will still appear in several places: 
+                in your browser's address bar and development console, in the list of projects you see before you open the project, in any exported files, and in the project's stored files.
+                If you want to change this project's actual name, export its full history, create a new project with a new name,
+                and import the project file to that empty project.)`
         },
+
         {
-            id: "projectOptions_warning_label",
+            id: "projectOptions_regionalsettings_header",
             valueType: "none",
-            displayType: "label",
-            displayName: "Warning",
-            displayPrompt: `<span.narrafirma-special-warning>Note: <strong>The project's real name will still appear in several places</strong>: 
-            in your browser's address bar and development console, in the list of projects you see before you open the project, in any exported files, and in the project's stored files.
-            If you want to change the project's actual name, export its full history, create a new project with a new name,
-            then import the project file to that empty project.</span>`
+            displayType: "header",
+            displayPrompt: "Regional settings"
+        },        
+        {
+            id: "projectOptions_monthDayOrder",
+            valueType: "string",
+            displayType: "radiobuttons",
+            valueOptions: ["month before day", "day before month"],
+            displayName: "Month day order",
+            displayPrompt: `How do you want <strong>dates</strong> to appear, with the month or day listed first?
+                This choice will impact graphs and imports of story collection dates. (If no choice is made here, months will be read and displayed first.)`
         },
         {
             id: "projectOptions_csvDelimiter",

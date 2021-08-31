@@ -57,7 +57,7 @@ export class Story {
     storyName(newValue = undefined) {
         return this.fieldValue("storyName", newValue);
     }
-    
+
     elicitingQuestion(newValue = undefined) {
         return this.fieldValue("elicitingQuestion", newValue);
     }
@@ -77,6 +77,18 @@ export class Story {
 
     indexInStoryCollection(newValue = undefined) {
         return this.fieldValue("indexInStoryCollection", newValue);
+    }
+
+    storyCollectionYear(newValue = undefined) {
+        return this.fieldValue("collectionYear", newValue);
+    }
+
+    storyCollectionMonth(newValue = undefined) {
+        return this.fieldValue("collectionMonth", newValue);
+    }
+    
+    storyCollectionDayOfMonth(newValue = undefined) {
+        return this.fieldValue("collectionDayOfMonth", newValue);
     }
 
     storyCollectionIdentifier(newValue = undefined) {
@@ -119,6 +131,12 @@ export function getStoriesForStoryCollection(storyCollectionIdentifier, includeI
                 // calculate derived count of number of stories told in each survey session (to be shown in graphs)
                 stories[storyIndex].numStoriesTold = "" + stories.length;
                 stories[storyIndex].storyLength = "" + stories[storyIndex].length;
+                if (message._topicTimestamp && message._topicTimestamp.length >= 10) {
+                    // ISO date: YYYY-MM-DD
+                    stories[storyIndex].collectionYear = message._topicTimestamp.substr(0, 4);
+                    stories[storyIndex].collectionMonth = message._topicTimestamp.substr(5, 2);
+                    stories[storyIndex].collectionDayOfMonth = message._topicTimestamp.substr(8, 2);
+                }
                 // Make a copy of the story so as not to modify original in message
                 const story = JSON.parse(JSON.stringify(stories[storyIndex]));
                 

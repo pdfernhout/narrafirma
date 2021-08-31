@@ -6,7 +6,7 @@ import questionnaireGeneration = require("./questionnaireGeneration");
 
 "use strict";
 
-var serverURL = "/api/pointrel20150417";
+const serverURL = "/api/pointrel20150417";
 
 // TODO: Rethink this as a more general way to watch models within the project (so, with arbitrary object IDs, not just the project ID)
 
@@ -64,7 +64,7 @@ class Project {
         
         // For now, listen on all topics in the journal
         // TODO: Think about how to move topicIdentifier into pointrelClient initialization
-        // var topicIdentifier = "project001";
+        // const topicIdentifier = "project001";
         // pointrelClient.topicIdentifier = topicIdentifier;
         
         this.tripleStore = new TripleStore(this.pointrelClient, "narrafirmaProject");
@@ -112,7 +112,7 @@ class Project {
     
     // TODO: Redundant code with what is in GridWithItemPanel
     getListForField(fieldName) {
-        var setIdentifier = this.getFieldValue(fieldName);
+        const setIdentifier = this.getFieldValue(fieldName);
         return this.tripleStore.getListForSetIdentifier(setIdentifier);
     }
     
@@ -159,11 +159,11 @@ class Project {
     // Project-specific data lookup
     
     findCatalysisReport(shortName) {
-        var catalysisReports = this.tripleStore.queryLatestC(this.projectIdentifier, "project_catalysisReports");
+        const catalysisReports = this.tripleStore.queryLatestC(this.projectIdentifier, "project_catalysisReports");
         if (!catalysisReports) return null;
-        var catalysisReportIdentifiers = this.tripleStore.getListForSetIdentifier(catalysisReports);
-        for (var i = 0; i < catalysisReportIdentifiers.length; i++) {
-            var reportShortName = this.tripleStore.queryLatestC(catalysisReportIdentifiers[i], "catalysisReport_shortName");
+        const catalysisReportIdentifiers = this.tripleStore.getListForSetIdentifier(catalysisReports);
+        for (let i = 0; i < catalysisReportIdentifiers.length; i++) {
+            const reportShortName = this.tripleStore.queryLatestC(catalysisReportIdentifiers[i], "catalysisReport_shortName");
             if (reportShortName === shortName) {
                 return catalysisReportIdentifiers[i];
             }
@@ -172,8 +172,8 @@ class Project {
     }
 
     findQuestionnaireTemplate(shortName): string {
-        var questionnaires: Array<string> = this.getListForField("project_storyForms");
-        for (var i = 0; i < questionnaires.length; i++) {
+        const questionnaires: Array<string> = this.getListForField("project_storyForms");
+        for (let i = 0; i < questionnaires.length; i++) {
             if (this.tripleStore.queryLatestC(questionnaires[i], "questionForm_shortName") === shortName) {
                 return questionnaires[i];
             }
@@ -182,8 +182,8 @@ class Project {
     }
     
     findStoryCollection(shortName): string {
-        var storyCollections: Array<string> = this.getListForField("project_storyCollections");
-        for (var i = 0; i < storyCollections.length; i++) {
+        const storyCollections: Array<string> = this.getListForField("project_storyCollections");
+        for (let i = 0; i < storyCollections.length; i++) {
             if (this.tripleStore.queryLatestC(storyCollections[i], "storyCollection_shortName") === shortName) {
                 return storyCollections[i];
             }
@@ -192,8 +192,8 @@ class Project {
     }
     
     private collectAllQuestionsForQuestionList(questionListName: string) {
-        var questionIdentifiers: Array<string> = this.getListForField(questionListName);
-        var questions = [];
+        const questionIdentifiers: Array<string> = this.getListForField(questionListName);
+        const questions = [];
         questionIdentifiers.forEach((questionIdentifier) => {
             const question = this.tripleStore.makeObject(questionIdentifier, true);
             if (!question.id) question.id = questionIdentifier;
@@ -249,8 +249,8 @@ class Project {
     }
 
     addQuestionForCategory(question, questionCategory: string) {
-        var questionListName;
-        var questionClass;
+        let questionListName;
+        let questionClass;
         
         switch (questionCategory) {
             case "elicitingQuestion":
@@ -273,7 +273,7 @@ class Project {
                 throw new Error("Unexpected question category: " + questionCategory);
         }
         
-        var setIdentifier = this.getFieldValue(questionListName);
+        let setIdentifier = this.getFieldValue(questionListName);
         if (!setIdentifier) {
             // Need to create list
             setIdentifier = this.tripleStore.newIdForSet(questionClass + "Set");
@@ -284,8 +284,8 @@ class Project {
     }
 
     deleteQuestionInCategory(question, questionCategory: string) {
-        var questionListName;
-        var questionClass;
+        let questionListName;
+        let questionClass;
         
         switch (questionCategory) {
             case "elicitingQuestion":
@@ -313,7 +313,7 @@ class Project {
             question.id = this.questionIDForQuestionShortNameGivenQuestionCategory(question.shortName, questionCategory);
         }
         
-        var setIdentifier = this.getFieldValue(questionListName);
+        let setIdentifier = this.getFieldValue(questionListName);
         if (!setIdentifier) {
             // Need to create list
             setIdentifier = this.tripleStore.newIdForSet(questionClass + "Set");
@@ -342,18 +342,19 @@ class Project {
     }
 
     allQuestionsThatCouldBeGraphedForCatalysisReport(catalysisReportIdentifier, considerExclusions = true) {
-        var elicitingQuestions = this.elicitingQuestionsForCatalysisReport(catalysisReportIdentifier);
-        var numStoriesToldQuestions = this.numStoriesToldQuestionsForCatalysisReport(catalysisReportIdentifier);
-        var storyLengthQuestions = this.storyLengthQuestionsForCatalysisReport(catalysisReportIdentifier);
-        var storyQuestions = this.storyQuestionsForCatalysisReport(catalysisReportIdentifier); 
-        var participantQuestions = this.participantQuestionsForCatalysisReport(catalysisReportIdentifier);
-        var annotationQuestions = questionnaireGeneration.convertEditorQuestions(this.collectAllAnnotationQuestions(), "A_");
-        var allQuestions = [];
-        allQuestions = allQuestions.concat(elicitingQuestions, numStoriesToldQuestions, storyLengthQuestions, storyQuestions, participantQuestions, annotationQuestions);
+        const elicitingQuestions = this.elicitingQuestionsForCatalysisReport(catalysisReportIdentifier);
+        const numStoriesToldQuestions = this.numStoriesToldQuestionsForCatalysisReport(catalysisReportIdentifier);
+        const storyLengthQuestions = this.storyLengthQuestionsForCatalysisReport(catalysisReportIdentifier);
+        const collectionDateQuestions = this.collectionDateQuestionsForCatalysisReport(catalysisReportIdentifier);
+        const storyQuestions = this.storyQuestionsForCatalysisReport(catalysisReportIdentifier); 
+        const participantQuestions = this.participantQuestionsForCatalysisReport(catalysisReportIdentifier);
+        const annotationQuestions = questionnaireGeneration.convertEditorQuestions(this.collectAllAnnotationQuestions(), "A_");
+        let allQuestions = [];
+        allQuestions = allQuestions.concat(elicitingQuestions, numStoriesToldQuestions, storyLengthQuestions, collectionDateQuestions, storyQuestions, participantQuestions, annotationQuestions);
         
         if (considerExclusions) {
-            var questionIDsToInclude = this.tripleStore.queryLatestC(catalysisReportIdentifier, "questionsToInclude"); 
-            var result = [];
+            const questionIDsToInclude = this.tripleStore.queryLatestC(catalysisReportIdentifier, "questionsToInclude"); 
+            const result = [];
             allQuestions.forEach( function(question) {
                 if (questionIDsToInclude && questionIDsToInclude[question.id]) {
                     result.push(question);
@@ -366,18 +367,18 @@ class Project {
     }
 
     numStoryCollectionsInCatalysisReport(catalysisReportIdentifier) {
-        var storyCollectionsIdentifier = this.tripleStore.queryLatestC(catalysisReportIdentifier, "catalysisReport_storyCollections");
-        var storyCollectionItems = this.tripleStore.getListForSetIdentifier(storyCollectionsIdentifier);
+        const storyCollectionsIdentifier = this.tripleStore.queryLatestC(catalysisReportIdentifier, "catalysisReport_storyCollections");
+        const storyCollectionItems = this.tripleStore.getListForSetIdentifier(storyCollectionsIdentifier);
         return storyCollectionItems.length;
     }
 
     storiesForCatalysisReport(catalysisReportIdentifier, showWarnings = false) {
         // the reason to have showWarnings is that this method gets called twice on the configure report page (once by the filter warning and once by the questions chooser)
-        var result = [];
-        var storyCollectionsIdentifier = this.tripleStore.queryLatestC(catalysisReportIdentifier, "catalysisReport_storyCollections");
-        var storyCollectionItems = this.tripleStore.getListForSetIdentifier(storyCollectionsIdentifier);
+        let result = [];
+        const storyCollectionsIdentifier = this.tripleStore.queryLatestC(catalysisReportIdentifier, "catalysisReport_storyCollections");
+        const storyCollectionItems = this.tripleStore.getListForSetIdentifier(storyCollectionsIdentifier);
         if (storyCollectionItems.length === 0) return [];
-        var filter = this.tripleStore.queryLatestC(catalysisReportIdentifier, "catalysisReport_filter");
+        const filter = this.tripleStore.queryLatestC(catalysisReportIdentifier, "catalysisReport_filter");
         if (filter) {
             return this.storiesForCatalysisReportWithFilter(catalysisReportIdentifier, storyCollectionItems, filter.trim(), showWarnings);
         } else {
@@ -386,7 +387,7 @@ class Project {
                     console.log("ERROR: null or undefined story collection pointer in catalysis report ", catalysisReportIdentifier);
                 } else {
                     const storyCollectionIdentifier = this.tripleStore.queryLatestC(storyCollectionPointer, "storyCollection");
-                    var storiesForThisCollection = surveyCollection.getStoriesForStoryCollection(storyCollectionIdentifier);
+                    const storiesForThisCollection = surveyCollection.getStoriesForStoryCollection(storyCollectionIdentifier);
                     result = result.concat(storiesForThisCollection);
                 }
             });
@@ -395,18 +396,18 @@ class Project {
     }
     
     storiesForCatalysisReportWithFilter(catalysisReportIdentifier, storyCollectionItems, filter, showWarnings = false) {
-        var result = [];
+        let result = [];
         storyCollectionItems.forEach((storyCollectionPointer) => {
             if (!storyCollectionPointer) {
                 console.log("ERROR: null or undefined story collection pointer in catalysis report ", catalysisReportIdentifier);
             } else {
                 const storyCollectionIdentifier = this.tripleStore.queryLatestC(storyCollectionPointer, "storyCollection");
-                var storiesForThisCollection = surveyCollection.getStoriesForStoryCollection(storyCollectionIdentifier);
-                var questionnaire = surveyCollection.getQuestionnaireForStoryCollection(storyCollectionIdentifier);
+                const storiesForThisCollection = surveyCollection.getStoriesForStoryCollection(storyCollectionIdentifier);
+                const questionnaire = surveyCollection.getQuestionnaireForStoryCollection(storyCollectionIdentifier);
                 result = result.concat(storiesForThisCollection);
-                var filterParts = filter.split("&&").map(function(item) {return item.trim()});
-                for (var partIndex = 0; partIndex < filterParts.length; partIndex++) {
-                    var filteredResult = this.storiesForStoryCollectionWithFilter(storyCollectionIdentifier, result, questionnaire, filterParts[partIndex], showWarnings);
+                const filterParts = filter.split("&&").map(function(item) {return item.trim()});
+                for (let partIndex = 0; partIndex < filterParts.length; partIndex++) {
+                    const filteredResult = this.storiesForStoryCollectionWithFilter(storyCollectionIdentifier, result, questionnaire, filterParts[partIndex], showWarnings);
                     result = filteredResult;
                 }
             }
@@ -415,21 +416,25 @@ class Project {
     }
 
     storiesForStoryCollectionWithFilter(storyCollectionIdentifier, storiesForThisCollection, questionnaire, filter, showWarnings = false) {
-        var result = [];
-        var questionAndAnswers = filter.split("==").map(function(item) {return item.trim()});
-        var warningShown = false;
-        var questionShortName = questionAndAnswers[0];
+        let result = [];
+        const questionAndAnswers = filter.split("==").map(function(item) {return item.trim()});
+        let warningShown = false;
+        let questionShortName = questionAndAnswers[0];
 
-        var negateFilter = false;
+        let negateFilter = false;
         if (questionShortName[0] === "!") {
             negateFilter = true;
             questionShortName = questionShortName.slice(1);
         }
 
-        var questionID = this.questionIDForQuestionShortNameGivenQuestionnaire(questionShortName, questionnaire);
-        var question = this.questionForQuestionIDGivenQuestionnaire(questionID, questionnaire, storyCollectionIdentifier);
+        const questionID = this.questionIDForQuestionShortNameGivenQuestionnaire(questionShortName, questionnaire);
+        let question = this.questionForQuestionIDGivenQuestionnaire(questionID, questionnaire, storyCollectionIdentifier);
+        let answers = [];
+        let lowerLimit = undefined;
+        let upperLimit = undefined;
+
         if (question) {
-            var answers = questionAndAnswers.slice(1);
+            answers = questionAndAnswers.slice(1);
             if (question.displayType == "boolean") {
                 if (answers[0] != "yes" && answers[0] != "no") {
                     if (showWarnings && !warningShown) 
@@ -445,7 +450,7 @@ class Project {
                     warningShown = true;
                 }
             } else if (question.displayType == "slider") { 
-                var lowerLimit = parseInt(answers[0]);
+                lowerLimit = parseInt(answers[0]);
                 if (isNaN(lowerLimit)) {
                     if (showWarnings && !warningShown) 
                         alert("This question (" + questionShortName + ") has a numerical range, and the lower limit you specified (" + answers[0] + ") doesn't seem to be a number.");
@@ -453,7 +458,7 @@ class Project {
                     warningShown = true;
                 }
                 if (answers.length > 1) {
-                    var upperLimit = parseInt(answers[1]);
+                    upperLimit = parseInt(answers[1]);
                     if (isNaN(upperLimit)) {
                         if (showWarnings && !warningShown) 
                             alert("This question (" + questionShortName + ") has a numerical range, and the upper limit you specified (" + answers[1] + ") doesn't seem to be a number.");
@@ -475,30 +480,30 @@ class Project {
         }
 
         if (question) {
-            var storiesThatMatchFilter = [];
-            for (var storyIndex = 0; storyIndex < storiesForThisCollection.length; storyIndex++) {
-                var story = storiesForThisCollection[storyIndex];
-                var value = story.fieldValue(question.id)
-                var storyMatches = false;
+            const storiesThatMatchFilter = [];
+            for (let storyIndex = 0; storyIndex < storiesForThisCollection.length; storyIndex++) {
+                const story = storiesForThisCollection[storyIndex];
+                const value = story.fieldValue(question.id)
+                let storyMatches = false;
                 if (question.displayType == "boolean") {
                     storyMatches = (answers[0] == "yes" && value) || (answers[0] == "no" && !value);
                 } else if (question.displayType == "checkbox") {
                     storyMatches = (answers[0] == "true" && value) || (answers[0] == "false" && !value);
                 } else if (value !== undefined && value !== null && value !== {} && value !== "") {
                     if (question.displayType == "slider") {
-                        var valueAsInt = parseInt(value);
+                        const valueAsInt = parseInt(value);
                         if (valueAsInt >= lowerLimit && valueAsInt <= upperLimit) {
                             storyMatches = true;
                         }
                     } else if (typeof(value) == "string") { // select, radiobuttons
-                        for (var answerIndex = 0; answerIndex < answers.length; answerIndex++) {
+                        for (let answerIndex = 0; answerIndex < answers.length; answerIndex++) {
                             if (value.trim() == answers[answerIndex]) {
                                 storyMatches = true;
                                 break;
                             }
                         }
                     } else { // checkboxes
-                        for (var answerIndex = 0; answerIndex < answers.length; answerIndex++) {
+                        for (let answerIndex = 0; answerIndex < answers.length; answerIndex++) {
                             if (value[answers[answerIndex]] && value[answers[answerIndex]] == true) {
                                 storyMatches = true;
                                 break;
@@ -545,13 +550,13 @@ class Project {
             return "elicitingQuestion";
         }
         // not an eliciting question, check story questions next
-        for (var i = 0; i < questionnaire.storyQuestions.length; i++) {
+        for (let i = 0; i < questionnaire.storyQuestions.length; i++) {
             if (questionnaire.storyQuestions[i].displayName == questionShortName) {
                 return questionnaire.storyQuestions[i].id;
             }
         }
         // not eliciting or story question, check participant questions next
-        for (i = 0; i < questionnaire.participantQuestions.length; i++) {
+        for (let i = 0; i < questionnaire.participantQuestions.length; i++) {
             if (questionnaire.participantQuestions[i].displayName == questionShortName) {
                 return questionnaire.participantQuestions[i].id;
             }
@@ -581,17 +586,17 @@ class Project {
         if (questionID == "elicitingQuestion") {
             return this.elicitingQuestionForStoryCollection(storyCollectionIdentifier);
         }
-        for (var index in questionnaire.storyQuestions) {
-            var question = questionnaire.storyQuestions[index];
+        for (let index in questionnaire.storyQuestions) {
+            const question = questionnaire.storyQuestions[index];
             if (question.id === questionID) return question;
         }
-        for (var index in questionnaire.participantQuestions) {
-            var question = questionnaire.participantQuestions[index];
+        for (let index in questionnaire.participantQuestions) {
+            const question = questionnaire.participantQuestions[index];
             if (question.id === questionID) return question;
         }
-        var annotationQuestions = this.collectAllAnnotationQuestions();
-        for (var index in annotationQuestions) {
-            var question = annotationQuestions[index];
+        const annotationQuestions = this.collectAllAnnotationQuestions();
+        for (let index in annotationQuestions) {
+            const question = annotationQuestions[index];
             if ("A_" + question.annotationQuestion_shortName === questionID) return question;
         }
         console.log("ERROR: question not found for id", questionID);
@@ -599,12 +604,12 @@ class Project {
     }
 
     elicitingQuestionForStoryCollection(storyCollectionIdentifier) {
-        var convertedElicitingQuestion = null;
-        var questionnaire = surveyCollection.getQuestionnaireForStoryCollection(storyCollectionIdentifier);
+        let convertedElicitingQuestion = null;
+        const questionnaire = surveyCollection.getQuestionnaireForStoryCollection(storyCollectionIdentifier);
         if (questionnaire) {
-            var elicitingQuestionValues = [];
-            for (var elicitingQuestionIndex in questionnaire.elicitingQuestions) {
-                var elicitingQuestionSpecification = questionnaire.elicitingQuestions[elicitingQuestionIndex];
+            const elicitingQuestionValues = [];
+            for (let elicitingQuestionIndex in questionnaire.elicitingQuestions) {
+                const elicitingQuestionSpecification = questionnaire.elicitingQuestions[elicitingQuestionIndex];
                 elicitingQuestionValues.push(elicitingQuestionSpecification.id || elicitingQuestionSpecification.shortName || elicitingQuestionSpecification.text);
             }
             convertedElicitingQuestion = {
@@ -619,19 +624,19 @@ class Project {
     }
 
     elicitingQuestionsForCatalysisReport(catalysisReportIdentifier) {
-        var result = [];
-        var elicitingQuestionValues = [];
-        var storyCollectionsIdentifier = this.tripleStore.queryLatestC(catalysisReportIdentifier, "catalysisReport_storyCollections");
-        var storyCollectionItems = this.tripleStore.getListForSetIdentifier(storyCollectionsIdentifier);
+        const result = [];
+        const elicitingQuestionValues = [];
+        const storyCollectionsIdentifier = this.tripleStore.queryLatestC(catalysisReportIdentifier, "catalysisReport_storyCollections");
+        const storyCollectionItems = this.tripleStore.getListForSetIdentifier(storyCollectionsIdentifier);
         if (storyCollectionItems.length === 0) return null; 
 
         storyCollectionItems.forEach((storyCollectionPointer) => {
             if (storyCollectionPointer) {
-                var storyCollectionIdentifier = this.tripleStore.queryLatestC(storyCollectionPointer, "storyCollection");
-                var questionnaire = surveyCollection.getQuestionnaireForStoryCollection(storyCollectionIdentifier);
+                const storyCollectionIdentifier = this.tripleStore.queryLatestC(storyCollectionPointer, "storyCollection");
+                const questionnaire = surveyCollection.getQuestionnaireForStoryCollection(storyCollectionIdentifier);
                 if (questionnaire) {
-                    for (var elicitingQuestionIndex in questionnaire.elicitingQuestions) {
-                        var elicitingQuestionSpecification = questionnaire.elicitingQuestions[elicitingQuestionIndex];
+                    for (let elicitingQuestionIndex in questionnaire.elicitingQuestions) {
+                        const elicitingQuestionSpecification = questionnaire.elicitingQuestions[elicitingQuestionIndex];
                         elicitingQuestionValues.push(elicitingQuestionSpecification.id || elicitingQuestionSpecification.shortName || elicitingQuestionSpecification.text);
                     }
                 }
@@ -639,7 +644,7 @@ class Project {
         });
             
         // create ONE eliciting question to cover all story collections, with all possible answers to question
-        var convertedElicitingQuestion = {
+        const convertedElicitingQuestion = {
             id: "elicitingQuestion",
             displayName: "Eliciting question",
             displayPrompt: "Please choose a question you would like to respond to",
@@ -651,7 +656,7 @@ class Project {
     }
 
     storyQuestionsForStoryCollection(storyCollectionIdentifier) {
-        var questionnaire = surveyCollection.getQuestionnaireForStoryCollection(storyCollectionIdentifier);
+        const questionnaire = surveyCollection.getQuestionnaireForStoryCollection(storyCollectionIdentifier);
         if (questionnaire) {
             return questionnaire.storyQuestions;
         } else {
@@ -660,25 +665,25 @@ class Project {
     }
 
     storyQuestionsForCatalysisReport(catalysisReportIdentifier) {
-        var result = [];  
-        var storyCollectionsIdentifier = this.tripleStore.queryLatestC(catalysisReportIdentifier, "catalysisReport_storyCollections");
-        var storyCollectionItems = this.tripleStore.getListForSetIdentifier(storyCollectionsIdentifier);
+        const result = [];  
+        const storyCollectionsIdentifier = this.tripleStore.queryLatestC(catalysisReportIdentifier, "catalysisReport_storyCollections");
+        const storyCollectionItems = this.tripleStore.getListForSetIdentifier(storyCollectionsIdentifier);
         if (storyCollectionItems.length === 0) return []; 
 
         storyCollectionItems.forEach((storyCollectionPointer) => {
             if (storyCollectionPointer) {
-                var storyCollectionIdentifier = this.tripleStore.queryLatestC(storyCollectionPointer, "storyCollection");
-                var questionnaire = surveyCollection.getQuestionnaireForStoryCollection(storyCollectionIdentifier);
+                const storyCollectionIdentifier = this.tripleStore.queryLatestC(storyCollectionPointer, "storyCollection");
+                const questionnaire = surveyCollection.getQuestionnaireForStoryCollection(storyCollectionIdentifier);
 
                 if (questionnaire) {
 
-                    for (var questionIndex in questionnaire.storyQuestions) {
-                        var question = questionnaire.storyQuestions[questionIndex];
+                    for (let questionIndex in questionnaire.storyQuestions) {
+                        const question = questionnaire.storyQuestions[questionIndex];
 
                         // check for existing question (possibly from another story collection) in results
-                        var alreadyThere = false;
-                        for (var resultQuestionIndex in result) {
-                            var resultQuestion = result[resultQuestionIndex];
+                        let alreadyThere = false;
+                        for (let resultQuestionIndex in result) {
+                            const resultQuestion = result[resultQuestionIndex];
                             if (question.displayName === resultQuestion.displayName) {
                                 alreadyThere = true;
                                 break;
@@ -695,7 +700,7 @@ class Project {
     }
 
     participantQuestionsForStoryCollection(storyCollectionIdentifier) {
-        var questionnaire = surveyCollection.getQuestionnaireForStoryCollection(storyCollectionIdentifier);
+        const questionnaire = surveyCollection.getQuestionnaireForStoryCollection(storyCollectionIdentifier);
         if (questionnaire) {
             return questionnaire.participantQuestions;
         } else {
@@ -704,23 +709,23 @@ class Project {
     }
 
     participantQuestionsForCatalysisReport(catalysisReportIdentifier) {
-        var result = [];  
-        var storyCollectionsIdentifier = this.tripleStore.queryLatestC(catalysisReportIdentifier, "catalysisReport_storyCollections");
-        var storyCollectionItems = this.tripleStore.getListForSetIdentifier(storyCollectionsIdentifier);
+        const result = [];  
+        const storyCollectionsIdentifier = this.tripleStore.queryLatestC(catalysisReportIdentifier, "catalysisReport_storyCollections");
+        const storyCollectionItems = this.tripleStore.getListForSetIdentifier(storyCollectionsIdentifier);
         if (storyCollectionItems.length === 0) return []; 
 
         storyCollectionItems.forEach((storyCollectionPointer) => {
             if (storyCollectionPointer) {
-                var storyCollectionIdentifier = this.tripleStore.queryLatestC(storyCollectionPointer, "storyCollection");
-                var questionnaire = surveyCollection.getQuestionnaireForStoryCollection(storyCollectionIdentifier);
+                const storyCollectionIdentifier = this.tripleStore.queryLatestC(storyCollectionPointer, "storyCollection");
+                const questionnaire = surveyCollection.getQuestionnaireForStoryCollection(storyCollectionIdentifier);
 
                 if (questionnaire) {
 
-                    for (var questionIndex in questionnaire.participantQuestions) {
-                        var question = questionnaire.participantQuestions[questionIndex];
-                        var alreadyThere = false;
-                        for (var resultQuestionIndex in result) {
-                            var resultQuestion = result[resultQuestionIndex];
+                    for (let questionIndex in questionnaire.participantQuestions) {
+                        const question = questionnaire.participantQuestions[questionIndex];
+                        let alreadyThere = false;
+                        for (let resultQuestionIndex in result) {
+                            const resultQuestion = result[resultQuestionIndex];
                             if (question.displayName === resultQuestion.displayName) {
                                 alreadyThere = true;
                                 break;
@@ -737,12 +742,12 @@ class Project {
     }
 
     storyLengthQuestion(maxStoryLength, numStoryLengthBins) {
-        var choices = [];
-        var increment = Math.round(maxStoryLength / numStoryLengthBins);
-        for (var i = 1; i <= numStoryLengthBins; i++) {
+        const choices = [];
+        const increment = Math.round(maxStoryLength / numStoryLengthBins);
+        for (let i = 1; i <= numStoryLengthBins; i++) {
             choices.push("" + i * increment);
         }
-        var storyLengthQuestion = {
+        const storyLengthQuestion = {
             id: "storyLength",
             displayName: "Story length",
             displayPrompt: "This is the length (in characters) of the story.",
@@ -753,10 +758,10 @@ class Project {
     }
 
     storyLengthQuestionForStoryCollection(storyCollectionIdentifier) {
-        var stories = surveyCollection.getStoriesForStoryCollection(storyCollectionIdentifier);
-        var maxStoryLength = 0;
-        for (var storyIndex in stories) {
-            var storyLength = stories[storyIndex].storyLength();
+        const stories = surveyCollection.getStoriesForStoryCollection(storyCollectionIdentifier);
+        let maxStoryLength = 0;
+        for (let storyIndex in stories) {
+            const storyLength = stories[storyIndex].storyLength();
             if (storyLength > maxStoryLength) maxStoryLength = storyLength;
         }
         // outside of catalysis report, use hard-coded upper limit
@@ -769,17 +774,17 @@ class Project {
     }
 
     storyLengthQuestionsForCatalysisReport(catalysisReportIdentifier) {
-        var maxStoryLength = 0;
-        var storyCollectionsIdentifier = this.tripleStore.queryLatestC(catalysisReportIdentifier, "catalysisReport_storyCollections");
-        var storyCollectionItems = this.tripleStore.getListForSetIdentifier(storyCollectionsIdentifier);
+        let maxStoryLength = 0;
+        const storyCollectionsIdentifier = this.tripleStore.queryLatestC(catalysisReportIdentifier, "catalysisReport_storyCollections");
+        const storyCollectionItems = this.tripleStore.getListForSetIdentifier(storyCollectionsIdentifier);
         if (storyCollectionItems.length === 0) return [];
         
         storyCollectionItems.forEach((storyCollectionPointer) => {
             if (storyCollectionPointer) {
-                var storyCollectionIdentifier = this.tripleStore.queryLatestC(storyCollectionPointer, "storyCollection");
-                var stories = surveyCollection.getStoriesForStoryCollection(storyCollectionIdentifier);
-                for (var storyIndex in stories) {
-                    var storyLength = stories[storyIndex].storyLength();
+                const storyCollectionIdentifier = this.tripleStore.queryLatestC(storyCollectionPointer, "storyCollection");
+                const stories = surveyCollection.getStoriesForStoryCollection(storyCollectionIdentifier);
+                for (let storyIndex in stories) {
+                    const storyLength = stories[storyIndex].storyLength();
                     if (storyLength > maxStoryLength) maxStoryLength = storyLength;
                 }
             }
@@ -789,7 +794,7 @@ class Project {
             const maxStoryLengthToShowAsNumber = parseInt(maxStoryLengthToShow);
             maxStoryLength = Math.min(maxStoryLengthToShowAsNumber, maxStoryLength);
         }
-        var numStoryLengthBinsAsNumber = Project.default_numStoryLengthCategories; 
+        let numStoryLengthBinsAsNumber = Project.default_numStoryLengthCategories; 
         const numStoryLengthBins = this.tripleStore.queryLatestC(catalysisReportIdentifier, "numStoryLengthBins");
         if (numStoryLengthBins) {
             numStoryLengthBinsAsNumber = parseInt(numStoryLengthBins);
@@ -797,12 +802,83 @@ class Project {
         return this.storyLengthQuestion(maxStoryLength, numStoryLengthBinsAsNumber);
     }
 
+    collectionDateQuestionForStoryCollection(storyCollectionIdentifier) {
+        const stories = surveyCollection.getStoriesForStoryCollection(storyCollectionIdentifier);
+        const monthDayOrder = this.tripleStore.queryLatestC(this.projectIdentifier, "projectOptions_monthDayOrder");
+        const storyCollectionDateUnit = "month"; // outside of catalysis report, hard-code option
+        let binNames = this.collectionDateBinNamesForListOfStories(stories, storyCollectionDateUnit, monthDayOrder);
+        binNames = binNames.sort(); 
+        return this.collectionDateQuestion(storyCollectionDateUnit, binNames);
+    }
+
+    collectionDateQuestionsForCatalysisReport(catalysisReportIdentifier) {
+        const storyCollectionDateUnit = this.tripleStore.queryLatestC(catalysisReportIdentifier, "storyCollectionDateUnit") || "months";
+        const monthDayOrder = this.tripleStore.queryLatestC(this.projectIdentifier, "projectOptions_monthDayOrder");
+
+        const storyCollectionsIdentifier = this.tripleStore.queryLatestC(catalysisReportIdentifier, "catalysisReport_storyCollections");
+        const storyCollectionItems = this.tripleStore.getListForSetIdentifier(storyCollectionsIdentifier);
+        if (storyCollectionItems.length === 0) return [];
+
+        let binNames = [];
+        storyCollectionItems.forEach((storyCollectionPointer) => {
+            if (storyCollectionPointer) {
+                const storyCollectionIdentifier = this.tripleStore.queryLatestC(storyCollectionPointer, "storyCollection");
+                const stories = surveyCollection.getStoriesForStoryCollection(storyCollectionIdentifier);
+                const binNamesForStoryCollection = this.collectionDateBinNamesForListOfStories(stories, storyCollectionDateUnit, monthDayOrder);
+                if (binNamesForStoryCollection.length) {
+                    binNames = binNames.concat(binNamesForStoryCollection);
+                }
+            }
+        });
+        binNames = binNames.sort(); 
+        return this.collectionDateQuestion(storyCollectionDateUnit, binNames);
+    }
+
+    collectionDateBinNamesForListOfStories(stories, storyCollectionDateUnit, monthDayOrder) {
+        const binNames = [];
+        stories.forEach((story) => {
+            if (storyCollectionDateUnit === "years") {
+                const collectionYear = story.storyCollectionYear();
+                if (binNames.indexOf(collectionYear) < 0) binNames.push(collectionYear);
+            } else if (storyCollectionDateUnit === "months") {
+                const collectionYear = story.storyCollectionYear();
+                const collectionMonth = story.storyCollectionMonth();
+                const yearMonth = collectionYear + "-" + collectionMonth;
+                if (binNames.indexOf(yearMonth) < 0) binNames.push(yearMonth);
+            } else if (storyCollectionDateUnit === "days") {
+                const collectionYear = story.storyCollectionYear();
+                const collectionMonth = story.storyCollectionMonth();
+                const collectionDayOfMonth = story.storyCollectionDayOfMonth();
+                let wholeDate;
+                if (monthDayOrder && monthDayOrder === "day before month") {
+                    wholeDate = collectionYear + "-" + collectionDayOfMonth + "-" + collectionMonth;
+                } else {
+                    wholeDate = collectionYear + "-" + collectionMonth + "-" + collectionDayOfMonth;
+                }
+                if (binNames.indexOf(wholeDate) < 0) binNames.push(wholeDate);
+            }
+        });
+        return binNames;
+    }
+
+    collectionDateQuestion(storyCollectionDateUnit, unitDescriptors) {
+        const collectionDateQuestion = {
+            id: "collectionDate",
+            displayName: "Collection date",
+            displayPrompt: "This is the date on which the story was collected.",
+            displayType: "select",
+            displayConfiguration: storyCollectionDateUnit || "months",
+            valueOptions: unitDescriptors 
+        }
+        return collectionDateQuestion;
+    }
+
     numStoriesToldQuestion(maxNumQuestions) {
-        var choices = [];
-        for (var i = 1; i <= maxNumQuestions; i++) {
+        const choices = [];
+        for (let i = 1; i <= maxNumQuestions; i++) {
             choices.push("" + i);
         }
-        var numStoriesToldQuestion = {
+        const numStoriesToldQuestion = {
             id: "numStoriesTold",
             displayName: "Number of stories told",
             displayPrompt: "This is the number of stories told by each participant.",
@@ -813,34 +889,38 @@ class Project {
     }
 
     numStoriesToldQuestionForStoryCollection(storyCollectionIdentifier) {
-        var stories = surveyCollection.getStoriesForStoryCollection(storyCollectionIdentifier);
-        var maxNumStoriesTold = 0;
-        for (var storyIndex in stories) {
-            var numStoriesToldForThisStory = stories[storyIndex].numStoriesTold();
+        const stories = surveyCollection.getStoriesForStoryCollection(storyCollectionIdentifier);
+        let maxNumStoriesTold = 0;
+        for (let storyIndex in stories) {
+            const numStoriesToldForThisStory = stories[storyIndex].numStoriesTold();
             if (typeof numStoriesToldForThisStory === "string") {
-                var numStoriesToldForThisStoryAsInt = parseInt(numStoriesToldForThisStory);
-                if (numStoriesToldForThisStoryAsInt > maxNumStoriesTold) maxNumStoriesTold = numStoriesToldForThisStoryAsInt;
+                let numStoriesToldForThisStoryAsInt = parseInt(numStoriesToldForThisStory);
+                if (numStoriesToldForThisStoryAsInt > maxNumStoriesTold) {
+                    maxNumStoriesTold = numStoriesToldForThisStoryAsInt;
+                }
             } 
         }
         return this.numStoriesToldQuestion(maxNumStoriesTold);
     }
 
     numStoriesToldQuestionsForCatalysisReport(catalysisReportIdentifier) {
-        var maxNumStoriesTold = 0;
-        var storyCollectionsIdentifier = this.tripleStore.queryLatestC(catalysisReportIdentifier, "catalysisReport_storyCollections");
-        var storyCollectionItems = this.tripleStore.getListForSetIdentifier(storyCollectionsIdentifier);
+        let maxNumStoriesTold = 0;
+        const storyCollectionsIdentifier = this.tripleStore.queryLatestC(catalysisReportIdentifier, "catalysisReport_storyCollections");
+        const storyCollectionItems = this.tripleStore.getListForSetIdentifier(storyCollectionsIdentifier);
     
         if (storyCollectionItems.length === 0) return [];
         
         storyCollectionItems.forEach((storyCollectionPointer) => {
             if (storyCollectionPointer) {
-                var storyCollectionIdentifier = this.tripleStore.queryLatestC(storyCollectionPointer, "storyCollection");
-                var stories = surveyCollection.getStoriesForStoryCollection(storyCollectionIdentifier);
-                for (var storyIndex in stories) {
-                    var numStoriesToldForThisStory = stories[storyIndex].numStoriesTold();
+                const storyCollectionIdentifier = this.tripleStore.queryLatestC(storyCollectionPointer, "storyCollection");
+                const stories = surveyCollection.getStoriesForStoryCollection(storyCollectionIdentifier);
+                for (let storyIndex in stories) {
+                    const numStoriesToldForThisStory = stories[storyIndex].numStoriesTold();
                     if (typeof numStoriesToldForThisStory === "string") {
-                        var numStoriesToldForThisStoryAsInt = parseInt(numStoriesToldForThisStory);
-                        if (numStoriesToldForThisStoryAsInt > maxNumStoriesTold) maxNumStoriesTold = numStoriesToldForThisStoryAsInt;
+                        let numStoriesToldForThisStoryAsInt = parseInt(numStoriesToldForThisStory);
+                        if (numStoriesToldForThisStoryAsInt > maxNumStoriesTold) {
+                            maxNumStoriesTold = numStoriesToldForThisStoryAsInt;
+                        }
                     }
                 }
             }

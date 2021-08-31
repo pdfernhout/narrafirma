@@ -358,11 +358,36 @@ export class StoryBrowser {
             displayPrompt: "Story length (in characters)",
             displayType: "text"
         }
+        const collectionYearQuestion = {
+            id: "collectionYear",
+            displayName: "Collection year",
+            displayPrompt: "Collection year",
+            displayType: "text"
+        }
+        const collectionMonthQuestion = {
+            id: "collectionMonth",
+            displayName: "Collection month",
+            displayPrompt: "Collection month",
+            displayType: "text"
+        }
+        const collectionDayOfMonthQuestion = {
+            id: "collectionDayOfMonth",
+            displayName: "Collection day of month",
+            displayPrompt: "Collection day of month",
+            displayType: "text"
+        }
 
         const storyQuestions = this.project.storyQuestionsForStoryCollection(this.storyCollectionIdentifier);
         const participantQuestions = this.project.participantQuestionsForStoryCollection(this.storyCollectionIdentifier);
         
-        this.questions = this.questions.concat(storyNameAndTextQuestions, [elicitingQuestion], storyQuestions, participantQuestions, [numStoriesToldQuestion], [storyLengthQuestion]);
+        this.questions = this.questions.concat(
+            storyNameAndTextQuestions, 
+            [elicitingQuestion], 
+            storyQuestions, 
+            participantQuestions, 
+            [collectionYearQuestion, collectionMonthQuestion, collectionDayOfMonthQuestion],
+            [numStoriesToldQuestion], 
+            [storyLengthQuestion]);
 
         this.choices = surveyCollection.optionsForAllQuestions(this.questions);
         this.allStories = surveyCollection.getStoriesForStoryCollection(storyCollectionIdentifier, true);
@@ -403,7 +428,13 @@ export class StoryBrowser {
         let storyDisplay;
         if (panelBuilder.readOnly) {
             // override questionnaire pointed to by storyModel because it may have been updated using the "update story form" button
-            storyDisplay = storyCardDisplay.generateStoryCardContent(storyModel, undefined, {location: "storyBrowser", questionnaire: this.questionnaire, storyTextAtTop: true, includeWriteInAnswers: true});
+            storyDisplay = storyCardDisplay.generateStoryCardContent(storyModel, undefined, {
+                location: "storyBrowser", 
+                questionnaire: this.questionnaire, 
+                storyTextAtTop: true, 
+                includeWriteInAnswers: true, 
+                monthDayOrder: Globals.clientState().monthDayOrder()
+            });
         } else {
             storyDisplay = panelBuilder.buildFields(this.questions, storyModel);
         }

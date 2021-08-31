@@ -190,6 +190,16 @@ function add_catalysisReportQuestionChooser(panelBuilder: PanelBuilder, model, f
         ]);
     }
 
+    function buildQuestionCheckboxSpecialForCollectionDate(): any {
+        var id = "collectionDate";
+        
+        return m("div", [
+            m("input[type=checkbox]", {id: id, checked: isChecked(id), onchange: function(event) { isChecked(id, event.target.checked); }}),
+            m("label", {"for": id}, "Collection date"),
+            m("br")
+        ]);
+    }
+
     function selectElements(displayTypes: any = null) {
         var map = {};
         if (elicitingQuestions) {
@@ -208,6 +218,7 @@ function add_catalysisReportQuestionChooser(panelBuilder: PanelBuilder, model, f
         });
         if (!displayTypes) map["numStoriesTold"] = true;
         if (!displayTypes) map["storyLength"] = true;
+        if (!displayTypes) map["collectionDate"] = true;
         storageFunction(map);
     }
 
@@ -313,7 +324,7 @@ function add_catalysisReportQuestionChooser(panelBuilder: PanelBuilder, model, f
     thirdColumn.push(m("br"));
     thirdColumn.push(m("br"));
     if (elicitingQuestions) thirdColumn.push(m("fieldset", elicitingQuestions.map((question) => {return buildQuestionCheckboxSpecialForElicitingQuestion();})));
-    thirdColumn.push(m("fieldset", [buildQuestionCheckboxSpecialForNumStoriesTold(), buildQuestionCheckboxSpecialForStoryLength()]));
+    thirdColumn.push(m("fieldset", [buildQuestionCheckboxSpecialForNumStoriesTold(), buildQuestionCheckboxSpecialForStoryLength(), buildQuestionCheckboxSpecialForCollectionDate()]));
     let thirdColumnTD = m("td", {"class": "narrafirma-questions-chooser-table-td"}, thirdColumn);
 
     let table = m("table", {"class": "narrafirma-questions-chooser-table"}, m("tr", [firstColumnTD, secondColumnTD, thirdColumnTD]));

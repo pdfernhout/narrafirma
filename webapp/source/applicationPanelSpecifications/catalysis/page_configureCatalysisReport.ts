@@ -452,6 +452,32 @@ var panel: Panel = {
             }
         },   
 
+        ////////////////////////////////////////////////////// story collection dates
+        {
+            id: "configureCatalysisReport_DrawingStoryCollectionDatesHeader",
+            valueType: "none",
+            displayType: "header",
+            displayPrompt: "Story collection dates",
+            displayVisible: function(panelBuilder, model) {
+                return !!Globals.clientState().haveCatalysisReportAndShowingAdvancedOptions();
+            }
+        },
+        {
+            id: "configureCatalysisReport_storyCollectionDateUnit",
+            valuePath: "/clientState/catalysisReportIdentifier/storyCollectionDateUnit",
+            valueType: "string",
+            valueOptions: ["years", "months", "days"],
+            displayType: "select",
+            displayName: "Story collection date unit",
+            displayPrompt: `For graphing story collection dates, <strong>what time units</strong> do you want to graph? 
+                (This choice affects graphs in the application and the printed report.
+                If no selection is made here, months will be used.)`,
+            displayVisible: function(panelBuilder, model) {
+                return !!Globals.clientState().haveCatalysisReportAndShowingAdvancedOptions();
+            }
+        },    
+
+
         ////////////////////////////////////////////////////// other options
         {
             id: "configureCatalysisReport_moreOptionsHeader",

@@ -80,7 +80,12 @@ function replaceAll(str: string, find: string, replace: string) {
 }
 
 function buildStoryDisplayPanel(panelBuilder: PanelBuilder, model) {
-    var storyCardDiv = storyCardDisplay.generateStoryCardContent(model, undefined, {location: "storyBrowser", storyTextAtTop: true, includeWriteInAnswers: true});
+    var storyCardDiv = storyCardDisplay.generateStoryCardContent(model, undefined, {
+        location: "storyBrowser", 
+        storyTextAtTop: true, 
+        includeWriteInAnswers: true, 
+        monthDayOrder: Globals.clientState().monthDayOrder()
+    });
     return storyCardDiv;
 }
 
@@ -751,11 +756,12 @@ class PatternExplorer {
         var elicitingQuestions = this.project.elicitingQuestionsForCatalysisReport(catalysisReportIdentifier);
         var numStoriesToldQuestions = this.project.numStoriesToldQuestionsForCatalysisReport(catalysisReportIdentifier);
         var storyLengthQuestions = this.project.storyLengthQuestionsForCatalysisReport(catalysisReportIdentifier);
+        var collectionDateQuestions = this.project.collectionDateQuestionsForCatalysisReport(catalysisReportIdentifier);
         var storyQuestions = this.project.storyQuestionsForCatalysisReport(catalysisReportIdentifier); 
         var participantQuestions = this.project.participantQuestionsForCatalysisReport(catalysisReportIdentifier);
         var annotationQuestions = questionnaireGeneration.convertEditorQuestions(this.project.collectAllAnnotationQuestions(), "A_");
         this.questions = [];
-        this.questions = this.questions.concat(leadingStoryQuestions, elicitingQuestions, numStoriesToldQuestions, storyLengthQuestions, storyQuestions, participantQuestions, annotationQuestions);
+        this.questions = this.questions.concat(leadingStoryQuestions, elicitingQuestions, numStoriesToldQuestions, storyLengthQuestions, collectionDateQuestions, storyQuestions, participantQuestions, annotationQuestions);
         this.questionsToInclude = this.project.tripleStore.queryLatestC(this.catalysisReportIdentifier, "questionsToInclude"); 
         this.graphHolder.lumpingCommands = this.project.lumpingCommandsForCatalysisReport(this.catalysisReportIdentifier); 
 
@@ -1280,7 +1286,7 @@ class PatternExplorer {
         answerKeys.sort();
         
         var sortedAndFormattedAnswers = "";
-        for (var i = 0; i < answerKeys.length; i++) {
+        for (let i = 0; i < answerKeys.length; i++) {
             var answer = answerKeys[i];
             sortedAndFormattedAnswers += answer;
             if (answers[answer] > 1) sortedAndFormattedAnswers += " (" + answers[answer] + ") ";
@@ -1313,7 +1319,7 @@ class PatternExplorer {
         answerKeys.sort();
         
         var sortedAndFormattedAnswers = "";
-        for (var i = 0; i < answerKeys.length; i++) {
+        for (let i = 0; i < answerKeys.length; i++) {
             var answer = answerKeys[i];
             sortedAndFormattedAnswers += answer;
             if (answers[answer] > 1) sortedAndFormattedAnswers += " (" + answers[answer] + ") ";
@@ -1407,7 +1413,7 @@ class PatternExplorer {
 
             const zipFile = new jszip();
 
-            for (var i = 0; i < svgNodes.length; i++) {
+            for (let i = 0; i < svgNodes.length; i++) {
 
                 let graphTitle = this.graphHolder.currentGraph[i].subgraphChoice;
                 graphTitle = graphTitle.replace("/", " "); // jszip interprets a forward slash as a folder designation 
@@ -1641,19 +1647,19 @@ class PatternExplorer {
         
         var questionIDsToShowForSelectedStories = [];
         questionShortNames.forEach(function(shortName) {
-            for (i = 0; i < storyQuestions.length; i++) {
+            for (let i = 0; i < storyQuestions.length; i++) {
                 if (storyQuestions[i].id === "S_" + shortName) {
                     questionIDsToShowForSelectedStories.push("S_" + shortName);
                     break;
                 }
             }
-            for (i = 0; i < participantQuestions.length; i++) {
+            for (let i = 0; i < participantQuestions.length; i++) {
                 if (participantQuestions[i].id === "P_" + shortName) {
                     questionIDsToShowForSelectedStories.push("P_" + shortName);
                     break;
                 }
             }
-            for (i = 0; i < annotationQuestions.length; i++) {
+            for (let i = 0; i < annotationQuestions.length; i++) {
                 if (annotationQuestions[i].id === "A_" + shortName) {
                     questionIDsToShowForSelectedStories.push("A_" + shortName);
                     break;
@@ -1683,14 +1689,14 @@ class PatternExplorer {
 
         // story names first
         text = "Names of stories (" + stories.length + ") " + sayAboutSelection + " - " + selectionName + "\n\n";
-        for (i = 0; i < stories.length; i++) {
+        for (let i = 0; i < stories.length; i++) {
             text += stories[i].indexInStoryCollection() + ". " + stories[i].model.storyName + textWithAnswersToSelectedQuestions(stories[i]) + "\n";
         }
 
         // then full story texts
         text += "\nStories (" + stories.length + ") " + sayAboutSelection + " - " + selectionName + "\n";
         const header = "\n----------------------------------------------------------------------------------------------------\n";
-        for (i = 0; i < stories.length; i++) {
+        for (let i = 0; i < stories.length; i++) {
             text += "\n" + stories[i].indexInStoryCollection() + ". " + stories[i].model.storyName + textWithAnswersToSelectedQuestions(stories[i]);
             if (this.numStoryCollectionsIncludedInReport > 1) text += "\nStory collection: " + stories[i].storyCollectionIdentifier();
             text += header + stories[i].model.storyText + "\n";

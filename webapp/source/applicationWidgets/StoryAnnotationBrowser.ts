@@ -116,8 +116,13 @@ export class StoryAnnotationBrowser {
 
         const questionsInDictionaryWithIDs = {};
         questionsToDisplay.map(function(question, index) {questionsInDictionaryWithIDs[question.id] = question;})
-        readOnlyDisplayPanel = storyCardDisplay.generateStoryCardContent(storyModel, questionsInDictionaryWithIDs, 
-            {location: "storyAnnotationBrowser", questionnaire: this.questionnaire, storyTextAtTop: true, includeWriteInAnswers: true});
+        readOnlyDisplayPanel = storyCardDisplay.generateStoryCardContent(storyModel, questionsInDictionaryWithIDs, {
+            location: "storyAnnotationBrowser", 
+            questionnaire: this.questionnaire,
+            storyTextAtTop: true, 
+            includeWriteInAnswers: true, 
+            monthDayOrder: Globals.clientState().monthDayOrder()
+        });
 
         if (panelBuilder.readOnly) {
             storyDisplayPanel = readOnlyDisplayPanel;
