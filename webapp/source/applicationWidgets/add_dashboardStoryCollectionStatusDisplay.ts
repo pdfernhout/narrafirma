@@ -12,7 +12,7 @@ function mithrilArrayForListOfThingsAndLink(name, list, page) {
     const count = list.length;
     let text = "" + count + " " + name;
     if (count != 1) text += "s";
-    return [m("a", {href: 'javascript:narrafirma_openPage("' + page + '")', title: text}, text), m("br")];  
+    return [m("a.narrafirma-home-page-link", {href: 'javascript:narrafirma_openPage("' + page + '")', title: text}, text)];  
 }
 
 function add_dashboardStoryCollectionStatusDisplay(panelBuilder: PanelBuilder, model, fieldSpecification): any {
@@ -114,7 +114,7 @@ function add_dashboardStoryCollectionStatusDisplay(panelBuilder: PanelBuilder, m
     }
     
     // project admin
-    resultItems = resultItems.concat([m("br"), m("a", {href: 'javascript:narrafirma_openPage("page_administration")', title: "Project administration"}, "Project administration")]); 
+    resultItems = resultItems.concat([m("br"), m("a.narrafirma-home-page-link", {href: 'javascript:narrafirma_openPage("page_administration")', title: "Project administration"}, "Project administration")]); 
 
     // choose another project
     let chooseProjectLink;
@@ -124,12 +124,12 @@ function add_dashboardStoryCollectionStatusDisplay(panelBuilder: PanelBuilder, m
     } else {
         chooseProjectLink = "../webapp/narrafirma.html";
     }
-    resultItems = resultItems.concat([m("br"), m("a", {href: chooseProjectLink, title: "Choose another project"}, "Choose another project")]); 
+    resultItems = resultItems.concat([m("a.narrafirma-home-page-link", {href: chooseProjectLink, title: "Choose another project"}, "Choose another project")]); 
 
     // site admin
     if (Globals.project().currentUserIsSuperUser) {
         // no need to get WordPress URL because superuser account does not exist there
-        resultItems = resultItems.concat([m("br"), m("a", {href: "\\admin.html", title: "Site administration"}, "Site administration"), m("br")]); 
+        resultItems = resultItems.concat([m("a.narrafirma-home-page-link", {href: "\\admin.html", title: "Site administration"}, "Site administration"), m("br")]); 
     }
     return m("div.narrafirma-dashboard-story-collection-status", resultItems);
 }

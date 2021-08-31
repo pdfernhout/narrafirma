@@ -290,6 +290,11 @@ input[type="submit"].narrafirma-login-button:hover {
     margin-top: 0.5em;
 }
 
+.narrafirma-home-page-link {
+    display: block;
+    margin-bottom: 0.2em;
+}
+
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Buttons bottom of page (and elsewhere) ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 form {
