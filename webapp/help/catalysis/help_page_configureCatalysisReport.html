@@ -40,9 +40,22 @@ Then, if you want to, read through the options on the rest of the page. You don'
 </div>
 
 <div class="heading">Frequently-asked questions</div>
+<ul>
+	<li><a href="#graphtypes">Can you explain the different graph types?</a></li>
+	<li><a href="#hiddenobservations">What happens to my observations when I hide a graph type or question?</a></li>
+	<li><a href="#statthreshold">How should I set the subset threshold for statistical tests?</a></li>
+	<li><a href="#statthresholdlater">What if I change my mind about the statistical threshold later?</a></li>
+	<li><a href="#hidegraphtypes">Why would I want to hide graph types from view?</a></li>
+	<li><a href="#hidequestions">Why would I want to hide questions from view?</a></li>
+	<li><a href="#filtering">How do I filter the stories used in the report?</a></li>
+	<li><a href="#displaylumping_works">How does display lumping work?</a></li>
+	<li><a href="#displaylumping_useful">Why is display lumping useful?</a></li>
+	<li><a href="#opaquedot">What's this about an opaque dot?</a></li>
+	<li><a href="#exportimport">Please explain exporting and importing report elements.</a></li>
+</ul>
 
 <div class="question">
-Can you explain the different graph types?
+	<a id="graphtypes">Can you explain the different graph types?</a>
 </div>
 <div class="question-answer">
 <p>The graph types are described in detail on the <a href="help_page_explorePatterns.html">Explore patterns</a> 
@@ -50,7 +63,19 @@ help page.</p>
 </div>
 
 <div class="question">
-How should I set the subset threshold for statistical tests? 
+	<a id="hiddenobservations">What happens to my observations when I hide a graph type or question?</a>
+</div>
+<div class="question-answer">
+<p>
+Any question or graph type you uncheck here will not show up on the 
+<a href="help_page_explorePatterns.html">Explore patterns</a> page.
+However, if you write an observation about a pattern and then hide its question or graph type, the observation will
+still appear in the printed report. 
+</p>
+</div>
+
+<div class="question">
+	<a id="statthreshold">How should I set the subset threshold for statistical tests?</a>
 </div>
 <div class="question-answer">
 <p>
@@ -63,7 +88,7 @@ can only be considered suggestive, not conclusive.
 </div>
 		
 <div class="question">
-What if I change my mind about the statistical threshold later?
+	<a id="statthresholdlater">What if I change my mind about the statistical threshold later?</a>
 </div>
 <div class="question-answer">
 <p>
@@ -73,7 +98,7 @@ observations you've already written that depend on statistical test values.
 </div>
 <div class="question">
 
-Why would I want to hide graph types from view?
+	<a id="hidegraphtypes">Why would I want to hide graph types from view?</a>
 </div>
 <div class="question-answer">
 <p>
@@ -86,7 +111,7 @@ concentrate on right now.
 </div>
 
 <div class="question">
-Why would I want to hide questions from view?
+	<a id="hidequestions">Why would I want to hide questions from view?</a>
 </div>
 <div class="question-answer">
 <p>
@@ -100,7 +125,7 @@ can't write any observations about it.
 </div>
 
 <div class="question">
-	What's this about filtering stories?
+	<a id="filtering">How do I filter the stories used in the report?</a>
 </div>
 <div class="question-answer">
 	<p>You can use a filter to <b>limit the scope of your catalysis report</b> to a specific subset of stories.
@@ -157,7 +182,7 @@ can't write any observations about it.
 </div>
 
 <div class="question">
-	How does <b>display lumping</b> work?
+	<a id="displaylumping_works">How does <b>display lumping</b> work?</a>
 </div>
 <div class="question-answer">
 	<p>
@@ -205,7 +230,7 @@ can't write any observations about it.
 			<li>You can only use display lumping with questions of the types <b>checkboxes</b>, <b>radio buttons</b>, and <b>select</b>.
 				You cannot use it with questions of the types boolean, checkbox, slider, label, header, text, and textarea. 
 			</li>
-			<li>You can use display lumping with all of the <b>questions NarraFirma generates</b>: 
+			<li>In your catalysis report, you can use display lumping with all of the <b>questions NarraFirma generates</b>: 
 				Eliciting question, Number of stories told, Story length, and Collection date.
 				For example, lumping commands for collection dates might look like this:
 				<ul>
@@ -214,11 +239,12 @@ can't write any observations about it.
 					<li>Collection date == 2021-05-12 || 2021-05-13 || 2021-05-14 == Pulse 3</li>
 				</ul>
 			</li>
+			<li>When printing story cards, you cannot use diplay lumping for any of the generated questions. It works for all story and participant questions, however.</li>
 		</ul>
 </div>
 
 <div class="question">
-	Why is <b>display lumping</b> useful?
+	<a id="displaylumping_useful">Why is display lumping useful?</a>
 </div>
 <div class="question-answer">
 	<p>
@@ -261,19 +287,7 @@ can't write any observations about it.
 </div>
 
 <div class="question">
-What happens to my observations when I hide a graph type or question?
-</div>
-<div class="question-answer">
-<p>
-Any question or graph type you uncheck here will not show up on the 
-<a href="help_page_explorePatterns.html">Explore patterns</a> page.
-However, if you write an observation about a pattern and then hide its question or graph type, the observation will
-still appear in the printed report. 
-</p>
-</div>
-
-<div class="question">
-		What's this about an opaque dot?
+		<a id="opaquedot">What's this about an opaque dot?</a>
 		</div>
 		<div class="question-answer">
 		<p>
@@ -284,7 +298,7 @@ still appear in the printed report.
 		</div>
 				
 <div class="question">
-	Please explain exporting and importing report elements. 
+	<a id="exportimport">Please explain exporting and importing report elements.</a>
 	</div>
 	<div class="question-answer">
 	<p>
