@@ -298,6 +298,32 @@ function processCSVContentsForStories(contents, saveStories, writeLog, questionn
                     //log("DEBUG||Story text (no word length check): " + shortenTextIfNecessary(value) + "...");
                 }
 
+            // column is story collection date - expected format: ISO 8601 (YYYY-MM-DD)
+            } else if (headerName === questionnaire.import_storyCollectionDateColumnName) {
+                let saveDate = true;
+                if (value.length < 10) {
+                    log("WARN||Story collection date (" + value + ") is too short; it should consist of at least ten characters (YYYY-MM-DD).");
+                    saveDate = false;
+                }
+                const year = value.substr(0, 4);
+                if (isNaN(Number(year))) {
+                    log("WARN||Story collection year (" + year + ") is not a number.");
+                    saveDate = false;
+                }
+                const month = value.substr(5, 2);
+                if (isNaN(Number(month))) {
+                    log("WARN||Story collection month (" + month + ") is not a number.");
+                    saveDate = false;
+                }
+                const day = value.substr(8, 2);
+                if (isNaN(Number(day))) {
+                    log("WARN||Story collection day of month (" + day + ") is not a number.");
+                    saveDate = false;
+                }
+                if (saveDate) {
+                    newItem["Collection date"] = value.substr(0, 10);
+                } 
+
             // column is one of additional text columns to be appended to story text (must be to the right of story text in data file)
             } else if (columnsToAppendToStoryText.indexOf(headerName) >= 0) {
                 const indexOfColumnInList = columnsToAppendToStoryText.indexOf(headerName);
@@ -558,7 +584,7 @@ function processCSVContentsForStories(contents, saveStories, writeLog, questionn
         progressModel.hideDialogMethod();
         progressModel.redraw();
         return;
-    }
+    } 
 
     //////////////////////////////////////// IF SAVING STORIES AND NOT WRITING LOG
 
@@ -611,6 +637,7 @@ function processCSVContentsForStories(contents, saveStories, writeLog, questionn
                 elicitingQuestion: elicitingQuestion,
                 storyText: storyItem["Story text"],
                 storyName: storyItem["Story title"] || ("Untitled #" + padLeadingZeros(++untitledCount, 4)),
+                collectionDate: storyItem["Collection date"],
                 numStoriesTold: "" + itemsByParticipantID[participantIDIndex].length
             };
         
@@ -962,6 +989,7 @@ function processCSVContentsForQuestionnaire(contents) {
         import_multiChoiceDelimiter: ",",
         import_storyTitleColumnName: "Story title",
         import_storyTextColumnName: "Story text",
+        import_storyCollectionDateColumnName: "Collection date",
         import_participantIDColumnName: "Participant ID",
         import_columnsToIgnore: [],
         import_columnsToAppendToStoryText: "",
@@ -1076,6 +1104,7 @@ function processCSVContentsForQuestionnaire(contents) {
     project.tripleStore.addTriple(template.id, "questionForm_import_elicitingQuestionColumnName", "Eliciting question");
     project.tripleStore.addTriple(template.id, "questionForm_import_storyTitleColumnName", "Story title");
     project.tripleStore.addTriple(template.id, "questionForm_import_storyTextColumnName", "Story text");
+    project.tripleStore.addTriple(template.id, "questionForm_import_storyCollectionDateColumnName", "Collection date");
     project.tripleStore.addTriple(template.id, "questionForm_import_participantIDColumnName", "Participant ID");
 
     for (let itemIndex = 0; itemIndex < items.length; itemIndex++) {
@@ -1287,6 +1316,9 @@ function processCSVContentsForQuestionnaire(contents) {
                 } else if (type === "Story text column name") {
                     template.import_storyTextColumnName = text;
                     project.tripleStore.addTriple(template.id, "questionForm_import_storyTextColumnName", text);
+                } else if (type === "Story collection date column name") {
+                    template.import_storyCollectionDateColumnName = text;
+                    project.tripleStore.addTriple(template.id, "questionForm_import_storyCollectionDateColumnName", text);
                 } else if (type === "Participant ID column name") {
                     template.import_participantIDColumnName = text;
                     project.tripleStore.addTriple(template.id, "questionForm_import_participantIDColumnName", text);
@@ -1954,6 +1986,8 @@ export function exportQuestionnaireForImport(questionnaire = null) { // to prese
     if (questionnaire.import_multiChoiceDelimiter) addOutputLine(["", "Multi choice single column delimiter", "import", "", "", "", questionnaire.import_multiChoiceDelimiter || ""]);
     if (questionnaire.import_storyTitleColumnName) addOutputLine(["", "Story title column name", "import", "", "", "", questionnaire.import_storyTitleColumnName || ""]);
     if (questionnaire.import_storyTextColumnName) addOutputLine(["", "Story text column name", "import", "", "", "", questionnaire.import_storyTextColumnName || ""]);
+    if (questionnaire.import_storyCollectionDateColumnName) addOutputLine(["", "Story text column name", "import", "", "", "", questionnaire.import_storyCollectionDateColumnName || ""]);
+
     if (questionnaire.import_participantIDColumnName) addOutputLine(["", "Participant ID column name", "import", "", "", "", questionnaire.import_participantIDColumnName || ""]);
     if (questionnaire.import_minWordsToIncludeStory) addOutputLine(["", "Minimum words to include story", "import", "", "", "", questionnaire.import_minWordsToIncludeStory || ""]);
 
@@ -2037,6 +2071,7 @@ export function exportStoryCollection() {
     // Put initial header
     header("Story title");
     header("Story text");
+    header("Collection date");
     header("Eliciting question");
     
     function headersForQuestions(questions) {
@@ -2093,8 +2128,9 @@ export function exportStoryCollection() {
     
     allStories.forEach(function (story) {
         const outputLine = [];
-        outputLine.push(story.storyName());
+        outputLine.push(story.storyName()); 
         outputLine.push(story.storyText());
+        outputLine.push(story.storyCollectionDate() || "");
         outputLine.push(story.elicitingQuestion());
         dataForQuestions(questionnaire.storyQuestions, story, outputLine);
         dataForQuestions(questionnaire.participantQuestions, story, outputLine);

@@ -79,16 +79,60 @@ export class Story {
         return this.fieldValue("indexInStoryCollection", newValue);
     }
 
-    storyCollectionYear(newValue = undefined) {
-        return this.fieldValue("collectionYear", newValue);
+    storyCollectionDate(newValue = undefined) {
+        return this.fieldValue("collectionDate", newValue);
     }
 
-    storyCollectionMonth(newValue = undefined) {
-        return this.fieldValue("collectionMonth", newValue);
+    // ISO 8601 date format: YYYY-MM-DD
+    storyCollectionYear() {
+        const collectionDate = this.storyCollectionDate();
+        if (collectionDate && collectionDate.length >= 4) {
+            return collectionDate.substr(0, 4);
+        } else {
+            return null;
+        }
+    }
+
+    storyCollectionQuarter() {
+        const year = this.storyCollectionYear();
+        const month = this.storyCollectionMonth();
+        if (!year || !month) return null;
+        if (["01", "02", "03"].indexOf(month) >= 0) {
+            return year + " Q1";
+        } else if (["04", "05", "06"].indexOf(month) >= 0) {
+            return year + " Q2";
+        } else if (["07", "08", "09"].indexOf(month) >= 0) {
+            return year + " Q3";
+        } else if (["10", "11", "12"].indexOf(month) >= 0) {
+            return year + " Q4";
+        }
     }
     
-    storyCollectionDayOfMonth(newValue = undefined) {
-        return this.fieldValue("collectionDayOfMonth", newValue);
+    storyCollectionYearAndMonth() {
+        const collectionDate = this.fieldValue("collectionDate");
+        if (collectionDate && collectionDate.length >= 4) {
+            return collectionDate.substr(0, 7);
+        } else {
+            return null;
+        }
+    }
+
+    storyCollectionMonth() {
+        const collectionDate = this.fieldValue("collectionDate");
+        if (collectionDate && collectionDate.length >= 7) {
+            return collectionDate.substr(5, 2);
+        } else {
+            return null;
+        }
+    }
+
+    storyCollectionDayOfFMonth() {
+        const collectionDate = this.fieldValue("collectionDate");
+        if (collectionDate && collectionDate.length >= 10) {
+            return collectionDate.substr(8, 2);
+        } else {
+            return null;
+        }
     }
 
     storyCollectionIdentifier(newValue = undefined) {
@@ -131,11 +175,15 @@ export function getStoriesForStoryCollection(storyCollectionIdentifier, includeI
                 // calculate derived count of number of stories told in each survey session (to be shown in graphs)
                 stories[storyIndex].numStoriesTold = "" + stories.length;
                 stories[storyIndex].storyLength = "" + stories[storyIndex].length;
-                if (message._topicTimestamp && message._topicTimestamp.length >= 10) {
-                    // ISO date: YYYY-MM-DD
-                    stories[storyIndex].collectionYear = message._topicTimestamp.substr(0, 4);
-                    stories[storyIndex].collectionMonth = message._topicTimestamp.substr(5, 2);
-                    stories[storyIndex].collectionDayOfMonth = message._topicTimestamp.substr(8, 2);
+                
+                // only set collection date info if it was not previously saved
+                // if the story was imported from a CSV file, the collection date read from the file
+                // was saved in the "collectionDate" field, and the "_topicTimestamp" of the message is the import timestamp
+                if (!stories[storyIndex].collectionDate) {
+                    if (message._topicTimestamp && message._topicTimestamp.length >= 10) {
+                        // ISO 8601 date format: YYYY-MM-DD
+                        stories[storyIndex].collectionDate = message._topicTimestamp.substr(0, 10);
+                    }
                 }
                 // Make a copy of the story so as not to modify original in message
                 const story = JSON.parse(JSON.stringify(stories[storyIndex]));

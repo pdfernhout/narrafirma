@@ -272,6 +272,7 @@ export function buildQuestionnaireFromTemplate(storyFormTemplate: string, shortN
         import_multiChoiceDelimiter: ",",
         import_storyTitleColumnName: "Story title",
         import_storyTextColumnName: "Story text",
+        import_storyCollectionDateColumnName: "Collection date",
         import_participantIDColumnName: "Participant ID",
         import_columnsToIgnore: [],
         import_columnsToAppendToStoryText: "",
@@ -327,6 +328,8 @@ export function buildQuestionnaireFromTemplate(storyFormTemplate: string, shortN
     storyForm.import_multiChoiceDelimiter = project.tripleStore.queryLatestC(storyFormTemplate, "questionForm_import_multiChoiceDelimiter"); 
     storyForm.import_storyTitleColumnName = project.tripleStore.queryLatestC(storyFormTemplate, "questionForm_import_storyTitleColumnName"); 
     storyForm.import_storyTextColumnName = project.tripleStore.queryLatestC(storyFormTemplate, "questionForm_import_storyTextColumnName"); 
+    storyForm.import_storyCollectionDateColumnName = project.tripleStore.queryLatestC(storyFormTemplate, "questionForm_import_storyCollectionDateColumnName"); 
+
     storyForm.import_elicitingQuestionColumnName = project.tripleStore.queryLatestC(storyFormTemplate, "questionForm_import_elicitingQuestionColumnName"); 
     storyForm.import_minWordsToIncludeStory = project.tripleStore.queryLatestC(storyFormTemplate, "questionForm_import_minWordsToIncludeStory"); 
     storyForm.import_stringsToRemoveFromHeaders = project.tripleStore.queryLatestC(storyFormTemplate, "questionForm_import_stringsToRemoveFromHeaders"); 

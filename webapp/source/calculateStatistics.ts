@@ -15,9 +15,9 @@ function isValidNumber(value) {
 export function getChoiceValueForQuestionAndStory(question, story, unansweredText, includeNAValues, lumpingCommands) {
     if (!question) return null;
     if (question.id === "storyLength") 
-        return getStoryLengthValueForStory(story, question, unansweredText, includeNAValues);
+        return getStoryLengthValueForStory(story, question, unansweredText, includeNAValues, lumpingCommands);
     if (question.id === "collectionDate")
-        return getCollectionDateValueForStory(story, question, unansweredText, includeNAValues);
+        return getCollectionDateValueForStory(story, question, unansweredText, includeNAValues, lumpingCommands);
     
     let value = story.fieldValue(question.id);
 
@@ -78,7 +78,7 @@ export function getScaleValueForQuestionAndStory(question, story, unansweredText
     return value;
 }
 
-function getStoryLengthValueForStory(story, question, unansweredText, includeNAValues) {
+function getStoryLengthValueForStory(story, question, unansweredText, includeNAValues, lumpingCommands) {
     const value = story.storyLength();
     if (value == 0) {
         if (includeNAValues) {
@@ -95,46 +95,43 @@ function getStoryLengthValueForStory(story, question, unansweredText, includeNAV
                 break;
             }
         }
-        if (!result) result = question.valueOptions[question.valueOptions.length-1];
+        if (!result) { // story length is higher than even the last bin value; set to last bin value
+            result = question.valueOptions[question.valueOptions.length-1];
+        }
+        if (lumpingCommands.hasOwnProperty(question.displayName)) {
+            if (lumpingCommands[question.displayName].hasOwnProperty(result)) {
+                result = lumpingCommands[question.displayName][result];
+            }
+        } 
+        
         return result;
     }
 }
 
-function getCollectionDateValueForStory(story, question, unansweredText, includeNAValues) {
-    const monthDayOrder = question.displayConfiguration;
-    const collectionYear = story.storyCollectionYear();
-    const collectionMonth = story.storyCollectionMonth();
-    const collectionDayOfMonth = story.storyCollectionDayOfMonth();
-
-    if (!collectionYear || !collectionMonth || !collectionDayOfMonth) {
+function getCollectionDateValueForStory(story, question, unansweredText, includeNAValues, lumpingCommands) {
+    let value = null;
+    const dateUnit = question.displayConfiguration;
+    if (dateUnit === "years") {
+        value = story.storyCollectionYear();
+    } else if (dateUnit === "quarters") {
+        value = story.storyCollectionQuarter();
+    } else if (dateUnit === "months") {
+        value = story.storyCollectionYearAndMonth();
+    } else if (dateUnit === "days") {
+        value = story.storyCollectionDate();
+    }
+    if (!value) {
         if (includeNAValues) {
             return unansweredText;
         } else {
             return null;
         }
-    } else {
-        let result = null;
-        let valueToMatch;
-
-        if (monthDayOrder === "years") {
-            valueToMatch = collectionYear;
-        } else if (monthDayOrder === "months") {
-            valueToMatch = collectionYear + "-" + collectionMonth;
-        } else if (monthDayOrder === "days") {
-            if (monthDayOrder && monthDayOrder === "day before month") {
-                valueToMatch = collectionYear + "-" + collectionDayOfMonth + "-" + collectionMonth;
-            } else {
-                valueToMatch = collectionYear + "-" + collectionMonth + "-" + collectionDayOfMonth;
-            }
-        }
-        for (let i = 0; i < question.valueOptions.length; i++) {
-            if (valueToMatch === question.valueOptions[i]) {
-                result = question.valueOptions[i];
-                break;
-            }
-        }
-        return result;
     }
+    if (lumpingCommands.hasOwnProperty(question.displayName)) {
+        if (lumpingCommands[question.displayName].hasOwnProperty(value)) 
+            value = lumpingCommands[question.displayName][value];
+    } 
+    return value;
 }
 
 export function collectValuesForOneScale(stories: surveyCollection.Story[], fieldName, conversionFunction = null) {

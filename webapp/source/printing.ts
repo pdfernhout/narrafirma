@@ -1473,7 +1473,6 @@ export function printStoryCards() {
     const cutoffMessage = project.tripleStore.queryLatestC(storyCollectionName, "printStoryCards_storyTextCutoffMessage"); 
     const includeIndex = project.tripleStore.queryLatestC(storyCollectionName, "printStoryCards_includeIndexInStoryCollection");
     const includeWriteInAnswers = project.tripleStore.queryLatestC(storyCollectionName, "printStoryCards_includeWriteInTexts");
-    const monthDayOrder = project.tripleStore.queryLatestC(project.projectIdentifier, "projectOptions_monthDayOrder");
     
     const storyDivs = [];
     if (filter) storyDivs.push(m(".storyCardFilterWarning", "Stories that match filter: " + filter));
@@ -1490,8 +1489,7 @@ export function printStoryCards() {
             cutoff: cutoff,
             cutoffMessage: cutoffMessage,
             includeIndex: includeIndex,
-            includeWriteInAnswers: includeWriteInAnswers,
-            monthDayOrder
+            includeWriteInAnswers: includeWriteInAnswers
         }
         const storyContent = storyCardDisplay.generateStoryCardContent(storyModel, questionsToInclude, options);
         

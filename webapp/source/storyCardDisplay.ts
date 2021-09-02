@@ -222,8 +222,7 @@ interface Options {
     cutoff?: string,
     cutoffMessage?: string,
     includeIndex?: string,
-    includeWriteInAnswers?: boolean,
-    monthDayOrder?: string
+    includeWriteInAnswers?: boolean
 }
 
 export function generateStoryCardContent(storyModel, questionsToInclude, options: Options = {}) {
@@ -237,12 +236,7 @@ export function generateStoryCardContent(storyModel, questionsToInclude, options
         storyName = storyModel.indexInStoryCollection() + ". " + storyName;
     }
 
-    let storyCollectionDate = storyModel.storyCollectionYear();
-    if (options.monthDayOrder && options.monthDayOrder === "day before month") {
-        storyCollectionDate += "-" + storyModel.storyCollectionDayOfMonth() + "-" + storyModel.storyCollectionMonth();
-    } else {
-        storyCollectionDate += "-" + storyModel.storyCollectionMonth() + "-" + storyModel.storyCollectionDayOfMonth();
-    }
+    const storyCollectionDate = storyModel.storyCollectionDate();
 
     var storyText = storyModel.storyText();
     if (options.cutoff && options.cutoff !== "no limit") {

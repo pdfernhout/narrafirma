@@ -120,8 +120,7 @@ export class StoryAnnotationBrowser {
             location: "storyAnnotationBrowser", 
             questionnaire: this.questionnaire,
             storyTextAtTop: true, 
-            includeWriteInAnswers: true, 
-            monthDayOrder: Globals.clientState().monthDayOrder()
+            includeWriteInAnswers: true
         });
 
         if (panelBuilder.readOnly) {

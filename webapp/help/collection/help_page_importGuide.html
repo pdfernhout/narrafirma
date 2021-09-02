@@ -23,12 +23,12 @@
 <h2 id="toc">Table of contents</h2>
 </p>
 <ul>
-    <li><a href="#beforeyoustart">Before you start: requirements</a></li>
-    <li><a href="#exporttocsv">Step One: Export your data to CSV</a></li>
-    <li><a href="#lookatheaders">Step Two: Look at your data file headers</a></li>
-    <li><a href="#describedata">Step Three: Describe your data to NarraFirma</a>
+    <li><b><a href="#beforeyoustart">Before you start: requirements</a></b></li>
+    <li><b><a href="#exporttocsv">Step One: Export your data to CSV</a></b></li>
+    <li><b><a href="#lookatheaders">Step Two: Look at your data file headers</a></b></li>
+    <li><b><a href="#describedata">Step Three: Describe your data to NarraFirma</a></b>
         <ul>
-            <li><a href="#usingnf">Describe your data to NarraFirma by building a story form in NarraFirma</a></li>
+            <li><b><a href="#usingnf">Describe your data to NarraFirma by building a story form in NarraFirma</a></b></li>
             <ul>
                 <li><a href="#nf_eliciting">Eliciting questions</a></li>
                 <li><a href="#nf_stories">Questions about stories</a>
@@ -42,18 +42,19 @@
                     <li><a href="#nf_multicolumnyesno">Multi-choice multi-column yes/no questions</a></li>
                     <li><a href="#nf_multicolumndelimited">Multi-choice single-column delimited questions</a></li>
                     <li><a href="#nf_multicolumndelimitedindexed">Multi-choice single-column delimited indexed questions</a></li>
-                    <li><a href="#nf_ifnomatch">If your data doesn't match any of these types</a></li>
+                    <li><a href="#nf_ifnomatch">If your data don't match any of these types</a></li>
                 </ul>
                 </li>
                 <li><a href="#nf_participants">Questions about participants</a></li>
                 <li><a href="#nf_form">Create your story form</a></li>
             </ul>
-            <li><a href="#usingcsv">Describe your data to NarraFirma by importing a story form CSV file you created in a spreadsheet program</a>
+            <li><b><a href="#usingcsv">Describe your data to NarraFirma by importing a story form CSV file you created in a spreadsheet program</a></b>
             <ul>
                 <li><a href="#csv_participantID">Participant identifier</a></li>
                 <li><a href="#csv_eliciting">Eliciting question</a></li>
                 <li><a href="#csv_storytexts">Story texts</a></li>
                 <li><a href="#csv_storytitles">Story titles</li>
+                <li><a href="#csv_storycollectiondates">Story collection dates</a></li>
                 <li><a href="#csv_singlechoice">Single choice questions</a></li>
                 <li><a href="#csv_singlechoiceindexed">Single choice indexed questions</a></li>
                 <li><a href="#csv_scale">Scale questions</a></li>
@@ -73,9 +74,9 @@
             </li>
         </ul>
     </li>
-    <li><a href="#checkstories">Step Four: Check your story data</a></li>
-    <li><a href="#importstories">Step Five: Import your stories</a></li>
-    <li><a href="#spotcheck">Step Six: Check your data again</a></li>
+    <li><b><a href="#checkstories">Step Four: Check your story data</a></b></li>
+    <li><b><a href="#importstories">Step Five: Import your stories</a></b></li>
+    <li><b><a href="#spotcheck">Step Six: Check your data again</a></b></li>
     <li><a href="#tips">Tips and tricks</a></li>
     <li><a href="#exportstories">Exporting stories from NarraFirma</a></li>
     <li><a href="#needmorehelp">Need more help?</a></li>
@@ -87,30 +88,51 @@
 <div class="text">
 <p>
 NarraFirma assumes that any file of story data you import has these features:
-<ul>
-    <li>The file is in the <b>CSV</b> (comma-separated values) format. 
-        Within this format, however, you can choose from three cell delimiters: 
-        <b>comma, semicolon, and tab</b>. The default choice is a comma, but you can change this 
-        in the "Project options" page (which you can find
-        by clicking on "Project administration" in the NarraFirma home page).
-        Note that this setting will affect <i>all</i> CSV operations in your project, both import and export.
-    </li>
-    <li>The file is encoded in the <b>UTF-8</b> encoding format. 
-        <b>Be careful!</b> Ignoring this requirement can cause mismatches and garbled data.
-        Check the internet for information on how to save a CSV file with UTF-8 encoding using your favorite spreadsheet program.
-    </li>
-    <li>The first row of the file is a <b>header</b> in which each cell describes the contents of the cells beneath it.</li>
-    <li>All the cells in all the rows beneath the header contain data that match both the <b>descriptions</b> in the header cells
-        and the <b>data types</b> NarraFirma knows how to read (see below).</li>
-    <li>If a column header starts with "WRITEIN_" (and then the question name), it means that the column contains write-in free-text answers for the specified question.
-         In the story form CSV file, that question must have the "writeInTextBoxLabel" option set in the "Options" cell of its row.
-    </li>
-    <li>Any rows that are not the header or data are marked as <b>comments</b> because the very first character in the very first cell of the row is a semicolon (;).</li>
-    <li>Each data row contains the data for <b>one story</b> only.</li>
-    <li>There are no rows that describe only participants. <b>Participant data is repeated</b> on each row that represents a story they told.</li>
-    <li>Custom answers from <b>write-in "other" options</b> are in their own separate columns (with the question type "Text").
-        Written-in answers are never intermingled (in the same column) with answers listed on the survey.</li>
-</ul>
+
+<table border="1" cellpadding="4" cellspacing="0">
+    <tr>
+        <td><b>The format is CSV</b></td>
+        <td>The file is in the <b>CSV</b> (comma-separated values) format. 
+            Within this format, you can choose from three cell delimiters: 
+            <b>comma, semicolon, and tab</b>. The default choice is a comma, but you can change this 
+            in the "Project options" page (which you can find
+            by clicking on "Project administration" in the NarraFirma home page).
+            Note that this setting will affect <i>all</i> CSV operations in your project, both import and export.</td>
+    </tr>
+    <tr>
+        <td><b>The encoding is UTF-8</b></td>
+        <td>The file is encoded in the <b>UTF-8</b> encoding format. 
+            <b>Be careful!</b> Ignoring this requirement can cause mismatches and garbled data.
+            Check the internet for information on how to save a CSV file with UTF-8 encoding using your favorite spreadsheet program.</td>
+    </tr>
+    <tr>
+        <td><b>The first row is the headers</b></td>
+        <td>The first row of the file is a <b>header</b> in which each cell describes the contents of the cells beneath it.</td>
+    </tr>
+    <tr>
+        <td><b>All other rows are data</b></td>
+        <td>All the cells in all the rows beneath the header contain data that match both the <b>descriptions</b> in the header cells
+            and the <b>data types</b> NarraFirma knows how to read (see below).</td>
+    </tr>
+    <tr>
+        <td><b>"Other" answers are separated</b></td>
+        <td>Written-in "other" answers are never intermingled (in the same column) with answers listed on the survey.
+            Those answers (if they exist) are in separate columns labeled "WRITEIN_" followed by the name of the question (see below).</td>
+    </tr>
+    <tr>
+        <td><b>A row is a story</b></td>
+        <td>Each data row contains the data for <b>one story</b> only.</td>
+    </tr>
+    <tr>
+        <td><b>There are no participant rows</b></td>
+        <td>There are no rows that describe only participants. <b>Participant data are repeated</b> on each row that represents a story that person told.</td>
+    </tr>
+    <tr>
+        <td><b>A semicolon marks a comment</b></td>
+        <td>Any rows that are not the header or data are marked as <b>comments</b> because the very first character in the very first cell of the row is a semicolon (;).</td>
+    </tr>
+</table>
+
 <p>
 If your data file doesn't meet these requirements, you will need to edit the file until it does.
 </p>
@@ -120,6 +142,8 @@ If your data file doesn't meet these requirements, you will need to edit the fil
         will show up as blank spaces when you look at your stories in NarraFirma.</li>
     <li>Each non-header row will <i>usually</i> have in it a cell with <b>the name of a story</b>. But you can import data with no story names. In that case, NarraFirma
         will assign story names of "Untitled" plus a number.</li>
+    <li>Each non-header row will <i>usually</i> have in it <b>the date on which the story was collected</b>, in ISO 8601 format (YYYY-MM-DD).
+        However, you can import stories with no collection dates. In that case, the collection date information normally displayed by NarraFirma will be blank.</li>
     <li>Each non-header row will <i>usually</i> have in it a cell with <b>the name of the question the participant answered</b> by telling the story. 
         If there is no data on eliciting questions in your data file, 
         NarraFirma will assign the name of the first eliciting question in your story form as the answer to the "Eliciting question" question for each story.
@@ -707,6 +731,17 @@ In our example data file, the "Needed" question is of this type:</p>
     </tr>
 
     <tr>
+        <td>What is the data column header for the <b>date of story collection</b>?</td>
+        <td>Look at your data file and find the column that has the date on which the story was collected. 
+            Copy and paste the exact header for that column here.
+            Also, make sure your date data are in the ISO 8601 format (YYYY-MM-DD). 
+            (If the data are not in that format, convert them to it using a spreadsheet program.)
+            Then, before you import your data file, make sure the correct format (month before day, or day before month)
+            is chosen on the "Project options" page.
+        </td>
+        </tr>
+
+    <tr>
     <td>If you want to <b>append additional text columns to your story text</b>, enter the column names here, one per line.</td>
     <td>After someone has told a story, you might want to ask them for more details on it in a follow-up question, and you might want those details
         to be included in the story text itself, instead of in a separate question. Use this box to tell NarraFirma the names of column
@@ -1077,6 +1112,38 @@ you must use an import option to tell NarraFirma how to read this column. Enter 
             <td></td>
             <td></td>
             <td>STitle</td>
+        </tr>
+    </table>
+
+<h2 id="csv_storycollectiondates">Story collection dates</h2>
+
+<p>If the data from your survey system includes the date of each survey submission, you can read that data into NarraFirma and use it to create graphs.
+Date information must be in the ISO 8601 format (YYYY-MM-DD), and anything that comes after the first ten characters (usually a time stamp) will be ignored. 
+If your dates aren't in ISO 8601 format, use a spreadsheet program to convert them.</p>
+
+<p>
+    You also need to tell NarraFirma where to find the date column
+    with the story form import option "Story collection date column name," like this.
+</p>
+
+<table border="1" cellpadding="4" cellspacing="0">
+        <tr>
+            <td>Data column name</td>
+            <td>Type</td>
+            <td>About</td>	
+            <td>Short name</td>	
+            <td>Long name</td>	
+            <td>Options</td>	
+            <td>Answers</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>Story collection date column name</td>
+            <td>import</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>Submitdate</td>
         </tr>
     </table>
 

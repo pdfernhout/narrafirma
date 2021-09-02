@@ -438,6 +438,15 @@ var panel: Panel = {
             displayVisible: function(panelBuilder, model) { return !!Globals.clientState().showImportOptions(); }
         },
         {
+            id: "questionForm_import_storyCollectionDateColumnName",
+            valueType: "string",
+            displayType: "text",
+            displayName: "Story collection date column name",
+            displayPrompt: "What is the data column header for the  <strong>date of story collection</strong>?",
+            displayVisible: function(panelBuilder, model) { return !!Globals.clientState().showImportOptions(); }
+        },
+
+        {
             id: "questionForm_import_columnsToAppendToStoryText",
             valueType: "string",
             displayType: "textarea",

@@ -804,16 +804,14 @@ class Project {
 
     collectionDateQuestionForStoryCollection(storyCollectionIdentifier) {
         const stories = surveyCollection.getStoriesForStoryCollection(storyCollectionIdentifier);
-        const monthDayOrder = this.tripleStore.queryLatestC(this.projectIdentifier, "projectOptions_monthDayOrder");
-        const storyCollectionDateUnit = "month"; // outside of catalysis report, hard-code option
-        let binNames = this.collectionDateBinNamesForListOfStories(stories, storyCollectionDateUnit, monthDayOrder);
+        const dateUnit = "days"; // outside of catalysis report, hard-code option
+        let binNames = this.collectionDateBinNamesForListOfStories(stories, dateUnit);
         binNames = binNames.sort(); 
-        return this.collectionDateQuestion(storyCollectionDateUnit, binNames);
+        return this.collectionDateQuestion(dateUnit, binNames);
     }
 
     collectionDateQuestionsForCatalysisReport(catalysisReportIdentifier) {
-        const storyCollectionDateUnit = this.tripleStore.queryLatestC(catalysisReportIdentifier, "storyCollectionDateUnit") || "months";
-        const monthDayOrder = this.tripleStore.queryLatestC(this.projectIdentifier, "projectOptions_monthDayOrder");
+        const dateUnit = this.tripleStore.queryLatestC(catalysisReportIdentifier, "storyCollectionDateUnit") || "days";
 
         const storyCollectionsIdentifier = this.tripleStore.queryLatestC(catalysisReportIdentifier, "catalysisReport_storyCollections");
         const storyCollectionItems = this.tripleStore.getListForSetIdentifier(storyCollectionsIdentifier);
@@ -824,50 +822,45 @@ class Project {
             if (storyCollectionPointer) {
                 const storyCollectionIdentifier = this.tripleStore.queryLatestC(storyCollectionPointer, "storyCollection");
                 const stories = surveyCollection.getStoriesForStoryCollection(storyCollectionIdentifier);
-                const binNamesForStoryCollection = this.collectionDateBinNamesForListOfStories(stories, storyCollectionDateUnit, monthDayOrder);
-                if (binNamesForStoryCollection.length) {
-                    binNames = binNames.concat(binNamesForStoryCollection);
+                const binNamesForStoryCollection = this.collectionDateBinNamesForListOfStories(stories, dateUnit);
+                for (let i = 0; i < binNamesForStoryCollection.length; i++) {
+                    if (binNames.indexOf(binNamesForStoryCollection[i]) < 0) {
+                        binNames.push(binNamesForStoryCollection[i]);
+                    }
                 }
             }
         });
         binNames = binNames.sort(); 
-        return this.collectionDateQuestion(storyCollectionDateUnit, binNames);
+        return this.collectionDateQuestion(dateUnit, binNames);
     }
 
-    collectionDateBinNamesForListOfStories(stories, storyCollectionDateUnit, monthDayOrder) {
+    collectionDateBinNamesForListOfStories(stories, dateUnit) {
         const binNames = [];
         stories.forEach((story) => {
-            if (storyCollectionDateUnit === "years") {
-                const collectionYear = story.storyCollectionYear();
-                if (binNames.indexOf(collectionYear) < 0) binNames.push(collectionYear);
-            } else if (storyCollectionDateUnit === "months") {
-                const collectionYear = story.storyCollectionYear();
-                const collectionMonth = story.storyCollectionMonth();
-                const yearMonth = collectionYear + "-" + collectionMonth;
-                if (binNames.indexOf(yearMonth) < 0) binNames.push(yearMonth);
-            } else if (storyCollectionDateUnit === "days") {
-                const collectionYear = story.storyCollectionYear();
-                const collectionMonth = story.storyCollectionMonth();
-                const collectionDayOfMonth = story.storyCollectionDayOfMonth();
-                let wholeDate;
-                if (monthDayOrder && monthDayOrder === "day before month") {
-                    wholeDate = collectionYear + "-" + collectionDayOfMonth + "-" + collectionMonth;
-                } else {
-                    wholeDate = collectionYear + "-" + collectionMonth + "-" + collectionDayOfMonth;
-                }
-                if (binNames.indexOf(wholeDate) < 0) binNames.push(wholeDate);
+            let valueToAdd = undefined;
+            if (dateUnit === "years") {
+                valueToAdd = story.storyCollectionYear();
+            } else if (dateUnit === "quarters") {
+                valueToAdd = story.storyCollectionQuarter();
+            } else if (dateUnit === "months") {
+                valueToAdd = story.storyCollectionYearAndMonth();
+            } else if (dateUnit === "days") {
+                valueToAdd = story.storyCollectionDate();
+            }
+            if (valueToAdd && binNames.indexOf(valueToAdd) < 0) {
+                binNames.push(valueToAdd);
             }
         });
         return binNames;
     }
 
-    collectionDateQuestion(storyCollectionDateUnit, unitDescriptors) {
+    collectionDateQuestion(dateUnit, unitDescriptors) {
         const collectionDateQuestion = {
             id: "collectionDate",
             displayName: "Collection date",
             displayPrompt: "This is the date on which the story was collected.",
             displayType: "select",
-            displayConfiguration: storyCollectionDateUnit || "months",
+            displayConfiguration: dateUnit || "days",
             valueOptions: unitDescriptors 
         }
         return collectionDateQuestion;

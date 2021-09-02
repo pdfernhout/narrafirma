@@ -111,18 +111,7 @@ class ClientState {
         }
     }
 
-    monthDayOrder() {
-        const defaultValue = "month before day";
-        if (!this._project) return defaultValue;
-        const value = this._project.tripleStore.queryLatestC(this._project.projectIdentifier, "projectOptions_monthDayOrder");
-        if (value) {
-            return value
-        } else {
-            return defaultValue;
-        }
-    }
-    
-    catalysisReportName(newValue: string = undefined): string {
+     catalysisReportName(newValue: string = undefined): string {
         if (newValue !== undefined) {
             this._catalysisReportName = newValue;
         }

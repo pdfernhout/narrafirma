@@ -161,6 +161,67 @@ can't write any observations about it.
 </div>
 <div class="question-answer">
 	<p>
+		You can lump answers permanently as you import your data from a CSV file.
+		(See the <a href="../collection/help_page_importGuide.html">Import guide</a> to learn how to do that.)
+		However, NarraFirma also supports <b>display lumping</b> -- that is, changing your catalysis graphs <i>without</i> 
+		changing your stored data. 
+	</p>
+	<p>
+		To use display lumping, go to the <b>Configure catalysis report</b> page and find the box labeled
+		"If you want to use <strong>display lumping</strong> for choice questions, enter your lumping commands here."
+		In that box, for each set of answers you want to lump together, on its own line,
+		enter 
+		<ul>
+			<li>the <i>exact</i> short name of the question, </li>
+			<li>two equals signs (==), </li>
+			<li>a list of the <i>exact</i> answers you want to lump together, separated by two pipe characters (||), then</li>
+			<li>two equals signs again, and finally</li>
+			<li>the name of the new merged answer. </li>
+		</ul>
+	<p>
+		For example: 
+	</p>
+	<ul>
+	<li>If you enter <b>Feel about == satisfied || relieved == positive</b>, NarraFirma will count the answers "satisfied" or "relieved" to the 
+		question "Feel about" as "positive."</li>
+	<li>If you enter <b>Feel about == frustrated || angry == negative</b>, NarraFirma will count the answers "frustrated" or "angry" to the 
+			question "Feel about" as "negative."</li>
+	</ul>
+	<p>Tips on display lumping:</p>
+		<ul>
+			<li>Spaces around the equals signs and pipe characters are optional. They get trimmed off.</li>
+			<li>Why <i>two</i> equals signs? Why <i>two</i> pipe characters? Because you might have one equals sign or pipe character in a question name or answer.</li>
+			<li>If you have multiple story collections in your catalysis report, display lumping will apply to all of them, as long as the question and answer names match.</li>
+			<li>Display lumping only affects the graphs drawn in the Catalysis portion of NarraFirma,
+				on the "Explore patterns" page and in your catalysis report. 
+				The Collection portion of NarraFirma (the "Spot-check graphs" page) shows your unlumped data.
+			</li>
+			<li>
+				If you make changes to your lumping scheme <i>after</i> you have written some observations, 
+				make sure you <b>check to see whether your observations need to change</b>. 
+				NarraFirma cannot tell that you have changed the way your graphs are drawn. 
+				You need to keep track of that yourself.
+			</li>
+			<li>You can only use display lumping with questions of the types <b>checkboxes</b>, <b>radio buttons</b>, and <b>select</b>.
+				You cannot use it with questions of the types boolean, checkbox, slider, label, header, text, and textarea. 
+			</li>
+			<li>You can use display lumping with all of the <b>questions NarraFirma generates</b>: 
+				Eliciting question, Number of stories told, Story length, and Collection date.
+				For example, lumping commands for collection dates might look like this:
+				<ul>
+					<li>Collection date == 2021-02-14 || 2021-02-15 || 2021-02-16 == Pulse 1</li>
+					<li>Collection date == 2021-03-05 || 2021-03-06 || 2021-03-07 == Pulse 2</li>
+					<li>Collection date == 2021-05-12 || 2021-05-13 || 2021-05-14 == Pulse 3</li>
+				</ul>
+			</li>
+		</ul>
+</div>
+
+<div class="question">
+	Why is <b>display lumping</b> useful?
+</div>
+<div class="question-answer">
+	<p>
 	The catalysis process almost always requires that you choose some answers to lump together. 
 	Why? Because when you give people a list of answers to choose from, you will often find that some answers gather few responses. 
 	</p>
@@ -197,55 +258,6 @@ can't write any observations about it.
 		a good idea (should those categories be lumped together?) is one of the decisions you make as you go through
 		the catalysis process.
 	</p>
-	<p>
-		You can lump answers permanently as you import your data from a CSV file.
-		(See the <a href="../collection/help_page_importGuide.html">Import guide</a> to learn how to do that.)
-		However, NarraFirma also supports <b>display lumping</b> -- that is, changing your catalysis graphs <i>without</i> 
-		changing your stored data. 
-	</p>
-	<p>
-		To use display lumping, go to the <b>Configure catalysis report</b> page and find the box labeled
-		"If you want to use <strong>display lumping</strong> for choice questions, enter your lumping commands here."
-		In that box, for each set of answers you want to lump together, on its own line,
-		enter 
-		<ul>
-			<li>the <i>exact</i> short name of the question, </li>
-			<li>two equals signs (==), </li>
-			<li>a list of the <i>exact</i> answers you want to lump together, separated by two pipe characters (||), then</li>
-			<li>two equals signs again, and finally</li>
-			<li>the name of the new merged answer. </li>
-		</ul>
-	<p>
-		For example: 
-	</p>
-	<ul>
-	<li>If you enter <b>Feel about == satisfied || relieved == positive</b>, NarraFirma will count the answers "satisfied" or "relieved" to the 
-		question "Feel about" as "positive."</li>
-	<li>If you enter <b>Feel about == frustrated || angry == negative</b>, NarraFirma will count the answers "frustrated" or "angry" to the 
-			question "Feel about" as "negative."</li>
-	</ul>
-	<p>Tips on display lumping:</p>
-		<ul>
-			<li>Display lumping <b>only affects the graphs drawn in the Catalysis portion of NarraFirma</b>,
-				on the "Explore patterns" page and in your catalysis report. 
-				The Collection portion of NarraFirma (the "Spot-check graphs" page) shows your unlumped data.
-			</li>
-			<li>Display lumping does not affect the way answers to questions are printed on the story cards
-				(in the Sensemaking portion of NarraFirma). Those answers are as you collected them.
-			</li>
-			<li>
-				If you make changes to your lumping scheme <i>after</i> you have written some observations, 
-				make sure you <b>check to see whether your observations need to change</b>. 
-				NarraFirma cannot tell that you have changed the way your graphs are drawn. 
-				You need to keep track of that yourself.
-			</li>
-			<li>You can only use display lumping with questions of the type <b>checkboxes</b>, <b>radio buttons</b>, or <b>select</b>.
-				You cannot use it with questions of the type boolean, checkbox, slider, label, header, text, or textarea. 
-			</li>
-			<li>Spaces around the equals signs and pipe characters are optional. They get trimmed off.</li>
-			<li>Why <i>two</i> equals signs? Why <i>two</i> pipe characters? Because you might have one equals sign or pipe character in a question name or answer.</li>
-			<li>If you have multiple story collections in your catalysis report, display lumping will apply to all of them, as long as the question and answer names match (exactly).</li>
-		</ul>
 </div>
 
 <div class="question">

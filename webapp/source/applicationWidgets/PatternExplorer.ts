@@ -83,8 +83,7 @@ function buildStoryDisplayPanel(panelBuilder: PanelBuilder, model) {
     var storyCardDiv = storyCardDisplay.generateStoryCardContent(model, undefined, {
         location: "storyBrowser", 
         storyTextAtTop: true, 
-        includeWriteInAnswers: true, 
-        monthDayOrder: Globals.clientState().monthDayOrder()
+        includeWriteInAnswers: true
     });
     return storyCardDiv;
 }

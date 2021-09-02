@@ -358,22 +358,10 @@ export class StoryBrowser {
             displayPrompt: "Story length (in characters)",
             displayType: "text"
         }
-        const collectionYearQuestion = {
-            id: "collectionYear",
+        const collectionDateQuestion = {
+            id: "collectionDate",
             displayName: "Collection year",
-            displayPrompt: "Collection year",
-            displayType: "text"
-        }
-        const collectionMonthQuestion = {
-            id: "collectionMonth",
-            displayName: "Collection month",
-            displayPrompt: "Collection month",
-            displayType: "text"
-        }
-        const collectionDayOfMonthQuestion = {
-            id: "collectionDayOfMonth",
-            displayName: "Collection day of month",
-            displayPrompt: "Collection day of month",
+            displayPrompt: "Collection year (format: YYYY-MM-DD)",
             displayType: "text"
         }
 
@@ -385,7 +373,7 @@ export class StoryBrowser {
             [elicitingQuestion], 
             storyQuestions, 
             participantQuestions, 
-            [collectionYearQuestion, collectionMonthQuestion, collectionDayOfMonthQuestion],
+            [collectionDateQuestion],
             [numStoriesToldQuestion], 
             [storyLengthQuestion]);
 
@@ -432,8 +420,7 @@ export class StoryBrowser {
                 location: "storyBrowser", 
                 questionnaire: this.questionnaire, 
                 storyTextAtTop: true, 
-                includeWriteInAnswers: true, 
-                monthDayOrder: Globals.clientState().monthDayOrder()
+                includeWriteInAnswers: true
             });
         } else {
             storyDisplay = panelBuilder.buildFields(this.questions, storyModel);

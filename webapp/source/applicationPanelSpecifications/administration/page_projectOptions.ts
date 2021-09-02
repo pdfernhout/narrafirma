@@ -30,15 +30,6 @@ var panel: Panel = {
             displayPrompt: "Regional settings"
         },        
         {
-            id: "projectOptions_monthDayOrder",
-            valueType: "string",
-            displayType: "radiobuttons",
-            valueOptions: ["month before day", "day before month"],
-            displayName: "Month day order",
-            displayPrompt: `How do you want <strong>dates</strong> to appear, with the month or day listed first?
-                This choice will impact graphs and imports of story collection dates. (If no choice is made here, months will be read and displayed first.)`
-        },
-        {
             id: "projectOptions_csvDelimiter",
             valueType: "string",
             displayType: "radiobuttons",

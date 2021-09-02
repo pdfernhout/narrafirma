@@ -466,12 +466,12 @@ var panel: Panel = {
             id: "configureCatalysisReport_storyCollectionDateUnit",
             valuePath: "/clientState/catalysisReportIdentifier/storyCollectionDateUnit",
             valueType: "string",
-            valueOptions: ["years", "months", "days"],
+            valueOptions: ["years", "quarters", "months", "days"],
             displayType: "select",
             displayName: "Story collection date unit",
             displayPrompt: `For graphing story collection dates, <strong>what time units</strong> do you want to graph? 
                 (This choice affects graphs in the application and the printed report.
-                If no selection is made here, months will be used.)`,
+                If no selection is made here, days will be used.)`,
             displayVisible: function(panelBuilder, model) {
                 return !!Globals.clientState().haveCatalysisReportAndShowingAdvancedOptions();
             }
