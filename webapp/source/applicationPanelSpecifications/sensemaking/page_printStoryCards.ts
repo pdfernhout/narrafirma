@@ -154,6 +154,19 @@ var panel: Panel = {
                 return !!Globals.clientState().haveStoryCollectionAndShowingAdvancedOptions();
             }
         },
+        {
+            id: "printStoryCards_lumpingCommands",
+            valuePath: "/clientState/storyCollectionName/printStoryCards_lumpingCommands",
+            valueType: "string",
+            displayType: "textarea",
+            displayPrompt: `
+            To use <strong>display lumping</strong>, enter your lumping commands here, one per line,
+            using the format [question] == [answer] || [answer] == [lumped answer].
+            For details, see the help system.`,
+            displayVisible: function(panelBuilder, model) {
+                return !!Globals.clientState().haveStoryCollectionAndShowingAdvancedOptions();
+            }
+        },
 
         {
             id: "printStoryCards_CustomTextsHeader",

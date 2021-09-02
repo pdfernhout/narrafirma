@@ -137,7 +137,24 @@ function displayHTMLForField(storyModel: surveyCollection.Story, fieldSpecificat
     // if (!model[fieldSpecification.id]) return "";
     var value = storyModel.fieldValue(fieldSpecification.id);
     var isAnnotationQuestion = fieldSpecification.id.indexOf("A_") >= 0;
-    // TODO: extra checking here for problems with test data -- could probably be changed back to just displayName eventually
+
+    if (options.lumpingCommands && options.lumpingCommands.hasOwnProperty(fieldSpecification.displayName)) {
+        if (fieldSpecification.displayType === "checkboxes") { 
+            const answersToLump = Object.keys(options.lumpingCommands[fieldSpecification.displayName]);
+            for (let i = 0; i < answersToLump.length; i++) {
+                const answerToLump = answersToLump[i];
+                const lumpedAnswer = options.lumpingCommands[fieldSpecification.displayName][answerToLump];
+                if (value.hasOwnProperty(answerToLump)) {
+                    delete value[answerToLump];
+                    value[lumpedAnswer] = true;
+                }
+            }
+        } else {
+            if (options.lumpingCommands[fieldSpecification.displayName].hasOwnProperty(value)) 
+                value = options.lumpingCommands[fieldSpecification.displayName][value];
+        }
+    }
+
     var fieldName = fieldSpecification.displayName || fieldSpecification.displayPrompt;
     var result = [];
     var answerClass = "narrafirma-story-card-answer-for-" + replaceSpacesWithDashes(fieldName);
@@ -219,14 +236,14 @@ interface Options {
     afterSliderCharacter?: string;
     noAnswerSliderCharacter?: string;
     order?: string;
-    cutoff?: string,
-    cutoffMessage?: string,
-    includeIndex?: string,
-    includeWriteInAnswers?: boolean
+    cutoff?: string;
+    cutoffMessage?: string;
+    includeIndex?: string;
+    includeWriteInAnswers?: boolean;
+    lumpingCommands?: any;
 }
 
 export function generateStoryCardContent(storyModel, questionsToInclude, options: Options = {}) {
-    // Encode all user-supplied text to ensure it does not create HTML issues
     var elicitingQuestion = storyModel.elicitingQuestion();
     var numStoriesTold = storyModel.numStoriesTold();
     var storyLength = storyModel.storyLength();
@@ -273,6 +290,23 @@ export function generateStoryCardContent(storyModel, questionsToInclude, options
         });
     } else {
         questions = allQuestions;
+    }
+
+    if (options.lumpingCommands) {
+        questions.forEach((question) => {
+            if (options.lumpingCommands.hasOwnProperty(question.displayName)) {
+                const lumpedAnswersToAdd = [];
+                question.valueOptions = question.valueOptions.filter((answer) => {
+                    const lumpedAnswer = options.lumpingCommands[question.displayName][answer];
+                    if (lumpedAnswer) {
+                        if (lumpedAnswersToAdd.indexOf(answer) < 0) lumpedAnswersToAdd.push(lumpedAnswer);
+                        return false;
+                    } 
+                    return true;
+                });
+                lumpedAnswersToAdd.forEach((answer) => { if (question.valueOptions.indexOf(answer) < 0) question.valueOptions.push(answer); });
+            }
+        });
     }
 
     //valueOptions: [
