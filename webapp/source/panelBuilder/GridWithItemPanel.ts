@@ -909,7 +909,7 @@ class TripleSetDataStore extends DataStore {
         // TODO: This needs to create an action that affects original list
         // Make a copy of the selected item
         this.ensureSetExists();
-        var newId = this.tripleStore.makeCopyOfSetItemWithNewId(this.setIdentifier, this.itemClassName, item);
+        var newId = this.tripleStore.makeCopyOfSetItemWithNewId(this.setIdentifier, item, this.itemClassName);
         this.data.push(newId);
         return newId;
     }
