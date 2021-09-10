@@ -13,7 +13,7 @@ function add_recommendationTable(panelBuilder: PanelBuilder, model, fieldSpecifi
         fieldSpecification: fieldSpecification,
         dialogModel: model,
         dialogTitle: "#title_recommendationsTable|Recommendations table",
-        dialogStyle: "wide",
+        dialogClass: "wide",
         dialogConstructionFunction: build_recommendationTable.bind(null, panelBuilder),
         dialogOKButtonLabel: "Close"
     };

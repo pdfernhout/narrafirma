@@ -11,7 +11,7 @@ function add_templateList(panelBuilder: PanelBuilder, model, fieldSpecification)
     var dialogConfiguration = {
         dialogModel: model,
         dialogTitle: "#title_chooseATemplate|Choose a template",
-        dialogStyle: undefined, // "height: 1000px; width: 800px",
+        dialogClass: undefined,
         dialogConstructionFunction: makeTemplateListChooser.bind(null, panelBuilder),
         dialogOKButtonLabel: "Cancel",
         fieldSpecification: fieldSpecification

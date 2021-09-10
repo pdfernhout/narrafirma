@@ -88,7 +88,7 @@ class MithrilDialog {
                 hideDialogMethod();
             }, "class": "narrafirma-dialog-cancel-button"}, translate(args.dialogCancelButtonLabel)));
         }
-        return m("div.overlay", m("div.modal-content", {"class": dialogConfiguration.dialogStyle}, parts));
+        return m("div.overlay", m("div.modal-content", {"class": dialogConfiguration.dialogClass}, parts));
     }
 }
 
@@ -99,7 +99,7 @@ export function openDialog(dialogConfiguration) {
 }
 
 // Caller needs to call the hideDialogMethod returned as the second arg of dialogOKCallback to close the dialog
-export function openTextEditorDialog(text, dialogTitle, dialogOKButtonLabel, dialogOKCallback, showCancelButton = true) {
+export function openTextEditorDialog(text, dialogTitle, dialogOKButtonLabel, dialogOKCallback, showCancelButton = true, readOnly = false) {
     if (!dialogTitle) dialogTitle = "Editor";
     if (!dialogOKButtonLabel) dialogOKButtonLabel = "OK";
     
@@ -108,7 +108,8 @@ export function openTextEditorDialog(text, dialogTitle, dialogOKButtonLabel, dia
     var dialogConfiguration = {
         dialogModel: model,
         dialogTitle: dialogTitle,
-        dialogStyle: undefined,
+        dialogClass: undefined,
+        dialogReadOnly: readOnly,
         dialogConstructionFunction: build_textEditorDialogContent,
         dialogOKButtonLabel: dialogOKButtonLabel,
         dialogOKCallback: function(dialogConfiguration, hideDialogMethod) { dialogOKCallback(model.text, hideDialogMethod); },
@@ -125,7 +126,8 @@ function build_textEditorDialogContent(dialogConfiguration, hideDialogMethod) {
                 key: "standardTextEditorTextarea", 
                 class: "textEditorInDialog", 
                 onchange: function(event) { dialogConfiguration.dialogModel.text = event.target.value; }, 
-                value: dialogConfiguration.dialogModel.text 
+                value: dialogConfiguration.dialogModel.text,
+                disabled: dialogConfiguration.dialogReadOnly
             }
         ) 
     ]);
@@ -147,7 +149,7 @@ export function openProgressDialog(progressText, dialogTitle, cancelButtonLabel,
     var dialogConfiguration = {
         dialogModel: model,
         dialogTitle: dialogTitle,
-        dialogStyle: undefined,
+        dialogClass: undefined,
         dialogConstructionFunction: build_progressDialogContent,
         // Use OK button isntead of Cancel because it has a callback and represents the action button
         dialogOKButtonLabel: cancelButtonLabel,
@@ -179,7 +181,7 @@ export function openFinishedDialog(finishedText, dialogTitle, okButtonLabel, can
     var dialogConfiguration = {
         dialogModel: model,
         dialogTitle: dialogTitle,
-        dialogStyle: undefined,
+        dialogClass: undefined,
         dialogConstructionFunction: build_finishedDialogContent,
         // Use OK button instead of Cancel because it has a callback and represents the action button
         dialogOKButtonLabel: okButtonLabel,
