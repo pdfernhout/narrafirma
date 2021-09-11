@@ -254,6 +254,7 @@ export function generateStoryCardContent(storyModel, questionsToInclude, options
     }
 
     const storyCollectionDate = storyModel.storyCollectionDate();
+    const language = storyModel.storyLanguage();
 
     var storyText = storyModel.storyText();
     if (options.cutoff && options.cutoff !== "no limit") {
@@ -401,6 +402,14 @@ export function generateStoryCardContent(storyModel, questionsToInclude, options
             [wrap("span", "narrafirma-story-card-collection-date-question-name", "Collection date: "), 
             storyCollectionDate, m("br")]);
     }
+    var textForLanguage: any = [];
+    // if questionsToInclude is unspecified, it is not being called in the "print story cards" page, so include this
+    if (!questionsToInclude || Object.keys(questionsToInclude).indexOf("language") >= 0) {
+        textForCollectionDate = m(
+            ".narrafirma-story-card-language-question", 
+            [wrap("span", "narrafirma-story-card-language-question-name", "Language: "), 
+            language, m("br")]);
+    }
     
     var storyTextAtTop: any = [];
     var storyTextClass = "";
@@ -427,6 +436,7 @@ export function generateStoryCardContent(storyModel, questionsToInclude, options
         textForNumStoriesTold,
         textForStoryLength,
         textForCollectionDate,
+        textForLanguage,
         m("hr.narrafirma-story-card-divider")
     ]);
     

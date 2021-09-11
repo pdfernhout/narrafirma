@@ -1031,6 +1031,8 @@ export function d3BarChartForValues(graphHolder: GraphHolder, plotItems, xLabels
                         questionText = xAxisLabel + ": " + story.storyLength();
                     } else if (question.id === "collectionDate") {
                         questionText = xAxisLabel + ": " + story.storyCollectionDate();
+                    } else if (question.id === "language") {
+                        questionText = xAxisLabel + ": " + story.storyLanguage();
                     } else {
                         questionText = xAxisLabel + ": " + displayTextForAnswer(story.fieldValue(question.id));
                     }

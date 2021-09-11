@@ -22,6 +22,7 @@ import page_writeStoryElicitingQuestions = require("./collection/page_writeStory
 import page_writeQuestionsAboutStories = require("./collection/page_writeQuestionsAboutStories");
 import page_writeQuestionsAboutParticipants = require("./collection/page_writeQuestionsAboutParticipants");
 import page_designStoryForms = require("./collection/page_designStoryForms");
+import page_translateStoryForms = require("./collection/page_translateStoryForms");
 import page_startStoryCollection = require("./collection/page_startStoryCollection");
 import page_printQuestionForms = require("./collection/page_printQuestionForms");
 import page_enterStories = require("./collection/page_enterStories");
@@ -107,6 +108,7 @@ navigationModules["page_writeStoryElicitingQuestions"] = page_writeStoryElicitin
 navigationModules["page_writeQuestionsAboutStories"] = page_writeQuestionsAboutStories;
 navigationModules["page_writeQuestionsAboutParticipants"] = page_writeQuestionsAboutParticipants;
 navigationModules["page_designStoryForms"] = page_designStoryForms;
+navigationModules["page_translateStoryForms"] = page_translateStoryForms;
 navigationModules["page_startStoryCollection"] = page_startStoryCollection;
 navigationModules["page_printQuestionForms"] = page_printQuestionForms;
 navigationModules["page_enterStories"] = page_enterStories;
@@ -218,6 +220,7 @@ var sections = [
             "page_writeQuestionsAboutStories",
             "page_writeQuestionsAboutParticipants",
             "page_designStoryForms",
+            "page_translateStoryForms",
             "page_startStoryCollection",
             "page_printQuestionForms",
             "page_enterStories",

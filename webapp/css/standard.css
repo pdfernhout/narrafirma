@@ -747,6 +747,50 @@ button.narrafirma-add-annotation-choice {
     cursor: pointer;
 }
 
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Translation page ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
+.narrafirma-translation-prompt {
+    margin: 0.5em;
+}
+
+.narrafirma-text-to-be-translated {
+    margin: 0.5em;
+    font-size: 1.1em;
+}
+
+.narrafirma-translation-explanation {
+    margin-left: 1em;
+    font-size: 0.8em;
+    font-style: italic;
+}
+
+table.narrafirma-translation-dictionary {
+    border-collapse: collapse;
+    table-layout: auto;
+    margin-left: 2em;
+}
+
+td.narrafirma-translation-language {
+    text-align: left;
+    vertical-align: top;
+    font-size: 0.9em;
+}
+
+td.narrafirma-translation-textbox {
+    text-align: left;
+}
+
+input[type=text].narrafirma-translation-textbox {
+    margin: 0.25em 0.25em 0.5em 0.25em;
+    width: 70em;
+}
+
+textarea.narrafirma-translation-textbox {
+    margin: 0.25em 0.25em 0.5em 0.25em;
+    width: 70em;
+    resize: vertical;
+}
+
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Grid item panel (spreadsheet like table) ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 .questionExternal.narrafirma-question-type-grid { /* no background for grid */
@@ -1985,7 +2029,6 @@ td.narrafirma-mw-nested-title, td.narrafirma-mw-nested-stats {
     width: 80%;
     min-width: 300px;
     max-width: 80%;
-    height: 80%;
     min-height: 100px;
     max-height: 80%;
     background-color: #b0d4d4; 
@@ -2030,4 +2073,8 @@ textarea.textEditorInDialog {
     box-sizing: border-box;         /* For IE and modern versions of Chrome */
     -moz-box-sizing: border-box;    /* For Firefox                          */
     -webkit-box-sizing: border-box; /* For Safari  */
+}
+
+textarea.textEditorInDialogReadOnly {
+    enabled: false;
 }

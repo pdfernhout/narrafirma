@@ -109,6 +109,146 @@ interface PanelField {
     displayClass?: string;
 }
 
+interface FormFieldInfo {
+    tripleStoreFieldID: string;
+    objectFieldID?: string;
+    exportImportID?: string;
+    type?: string;
+    canBeTranslated?: boolean;
+    default?: any;
+    nonNativeImportOption?: any;
+    section?: string;
+    explanation?: string;
+}
+
+interface StoryFormTemplate {
+        __type?: string;
+        id?: string;
+        questionForm_shortName?: string; // set identifier
+        questionForm_elicitingQuestions?: string; // set identifier
+        questionForm_storyQuestions?: string; // set identifier
+        questionForm_participantQuestions?: string;
+        questionForm_title?: string;
+        questionForm_startText?: string;
+        questionForm_image?: string;
+        questionForm_endText?: string;
+        questionForm_aboutYouText?: string;
+        questionForm_thankYouPopupText?: string;
+        questionForm_customCSS?: string;
+        questionForm_customCSSForPrint?: string;
+
+        questionForm_chooseQuestionText?: string;
+        questionForm_enterStoryText?: string;
+        questionForm_nameStoryText?: string;
+        questionForm_tellAnotherStoryText?: string;
+        questionForm_tellAnotherStoryButtonText?: string;
+        questionForm_maxNumStories?: string;
+        questionForm_sliderValuePrompt?: string;
+        questionForm_maxNumAnswersPrompt?: string;
+
+        questionForm_submitSurveyButtonText?: string;
+        questionForm_sendingSurveyResultsText?: string;
+        questionForm_couldNotSaveSurveyText?: string;
+        questionForm_resubmitSurveyButtonText?: string;
+
+        questionForm_deleteStoryButtonText?: string;
+        questionForm_deleteStoryDialogPrompt?: string;
+        questionForm_surveyStoredText?: string;
+        questionForm_showSurveyResultPane?: string;
+        questionForm_surveyResultPaneHeader?: string;
+
+        questionForm_errorMessage_noElicitationQuestionChosen?: string;
+        questionForm_errorMessage_noStoryText?: string;
+        questionForm_errorMessage_noStoryName?: string;
+
+        questionForm_defaultLanguage?: string;
+        questionForm_languageChoiceQuestion_text?: string;
+        questionForm_languageChoiceQuestion_choices?: string;
+    
+        import_minScaleValue?: number;
+        import_maxScaleValue?: number;
+        import_multiChoiceYesIndicator?: string;
+        import_multiChoiceYesQASeparator?: string;
+        import_multiChoiceYesQAEnding?: string;
+        import_multiChoiceDelimiter?: string;
+        import_storyTitleColumnName?: string;
+        import_storyTextColumnName?: string;
+        import_storyCollectionDateColumnName?: string;
+        import_storyFormLanguageColumnName?: string;
+        import_participantIDColumnName?: string;
+        import_columnsToIgnore?: any;
+        import_columnsToAppendToStoryText?: string;
+        import_textsToWriteBeforeAppendedColumns?: string;
+        import_minWordsToIncludeStory?: string;
+        import_stringsToRemoveFromHeaders?: string;
+        import_elicitingQuestionColumnName?: string;
+        import_elicitingQuestionGraphName?: string;
+}
+
+interface StoryFormFields {
+    id?: string;
+    shortName?: string; 
+    elicitingQuestions?: any [];
+    storyQuestions?: any [];
+    participantQuestions?: any [];
+    title?: string;
+    startText?: string;
+    image?: string;
+    endText?: string;
+    aboutYouText?: string;
+    thankYouPopupText?: string;
+    customCSS?: string;
+    customCSSForPrint?: string;
+
+    chooseQuestionText?: string;
+    enterStoryText?: string;
+    nameStoryText?: string;
+    tellAnotherStoryText?: string;
+    tellAnotherStoryButtonText?: string;
+    maxNumStories?: string;
+    sliderValuePrompt?: string;
+    maxNumAnswersPrompt?: string;
+
+    submitSurveyButtonText?: string;
+    sendingSurveyResultsText?: string;
+    couldNotSaveSurveyText?: string;
+    resubmitSurveyButtonText?: string;
+
+    deleteStoryButtonText?: string;
+    deleteStoryDialogPrompt?: string;
+    surveyStoredText?: string;
+    showSurveyResultPane?: string;
+    surveyResultPaneHeader?: string;
+
+    errorMessage_noElicitationQuestionChosen?: string;
+    errorMessage_noStoryText?: string;
+    errorMessage_noStoryName?: string;
+
+    defaultLanguage?: string;
+    languageChoiceQuestion_text?: string;
+    languageChoiceQuestion_choices?: string;
+    translationDictionary?: {};
+
+    import_minScaleValue?: number;
+    import_maxScaleValue?: number;
+    import_multiChoiceYesIndicator?: string;
+    import_multiChoiceYesQASeparator?: string;
+    import_multiChoiceYesQAEnding?: string;
+    import_multiChoiceDelimiter?: string;
+    import_storyTitleColumnName?: string;
+    import_storyTextColumnName?: string;
+    import_storyCollectionDateColumnName?: string;
+    import_storyFormLanguageColumnName?: string;
+    import_participantIDColumnName?: string;
+    import_columnsToIgnore?: any;
+    import_columnsToAppendToStoryText?: string;
+    import_textsToWriteBeforeAppendedColumns?: string;
+    import_minWordsToIncludeStory?: string;
+    import_stringsToRemoveFromHeaders?: string;
+    import_elicitingQuestionColumnName?: string;
+    elicitingQuestionGraphName?: string;
+}
+
 interface Panel {
     id: string;
     displayName?: string;
@@ -145,3 +285,4 @@ interface ClusteringDiagramModel {
     items: ClusteringDiagramItem[];
     changesCount: number;
 }
+

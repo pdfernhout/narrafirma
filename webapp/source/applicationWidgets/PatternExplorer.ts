@@ -756,11 +756,13 @@ class PatternExplorer {
         var numStoriesToldQuestions = this.project.numStoriesToldQuestionsForCatalysisReport(catalysisReportIdentifier);
         var storyLengthQuestions = this.project.storyLengthQuestionsForCatalysisReport(catalysisReportIdentifier);
         var collectionDateQuestions = this.project.collectionDateQuestionsForCatalysisReport(catalysisReportIdentifier);
+        var languageQuestions = this.project.languageQuestionsForCatalysisReport(catalysisReportIdentifier);
         var storyQuestions = this.project.storyQuestionsForCatalysisReport(catalysisReportIdentifier); 
         var participantQuestions = this.project.participantQuestionsForCatalysisReport(catalysisReportIdentifier);
         var annotationQuestions = questionnaireGeneration.convertEditorQuestions(this.project.collectAllAnnotationQuestions(), "A_");
         this.questions = [];
-        this.questions = this.questions.concat(leadingStoryQuestions, elicitingQuestions, numStoriesToldQuestions, storyLengthQuestions, collectionDateQuestions, storyQuestions, participantQuestions, annotationQuestions);
+        this.questions = this.questions.concat(leadingStoryQuestions, elicitingQuestions, numStoriesToldQuestions, storyLengthQuestions, 
+            collectionDateQuestions, languageQuestions, storyQuestions, participantQuestions, annotationQuestions);
         this.questionsToInclude = this.project.tripleStore.queryLatestC(this.catalysisReportIdentifier, "questionsToInclude"); 
         this.graphHolder.lumpingCommands = this.project.lumpingCommandsForCatalysisReport(this.catalysisReportIdentifier); 
 

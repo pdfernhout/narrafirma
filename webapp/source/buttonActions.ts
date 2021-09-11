@@ -214,7 +214,7 @@ function openMithrilSurveyDialog(questionnaire, callback, previewModeTitleText =
     var dialogConfiguration = {
         dialogModel: null,
         dialogTitle: "Enter Story" + (previewModeTitleText || ""),
-        dialogStyle: undefined,
+        dialogClass: undefined,
         dialogConstructionFunction: surveyViewFunction,
         dialogOKButtonLabel: "Close",
         dialogOKCallback: function(dialogConfiguration, hideDialogMethod) { hideDialogMethod(); }
@@ -249,46 +249,31 @@ export function copyStoryFormURL() {
     alert("Story form URL is: " + "http://localhost:8080/survey.html");
 }
 
-/*
-function previewQuestionForm(model, fieldSpecification) {
-    console.log("previewQuestionForm", model);
-    var questionnaire = questionnaireGeneration.buildQuestionnaireFromTemplate(project, model);
-    
-    var surveyDialog = openMithrilSurveyDialog(questionnaire, finished, true);
-    
-    function finished(status, surveyResult, wizardPane) {
-        console.log("surveyResult", status, surveyResult);
-        if (wizardPane) wizardPane.forward();
-    }
-}
-*/
-
 export function previewQuestionForm(model, fieldSpecification) {
-    var questionnaire = questionnaireGeneration.buildQuestionnaireFromTemplate(model, "");
+    var questionnaire = questionnaireGeneration.buildStoryFormUsingTripleStoreID(model, "");
     window["narraFirma_previewQuestionnaire"] = questionnaire;
-    
     var w = window.open("survey.html#preview=" + (new Date().toISOString()), "_blank");
 }
 
 export function checkCSVDataFileWhileEditingStoryForm(model, fieldSpecification) {
-    var questionnaire = questionnaireGeneration.buildQuestionnaireFromTemplate(model, "");
+    var questionnaire = questionnaireGeneration.buildStoryFormUsingTripleStoreID(model, "");
     csvImportExport.checkCSVStoriesWithStoryForm(questionnaire);
 }
 
 export function exportStoryFormWhileEditingIt_NativeFormat(model, fieldSpecification) {
-    var questionnaire = questionnaireGeneration.buildQuestionnaireFromTemplate(model, "");
+    var questionnaire = questionnaireGeneration.buildStoryFormUsingTripleStoreID(model, "");
     csvImportExport.exportQuestionnaire(questionnaire);
 }
 
 export function exportStoryFormWhileEditingIt_ExternalFormat(model, fieldSpecification) {
-    var questionnaire = questionnaireGeneration.buildQuestionnaireFromTemplate(model, "");
+    var questionnaire = questionnaireGeneration.buildStoryFormUsingTripleStoreID(model, "");
     csvImportExport.exportQuestionnaireForImport(questionnaire);
 }
 
 export function setQuestionnaireForStoryCollection(storyCollectionIdentifier): boolean {
     if (!storyCollectionIdentifier) return false;
     var questionnaireName = project.tripleStore.queryLatestC(storyCollectionIdentifier, "storyCollection_questionnaireIdentifier");
-    var questionnaire = questionnaireGeneration.buildQuestionnaire(questionnaireName);
+    var questionnaire = questionnaireGeneration.buildStoryForm(questionnaireName);
     if (!questionnaire) return false;
     project.tripleStore.addTriple(storyCollectionIdentifier, "questionnaire", questionnaire);
     return true;

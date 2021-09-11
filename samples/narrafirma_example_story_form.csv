@@ -41,3 +41,4 @@ Age group,Single choice,participant,Age group,What is your age group?,,younger t
 ,Story text column name,import,,,,Story text,,,,
 ,Participant ID column name,import,,,,Participant ID,,,,
 ,Story collection date column name,import,,,,Collection date,,,,
+,Language column name,import,,,,Language,,,,

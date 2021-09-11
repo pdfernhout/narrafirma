@@ -36,6 +36,7 @@ class ClientState {
     private _pageIdentifier: string = null;
     private _storyCollectionName: string = null;
     private _catalysisReportName: string = null;
+    private _storyFormName: string = null;
     private _observationAccessor: Object = null;
     private _debugMode: string = null;
     private _serverStatus: string = "narrafirma-serverstatus-ok";
@@ -73,13 +74,13 @@ class ClientState {
     // Read-only convenience accessor
     storyCollectionIdentifier(newValue = undefined) {
         if (newValue) throw new Error("storyCollectionIdentifier: setting value is not supported");
-        var storyCollectionIdentifier = this._project.findStoryCollection(this._storyCollectionName);
+        var storyCollectionIdentifier = this._project.findStoryCollectionID(this._storyCollectionName);
         if (!storyCollectionIdentifier) return null;
         return storyCollectionIdentifier;
     }
 
     haveStoryCollectionAndShowingAdvancedOptions() {
-        var storyCollectionIdentifier = this._project.findStoryCollection(this._storyCollectionName);
+        var storyCollectionIdentifier = this._project.findStoryCollectionID(this._storyCollectionName);
         if (!storyCollectionIdentifier) return null;
         return this._showAdvancedOptions;
     }
@@ -111,13 +112,13 @@ class ClientState {
         }
     }
 
-     catalysisReportName(newValue: string = undefined): string {
+    catalysisReportName(newValue: string = undefined): string {
         if (newValue !== undefined) {
             this._catalysisReportName = newValue;
         }
         return this._catalysisReportName;
     }
-    
+
     // Read-only convenience accessor
     catalysisReportIdentifier(newValue = undefined) {
         if (newValue) throw new Error("catalysisReportIdentifier: setting value is not supported");
@@ -129,6 +130,25 @@ class ClientState {
     haveCatalysisReportAndShowingAdvancedOptions() {
         var catalysisReportIdentifier = this._project.findCatalysisReport(this._catalysisReportName);
         if (!catalysisReportIdentifier) return null;
+        return this._showAdvancedOptions;
+    }
+
+    storyFormName(newValue: string = undefined): string {
+        if (newValue !== undefined) {
+            this._storyFormName = newValue;
+        }
+        return this._storyFormName;
+    }
+
+    storyFormIdentifier() {
+        var storyFormIdentifier = this._project.findStoryFormID(this._storyFormName);
+        if (!storyFormIdentifier) return null;
+        return storyFormIdentifier;
+    }
+
+    haveStoryFormAndShowingAdvancedOptions() {
+        var storyFormIdentifier = this._project.findStoryFormID(this._storyFormName);
+        if (!storyFormIdentifier) return null;
         return this._showAdvancedOptions;
     }
 

@@ -148,13 +148,14 @@ class GraphBrowser {
         var numStoriesToldQuestions = this.project.numStoriesToldQuestionForStoryCollection(this.storyCollectionIdentifier);
         var storyLengthQuestions = this.project.storyLengthQuestionForStoryCollection(this.storyCollectionIdentifier);
         var collectionDateQuestions = this.project.collectionDateQuestionForStoryCollection(this.storyCollectionIdentifier);
+        var languageQuestions = this.project.languageQuestionForStoryCollection(this.storyCollectionIdentifier);
 
         var storyQuestions = this.project.storyQuestionsForStoryCollection(this.storyCollectionIdentifier);
         var participantQuestions = this.project.participantQuestionsForStoryCollection(this.storyCollectionIdentifier);
         // annotations are not per collection/questionnaire
         var annotationQuestions = questionnaireGeneration.convertEditorQuestions(this.project.collectAllAnnotationQuestions(), "A_");
         
-        this.questions = this.questions.concat(storyQuestions, participantQuestions, annotationQuestions, numStoriesToldQuestions, storyLengthQuestions, collectionDateQuestions);
+        this.questions = this.questions.concat(storyQuestions, participantQuestions, annotationQuestions, numStoriesToldQuestions, storyLengthQuestions, collectionDateQuestions, languageQuestions);
 
         this.choices = surveyCollection.optionsForAllQuestions(this.questions, "excludeTextQuestions");
         // update all stories for the specific collection and update graph

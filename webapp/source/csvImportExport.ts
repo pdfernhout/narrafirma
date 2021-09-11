@@ -2,6 +2,7 @@ import Project = require("./Project");
 import d3 = require("d3");
 import generateRandomUuid = require("./pointrel20150417/generateRandomUuid");
 import questionnaireGeneration = require("./questionnaireGeneration");
+import surveyBuilderMithril = require("./surveyBuilderMithril");
 import surveyCollection = require("./surveyCollection");
 import surveyStorage = require("./surveyStorage");
 import dialogSupport = require("./panelBuilder/dialogSupport");
@@ -324,6 +325,10 @@ function processCSVContentsForStories(contents, saveStories, writeLog, questionn
                     newItem["Collection date"] = value.substr(0, 10);
                 } 
 
+            // column is story language (or language of form story was collected using, whichever the user wants it to be)
+            } else if (headerName === questionnaire.import_storyFormLanguageColumnName) {
+                newItem["Language"] = value;
+
             // column is one of additional text columns to be appended to story text (must be to the right of story text in data file)
             } else if (columnsToAppendToStoryText.indexOf(headerName) >= 0) {
                 const indexOfColumnInList = columnsToAppendToStoryText.indexOf(headerName);
@@ -614,6 +619,7 @@ function processCSVContentsForStories(contents, saveStories, writeLog, questionn
             questionnaire: questionnaire,
             responseID: generateRandomUuid("QuestionnaireResponse"),
             stories: [],
+            language: undefined,
             participantData: {
                 __type: "org.workingwithstories.ParticipantData",
                 participantID: participantIDIndex
@@ -652,6 +658,7 @@ function processCSVContentsForStories(contents, saveStories, writeLog, questionn
             }
 
             newSurveyResult.stories.push(story);
+            newSurveyResult.language = storyItem["Language"];
             totalStoryCount += 1;
             for (let i = 0; i < questionnaire.participantQuestions.length; i++) {
                 const question = questionnaire.participantQuestions[i];
@@ -931,7 +938,7 @@ function processCSVContentsForQuestionnaire(contents) {
     
     const shortName = prompt("Please enter a short name for the new story form. (It must be unique within the project.)");
     if (!shortName) return;
-    if (questionnaireGeneration.buildQuestionnaire(shortName)) {
+    if (questionnaireGeneration.buildStoryForm(shortName)) {
         alert('A story form already exists with that name: "' + shortName + '"');
         return;
     }
@@ -941,70 +948,23 @@ function processCSVContentsForQuestionnaire(contents) {
         storyFormListIdentifier = project.tripleStore.newIdForSet("StoryFormSet");
         project.setFieldValue("project_storyForms", storyFormListIdentifier);
     }
- 
-    // TODO: Generalize random uuid function to take class name
 
-    const template = {
-        id: generateRandomUuid("StoryForm"),
-        questionForm_shortName: shortName,
-        questionForm_elicitingQuestions: project.tripleStore.newIdForSet("ElicitingQuestionChoiceSet"),
-        questionForm_storyQuestions: project.tripleStore.newIdForSet("StoryQuestionChoiceSet"),
-        questionForm_participantQuestions: project.tripleStore.newIdForSet("ParticipantQuestionChoiceSet"),
-        questionForm_title: "",
-        questionForm_startText: "",
-        questionForm_image: "",
-        questionForm_endText: "",
-        questionForm_thankYouPopupText: "",
-        questionForm_customCSS: "",
-        questionForm_customCSSForPrint: "",
+    const template: StoryFormTemplate = {};
+    questionnaireGeneration.formFieldsInfo.forEach((fieldInfo) => {
+        if (fieldInfo.default) {
+            template[fieldInfo.tripleStoreFieldID] = fieldInfo.default;
+        } else {
+            template[fieldInfo.tripleStoreFieldID] = "";
+        }
+    });
+    template.id = generateRandomUuid("StoryForm"); 
+    template.questionForm_shortName = shortName;
+    template.questionForm_elicitingQuestions = project.tripleStore.newIdForSet("ElicitingQuestionChoiceSet");
+    template.questionForm_storyQuestions = project.tripleStore.newIdForSet("StoryQuestionChoiceSet");
+    template.questionForm_participantQuestions = project.tripleStore.newIdForSet("ParticipantQuestionChoiceSet");
+    questionnaireGeneration.setDefaultImportFieldsForTemplate(template);
 
-        questionForm_enterStoryText: "",
-        questionForm_nameStoryText: "",
-        questionForm_tellAnotherStoryText: "",
-        questionForm_tellAnotherStoryButtonText: "",
-        questionForm_maxNumStories: "no limit",
-        questionForm_sliderValuePrompt: "",
-        questionForm_maxNumAnswersPrompt: "",
-
-        questionForm_submitSurveyButtonText: "",
-        questionForm_sendingSurveyResultsText: "",
-        questionForm_couldNotSaveSurveyText: "",
-        questionForm_resubmitSurveyButtonText: "",
-
-        questionForm_deleteStoryButtonText: "",
-        questionForm_deleteStoryDialogPrompt: "",
-        questionForm_surveyStoredText: "",
-        questionForm_showSurveyResultPane: "",
-        questionForm_surveyResultPaneHeader: "",
-
-        questionForm_errorMessage_noElicitationQuestionChosen: "",
-        questionForm_errorMessage_noStoryText: "",
-        questionForm_errorMessage_noStoryName: "",
-    
-        import_minScaleValue: 0,
-        import_maxScaleValue: 0,
-        import_multiChoiceYesIndicator: "Yes",
-        import_multiChoiceYesQASeparator: "",
-        import_multiChoiceYesQAEnding: "",
-        import_multiChoiceDelimiter: ",",
-        import_storyTitleColumnName: "Story title",
-        import_storyTextColumnName: "Story text",
-        import_storyCollectionDateColumnName: "Collection date",
-        import_participantIDColumnName: "Participant ID",
-        import_columnsToIgnore: [],
-        import_columnsToAppendToStoryText: "",
-        import_textsToWriteBeforeAppendedColumns: "",
-        import_minWordsToIncludeStory: "0",
-        import_stringsToRemoveFromHeaders: "",
-
-        import_elicitingQuestionColumnName: "Eliciting question",
-        import_elicitingQuestionGraphName: "Eliciting question",
-        questionForm_chooseQuestionText: "What question would you like to answer?",
-    };
-    
     let overrideOption = project.tripleStore.queryLatestC(project.projectIdentifier, "project_csvQuestionOverwriteOption");
-
-    // TODO: translate
     if (overrideOption === "always replace existing questions with matching questions from the CSV file") {
         overrideOption = "always";
     } else if (overrideOption === "always keep existing questions; ignore any matching questions in the CSV file") {
@@ -1048,11 +1008,7 @@ function processCSVContentsForQuestionnaire(contents) {
                 message += " and are being preserved. The questions with the same name in the CSV file are being ignored.\n\n";
                 break;
             case "ask all": 
-                message += ":\n\n";
-                break;
             case "ask each":
-                message += ":\n\n";
-                break;
             case "stop":
                 message += ":\n\n";
                 break;
@@ -1065,8 +1021,6 @@ function processCSVContentsForQuestionnaire(contents) {
 
         switch (overrideOption) {
             case "always":
-                alert(message);
-                break;
             case "never":
                 alert(message);
                 break;
@@ -1104,8 +1058,9 @@ function processCSVContentsForQuestionnaire(contents) {
     project.tripleStore.addTriple(template.id, "questionForm_import_elicitingQuestionColumnName", "Eliciting question");
     project.tripleStore.addTriple(template.id, "questionForm_import_storyTitleColumnName", "Story title");
     project.tripleStore.addTriple(template.id, "questionForm_import_storyTextColumnName", "Story text");
-    project.tripleStore.addTriple(template.id, "questionForm_import_storyCollectionDateColumnName", "Collection date");
     project.tripleStore.addTriple(template.id, "questionForm_import_participantIDColumnName", "Participant ID");
+    project.tripleStore.addTriple(template.id, "questionForm_import_storyCollectionDateColumnName", "Collection date");
+    project.tripleStore.addTriple(template.id, "questionForm_import_storyFormLanguageColumnName", "Language");
 
     for (let itemIndex = 0; itemIndex < items.length; itemIndex++) {
         const item = items[itemIndex];
@@ -1164,115 +1119,16 @@ function processCSVContentsForQuestionnaire(contents) {
             const type = item.Type;
             const text = item.Answers[0];
             if (text && text != "") {
-                switch (type) {
-                    case "Title":
-                        template.questionForm_title = text; 
-                        project.tripleStore.addTriple(template.id, "questionForm_title", text);
-                        break;
-                    case "Start text":
-                        template.questionForm_startText = text;
-                        project.tripleStore.addTriple(template.id, "questionForm_startText", text);
-                        break;
-                    case "Image":
-                        template.questionForm_image = text;
-                        project.tripleStore.addTriple(template.id, "questionForm_image", text);
-                        break;
-                    case "End text":
-                        template.questionForm_endText = text;
-                        project.tripleStore.addTriple(template.id, "questionForm_endText", text);
-                        break;
-                    case "Thank you text":
-                        template.questionForm_thankYouPopupText = text;
-                        project.tripleStore.addTriple(template.id, "questionForm_thankYouPopupText", text);
-                        break;
-                    case "Custom CSS":
-                        template.questionForm_customCSS = text;
-                        project.tripleStore.addTriple(template.id, "questionForm_customCSS", text);
-                        break;
-                    case "Custom CSS for Printing":
-                        template.questionForm_customCSSForPrint = text;
-                        project.tripleStore.addTriple(template.id, "questionForm_customCSSForPrint", text);
-                        break;
-                    case "Enter story text":
-                        template.questionForm_enterStoryText = text;
-                        project.tripleStore.addTriple(template.id, "questionForm_enterStoryText", text);
-                        break;
-                    case "Choose question text": // this is legacy; i've moved it to the eliciting question long name, but some old files may still have this
-                        template.questionForm_chooseQuestionText = text;
-                        project.tripleStore.addTriple(template.id, "questionForm_chooseQuestionText", text);
-                case "Name story text":
-                        template.questionForm_nameStoryText = text;
-                        project.tripleStore.addTriple(template.id, "questionForm_nameStoryText", text);
-                        break;
-                    case "Tell another story text":
-                        template.questionForm_tellAnotherStoryText = text;
-                        project.tripleStore.addTriple(template.id, "questionForm_tellAnotherStoryText", text);
-                        break;
-                    case "Tell another story button":
-                        template.questionForm_tellAnotherStoryButtonText = text;
-                        project.tripleStore.addTriple(template.id, "questionForm_tellAnotherStoryButtonText", text);
-                        break;
-                    case "Max num stories":
-                        template.questionForm_maxNumStories = text;
-                        project.tripleStore.addTriple(template.id, "questionForm_maxNumStories", text);
-                        break;
-                    case "Slider value prompt":
-                        template.questionForm_sliderValuePrompt = text;
-                        project.tripleStore.addTriple(template.id, "questionForm_sliderValuePrompt", text);
-                        break;
-                    case "Max number of answers prompt":
-                        template.questionForm_maxNumAnswersPrompt = text;
-                        project.tripleStore.addTriple(template.id, "questionForm_maxNumAnswersPrompt", text);
-                        break;
-
-                    case "Submit survey button":
-                        template.questionForm_submitSurveyButtonText = text;
-                        project.tripleStore.addTriple(template.id, "questionForm_submitSurveyButtonText", text);
-                        break;
-                    case "Sending survey text":
-                        template.questionForm_sendingSurveyResultsText = text;
-                        project.tripleStore.addTriple(template.id, "questionForm_sendingSurveyResultsText", text);
-                        break;
-                    case "Could not save survey text":
-                        template.questionForm_couldNotSaveSurveyText = text;
-                        project.tripleStore.addTriple(template.id, "questionForm_couldNotSaveSurveyText", text);
-                        break;
-                    case "Resubmit survey button":
-                        template.questionForm_resubmitSurveyButtonText = text;
-                        project.tripleStore.addTriple(template.id, "questionForm_resubmitSurveyButtonText", text);
-                        break;
-                    case "Delete story button":
-                        template.questionForm_deleteStoryButtonText = text;
-                        project.tripleStore.addTriple(template.id, "questionForm_deleteStoryButtonText", text);
-                        break;
-                    case "Delete story prompt":
-                        template.questionForm_deleteStoryDialogPrompt = text;
-                        project.tripleStore.addTriple(template.id, "questionForm_deleteStoryDialogPrompt", text);
-                        break;
-                    case "Survey stored message":
-                        template.questionForm_surveyStoredText = text;
-                        project.tripleStore.addTriple(template.id, "questionForm_surveyStoredText", text);
-                        break;
-                    case "Show survey result":
-                        template.questionForm_showSurveyResultPane = text;
-                        project.tripleStore.addTriple(template.id, "questionForm_showSurveyResultPane", text);
-                        break;
-                    case "Survey result header":
-                        template.questionForm_surveyResultPaneHeader = text;
-                        project.tripleStore.addTriple(template.id, "questionForm_surveyResultPaneHeader", text);
-                        break;
-                    case "Error message no elicitation question chosen":
-                        template.questionForm_errorMessage_noElicitationQuestionChosen = text;
-                        project.tripleStore.addTriple(template.id, "questionForm_errorMessage_noElicitationQuestionChosen", text);
-                        break;
-                    case "Error message no story text":
-                        template.questionForm_errorMessage_noStoryText = text;
-                        project.tripleStore.addTriple(template.id, "questionForm_errorMessage_noStoryText", text);
-                        break;
-                    case "Error message no story name":
-                        template.questionForm_errorMessage_noStoryName = text;
-                        project.tripleStore.addTriple(template.id, "questionForm_errorMessage_noStoryName", text);
-                        break;
+                let fieldInfoFound = false;
+                questionnaireGeneration.formFieldsInfo.forEach((fieldInfo) => {
+                    if (fieldInfo.exportImportID === type) {
+                        fieldInfoFound = true;
+                        template[fieldInfo.tripleStoreFieldID] = text;
+                        project.tripleStore.addTriple(template.id, fieldInfo.tripleStoreFieldID, text);
+                    } 
+                });
+                if (!fieldInfoFound) {
+                    alert("ERROR: Unrecognized form field: " + type);
                 }
             }
         } else if (about === "import") {
@@ -1319,6 +1175,9 @@ function processCSVContentsForQuestionnaire(contents) {
                 } else if (type === "Story collection date column name") {
                     template.import_storyCollectionDateColumnName = text;
                     project.tripleStore.addTriple(template.id, "questionForm_import_storyCollectionDateColumnName", text);
+                } else if (type === "Language column name") {
+                    template.import_storyFormLanguageColumnName = text;
+                    project.tripleStore.addTriple(template.id, "questionForm_import_storyFormLanguageColumnName", text);
                 } else if (type === "Participant ID column name") {
                     template.import_participantIDColumnName = text;
                     project.tripleStore.addTriple(template.id, "questionForm_import_participantIDColumnName", text);
@@ -1583,7 +1442,7 @@ function valueAndImportOptionsForAnswers(answers) {
 export function autoFillStoryForm() {
     const questionnaireName = prompt("Please enter a short name for the new story form.");
     if (!questionnaireName) return;
-    if (questionnaireGeneration.buildQuestionnaire(questionnaireName)) {
+    if (questionnaireGeneration.buildStoryForm(questionnaireName)) {
         alert('A story form already exists with that name: "' + questionnaireName + '"');
         return;
     }
@@ -1650,9 +1509,7 @@ export function autoFillStoryForm() {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 export function exportQuestionnaire(questionnaire = null) {
-
     let nameToSave = "";
-    // for some reason the project name is being passed to this method from the "export story form" button, but "questionnaire" should be an object, not a string
     if (!questionnaire || typeof questionnaire === "string") { 
         const storyCollectionName = Globals.clientState().storyCollectionName();
         if (!storyCollectionName) {
@@ -1660,7 +1517,7 @@ export function exportQuestionnaire(questionnaire = null) {
             return;
         }
         nameToSave = storyCollectionName;
-        const questionnaire = surveyCollection.getQuestionnaireForStoryCollection(storyCollectionName);
+        questionnaire = surveyCollection.getQuestionnaireForStoryCollection(storyCollectionName);
         if (!questionnaire) {
             alert("The story collection has not been initialized with a story form: " + storyCollectionName);
             return;
@@ -1668,18 +1525,11 @@ export function exportQuestionnaire(questionnaire = null) {
     } else {
         nameToSave = questionnaire.shortName;
     }
-
-    if (!questionnaire) {
-        alert("ERROR: No story form was specified.");
-        return;
-    }
     
     let output = "";
     let lineIndex = 1;
     const delimiter = Globals.clientState().csvDelimiter();
-    function addOutputLine(line) {
-        output = addCSVOutputLine(output, line, delimiter);
-    }
+    function addOutputLine(line) { output = addCSVOutputLine(output, line, delimiter); }
     
     const header = ["Data column name", "Type", "About", "Short name", "Long name", "Options", "Answers"];
     addOutputLine(header);
@@ -1694,28 +1544,16 @@ export function exportQuestionnaire(questionnaire = null) {
         for (let i = 0; i < questions.length; i++) {
             const outputLine = [];
             const question = questions[i];
-
-            // data column name
             outputLine.push(question.displayName || ""); // short name is also data column name for export
-            
-            // type
             let questionType = exportQuestionTypeMap[question.displayType];
             if (!questionType) {
                 console.log("EXPORT ERROR: unsupported question type: ", question.displayType);
                 questionType = "UNSUPPORTED:" + question.displayType;
             }
             outputLine.push(questionType);
-
-            // about
             outputLine.push(about);
-
-            // short name
             outputLine.push(question.displayName || ""); 
-
-            // long name
             outputLine.push(question.displayPrompt || ""); 
-
-            // options
             const options = [];
             if (question.maxNumAnswers) {
                 options.push("maxNumAnswers=" + question.maxNumAnswers);
@@ -1727,8 +1565,6 @@ export function exportQuestionnaire(questionnaire = null) {
                 options.push("listBoxRows=" + question.listBoxRows);
             }
             outputLine.push(options.join("|"));  
-
-            // answers
             if (question.displayType === "slider") {
                 if (question.displayConfiguration) {
                     if (question.displayConfiguration.length === 1) {
@@ -1757,37 +1593,11 @@ export function exportQuestionnaire(questionnaire = null) {
     const adjustedAnnotationQuestions = questionnaireGeneration.convertEditorQuestions(annotationQuestions, "A_");
     outputQuestions(adjustedAnnotationQuestions, "annotation");
 
-    addOutputLine(["", "Title", "form", "", "", "", questionnaire.title || ""]);
-    addOutputLine(["", "Start text", "form", "", "", "", questionnaire.startText || ""]);
-    addOutputLine(["", "Image", "form", "", "", "", questionnaire.image || ""]);
-    addOutputLine(["", "End text", "form", "", "", "", questionnaire.endText || ""]);
-    addOutputLine(["", "About you text", "form", "", "", "", questionnaire.aboutYouText || ""]);
-    addOutputLine(["", "Thank you text", "form", "", "", "", questionnaire.thankYouPopupText || ""]);
-    addOutputLine(["", "Custom CSS", "form", "", "", "", questionnaire.customCSS || ""]);
-    addOutputLine(["", "Custom CSS for Printing", "form", "", "", "", questionnaire.customCSSForPrint || ""]);
-
-    addOutputLine(["", "Choose question text", "form", "", "", "", questionnaire.chooseQuestionText || ""]);
-    addOutputLine(["", "Enter story text", "form", "", "", "", questionnaire.enterStoryText || ""]);
-    addOutputLine(["", "Name story text", "form", "", "", "", questionnaire.nameStoryText || ""]);
-    addOutputLine(["", "Tell another story text", "form", "", "", "", questionnaire.tellAnotherStoryText || ""]);
-    addOutputLine(["", "Tell another story button", "form", "", "", "", questionnaire.tellAnotherStoryButtonText || ""]);
-    addOutputLine(["", "Max num stories", "form", "", "", "", questionnaire.maxNumStories || ""]);
-    addOutputLine(["", "Slider value prompt", "form", "", "", "", questionnaire.sliderValuePrompt || ""]);
-    addOutputLine(["", "Max number of answers prompt", "form", "", "", "", questionnaire.maxNumAnswersPrompt || ""]);
-
-    addOutputLine(["", "Submit survey button", "form", "", "", "", questionnaire.submitSurveyButtonText || ""]);
-    addOutputLine(["", "Sending survey text", "form", "", "", "", questionnaire.questionForm_sendingSurveyResultsText || ""]);
-    addOutputLine(["", "Could not save survey text", "form", "", "", "", questionnaire.questionForm_couldNotSaveSurveyText || ""]);
-    addOutputLine(["", "Resubmit survey button", "form", "", "", "", questionnaire.resubmitSurveyButtonText || ""]);
-    
-    addOutputLine(["", "Delete story button", "form", "", "", "", questionnaire.deleteStoryButtonText || ""]);
-    addOutputLine(["", "Delete story prompt", "form", "", "", "", questionnaire.deleteStoryDialogPrompt || ""]);
-    addOutputLine(["", "Survey stored message", "form", "", "", "", questionnaire.surveyStoredText || ""]);
-    addOutputLine(["", "Show survey result", "form", "", "", "", questionnaire.showSurveyResultPane || ""]);
-    addOutputLine(["", "Survey result header", "form", "", "", "", questionnaire.surveyResultPaneHeader || ""]);
-    
-    addOutputLine(["", "Error message no elicitation question chosen", "form", "", "", "", questionnaire.errorMessage_noElicitationQuestionChosen || ""]);
-    addOutputLine(["", "Error message no story text", "form", "", "", "", questionnaire.errorMessage_noStoryText || ""]);
+    questionnaireGeneration.formFieldsInfo.forEach((fieldInfo) => {
+        if (fieldInfo.exportImportID) {
+            addOutputLine(["", fieldInfo.exportImportID, "form", "", "", "", questionnaire[fieldInfo.objectFieldID] || ""]);
+        }
+    });
 
     // do not need to write "Scale range" because scale data was converted to 0-100 scale during import
     // do not need to write "Yes no questions Q-A separator" or "Yes no questions Q-A ending" or "Yes no questions yes indicator" or "Multi choice single column delimiter"
@@ -1842,18 +1652,15 @@ function addCSVOutputLine(output, line, delimiter) {
 }
 
 export function exportQuestionnaireForImport(questionnaire = null) { // to preserve import options for externally derived data
-
-    let nameToSave;
-    // for some reason the project name is being passed to this method from the "export story form" button, but "questionnaire" should be an object, not a string
+    let nameToSave = "";
     if (!questionnaire || typeof questionnaire === "string") { 
         const storyCollectionName = Globals.clientState().storyCollectionName();
         if (!storyCollectionName) {
-            alert("Please select a story collection first");
+            alert("Please select a story collection first.");
             return;
         }
         nameToSave = storyCollectionName;
-        
-        const questionnaire = surveyCollection.getQuestionnaireForStoryCollection(storyCollectionName);
+        questionnaire = surveyCollection.getQuestionnaireForStoryCollection(storyCollectionName);
         if (!questionnaire) {
             alert("The story collection has not been initialized with a story form: " + storyCollectionName);
             return;
@@ -1861,17 +1668,10 @@ export function exportQuestionnaireForImport(questionnaire = null) { // to prese
     } else {
         nameToSave = questionnaire.shortName;
     }
-    
-    if (!questionnaire) {
-        alert("ERROR: No story form was specified.");
-        return;
-    }
     let output = "";
     let lineIndex = 1;
     const delimiter = Globals.clientState().csvDelimiter();
-    function addOutputLine(line) {
-        output = addCSVOutputLine(output, line, delimiter);
-    }
+    function addOutputLine(line) { output = addCSVOutputLine(output, line, delimiter); }
     
     const header = ["Data column name", "Type", "About", "Short name", "Long name", "Options", "Answers"];
     addOutputLine(header);
@@ -1946,38 +1746,12 @@ export function exportQuestionnaireForImport(questionnaire = null) { // to prese
     
     outputQuestions(questionnaire.storyQuestions, "story");
     outputQuestions(questionnaire.participantQuestions, "participant");
-    
-    if (questionnaire.title) addOutputLine(["", "Title", "form", "", "", "", questionnaire.title || ""]);
-    if (questionnaire.startText) addOutputLine(["", "Start text", "form", "", "", "", questionnaire.startText || ""]);
-    if (questionnaire.image) addOutputLine(["", "Image", "form", "", "", "", questionnaire.image || ""]);
-    if (questionnaire.endText) addOutputLine(["", "End text", "form", "", "", "", questionnaire.endText || ""]);
-    if (questionnaire.aboutYouText) addOutputLine(["", "About you text", "form", "", "", "", questionnaire.aboutYouText || ""]);
-    if (questionnaire.thankYouPopupText) addOutputLine(["", "Thank you text", "form", "", "", "", questionnaire.thankYouPopupText || ""]);
-    if (questionnaire.customCSS) addOutputLine(["", "Custom CSS", "form", "", "", "", questionnaire.customCSS || ""]);
-    if (questionnaire.customCSSForPrint) addOutputLine(["", "Custom CSS for Printing", "form", "", "", "", questionnaire.customCSSForPrint || ""]);
 
-    if (questionnaire.chooseQuestionText) addOutputLine(["", "Choose question text", "form", "", "", "", questionnaire.chooseQuestionText || ""]);
-    if (questionnaire.enterStoryText) addOutputLine(["", "Enter story text", "form", "", "", "", questionnaire.enterStoryText || ""]);
-    if (questionnaire.nameStoryText) addOutputLine(["", "Name story text", "form", "", "", "", questionnaire.nameStoryText || ""]);
-    if (questionnaire.tellAnotherStoryText) addOutputLine(["", "Tell another story text", "form", "", "", "", questionnaire.tellAnotherStoryText || ""]);
-    if (questionnaire.tellAnotherStoryButtonText) addOutputLine(["", "Tell another story button", "form", "", "", "", questionnaire.tellAnotherStoryButtonText || ""]);
-    if (questionnaire.maxNumStories) addOutputLine(["", "Max num stories", "form", "", "", "", questionnaire.maxNumStories || ""]);
-    if (questionnaire.sliderValuePrompt) addOutputLine(["", "Slider value prompt", "form", "", "", "", questionnaire.sliderValuePrompt || ""]);
-    if (questionnaire.maxNumAnswersPrompt) addOutputLine(["", "Max number of answers prompt", "form", "", "", "", questionnaire.maxNumAnswersPrompt || ""]);
-
-    if (questionnaire.submitSurveyButtonText) addOutputLine(["", "Submit survey button", "form", "", "", "", questionnaire.submitSurveyButtonText || ""]);
-    if (questionnaire.questionForm_sendingSurveyResultsText) addOutputLine(["", "Sending survey text", "form", "", "", "", questionnaire.questionForm_sendingSurveyResultsText || ""]);
-    if (questionnaire.questionForm_couldNotSaveSurveyText) addOutputLine(["", "Could not save survey text", "form", "", "", "", questionnaire.questionForm_couldNotSaveSurveyText || ""]);
-    if (questionnaire.resubmitSurveyButtonText) addOutputLine(["", "Resubmit survey button", "form", "", "", "", questionnaire.resubmitSurveyButtonText || ""]);
-    
-    if (questionnaire.deleteStoryButtonText) addOutputLine(["", "Delete story button", "form", "", "", "", questionnaire.deleteStoryButtonText || ""]);
-    if (questionnaire.deleteStoryDialogPrompt) addOutputLine(["", "Delete story prompt", "form", "", "", "", questionnaire.deleteStoryDialogPrompt || ""]);
-    if (questionnaire.surveyStoredText) addOutputLine(["", "Survey stored message", "form", "", "", "", questionnaire.surveyStoredText || ""]);
-    if (questionnaire.showSurveyResultPane) addOutputLine(["", "Show survey result", "form", "", "", "", questionnaire.showSurveyResultPane || ""]);
-    if (questionnaire.surveyResultPaneHeader) addOutputLine(["", "Survey result header", "form", "", "", "", questionnaire.surveyResultPaneHeader || ""]);
-    
-    if (questionnaire.errorMessage_noElicitationQuestionChosen) addOutputLine(["", "Error message no elicitation question chosen", "form", "", "", "", questionnaire.errorMessage_noElicitationQuestionChosen || ""]);
-    if (questionnaire.errorMessage_noStoryText) addOutputLine(["", "Error message no story text", "form", "", "", "", questionnaire.errorMessage_noStoryText || ""]);
+    questionnaireGeneration.formFieldsInfo.forEach((fieldInfo) => {
+        if (fieldInfo.exportImportID && fieldInfo.objectFieldID && questionnaire[fieldInfo.objectFieldID]) {
+            addOutputLine(["", fieldInfo.exportImportID, "form", "", "", "", questionnaire[fieldInfo.objectFieldID] || ""]);
+        }
+    });
 
     if (questionnaire.import_minScaleValue || questionnaire.import_maxScaleValue) addOutputLine(["", "Scale range", "import", "", "", "", "" + questionnaire.import_minScaleValue || "", "" + questionnaire.import_maxScaleValue || ""]);
     if (questionnaire.import_multiChoiceYesQASeparator) addOutputLine(["", "Yes no questions Q-A separator", "import", "", "", "", questionnaire.import_multiChoiceYesQASeparator || ""]);
@@ -2043,6 +1817,153 @@ export function exportQuestionnaireForImport(questionnaire = null) { // to prese
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// exporting and importing story form translation dictionaries
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+export function exportTranslationDictionary(questionnaire = null) {
+    let nameToSave = "";
+    if (!questionnaire || typeof questionnaire === "string") { 
+        const storyCollectionName = Globals.clientState().storyCollectionName();
+        if (!storyCollectionName) {
+            alert("Please select a story collection first.");
+            return;
+        }
+        nameToSave = storyCollectionName;
+        questionnaire = surveyCollection.getQuestionnaireForStoryCollection(storyCollectionName);
+        if (!questionnaire) {
+            alert("The story collection has not been initialized with a story form: " + storyCollectionName);
+            return;
+        }
+    } else {
+        nameToSave = questionnaire.shortName;
+    }
+    if (!questionnaire.defaultLanguage) {
+        alert("Please enter a default language before you export the translation dictionary.");
+        return;
+    }
+    if (!questionnaire.languageChoiceQuestion_choices) {
+        alert("Please enter some additional language names before you export the translation dictionary.");
+        return;
+    }
+    
+    let output = "";
+    let lineIndex = 1;
+    const delimiter = Globals.clientState().csvDelimiter();
+
+    function addOutputLine(line) { 
+        output = addCSVOutputLine(output, line, delimiter); 
+    }
+
+    function addOutputLineWithTranslations(text) {
+        const parts = [];
+        parts.push(lineIndex);
+        parts.push(text || "");
+        if (questionnaire.translationDictionary[text]) {
+            additionalLanguages.forEach((language) => { parts.push(questionnaire.translationDictionary[text][language] || ""); });
+        }
+        addOutputLine(parts);
+        lineIndex++;
+    }
+
+    let header = ["Order in survey"];
+    const additionalLanguages = questionnaire.languageChoiceQuestion_choices.split("\n").map(function(item) { return item.trim(); } );
+    header = header.concat(["Default language: " + questionnaire.defaultLanguage], additionalLanguages);
+    addOutputLine(header);
+
+    const instructionsLine = ["; Do not edit the default-language texts in this file. Only change the translated texts (to the right of the default-language texts)."];
+    addOutputLine(instructionsLine);
+
+    questionnaireGeneration.formFieldsInfo.forEach((fieldInfo) => {
+        if (fieldInfo.canBeTranslated) {
+            addOutputLineWithTranslations(questionnaire[fieldInfo.objectFieldID] || surveyBuilderMithril.defaultFormTexts[fieldInfo.objectFieldID] || "");
+        }
+    });
+    questionnaire.elicitingQuestions.forEach(function (elicitingQuestionSpecification) { 
+        addOutputLineWithTranslations(elicitingQuestionSpecification.text); 
+    });
+    [questionnaire.storyQuestions, questionnaire.participantQuestions].forEach((questionList) => {
+        questionList.forEach((question) => {
+            addOutputLineWithTranslations(question.displayPrompt);
+            if (question.displayType === "slider") {
+                question.displayConfiguration.forEach(function(option, index) { addOutputLineWithTranslations(option); });
+            } else if (question.valueOptions) {
+                question.valueOptions.forEach(function(option, index) { addOutputLineWithTranslations(option); });
+            }
+        });
+    });
+    
+    const questionnaireBlob = new Blob([output], {type: "text/csv;charset=utf-8"});
+    saveAs(questionnaireBlob, "export_translation_dictionary_" + nameToSave + ".csv");    
+}
+
+function processCSVContentsForTranslationDictionary(contents, saveStories, writeLog, questionnaire = null) {
+    if (!questionnaire) return;
+
+    const delimiter = Globals.clientState().csvDelimiter();
+    const csv = d3.dsv(delimiter, "text/plain");
+    const rows = csv.parseRows(contents);
+
+    let dictionarySetID = project.tripleStore.queryLatestC(questionnaire.id, "questionForm_translationDictionary");
+    if (!dictionarySetID) {
+        dictionarySetID = project.tripleStore.newIdForSet("TranslationDictionarySet");
+        project.tripleStore.addTriple(questionnaire.id, "questionForm_translationDictionary", dictionarySetID);
+    }
+    const alternativeLanguageNames = [];
+    let numLanguageEntriesAdded = 0;
+    let numNewDictionariesCreated = 0;
+    for (let rowIndex = 0; rowIndex < rows.length; rowIndex++) {
+        const row = rows[rowIndex];
+        if (row.length < 3) continue; 
+        if (row[0][0] === ";") continue; 
+        if (row[0] === "") continue; 
+        if (rowIndex === 0) { 
+            // "Order" | Default language | Alternative language | Alternative language | Alternative language
+            for (let columnIndex = 2; columnIndex < row.length; columnIndex++) {
+                alternativeLanguageNames.push(row[columnIndex]);
+            }
+        } else {
+            // "Order" | Default language text | Alternative language text | Alternative language text | Alternative language text
+            const defaultLanguageText = row[1];
+            if (defaultLanguageText) {
+                for (let columnIndex = 2; columnIndex < row.length; columnIndex++) {
+                    const value = row[columnIndex];
+                    if (value) {
+                        const languageName = alternativeLanguageNames[columnIndex-2];
+                        let foundMatchingDictionary = false;
+                        const dictionaryIDs = project.tripleStore.getListForSetIdentifier(dictionarySetID);
+                        dictionaryIDs.forEach((id) => {
+                            const storedDictionary = project.tripleStore.makeObject(id, true);
+                            if (storedDictionary.defaultText === defaultLanguageText) {
+                                foundMatchingDictionary = true;
+                                if (storedDictionary[languageName] !== value) {
+                                    project.tripleStore.addTriple(id, languageName, value);
+                                    numLanguageEntriesAdded++;
+                                }
+                            }
+                        });
+                        if (!foundMatchingDictionary) {
+                            const template = {"defaultText": defaultLanguageText};
+                            template[languageName] = value;
+                            project.tripleStore.makeNewSetItem(dictionarySetID, "TranslationDictionary", template);
+                            numNewDictionariesCreated++;
+                        }
+                    }
+                }
+            }
+        }   
+    }
+    project.tripleStore.addTriple(questionnaire.id, "languageChoiceQuestion_choices", alternativeLanguageNames.join("\n"));
+    let prompt;
+    if (numLanguageEntriesAdded == 0 && numNewDictionariesCreated == 0) {
+        prompt = "The imported translation dictionary matches the currently stored dictionary. No changes were made.";
+    } else {
+        prompt = "Import complete. New entries added: " + numNewDictionariesCreated + ". Language fields added or updated: " + numLanguageEntriesAdded + ".";
+    }
+    alert(prompt);
+    m.redraw();
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // exporting stories
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -2072,6 +1993,7 @@ export function exportStoryCollection() {
     header("Story title");
     header("Story text");
     header("Collection date");
+    header("Language");
     header("Eliciting question");
     
     function headersForQuestions(questions) {
@@ -2100,9 +2022,7 @@ export function exportStoryCollection() {
   
     let output = "";
     const delimiter = Globals.clientState().csvDelimiter();
-    function addOutputLine(line) {
-        output = addCSVOutputLine(output, line, delimiter);
-    }
+    function addOutputLine(line) { output = addCSVOutputLine(output, line, delimiter); }
     
     addOutputLine(header1);
     addOutputLine(header2);
@@ -2152,9 +2072,7 @@ export function exportCatalysisReportElementsToCSV() {
     let i = 0;
 
     const delimiter = Globals.clientState().csvDelimiter();
-    function addOutputLine(line) {
-        output = addCSVOutputLine(output, line, delimiter);
-    }
+    function addOutputLine(line) { output = addCSVOutputLine(output, line, delimiter); }
 
     const catalysisReportName = Globals.clientState().catalysisReportName();
     const catalysisReportIdentifier = project.findCatalysisReport(catalysisReportName);  
@@ -2591,6 +2509,10 @@ export function importCSVQuestionnaire() {
         return;
     }
     chooseCSVFileToImport(processCSVContentsForQuestionnaire, true, false);
+}
+
+export function importTranslationDictionary(questionnaire) {
+    chooseCSVFileToImport(processCSVContentsForTranslationDictionary, true, false, questionnaire);
 }
 
 export function importCSVCatalysisElements() {

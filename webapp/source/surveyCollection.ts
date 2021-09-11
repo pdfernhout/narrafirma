@@ -83,6 +83,10 @@ export class Story {
         return this.fieldValue("collectionDate", newValue);
     }
 
+    storyLanguage(newValue = undefined) {
+        return this.fieldValue("language", newValue);
+    }
+
     // ISO 8601 date format: YYYY-MM-DD
     storyCollectionYear() {
         const collectionDate = this.storyCollectionDate();
@@ -175,7 +179,7 @@ export function getStoriesForStoryCollection(storyCollectionIdentifier, includeI
                 // calculate derived count of number of stories told in each survey session (to be shown in graphs)
                 stories[storyIndex].numStoriesTold = "" + stories.length;
                 stories[storyIndex].storyLength = "" + stories[storyIndex].length;
-                
+            
                 // only set collection date info if it was not previously saved
                 // if the story was imported from a CSV file, the collection date read from the file
                 // was saved in the "collectionDate" field, and the "_topicTimestamp" of the message is the import timestamp
@@ -185,6 +189,8 @@ export function getStoriesForStoryCollection(storyCollectionIdentifier, includeI
                         stories[storyIndex].collectionDate = message._topicTimestamp.substr(0, 10);
                     }
                 }
+                stories[storyIndex].language = surveyResult.language;
+
                 // Make a copy of the story so as not to modify original in message
                 const story = JSON.parse(JSON.stringify(stories[storyIndex]));
                 
@@ -214,15 +220,15 @@ export function getStoriesForStoryCollection(storyCollectionIdentifier, includeI
 }
 
 export function getQuestionnaireForStoryCollection(storyCollectionName: string, alertIfProblem = false) {
-    const storyCollection = project.findStoryCollection(storyCollectionName);
+    const storyCollectionID = project.findStoryCollectionID(storyCollectionName);
   
-    if (!storyCollection) {
+    if (!storyCollectionID) {
         // TODO: translate
         if (alertIfProblem) alert("The selected story collection could not be found.");
         return null;
     }
     
-    const questionnaireName = project.tripleStore.queryLatestC(storyCollection, "storyCollection_questionnaireIdentifier");
+    const questionnaireName = project.tripleStore.queryLatestC(storyCollectionID, "storyCollection_questionnaireIdentifier");
     
     if (!questionnaireName) {
         // TODO: translate
@@ -230,7 +236,7 @@ export function getQuestionnaireForStoryCollection(storyCollectionName: string, 
         return null;
     }
     
-    const questionnaire = project.tripleStore.queryLatestC(storyCollection, "questionnaire");
+    const questionnaire = project.tripleStore.queryLatestC(storyCollectionID, "questionnaire");
     
     if (!questionnaire) {
         // TODO: translate
@@ -242,33 +248,33 @@ export function getQuestionnaireForStoryCollection(storyCollectionName: string, 
 }
 
 
-export function urlForSurvey(storyCollectionIdentifier) {
+export function urlForSurvey(storyCollectionID) {
     const href = window.location.href;
     const baseURL = href.substring(0, href.lastIndexOf("/"));
     // TODO: Duplicated project prefix; should refactor to have it in one place
     const projectName = project.journalIdentifier.substring("NarraFirmaProject-".length);
-    const shortName = project.tripleStore.queryLatestC(storyCollectionIdentifier, "storyCollection_shortName");
+    const shortName = project.tripleStore.queryLatestC(storyCollectionID, "storyCollection_shortName");
     const url = baseURL + "/survey.html#project=" + projectName + "&survey=" + shortName;
     const result = m("a[id=narrafirma-survey-url]", {href: url, title: url, target: "_blank"}, url)
     return result;
 }
 
-export function urlForSurveyAsString(storyCollectionIdentifier) {
+export function urlForSurveyAsString(storyCollectionID) {
     const href = window.location.href;
     const baseURL = href.substring(0, href.lastIndexOf("/"));
     // TODO: Duplicated project prefix; should refactor to have it in one place
     const projectName = project.journalIdentifier.substring("NarraFirmaProject-".length);
-    const shortName = project.tripleStore.queryLatestC(storyCollectionIdentifier, "storyCollection_shortName");
+    const shortName = project.tripleStore.queryLatestC(storyCollectionID, "storyCollection_shortName");
     const url = baseURL + "/survey.html#project=" + projectName + "&survey=" + shortName;
     return url;
 }
 
-export function urlForStoryCollectionReview(storyCollectionIdentifier, pageName: string) {
+export function urlForStoryCollectionReview(storyCollectionID, pageName: string) {
     const href = window.location.href;
     const baseURL = href.substring(0, href.lastIndexOf("/"));
     // TODO: Duplicated project prefix; should refactor to have it in one place
     const projectName = project.journalIdentifier.substring("NarraFirmaProject-".length);
-    const shortName = project.tripleStore.queryLatestC(storyCollectionIdentifier, "storyCollection_shortName");
+    const shortName = project.tripleStore.queryLatestC(storyCollectionID, "storyCollection_shortName");
     const url = baseURL + "/narrafirma.html#project=" + projectName + "&page=" +  pageName + "&storyCollection=" + shortName;
     return url;
 }

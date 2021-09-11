@@ -15,38 +15,53 @@ const writeInTag = "WriteInEntry_";
 // http://validator.w3.org/mobile/
 // http://achecker.ca/checker/index.php#output_div [first used testing tool]
 // http://webaim.org/techniques/forms/controls
-
-/* TODO:
- * All widget types:
- X   boolean
- X   radiobuttons
- X   checkbox
- *   (maybe) image
- *   (maybe) togglebutton
- * Multiple eliciting questions
- X Storing data in model
- X Add styling classes
- X Dialog version
- X Call validation for each story
- * (Optional) Reporting validation errors inline
- * (Optional for now) Call translate
- X After survey is sent, make the form read-only somehow
- X Accessibility [at least the basics]
- */
  
-var idsMade = {};
-var idCount = 0;
+const idsMade = {};
+let idCount = 0;
+let currentLanguage = "";
+
+export const defaultFormTexts = {
+    startText: 'Please help by taking a short survey. The data you enter will be sent to the server only at the end when you press the "submit survey" button.',
+    sliderValuePrompt: "Type a new value",
+    maxNumAnswersPrompt: "(Please choose up to # answers.)",
+    endText: "Thank you for taking the survey.",
+    thankYouPopupText: "Your contribution has been added to the story collection. Thank you.",
+    chooseQuestionText: "Please choose a question to which you would like to respond.",
+    enterStoryText: "Please enter your response in the box below.",
+    nameStoryText: "Please give your story a name.",
+    aboutYouText: "About you",
+    errorMessage_noElicitationQuestionChosen: "Please select the question to which story # is a response.",
+    errorMessage_noStoryText: "Please enter some text for story #.",
+    errorMessage_noStoryName: "Please give story # a name.",
+    deleteStoryButtonText: "Delete this story",
+    deleteStoryDialogPrompt: "Are you sure you want to delete this story?",
+    submitSurveyButtonText: "Submit Survey",
+    couldNotSaveSurveyText:"The server could not save your survey. Please try again.",
+    sendingSurveyResultsText: "Now sending survey result to server. Please wait . . .",
+    resubmitSurveyButtonText: "Resubmit Survey",
+    surveyStoredText: "Your survey has been accepted and stored.",
+    surveyResultPaneHeader: "Here are the stories you contributed. You can copy this text and paste it somewhere else to keep your own copy of what you said.",
+    tellAnotherStoryText: "Would you like to tell another story?",
+    tellAnotherStoryButtonText: "Yes, I'd like to tell another story",
+}
+
+function translate(storyForm, language, text) {
+    if (!language) return text;
+    if (!storyForm.translationDictionary) return text;
+    if (!storyForm.translationDictionary[text]) return text;
+    if (!storyForm.translationDictionary[text][language]) return text;
+    return storyForm.translationDictionary[text][language];
+}
 
 function getIdForText(text) {
     if (!idsMade["$" + text]) {
         idsMade["$" + text] = idCount++;
     }
-        
     return "panelField_" + idsMade["$" + text];
 }
 
 export function loadCSS(document, cssText) {
-    var styleElement = document.createElement("style");
+    const styleElement = document.createElement("style");
     styleElement.type = "text/css";
     document.getElementsByTagName("head")[0].appendChild(styleElement);
 
@@ -59,7 +74,7 @@ export function loadCSS(document, cssText) {
   
 // Redrawing
 
-var globalRedrawCallback;
+let globalRedrawCallback;
 
 export function setGlobalRedrawFunction(callback) {
     globalRedrawCallback = callback;
@@ -70,48 +85,53 @@ function globalRedraw(source = undefined) {
 }
 
 function addAllowedHTMLToPrompt(text) {
+    let result;
     try {
-        var result = sanitizeHTML.generateSanitizedHTMLForMithril(text);
+        result = sanitizeHTML.generateSanitizedHTMLForMithril(text);
         return result;
     } catch (error) {
         alert(error);
-        return text
+        return text;
     }
-}
-
-function buildQuestionLabel(fieldSpecification, questionnaire) {
-
-    let displayPrompt = fieldSpecification.displayPrompt;
-
-    if (fieldSpecification.displayType === "checkboxes" && fieldSpecification.maxNumAnswers) {
-        if (questionnaire.maxNumAnswersPrompt) {
-            displayPrompt += " " + questionnaire.maxNumAnswersPrompt.replace("#", fieldSpecification.maxNumAnswers);
-        } else { 
-            displayPrompt += " " + "(Please choose up to # answers.)".replace("#", fieldSpecification.maxNumAnswers);
-        }
-    }
-    
-    return [
-        // TODO: Generalize this css class name
-        m("span", {"class": "narrafirma-survey-prompt"}, addAllowedHTMLToPrompt(displayPrompt)),
-        m("br")
-    ];
 }
 
 // Builder is used by main application, and is passed in for compatibility
-function displayQuestion(builder, model, fieldSpecification, questionnaire) {
+function displayQuestion(builder, model, fieldSpecification, storyForm) {
+
+    function buildQuestionLabel(fieldSpecification, storyForm) {
+
+        let displayPrompt = tr(fieldSpecification.displayPrompt);
+    
+        if (fieldSpecification.displayType === "checkboxes" && fieldSpecification.maxNumAnswers) {
+            if (storyForm.maxNumAnswersPrompt) {
+                displayPrompt += " " + tr(storyForm.maxNumAnswersPrompt).replace("#", fieldSpecification.maxNumAnswers);
+            } else { 
+                displayPrompt += " " + tr(defaultFormTexts.maxNumAnswersPrompt).replace("#", fieldSpecification.maxNumAnswers);
+            }
+        }
+        
+        return [
+            // TODO: Generalize this css class name
+            m("span", {"class": "narrafirma-survey-prompt"}, addAllowedHTMLToPrompt(displayPrompt)),
+            m("br")
+        ];
+    }
 
     let fieldID = fieldSpecification.id;
     if (model) {
         fieldID = (model.storyID || model.participantID) + "__" + fieldID;
     }
 
-    let questionLabel = buildQuestionLabel(fieldSpecification, questionnaire);
+    let questionLabel = buildQuestionLabel(fieldSpecification, storyForm);
     let parts: any = [];
 
     let value = null;
     if (model) value = model[fieldSpecification.id];
     if (value === undefined) value = "";
+
+    function tr(text) {
+        return translate(storyForm, currentLanguage, text);
+    }
 
     function standardChangeMethod(event, value) {
         if (event) value = event.target.value;
@@ -147,7 +167,7 @@ function displayQuestion(builder, model, fieldSpecification, questionnaire) {
                 checked: value, 
                 onchange: function(event) { standardChangeMethod(null, event.target.checked); }
             }),
-            m("label", {"for": getIdForText(fieldID)}, fieldSpecification.displayConfiguration || ""),
+            m("label", {"for": getIdForText(fieldID)}, tr(fieldSpecification.displayConfiguration || "")),
             m("br")
         ];    
     }
@@ -202,7 +222,7 @@ function displayQuestion(builder, model, fieldSpecification, questionnaire) {
                             }
                         }
                     }),
-                    m("label", {"for": optionID}, sanitizeHTML.generateSmallerSetOfSanitizedHTMLForMithril(optionName)),
+                    m("label", {"for": optionID}, sanitizeHTML.generateSmallerSetOfSanitizedHTMLForMithril(tr(optionName))),
                     m("br")
                 ];
             })
@@ -223,7 +243,7 @@ function displayQuestion(builder, model, fieldSpecification, questionnaire) {
                 const optionID = getIdForText(fieldID + "_" + optionValue);
                 return [
                     m("input[type=radio]", {id: optionID, value: optionValue, name: fieldSpecification.id, checked: value === optionValue, onchange: standardChangeMethod.bind(null, null, optionValue) }),
-                    m("label", {"for": optionID}, sanitizeHTML.generateSmallerSetOfSanitizedHTMLForMithril(optionName)), 
+                    m("label", {"for": optionID}, sanitizeHTML.generateSmallerSetOfSanitizedHTMLForMithril(tr(optionName))), 
                     m("br")
                 ];
             })
@@ -238,10 +258,10 @@ function displayQuestion(builder, model, fieldSpecification, questionnaire) {
         delete questionLabel[0].attrs["for"];
         const questionParts = [
             m("input[type=radio]", {id: getIdForText(fieldID + "_yes"), value: true, name: fieldSpecification.id, checked: value === true, onchange: standardChangeMethod.bind(null, null, true) }),
-            m("label", {"for": getIdForText(fieldID + "_yes")}, "yes"),
+            m("label", {"for": getIdForText(fieldID + "_yes")}, tr("yes")), // cfk fix should not be hard coded
             m("br"),
             m("input[type=radio]", {id: getIdForText(fieldID + "_no"), value: false, name: fieldSpecification.id, checked: value === false, onchange: standardChangeMethod.bind(null, null, false) }),
-            m("label", {"for": getIdForText(fieldID + "_no")}, "no"),
+            m("label", {"for": getIdForText(fieldID + "_no")}, tr("no")), // cfk fix should not be hard coded
             m("br")
         ];
         questionParts.unshift(m("legend", questionLabel[0]));
@@ -257,7 +277,7 @@ function displayQuestion(builder, model, fieldSpecification, questionnaire) {
         let selectOptions = [];
         let defaultOptions = {name: '', value: '', selected: undefined};
         if (!value) defaultOptions.selected = 'selected';
-        if (!fieldSpecification.listBoxRows) { selectOptions.push(m("option", defaultOptions, '-- select --')); }
+        if (!fieldSpecification.listBoxRows) { selectOptions.push(m("option", defaultOptions, tr('-- select --'))); } // cfk fix should not be hard coded
 
         selectOptions = selectOptions.concat(
             fieldSpecification.valueOptions.map(function (option, index) {
@@ -265,7 +285,7 @@ function displayQuestion(builder, model, fieldSpecification, questionnaire) {
                 const optionValue = (typeof option === "string") ? option : option.value;
                  let optionOptions = {value: optionValue, selected: undefined};
                 if (optionValue === value) optionOptions.selected = 'selected';
-                return m("option", optionOptions, optionName);
+                return m("option", optionOptions, tr(optionName));
             })
         );
         
@@ -309,7 +329,7 @@ function displayQuestion(builder, model, fieldSpecification, questionnaire) {
         questionLabel[0].tag = "label";
 
         const checkboxID = getIdForText(fieldID) + "_doesNotApply";
-        const popupPrompt = questionnaire.sliderValuePrompt || "Type a new value";
+        const popupPrompt = tr(storyForm.sliderValuePrompt || defaultFormTexts.sliderValuePrompt);
         
         let leftSideText = "";
         let rightSideText = "";
@@ -330,9 +350,9 @@ function displayQuestion(builder, model, fieldSpecification, questionnaire) {
         const sliderValueOptions = {value: value, id: getIdForText(fieldID), onchange: standardChangeMethod, min: 0, max: 100, step: 1};
         const questionParts = [
             m("span", {"class": "narrafirma-survey-low-arrow"}, "◀ "),
-            m("span", {"class": "narrafirma-survey-low"}, leftSideText),
+            m("span", {"class": "narrafirma-survey-low"}, tr(leftSideText)),
             m('span', {"class": "narrafirma-survey-slider"}, m('input[type="range"]', sliderValueOptions)),
-            m('span', {"class": "narrafirma-survey-high"}, rightSideText),
+            m('span', {"class": "narrafirma-survey-high"}, tr(rightSideText)),
             m('span', {"class": "narrafirma-survey-high-arrow"}, " ▶"),
             m("span", {"class": "narrafirma-survey-value", "tabindex": "0", 
                 onclick: function(event) { setSliderValueWithPopup(event, popupPrompt, value, sliderValueOptions, fieldSpecification, model) }, 
@@ -356,7 +376,7 @@ function displayQuestion(builder, model, fieldSpecification, questionnaire) {
                     }
                 }
             }),
-            m("label", {"for": checkboxID}, doesNotApplyText)
+            m("label", {"for": checkboxID}, tr(doesNotApplyText))
         ];
         return questionParts;
     }
@@ -373,7 +393,7 @@ function displayQuestion(builder, model, fieldSpecification, questionnaire) {
         }
 
         const writeInDivParts = [
-            m("span.narrafirma-survey-write-in-prompt"), addAllowedHTMLToPrompt(label),
+            m("span.narrafirma-survey-write-in-prompt"), addAllowedHTMLToPrompt(tr(label)),
             m(mString, {
                 id: getIdForText(fieldSpecification.id) + "_input",
                 value: model[writeInTag + fieldSpecification.id] || "", 
@@ -442,76 +462,81 @@ interface SurveyOptions {
     dataEntry?: boolean;
 }
 
-export function buildSurveyForm(surveyDiv, questionnaire, doneCallback, surveyOptions: SurveyOptions = {}) {  
-    console.log("buildSurveyForm questions", questionnaire);
+export function buildSurveyForm(surveyDiv, storyForm, doneCallback, surveyOptions: SurveyOptions = {}) {  
+
+    function tr(text) {
+        return translate(storyForm, currentLanguage, text);
+    }
+
+    console.log("buildSurveyForm questions", storyForm);
     
-    var startQuestions = [];
+    const startQuestions = [];
     
     if (surveyOptions.previewMode) {
         startQuestions.push({id: "previewMode_header", displayName: "previewMode", displayClass: "narrafirma-preview", displayPrompt: "Previewing story form; results will not be saved.", displayType: "header", valueOptions: []});
     }
     
-    if (questionnaire.title) {
-        startQuestions.push({id: "title_header", displayName: "title", displayPrompt: questionnaire.title, displayType: "header", valueOptions: [], displayClass: "narrafirma-survey-title"});
-        if (!surveyOptions.ignoreTitleChange) document.title = sanitizeHTML.removeHTMLTags(questionnaire.title);
+    if (storyForm.title) {
+        startQuestions.push({id: "title_header", displayName: "title", displayPrompt: tr(storyForm.title), displayType: "header", valueOptions: [], displayClass: "narrafirma-survey-title"});
+        if (!surveyOptions.ignoreTitleChange) document.title = sanitizeHTML.removeHTMLTags(tr(storyForm.title));
     }
-    
-    var startText = questionnaire.startText || 'Please help by taking a short survey. The data you enter will be sent to the server only at the end when you press the "submit survey" button.';
+
+    const startText = tr(storyForm.startText || defaultFormTexts.startText);
     startQuestions.push({id: "startText_label", displayName: "startText", displayPrompt: startText, displayType: "label", valueOptions: [], displayClass: "narrafirma-survey-start-text"});
 
-    var endText = questionnaire.endText || "Thank you for taking the survey.";
-    var thankYouPopupText = questionnaire.thankYouPopupText || "Your contribution has been added to the story collection. Thank you.";
-    var endQuestions = [];
+    const endText = tr(storyForm.endText || defaultFormTexts.endText);
+    const endQuestions = [];
     endQuestions.push({id: "endText_label", displayName: "endText", displayPrompt: endText, displayType: "label", valueOptions: [], displayClass: "narrafirma-survey-end-text"});
 
     // TODO: What about idea of having IDs that go with eliciting questions so store reference to ID not text prompt?
-    var elicitingQuestionOptions = [];
-    for (var elicitingQuestionIndex in questionnaire.elicitingQuestions) {
-        var elicitingQuestionSpecification = questionnaire.elicitingQuestions[elicitingQuestionIndex];
-        var value = elicitingQuestionSpecification.id || elicitingQuestionSpecification.text;
-        var option = {name: elicitingQuestionSpecification.text, value: value};
+    const elicitingQuestionOptions = [];
+    for (let elicitingQuestionIndex in storyForm.elicitingQuestions) {
+        const elicitingQuestionSpecification = storyForm.elicitingQuestions[elicitingQuestionIndex];
+        const value = elicitingQuestionSpecification.id || elicitingQuestionSpecification.text;
+        const option = {name: tr(elicitingQuestionSpecification.text), value: value};
         elicitingQuestionOptions.push(option);
     }
     
     // TODO: What if these IDs for storyText and storyName are not unique?
-    var initialStoryQuestions = [];
-    var singlePrompt = null;
+    const initialStoryQuestions = [];
+    let singlePrompt = null;
 
     if (elicitingQuestionOptions.length !== 1) {
-        const chooseQuestionText = questionnaire.chooseQuestionText || "Please choose a question to which you would like to respond.";
+        const chooseQuestionText = tr(storyForm.chooseQuestionText || defaultFormTexts.chooseQuestionText);
         initialStoryQuestions.push({id: "elicitingQuestion", displayName: "elicitingQuestion", displayPrompt: chooseQuestionText, displayType: "radiobuttons", valueOptions: elicitingQuestionOptions, displayClass: "narrafirma-eliciting-questions"});
-        const enterStoryText = questionnaire.enterStoryText || "Please enter your response in the box below.";
+        const enterStoryText = tr(storyForm.enterStoryText || defaultFormTexts.enterStoryText);
         initialStoryQuestions.push({id: "storyText", displayName: "storyText", displayPrompt: enterStoryText, displayType: "textarea", valueOptions: [], displayClass: "narrafirma-story-text"});
     } else {
         singlePrompt = elicitingQuestionOptions[0];
-        initialStoryQuestions.push({id: "storyText", displayName: "storyText", displayPrompt: singlePrompt.name, displayType: "textarea", valueOptions: [], displayClass: "narrafirma-story-text"});
+        initialStoryQuestions.push({id: "storyText", displayName: "storyText", displayPrompt: tr(singlePrompt.name), displayType: "textarea", valueOptions: [], displayClass: "narrafirma-story-text"});
     }
-    const nameStoryText = questionnaire.nameStoryText || "Please give your story a name.";
+    const nameStoryText = tr(storyForm.nameStoryText || defaultFormTexts.nameStoryText);
     initialStoryQuestions.push({id: "storyName", displayName: "storyName", displayPrompt: nameStoryText, displayType: "text", valueOptions: [], displayClass: "narrafirma-story-name"});
     
-    var allStoryQuestions = initialStoryQuestions.concat(questionnaire.storyQuestions);
+    const allStoryQuestions = initialStoryQuestions.concat(storyForm.storyQuestions);
             
-    const aboutYouText = questionnaire.aboutYouText || "About you";
-    var participantQuestions = [];
-    if (questionnaire.participantQuestions.length > 0) {
+    const aboutYouText = tr(storyForm.aboutYouText || defaultFormTexts.aboutYouText);
+    let participantQuestions = [];
+    if (storyForm.participantQuestions.length > 0) {
         participantQuestions = [{id: "participantHeader", displayName: "participantHeader", displayPrompt: aboutYouText, displayType: "header", valueOptions: [], displayClass: "narrafirma-participant-header"}];
-        participantQuestions = participantQuestions.concat(questionnaire.participantQuestions);
+        participantQuestions = participantQuestions.concat(storyForm.participantQuestions);
     }
 
-    var timestampStart = new Date();
+    const timestampStart = new Date();
     
-    var surveyResult = {
-        __type: "org.workingwithstories.QuestionnaireResponse",
-        // TODO: Think about whether to include entire questionnaire or something else perhaps
-        questionnaire: questionnaire,
-        responseID: generateRandomUuid("QuestionnaireResponse"),
+    const surveyResult = {
+        __type: "org.workingwithstories.storyFormResponse",
+        // TODO: Think about whether to include entire storyForm or something else perhaps
+        storyForm: storyForm,
+        responseID: generateRandomUuid("storyFormResponse"),
         stories: [],
+        language: currentLanguage,
         participantData: null,
         timestampStart: "" + timestampStart.toISOString()
     };
     
-    var participantID = generateRandomUuid("Participant");
-    var participantDataModel = {
+    const participantID = generateRandomUuid("Participant");
+    const participantDataModel = {
         __type: "org.workingwithstories.ParticipantData",
         participantID: participantID
     };
@@ -520,10 +545,10 @@ export function buildSurveyForm(surveyDiv, questionnaire, doneCallback, surveyOp
 
     // m.render(surveyDiv, m("div", ["Hello survey ============== b", "More!!"]));
     
-    var stories = surveyResult.stories;
+    const stories = surveyResult.stories;
     
     function addStory() {
-        var storyQuestionsModel = {
+        const storyQuestionsModel = {
             __type: "org.workingwithstories.Story",
             storyID: generateRandomUuid("Story"),
             participantID: participantID,
@@ -537,7 +562,7 @@ export function buildSurveyForm(surveyDiv, questionnaire, doneCallback, surveyOp
     addStory();
     
     function makeLabelForStory(story, index) {
-        var storyLabel = story.storyName;
+        let storyLabel = story.storyName;
         if (storyLabel) storyLabel = storyLabel.trim();
         if (!storyLabel) {
             storyLabel = 'Untitled story #' + (index + 1);
@@ -548,12 +573,12 @@ export function buildSurveyForm(surveyDiv, questionnaire, doneCallback, surveyOp
     }
          
     // submitted can be one of: "never", "pending", "failed", "success"
-    var submitted = "never";
+    let submitted = "never";
     
     function submitSurvey(surveyResult, wizardPane, doneCallback) {
         console.log("submitting survey...");
 
-        var timestampEnd = new Date();
+        const timestampEnd = new Date();
         
         surveyResult.timestampEnd = timestampEnd.toISOString();
         surveyResult.timeDuration_ms = timestampEnd.getTime() - timestampStart.getTime(); 
@@ -564,26 +589,26 @@ export function buildSurveyForm(surveyDiv, questionnaire, doneCallback, surveyOp
     }
 
     function validateStoryQuestionsModel(storyQuestionsModel, index) {
-        var elicitingQuestion = storyQuestionsModel.elicitingQuestion;
-        var storyName = storyQuestionsModel.storyName;
-        var storyText = storyQuestionsModel.storyText;
+        const elicitingQuestion = storyQuestionsModel.elicitingQuestion;
+        const storyName = storyQuestionsModel.storyName;
+        const storyText = storyQuestionsModel.storyText;
 
         if (!elicitingQuestion) {
-            var prompt = questionnaire.errorMessage_noElicitationQuestionChosen || "Please select the question to which story # is a response.";
+            let prompt = tr(storyForm.errorMessage_noElicitationQuestionChosen || defaultFormTexts.errorMessage_noElicitationQuestionChosen);
             prompt = prompt.replace("#", index + 1);
             alert(prompt);
             return false;
         }
 
         if (!storyText) {
-            var prompt = questionnaire.errorMessage_noStoryText || "Please enter some text for story #.";
+            let prompt = tr(storyForm.errorMessage_noStoryText || defaultFormTexts.errorMessage_noStoryText);
             prompt = prompt.replace("#", index + 1);
             alert(prompt);
             return false;
         }
 
         if (!storyName) {
-            var prompt = questionnaire.errorMessage_noStoryName || "Please give story # a name.";
+            let prompt = tr(storyForm.errorMessage_noStoryName || defaultFormTexts.errorMessage_noStoryName);
             prompt = prompt.replace("#", index + 1);
             alert(prompt);
             return false;
@@ -593,14 +618,14 @@ export function buildSurveyForm(surveyDiv, questionnaire, doneCallback, surveyOp
     }
     
     function displayStoryQuestions(story, index) {
-        var storylabel = makeLabelForStory(story, index);
-        var storyQuestionsPart = allStoryQuestions.map(function(question, index) {
-            return displayQuestion(null, story, question, questionnaire)
+        const storylabel = makeLabelForStory(story, index);
+        const storyQuestionsPart = allStoryQuestions.map(function(question, index) {
+            return displayQuestion(null, story, question, storyForm)
         });
 
-        const deleteStoryButtonText = questionnaire.deleteStoryButtonText || "Delete this story";
-        const deleteStoryPrompt = questionnaire.deleteStoryDialogPrompt || "Are you sure you want to delete this story?";
-        var result = [
+        const deleteStoryButtonText = tr(storyForm.deleteStoryButtonText || defaultFormTexts.deleteStoryButtonText);
+        const deleteStoryPrompt = tr(storyForm.deleteStoryDialogPrompt || defaultFormTexts.deleteStoryDialogPrompt);
+        const result = [
             m("button", {
                 "class": "narrafirma-survey-delete-story-button",
                 onclick: function () {
@@ -614,7 +639,7 @@ export function buildSurveyForm(surveyDiv, questionnaire, doneCallback, surveyOp
         ];
         
         // invert even and odd to match up with numbers starting at 1, not zero
-        var evenOrOdd = (index % 2 === 1) ? "narrafirma-survey-story-even" : "narrafirma-survey-story-odd";
+        const evenOrOdd = (index % 2 === 1) ? "narrafirma-survey-story-even" : "narrafirma-survey-story-odd";
         // A locally unique key needs to be defined so Mithril can track deletions and inserts without rebuilding DOM nodes
         return m("div", {key: story.storyID, "class": "narrafirma-survey-story " + evenOrOdd}, <any>result); 
     }
@@ -626,8 +651,7 @@ export function buildSurveyForm(surveyDiv, questionnaire, doneCallback, surveyOp
             return false;
         }
         for (let i = 0; i < stories.length; i++) {
-            var story = stories[i];
-            if (!validateStoryQuestionsModel(story, i)) return false;
+            if (!validateStoryQuestionsModel(stories[i], i)) return false;
         }
         return true;
     }
@@ -646,11 +670,11 @@ export function buildSurveyForm(surveyDiv, questionnaire, doneCallback, surveyOp
         console.log("Submit survey validated");
         
         // TODO: Fix no-longer-correct name from Dojo version
-        var wizardPane = {
+        const wizardPane = {
             forward: function () {
                 console.log("survey sending success" + (surveyOptions.previewMode ? " (preview)" : ""));
                 submitted = "success";
-                // TODO: Translate
+                const thankYouPopupText = tr(storyForm.thankYouPopupText || defaultFormTexts.thankYouPopupText);
                 alert(thankYouPopupText);
                 
                 redraw("network");
@@ -672,14 +696,14 @@ export function buildSurveyForm(surveyDiv, questionnaire, doneCallback, surveyOp
     
     function submitButtonOrWaitOrFinal(): any {
 
-        const submitSurveyButtonText = questionnaire.submitSurveyButtonText || "Submit Survey";
-        const couldNotSaveSurveyText = questionnaire.couldNotSaveSurveyText || "The server could not save your survey. Please try again.";
-        const sendingSurveyResultsText = questionnaire.sendingSurveyResultsText || "Now sending survey result to server. Please wait . . .";
+        const submitSurveyButtonText = tr(storyForm.submitSurveyButtonText || defaultFormTexts.submitSurveyButtonText);
+        const couldNotSaveSurveyText = tr(storyForm.couldNotSaveSurveyText || defaultFormTexts.couldNotSaveSurveyText);
+        const sendingSurveyResultsText = tr(storyForm.sendingSurveyResultsText || defaultFormTexts.sendingSurveyResultsText);
 
         if (submitted === "never") {
             return m("button", {"class": "narrafirma-survey-submit-survey-button", onclick: submitButtonPressed}, submitSurveyButtonText + (surveyOptions.previewMode ? " (preview)" : ""));
         } else if (submitted === "failed") {
-            const resubmitSurveyButtonText = questionnaire.resubmitSurveyButtonText || "Resubmit Survey";
+            const resubmitSurveyButtonText = tr(storyForm.resubmitSurveyButtonText || defaultFormTexts.resubmitSurveyButtonText);
             return m("div.narrafirma-could-not-save-survey", [
                 couldNotSaveSurveyText,
                 m("br"),
@@ -688,13 +712,13 @@ export function buildSurveyForm(surveyDiv, questionnaire, doneCallback, surveyOp
         } else if (submitted === "pending") {
             return m("div.narrafirma-sending-survey", m("br"), [sendingSurveyResultsText]);
         } else {
-            const surveyStoredText = questionnaire.surveyStoredText || "Your survey has been accepted and stored.";
+            const surveyStoredText = tr(storyForm.surveyStoredText || defaultFormTexts.surveyStoredText);
             return endQuestions.map(function(question, index) {
                 return m("div", [
                     m("br"),
                     m("div.narrafirma-survey-accepted", [surveyStoredText,
                         m("br"),
-                        displayQuestion(null, null, question, questionnaire),
+                        displayQuestion(null, null, question, storyForm),
                         m("br")
                 ])
                 ]);
@@ -703,18 +727,18 @@ export function buildSurveyForm(surveyDiv, questionnaire, doneCallback, surveyOp
     }
 
     function questionNameForResultsPane(question) {
-        var questionName = "";
+        let questionName = "";
         if (question.displayType !== "header" && question.displayType !== "label") {
-            questionName = "* " + question.displayPrompt;
+            questionName = "* " + tr(question.displayPrompt);
         }
         if (question.displayType === "slider") {
             if (question.displayConfiguration) { // for stories
                 if (question.displayConfiguration.length > 1) {
-                    questionName += " (0 = " + question.displayConfiguration[0] + "; 100 = " + question.displayConfiguration[1] + ")";
+                    questionName += " (0 = " + tr(question.displayConfiguration[0]) + "; 100 = " + tr(question.displayConfiguration[1]) + ")";
                 }
             } else if (question.valueOptions) { // for participant data
                 if (question.valueOptions.length > 1) {
-                    questionName += " (0 = " + question.valueOptions[0] + "; 100 = " + question.valueOptions[1] + ")";
+                    questionName += " (0 = " + tr(question.valueOptions[0]) + "; 100 = " + tr(question.valueOptions[1]) + ")";
                 }
             }
         }
@@ -722,17 +746,17 @@ export function buildSurveyForm(surveyDiv, questionnaire, doneCallback, surveyOp
     }
 
     function surveyResultPane() {
-        var parts = [];
+        const parts = [];
         stories.forEach((story) => {
             allStoryQuestions.forEach((question) => {
-                var questionName = questionNameForResultsPane(question);
+                const questionName = tr(questionNameForResultsPane(question));
                 if (questionName) parts.push(questionName);
                 if (question.id in story) {
-                    var response = story[question.id];
+                    const response = story[question.id];
                     if (typeof response == "object") {
-                        var answers = Object.keys(response);
+                        const answers = Object.keys(response);
                         for (const answer of answers) {
-                            if (response[answer]) parts.push(answer);
+                            if (response[answer]) parts.push(tr(answer));
                         }
                     } else {
                         parts.push(response);
@@ -742,21 +766,21 @@ export function buildSurveyForm(surveyDiv, questionnaire, doneCallback, surveyOp
             parts.push("");
         });
         participantQuestions.forEach((question) => {
-            var questionName = questionNameForResultsPane(question);
+            const questionName = tr(questionNameForResultsPane(question));
             if (questionName) parts.push(questionName);
             if (question.id in surveyResult.participantData) {
-                var response = surveyResult.participantData[question.id];
+                const response = surveyResult.participantData[question.id];
                 if (typeof response == "object") {
-                    var answers = Object.keys(response);
+                    const answers = Object.keys(response);
                     for (const answer of answers) {
-                        if (response[answer]) parts.push(answer);
+                        if (response[answer]) parts.push(tr(answer));
                     }
                 } else {
                     parts.push(response);
                 }
             }
         });
-        const surveyResultPaneHeader = questionnaire.surveyResultPaneHeader || "Here are the stories you contributed. You can copy this text and paste it somewhere else to keep your own copy of what you said.";
+        const surveyResultPaneHeader = tr(storyForm.surveyResultPaneHeader || defaultFormTexts.surveyResultPaneHeader);
         return [m("div", {"class": "narrafirma-survey-result-summary-header"}, surveyResultPaneHeader), 
             m("textarea", {"class": "narrafirma-survey-result-summary"}, parts.join("\n"))];
     }
@@ -766,7 +790,7 @@ export function buildSurveyForm(surveyDiv, questionnaire, doneCallback, surveyOp
         redraw();
     }
     
-    var tagsToMakeReadOnly = {
+    const tagsToMakeReadOnly = {
         "input": true,
         "select": true,
         "textarea": true,
@@ -803,23 +827,58 @@ export function buildSurveyForm(surveyDiv, questionnaire, doneCallback, surveyOp
         return root;
     }
     
-    function anotherStoryButton(questionnaire) {
-        const tellAnotherStoryText = questionnaire.tellAnotherStoryText || "Would you like to tell another story?";
-        const tellAnotherStoryButtonText = questionnaire.tellAnotherStoryButtonText || "Yes, I'd like to tell another story";
-        return m("div", {"class": "narrafirma-survey-tell-another-story-button-panel"}, [
-            tellAnotherStoryText,
-             m("button", {"class": "narrafirma-survey-tell-another-story-button", onclick: tellAnotherStory}, tellAnotherStoryButtonText)
-        ]);
-    }
+    const view = function() {
 
-    var view = function() {
-        var imageHTML;
-        if (questionnaire.image) {
-            imageHTML = "img[src='" + questionnaire.image + "'][class='narrafirma-survey-image']";
+        function anotherStoryButton(storyForm) {
+            const tellAnotherStoryText = tr(storyForm.tellAnotherStoryText || defaultFormTexts.tellAnotherStoryText);
+            const tellAnotherStoryButtonText = tr(storyForm.tellAnotherStoryButtonText || defaultFormTexts.tellAnotherStoryButtonText);
+            return m("div", {"class": "narrafirma-survey-tell-another-story-button-panel"}, [
+                tellAnotherStoryText,
+                 m("button", {"class": "narrafirma-survey-tell-another-story-button", onclick: tellAnotherStory}, tellAnotherStoryButtonText)
+            ]);
         }
-        var showSurveyResultPane = false;
+
+        function chooseLanguageHTML() {
+            if (!storyForm.defaultLanguage) return ""; 
+            if (!storyForm.languageChoiceQuestion_text) return "";
+            if (!storyForm.languageChoiceQuestion_choices) return "";
+
+            const languageChoiceQuestionText = sanitizeHTML.removeHTMLTags(storyForm.languageChoiceQuestion_text);
+
+            let languageNames = [];
+            const nonDefaultLanguages = storyForm.languageChoiceQuestion_choices.split("\n").map(function(item) { return item.trim(); } );
+            languageNames = languageNames.concat([storyForm.defaultLanguage], nonDefaultLanguages);
+            const selectOptions = languageNames.map(function (aLanguage) { return m("option", {value: aLanguage, selected: aLanguage === currentLanguage}, aLanguage); });
+
+            let defaultOptions = {name: '', value: '', selected: undefined};
+            if (!currentLanguage) defaultOptions.selected = 'selected';
+            selectOptions.push(m("option", defaultOptions, tr('-- select --')));  // cfk fix should not be hard coded
+
+            const questionParts = [
+                m("div.narrafirma-language-choice-question-text", languageChoiceQuestionText),
+                m("select", {
+                    value: currentLanguage,
+                    id: "languageChoiceQuestion",
+                    onchange: function(event) {
+                        if (event.target.value !== currentLanguage) {
+                            currentLanguage = event.target.value;
+                            globalRedraw();
+                        }
+                    }}, 
+                    selectOptions),
+                m("br")
+            ];
+            return questionParts;
+        }
+        
+        let imageHTML;
+        if (storyForm.image) {
+            imageHTML = "img[src='" + storyForm.image + "'][class='narrafirma-survey-image']";
+        }
+
+        let showSurveyResultPane = false;
         if (submitted === "success") {
-            switch (questionnaire.showSurveyResultPane) {
+            switch (storyForm.showSurveyResultPane) {
                 case "never":
                     showSurveyResultPane = false;
                     break;
@@ -834,20 +893,23 @@ export function buildSurveyForm(surveyDiv, questionnaire, doneCallback, surveyOp
                     break;
             }
         }
-        var result = m("div", [
+
+        const languageHTML = chooseLanguageHTML();
+        const result = m("div", [
+            languageHTML,
             m(imageHTML || ""),
             startQuestions.map(function(question, index) {
-                return displayQuestion(null, null, question, questionnaire);
+                return displayQuestion(null, null, question, storyForm);
             }),
             
             stories.map(function(story, index) {
                 return displayStoryQuestions(story, index);
             }),
-            (!questionnaire.maxNumStories || questionnaire.maxNumStories === "no limit" || stories.length < questionnaire.maxNumStories) ? anotherStoryButton(questionnaire) : "",
+            (!storyForm.maxNumStories || storyForm.maxNumStories === "no limit" || stories.length < storyForm.maxNumStories) ? anotherStoryButton(storyForm) : "",
             // A locally unique key needs to be defined so Mithril can track deletions and inserts without rebuilding DOM nodes
             m("div", {key: "participant", "class": "narrafirma-survey-participant"}, 
                 participantQuestions.map(function(question, index) {
-                    return displayQuestion(null, surveyResult.participantData, question, questionnaire);
+                    return displayQuestion(null, surveyResult.participantData, question, storyForm);
                 })),
             submitButtonOrWaitOrFinal(),
             showSurveyResultPane ? surveyResultPane() : ""

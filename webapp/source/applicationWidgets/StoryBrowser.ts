@@ -364,6 +364,12 @@ export class StoryBrowser {
             displayPrompt: "Collection year (format: YYYY-MM-DD)",
             displayType: "text"
         }
+        const languageQuestion = {
+            id: "language",
+            displayName: "Language",
+            displayPrompt: "Language",
+            displayType: "text"
+        }
 
         const storyQuestions = this.project.storyQuestionsForStoryCollection(this.storyCollectionIdentifier);
         const participantQuestions = this.project.participantQuestionsForStoryCollection(this.storyCollectionIdentifier);
@@ -374,6 +380,7 @@ export class StoryBrowser {
             storyQuestions, 
             participantQuestions, 
             [collectionDateQuestion],
+            [languageQuestion],
             [numStoriesToldQuestion], 
             [storyLengthQuestion]);
 

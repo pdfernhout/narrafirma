@@ -18,6 +18,8 @@ export function getChoiceValueForQuestionAndStory(question, story, unansweredTex
         return getStoryLengthValueForStory(story, question, unansweredText, includeNAValues, lumpingCommands);
     if (question.id === "collectionDate")
         return getCollectionDateValueForStory(story, question, unansweredText, includeNAValues, lumpingCommands);
+    if (question.id === "language")
+        return getLanguageForStory(story, question, unansweredText, includeNAValues, lumpingCommands);
     
     let value = story.fieldValue(question.id);
 
@@ -120,6 +122,22 @@ function getCollectionDateValueForStory(story, question, unansweredText, include
     } else if (dateUnit === "days") {
         value = story.storyCollectionDate();
     }
+    if (!value) {
+        if (includeNAValues) {
+            return unansweredText;
+        } else {
+            return null;
+        }
+    }
+    if (lumpingCommands.hasOwnProperty(question.displayName)) {
+        if (lumpingCommands[question.displayName].hasOwnProperty(value)) 
+            value = lumpingCommands[question.displayName][value];
+    } 
+    return value;
+}
+
+function getLanguageForStory(story, question, unansweredText, includeNAValues, lumpingCommands) {
+    let value = story.storyLanguage();
     if (!value) {
         if (includeNAValues) {
             return unansweredText;

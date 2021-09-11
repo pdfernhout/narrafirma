@@ -1,6 +1,7 @@
 import add_catalysisReportQuestionChooser = require("./add_catalysisReportQuestionChooser");
 import add_printStoryCardsQuestionChooser = require("./add_printStoryCardsQuestionChooser");
 import add_questionTypeChooser = require("./add_questionTypeChooser");
+import add_translationDictionaryEditorPanel = require("./add_translationDictionaryEditorPanel");
 import add_choiceQuestionAnswersManagementPanel = require("./add_choiceQuestionAnswersManagementPanel");
 import add_checkboxQuestionConfigurationPanel = require("./add_checkboxQuestionConfigurationPanel");
 import add_sliderQuestionConfigurationPanel = require("./add_sliderQuestionConfigurationPanel");
@@ -31,6 +32,7 @@ function loadAllApplicationWidgets(PanelBuilder) {
     PanelBuilder.addPlugin("catalysisReportQuestionChooser", add_catalysisReportQuestionChooser);
     PanelBuilder.addPlugin("printStoryCardsQuestionChooser", add_printStoryCardsQuestionChooser);
     PanelBuilder.addPlugin("questionTypeChooser", add_questionTypeChooser);
+    PanelBuilder.addPlugin("translationDictionaryEditorPanel", add_translationDictionaryEditorPanel);
     PanelBuilder.addPlugin("choiceQuestionAnswersManagementPanel", add_choiceQuestionAnswersManagementPanel);
     PanelBuilder.addPlugin("checkboxQuestionConfigurationPanel", add_checkboxQuestionConfigurationPanel);
     PanelBuilder.addPlugin("sliderQuestionConfigurationPanel", add_sliderQuestionConfigurationPanel);

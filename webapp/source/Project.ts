@@ -171,17 +171,18 @@ class Project {
         return null;
     }
 
-    findQuestionnaireTemplate(shortName): string {
-        const questionnaires: Array<string> = this.getListForField("project_storyForms");
-        for (let i = 0; i < questionnaires.length; i++) {
-            if (this.tripleStore.queryLatestC(questionnaires[i], "questionForm_shortName") === shortName) {
-                return questionnaires[i];
+    findStoryFormID(shortName): string {
+        const storyFormIDs: Array<string> = this.getListForField("project_storyForms");
+        for (let i = 0; i < storyFormIDs.length; i++) {
+            const formShortName = this.tripleStore.queryLatestC(storyFormIDs[i], "questionForm_shortName");
+            if (formShortName === shortName) {
+                return storyFormIDs[i];
             }
         }
         return null;
     }
     
-    findStoryCollection(shortName): string {
+    findStoryCollectionID(shortName): string {
         const storyCollections: Array<string> = this.getListForField("project_storyCollections");
         for (let i = 0; i < storyCollections.length; i++) {
             if (this.tripleStore.queryLatestC(storyCollections[i], "storyCollection_shortName") === shortName) {
@@ -346,11 +347,12 @@ class Project {
         const numStoriesToldQuestions = this.numStoriesToldQuestionsForCatalysisReport(catalysisReportIdentifier);
         const storyLengthQuestions = this.storyLengthQuestionsForCatalysisReport(catalysisReportIdentifier);
         const collectionDateQuestions = this.collectionDateQuestionsForCatalysisReport(catalysisReportIdentifier);
+        const languageQuestions = this.languageQuestionsForCatalysisReport(catalysisReportIdentifier);
         const storyQuestions = this.storyQuestionsForCatalysisReport(catalysisReportIdentifier); 
         const participantQuestions = this.participantQuestionsForCatalysisReport(catalysisReportIdentifier);
         const annotationQuestions = questionnaireGeneration.convertEditorQuestions(this.collectAllAnnotationQuestions(), "A_");
         let allQuestions = [];
-        allQuestions = allQuestions.concat(elicitingQuestions, numStoriesToldQuestions, storyLengthQuestions, collectionDateQuestions, storyQuestions, participantQuestions, annotationQuestions);
+        allQuestions = allQuestions.concat(elicitingQuestions, numStoriesToldQuestions, storyLengthQuestions, collectionDateQuestions, languageQuestions, storyQuestions, participantQuestions, annotationQuestions);
         
         if (considerExclusions) {
             const questionIDsToInclude = this.tripleStore.queryLatestC(catalysisReportIdentifier, "questionsToInclude"); 
@@ -855,7 +857,7 @@ class Project {
     }
 
     collectionDateQuestion(dateUnit, unitDescriptors) {
-        const collectionDateQuestion = {
+        return {
             id: "collectionDate",
             displayName: "Collection date",
             displayPrompt: "This is the date on which the story was collected.",
@@ -863,7 +865,56 @@ class Project {
             displayConfiguration: dateUnit || "days",
             valueOptions: unitDescriptors 
         }
-        return collectionDateQuestion;
+    }
+
+    languageQuestionForStoryCollection(storyCollectionIdentifier) {
+        const stories = surveyCollection.getStoriesForStoryCollection(storyCollectionIdentifier);
+        let languages = this.languagesForListOfStories(stories);
+        languages = languages.sort(); 
+        return this.languageQuestion(languages);
+    }
+
+    languageQuestionsForCatalysisReport(catalysisReportIdentifier) {
+        const storyCollectionsIdentifier = this.tripleStore.queryLatestC(catalysisReportIdentifier, "catalysisReport_storyCollections");
+        const storyCollectionItems = this.tripleStore.getListForSetIdentifier(storyCollectionsIdentifier);
+        if (storyCollectionItems.length === 0) return [];
+
+        let languages = [];
+        storyCollectionItems.forEach((storyCollectionPointer) => {
+            if (storyCollectionPointer) {
+                const storyCollectionIdentifier = this.tripleStore.queryLatestC(storyCollectionPointer, "storyCollection");
+                const stories = surveyCollection.getStoriesForStoryCollection(storyCollectionIdentifier);
+                const languagesForStoryCollection = this.languagesForListOfStories(stories);
+                languagesForStoryCollection.forEach((language) => {
+                    if (languages.indexOf(language) < 0) {
+                        languages.push(language);
+                    }
+                });
+            }
+        });
+        languages = languages.sort(); 
+        return this.languageQuestion(languages);
+    }
+
+    languagesForListOfStories(stories) {
+        const languages = [];
+        stories.forEach((story) => { 
+            const language = story.storyLanguage();
+            if (language && languages.indexOf(language) < 0) {
+                languages.push(language);
+            }
+        });
+        return languages;
+    }
+
+    languageQuestion(languages) {
+        return {
+            id: "language",
+            displayName: "Language",
+            displayPrompt: "This is the language in which the story form was displayed when the story was collected.",
+            displayType: "select",
+            valueOptions: languages 
+        }
     }
 
     numStoriesToldQuestion(maxNumQuestions) {

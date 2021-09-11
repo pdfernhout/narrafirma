@@ -55,6 +55,7 @@
                 <li><a href="#csv_storytexts">Story texts</a></li>
                 <li><a href="#csv_storytitles">Story titles</li>
                 <li><a href="#csv_storycollectiondates">Story collection dates</a></li>
+                <li><a href="#csv_storycollectionlanguages">Story form languages</a></li>
                 <li><a href="#csv_singlechoice">Single choice questions</a></li>
                 <li><a href="#csv_singlechoiceindexed">Single choice indexed questions</a></li>
                 <li><a href="#csv_scale">Scale questions</a></li>
@@ -144,6 +145,8 @@ If your data file doesn't meet these requirements, you will need to edit the fil
         will assign story names of "Untitled" plus a number.</li>
     <li>Each non-header row will <i>usually</i> have in it <b>the date on which the story was collected</b>, in ISO 8601 format (YYYY-MM-DD).
         However, you can import stories with no collection dates. In that case, the collection date information normally displayed by NarraFirma will be blank.</li>
+    <li>Each non-header row <i>may</i> have in it <b>the language of the form on which the story was collected</b>.
+        However, you can import stories with no language information. In that case, the language information normally displayed by NarraFirma will be blank.</li>
     <li>Each non-header row will <i>usually</i> have in it a cell with <b>the name of the question the participant answered</b> by telling the story. 
         If there is no data on eliciting questions in your data file, 
         NarraFirma will assign the name of the first eliciting question in your story form as the answer to the "Eliciting question" question for each story.
@@ -1122,7 +1125,7 @@ Date information must be in the ISO 8601 format (YYYY-MM-DD), and anything that 
 If your dates aren't in ISO 8601 format, use a spreadsheet program to convert them.</p>
 
 <p>
-    You also need to tell NarraFirma where to find the date column
+    You will need to tell NarraFirma where to find the date column
     with the story form import option "Story collection date column name," like this.
 </p>
 
@@ -1144,6 +1147,36 @@ If your dates aren't in ISO 8601 format, use a spreadsheet program to convert th
             <td></td>
             <td></td>
             <td>Submitdate</td>
+        </tr>
+    </table>
+
+<h2 id="csv_storycollectionlanguages">Story collection languages</h2>
+
+<p>If the data from your survey system includes the language of each survey, you can read that data into NarraFirma and use it to create graphs.</p>
+
+<p>
+    You will need to tell NarraFirma where to find the date column
+    with the story form import option "Language column name," like this.
+</p>
+
+<table border="1" cellpadding="4" cellspacing="0">
+        <tr>
+            <td>Data column name</td>
+            <td>Type</td>
+            <td>About</td>	
+            <td>Short name</td>	
+            <td>Long name</td>	
+            <td>Options</td>	
+            <td>Answers</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>Language column name</td>
+            <td>import</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>Language</td>
         </tr>
     </table>
 

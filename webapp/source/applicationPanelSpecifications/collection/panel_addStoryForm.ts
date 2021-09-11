@@ -78,7 +78,6 @@ var panel: Panel = {
             displayVisible: function(panelBuilder, model) { return !!Globals.clientState().showAdvancedOptions(); }
         },
 
-
         // choose eliciting question(s) - basic
         {
             id: "questionForm_header_chooseElicitingQuestions",
@@ -445,6 +444,14 @@ var panel: Panel = {
             displayPrompt: "What is the data column header for the  <strong>date of story collection</strong>?",
             displayVisible: function(panelBuilder, model) { return !!Globals.clientState().showImportOptions(); }
         },
+        {
+            id: "questionForm_import_storyFormLanguageColumnName",
+            valueType: "string",
+            displayType: "text",
+            displayName: "Story form language column name",
+            displayPrompt: "What is the data column header for the <strong>language</strong> of the survey on which the story was entered?",
+            displayVisible: function(panelBuilder, model) { return !!Globals.clientState().showImportOptions(); }
+        },
 
         {
             id: "questionForm_import_columnsToAppendToStoryText",
@@ -587,7 +594,6 @@ var panel: Panel = {
             displayPrompt: "Export story form for external import...",
             displayVisible: function(panelBuilder, model) { return !panelBuilder.readOnly && !!Globals.clientState().showImportOptions(); }
         },        
-
 
         // notes to self
         {
