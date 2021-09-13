@@ -53,6 +53,7 @@ interface GraphHolder {
 
 interface PatternDisplayConfiguration {
     hideNoAnswerValues: boolean;
+    useLumpingCommands: boolean;
     remarkable?: string;
 }
 

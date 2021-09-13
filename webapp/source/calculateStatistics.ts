@@ -52,20 +52,29 @@ export function getChoiceValueForQuestionAndStory(question, story, unansweredTex
     } else if (["radiobuttons", "checkboxes", "select"].indexOf(question.displayType) >= 0) {
 
         if (lumpingCommands.hasOwnProperty(question.displayName)) {
-            
+
             if (question.displayType === "checkboxes") { 
+                // do not want to change the actual values, because they are in the story
+                // so make a copy of the dictionary, change that, and return it
+                const answersToReport = {}; 
+                const answersToCopy = Object.keys(value);
+                for (let i = 0; i < answersToCopy.length; i++) {
+                    answersToReport[answersToCopy[i]] = value[answersToCopy[i]];
+                }
                 const answersToLump = Object.keys(lumpingCommands[question.displayName]);
                 for (let i = 0; i < answersToLump.length; i++) {
                     const answerToLump = answersToLump[i];
                     const lumpedAnswer = lumpingCommands[question.displayName][answerToLump];
                     if (value.hasOwnProperty(answerToLump)) {
-                        delete value[answerToLump];
-                        value[lumpedAnswer] = true;
+                        delete answersToReport[answerToLump];
+                        answersToReport[lumpedAnswer] = true;
                     }
                 }
-            } else {
+                return answersToReport;
+
+            } else { // not checkboxes, so answer is not a dictionary, so you can just return one lumped value
                 if (lumpingCommands[question.displayName].hasOwnProperty(value)) 
-                    value = lumpingCommands[question.displayName][value];
+                    return lumpingCommands[question.displayName][value];
             }
         }
     } 

@@ -511,8 +511,13 @@ function printCatalysisReportWithObservationGraphsOnly(project, catalysisReportI
                 graphTitle = graphTitle.replace("/", " "); // jszip interprets a forward slash as a folder designation 
 
                 const graphHolder = initializedGraphHolder(allStories, options);
+
                 const hideNoAnswerValues = PatternExplorer.getOrSetWhetherNoAnswerValuesShouldBeHiddenForPattern(project, options.catalysisReportIdentifier, observation.pattern);
                 graphHolder.patternDisplayConfiguration.hideNoAnswerValues = hideNoAnswerValues;
+
+                const useLumpingCommands = PatternExplorer.getOrSetWhetherLumpingCommandsShouldBeUsedForPattern(project, options.catalysisReportIdentifier, observation.pattern);
+                graphHolder.patternDisplayConfiguration.useLumpingCommands = useLumpingCommands;
+
                 const selectionCallback = function() { return this; };
 
                 const graph = PatternExplorer.makeGraph(observation.pattern, graphHolder, selectionCallback, !options.showStatsPanelsInReport);
@@ -600,6 +605,10 @@ function printCatalysisReportWithCSVOnly(project, catalysisReportIdentifier, cat
                 const graphHolder = initializedGraphHolder(allStories, options);
                 const hideNoAnswerValues = PatternExplorer.getOrSetWhetherNoAnswerValuesShouldBeHiddenForPattern(project, options.catalysisReportIdentifier, observation.pattern);
                 graphHolder.patternDisplayConfiguration.hideNoAnswerValues = hideNoAnswerValues;
+
+                const useLumpingCommands = PatternExplorer.getOrSetWhetherLumpingCommandsShouldBeUsedForPattern(project, options.catalysisReportIdentifier, observation.pattern);
+                graphHolder.patternDisplayConfiguration.useLumpingCommands = useLumpingCommands;
+
                 const selectionCallback = function() { return this; };
                 const graph = PatternExplorer.makeGraph(observation.pattern, graphHolder, selectionCallback, !options.showStatsPanelsInReport);
 
@@ -927,6 +936,9 @@ function printObservation(observationID, observationIndex, clusterIndex, idTagSt
         
         const hideNoAnswerValues = PatternExplorer.getOrSetWhetherNoAnswerValuesShouldBeHiddenForPattern(project, options.catalysisReportIdentifier, pattern);
         graphHolder.patternDisplayConfiguration.hideNoAnswerValues = hideNoAnswerValues;
+        
+        const useLumpingCommands = PatternExplorer.getOrSetWhetherLumpingCommandsShouldBeUsedForPattern(project, options.catalysisReportIdentifier, pattern);
+        graphHolder.patternDisplayConfiguration.useLumpingCommands = useLumpingCommands;
 
         const graph = PatternExplorer.makeGraph(pattern, graphHolder, selectionCallback, !options.showStatsPanelsInReport);
         if (graph) resultItems.push(printGraphWithGraphHolder(graphHolder, options.customGraphCSS));
@@ -964,6 +976,9 @@ function printObservation(observationID, observationIndex, clusterIndex, idTagSt
                     // the "show no answer values" option is whatever was set on the OTHER pattern that is being referenced here
                     const hideNoAnswerValues = PatternExplorer.getOrSetWhetherNoAnswerValuesShouldBeHiddenForPattern(project, options.catalysisReportIdentifier, extraPattern);
                     extraGraphHolder.patternDisplayConfiguration.hideNoAnswerValues = hideNoAnswerValues;
+                    
+                    const useLumpingCommands = PatternExplorer.getOrSetWhetherLumpingCommandsShouldBeUsedForPattern(project, options.catalysisReportIdentifier, extraPattern);
+                    extraGraphHolder.patternDisplayConfiguration.useLumpingCommands = useLumpingCommands;
 
                     const extraGraph = PatternExplorer.makeGraph(extraPattern, extraGraphHolder, selectionCallback, !options.showStatsPanelsInReport);
                     if (extraGraph) resultItems.push(printGraphWithGraphHolder(extraGraphHolder, options.customGraphCSS));
@@ -1033,7 +1048,7 @@ function initializedGraphHolder(allStories, options) {
         showStatsPanelsInReport: options.showStatsPanelsInReport,
         customStatsTextReplacements: options.customStatsTextReplacements,
         customGraphWidth: options.customGraphWidth,
-        patternDisplayConfiguration: {hideNoAnswerValues: false},
+        patternDisplayConfiguration: {hideNoAnswerValues: false, useLumpingCommands: true},
         adjustedCSS: options.adjustedCSS,
         lumpingCommands: options.lumpingCommands,
         graphTypesToCreate: {}

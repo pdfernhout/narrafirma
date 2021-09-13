@@ -49,7 +49,7 @@ class AnnotationGraphBrowser {
             customGraphWidth: 600,
             customGraphPadding: 0,
             hideNumbersOnContingencyGraphs: false,
-            patternDisplayConfiguration: {hideNoAnswerValues: true},
+            patternDisplayConfiguration: {hideNoAnswerValues: true, useLumpingCommands: true},
             graphTypesToCreate: {},
             lumpingCommands: {}
         }; 

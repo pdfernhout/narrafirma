@@ -213,6 +213,22 @@ class PatternExplorer {
         }
     }
 
+    static getOrSetWhetherLumpingCommandsShouldBeUsedForPattern(project: Project, catalysisReportIdentifier: string, pattern, newValue = undefined) {
+        const patternReference = JSON.stringify({"patternDisplayConfiguration": PatternExplorer.patternReferenceForPatternAndIndex(pattern, 0)});
+        const configurationObject: PatternDisplayConfiguration = project.tripleStore.queryLatestC(catalysisReportIdentifier, patternReference) || {};
+        if (newValue === undefined) {
+            if (configurationObject.useLumpingCommands !== undefined) {
+                return configurationObject.useLumpingCommands;
+            } else {
+                return true; // assume that lumping commands are being used unless they are turned off for a pattern
+            }
+        } else {
+            configurationObject.useLumpingCommands = newValue;
+            project.tripleStore.addTriple(catalysisReportIdentifier, patternReference, configurationObject);
+            return configurationObject.useLumpingCommands;
+        }
+    }
+
     static getOrSetWhetherPatternIsMarkedAsRemarkable(project: Project, catalysisReportIdentifier: string, pattern, newValue = undefined) {
         const patternReference = JSON.stringify({"patternDisplayConfiguration": PatternExplorer.patternReferenceForPatternAndIndex(pattern, 0)});
         const configurationObject: PatternDisplayConfiguration = project.tripleStore.queryLatestC(catalysisReportIdentifier, patternReference) || {};
@@ -257,7 +273,7 @@ class PatternExplorer {
             customGraphPadding: Project.default_customGraphPadding,
             hideNumbersOnContingencyGraphs: false,
             graphTypesToCreate: Project.default_graphTypesToCreate,
-            patternDisplayConfiguration: {hideNoAnswerValues: false},
+            patternDisplayConfiguration: {hideNoAnswerValues: false, useLumpingCommands: true},
             lumpingCommands: {}
         };
         
@@ -331,7 +347,8 @@ class PatternExplorer {
                         "Show random sample of 10 selected stories", 
                         "Show random sample of 20 selected stories", 
                         "Show random sample of 30 selected stories",
-                        'Toggle display of "No answer" values',
+                        'Toggle display of "No answer" values for this pattern',
+                        'Toggle display lumping for this pattern',
                         "Save current selection (will appear in text box below)",
                         "Restore saved selection (position cursor in text box)",
                         "Save graph(s) as SVG file(s)",
@@ -867,7 +884,11 @@ class PatternExplorer {
                 m.redraw();
             } else {
                 const hideNoAnswerValues = PatternExplorer.getOrSetWhetherNoAnswerValuesShouldBeHiddenForPattern(project, this.catalysisReportIdentifier, result[patternIndex]);
-                const lumpingCommands = this.project.tripleStore.queryLatestC(this.catalysisReportIdentifier, "lumpingCommands") || ""; 
+                const useLumpingCommands = PatternExplorer.getOrSetWhetherLumpingCommandsShouldBeUsedForPattern(project, this.catalysisReportIdentifier, result[patternIndex]);
+                let lumpingCommands = {};
+                if (useLumpingCommands) {
+                    lumpingCommands = this.project.tripleStore.queryLatestC(this.catalysisReportIdentifier, "lumpingCommands") || ""; 
+                }
                 calculateStatistics.calculateStatisticsForPattern(result[patternIndex], stories, 
                     minimumStoryCountRequiredForTest, "No answer", !hideNoAnswerValues, lumpingCommands,
                     progressUpdater, patternIndex, result.length, howOftenToUpdateProgressMessage);
@@ -1194,11 +1215,16 @@ class PatternExplorer {
         const oldHideNoAnswerValuesChoice = this.graphHolder.patternDisplayConfiguration.hideNoAnswerValues;
         const newHideNoAnswerValuesChoice = PatternExplorer.getOrSetWhetherNoAnswerValuesShouldBeHiddenForPattern(this.project, this.catalysisReportIdentifier, pattern);
         this.graphHolder.patternDisplayConfiguration.hideNoAnswerValues = newHideNoAnswerValuesChoice; 
-        if (oldHideNoAnswerValuesChoice !== newHideNoAnswerValuesChoice) {
-            calculateStatistics.calculateStatisticsForPattern(pattern, this.graphHolder.allStories, 
-                this.graphHolder.minimumStoryCountRequiredForTest, "No answer", !newHideNoAnswerValuesChoice, this.graphHolder.lumpingCommands, null, 0, 0, 0);
-        }
 
+        const oldUseLumpingCommandsChoice = this.graphHolder.patternDisplayConfiguration.useLumpingCommands;
+        const newUseLumpingCommandsChoice = PatternExplorer.getOrSetWhetherLumpingCommandsShouldBeUsedForPattern(this.project, this.catalysisReportIdentifier, pattern);
+        this.graphHolder.patternDisplayConfiguration.useLumpingCommands = newUseLumpingCommandsChoice; 
+
+        if (oldHideNoAnswerValuesChoice !== newHideNoAnswerValuesChoice || oldUseLumpingCommandsChoice !== newUseLumpingCommandsChoice) {
+            const lumpingCommandsToUse = newUseLumpingCommandsChoice ? this.graphHolder.lumpingCommands : {};
+            calculateStatistics.calculateStatisticsForPattern(pattern, this.graphHolder.allStories, 
+                this.graphHolder.minimumStoryCountRequiredForTest, "No answer", !newHideNoAnswerValuesChoice, lumpingCommandsToUse, null, 0, 0, 0);
+        }
 
         this.graphHolder.statisticalInfo = "";
         this.graphHolder.currentGraph = PatternExplorer.makeGraph(pattern, this.graphHolder, this.updateStoriesPane.bind(this), this.hideStatsPanels);
@@ -1353,8 +1379,11 @@ class PatternExplorer {
             case "Show random sample of 30 selected stories":
                 this.sampleStoriesSelectedInGraph(30);
                 break;
-            case 'Toggle display of "No answer" values':
+            case 'Toggle display of "No answer" values for this pattern':
                 this.toggleNoAnswerDisplayForPattern();
+                break;
+            case 'Toggle display lumping for this pattern':
+                this.toggleUseLumpingCommandsForPattern();
                 break;
             case "Save current selection (will appear in text box below)":
                 this.saveGraphSelection();
@@ -1382,6 +1411,14 @@ class PatternExplorer {
         const hideNoAnswerValues = PatternExplorer.getOrSetWhetherNoAnswerValuesShouldBeHiddenForPattern(this.project, this.catalysisReportIdentifier, this.currentPattern);
         const newValue = !hideNoAnswerValues;
         PatternExplorer.getOrSetWhetherNoAnswerValuesShouldBeHiddenForPattern(this.project, this.catalysisReportIdentifier, this.currentPattern, newValue);
+        this.updateGraphForNewPattern(this.currentPattern);
+    }
+
+    toggleUseLumpingCommandsForPattern() {
+        if (!this.currentPattern) return; 
+        const useLumpingCommands = PatternExplorer.getOrSetWhetherLumpingCommandsShouldBeUsedForPattern(this.project, this.catalysisReportIdentifier, this.currentPattern);
+        const newValue = !useLumpingCommands;
+        PatternExplorer.getOrSetWhetherLumpingCommandsShouldBeUsedForPattern(this.project, this.catalysisReportIdentifier, this.currentPattern, newValue);
         this.updateGraphForNewPattern(this.currentPattern);
     }
 

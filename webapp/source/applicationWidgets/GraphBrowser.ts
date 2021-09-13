@@ -51,7 +51,7 @@ class GraphBrowser {
             customGraphWidth: Project.default_customDisplayGraphWidth,
             customGraphPadding: Project.default_customGraphPadding,
             hideNumbersOnContingencyGraphs: false,
-            patternDisplayConfiguration: {hideNoAnswerValues: false},
+            patternDisplayConfiguration: {hideNoAnswerValues: false, useLumpingCommands: true},
             graphTypesToCreate: {},
             lumpingCommands: {}
         }; 

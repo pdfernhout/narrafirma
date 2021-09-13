@@ -116,8 +116,14 @@ function customStatLabel(key, graphHolder) {
 }
 
 function showNAValues(graphHolder: GraphHolder) {
-    if (graphHolder.patternDisplayConfiguration === undefined) return true;
+    if (graphHolder.patternDisplayConfiguration == undefined) return true;
     return !graphHolder.patternDisplayConfiguration.hideNoAnswerValues;
+}
+
+function getLumpingCommands(graphHolder: GraphHolder) {
+    if (graphHolder.patternDisplayConfiguration == undefined) return graphHolder.lumpingCommands;
+    if (graphHolder.patternDisplayConfiguration.useLumpingCommands) return graphHolder.lumpingCommands;
+    return {};
 }
 
 function nameForQuestion(question) {
@@ -239,7 +245,7 @@ export function initializedGraphHolder(allStories, options) {
         showStatsPanelsInReport: options.showStatsPanelsInReport,
         customStatsTextReplacements: options.customStatsTextReplacements,
         customGraphWidth: options.customGraphWidth,
-        patternDisplayConfiguration: {hideNoAnswerValues: false},
+        patternDisplayConfiguration: {hideNoAnswerValues: false, useLumpingCommands: true},
         adjustedCSS: options.adjustedCSS,
         graphTypesToCreate: {},
         lumpingCommands: {}
@@ -841,7 +847,7 @@ export function d3BarChartForQuestion(graphHolder: GraphHolder, question, storie
     let key;
     
     const showNAs = showNAValues(graphHolder);
-    const lumpingCommands = graphHolder.lumpingCommands;
+    const lumpingCommands = getLumpingCommands(graphHolder);
     const unansweredText = customStatLabel("unanswered", graphHolder);
     graphHolder.dataForCSVExport = {};
 
@@ -1083,7 +1089,7 @@ export function d3HistogramChartForQuestion(graphHolder: GraphHolder, scaleQuest
 
     const unansweredText = customStatLabel("unanswered", graphHolder);
     const showNAs = showNAValues(graphHolder);
-    const lumpingCommands = graphHolder.lumpingCommands;
+    const lumpingCommands = getLumpingCommands(graphHolder);
     if (choiceQuestion) {
         graphHolder.dataForCSVExport[choice] = [];
     } else {
@@ -1436,7 +1442,7 @@ export function d3HistogramChartForValues(graphHolder: GraphHolder, plotItems, c
 // TODO: Also need to track the most recent histogram with an actual selection so can save and restore that from patterns browser
 export function multipleHistograms(graphHolder: GraphHolder, choiceQuestion, scaleQuestion, storiesSelectedCallback, hideStatsPanel = false) {
     const unansweredText = customStatLabel("unanswered", graphHolder);
-    const lumpingCommands = graphHolder.lumpingCommands;
+    const lumpingCommands = getLumpingCommands(graphHolder);
     const options = [];
     createEmptyDataStructureForAnswerCountsUsingArray(options, choiceQuestion, unansweredText, showNAValues(graphHolder), lumpingCommands);
     graphHolder.dataForCSVExport = {};
@@ -1467,7 +1473,7 @@ export function multipleHistograms(graphHolder: GraphHolder, choiceQuestion, sca
     
     // Add these statistics at the bottom after all other graphs
     const statistics = calculateStatistics.calculateStatisticsForMultipleHistogram(scaleQuestion, choiceQuestion, graphHolder.allStories, 
-        graphHolder.minimumStoryCountRequiredForTest, unansweredText, showNAValues(graphHolder), graphHolder.lumpingCommands);
+        graphHolder.minimumStoryCountRequiredForTest, unansweredText, showNAValues(graphHolder), lumpingCommands);
     graphHolder.statisticalInfo += addStatisticsPanelForChart(graphHolder.graphResultsPane, graphHolder, statistics, chartTitle, "large", hideStatsPanel);
   
     return subCharts;
@@ -1488,7 +1494,7 @@ export function d3ScatterPlot(graphHolder: GraphHolder, xAxisQuestion, yAxisQues
     const stories = graphHolder.allStories;
     const unansweredText = customStatLabel("unanswered", graphHolder);
     const showNAs = showNAValues(graphHolder);
-    const lumpingCommands = graphHolder.lumpingCommands;
+    const lumpingCommands = getLumpingCommands(graphHolder);
 
     const delimiter = Globals.clientState().csvDelimiter();
     if (choiceQuestion) {
@@ -1705,7 +1711,7 @@ export function d3ScatterPlot(graphHolder: GraphHolder, xAxisQuestion, yAxisQues
 export function multipleScatterPlot(graphHolder: GraphHolder, xAxisQuestion, yAxisQuestion, choiceQuestion, storiesSelectedCallback, hideStatsPanel = false) {
     
     const unansweredText = customStatLabel("unanswered", graphHolder);
-    const lumpingCommands = graphHolder.lumpingCommands;
+    const lumpingCommands = getLumpingCommands(graphHolder);
     
     const options = [];
     createEmptyDataStructureForAnswerCountsUsingArray(options, choiceQuestion, unansweredText, showNAValues(graphHolder), lumpingCommands);
@@ -1737,7 +1743,7 @@ export function d3ContingencyTable(graphHolder: GraphHolder, xAxisQuestion, yAxi
     
     const unansweredText = customStatLabel("unanswered", graphHolder);
     const showNAs = showNAValues(graphHolder);
-    const lumpingCommands = graphHolder.lumpingCommands;
+    const lumpingCommands = getLumpingCommands(graphHolder);
     
     const columnLabels = {};
     const columnLabelsArray = [];
@@ -2237,7 +2243,7 @@ function nodeInfoForScalesWithOrWithoutChoiceQuestion(graphHolder, questions) {
     const stories = graphHolder.allStories;
     const unansweredText = customStatLabel("unanswered", graphHolder);
     const showNAs = showNAValues(graphHolder);
-    const lumpingCommands = graphHolder.lumpingCommands;
+    const lumpingCommands = getLumpingCommands(graphHolder);
 
     let choiceQuestion = null;
     let scaleQuestions = null;
@@ -2323,7 +2329,7 @@ export function d3CorrelationMap(graphHolder: GraphHolder, scaleQuestions, choic
     const stories = graphHolder.allStories;
     const unansweredText = customStatLabel("unanswered", graphHolder);
     const showNAs = showNAValues(graphHolder);
-    const lumpingCommands = graphHolder.lumpingCommands;
+    const lumpingCommands = getLumpingCommands(graphHolder);
 
     const statsInfo = [];
     const usedQuestionIndexes = [];
@@ -2728,7 +2734,7 @@ export function d3ScatterPlotForPopup(graphHolder: GraphHolder, parentNode, xAxi
     const stories = graphHolder.allStories;
     const unansweredText = customStatLabel("unanswered", graphHolder);
     const showNAs = showNAValues(graphHolder);
-    const lumpingCommands = graphHolder.lumpingCommands;
+    const lumpingCommands = getLumpingCommands(graphHolder);
 
     for (let index in stories) {
         const story = stories[index];
@@ -2775,7 +2781,7 @@ export function d3ScatterPlotForPopup(graphHolder: GraphHolder, parentNode, xAxi
 export function d3HistogramChartForPopup(graphHolder: GraphHolder, parentNode, scaleQuestion, choiceQuestion, option) {
     const unansweredText = customStatLabel("unanswered", graphHolder);
     const showNAs = showNAValues(graphHolder);
-    const lumpingCommands = graphHolder.lumpingCommands;
+    const lumpingCommands = getLumpingCommands(graphHolder);
 
     const plotItems = [];
     const stories = graphHolder.allStories;
