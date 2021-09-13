@@ -23,6 +23,8 @@ let currentLanguage = "";
 export const defaultFormTexts = {
     startText: 'Please help by taking a short survey. The data you enter will be sent to the server only at the end when you press the "submit survey" button.',
     sliderValuePrompt: "Type a new value",
+    selectNoChoiceName: "-- select --",
+    booleanYesNoNames: "yes/no",
     maxNumAnswersPrompt: "(Please choose up to # answers.)",
     endText: "Thank you for taking the survey.",
     thankYouPopupText: "Your contribution has been added to the story collection. Thank you.",
@@ -256,12 +258,17 @@ function displayQuestion(builder, model, fieldSpecification, storyForm) {
     //////////////////////////////////////////////////////////////// boolean ////////////////////////////////////////////////////////////////
     function displayBooleanQuestion() {
         delete questionLabel[0].attrs["for"];
+        let yesName = "yes";
+        let noName = "no";
+        const yesNoParts = tr(storyForm.booleanYesNoNames || defaultFormTexts.booleanYesNoNames).split("/");
+        if (yesNoParts.length > 0) yesName = yesNoParts[0]; 
+        if (yesNoParts.length > 1) noName = yesNoParts[1]; 
         const questionParts = [
             m("input[type=radio]", {id: getIdForText(fieldID + "_yes"), value: true, name: fieldSpecification.id, checked: value === true, onchange: standardChangeMethod.bind(null, null, true) }),
-            m("label", {"for": getIdForText(fieldID + "_yes")}, tr("yes")), // cfk fix should not be hard coded
+            m("label", {"for": getIdForText(fieldID + "_yes")}, yesName), 
             m("br"),
             m("input[type=radio]", {id: getIdForText(fieldID + "_no"), value: false, name: fieldSpecification.id, checked: value === false, onchange: standardChangeMethod.bind(null, null, false) }),
-            m("label", {"for": getIdForText(fieldID + "_no")}, tr("no")), // cfk fix should not be hard coded
+            m("label", {"for": getIdForText(fieldID + "_no")}, noName), 
             m("br")
         ];
         questionParts.unshift(m("legend", questionLabel[0]));
@@ -277,7 +284,7 @@ function displayQuestion(builder, model, fieldSpecification, storyForm) {
         let selectOptions = [];
         let defaultOptions = {name: '', value: '', selected: undefined};
         if (!value) defaultOptions.selected = 'selected';
-        if (!fieldSpecification.listBoxRows) { selectOptions.push(m("option", defaultOptions, tr('-- select --'))); } // cfk fix should not be hard coded
+        if (!fieldSpecification.listBoxRows) { selectOptions.push(m("option", defaultOptions, tr(storyForm.selectNoChoiceName || defaultFormTexts.selectNoChoiceName))); }
 
         selectOptions = selectOptions.concat(
             fieldSpecification.valueOptions.map(function (option, index) {
@@ -852,7 +859,7 @@ export function buildSurveyForm(surveyDiv, storyForm, doneCallback, surveyOption
 
             let defaultOptions = {name: '', value: '', selected: undefined};
             if (!currentLanguage) defaultOptions.selected = 'selected';
-            selectOptions.push(m("option", defaultOptions, tr('-- select --')));  // cfk fix should not be hard coded
+            selectOptions.push(m("option", defaultOptions,  tr(storyForm.selectNoChoiceName || defaultFormTexts.selectNoChoiceName)));
 
             const questionParts = [
                 m("div.narrafirma-language-choice-question-text", languageChoiceQuestionText),

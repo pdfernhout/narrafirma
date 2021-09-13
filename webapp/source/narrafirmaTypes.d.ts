@@ -144,6 +144,8 @@ interface StoryFormTemplate {
         questionForm_tellAnotherStoryButtonText?: string;
         questionForm_maxNumStories?: string;
         questionForm_sliderValuePrompt?: string;
+        questionForm_selectNoChoiceName?: string;
+        questionForm_booleanYesNoNames?: string;
         questionForm_maxNumAnswersPrompt?: string;
 
         questionForm_submitSurveyButtonText?: string;
@@ -207,6 +209,8 @@ interface StoryFormFields {
     tellAnotherStoryButtonText?: string;
     maxNumStories?: string;
     sliderValuePrompt?: string;
+    selectNoChoiceName?: string;
+    booleanYesNoNames?: string;
     maxNumAnswersPrompt?: string;
 
     submitSurveyButtonText?: string;

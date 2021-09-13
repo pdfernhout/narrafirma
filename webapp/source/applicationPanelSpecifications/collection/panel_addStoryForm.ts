@@ -203,6 +203,27 @@ var panel: Panel = {
             displayVisible: function(panelBuilder, model) { return !!Globals.clientState().showAdvancedOptions(); }
         },
         {
+            id: "questionForm_selectNoChoiceName",
+            valueType: "string",
+            displayType: "text",
+            displayName: "Select no-choice name",
+            displayPrompt: `
+                For a drop-down <strong>select</strong> question, what do you want the choice to say when the participant has made no choice? 
+                (Default: \"-- select --\")`,
+            displayVisible: function(panelBuilder, model) { return !!Globals.clientState().showAdvancedOptions(); }
+        },
+        {
+            id: "questionForm_booleanYesNoNames",
+            valueType: "string",
+            displayType: "text",
+            displayName: "Boolean yes/no names",
+            displayPrompt: `
+                For a <strong>boolean</strong> (yes/no) question, what do you want the yes/no choices to actually say?
+                Please enter them with a forward slash (/) between them. 
+                (Default: \"yes/no")`,
+            displayVisible: function(panelBuilder, model) { return !!Globals.clientState().showAdvancedOptions(); }
+        },
+        {
             id: "questionForm_maxNumAnswersPrompt",
             valueType: "string",
             displayType: "text",
