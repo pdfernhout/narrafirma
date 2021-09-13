@@ -104,14 +104,14 @@ function addExtraFieldSpecificationsForPageSpecification(pageID, pageSpecificati
         // Add button at bottom of each page to move to previous
         if (pageSpecification.previousPageID) {
             // TODO: Translate
-            addPageChangeButton(pageSpecification.previousPageID, "_previousPageButton", "Previous", "leftButtonImage");
+            addPageChangeButton(pageSpecification.previousPageID, "_previousPageButton", "Previous page", "leftButtonImage");
         } else {
             addPageChangeButton(_startPage, "_returnToDashboardButton", "Go to home page", "homeButtonImage");
         }
    
         // Add button at bottom of each page to move forward
         if (pageSpecification.nextPageID) {
-            addPageChangeButton(pageSpecification.nextPageID, "_nextPageButton", "Next", "rightButtonImage");
+            addPageChangeButton(pageSpecification.nextPageID, "_nextPageButton", "Next page", "rightButtonImage");
         } else {
             addPageChangeButton(_startPage, "_returnToDashboardButton", "Go to home page", "homeButtonImage");
         }
