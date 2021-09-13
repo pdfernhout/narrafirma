@@ -864,7 +864,7 @@ class ClusteringDiagram {
         result.push(createOrEdit + " " + this.itemBeingEditedCopy.type);
         result.push(m("br"));
         result.push(m("br"));
-        result.push(m('label', {"for": "itemDialog_name"}, "Name:"));
+        result.push(m('label', {for: "itemDialog_name", style: "margin-right: 0.5em"}, "Name"));
         result.push(m('input[type=text]', {
                 id: "itemDialog_name",
                 value: this.itemBeingEditedCopy.name || "",
@@ -883,7 +883,7 @@ class ClusteringDiagram {
 
         if (this.configuration === "interpretations" || this.configuration === "observations") {
             result.push(m("br"));
-            result.push(m('label', {"for": "itemDialog_order"}, "Order:"));
+            result.push(m('label', {for: "itemDialog_order", style: "margin-right: 0.5em"}, "Order in printed report"));
             result.push(m('input[type=text]', {
                 id: "itemDialog_order",
                 value: this.itemBeingEditedCopy.order || "",
