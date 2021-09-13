@@ -9,6 +9,7 @@ var panel: Panel = {
             id: "sensemakingSessionRecord_name",
             valueType: "string",
             displayType: "text",
+            displayConfiguration: "20",
             displayName: "Sensemaking session record name",
             displayPrompt: "Please give this session record a <strong>name</strong>."
         },

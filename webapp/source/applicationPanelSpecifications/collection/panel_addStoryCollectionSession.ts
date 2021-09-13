@@ -9,6 +9,7 @@ var panel: Panel = {
             id: "collectionSessionPlan_name",
             valueType: "string",
             displayType: "text",
+            displayConfiguration: "20",
             displayName: "Collection session plan name",
             displayPrompt: "Please give this session plan a <strong>name</strong>."
         },
@@ -16,6 +17,7 @@ var panel: Panel = {
             id: "collectionSessionPlan_groups",
             valueType: "string",
             displayType: "text",
+            displayConfiguration: "30",
             displayName: "Participant groups",
             displayPrompt: "From which participant <strong>group</strong> (or groups) will people be invited?"
         },
@@ -23,6 +25,7 @@ var panel: Panel = {
             id: "collectionSessionPlan_repetitions",
             valueType: "string",
             displayType: "text",
+            displayConfiguration: "30",
             displayName: "Repetitions",
             displayPrompt: "How many <strong>repetitions</strong> of the session will there be?"
         },
@@ -30,6 +33,7 @@ var panel: Panel = {
             id: "collectionSessionPlan_duration",
             valueType: "string",
             displayType: "text",
+            displayConfiguration: "30",
             displayName: "Length",
             displayPrompt: "<strong>How long</strong> will each session be?"
         },
@@ -37,6 +41,7 @@ var panel: Panel = {
             id: "collectionSessionPlan_times",
             valueType: "string",
             displayType: "text",
+            displayConfiguration: "30",
             displayName: "Time",
             displayPrompt: "<strong>When</strong> will these sessions take place?"
         },
@@ -44,6 +49,7 @@ var panel: Panel = {
             id: "collectionSessionPlan_location",
             valueType: "string",
             displayType: "text",
+            displayConfiguration: "30",
             displayName: "Location",
             displayPrompt: "<strong>Where</strong> will these sessions take place?"
         },
@@ -51,6 +57,7 @@ var panel: Panel = {
             id: "collectionSessionPlan_numPeople",
             valueType: "string",
             displayType: "text",
+            displayConfiguration: "30",
             displayName: "Number of people",
             displayPrompt: "<strong>How many people</strong> will be invited to each repetition of this session?"
         },

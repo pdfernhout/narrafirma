@@ -11,6 +11,7 @@ var panel: Panel = {
             id: "questionForm_shortName",
             valueType: "string",
             displayType: "text",
+            displayConfiguration: "20",
             displayName: "Short name",
             displayPrompt: "Enter a short <strong>name</strong> for the story form. It must be unique within the project."
         },
@@ -58,6 +59,7 @@ var panel: Panel = {
             id: "questionForm_title",
             valueType: "string",
             displayType: "text",
+            displayConfiguration: "30",
             displayName: "Title",
             displayPrompt: "Enter a <strong>title</strong> to be shown at the top of the story form."
         },
@@ -114,6 +116,7 @@ var panel: Panel = {
             id: "questionForm_elicitingQuestionGraphName",
             valueType: "string",
             displayType: "text",
+            displayConfiguration: "20",
             displayName: "Eliciting question graph name",
             displayPrompt: `What do you want to call the graph that shows <strong>which eliciting question people answered</strong>? (Default:  \"Eliciting question.\")`,
             displayVisible: function(panelBuilder, model) { return !!Globals.clientState().showAdvancedOptions(); }
@@ -196,6 +199,7 @@ var panel: Panel = {
             id: "questionForm_sliderValuePrompt",
             valueType: "string",
             displayType: "text",
+            displayConfiguration: "30",
             displayName: "Slider value prompt",
             displayPrompt: `
                 What do you want the popup dialog to say if the participant clicks on a <b>slider value</b> to change it? 
@@ -206,6 +210,7 @@ var panel: Panel = {
             id: "questionForm_selectNoChoiceName",
             valueType: "string",
             displayType: "text",
+            displayConfiguration: "20",
             displayName: "Select no-choice name",
             displayPrompt: `
                 For a drop-down <strong>select</strong> question, what do you want the choice to say when the participant has made no choice? 
@@ -216,6 +221,7 @@ var panel: Panel = {
             id: "questionForm_booleanYesNoNames",
             valueType: "string",
             displayType: "text",
+            displayConfiguration: "20",
             displayName: "Boolean yes/no names",
             displayPrompt: `
                 For a <strong>boolean</strong> (yes/no) question, what do you want the yes/no choices to actually say?
@@ -257,6 +263,7 @@ var panel: Panel = {
             id: "questionForm_aboutYouText",
             valueType: "string",
             displayType: "text",
+            displayConfiguration: "30",
             displayName: "About you text",
             displayPrompt: `
                 How would you like to introduce your <strong>participant questions</strong>? 
@@ -285,6 +292,7 @@ var panel: Panel = {
             id: "questionForm_tellAnotherStoryButtonText",
             valueType: "string",
             displayType: "text",
+            displayConfiguration: "20",
             displayName: "Tell another story button text",
             displayPrompt: `
                 What do you want the <strong>tell another story button</strong> to say? 
@@ -295,6 +303,7 @@ var panel: Panel = {
             id: "questionForm_deleteStoryButtonText",
             valueType: "string",
             displayType: "text",
+            displayConfiguration: "20",
             displayName: "Delete story button text",
             displayPrompt: `What would you like the <b>delete a story</b> button to say?
                 (Default:  \"Delete this story.\")`,
@@ -347,6 +356,7 @@ var panel: Panel = {
             id: "questionForm_submitSurveyButtonText",
             valueType: "string",
             displayType: "text",
+            displayConfiguration: "20",
             displayName: "Submit survey button text",
             displayPrompt: `What would you like the button to <b>submit</b> the story form to say?
                 (Default: \"Submit Survey.\")`,
@@ -445,6 +455,7 @@ var panel: Panel = {
             id: "questionForm_import_storyTitleColumnName",
             valueType: "string",
             displayType: "text",
+            displayConfiguration: "20",
             displayName: "Story title column name",
             displayPrompt: "In your data file, what is the data column header for the  <strong>story title</strong>?",
             displayVisible: function(panelBuilder, model) { return !!Globals.clientState().showImportOptions(); }
@@ -453,6 +464,7 @@ var panel: Panel = {
             id: "questionForm_import_storyTextColumnName",
             valueType: "string",
             displayType: "text",
+            displayConfiguration: "20",
             displayName: "Story text column name",
             displayPrompt: "What is the data column header for the  <strong>story text</strong>?",
             displayVisible: function(panelBuilder, model) { return !!Globals.clientState().showImportOptions(); }
@@ -461,6 +473,7 @@ var panel: Panel = {
             id: "questionForm_import_storyCollectionDateColumnName",
             valueType: "string",
             displayType: "text",
+            displayConfiguration: "20",
             displayName: "Story collection date column name",
             displayPrompt: "What is the data column header for the  <strong>date of story collection</strong>?",
             displayVisible: function(panelBuilder, model) { return !!Globals.clientState().showImportOptions(); }
@@ -469,6 +482,7 @@ var panel: Panel = {
             id: "questionForm_import_storyFormLanguageColumnName",
             valueType: "string",
             displayType: "text",
+            displayConfiguration: "20",
             displayName: "Story form language column name",
             displayPrompt: "What is the data column header for the <strong>language</strong> of the survey on which the story was entered?",
             displayVisible: function(panelBuilder, model) { return !!Globals.clientState().showImportOptions(); }
@@ -495,6 +509,7 @@ var panel: Panel = {
             id: "questionForm_import_elicitingQuestionColumnName",
             valueType: "string",
             displayType: "text",
+            displayConfiguration: "20",
             displayName: "Eliciting question column name",
             displayPrompt: "What is the data column header for the  <strong>eliciting question</strong>? (If you have only one eliciting question, you can leave this field blank.)",
             displayVisible: function(panelBuilder, model) { return !!Globals.clientState().showImportOptions(); }
@@ -503,6 +518,7 @@ var panel: Panel = {
             id: "questionForm_import_participantIDColumnName",
             valueType: "string",
             displayType: "text",
+            displayConfiguration: "20",
             displayName: "Participant ID column name",
             displayPrompt: "What is the data column header for the  <strong>participant ID</strong> field? (If participants are not identified in your data file, you can leave this field blank.)",
             displayVisible: function(panelBuilder, model) { return !!Globals.clientState().showImportOptions(); }
@@ -537,6 +553,7 @@ var panel: Panel = {
             id: "questionForm_import_minScaleValue",
             valueType: "string",
             displayType: "text",
+            displayConfiguration: "10",
             displayName: "Minimum scale value",
             displayPrompt: "In your data file, what is the <strong>minimum value</strong> for your scale questions? (If your scales have different minima, you can enter them separately for each scale question.)",
             displayVisible: function(panelBuilder, model) { return !!Globals.clientState().showImportOptions(); }
@@ -545,6 +562,7 @@ var panel: Panel = {
             id: "questionForm_import_maxScaleValue",
             valueType: "string",
             displayType: "text",
+            displayConfiguration: "10",
             displayName: "Maximum scale value",
             displayPrompt: "What is the <strong>maximum value</strong> for your scale questions? (If your scales have different maxima, you can enter them separately for each scale question.)",
             displayVisible: function(panelBuilder, model) { return !!Globals.clientState().showImportOptions(); }
@@ -553,6 +571,7 @@ var panel: Panel = {
             id: "questionForm_import_multiChoiceDelimiter",
             valueType: "string",
             displayType: "text",
+            displayConfiguration: "10",
             displayName: "Multi choice delimiter",
             displayPrompt: `If you have any questions of the type "Multi-choice single-column delimited" or "Multi-choice single-column delimited indexed",
                 what text <strong>separates the items</strong> within each cell? (If the separator is a space, don't enter a space here; enter the <i>word</i> "space".)`,
@@ -562,6 +581,7 @@ var panel: Panel = {
             id: "questionForm_import_multiChoiceYesIndicator",
             valueType: "string",
             displayType: "text",
+            displayConfiguration: "10",
             displayName: "Multi choice yes indicator",
             displayPrompt: `If you have any questions of the type "Multi-choice multi-column yes/no", what text <strong>indicates a "Yes" answer</strong>?`,
             displayVisible: function(panelBuilder, model) { return !!Globals.clientState().showImportOptions(); }
@@ -570,6 +590,7 @@ var panel: Panel = {
             id: "questionForm_import_multiChoiceYesQASeparator",
             valueType: "string",
             displayType: "text",
+            displayConfiguration: "10",
             displayName: "Multi choice Q-A separator",
             displayPrompt: `If you have any questions of the type "Multi-choice multi-column yes/no",
                 your column headers must describe the question and answer to be found in each column. 
@@ -581,6 +602,7 @@ var panel: Panel = {
             id: "questionForm_import_multiChoiceYesQAEnding",
             valueType: "string",
             displayType: "text",
+            displayConfiguration: "10",
             displayName: "Multi choice Q-A separator",
             displayPrompt: `If you have any questions of the type "Multi-choice multi-column yes/no",
                 what is the text <strong>after the answer name</strong> in each column header?` ,

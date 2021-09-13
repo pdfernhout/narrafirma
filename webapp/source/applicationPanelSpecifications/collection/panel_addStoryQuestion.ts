@@ -73,6 +73,18 @@ var panel: Panel = {
             displayVisible: function(panelBuilder, model) { return matchQuestionType(model, ["select"]); }
         },
         {
+            id: "storyQuestion_textBoxLength",
+            valueType: "string",
+            valueOptions: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", 
+                "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32", "33", "34", "35", "36", "37", "38", "39", 
+                "40", "41", "42", "43", "44", "45", "46", "47", "48", "49", "50", "51", "52", "53", "54", "55", "56", "57", "58", "59", "60"],
+            displayType: "select",
+            displayName: "Text box length",
+            displayPrompt: `<strong>How long</strong> do you want this text box to be, in "em" units? (An "em" is the width of a capital "M.") Leave blank for a long text box. 
+                (Note that this option only specifies the length of the text box on the screen. It does not limit the number of characters participants can enter.)`,
+            displayVisible: function(panelBuilder, model) { return matchQuestionType(model, ["text"]); }
+        },
+        {
             id: "storyQuestion_maxNumAnswers",
             valueType: "string",
             valueOptions: ["2", "3", "4", "5", "6", "7", "8", "9", "10"],
@@ -86,6 +98,7 @@ var panel: Panel = {
             valuePath: "storyQuestion_writeInTextBoxLabel",
             valueType: "string",
             displayType: "text",
+            displayConfiguration: "20",
             displayName: "Write-in answer label",
             displayPrompt: `If you want participants to be able to append an extra <strong>write-in answer</strong> for this question,
                 enter a label for the write-in text box here.`,
@@ -132,16 +145,10 @@ var panel: Panel = {
             displayVisible: function(panelBuilder, model) { return !!Globals.clientState().showImportOptions(); }
         },
         {
-            id: "storyQuestions_import_intro",
-            valueType: "none",
-            displayType: "label",
-            displayPrompt: "Use these options to specify how you want to <strong>read stories from a CSV file</strong>. If you are not importing data, you can ignore them.",
-            displayVisible: function(panelBuilder, model) { return !!Globals.clientState().showImportOptions(); }
-        },
-        {
             id: "storyQuestion_import_columnName",
             valueType: "string",
             displayType: "text",
+            displayConfiguration: "20",
             displayName: "Data column name",
             displayPrompt: "In your data file, what is the <strong>data column header</strong> for this question? (What you write here must match the header in your data file exactly. Extra spaces will be trimmed off.)",
             displayVisible: function(panelBuilder, model) { return !!Globals.clientState().showImportOptions(); }
@@ -178,17 +185,19 @@ var panel: Panel = {
             id: "storyQuestion_import_minScaleValue",
             valueType: "string",
             displayType: "text",
+            displayConfiguration: "10",
             displayName: "Min scale value",
-            displayPrompt: "If this question is a scale, what is the <strong>minimum</strong> value in its column? (This must be a number. If this field is blank, the default minimum of zero will be used.)",
-            displayVisible: function(panelBuilder, model) { return !!Globals.clientState().showImportOptions(); }
+            displayPrompt: "What is the <strong>minimum slider value</strong> in this column?(This must be a number. If this field is blank, the default minimum of zero will be used.)",
+            displayVisible: function(panelBuilder, model) { return !!Globals.clientState().showImportOptions() && matchQuestionType(model, ["slider"]); }
         },
         {
             id: "storyQuestion_import_maxScaleValue",
             valueType: "string",
             displayType: "text",
+            displayConfiguration: "10",
             displayName: "Max scale value",
-            displayPrompt: "If this question is a scale, what is the <strong>maximum</strong> value in its column? (This must be a number. If this field is blank, the default maximum of 100 will be used.)",
-            displayVisible: function(panelBuilder, model) { return !!Globals.clientState().showImportOptions(); }
+            displayPrompt: "What is the <strong>maximum slider value</strong> in this column? (This must be a number. If this field is blank, the default maximum of 100 will be used.)",
+            displayVisible: function(panelBuilder, model) { return !!Globals.clientState().showImportOptions()  && matchQuestionType(model, ["slider"]); }
         }
     ]
 };

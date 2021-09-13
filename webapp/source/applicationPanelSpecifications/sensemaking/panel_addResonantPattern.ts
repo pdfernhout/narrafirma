@@ -9,6 +9,7 @@ var panel: Panel = {
             id: "sensemakingSessionRecord_resonantPattern_name",
             valueType: "string",
             displayType: "text",
+            displayConfiguration: "20",
             displayName: "Why",
             displayPrompt: "Please give this resonant pattern a <strong>name</strong>."
         },

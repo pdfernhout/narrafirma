@@ -140,6 +140,7 @@ export class StoryAnnotationBrowser {
             valueType: "string",
             displayType: "text",
             displayName: "Index",
+            displayConfiguration: "10",
             displayPrompt: "Index of story in collection",
             displayClass: "narrafirma-index-in-story-collection"
         });
@@ -148,6 +149,7 @@ export class StoryAnnotationBrowser {
             valueType: "string",
             displayType: "text",
             displayName: "Story name",
+            displayConfiguration: "20",
             displayPrompt: "Name of story"
         });
         panelFieldsToCreateForGridColumns.push({

@@ -9,6 +9,7 @@ var panel: Panel = {
             id: "order",
             valueType: "string",
             displayType: "text",
+            displayConfiguration: "10",
             displayName: "Order",
             displayPrompt: "Specify the order in which to do this sensemaking activity (e.g. 1, 2a, 2b, 3)"
         },
@@ -16,6 +17,7 @@ var panel: Panel = {
             id: "sensemakingSessionPlan_activity_name",
             valueType: "string",
             displayType: "text",
+            displayConfiguration: "20",
             displayName: "Name",
             displayPrompt: "Please give this activity a <strong>name</strong>."
         },
@@ -23,6 +25,7 @@ var panel: Panel = {
             id: "sensemakingSessionPlan_activity_duration",
             valueType: "string",
             displayType: "text",
+            displayConfiguration: "30",
             displayName: "Length",
             displayPrompt: "<strong>How long</strong> will this activity take?"
         },

@@ -9,6 +9,7 @@ var panel: Panel = {
             id: "participantGroup_name",
             valueType: "string",
             displayType: "text",
+            displayConfiguration: "20",
             displayName: "Participant group name",
             displayPrompt: "Please <strong>name</strong> this group of participants (for example, \"doctors\", \"students\", \"staff\")."
         },

@@ -258,7 +258,8 @@ var panel: Panel = {
             valuePath: "/clientState/catalysisReportIdentifier/catalysisReport_tocHeaderFirstLevel",
             valueType: "string",
             displayType: "text",
-            displayName: "Contents header (top level)",
+            displayConfiguration: "40",
+            displayName: "Contents header (top level, perspectives)",
             displayPrompt: `
                 You can enter a custom <strong>header for the list of perspectives</strong> at the start
                 of your clustered-interpretations report. 
@@ -273,7 +274,8 @@ var panel: Panel = {
             valuePath: "/clientState/catalysisReportIdentifier/catalysisReport_tocHeaderFirstLevel_observations",
             valueType: "string",
             displayType: "text",
-            displayName: "Contents header (top level)",
+            displayConfiguration: "40",
+            displayName: "Contents header (top level, themes)",
             displayPrompt: `
                 You can enter a custom <strong>header for the list of themes</strong> at the start
                 of your clustered-observations report. 
@@ -289,7 +291,8 @@ var panel: Panel = {
             valuePath: "/clientState/catalysisReportIdentifier/catalysisReport_tocHeaderSecondLevel",
             valueType: "string",
             displayType: "text",
-            displayName: "Contents header (second level)",
+            displayConfiguration: "40",
+            displayName: "Contents header (second level, perspectives)",
             displayPrompt: `
                 You can enter a custom <strong>header for the table of interpretations and observations in each perspective</strong> 
                 in a clustered-interpretations report. A number sign (#) will be replaced with the number of interpretations in the perspective. 
@@ -303,7 +306,8 @@ var panel: Panel = {
             valuePath: "/clientState/catalysisReportIdentifier/catalysisReport_tocHeaderSecondLevel_observations",
             valueType: "string",
             displayType: "text",
-            displayName: "Contents header (second level)",
+            displayConfiguration: "40",
+            displayName: "Contents header (second level, themes)",
             displayPrompt: `
                 You can enter a custom <strong>header for the list of observations in each theme</strong> 
                 in a clustered-observations report. A number sign (#) will be replaced with the number of observations in the theme. 
@@ -318,6 +322,7 @@ var panel: Panel = {
             valuePath: "/clientState/catalysisReportIdentifier/catalysisReport_perspectiveLabel",
             valueType: "string",
             displayType: "text",
+            displayConfiguration: "40",
             displayName: "Perspective label",
             displayPrompt: `
             This optional label will appear <strong>before each perspective name</strong> in the report.`,
@@ -330,6 +335,7 @@ var panel: Panel = {
             valuePath: "/clientState/catalysisReportIdentifier/catalysisReport_themeLabel",
             valueType: "string",
             displayType: "text",
+            displayConfiguration: "40",
             displayName: "Theme label",
             displayPrompt: `
             This optional label will appear <strong>before each theme name</strong> in the report.`,
@@ -342,6 +348,7 @@ var panel: Panel = {
             valuePath: "/clientState/catalysisReportIdentifier/catalysisReport_interpretationLabel",
             valueType: "string",
             displayType: "text",
+            displayConfiguration: "40",
             displayName: "Interpretation label",
             displayPrompt: `
             This optional label will appear <strong>before each interpretation name</strong> in the report.`,
@@ -354,6 +361,7 @@ var panel: Panel = {
             valuePath: "/clientState/catalysisReportIdentifier/catalysisReport_interpretationQuestionsLabel",
             valueType: "string",
             displayType: "text",
+            displayConfiguration: "40",
             displayName: "Interpretation questions label",
             displayPrompt: `
             This optional label will appear <strong>before each list of interpretation questions</strong> in the report.`,
@@ -366,6 +374,7 @@ var panel: Panel = {
             valuePath: "/clientState/catalysisReportIdentifier/catalysisReport_interpretationIdeaLabel",
             valueType: "string",
             displayType: "text",
+            displayConfiguration: "40",
             displayName: "Interpretation idea label",
             displayPrompt: `
             This optional label will appear <strong>before each interpretation idea</strong> in the report.`,
@@ -378,6 +387,7 @@ var panel: Panel = {
             valuePath: "/clientState/catalysisReportIdentifier/catalysisReport_observationLabel",
             valueType: "string",
             displayType: "text",
+            displayConfiguration: "40",
             displayName: "Observation label",
             displayPrompt: `
             This optional label will appear <strong>before each observation name</strong> in the report.`,

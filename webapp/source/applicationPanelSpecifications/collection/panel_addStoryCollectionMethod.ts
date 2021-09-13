@@ -9,6 +9,7 @@ var panel: Panel = {
             id: "storyCollectionMethod_name",
             valueType: "string",
             displayType: "text",
+            displayConfiguration: "20",
             displayName: "Story collection method name",
             displayPrompt: "Please give this method plan a <strong>name</strong>."
         },

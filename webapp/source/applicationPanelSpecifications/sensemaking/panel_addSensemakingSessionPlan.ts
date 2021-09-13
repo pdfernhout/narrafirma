@@ -9,6 +9,7 @@ var panel: Panel = {
             id: "sensemakingSessionPlan_name",
             valueType: "string",
             displayType: "text",
+            displayConfiguration: "20",
             displayName: "Sensemaking session plan name",
             displayPrompt: "Please give this session plan a <strong>name</strong>."
         },
@@ -23,6 +24,7 @@ var panel: Panel = {
             id: "sensemakingSessionPlan_repetitions",
             valueType: "string",
             displayType: "text",
+            displayConfiguration: "30",
             displayName: "Repetitions",
             displayPrompt: "How many <strong>repetitions</strong> of the session will there be?"
         },
@@ -30,6 +32,7 @@ var panel: Panel = {
             id: "sensemakingSessionPlan_duration",
             valueType: "string",
             displayType: "text",
+            displayConfiguration: "30",
             displayName: "Length",
             displayPrompt: "<strong>How long</strong> will this session last?"
         },
@@ -37,6 +40,7 @@ var panel: Panel = {
             id: "sensemakingSessionPlan_times",
             valueType: "string",
             displayType: "text",
+            displayConfiguration: "30",
             displayName: "Time",
             displayPrompt: "<strong>When</strong> will the sessions take place?"
         },
@@ -44,6 +48,7 @@ var panel: Panel = {
             id: "sensemakingSessionPlan_location",
             valueType: "string",
             displayType: "text",
+            displayConfiguration: "30",
             displayName: "Location",
             displayPrompt: "<strong>Where</strong> will these sessions take place?"
         },

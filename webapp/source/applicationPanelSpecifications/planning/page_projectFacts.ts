@@ -17,6 +17,7 @@ var panel: Panel = {
             id: "project_title",
             valueType: "string",
             displayType: "text",
+            displayConfiguration: "20",
             displayName: "Project title",
             displayPrompt: "What is the project's <strong>title</strong>?"
         },
@@ -24,6 +25,7 @@ var panel: Panel = {
             id: "project_communityOrOrganizationName",
             valueType: "string",
             displayType: "text",
+            displayConfiguration: "30",
             displayName: "Community/organization name",
             displayPrompt: "What is the name of your <strong>community or organization</strong>?"
         },
@@ -31,6 +33,7 @@ var panel: Panel = {
             id: "project_topic",
             valueType: "string",
             displayType: "text",
+            displayConfiguration: "30",
             displayName: "Project topic",
             displayPrompt: "Enter a brief name for the project's primary <strong>topic</strong>."
         },
@@ -38,6 +41,7 @@ var panel: Panel = {
             id: "project_startAndEndDates",
             valueType: "string",
             displayType: "text",
+            displayConfiguration: "30",
             displayName: "Project start and end",
             displayPrompt: "What are the project's starting and ending <strong>dates</strong>?"
         },

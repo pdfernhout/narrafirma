@@ -32,6 +32,7 @@ var panel: Panel = {
             valuePath: "/clientState/storyFormIdentifier/questionForm_defaultLanguage",
             valueType: "string",
             displayType: "text",
+            displayConfiguration: "20",
             displayName: "Default language",
             displayPrompt: "What is the <strong>default language</strong> of this story form?",
             displayVisible: function(panelBuilder, model) { return !!Globals.clientState().storyFormIdentifier(); }
@@ -42,6 +43,7 @@ var panel: Panel = {
             valuePath: "/clientState/storyFormIdentifier/questionForm_languageChoiceQuestion_text",
             valueType: "string",
             displayType: "text",
+            displayConfiguration: "60",
             displayName: "Language choice question text",
             displayPrompt: "Enter a question participants will answer to <strong>choose a language</strong> in which to view the story form.",
             displayVisible: function(panelBuilder, model) { return !!Globals.clientState().storyFormIdentifier(); }

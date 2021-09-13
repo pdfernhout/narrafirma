@@ -10,6 +10,7 @@ var panel: Panel = {
             id: "storyCollection_shortName",
             valueType: "string",
             displayType: "text",
+            displayConfiguration: "20",
             displayName: "Story collection name",
             displayPrompt: `
                 Please give this story collection a short <strong>name</strong>.

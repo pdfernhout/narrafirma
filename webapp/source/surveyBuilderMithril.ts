@@ -104,11 +104,11 @@ function displayQuestion(builder, model, fieldSpecification, storyForm) {
 
         let displayPrompt = tr(fieldSpecification.displayPrompt);
     
-        if (fieldSpecification.displayType === "checkboxes" && fieldSpecification.maxNumAnswers) {
+        if (fieldSpecification.displayType === "checkboxes" && fieldSpecification.displayConfiguration) {
             if (storyForm.maxNumAnswersPrompt) {
-                displayPrompt += " " + tr(storyForm.maxNumAnswersPrompt).replace("#", fieldSpecification.maxNumAnswers);
+                displayPrompt += " " + tr(storyForm.maxNumAnswersPrompt).replace("#", fieldSpecification.displayConfiguration);
             } else { 
-                displayPrompt += " " + tr(defaultFormTexts.maxNumAnswersPrompt).replace("#", fieldSpecification.maxNumAnswers);
+                displayPrompt += " " + tr(defaultFormTexts.maxNumAnswersPrompt).replace("#", fieldSpecification.displayConfiguration);
             }
         }
         
@@ -156,7 +156,16 @@ function displayQuestion(builder, model, fieldSpecification, storyForm) {
     function displayTextOrTextAreaQuestion(type) {
         questionLabel[0].attrs["for"] = getIdForText(fieldID);
         questionLabel[0].tag = "label";
-        return [m(type, standardValueOptions), m("br")];
+        if (type === "input") {
+            const lengthAsNumber = Number(fieldSpecification.displayConfiguration);
+            if (!isNaN(lengthAsNumber)) {
+                return [m(type, {style: "width: " + lengthAsNumber + "em"}, standardValueOptions), m("br")];
+            } else {
+                return [m(type, standardValueOptions), m("br")];
+            }
+        } else {
+            return [m(type, standardValueOptions), m("br")];
+        }
     }
 
     //////////////////////////////////////////////////////////////// one checkbox ////////////////////////////////////////////////////////////////
@@ -182,7 +191,9 @@ function displayQuestion(builder, model, fieldSpecification, storyForm) {
             checkBoxIDs.map(function (anOptionID, index) {
                 if (document.querySelector('#' + anOptionID + ':checked')) numOptionsChecked++;
             })
-            const disableUncheckedBoxes = (numOptionsChecked >= fieldSpecification.maxNumAnswers);
+            let maxAsNumber = Number(fieldSpecification.displayConfiguration);
+            if (isNaN(maxAsNumber)) maxAsNumber = null;
+            const disableUncheckedBoxes = (maxAsNumber && numOptionsChecked >= maxAsNumber);
             checkBoxIDs.map(function (anOptionID, index) {
                 const element = document.querySelector('#' + anOptionID) as HTMLInputElement;
                 if (element && !element.checked) {
@@ -200,7 +211,7 @@ function displayQuestion(builder, model, fieldSpecification, storyForm) {
         }
     
         const checkBoxIDsForThisQuestion = [];
-        if (fieldSpecification.maxNumAnswers) {
+        if (fieldSpecification.displayConfiguration) {
             fieldSpecification.valueOptions.map(function (option, index) {
                 const optionID = getIdForText(fieldID + "_" + option);
                 checkBoxIDsForThisQuestion.push(optionID);
@@ -219,7 +230,7 @@ function displayQuestion(builder, model, fieldSpecification, storyForm) {
                         onchange: function(event) {
                             value[optionValue] = event.target.checked; 
                             standardChangeMethod(null, value); 
-                            if (fieldSpecification.maxNumAnswers) {
+                            if (fieldSpecification.displayConfiguration) {
                                 disableUncheckedBoxesIfReachedMaxNumAnswers(checkBoxIDsForThisQuestion);
                             }
                         }
@@ -284,7 +295,7 @@ function displayQuestion(builder, model, fieldSpecification, storyForm) {
         let selectOptions = [];
         let defaultOptions = {name: '', value: '', selected: undefined};
         if (!value) defaultOptions.selected = 'selected';
-        if (!fieldSpecification.listBoxRows) { selectOptions.push(m("option", defaultOptions, tr(storyForm.selectNoChoiceName || defaultFormTexts.selectNoChoiceName))); }
+        if (!fieldSpecification.displayConfiguration) { selectOptions.push(m("option", defaultOptions, tr(storyForm.selectNoChoiceName || defaultFormTexts.selectNoChoiceName))); }
 
         selectOptions = selectOptions.concat(
             fieldSpecification.valueOptions.map(function (option, index) {
@@ -296,20 +307,10 @@ function displayQuestion(builder, model, fieldSpecification, storyForm) {
             })
         );
         
-        
-        let selectDictionary = {};
-        if (fieldSpecification.listBoxRows) {
-            const keys = Object.keys(standardValueOptions);
-            for (let i = 0; i < keys.length; i++) { 
-                const key = keys[i];
-                selectDictionary[key] = standardValueOptions[key]; 
-            }
-            selectDictionary["size"] = fieldSpecification.listBoxRows;
-        } else {
-            selectDictionary = standardValueOptions;
-        }
+        let sizeAsNumber = Number(fieldSpecification.displayConfiguration);
+        if (!isNaN(sizeAsNumber)) standardValueOptions["size"] = sizeAsNumber;
         const questionParts = [
-            m("select", selectDictionary, selectOptions),
+            m("select", standardValueOptions, selectOptions),
             m("br")
         ];
         return questionParts;
@@ -518,7 +519,7 @@ export function buildSurveyForm(surveyDiv, storyForm, doneCallback, surveyOption
         initialStoryQuestions.push({id: "storyText", displayName: "storyText", displayPrompt: tr(singlePrompt.name), displayType: "textarea", valueOptions: [], displayClass: "narrafirma-story-text"});
     }
     const nameStoryText = tr(storyForm.nameStoryText || defaultFormTexts.nameStoryText);
-    initialStoryQuestions.push({id: "storyName", displayName: "storyName", displayPrompt: nameStoryText, displayType: "text", valueOptions: [], displayClass: "narrafirma-story-name"});
+    initialStoryQuestions.push({id: "storyName", displayName: "storyName", displayPrompt: nameStoryText, displayType: "text", valueOptions: [], displayConfiguration: "20", displayClass: "narrafirma-story-name"});
     
     const allStoryQuestions = initialStoryQuestions.concat(storyForm.storyQuestions);
             

@@ -9,6 +9,7 @@ var panel: Panel = {
             id: "feedback_name",
             valueType: "string",
             displayType: "text",
+            displayConfiguration: "20",
             displayName: "Name",
             displayPrompt: "Please give this piece of feedback a <strong>name</strong>."
         },
@@ -42,6 +43,7 @@ var panel: Panel = {
             id: "feedback_who",
             valueType: "string",
             displayType: "text",
+            displayConfiguration: "40",
             displayName: "Source",
             displayPrompt: "<strong>Who</strong> said or did this?"
         },

@@ -10,6 +10,7 @@ var panel: Panel = {
             id: "interventionPlan_name",
             valueType: "string",
             displayType: "text",
+            displayConfiguration: "20",
             displayName: "Intervention plan name",
             displayPrompt: "Please give this intervention plan a <strong>name</strong>."
         },

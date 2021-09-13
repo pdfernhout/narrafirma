@@ -9,6 +9,7 @@ var panel: Panel = {
             id: "catalysisReport_shortName",
             valueType: "string",
             displayType: "text",
+            displayConfiguration: "20",
             displayName: "Catalysis report name",
             displayPrompt: `Please give this catalysis report a short <strong>name</strong>.
                 A catalysis report must have a name. 

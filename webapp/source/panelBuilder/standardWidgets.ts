@@ -156,11 +156,12 @@ export function displayQuestion(panelBuilder: PanelBuilder, model, fieldSpecific
     function displayTextQuestion() {
         questionLabel[0].attrs["for"] = getIdForText(fieldID);
         questionLabel[0].tag = "label";
-        let inputClass = "narrafirma-textbox";
-        if (["Short name", "Nickname"].indexOf(fieldSpecification.displayName) >= 0) {
-            inputClass += "-short";
+
+        const lengthAsNumber = Number(fieldSpecification.displayConfiguration);
+        if (!isNaN(lengthAsNumber)) {
+            standardValueOptions["style"] = "width: " + lengthAsNumber + "em";
         }
-        return [m("input[class=" + inputClass + "]", standardValueOptions), m("br")];
+        return [m("input[class=narrafirma-textbox]", standardValueOptions), m("br")];
     }
 
     ///////////////////////////////////////////////////////////////////// textarea /////////////////////////////////////////////////////////////////////
@@ -359,26 +360,16 @@ export function displayQuestion(panelBuilder: PanelBuilder, model, fieldSpecific
         questionLabel[0].attrs["for"] = getIdForText(fieldID);
         questionLabel[0].tag = "label";
 
-        const selectOptionsRaw = optionsForSelect(panelBuilder, model, fieldSpecification, value, !fieldSpecification.listBoxRows);
+        const selectOptionsRaw = optionsForSelect(panelBuilder, model, fieldSpecification, value, !fieldSpecification.displayConfiguration);
         const selectOptions = selectOptionsRaw.map(function (option, index) {
             const optionOptions = {value: option.value, selected: undefined};
             if (option.selected) optionOptions.selected = 'selected';
             return m("option", optionOptions, option.name);
         });
         
-        let selectDictionary = {};
-        if (fieldSpecification.listBoxRows) {
-            const keys = Object.keys(standardValueOptions);
-            for (let i = 0; i < keys.length; i++) { 
-                const key = keys[i];
-                selectDictionary[key] = standardValueOptions[key]; 
-            }
-            selectDictionary["size"] = fieldSpecification.listBoxRows;
-        } else {
-            selectDictionary = standardValueOptions;
-        }
-
-        return [m("select", selectDictionary, selectOptions), (fieldSpecification.displayWithoutQuestionDivs || isAnnotationQuestion) ? "" : m("br")];
+        let sizeAsNumber = Number(fieldSpecification.displayConfiguration);
+        if (!isNaN(sizeAsNumber)) standardValueOptions["size"] = sizeAsNumber;
+        return [m("select", standardValueOptions, selectOptions), (fieldSpecification.displayWithoutQuestionDivs || isAnnotationQuestion) ? "" : m("br")];
     }
 
     ///////////////////////////////////////////////////////////////////// slider /////////////////////////////////////////////////////////////////////

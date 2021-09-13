@@ -16,6 +16,7 @@ var panel: Panel = {
             id: "interpretation_name",
             valueType: "string",
             displayType: "text",
+            displayConfiguration: "20",
             displayName: "Name",
             displayPrompt: 'Give the interpretation a short <strong>name</strong>. This name will represent it during clustering and will be its heading in the printed report.'
         },

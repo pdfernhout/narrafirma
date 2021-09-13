@@ -10,6 +10,7 @@ var panel: Panel = {
             id: "outcomes_group",
             valueType: "string",
             displayType: "text",
+            displayConfiguration: "20",
             displayName: "Participant group",
             displayPrompt: "Which participant <strong>group</strong> is this outcome for?"
         },

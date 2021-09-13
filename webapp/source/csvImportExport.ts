@@ -1309,6 +1309,7 @@ function questionForItem(item, questionCategory) {
     let maxNumAnswers = undefined;
     let writeInTextBoxLabel = "";
     let listBoxRows = undefined;
+    let textBoxLength = undefined;
     const optionsString = item["Options"] || "";
     if (optionsString) {
         const optionParts = optionsString.split("|");
@@ -1319,11 +1320,15 @@ function questionForItem(item, questionCategory) {
                     alert('Import error: For the Multiple choice question "' + item["Short name"] + '," the maximum number of answers ("' + maxNumAnswers + '") is not a number.');
                     maxNumAnswers = "";
                 }
-            }
-            if (part.indexOf("writeInTextBoxLabel=") >= 0) {
+            } else if (part.indexOf("writeInTextBoxLabel=") >= 0) {
                 writeInTextBoxLabel = stringBeyond(part, "writeInTextBoxLabel=");
-            }
-            if (part.indexOf("listBoxRows=") >= 0) {
+            } else if (part.indexOf("textBoxLength=") >= 0) {
+                textBoxLength = stringBeyond(part, "textBoxLength=");
+                if (textBoxLength && isNaN(textBoxLength)) {
+                    alert('Import error: For the text question "' + item["Short name"] + '," the text box length ("' + textBoxLength + '") is not a number.');
+                    textBoxLength = "";
+                }
+            } else if (part.indexOf("listBoxRows=") >= 0) {
                 listBoxRows = stringBeyond(part, "listBoxRows=");
                 if (listBoxRows && isNaN(listBoxRows)) {
                     alert('Import error: For the Multiple choice question "' + item["Short name"] + '," the number of list box rows ("' + listBoxRows + '") is not a number.');
@@ -1410,6 +1415,7 @@ function questionForItem(item, questionCategory) {
     if (maxNumAnswers) question[questionCategory + "_maxNumAnswers"] = maxNumAnswers;
     if (listBoxRows) question[questionCategory + "_listBoxRows"] = listBoxRows;
     if (writeInTextBoxLabel) question[questionCategory + "_writeInTextBoxLabel"] = writeInTextBoxLabel;
+    if (textBoxLength) question[questionCategory + "_textBoxLength"] = textBoxLength;
 
     question[questionCategory + "_import_columnName"] = item["Data column name"] || item["Short name"];
     question[questionCategory + "_import_valueType"] = itemType;
@@ -1564,6 +1570,9 @@ export function exportQuestionnaire(questionnaire = null) {
             if (question.listBoxRows) {
                 options.push("listBoxRows=" + question.listBoxRows);
             }
+            if (question.textBoxLength) {
+                options.push("textBoxLength=" + question.textBoxLength);
+            }
             outputLine.push(options.join("|"));  
             if (question.displayType === "slider") {
                 if (question.displayConfiguration) {
@@ -1708,6 +1717,9 @@ export function exportQuestionnaireForImport(questionnaire = null) { // to prese
             }
             if (question.listBoxRows) {
                 options.push("listBoxRows=" + question.listBoxRows);
+            }
+            if (question.textBoxLength) {
+                options.push("textBoxLength=" + question.textBoxLength);
             }
             outputLine.push(options.join("|"));  
 

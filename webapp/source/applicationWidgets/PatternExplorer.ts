@@ -411,7 +411,8 @@ class PatternExplorer {
                     valuePath: "/clientState/observationAccessor/observationTitle",
                     displayName: "Observation title",
                     displayPrompt: "Give the observation a short <strong>name</strong>. This name will represent it during clustering and will be its heading in the printed report.",
-                    displayType: "text"
+                    displayType: "text",
+                    displayConfiguration: "20"
                 },
                 {
                     id: "observationPanel_strength",

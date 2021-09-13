@@ -30,6 +30,7 @@ var panel: Panel = {
             id: "elicitingQuestion_dataColumnName",
             valueType: "string",
             displayType: "text",
+            displayConfiguration: "20",
             displayName: "Answer cell name",
             displayPrompt: "In your data file, what does it say <strong>in the data cell</strong> when the participant chose this eliciting question?"
         },

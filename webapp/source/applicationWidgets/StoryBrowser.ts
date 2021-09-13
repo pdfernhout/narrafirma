@@ -350,25 +350,29 @@ export class StoryBrowser {
             displayReadOnly: true,
             displayPrompt: "Number of stories told by this participant",
             displayType: "text",
+            displayConfiguration: "10"
         }
         const storyLengthQuestion = {
             id: "storyLength",
             displayName: "Story length",
             displayReadOnly: true,
             displayPrompt: "Story length (in characters)",
-            displayType: "text"
+            displayType: "text",
+            displayConfiguration: "10"
         }
         const collectionDateQuestion = {
             id: "collectionDate",
             displayName: "Collection year",
             displayPrompt: "Collection year (format: YYYY-MM-DD)",
-            displayType: "text"
+            displayType: "text",
+            displayConfiguration: "20"
         }
         const languageQuestion = {
             id: "language",
             displayName: "Language",
             displayPrompt: "Language",
-            displayType: "text"
+            displayType: "text",
+            displayConfiguration: "20"
         }
 
         const storyQuestions = this.project.storyQuestionsForStoryCollection(this.storyCollectionIdentifier);
@@ -395,6 +399,7 @@ export class StoryBrowser {
             displayReadOnly: true,
             displayType: "text",
             displayName: "Index",
+            displayConfiguration: "10",
             displayPrompt: "Index of story in collection",
             displayClass: "narrafirma-index-in-story-collection"
         });

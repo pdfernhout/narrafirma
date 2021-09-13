@@ -15,6 +15,7 @@ var panel: Panel = {
             id: "projectOptions_projectNickname",
             valueType: "string",
             displayType: "text",
+            displayConfiguration: "20",
             displayName: "Nickname",
             displayPrompt: `Enter a <strong>project nickname</strong> you want to appear on within-the-project pages and reports.
                 (Note that the project's real name will still appear in several places: 

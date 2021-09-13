@@ -9,6 +9,7 @@ var panel: Panel = {
             id: "collectionSessionRecord_construction_name",
             valueType: "string",
             displayType: "text",
+            displayConfiguration: "20",
             displayName: "Collection construction name",
             displayPrompt: "Please give this construction a <strong>name</strong>."
         },

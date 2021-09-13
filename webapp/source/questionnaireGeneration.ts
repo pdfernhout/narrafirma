@@ -229,14 +229,36 @@ export function convertEditorQuestions(editorQuestions, prefixQPA) {
 
         const options = [];
         const optionsString = question[keyPrefix + "options"];
-        
         if (optionsString) {
             // TODO: Improve option handling so can have standard IDs for options
             const splitOptions = optionsString.split("\n");
             splitOptions.map(function(option) { if (option.trim()) options.push(option.trim()); })
         }
-        const listBoxRows = question[keyPrefix + "listBoxRows"];
-        const maxNumAnswers = question[keyPrefix + "maxNumAnswers"];
+
+        const valueType = displayTypeToValueTypeMap[questionType];
+        if (!valueType) console.log("ERROR: Could not resolve valueType for ", question);
+
+        // default valueOptions and displayConfiguration to undefined so no object fields will appear set for these if not otherwise set
+        valueOptions = undefined;
+        if (["select", "radiobuttons", "checkboxes"].indexOf(questionType) >= 0) {
+            valueOptions = options;
+        } 
+
+        // use displayConfiguration for configuration options that are specific to the question type
+        displayConfiguration = undefined;
+        if (questionType === "slider") {
+            if (options.length === 1) {
+                displayConfiguration = options[0];
+            } else if (options.length > 1) {
+                displayConfiguration = options;
+            }
+        } else if (questionType === "text") {
+            displayConfiguration = !isNaN(Number(question[keyPrefix + "textBoxLength"])) ? question[keyPrefix + "textBoxLength"] : "";
+        } else if (questionType === "select") {
+            displayConfiguration = !isNaN(Number(question[keyPrefix + "listBoxRows"])) ? question[keyPrefix + "listBoxRows"] : "";
+        } else if (questionType === "checkboxes") {
+            displayConfiguration = !isNaN(Number(question[keyPrefix + "maxNumAnswers"])) ? question[keyPrefix + "maxNumAnswers"] : "";
+        }
 
         const import_columnName = question[keyPrefix + "import_columnName"] || question[keyPrefix + "shortName"];
         const import_valueType = question[keyPrefix + "import_valueType"];
@@ -251,33 +273,15 @@ export function convertEditorQuestions(editorQuestions, prefixQPA) {
             importOptions = question[keyPrefix + "import_answerNames"];
         }
 
-        const valueType = displayTypeToValueTypeMap[questionType];
-        if (!valueType) console.log("ERROR: Could not resolve valueType for ", question);
-
-        // Set these two variabless to undefined so no object fields will appear set for these if not otherwise set
-        valueOptions = undefined;
-        displayConfiguration = undefined;
-        
-        if (["select", "radiobuttons", "checkboxes"].indexOf(questionType) >= 0) {
-            valueOptions = options;
-        } else {
-            if (options.length === 1) {
-                displayConfiguration = options[0];
-            } else if (options.length > 1) {
-                displayConfiguration = options;
-            }
-        }
         adjustedQuestions.push({
-            valueType: valueType,
-            displayType: questionType,
             id: id, 
-            valueOptions: valueOptions, 
-            maxNumAnswers: maxNumAnswers,
-            listBoxRows: listBoxRows,
-            writeInTextBoxLabel: writeInTextBoxLabel,
+            valueType: valueType,
             displayName: shortName, 
             displayPrompt: prompt,
+            displayType: questionType,
+            valueOptions: valueOptions, 
             displayConfiguration: displayConfiguration,
+            writeInTextBoxLabel: writeInTextBoxLabel,
             import_columnName: import_columnName,
             import_valueType: import_valueType,
             import_answerNames: importOptions,
@@ -326,6 +330,7 @@ export function getStoryNameAndTextQuestions() {
         displayName: "Story title",
         displayPrompt: "Please give your story a name",
         displayType: "text",
+        displayConfiguration: "20",
         valueOptions: [],
     });
     result.unshift({
