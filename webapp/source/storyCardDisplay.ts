@@ -22,24 +22,23 @@ function wrap(elementType, cssClass, text) {
 }
 
 function displayHTMLForSlider(fieldSpecification, fieldName, value, options) {
-    var lowLabel = "";
-    var highLabel = "";
+    let lowLabel = "";
+    let highLabel = "";
     if (fieldSpecification.displayConfiguration !== undefined && fieldSpecification.displayConfiguration.length > 1) {
         lowLabel = fieldSpecification.displayConfiguration[0];
         highLabel = fieldSpecification.displayConfiguration[1];
     }
-    var sliderText = [];
-    var sliderTextBefore = "";
-    var sliderTextAfter = "";
+    const sliderText = [];
+    let sliderTextBefore = "";
+    let sliderTextAfter = "";
     // Assumes values go from 0 to 100; places 100.0 in last bucket
-    var bucketCount = 50;
-    var bucketSize = 100.0 / bucketCount;
-    var placed = false;
-    var answerClass = "narrafirma-story-card-answer-for-" + replaceSpacesWithDashes(fieldName);
+    const bucketCount = 50;
+    const bucketSize = 100.0 / bucketCount;
+    let placed = false;
+    const answerClass = "narrafirma-story-card-answer-for-" + replaceSpacesWithDashes(fieldName);
     if (value !== undefined && value !== "") {
         for (let i = 0; i < bucketCount; i++) {
-            var bucketLow = i * bucketSize;
-            var bucketHigh = i * bucketSize + bucketSize;
+            const bucketHigh = i * bucketSize + bucketSize;
             if (!placed) {
                 if (value && ((value < bucketHigh) || (value && i === bucketCount - 1))) {
                     sliderText.push(m("span", {"class": "narrafirma-story-card-slider-bars-before " + answerClass + '-slider-bars-before'}, sliderTextBefore));
@@ -68,14 +67,14 @@ function displayHTMLForSlider(fieldSpecification, fieldName, value, options) {
 }
 
 function displayHTMLForCheckboxes(fieldSpecification, fieldName, value) {
-    var options = [];
-    var atLeastOneOptionWasChecked = false;
-    var answerClass = "narrafirma-story-card-answer-for-" + replaceSpacesWithDashes(fieldName);
+    const options = [];
+    let atLeastOneOptionWasChecked = false;
+    const answerClass = "narrafirma-story-card-answer-for-" + replaceSpacesWithDashes(fieldName);
     options.push(m("span", {"class": "narrafirma-story-card-field-name-" + replaceSpacesWithDashes(fieldName)}, fieldName + ": "));
     // TODO: What if value is not currently available option?
-    var optionsAlreadyConsidered = [];
+    const optionsAlreadyConsidered = [];
     for (let i = 0; i < fieldSpecification.valueOptions.length; i++) {
-        var option = fieldSpecification.valueOptions[i];
+        const option = fieldSpecification.valueOptions[i];
         if (optionsAlreadyConsidered.indexOf(option) >= 0) continue; // hide duplicate options, if any, due to lumping during import
         optionsAlreadyConsidered.push(option);
         if (options.length-1) options.push(wrap("span", answerClass + "-comma", ", "));
@@ -90,14 +89,14 @@ function displayHTMLForCheckboxes(fieldSpecification, fieldName, value) {
 }
 
 function displayHTMLForRadioButtons(fieldSpecification, fieldName, value) {
-    var options = [];
-    var atLeastOneOptionWasChecked = false;
-    var answerClass = "narrafirma-story-card-answer-for-" + replaceSpacesWithDashes(fieldName);
+    const options = [];
+    let atLeastOneOptionWasChecked = false;
+    const answerClass = "narrafirma-story-card-answer-for-" + replaceSpacesWithDashes(fieldName);
     options.push(m("span", {"class": "narrafirma-story-card-field-name-" + replaceSpacesWithDashes(fieldName)}, fieldName + ": "));
     // TODO: What if value is not currently available option?
-    var optionsAlreadyConsidered = [];
+    const optionsAlreadyConsidered = [];
     for (let i = 0; i < fieldSpecification.valueOptions.length; i++) {
-        var option = fieldSpecification.valueOptions[i];
+        const option = fieldSpecification.valueOptions[i];
         if (optionsAlreadyConsidered.indexOf(option) >= 0) continue; // hide duplicate options, if any, due to lumping during import
         optionsAlreadyConsidered.push(option);
         if (options.length-1) options.push(wrap("span", answerClass + "-comma", ", "));
@@ -112,14 +111,14 @@ function displayHTMLForRadioButtons(fieldSpecification, fieldName, value) {
 }
 
 function displayHTMLForSelect(fieldSpecification, fieldName, value) {
-    var options = [];
-    var atLeastOneOptionWasChecked = false;
-    var answerClass = "narrafirma-story-card-answer-for-" + replaceSpacesWithDashes(fieldName);
+    const options = [];
+    let atLeastOneOptionWasChecked = false;
+    const answerClass = "narrafirma-story-card-answer-for-" + replaceSpacesWithDashes(fieldName);
     options.push(m("span", {"class": "narrafirma-story-card-field-name-" + replaceSpacesWithDashes(fieldName)}, fieldName + ": "));
     // TODO: What if value is not currently available option?
-    var optionsAlreadyConsidered = [];
+    const optionsAlreadyConsidered = [];
     for (let i = 0; i < fieldSpecification.valueOptions.length; i++) {
-        var option = fieldSpecification.valueOptions[i];
+        const option = fieldSpecification.valueOptions[i];
         if (optionsAlreadyConsidered.indexOf(option) >= 0) continue; // hide duplicate options, if any, due to lumping during import
         optionsAlreadyConsidered.push(option);
         if (options.length-1) options.push(wrap("span", answerClass + "-comma", ", "));
@@ -135,8 +134,8 @@ function displayHTMLForSelect(fieldSpecification, fieldName, value) {
 
 function displayHTMLForField(storyModel: surveyCollection.Story, fieldSpecification, options, nobreak = null) {
     // if (!model[fieldSpecification.id]) return "";
-    var value = storyModel.fieldValue(fieldSpecification.id);
-    var isAnnotationQuestion = fieldSpecification.id.indexOf("A_") >= 0;
+    let value = storyModel.fieldValue(fieldSpecification.id);
+    const isAnnotationQuestion = fieldSpecification.id.indexOf("A_") >= 0;
 
     if (options.lumpingCommands && options.lumpingCommands.hasOwnProperty(fieldSpecification.displayName)) {
         if (fieldSpecification.displayType === "checkboxes") { 
@@ -155,34 +154,34 @@ function displayHTMLForField(storyModel: surveyCollection.Story, fieldSpecificat
         }
     }
 
-    var fieldName = fieldSpecification.displayName || fieldSpecification.displayPrompt;
-    var result = [];
-    var answerClass = "narrafirma-story-card-answer-for-" + replaceSpacesWithDashes(fieldName);
+    const fieldName = fieldSpecification.displayName || fieldSpecification.displayPrompt;
+    const result = [];
+    const answerClass = "narrafirma-story-card-answer-for-" + replaceSpacesWithDashes(fieldName);
     if (fieldSpecification.displayType === "slider") {
         result.push(displayHTMLForSlider(fieldSpecification, fieldName, value, options));
     } else if (fieldSpecification.displayType === "checkboxes") {
-        var optionsAndChecked = displayHTMLForCheckboxes(fieldSpecification, fieldName, value);
+        const optionsAndChecked = displayHTMLForCheckboxes(fieldSpecification, fieldName, value);
         if (optionsAndChecked[1]) {
             result.push(wrap("div", "narrafirma-story-card-question-line-with-selected-item", optionsAndChecked[0]));
         } else {
             result.push(wrap("div", "narrafirma-story-card-question-line-without-selected-item", optionsAndChecked[0]));
         }
     } else if (fieldSpecification.displayType === "select") {
-        var optionsAndChecked = displayHTMLForSelect(fieldSpecification, fieldName, value);
+        const optionsAndChecked = displayHTMLForSelect(fieldSpecification, fieldName, value);
         if (optionsAndChecked[1]) {
             result.push(wrap("div", "narrafirma-story-card-question-line-with-selected-item", optionsAndChecked[0]));
         } else {
             result.push(wrap("div", "narrafirma-story-card-question-line-without-selected-item", optionsAndChecked[0]));
         }
     } else if (fieldSpecification.displayType === "radiobuttons") {
-        var optionsAndChecked = displayHTMLForRadioButtons(fieldSpecification, fieldName, value);
+        const optionsAndChecked = displayHTMLForRadioButtons(fieldSpecification, fieldName, value);
         if (optionsAndChecked[1]) {
             result.push(wrap("div", "narrafirma-story-card-question-line-with-selected-item", optionsAndChecked[0]));
         } else {
             result.push(wrap("div", "narrafirma-story-card-question-line-without-selected-item", optionsAndChecked[0]));
         }
     } else if (fieldSpecification.displayType === "boolean") {
-        var thisBit = [];
+        const thisBit = [];
         thisBit.push(m("span", {"class": "narrafirma-story-card-field-name-" + replaceSpacesWithDashes(fieldName)}, fieldName + ": "));
         if (value === true) {
             thisBit.push(m("span", {"class": answerClass}, "yes"));
@@ -193,7 +192,7 @@ function displayHTMLForField(storyModel: surveyCollection.Story, fieldSpecificat
         }
         result.push(wrap("div", "narrafirma-story-card-question-line-without-selected-item", thisBit));
     } else if (fieldSpecification.displayType === "checkbox") {
-        var thisBit = [];
+        const thisBit = [];
         thisBit.push(m("span", {"class": "narrafirma-story-card-field-name-" + replaceSpacesWithDashes(fieldName)}, fieldName + ": "));
         if (value === true) {
             thisBit.push(m("span", {"class": answerClass}, "true"));
@@ -207,7 +206,7 @@ function displayHTMLForField(storyModel: surveyCollection.Story, fieldSpecificat
         return [];
     } else {
         // TODO: May need more handling here for other cases
-        var thisBit = [];
+        const thisBit = [];
         thisBit.push(m("span", {"class": "narrafirma-story-card-field-name-" + replaceSpacesWithDashes(fieldName)}, fieldName + ": "));
         thisBit.push(m("span", {"class": answerClass}, value));
         result.push(wrap("div", "narrafirma-story-card-question-line-without-selected-item", thisBit));
@@ -244,11 +243,11 @@ interface Options {
 }
 
 export function generateStoryCardContent(storyModel, questionsToInclude, options: Options = {}) {
-    var elicitingQuestion = storyModel.elicitingQuestion();
-    var numStoriesTold = storyModel.numStoriesTold();
-    var storyLength = storyModel.storyLength();
+    const elicitingQuestion = storyModel.elicitingQuestion();
+    const numStoriesTold = storyModel.numStoriesTold();
+    const storyLength = storyModel.storyLength();
     
-    var storyName = storyModel.storyName();
+    let storyName = storyModel.storyName();
     if (options.includeIndex) {
         storyName = storyModel.indexInStoryCollection() + ". " + storyName;
     }
@@ -256,10 +255,10 @@ export function generateStoryCardContent(storyModel, questionsToInclude, options
     const storyCollectionDate = storyModel.storyCollectionDate();
     const language = storyModel.storyLanguage();
 
-    var storyText = storyModel.storyText();
+    let storyText = storyModel.storyText();
     if (options.cutoff && options.cutoff !== "no limit") {
-        var cutoffValue = parseInt(options.cutoff);
-        var cutoffMessageToUse = options.cutoffMessage || "... (truncated)";
+        const cutoffValue = parseInt(options.cutoff);
+        const cutoffMessageToUse = options.cutoffMessage || "... (truncated)";
         if (!isNaN(cutoffValue)) {
             if (storyText.length > cutoffValue) {
                 storyText = storyText.slice(0, cutoffValue) + cutoffMessageToUse;
@@ -267,22 +266,22 @@ export function generateStoryCardContent(storyModel, questionsToInclude, options
         }
     }
 
-    var formattedFields = [];
+    let formattedFields = [];
 
-    var questionnaire = storyModel.questionnaire();
+    let questionnaire = storyModel.questionnaire();
     if (options.questionnaire) questionnaire = options.questionnaire;
 
-    var allQuestions = [];
+    let allQuestions = [];
     if (questionnaire) {
         if (options["location"] || options["location"] !== "storyAnnotationBrowser") {
             allQuestions = allQuestions.concat(questionnaire.storyQuestions);
             allQuestions = allQuestions.concat(questionnaire.participantQuestions);
         }
-        var allAnnotationQuestions = questionnaireGeneration.convertEditorQuestions(Globals.project().collectAllAnnotationQuestions(), "A_");
+        const allAnnotationQuestions = questionnaireGeneration.convertEditorQuestions(Globals.project().collectAllAnnotationQuestions(), "A_");
         if (allAnnotationQuestions) allQuestions = allQuestions.concat(allAnnotationQuestions);
     }
 
-    var questions = [];
+    let questions = [];
     if (questionsToInclude) {
         allQuestions.forEach((question) => {
             if (questionsToInclude[question.id]) {
@@ -317,18 +316,18 @@ export function generateStoryCardContent(storyModel, questionsToInclude, options
     //    "alphabetical order, scales mixed in"
     //],
 
-    var sortAlphabetically = options.order != undefined && options.order.indexOf("alphabetical") >= 0;
-    var sortScalesSeparately = options.order != undefined && options.order.indexOf("scales separate") >= 0;
+    const sortAlphabetically = options.order != undefined && options.order.indexOf("alphabetical") >= 0;
+    const sortScalesSeparately = options.order != undefined && options.order.indexOf("scales separate") >= 0;
 
     if (sortAlphabetically) {
         questions.sort(function(a, b) {
-            var aName = a.displayName || a.displayPrompt || "";
+            let aName = a.displayName || a.displayPrompt || "";
             aName = aName.toLowerCase();
-            var bName = b.displayName || b.displayPrompt || "";
+            let bName = b.displayName || b.displayPrompt || "";
             bName = bName.toLowerCase();
                 
-            var aIsAnnotationQuestion = a.id.indexOf("A_") >= 0;
-            var bIsAnnotationQuestion = b.id.indexOf("A_") >= 0;
+            const aIsAnnotationQuestion = a.id.indexOf("A_") >= 0;
+            const bIsAnnotationQuestion = b.id.indexOf("A_") >= 0;
 
             if ((aIsAnnotationQuestion && bIsAnnotationQuestion) || (!aIsAnnotationQuestion && !bIsAnnotationQuestion)) {
                 if (aName < bName) return -1;
@@ -342,15 +341,15 @@ export function generateStoryCardContent(storyModel, questionsToInclude, options
         });
     }
     
-    var question;
-    var i;
+    let question;
+    let i;
     
     // Put sliders in a table at the start, so loop twice with different conditions (but only if they chose that option)
     if (sortScalesSeparately) {
         for (let i = 0; i < questions.length; i++) {
             question = questions[i];
             if (question.displayType !== "slider") continue;
-            var fieldHTML = displayHTMLForField(storyModel, question, options, "nobreak");
+            const fieldHTML = displayHTMLForField(storyModel, question, options, "nobreak");
             formattedFields.push(fieldHTML);
         }
         if (formattedFields.length) formattedFields = [m("table", {"class": "narrafirma-story-card-sliders-table"}, formattedFields)];
@@ -359,15 +358,14 @@ export function generateStoryCardContent(storyModel, questionsToInclude, options
     for (let i = 0; i < questions.length; i++) {
         question = questions[i];
         if (sortScalesSeparately && question.displayType === "slider") continue;
-        var fieldHTML = displayHTMLForField(storyModel, question, options);
+        let fieldHTML = displayHTMLForField(storyModel, question, options);
         if (!sortScalesSeparately && question.displayType === "slider") {
-            var fieldName = question.displayName || question.displayPrompt;
             fieldHTML = [m("div", {"class": "narrafirma-story-card-question-line-with-slider"}, m("table", {"class": "narrafirma-story-card-one-slider-table"}, fieldHTML))];
         }
         formattedFields.push(fieldHTML);
     }
 
-    var textForElicitingQuestion: any = [];
+    let textForElicitingQuestion: any = [];
     // if questionsToInclude is unspecified, it is not being called in the "print story cards" page, so include this
     if (!questionsToInclude || Object.keys(questionsToInclude).indexOf("elicitingQuestion") >= 0) {
         textForElicitingQuestion = m(
@@ -376,7 +374,7 @@ export function generateStoryCardContent(storyModel, questionsToInclude, options
             elicitingQuestion]);
     }
     
-    var textForNumStoriesTold: any = [];
+    let textForNumStoriesTold: any = [];
     // if questionsToInclude is unspecified, it is not being called in the "print story cards" page, so include this
     if (!questionsToInclude || Object.keys(questionsToInclude).indexOf("numStoriesTold") >= 0) {
         textForNumStoriesTold = m(
@@ -385,7 +383,7 @@ export function generateStoryCardContent(storyModel, questionsToInclude, options
             numStoriesTold]);
     }
 
-    var textForStoryLength: any = [];
+    let textForStoryLength: any = [];
     // if questionsToInclude is unspecified, it is not being called in the "print story cards" page, so include this
     if (!questionsToInclude || Object.keys(questionsToInclude).indexOf("storyLength") >= 0) {
         textForStoryLength = m(
@@ -394,7 +392,7 @@ export function generateStoryCardContent(storyModel, questionsToInclude, options
             storyLength, " characters", m("br")]);
     }
 
-    var textForCollectionDate: any = [];
+    let textForCollectionDate: any = [];
     // if questionsToInclude is unspecified, it is not being called in the "print story cards" page, so include this
     if (!questionsToInclude || Object.keys(questionsToInclude).indexOf("collectionDate") >= 0) {
         textForCollectionDate = m(
@@ -402,7 +400,7 @@ export function generateStoryCardContent(storyModel, questionsToInclude, options
             [wrap("span", "narrafirma-story-card-collection-date-question-name", "Collection date: "), 
             storyCollectionDate, m("br")]);
     }
-    var textForLanguage: any = [];
+    let textForLanguage: any = [];
     // if questionsToInclude is unspecified, it is not being called in the "print story cards" page, so include this
     if (!questionsToInclude || Object.keys(questionsToInclude).indexOf("language") >= 0) {
         textForCollectionDate = m(
@@ -411,8 +409,8 @@ export function generateStoryCardContent(storyModel, questionsToInclude, options
             language, m("br")]);
     }
     
-    var storyTextAtTop: any = [];
-    var storyTextClass = "";
+    let storyTextAtTop: any = [];
+    let storyTextClass = "";
     if (options["location"] && options["location"] === "storyBrowser") {
         storyTextClass = "narrafirma-story-card-story-text-in-story-browser";
     } else if (options["location"] && options["location"] === "storyAnnotationBrowser") {
@@ -420,14 +418,14 @@ export function generateStoryCardContent(storyModel, questionsToInclude, options
     } else {
         storyTextClass = "narrafirma-story-card-story-text-in-printed-story-cards";
     }
-    var storyTextAtBottom: any = wrap("div", storyTextClass, storyText);
+    let storyTextAtBottom: any = wrap("div", storyTextClass, storyText);
     
     if (options.storyTextAtTop) {
         storyTextAtTop = storyTextAtBottom;
         storyTextAtBottom = [];
     }
     
-    var storyCardContent = m("div[class=storyCard]", [
+    const storyCardContent = m("div[class=storyCard]", [
         wrap("div", "narrafirma-story-card-story-title", storyName),
         storyTextAtTop,
         formattedFields,

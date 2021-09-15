@@ -5,14 +5,9 @@ import PatternExplorer = require("./PatternExplorer");
 "use strict";
 
 function add_patternExplorer(panelBuilder: PanelBuilder, model, fieldSpecification) {
-    var prompt = panelBuilder.buildQuestionLabel(fieldSpecification);
-    
-    var patternBrowser = m.component(<any>PatternExplorer, {key: fieldSpecification.id, panelBuilder: panelBuilder, model: model, fieldSpecification: fieldSpecification});
- 
-    return m("div", [
-        prompt,
-        patternBrowser
-     ]);
+    const prompt = panelBuilder.buildQuestionLabel(fieldSpecification);
+    const patternBrowser = m.component(<any>PatternExplorer, {key: fieldSpecification.id, panelBuilder: panelBuilder, model: model, fieldSpecification: fieldSpecification});
+    return m("div", [prompt, patternBrowser]);
 }
 
 export = add_patternExplorer;

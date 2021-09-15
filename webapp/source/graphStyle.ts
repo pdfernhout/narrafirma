@@ -338,13 +338,16 @@ export const graphResultsPaneCSS = `
 export function modifyFontSize(css, outputFontModifierPercent) {
     if (!outputFontModifierPercent) return css;
 
-    var regex = /font-size:/gi, searchResult, fontSizeIndices = [];
-    while ( (searchResult = regex.exec(css)) ) {
+    let regex = /font-size:/gi;
+    let searchResult;
+    const fontSizeIndices = [];
+    while (searchResult = regex.exec(css)) {
         fontSizeIndices.push(searchResult.index);
     }
 
-    var regex = /em/gi, searchResult, emIndices = [];
-    while ( (searchResult = regex.exec(css)) ) {
+    regex = /em/gi;
+    const emIndices = [];
+    while (searchResult = regex.exec(css)) {
         emIndices.push(searchResult.index);
     }
 
@@ -407,20 +410,20 @@ export function dataURItoBlob( dataURI ) {
     // copied from https://stackoverflow.com/questions/55385369/jszip-creating-corrupt-jpg-image
     // Convert Base64 to raw binary data held in a string.
 
-    var byteString = atob(dataURI.split(',')[1]);
+    const byteString = atob(dataURI.split(',')[1]);
 
     // Separate the MIME component.
-    var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0]
+    const mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0]
 
     // Write the bytes of the string to an ArrayBuffer.
-    var arrayBuffer = new ArrayBuffer(byteString.length);
-    var uint8Array = new Uint8Array(arrayBuffer);
+    const arrayBuffer = new ArrayBuffer(byteString.length);
+    const uint8Array = new Uint8Array(arrayBuffer);
     for (let i = 0; i < byteString.length; i++) {
         uint8Array[i] = byteString.charCodeAt(i);
     }
 
     // Write the ArrayBuffer to a BLOB and you're done.
-    var blob = new Blob([arrayBuffer]);
+    const blob = new Blob([arrayBuffer]);
 
     return blob;
 }

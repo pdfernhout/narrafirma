@@ -23,14 +23,13 @@ import kludgeForUseStrict = require("../kludgeForUseStrict");
  */
 
 function loadAllPanelSpecifications(panelSpecificationCollection, navigationSections, loadingBase, callback) {
-    var panelMetadata = [];
-    var navigationModules = navigationSections["navigationModules"];
-    var panelSpecification;
+    const navigationModules = navigationSections["navigationModules"];
+    let panelSpecification;
     
-    for (var sectionIndex = 0; sectionIndex < navigationSections.length; sectionIndex++) {
-        var sectionInfo = navigationSections[sectionIndex];
-        for (var pageIndex = 0; pageIndex < sectionInfo.pages.length; pageIndex++) {
-            var pageID = sectionInfo.pages[pageIndex];
+    for (let sectionIndex = 0; sectionIndex < navigationSections.length; sectionIndex++) {
+        const sectionInfo = navigationSections[sectionIndex];
+        for (let pageIndex = 0; pageIndex < sectionInfo.pages.length; pageIndex++) {
+            const pageID = sectionInfo.pages[pageIndex];
             panelSpecification = navigationModules[pageID];
             if (panelSpecification.id !== pageID) {
                 console.log("pageID mismatch; expected:", pageID, panelSpecification);
@@ -42,15 +41,15 @@ function loadAllPanelSpecifications(panelSpecificationCollection, navigationSect
             panelSpecificationCollection.addPanelSpecification(panelSpecification);
         }
         if (sectionInfo.panels) {
-            for (var extraPanelIndex = 0; extraPanelIndex < sectionInfo.panels.length; extraPanelIndex++) {
-                var extraPanelID = sectionInfo.panels[extraPanelIndex];
+            for (let extraPanelIndex = 0; extraPanelIndex < sectionInfo.panels.length; extraPanelIndex++) {
+                const extraPanelID = sectionInfo.panels[extraPanelIndex];
                 panelSpecification = navigationModules[extraPanelID];
                 if (panelSpecification.id !== extraPanelID) {
                     console.log("panelID mismatch; expected:", extraPanelID, panelSpecification);
                     throw new Error("panelID does not match id in file for panel: " + extraPanelID);
                 }
                 panelSpecification.section = sectionInfo.section;
-                panelSpecification.isHeader = pageIndex === 0 || false;
+                panelSpecification.isHeader = extraPanelIndex === 0 || false;
                 panelSpecification.displayType = "panel";
                 panelSpecificationCollection.addPanelSpecification(panelSpecification);
             }

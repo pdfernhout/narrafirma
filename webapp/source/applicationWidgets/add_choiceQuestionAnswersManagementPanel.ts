@@ -19,7 +19,7 @@ function add_choiceQuestionAnswersManagementPanel(panelBuilder: PanelBuilder, mo
     const allStories = project.allStoriesInProject();
 
     function storyCountForAnswer(answer) {
-        var result = 0;
+        let result = 0;
         allStories.forEach((story) => {
             const value = story.fieldValue("A_" + question.annotationQuestion_shortName);
             if (typeof value == "string") { // select, radiobuttons - value is string

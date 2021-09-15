@@ -5,35 +5,35 @@ import _ = require("lodash");
 
 "use strict";
 
-var narrafirmaProjectPrefix = "NarraFirmaProject-";
+const narrafirmaProjectPrefix = "NarraFirmaProject-";
 
-var usersJournalIdentifier = "users";
-var projectAdministrationTopic = "ProjectAdministration";
+const usersJournalIdentifier = "users";
+const projectAdministrationTopic = "ProjectAdministration";
 
-var userIdentifier;
+let userIdentifier;
 
-var pointrelClient: PointrelClient;
+let pointrelClient: PointrelClient;
 
-var allProjectsModel = {
+const allProjectsModel = {
     users: {},
     projects: []
 };
 
-var lastServerError = "";
+let lastServerError = "";
 // For this local instance only (not shared with other users or other browser tabs)
-var clientState = {
+let clientState = {
     debugMode: null,
     serverStatus: "narrafirma-serverstatus-ok",
     serverStatusText: ""
 };
 
-var journalName = m.prop("");
-var userName = m.prop("");
-var userPassword = m.prop("");
-var roleName = m.prop("");
-var topicName = m.prop("");
+let journalName = m.prop("");
+let userName = m.prop("");
+let userPassword = m.prop("");
+let roleName = m.prop("");
+let topicName = m.prop("");
 
-var userToDisplay;
+let userToDisplay;
 
 (<any>window).projectAdmin_selectRole = function(theRole) {
     console.log("projectAdmin_selectRole", theRole);
@@ -54,18 +54,17 @@ var userToDisplay;
     m.redraw();
 };
 
-var AdminPageDisplayer: any = {
+const AdminPageDisplayer: any = {
     controller: function(args) {
         console.log("AdminPageDisplayer created");
     },
     
     view: function(controller, args) {
-        var contentsDiv;
         const buttonStyleText = "margin-left: 1em;"
         const labelStyleText = "margin-right: 0.25em";
         const hrStyleText = "display: block; clear: both; height: 2px; border-top: 2px solid #c5d2eb; background-color: #c5d2eb; margin-top: 1em; margin-right: 1em; border-radius: 5px;";
-        var chooseProjectLink;
-        var isWordPressAJAX = !!window["ajaxurl"];
+        let chooseProjectLink;
+        let isWordPressAJAX = !!window["ajaxurl"];
         if (!isWordPressAJAX) {
             chooseProjectLink = "\\";
         } else {
@@ -106,8 +105,8 @@ var AdminPageDisplayer: any = {
             // don't show users who have no roles for any existing projects 
             // because there is no real way to remove a user, and it's annoying to have to look at them forever
             Object.keys(allProjectsModel.users).sort().map(function(userIdentifier) {
-                var user = allProjectsModel.users[userIdentifier];
-                var userHasRoles = false;
+                const user = allProjectsModel.users[userIdentifier];
+                let userHasRoles = false;
                 Object.keys(user.rolesForJournals).map(function(journalIdentifier) {
                     if (user.rolesForJournals[journalIdentifier].length > 0) {
                         userHasRoles = true;
@@ -292,7 +291,7 @@ function initialize(theUserIdentifier, theProjects) {
     
     m.mount(document.getElementById("pageDiv"), AdminPageDisplayer);
     
-    var userCredentials = {userIdentifier: userIdentifier};
+    const userCredentials = {userIdentifier: userIdentifier};
     
     pointrelClient = new PointrelClient("/api/pointrel20150417", usersJournalIdentifier, userCredentials, messageReceived, updateServerStatus);
     pointrelClient.startup();
@@ -306,7 +305,7 @@ function initialize(theUserIdentifier, theProjects) {
             // TODO: Sanitize journalIdentifier
             document.body.innerHTML += '<br>Problem connecting to project journal on server for: "<b>' + usersJournalIdentifier + '</b>"';
         } else {
-            var permissions = response.permissions;
+            const permissions = response.permissions;
             const pleaseLogoutMessage = `<p style="margin-left: 1em">The NarraFirma site administration tool can only be accessed 
                 with the site administrator account.</p>
                 <p style="margin-left: 1em">Please <a href="/logout">log out</a>, then log back in with that account.`;
@@ -338,12 +337,12 @@ function updateServerStatus(status, text) {
     // The serverStatusPane may be created only after we start talking to the server
     // if (!serverStatusPane) return;
     
-    var nameDiv = document.getElementById("narrafirma-name");
+    const nameDiv = document.getElementById("narrafirma-name");
     if (!nameDiv) return;
     
     // TODO: Translate
     
-    var statusText = "Server status: (" + status + ") " + text;
+    let statusText = "Server status: (" + status + ") " + text;
 
     if (status === "ok") {
         nameDiv.className = "narrafirma-serverstatus-ok";
@@ -383,7 +382,7 @@ function addJournal(journalIdentifier) {
     pointrelClient.createJournal(journalIdentifier, function(error, response) {
         if (error || !response.success) {
             console.log("Error creating project", journalIdentifier, error, response);
-            var message = "error";
+            let message = "error";
             if (response) message = response.description;
             if (error) message = error.description
             if (error && typeof error.error === "string") message += "\n" + error.error.split("\n")[0];
@@ -406,7 +405,7 @@ function hideJournal(journalIdentifier) {
     pointrelClient.hideJournal(journalIdentifier, function(error, response) {
         if (error || !response.success) {
             console.log("Error hiding project", journalIdentifier, error, response);
-            var message = "error";
+            let message = "error";
             if (response) message = response.description;
             if (error) message = error.description
             if (error && typeof error.error === "string") message += "\n" + error.error.split("\n")[0];
@@ -428,7 +427,7 @@ function addUser(userIdentifier, password) {
     }
     
     // Check if user exists first, as otherwise will remove all roles and override other settings
-    var userInformation = allProjectsModel.users[userIdentifier];
+    const userInformation = allProjectsModel.users[userIdentifier];
     if (userInformation) {
         console.log("User already exists", userIdentifier);
         // toaster.toast("User already exists: " + userIdentifier);
@@ -443,8 +442,8 @@ function addUser(userIdentifier, password) {
 }
 
 function findIndexForRole(roles, role) {
-    var index = -1;
-    var roleStringified = JSON.stringify(role);
+    let index = -1;
+    const roleStringified = JSON.stringify(role);
     for (let i = 0; i < roles.length; i++) {
         if (JSON.stringify(roles[i]) === roleStringified) {
             index = i;
@@ -460,7 +459,7 @@ function grantRole(userIdentifier, role, journalIdentifier, topic) {
     console.log("grant", userIdentifier, role, journalIdentifier, topic);
     
     // Make sure the user already exists
-    var userInformation = allProjectsModel.users[userIdentifier];
+    const userInformation = allProjectsModel.users[userIdentifier];
     if (!userInformation) {
         console.log("Error: could not find user", userIdentifier);
         toaster.toast("Error: could not find user: " + userIdentifier);
@@ -469,14 +468,14 @@ function grantRole(userIdentifier, role, journalIdentifier, topic) {
     
     // TODO: Should confirm the journal exists...
     
-    var roleToAdd;
+    let roleToAdd;
     if (topic) {
         // Fields need to be in alphabetical order for JSON comparison with messages stored in canonical form
         roleToAdd = {role: role, topic: topic};
     } else {
         roleToAdd = role;
     }
-    var roles = userInformation.rolesForJournals[journalIdentifier];
+    let roles = userInformation.rolesForJournals[journalIdentifier];
     if (!roles) {
         roles = [];
         userInformation.rolesForJournals[journalIdentifier] = roles;
@@ -494,17 +493,17 @@ function grantRole(userIdentifier, role, journalIdentifier, topic) {
 function grantAnonymousSurveyAccessToJournal(journalIdentifier) {
     console.log("grantAnonymousSurveyAccessToJournal", journalIdentifier);
     
-    var userIdentifier = "anonymous";
+    const userIdentifier = "anonymous";
     
     // Make sure the user already exists
-    var userInformation = allProjectsModel.users[userIdentifier];
+    const userInformation = allProjectsModel.users[userIdentifier];
     if (!userInformation) {
         console.log("Error: could not find user", userIdentifier);
         toaster.toast("Error: could not find user: " + userIdentifier);
         return;
     }
     
-    var example = {"NarraFirmaProject-test1": [
+    const example = {"NarraFirmaProject-test1": [
         {
           "role": "writer",
           "topic": "surveyResults"
@@ -517,22 +516,22 @@ function grantAnonymousSurveyAccessToJournal(journalIdentifier) {
     
     // TODO: Should confirm the journal exists...
     
-    var roles = userInformation.rolesForJournals[journalIdentifier];
+    let roles = userInformation.rolesForJournals[journalIdentifier];
     if (!roles) {
         roles = [];
         userInformation.rolesForJournals[journalIdentifier] = roles;
     }
 
     // Fields need to be in alphabetical order for JSON comparison with messages stored in canonical form
-    var readerRoleToAdd = {role: "reader", topic: "questionnaires"};
+    const readerRoleToAdd = {role: "reader", topic: "questionnaires"};
 
-    var changed = false;
+    let changed = false;
     if (findIndexForRole(roles, readerRoleToAdd) === -1) {
         roles.push(readerRoleToAdd);
         changed = true;
     }
  
-    var writerRoleToAdd = {role: "writer", topic: "surveyResults"};
+    const writerRoleToAdd = {role: "writer", topic: "surveyResults"};
     if (findIndexForRole(roles, writerRoleToAdd) === -1) {
         roles.push(writerRoleToAdd);
         changed = true;
@@ -549,7 +548,7 @@ function revokeRole(userIdentifier, role, journalIdentifier, topic) {
     console.log("revoke", userIdentifier, role, journalIdentifier, topic);
     
     // Make sure the user already exists
-    var userInformation = allProjectsModel.users[userIdentifier];
+    const userInformation = allProjectsModel.users[userIdentifier];
     if (!userInformation) {
         console.log("Error: could not find user", userIdentifier);
         toaster.toast("Error: could not find user: " + userIdentifier);
@@ -558,20 +557,20 @@ function revokeRole(userIdentifier, role, journalIdentifier, topic) {
     
     // TODO: Should confirm the journal exists...
     
-    var roleToRemove;
+    let roleToRemove;
     if (topic) {
         // Fields need to be in alphabetical order for JSON comparison with messages stored in canonical form
         roleToRemove = {role: role, topic: topic};
     } else {
         roleToRemove = role;
     }
-    var roles = userInformation.rolesForJournals[journalIdentifier];
+    let roles = userInformation.rolesForJournals[journalIdentifier];
     if (!roles) {
         roles = [];
         userInformation.rolesForJournals[journalIdentifier] = roles;
     }
     
-    var indexToRemove = findIndexForRole(roles, roleToRemove);
+    const indexToRemove = findIndexForRole(roles, roleToRemove);
     
     if (indexToRemove === -1) {
         console.log("Did not find existing role to revoke", roleToRemove);
@@ -594,7 +593,7 @@ function updateUserInformation(userIdentifier, userInformation = undefined) {
             }
         };
     }
-    var createUserMessage = {
+    const createUserMessage = {
         "_topicIdentifier": {type: "userInformation", userIdentifier: userIdentifier},
         "_topicTimestamp": new Date().toISOString(),
         change: userInformation
@@ -613,23 +612,23 @@ function updateUserInformation(userIdentifier, userInformation = undefined) {
 }
 
 function setUserPassword(newUserIdentifier, password) {
-    var salt = PointrelClient.calculateSHA256("toolsOfAbundance" + Math.random() + new Date().toISOString());
-    // TODO: client-side hashing of password: var hashOfPassword = PointrelClient.calculateSHA256(salt + PointrelClient.calculateSHA256("irony" + newUserIdentifier + password));
-    var hashOfPassword = PointrelClient.calculateSHA256(salt + password);
-    var userCredentials = {
+    const salt = PointrelClient.calculateSHA256("toolsOfAbundance" + Math.random() + new Date().toISOString());
+    // TODO: client-side hashing of password: const hashOfPassword = PointrelClient.calculateSHA256(salt + PointrelClient.calculateSHA256("irony" + newUserIdentifier + password));
+    const hashOfPassword = PointrelClient.calculateSHA256(salt + password);
+    const userCredentials = {
         userIdentifier: newUserIdentifier,
         salt: salt,
         hashOfPassword: hashOfPassword
     };
     
-    var credentialsMessage = {
+    const credentialsMessage = {
         "_topicIdentifier": {type: "authenticationInformation", userIdentifier: newUserIdentifier},
         "_topicTimestamp": new Date().toISOString(),
         change: userCredentials
     };
 
     // Throwaway single-use pointrel client instance to access credentials journal
-    var singleUsePointrelClient = new PointrelClient("/api/pointrel20150417", "credentials", {userIdentifier: userIdentifier});
+    const singleUsePointrelClient = new PointrelClient("/api/pointrel20150417", "credentials", {userIdentifier: userIdentifier});
     singleUsePointrelClient.sendMessage(credentialsMessage, function(error, response) {
         if (error || !response.success) {
             console.log("Error setting user password:", error, response);
@@ -644,7 +643,7 @@ function setUserPassword(newUserIdentifier, password) {
 
 function startup() {
     // Throwaway single-use pointrel client instance which does not access a specific journal
-    var singleUsePointrelClient = new PointrelClient("/api/pointrel20150417", "unused", {});
+    const singleUsePointrelClient = new PointrelClient("/api/pointrel20150417", "unused", {});
     singleUsePointrelClient.getCurrentUserInformation(function(error, response) {
         if (error) {
             console.log("error", error, response);
@@ -653,10 +652,10 @@ function startup() {
         }
         
         // Identical code in applications to get project list
-        var projects = [];
-        for (var key in response.journalPermissions) {
+        const projects = [];
+        for (let key in response.journalPermissions) {
             if (!_.startsWith(key, narrafirmaProjectPrefix)) continue;
-            var permissions = response.journalPermissions[key];
+            const permissions = response.journalPermissions[key];
             projects.push({
                 id: key,
                 name: key.substring(narrafirmaProjectPrefix.length),

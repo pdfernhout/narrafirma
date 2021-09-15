@@ -5,9 +5,9 @@ import AnnotationGraphBrowser = require("./AnnotationGraphBrowser");
 "use strict";
 
 function add_annotationGraphBrowser(panelBuilder: PanelBuilder, model, fieldSpecification) {
-    var prompt = panelBuilder.buildQuestionLabel(fieldSpecification);
+    const prompt = panelBuilder.buildQuestionLabel(fieldSpecification);
     
-    var graphBrowser = m.component(<any>AnnotationGraphBrowser, {key: fieldSpecification.id, panelBuilder: panelBuilder, model: model, fieldSpecification: fieldSpecification});
+    const graphBrowser = m.component(<any>AnnotationGraphBrowser, {key: fieldSpecification.id, panelBuilder: panelBuilder, model: model, fieldSpecification: fieldSpecification});
     // insertGraphBrowser(panelBuilder, model, fieldSpecification);
 
     return m("div", [

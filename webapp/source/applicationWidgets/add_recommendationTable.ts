@@ -9,7 +9,7 @@ import Globals = require("../Globals");
 "use strict";
 
 function add_recommendationTable(panelBuilder: PanelBuilder, model, fieldSpecification) {
-    var dialogConfiguration = {
+    const dialogConfiguration = {
         fieldSpecification: fieldSpecification,
         dialogModel: model,
         dialogTitle: "#title_recommendationsTable|Recommendations table",
@@ -17,7 +17,6 @@ function add_recommendationTable(panelBuilder: PanelBuilder, model, fieldSpecifi
         dialogConstructionFunction: build_recommendationTable.bind(null, panelBuilder),
         dialogOKButtonLabel: "Close"
     };
-
     return dialogSupport.addButtonThatLaunchesDialog(fieldSpecification, dialogConfiguration);
 }
 
@@ -37,7 +36,7 @@ function tagForRecommendationValue(recommendation) {
 }
 
 function makeTableForParticipantGroup(categoryName: string, project: Project, participantGroupIdentifier: string) {
-    var recommendationsObject: RecommendationsParser; 
+    let recommendationsObject: RecommendationsParser; 
     if (categoryName === "interventions") {
          recommendationsObject = RecommendationsParser.recommendationsIntervention();
     } else {
@@ -45,13 +44,13 @@ function makeTableForParticipantGroup(categoryName: string, project: Project, pa
     }
     // recommendations -> Question -> Answer -> Category -> Option
     
-    var optionsForCategory = recommendationsObject.categories[categoryName];
+    let optionsForCategory = recommendationsObject.categories[categoryName];
     if (!optionsForCategory) {
         console.log("ERROR: No data for recommendationTable category: ", categoryName);
         optionsForCategory = [];
     }
     
-    var table = m("table.recommendationsTable", 
+    const table = m("table.recommendationsTable", 
         // Do the header
         m("tr", [[
             m("th.wwsRecommendationsTable-valueCell", {colspan: 4, align: "right"}, m("i", "Question")),
@@ -64,16 +63,15 @@ function makeTableForParticipantGroup(categoryName: string, project: Project, pa
         // TODO: Maybe keys should be sorted somehow?
         Object.keys(recommendationsObject.questions).map(function(questionName) {
             // TODO: Possible should improve this translation default, maybe by retrieving fieldSpecification for question and getting displayPrompt?
-            var questionText = translate(questionName + "::shortName", questionName);
-            
-            var yourAnswer = project.tripleStore.queryLatestC(participantGroupIdentifier, questionName);
+            const questionText = translate(questionName + "::shortName", questionName);
+            let yourAnswer = project.tripleStore.queryLatestC(participantGroupIdentifier, questionName);
             if (yourAnswer === undefined) yourAnswer = project.getFieldValue(questionName);
             if (yourAnswer === undefined) yourAnswer = "";
             // Don't put rows where there is no answer
             if (!yourAnswer) return [];
             
-            // Drill down into the recommentations if they exists for questioName, yourAnswer, and categoryName
-            var recommendationsForAnswer = recommendationsObject.recommendations[questionName];
+            // Drill down into the recommentations if they exist for questioName, yourAnswer, and categoryName
+            let recommendationsForAnswer = recommendationsObject.recommendations[questionName];
             if (recommendationsForAnswer) recommendationsForAnswer = recommendationsForAnswer[yourAnswer];
             if (recommendationsForAnswer) recommendationsForAnswer = recommendationsForAnswer[categoryName];
             
@@ -81,7 +79,7 @@ function makeTableForParticipantGroup(categoryName: string, project: Project, pa
                 m("th.wwsRecommendationsTable-valueCell", {colspan: 4, align: "right"}, questionText),
                 m("th.wwsRecommendationsTable-valueCell", {colspan: 2, align: "right"}, yourAnswer)
             ], optionsForCategory.map(function(optionName, index) {
-                var recommendationForOption = "???";
+                let recommendationForOption = "???";
                 if (recommendationsForAnswer) {
                     recommendationForOption = recommendationsForAnswer[optionName];
                 } else {
@@ -96,7 +94,7 @@ function makeTableForParticipantGroup(categoryName: string, project: Project, pa
                 }
                 if (recommendationForOption === "very good") recommendationForOption = "excellent";
                 // TODO: Translate recommendation name 
-                var theClass = tagForRecommendationValue(recommendationForOption);
+                const theClass = tagForRecommendationValue(recommendationForOption);
                 return m("td.wwsRecommendationsTable-labelCell", {colspan: 1, align: "right", "class": theClass}, recommendationForOption);
             })]);
         })
@@ -106,17 +104,13 @@ function makeTableForParticipantGroup(categoryName: string, project: Project, pa
 }
 
 function build_recommendationTable(panelBuilder: PanelBuilder, dialogConfiguration, hideDialogCallback) {
-    var model = dialogConfiguration.dialogModel;
-    var fieldSpecification = dialogConfiguration.fieldSpecification;
-   
-    var prompt = panelBuilder.buildQuestionLabel(fieldSpecification);
+    const model = dialogConfiguration.dialogModel;
+    const fieldSpecification = dialogConfiguration.fieldSpecification;
+    const prompt = panelBuilder.buildQuestionLabel(fieldSpecification);
+    const categoryName = fieldSpecification.displayConfiguration;
     
-    var categoryName = fieldSpecification.displayConfiguration;
-    
-    // var recommendationsForTopic = recommendationsObject.recommendations[categoryName];
-    
-    var participantGroups;
-    var participantGroupNameFieldIdentifier;
+    let participantGroups;
+    let participantGroupNameFieldIdentifier;
     if (categoryName === "interventions") {
         participantGroups = Globals.project().getListForField("project_outcomesList");
         participantGroupNameFieldIdentifier = "outcomes_group";
@@ -133,7 +127,7 @@ function build_recommendationTable(panelBuilder: PanelBuilder, dialogConfigurati
     return m("div", {"class": "narrafirma-recommendations-table " + categoryName}, [
         prompt,
         participantGroups.map(function (participantGroupIdentifier) {
-            var participantGroupName = Globals.project().tripleStore.queryLatestC(participantGroupIdentifier, participantGroupNameFieldIdentifier);
+            const participantGroupName = Globals.project().tripleStore.queryLatestC(participantGroupIdentifier, participantGroupNameFieldIdentifier);
             return m("div", [
                 m("b", participantGroupName),
                 m("br"),

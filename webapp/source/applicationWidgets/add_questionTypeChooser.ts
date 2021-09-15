@@ -6,7 +6,7 @@ import Globals = require("../Globals");
 "use strict";
 
 function add_questionTypeChooser(panelBuilder: PanelBuilder, model, fieldSpecification) {
-    var project = Globals.project();
+    const project = Globals.project();
     
     //const questionCategory = fieldSpecification.displayConfiguration;
     const prompt = panelBuilder.buildQuestionLabel(fieldSpecification);

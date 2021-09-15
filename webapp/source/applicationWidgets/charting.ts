@@ -2185,9 +2185,9 @@ export function d3ContingencyTable(graphHolder: GraphHolder, xAxisQuestion, yAxi
     if (storyDisplayClusters) supportStartingDragOverStoryDisplayItemOrCluster(chartBody, storyDisplayClusters);
 
     function isPlotItemSelected(extent, plotItem) {
-        var midPointX = xScale(plotItem.x) + xScale.rangeBand() / 2;
-        var midPointY = yScale(plotItem.y) + yScale.rangeBand() / 2;
-        var selected = extent[0][0] <= midPointX && midPointX <= extent[1][0] && extent[0][1] <= midPointY && midPointY <= extent[1][1];
+        const midPointX = xScale(plotItem.x) + xScale.rangeBand() / 2;
+        const midPointY = yScale(plotItem.y) + yScale.rangeBand() / 2;
+        const selected = extent[0][0] <= midPointX && midPointX <= extent[1][0] && extent[0][1] <= midPointY && midPointY <= extent[1][1];
         if (selected) {
             const itemName = plotItem.x + " x " + plotItem.y;
             if (graphHolder.currentSelectionExtentPercentages.selectionCategories.indexOf(itemName) < 0) {

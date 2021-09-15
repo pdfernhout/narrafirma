@@ -2,7 +2,7 @@ import Globals = require("../../Globals");
 import kludgeForUseStrict = require("../../kludgeForUseStrict");
 "use strict";
 
-var panel: Panel = {
+const panel: Panel = {
     id: "page_translateStoryForms",
     displayName: "Translate story forms",
     tooltipText: "Translate your story from into multiple languages.",

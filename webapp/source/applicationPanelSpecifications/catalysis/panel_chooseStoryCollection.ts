@@ -1,7 +1,7 @@
 import kludgeForUseStrict = require("../../kludgeForUseStrict");
 "use strict";
 
-var panel: Panel = {
+const panel: Panel = {
     id: "panel_chooseStoryCollection",
     modelClass: "StoryCollectionChoice",
     panelFields: [

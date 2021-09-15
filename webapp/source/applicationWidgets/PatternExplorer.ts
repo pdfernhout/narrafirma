@@ -25,9 +25,9 @@ import saveAs = require("FileSaver");
 //------------------------------------------------------------------------------------------------------------------------------------------
 
 // Question types that have choice (not scale) data associated with them for filters and graphs
-var nominalQuestionTypes = ["select", "boolean", "checkbox", "checkboxes", "radiobuttons"];
+const nominalQuestionTypes = ["select", "boolean", "checkbox", "checkboxes", "radiobuttons"];
 
-var patternsPanelSpecification = {
+const patternsPanelSpecification = {
     id: "patternsPanel",
     modelClass: "Pattern",
     panelFields: [
@@ -80,7 +80,7 @@ function replaceAll(str: string, find: string, replace: string) {
 }
 
 function buildStoryDisplayPanel(panelBuilder: PanelBuilder, model) {
-    var storyCardDiv = storyCardDisplay.generateStoryCardContent(model, undefined, {
+    const storyCardDiv = storyCardDisplay.generateStoryCardContent(model, undefined, {
         location: "storyBrowser", 
         storyTextAtTop: true, 
         includeWriteInAnswers: true
@@ -89,8 +89,7 @@ function buildStoryDisplayPanel(panelBuilder: PanelBuilder, model) {
 }
 
 function makeItemPanelSpecificationForQuestions(questions) {
-    // TODO: add more participant and survey info, like timestamps and participant ID
-    var storyItemPanelSpecification = {
+    const storyItemPanelSpecification = {
          id: "patternBrowserQuestions",
          modelClass: "Story",
          panelFields: questions,
@@ -282,13 +281,13 @@ class PatternExplorer {
         // Pattern grid initialization
         this.questionsToInclude = this.project.tripleStore.queryLatestC(this.catalysisReportIdentifier, "questionsToInclude"); 
         this.modelForPatternsGrid.patterns = this.buildPatternList();
-        var patternsGridConfiguration = {
+        const patternsGridConfiguration = {
             idProperty: "id",
             columnsToDisplay: true,
             navigationButtons: true,
             selectCallback: this.patternSelected.bind(this)
         };
-        var patternsGridFieldSpecification = {
+        const patternsGridFieldSpecification = {
             id: "patterns",
             itemPanelID: undefined,
             // TODO: Why is itemPanelSpecification in here twice (also in displayConfiguration)?
@@ -523,25 +522,25 @@ class PatternExplorer {
         const clientState = Globals.clientState();
         
         // Handling of caching of questions and stories
-        var catalysisReportIdentifier = this.getCurrentCatalysisReportIdentifier(args);
+        const catalysisReportIdentifier = this.getCurrentCatalysisReportIdentifier(args);
         if (catalysisReportIdentifier !== this.catalysisReportIdentifier) {
             this.catalysisReportIdentifier = catalysisReportIdentifier;
             this.currentCatalysisReportChanged(this.catalysisReportIdentifier);
         }
         
-        var parts;
+        let parts;
         
         function isMissingQuestionsToInclude(questionsToInclude) {
             if (!questionsToInclude) return true;
-            for (var keys in questionsToInclude) {
-                return false;
+            for (let key in questionsToInclude) {
+                if (questionsToInclude[key]) return false;
             }
             return true; 
         }
 
         function isMissingGraphTypesToCreate(graphTypesToCreate) {
             if (!graphTypesToCreate) return true;
-            for (var key in graphTypesToCreate) {
+            for (let key in graphTypesToCreate) {
                 if (graphTypesToCreate[key]) return false;
             }
             return true; 
@@ -655,7 +654,7 @@ class PatternExplorer {
             } else { 
                 const numStories = this.modelForStoryGrid.storiesSelectedInGraph.length;
                 const storyOrStoriesWord = (numStories > 1) ? "stories" : "story";
-                var selectedStoriesText = "" + numStories + " " + storyOrStoriesWord + " in selection - " + this.nameForCurrentGraphSelection();
+                const selectedStoriesText = "" + numStories + " " + storyOrStoriesWord + " in selection - " + this.nameForCurrentGraphSelection();
                 parts = [
                     buildGridHeader(),
                     this.patternsGrid.calculateView(),
@@ -715,7 +714,7 @@ class PatternExplorer {
         if (Object.keys(strengthCounts).length) {
             result += ", " + nonBlankObservations.length + (nonBlankObservations.length !== 1 ? " observations" : " observation");
             result += " (by strength, ";
-            var keyCount = 0;
+            let keyCount = 0;
             Object.keys(strengthCounts).forEach(function(key) {
                 result += key.slice(0,1) + ": " + strengthCounts[key];
                 if (keyCount < 2) result += "; ";
@@ -769,15 +768,15 @@ class PatternExplorer {
         this.numStoryCollectionsIncludedInReport = this.project.numStoryCollectionsInCatalysisReport(catalysisReportIdentifier);
 
         // gather questions for patterns table
-        var leadingStoryQuestions = questionnaireGeneration.getStoryNameAndTextQuestions();
-        var elicitingQuestions = this.project.elicitingQuestionsForCatalysisReport(catalysisReportIdentifier);
-        var numStoriesToldQuestions = this.project.numStoriesToldQuestionsForCatalysisReport(catalysisReportIdentifier);
-        var storyLengthQuestions = this.project.storyLengthQuestionsForCatalysisReport(catalysisReportIdentifier);
-        var collectionDateQuestions = this.project.collectionDateQuestionsForCatalysisReport(catalysisReportIdentifier);
-        var languageQuestions = this.project.languageQuestionsForCatalysisReport(catalysisReportIdentifier);
-        var storyQuestions = this.project.storyQuestionsForCatalysisReport(catalysisReportIdentifier); 
-        var participantQuestions = this.project.participantQuestionsForCatalysisReport(catalysisReportIdentifier);
-        var annotationQuestions = questionnaireGeneration.convertEditorQuestions(this.project.collectAllAnnotationQuestions(), "A_");
+        const leadingStoryQuestions = questionnaireGeneration.getStoryNameAndTextQuestions();
+        const elicitingQuestions = this.project.elicitingQuestionsForCatalysisReport(catalysisReportIdentifier);
+        const numStoriesToldQuestions = this.project.numStoriesToldQuestionsForCatalysisReport(catalysisReportIdentifier);
+        const storyLengthQuestions = this.project.storyLengthQuestionsForCatalysisReport(catalysisReportIdentifier);
+        const collectionDateQuestions = this.project.collectionDateQuestionsForCatalysisReport(catalysisReportIdentifier);
+        const languageQuestions = this.project.languageQuestionsForCatalysisReport(catalysisReportIdentifier);
+        const storyQuestions = this.project.storyQuestionsForCatalysisReport(catalysisReportIdentifier); 
+        const participantQuestions = this.project.participantQuestionsForCatalysisReport(catalysisReportIdentifier);
+        const annotationQuestions = questionnaireGeneration.convertEditorQuestions(this.project.collectAllAnnotationQuestions(), "A_");
         this.questions = [];
         this.questions = this.questions.concat(leadingStoryQuestions, elicitingQuestions, numStoriesToldQuestions, storyLengthQuestions, 
             collectionDateQuestions, languageQuestions, storyQuestions, participantQuestions, annotationQuestions);
@@ -836,9 +835,9 @@ class PatternExplorer {
         if (!this.questionsToInclude) return [];
         const project = this.project;
 
-        var nominalQuestions = [];
-        var scaleQuestions = [];
-        var textQuestions = [];
+        const nominalQuestions = [];
+        const scaleQuestions = [];
+        const textQuestions = [];
         this.questions.forEach((question) => {
             if (this.questionsToInclude[question.id]) {
                 if (question.displayType === "slider") {
@@ -851,7 +850,7 @@ class PatternExplorer {
             }
         });
 
-        var result = this.buildOrCountPatternList(nominalQuestions, scaleQuestions, textQuestions, true);
+        const result = this.buildOrCountPatternList(nominalQuestions, scaleQuestions, textQuestions, true);
 
         const self = this;
 
@@ -868,10 +867,10 @@ class PatternExplorer {
         }
         progressUpdater.redraw();
 
-        var patternIndex = 0;
-        var howOftenToUpdateProgressMessage = 20; 
-        var stories = this.graphHolder.allStories;
-        var minimumStoryCountRequiredForTest = this.graphHolder.minimumStoryCountRequiredForTest;
+        let patternIndex = 0;
+        const howOftenToUpdateProgressMessage = 20; 
+        const stories = this.graphHolder.allStories;
+        const minimumStoryCountRequiredForTest = this.graphHolder.minimumStoryCountRequiredForTest;
 
         if (!this.calculationsCanceled) {
             setTimeout(function() { calculateStatsForNextPattern(); }, 1);
@@ -903,8 +902,8 @@ class PatternExplorer {
     }
 
     buildOrCountPatternList(nominalQuestions, scaleQuestions, textQuestions, build) {
-        var result = [];
-        var graphCount = 0;
+        const result = [];
+        let graphCount = 0;
 
         function nextID() {
             return ("00000" + graphCount++).slice(-5);
@@ -973,7 +972,7 @@ class PatternExplorer {
 
         // when creating question combinations, prevent mirror duplicates (axb, bxa) and self-matching questions (axa)
         // unless they want axa for multi-choice questions
-        var usedQuestions;
+        let usedQuestions;
         
         // two choice questions
         if (this.graphTypesToCreate["tables"]) {
@@ -981,7 +980,7 @@ class PatternExplorer {
             nominalQuestions.forEach((question1) => {
                 usedQuestions.push(question1);
                 nominalQuestions.forEach((question2) => {
-                    var okayToGraphQuestionAgainstItself = this.graphMultiChoiceQuestionsAgainstThemselves && question1.displayName === question2.displayName && question2.displayType === "checkboxes";
+                    const okayToGraphQuestionAgainstItself = this.graphMultiChoiceQuestionsAgainstThemselves && question1.displayName === question2.displayName && question2.displayType === "checkboxes";
                     if (!okayToGraphQuestionAgainstItself && usedQuestions.indexOf(question2) !== -1) return;
                     if (build) {
                         result.push(this.makePattern(nextID(), "table", [question1, question2], null));
@@ -1027,7 +1026,7 @@ class PatternExplorer {
             nominalQuestions.forEach((question1) => {
                 usedQuestions.push(question1);
                 nominalQuestions.forEach((question2) => {
-                    var okayToGraphQuestionAgainstItself = this.graphMultiChoiceQuestionsAgainstThemselves && question1.displayName === question2.displayName && question2.displayType === "checkboxes";
+                    const okayToGraphQuestionAgainstItself = this.graphMultiChoiceQuestionsAgainstThemselves && question1.displayName === question2.displayName && question2.displayType === "checkboxes";
                     if (!okayToGraphQuestionAgainstItself && usedQuestions.indexOf(question2) !== -1) return;
                     scaleQuestions.forEach((question3) => {
                         if (build) {
@@ -1088,7 +1087,7 @@ class PatternExplorer {
     //------------------------------------------------------------------------------------------------------------------------------------------
     
     makePattern(id, graphType, questions, patternNameIfSpecialType) {
-        var pattern; 
+        let pattern; 
         if (graphType == "data integrity") {
             pattern = {id: id, graphType: graphType, patternName: patternNameIfSpecialType, 
                 questions: questions, q1DisplayName: "", q2DisplayName: "", q3DisplayName: ""};    
@@ -1119,20 +1118,20 @@ class PatternExplorer {
         }
 
         
-        var observationTitleOrDescriptionAccessor = () => {
+        const observationTitleOrDescriptionAccessor = () => {
             return this.getCombinedObservationsInfoForPattern(pattern, "observationTitle") || this.getCombinedObservationsInfoForPattern(pattern, "observationDescription");
         };
-        var strengthAccessor = () => {
+        const strengthAccessor = () => {
             return this.getCombinedObservationsInfoForPattern(pattern, "observationStrength") || "";
         };
-        var interpretationsAccessor = () => {
+        const interpretationsAccessor = () => {
             return this.getCombinedObservationsInfoForPattern(pattern, "observationInterpretations") || "";
         };
-        var remarkableAccessor = () => {
+        const remarkableAccessor = () => {
             const remarkable = PatternExplorer.getOrSetWhetherPatternIsMarkedAsRemarkable(this.project, this.catalysisReportIdentifier, pattern);
             return (remarkable === undefined) ? "" : remarkable;
         }
-        var noteAccessor = () => {
+        const noteAccessor = () => {
             return this.getCombinedObservationsInfoForPattern(pattern, "observationNote") || "";
         };
        
@@ -1192,7 +1191,7 @@ class PatternExplorer {
     updateGraphForNewPattern(pattern) {
         // Remove old graph(s)
         while (this.graphHolder.chartPanes.length) {
-            var chartPane = this.graphHolder.chartPanes.pop();
+            const chartPane = this.graphHolder.chartPanes.pop();
             this.graphHolder.graphResultsPane.removeChild(chartPane);
             // TODO: Do these need to be destroyed or freed somehow?
         }
@@ -1233,11 +1232,11 @@ class PatternExplorer {
     }
 
     static makeGraph(pattern, graphHolder, selectionCallback, hideStatsPanel = false) {
-        var graphType = pattern.graphType;
-        var q1 = pattern.questions[0];
-        var q2 = pattern.questions[1];
-        var q3 = pattern.questions[2]
-        var newGraph = null;
+        const graphType = pattern.graphType;
+        const q1 = pattern.questions[0];
+        const q2 = pattern.questions[1];
+        const q3 = pattern.questions[2]
+        let newGraph = null;
         switch (graphType) {
             case "bar":
                 newGraph = charting.d3BarChartForQuestion(graphHolder, q1, selectionCallback, hideStatsPanel);
@@ -1296,13 +1295,13 @@ class PatternExplorer {
         if (!this.currentPattern.questions[0]) return "";
         if (!this.graphHolder.allStories) return "";
 
-        var questionID = this.currentPattern.questions[0].id; 
-        var stories = this.graphHolder.allStories; 
-        var answers = {};
-        var answerKeys = [];
+        const questionID = this.currentPattern.questions[0].id; 
+        const stories = this.graphHolder.allStories; 
+        const answers = {};
+        const answerKeys = [];
 
         stories.forEach(function (story) {
-            var text = story.fieldValue(questionID);
+            const text = story.fieldValue(questionID);
             if (text) {
                 if (!answers[text]) {
                     answers[text] = 0;
@@ -1313,9 +1312,9 @@ class PatternExplorer {
         });
         answerKeys.sort();
         
-        var sortedAndFormattedAnswers = "";
+        let sortedAndFormattedAnswers = "";
         for (let i = 0; i < answerKeys.length; i++) {
-            var answer = answerKeys[i];
+            const answer = answerKeys[i];
             sortedAndFormattedAnswers += answer;
             if (answers[answer] > 1) sortedAndFormattedAnswers += " (" + answers[answer] + ") ";
             if (i < answerKeys.length - 1) sortedAndFormattedAnswers +=  "\n--------\n";
@@ -1329,13 +1328,13 @@ class PatternExplorer {
         if (!this.currentPattern.questions[0]) return "";
         if (!this.graphHolder.allStories) return "";
 
-        var questionID = this.currentPattern.questions[0].id; 
-        var stories = this.graphHolder.allStories; 
-        var answers = {};
-        var answerKeys = [];
+        const questionID = this.currentPattern.questions[0].id; 
+        const stories = this.graphHolder.allStories; 
+        const answers = {};
+        const answerKeys = [];
 
         stories.forEach(function (story) {
-            var writeInText = story.fieldValueWriteIn(questionID);
+            const writeInText = story.fieldValueWriteIn(questionID);
             if (writeInText) {
                 if (!answers[writeInText]) {
                     answers[writeInText] = 0;
@@ -1346,9 +1345,9 @@ class PatternExplorer {
         });
         answerKeys.sort();
         
-        var sortedAndFormattedAnswers = "";
+        let sortedAndFormattedAnswers = "";
         for (let i = 0; i < answerKeys.length; i++) {
-            var answer = answerKeys[i];
+            const answer = answerKeys[i];
             sortedAndFormattedAnswers += answer;
             if (answers[answer] > 1) sortedAndFormattedAnswers += " (" + answers[answer] + ") ";
             if (i < answerKeys.length - 1) sortedAndFormattedAnswers +=  "\n--------\n";
@@ -1361,8 +1360,8 @@ class PatternExplorer {
     //------------------------------------------------------------------------------------------------------------------------------------------
     
     doThingsWithSelectedStories() {
-        var actionElement = <HTMLTextAreaElement>document.getElementById("thingsYouCanDoPanel_actionRequested");
-        var action = actionElement.value;
+        const actionElement = <HTMLTextAreaElement>document.getElementById("thingsYouCanDoPanel_actionRequested");
+        const action = actionElement.value;
         switch (action) {
             case "Show statistical results":
                 this.showStatisticalResultsForGraph();
@@ -1603,13 +1602,13 @@ class PatternExplorer {
             alert("No statistical information is available for the current graph.");
             return;
         }
-        var titleText = "Statistics for pattern: " +  this.currentPattern.patternName;
-        var text = titleText + (this.graphHolder.statisticalInfo.indexOf("\n\n") !== 0 ? "\n\n" : "") + this.graphHolder.statisticalInfo;
+        const titleText = "Statistics for pattern: " +  this.currentPattern.patternName;
+        const text = titleText + (this.graphHolder.statisticalInfo.indexOf("\n\n") !== 0 ? "\n\n" : "") + this.graphHolder.statisticalInfo;
         dialogSupport.openTextEditorDialog(text, titleText, "Close", this.closeCopyStoriesDialogClicked.bind(this), false);
     }
 
     showAllStoriesSelectedInGraph() {
-        var stories = this.modelForStoryGrid.storiesSelectedInGraph;
+        const stories = this.modelForStoryGrid.storiesSelectedInGraph;
         if (!stories.length) {
             alert("Please select some stories in the graph.");
             return;
@@ -1635,18 +1634,18 @@ class PatternExplorer {
     }
 
     sampleStoriesSelectedInGraph(sampleSize) {
-        var stories = this.modelForStoryGrid.storiesSelectedInGraph;
+        const stories = this.modelForStoryGrid.storiesSelectedInGraph;
         if (!stories.length) {
             alert("Please select some stories to show.");
             return;
         }
-        var sampledStories = [];
+        let sampledStories = [];
         if (stories.length <= sampleSize) {
             sampledStories = sampledStories.concat(stories);
         } else {   
-            var sampledStoryIDs = [];   
+            const sampledStoryIDs = [];   
             while (sampledStoryIDs.length < sampleSize) { 
-                var randomIndex = Math.max(0, Math.min(stories.length - 1, Math.round(Math.random() * stories.length) - 1));
+                const randomIndex = Math.max(0, Math.min(stories.length - 1, Math.round(Math.random() * stories.length) - 1));
                 if (sampledStoryIDs.indexOf(randomIndex) < 0) {
                     sampledStoryIDs.push(randomIndex);
                 }
@@ -1665,11 +1664,11 @@ class PatternExplorer {
     }
 
     showStoriesInSeparateWindow(stories, sayAboutSelection, windowTitle) {
-        var i;
-        var text;
+        let i;
+        let text;
         const selectionName = this.nameForCurrentGraphSelection();
 
-        var questionShortNames = this.project.tripleStore.queryLatestC(this.catalysisReportIdentifier, "questionShortNamesToShowForSelectedStories");
+        let questionShortNames = this.project.tripleStore.queryLatestC(this.catalysisReportIdentifier, "questionShortNamesToShowForSelectedStories");
         if (questionShortNames === undefined) {
             questionShortNames = [];
         } else {
@@ -1678,13 +1677,11 @@ class PatternExplorer {
             }
         } 
 
-        // have to add the right prefix to connect to fields in stories 
-        // this assumes that question short names will be unique across all questions - though we do say that in the interface, so...
-        var storyQuestions = this.project.storyQuestionsForCatalysisReport(this.catalysisReportIdentifier); 
-        var participantQuestions = this.project.participantQuestionsForCatalysisReport(this.catalysisReportIdentifier);
-        var annotationQuestions = questionnaireGeneration.convertEditorQuestions(this.project.collectAllAnnotationQuestions(), "A_");
+        const storyQuestions = this.project.storyQuestionsForCatalysisReport(this.catalysisReportIdentifier); 
+        const participantQuestions = this.project.participantQuestionsForCatalysisReport(this.catalysisReportIdentifier);
+        const annotationQuestions = questionnaireGeneration.convertEditorQuestions(this.project.collectAllAnnotationQuestions(), "A_");
         
-        var questionIDsToShowForSelectedStories = [];
+        const questionIDsToShowForSelectedStories = [];
         questionShortNames.forEach(function(shortName) {
             for (let i = 0; i < storyQuestions.length; i++) {
                 if (storyQuestions[i].id === "S_" + shortName) {
@@ -1707,9 +1704,9 @@ class PatternExplorer {
         });
 
         function textWithAnswersToSelectedQuestions(story) {
-            var questionAnswersToShow = [];
+            const questionAnswersToShow = [];
             questionIDsToShowForSelectedStories.forEach(function(fieldName) {
-                var answer = story.fieldValue(fieldName);
+                const answer = story.fieldValue(fieldName);
                 if (answer) {
                     if (typeof answer === "string") {
                         questionAnswersToShow.push(answer);
@@ -1749,7 +1746,7 @@ class PatternExplorer {
     }
 
     nameForCurrentGraphSelection() {
-        var result = "";
+        let result = "";
 
         if (!this.currentPattern) return result;
         result += this.currentPattern.patternName;
@@ -1818,15 +1815,15 @@ class PatternExplorer {
         if (!this.currentPattern) return;
         
         // Find observation textarea and other needed data
-        var textarea = <HTMLTextAreaElement>document.getElementById("observationPanel_savedGraphSelections");
-        var selection = this.graphHolder.currentSelectionExtentPercentages;
-        var textToInsert = JSON.stringify(selection);
+        const textarea = <HTMLTextAreaElement>document.getElementById("observationPanel_savedGraphSelections");
+        const selection = this.graphHolder.currentSelectionExtentPercentages;
+        const textToInsert = JSON.stringify(selection);
         
         // Replace the currently selected text in the textarea (or insert at caret if nothing selected)
-        var selectionStart = textarea.selectionStart;
-        var selectionEnd = textarea.selectionEnd;
-        var oldText = activeAccessor.observationSavedGraphSelections();
-        var newText = oldText.substring(0, selectionStart) + textToInsert + oldText.substring(selectionEnd);
+        const selectionStart = textarea.selectionStart;
+        const selectionEnd = textarea.selectionEnd;
+        const oldText = activeAccessor.observationSavedGraphSelections();
+        const newText = oldText.substring(0, selectionStart) + textToInsert + oldText.substring(selectionEnd);
         activeAccessor.observationSavedGraphSelections(newText);
         
         // Set the new value explicitly here rather than waiting for a Mithril redraw so that we can then select it
@@ -1840,19 +1837,19 @@ class PatternExplorer {
         if (this.activeObservationTab === undefined || this.activeObservationTab < 0 || !this.observationAccessors || this.activeObservationTab >= this.observationAccessors.length) return;
         const activeAccessor = this.observationAccessors[this.activeObservationTab];
 
-        var textarea = <HTMLTextAreaElement>document.getElementById("observationPanel_savedGraphSelections");
+        const textarea = <HTMLTextAreaElement>document.getElementById("observationPanel_savedGraphSelections");
         if (!this.currentPattern) return;
-        var text = activeAccessor.observationSavedGraphSelections();
+        const text = activeAccessor.observationSavedGraphSelections();
 
         if (doFocus) textarea.focus();
 
-        var selectionStart = textarea.selectionStart;
-        var selectionEnd = textarea.selectionEnd;
+        const selectionStart = textarea.selectionStart;
+        const selectionEnd = textarea.selectionEnd;
         
         // Find the text for a selection surrounding the current insertion point
         // This assumes there are not nested objects with nested braces
-        var start;
-        var end;
+        let start;
+        let end;
         
         // Special case of entire selection -- but could return more complex nested object...
         if (selectionStart !== selectionEnd) {
@@ -1884,15 +1881,15 @@ class PatternExplorer {
         // TODO: Need better approach to finding brush extent text and safely parsing it
     
         // Find observation textarea and other needed data
-        // var selectedText = oldText.substring(selectionStart, selectionEnd);
-        var selectedText = this.scanForSelectionJSON(true);
+        // const selectedText = oldText.substring(selectionStart, selectionEnd);
+        const selectedText = this.scanForSelectionJSON(true);
         if (!selectedText) {
             // TODO: Translate
             alert("To restore a graph selection, your cursor has to be inside the curly-brackets reference in a graph selections text box (which is part of an observation).\nClick inside the curly brackets, then try this again.");
             return;
         }
         
-        var selection = null;
+        let selection = null;
         try {
             selection = JSON.parse(selectedText);
         } catch (e) {
@@ -1905,16 +1902,16 @@ class PatternExplorer {
             return;
         }
         
-        var graph = this.graphHolder.currentGraph;
+        let graph = this.graphHolder.currentGraph;
         if (_.isArray(graph)) {
-            var optionText = selection.subgraphChoice;
+            let optionText = selection.subgraphChoice;
             if (!optionText) {
                 // TODO: Translate
                 alert("No choice of sub-graph was specified in in the stored graph selection.");
                 return;
             }
             optionText = decodeCurlyBraces(optionText);
-            var graphs = this.graphHolder.currentGraph;
+            const graphs = this.graphHolder.currentGraph;
             graphs.forEach(function (subgraph) {
                 if (subgraph.subgraphChoice === optionText) {
                     graph = subgraph;
@@ -1934,14 +1931,11 @@ class PatternExplorer {
         if (!catalysisReportIdentifier) {
             throw new Error("getObservationSetIdentifier: catalysisReportIdentifier is not defined"); 
         }
-        
-        var setIdentifier = this.project.tripleStore.queryLatestC(catalysisReportIdentifier, "catalysisReport_observations");
-        
+        let setIdentifier = this.project.tripleStore.queryLatestC(catalysisReportIdentifier, "catalysisReport_observations");
         if (!setIdentifier) {
             setIdentifier = generateRandomUuid("ObservationSet");
             this.project.tripleStore.addTriple(catalysisReportIdentifier, "catalysisReport_observations", setIdentifier);
         }
-
         return setIdentifier;
     }
 
@@ -2014,7 +2008,7 @@ class ObservationAccessor {
 
     getOrSetField(field: string, newValue = undefined) {
         if (newValue === undefined) {
-            var result = this.project.tripleStore.queryLatestC(this.observationID, field);
+            let result = this.project.tripleStore.queryLatestC(this.observationID, field);
             if (result === undefined || result === null) {
                 result = "";
             }

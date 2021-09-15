@@ -21,50 +21,50 @@ function friedmanchisquare(table: number[][]) {
     It assumes 3 or more repeated measures.  Only 3
     */
     
-    var i;
-    var k = table.length;
+    let i;
+    const numTableRows = table.length;
     
-    if (k < 3) {
-        throw new Error("ValueError: Less than 3 levels. Friedman test not appropriate.");
+    if (numTableRows < 3) {
+        throw new Error("ValueError: Less than 3 levels. Friedman Chi-square test not appropriate.");
     }
     
-    var n = table[0].length;
-    for (i = 1; i < k; i++) {
+    const n = table[0].length;
+    for (i = 1; i < numTableRows; i++) {
         if (table[i].length !== n) {
-            throw new Error("ValueError: Unequal N in friedmanchisquare. Aborting.");
+            throw new Error("ValueError: Unequal N in Friedman Chi-square test. Aborting.");
         }
     }
-    if (n < 10 && k < 6) {
-        console.log('Warning: friedmanchisquare test using Chisquared aproximation');
+    if (n < 10 && numTableRows < 6) {
+        console.log('Warning: Friedman Chi-square test is using Chi-squared aproximation.');
     }
 
     // Rank data
-    var data = table;
+    const data = table;
     
     for (let i = 0; i < data.length; i++) {
         data[i] = statisticsCommon.rankdata(data[i]);
     }
     
     // Handle ties
-    var ties = 0;
+    let ties = 0;
     for (let i = 0; i < data.length; i++) {
-        var repnum = statisticsCommon.repeatCounts(data[i]);
-        for (var y = 0; y <  repnum.length; y++) {
-            var t = repnum[y];
+        const repnum = statisticsCommon.repeatCounts(data[i]);
+        for (let y = 0; y <  repnum.length; y++) {
+            const t = repnum[y];
             ties += t * (t * t - 1);
         }
     }
     
-    var c = 1 - ties / (k * (k * k - 1) * n);
+    const c = 1 - ties / (numTableRows * (numTableRows * numTableRows - 1) * n);
 
     // TODO: SciPy was doing a second sum on result which would remove arrays -- is this needed?
-    // var ssbn = pysum(pysum(data)**2);
-    var sum = jStat.sum(data);
-    var ssbn = sum * sum;
+    // const ssbn = pysum(pysum(data)**2);
+    const sum = jStat.sum(data);
+    const ssbn = sum * sum;
     
-    var chisq = ( 12.0 / (k * n * (k + 1)) * ssbn - 3 * n * (k + 1) ) / c;
+    const chiSquared = ( 12.0 / (numTableRows * n * (numTableRows + 1)) * ssbn - 3 * n * (numTableRows + 1) ) / c;
     
-    return {chisq: chisq, p: jStat.chisquare.cdf(chisq, k - 1)};
+    return {chisq: chiSquared, p: jStat.chisquare.cdf(chiSquared, numTableRows - 1)};
 }
 
 export = friedmanchisquare

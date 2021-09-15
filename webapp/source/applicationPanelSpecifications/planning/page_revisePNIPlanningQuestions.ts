@@ -1,7 +1,7 @@
 import kludgeForUseStrict = require("../../kludgeForUseStrict");
 "use strict";
 
-var panel: Panel = {
+const panel: Panel = {
     id: "page_revisePNIPlanningQuestions",
     displayName: "Revise PNI planning questions",
     tooltipText: "Go back to your goals, focus, etc., and see how you can improve what you wrote before.",

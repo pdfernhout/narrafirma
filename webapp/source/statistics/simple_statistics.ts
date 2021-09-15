@@ -13,7 +13,7 @@ import kludgeForUseStrict = require("../kludgeForUseStrict");
 
 // Changed by Paul Fernhout to be loadable as TypeScript
 
-// var ss = {};
+// const ss = {};
 
 /*
 if (typeof module !== 'undefined') {
@@ -33,8 +33,8 @@ if (typeof module !== 'undefined') {
 // is a simple way to find a fitted line
 // between a set of coordinates.
 export function linear_regression() {
-    var linreg: any = {},
-        data = [];
+    const linreg: any = {};
+    let data = [];
 
     // Assign data to the model. Data is assumed to be an array.
     linreg.data = function(x) {
@@ -46,11 +46,12 @@ export function linear_regression() {
     // Calculate the slope and y-intercept of the regression line
     // by calculating the least sum of squares
     linreg.mb = function() {
-        var m, b;
+        let m;
+        let b;
 
         // Store data length in a local variable to reduce
         // repeated object property lookups
-        var data_length = data.length;
+        const data_length = data.length;
 
         //if there's only one point, arbitrarily choose a slope of 0
         //and a y-intercept of whatever the y of the initial point is
@@ -60,12 +61,16 @@ export function linear_regression() {
         } else {
             // Initialize our sums and scope the `m` and `b`
             // variables that define the line.
-            var sum_x = 0, sum_y = 0,
-                sum_xx = 0, sum_xy = 0;
+            let sum_x = 0;
+            let sum_y = 0;
+            let sum_xx = 0;
+            let sum_xy = 0;
 
             // Use local variables to grab point values
             // with minimal object property lookups
-            var point, x, y;
+            let point;
+            let x;
+            let y;
 
             // Gather the sum of all x values, the sum of all
             // y values, and the sum of x^2 and (x*y) for each
@@ -115,9 +120,9 @@ export function linear_regression() {
     linreg.line = function() {
 
         // Get the slope, `m`, and y-intercept, `b`, of the line.
-        var mb = linreg.mb(),
-            m = mb.m,
-            b = mb.b;
+        const mb = linreg.mb();
+        const m = mb.m;
+        const b = mb.b;
 
         // Return a function that computes a `y` value for each
         // x value it is given, based on the values of `b` and `a`
@@ -141,25 +146,25 @@ export function r_squared(data, f) {
     // Compute the average y value for the actual
     // data set in order to compute the
     // _total sum of squares_
-    var sum = 0, average;
+    let sum = 0;
     for (let i = 0; i < data.length; i++) {
         sum += data[i][1];
     }
-    average = sum / data.length;
+    const average = sum / data.length;
 
     // Compute the total sum of squares - the
     // squared difference between each point
     // and the average of all points.
-    var sum_of_squares = 0;
-    for (var j = 0; j < data.length; j++) {
+    let sum_of_squares = 0;
+    for (let j = 0; j < data.length; j++) {
         sum_of_squares += Math.pow(average - data[j][1], 2);
     }
 
     // Finally estimate the error: the squared
     // difference between the estimate and the actual data
     // value at each point.
-    var err = 0;
-    for (var k = 0; k < data.length; k++) {
+    let err = 0;
+    for (let k = 0; k < data.length; k++) {
         err += Math.pow(data[k][1] - f(data[k][0]), 2);
     }
 
@@ -178,12 +183,12 @@ export function bayesian() {
     // The `bayes_model` object is what will be exposed
     // by this closure, with all of its extended methods, and will
     // have access to all scope variables, like `total_count`.
-    var bayes_model: any = {},
+    const bayes_model: any = {};
         // The number of items that are currently
         // classified in the model
-        total_count = 0,
+    let total_count = 0;
         // Every item classified in the model
-        data = {};
+    let data = {};
 
     // ## Train
     // Train the classifier with a new item, which has a single
@@ -194,8 +199,8 @@ export function bayesian() {
         if (!data[category]) data[category] = {};
 
         // Iterate through each key in the item.
-        for (var k in item) {
-            var v = item[k];
+        for (let k in item) {
+            const v = item[k];
             // Initialize the nested object `data[category][k][item[k]]`
             // with an object of keys that equal 0.
             if (data[category][k] === undefined) data[category][k] = {};
@@ -213,12 +218,13 @@ export function bayesian() {
     // possible categories based on its attributes
     bayes_model.score = function(item) {
         // Initialize an empty array of odds per category.
-        var odds = {}, category;
+        const odds = {};
+        let category;
         // Iterate through each key in the item,
         // then iterate through each category that has been used
         // in previous calls to `.train()`
-        for (var k in item) {
-            var v = item[k];
+        for (let k in item) {
+            const v = item[k];
             for (category in data) {
                 // Create an empty object for storing key - value combinations
                 // for this category.
@@ -237,13 +243,13 @@ export function bayesian() {
         }
 
         // Set up a new object that will contain sums of these odds by category
-        var odds_sums = {};
+        const odds_sums = {};
 
         for (category in odds) {
             // Tally all of the odds for each category-combination pair -
             // the non-existence of a category does not add anything to the
             // score.
-            for (var combination in odds[category]) {
+            for (let combination in odds[category]) {
                 if (odds_sums[category] === undefined) odds_sums[category] = 0;
                 odds_sums[category] += odds[category][combination];
             }
@@ -263,7 +269,7 @@ export function bayesian() {
 //
 // This runs on `O(n)`, linear time in respect to the array
 export function sum(x) {
-    var value = 0;
+    let value = 0;
     for (let i = 0; i < x.length; i++) {
         value += x[i];
     }
@@ -295,7 +301,7 @@ export function geometric_mean(x) {
     if (x.length === 0) return null;
 
     // the starting value.
-    var value = 1;
+    let value = 1;
 
     for (let i = 0; i < x.length; i++) {
         // the geometric mean is only valid for positive numbers
@@ -321,7 +327,7 @@ export function harmonic_mean(x) {
     // The mean of no numbers is null
     if (x.length === 0) return null;
 
-    var reciprocal_sum = 0;
+    let reciprocal_sum = 0;
 
     for (let i = 0; i < x.length; i++) {
         // the harmonic mean is only valid for positive numbers
@@ -346,7 +352,7 @@ export function harmonic_mean(x) {
 export function root_mean_square(x) {
     if (x.length === 0) return null;
 
-    var sum_of_squares = 0;
+    let sum_of_squares = 0;
     for (let i = 0; i < x.length; i++) {
         sum_of_squares += Math.pow(x[i], 2);
     }
@@ -360,7 +366,7 @@ export function root_mean_square(x) {
 //
 // This runs on `O(n)`, linear time in respect to the array
 export function min(x) {
-    var value;
+    let value;
     for (let i = 0; i < x.length; i++) {
         // On the first iteration of this loop, min is
         // undefined and is thus made the minimum element in the array
@@ -375,7 +381,7 @@ export function min(x) {
 //
 // This runs on `O(n)`, linear time in respect to the array
 export function max(x) {
-    var value;
+    let value;
     for (let i = 0; i < x.length; i++) {
         // On the first iteration of this loop, max is
         // undefined and is thus made the maximum element in the array
@@ -393,8 +399,8 @@ export function variance(x) {
     // The variance of no numbers is null
     if (x.length === 0) return null;
 
-    var mean_value = mean(x),
-        deviations = [];
+    const mean_value = mean(x);
+    const deviations = [];
 
     // Make a list of squared deviations from the mean.
     for (let i = 0; i < x.length; i++) {
@@ -423,8 +429,8 @@ export function standard_deviation(x) {
 //
 // depends on `mean()`
 export function sum_nth_power_deviations(x, n) {
-    var mean_value = mean(x),
-        sum = 0;
+    const mean_value = mean(x);
+    let sum = 0;
 
     for (let i = 0; i < x.length; i++) {
         sum += Math.pow(x[i] - mean_value, n);
@@ -442,7 +448,7 @@ export function sample_variance(x) {
     // The variance of no numbers is null
     if (x.length <= 1) return null;
 
-    var sum_squared_deviations_value = sum_nth_power_deviations(x, 2);
+    const sum_squared_deviations_value = sum_nth_power_deviations(x, 2);
 
     // Find the mean value of that list
     return sum_squared_deviations_value / (x.length - 1);
@@ -478,9 +484,9 @@ export function sample_covariance(x, y) {
     // value of the dataset fairly as the difference from the mean. this
     // way, if one dataset is [1, 2, 3] and [2, 3, 4], their covariance
     // does not suffer because of the difference in absolute values
-    var xmean = mean(x),
-        ymean = mean(y),
-        sum = 0;
+    const xmean = mean(x);
+    const ymean = mean(y);
+    let sum = 0;
 
     // for each pair of values, the covariance increases when their
     // difference from the mean is associated - if both are well above
@@ -500,9 +506,9 @@ export function sample_covariance(x, y) {
 //
 // depends on `sample_standard_deviation()` and `sample_covariance()`
 export function sample_correlation(x, y) {
-    var cov = sample_covariance(x, y),
-        xstd = sample_standard_deviation(x),
-        ystd = sample_standard_deviation(y);
+    const cov = sample_covariance(x, y);
+    const xstd = sample_standard_deviation(x);
+    const ystd = sample_standard_deviation(y);
 
     if (cov === null || xstd === null || ystd === null) {
         return null;
@@ -521,7 +527,7 @@ export function median(x) {
 
     // Sorting the array makes it easy to find the center, but
     // use `.slice()` to ensure the original array `x` is not modified
-    var sorted = x.slice().sort(function (a, b) { return a - b; });
+    const sorted = x.slice().sort(function (a, b) { return a - b; });
 
     // If the length of the list is odd, it's the central number
     if (sorted.length % 2 === 1) {
@@ -529,8 +535,8 @@ export function median(x) {
     // Otherwise, the median is the average of the two numbers
     // at the center of the list
     } else {
-        var a = sorted[(sorted.length / 2) - 1];
-        var b = sorted[(sorted.length / 2)];
+        const a = sorted[(sorted.length / 2) - 1];
+        const b = sorted[(sorted.length / 2)];
         return (a + b) / 2;
     }
 }
@@ -557,25 +563,25 @@ export function mode(x) {
     // Sorting the array lets us iterate through it below and be sure
     // that every time we see a new number it's new and we'll never
     // see the same number twice
-    var sorted = x.slice().sort(function (a, b) { return a - b; });
+    const sorted = x.slice().sort(function (a, b) { return a - b; });
 
     // This assumes it is dealing with an array of size > 1, since size
     // 0 and 1 are handled immediately. Hence it starts at index 1 in the
     // array.
-    var last = sorted[0],
-        // store the mode as we find new modes
-        value,
-        // store how many times we've seen the mode
-        max_seen = 0,
-        // how many times the current candidate for the mode
-        // has been seen
-        seen_this = 1;
+    let last = sorted[0];
+    // store the mode as we find new modes
+    let value;
+    // store how many times we've seen the mode
+    let max_seen = 0;
+    // how many times the current candidate for the mode
+    // has been seen
+    let seen_this = 1;
 
     // end at sorted.length + 1 to fix the case in which the mode is
     // the highest number that occurs in the sequence. the last iteration
     // compares sorted[i], which is undefined, to the highest number
     // in the series
-    for (var i = 1; i < sorted.length + 1; i++) {
+    for (let i = 1; i < sorted.length + 1; i++) {
         // we're seeing a new number pass by
         if (sorted[i] !== last) {
             // the last number is the new mode since we saw it more
@@ -608,13 +614,11 @@ export function mode(x) {
 // Depends on `standard_deviation()` and `mean()`
 export function t_test(sample, x) {
     // The mean of the sample
-    var sample_mean = mean(sample);
-
+    const sample_mean = mean(sample);
     // The standard deviation of the sample
-    var sd = standard_deviation(sample);
-
+    const sd = standard_deviation(sample);
     // Square root the length of the sample
-    var rootN = Math.sqrt(sample.length);
+    const rootN = Math.sqrt(sample.length);
 
     // Compute the known value against the sample,
     // returning the t value
@@ -643,8 +647,8 @@ export function t_test(sample, x) {
 //
 // Depends on `sample_variance()` and `mean()`
 export function t_test_two_sample(sample_x, sample_y, difference) {
-    var n = sample_x.length,
-        m = sample_y.length;
+    const n = sample_x.length;
+    const m = sample_y.length;
 
     // If either sample doesn't actually have any values, we can't
     // compute this at all, so we return `null`.
@@ -653,11 +657,10 @@ export function t_test_two_sample(sample_x, sample_y, difference) {
     // default difference (mu) is zero
     if (!difference) difference = 0;
 
-    var meanX = mean(sample_x),
-        meanY = mean(sample_y);
+    const meanX = mean(sample_x);
+    const meanY = mean(sample_y);
 
-    var weightedVariance = ((n - 1) * sample_variance(sample_x) +
-        (m - 1) * sample_variance(sample_y)) / (n + m - 2);
+    const weightedVariance = ((n - 1) * sample_variance(sample_x) + (m - 1) * sample_variance(sample_y)) / (n + m - 2);
 
     return (meanX - meanY - difference) /
         Math.sqrt(weightedVariance * (1 / n + 1 / m));
@@ -675,7 +678,7 @@ export function t_test_two_sample(sample_x, sample_y, difference) {
 export function chunk(sample, chunkSize) {
 
     // a list of result chunks, as arrays in an array
-    var output = [];
+    const output = [];
 
     // `chunkSize` must be zero or higher - otherwise the loop below,
     // in which we call `start += chunkSize`, will loop infinitely.
@@ -687,7 +690,7 @@ export function chunk(sample, chunkSize) {
 
     // `start` is the index at which `.slice` will start selecting
     // new array elements
-    for (var start = 0; start < sample.length; start += chunkSize) {
+    for (let start = 0; start < sample.length; start += chunkSize) {
 
         // for each chunk, slice that part of the array and add it
         // to the output. The `.slice` function does not change
@@ -711,14 +714,14 @@ export function shuffle_in_place(sample, randomSource) {
 
     // store the current length of the sample to determine
     // when no elements remain to shuffle.
-    var length = sample.length;
+    let length = sample.length;
 
     // temporary is used to hold an item when it is being
     // swapped between indices.
-    var temporary;
+    let temporary;
 
     // The index to swap at each stage.
-    var index;
+    let index;
 
     // While there are still items to shuffle
     while (length > 0) {
@@ -755,7 +758,7 @@ export function shuffle(sample, randomSource) {
 // from a given array of `n` elements.
 export function sample(array, n, randomSource) {
     // shuffle the original array using a fisher-yates shuffle
-    var shuffled = shuffle(array, randomSource);
+    const shuffled = shuffle(array, randomSource);
 
     // and then return a subset of it - the first `n` elements.
     return shuffled.slice(0, n);
@@ -782,11 +785,12 @@ export function quantile(sample, p) {
 
     // Sort a copy of the array. We'll need a sorted array to index
     // the values in sorted order.
-    var sorted = sample.slice().sort(function (a, b) { return a - b; });
+    const sorted = sample.slice().sort(function (a, b) { return a - b; });
 
     if (p.length) {
         // Initialize the result array
-        var results = [];
+
+        const results = [];
         // For each requested quantile
         for (let i = 0; i < p.length; i++) {
             results[i] = quantile_sorted(sorted, p[i]);
@@ -803,7 +807,7 @@ export function quantile(sample, p) {
 // that the order is sorted, you don't need to re-sort it, and the computations
 // are much faster.
 export function quantile_sorted(sample, p) {
-    var idx = (sample.length) * p;
+    const idx = (sample.length) * p;
     if (p < 0 || p > 1) {
         return null;
     } else if (p === 1) {
@@ -848,8 +852,8 @@ export function mad(x) {
     // The mad of nothing is null
     if (!x || x.length === 0) return null;
 
-    var median_value = median(x),
-        median_absolute_deviations = [];
+    const median_value = median(x);
+    const median_absolute_deviations = [];
 
     // Make a list of absolute deviations from the median
     for (let i = 0; i < x.length; i++) {
@@ -871,16 +875,18 @@ export function jenksMatrices(data, n_classes) {
     //
     // * lower_class_limits (LC): optimal lower class limits
     // * variance_combinations (OP): optimal variance combinations for all classes
-    var lower_class_limits = [],
-        variance_combinations = [],
-        // loop counters
-        i, j,
-        // the variance, as computed at each step in the calculation
-        variance = 0;
+    const lower_class_limits = [];
+    const variance_combinations = [];
+    // loop counters
+    let i; 
+    let j;
+    // the variance, as computed at each step in the calculation
+    let variance = 0;
 
     // Initialize and fill each matrix with zeroes
     for (let i = 0; i < data.length + 1; i++) {
-        var tmp1 = [], tmp2 = [];
+        const tmp1 = [];
+        const tmp2 = [];
         // despite these arrays having the same values, we need
         // to keep them separate so that changing one does not change
         // the other
@@ -902,27 +908,27 @@ export function jenksMatrices(data, n_classes) {
         }
     }
 
-    for (var l = 2; l < data.length + 1; l++) {
+    for (let l = 2; l < data.length + 1; l++) {
 
         // `SZ` originally. this is the sum of the values seen thus
         // far when calculating variance.
-        var sum = 0,
-            // `ZSQ` originally. the sum of squares of values seen
-            // thus far
-            sum_squares = 0,
-            // `WT` originally. This is the number of
-            w = 0,
-            // `IV` originally
-            i4 = 0;
+        let sum = 0;
+        // `ZSQ` originally. the sum of squares of values seen
+        // thus far
+        let sum_squares = 0;
+        // `WT` originally. This is the number of
+        let w = 0;
+        // `IV` originally
+        let i4 = 0;
 
         // in several instances, you could say `Math.pow(x, 2)`
         // instead of `x * x`, but this is slower in some browsers
         // introduces an unnecessary concept.
-        for (var m = 1; m < l + 1; m++) {
+        for (let m = 1; m < l + 1; m++) {
 
             // `III` originally
-            var lower_class_limit = l - m + 1,
-                val = data[lower_class_limit - 1];
+            const lower_class_limit = l - m + 1;
+            const val = data[lower_class_limit - 1];
 
             // here we're estimating variance for each potential classing
             // of the data, for each potential number of classes. `w`
@@ -975,9 +981,9 @@ export function jenksMatrices(data, n_classes) {
 // and derive an array of n breaks.
 export function jenksBreaks(data, lower_class_limits, n_classes) {
 
-    var k = data.length - 1,
-        kclass = [],
-        countNum = n_classes;
+    let k = data.length - 1;
+    const kclass = [];
+    let countNum = n_classes;
 
     // the calculation of classes will never include the upper and
     // lower bounds, so we need to explicitly set them
@@ -1011,9 +1017,9 @@ export function jenks(data, n_classes) {
     data = data.slice().sort(function (a, b) { return a - b; });
 
     // get our basic matrices
-    var matrices = jenksMatrices(data, n_classes),
-        // we only need lower class limits here
-        lower_class_limits = matrices.lower_class_limits;
+    const matrices = jenksMatrices(data, n_classes);
+    // we only need lower class limits here
+    const lower_class_limits = matrices.lower_class_limits;
 
     // extract n_classes out of the computed matrices
     return jenksBreaks(data, lower_class_limits, n_classes);
@@ -1035,9 +1041,9 @@ export function sample_skewness(x) {
     // The skewness of less than three arguments is null
     if (x.length < 3) return null;
 
-    var n = x.length,
-        cubed_s = Math.pow(sample_standard_deviation(x), 3),
-        sum_cubed_deviations = sum_nth_power_deviations(x, 3);
+    const n = x.length;
+    const cubed_s = Math.pow(sample_standard_deviation(x), 3);
+    const sum_cubed_deviations = sum_nth_power_deviations(x, 3);
 
     return n * sum_cubed_deviations / ((n - 1) * (n - 2) * cubed_s);
 }
@@ -1053,7 +1059,7 @@ export function sample_skewness(x) {
 // The probabilities are taken from http://en.wikipedia.org/wiki/Standard_normal_table
 // The table used is the cumulative, and not cumulative from 0 to mean
 // (even though the latter has 5 digits precision, instead of 4).
-var standard_normal_table = [
+const standard_normal_table = [
     /*  z      0.00    0.01    0.02    0.03    0.04    0.05    0.06    0.07    0.08    0.09 */
     /* 0.0 */
     0.5000, 0.5040, 0.5080, 0.5120, 0.5160, 0.5199, 0.5239, 0.5279, 0.5319, 0.5359,
@@ -1126,8 +1132,8 @@ var standard_normal_table = [
 //
 // This function returns a numerical approximation to the exact value.
 export function error_function(x) {
-    var t = 1 / (1 + 0.5 * Math.abs(x));
-    var tau = t * Math.exp(-Math.pow(x, 2) -
+    const t = 1 / (1 + 0.5 * Math.abs(x));
+    const tau = t * Math.exp(-Math.pow(x, 2) -
         1.26551223 +
         1.00002368 * t +
         0.37409196 * Math.pow(t, 2) +
@@ -1157,12 +1163,12 @@ export function error_function(x) {
 export function cumulative_std_normal_probability(z) {
 
     // Calculate the position of this value.
-    var absZ = Math.abs(z),
-        // Each row begins with a different
-        // significant digit: 0.5, 0.6, 0.7, and so on. Each value in the table
-        // corresponds to a range of 0.01 in the input values, so the value is
-        // multiplied by 100.
-        index = Math.min(Math.round(absZ * 100), standard_normal_table.length - 1);
+    const absZ = Math.abs(z);
+    // Each row begins with a different
+    // significant digit: 0.5, 0.6, 0.7, and so on. Each value in the table
+    // corresponds to a range of 0.01 in the input values, so the value is
+    // multiplied by 100.
+    const index = Math.min(Math.round(absZ * 100), standard_normal_table.length - 1);
 
     // The index we calculate must be in the table as a positive value,
     // but we still pay attention to whether the input is positive
@@ -1197,7 +1203,7 @@ export function z_score(x, mean, standard_deviation) {
 
 // We use `ε`, epsilon, as a stopping criterion when we want to iterate
 // until we're "close enough".
-var epsilon = 0.0001;
+const epsilon = 0.0001;
 
 // # [Factorial](https://en.wikipedia.org/wiki/Factorial)
 //
@@ -1214,8 +1220,8 @@ export function factorial(n) {
     // 5! = 5 * 4 * 3 * 2 * 1. This is going in the opposite direction,
     // counting from 2 up to the number in question, and since anything
     // multiplied by 1 is itself, the loop only needs to start at 2.
-    var accumulator = 1;
-    for (var i = 2; i <= n; i++) {
+    let accumulator = 1;
+    for (let i = 2; i <= n; i++) {
         // for each number up to and including the number `n`, multiply
         // the accumulator my that number.
         accumulator *= i;
@@ -1268,9 +1274,9 @@ export function binomial_distribution(trials, probability) {
     // `cumulative_probability_of_x`, as well as the calculated mean &
     // variance. We iterate until the `cumulative_probability_of_x` is
     // within `epsilon` of 1.0.
-    var x = 0,
-        cumulative_probability = 0,
-        cells = {};
+    let x = 0;
+    let cumulative_probability = 0;
+    const cells = {};
 
     // This algorithm iterates through each potential outcome,
     // until the `cumulative_probability` is very close to 1, at
@@ -1301,12 +1307,12 @@ export function poisson_distribution(lambda) {
     if (lambda <= 0) { return null; }
 
     // our current place in the distribution
-    var x = 0,
+    let x = 0;
         // and we keep track of the current cumulative probability, in
         // order to know when to stop calculating chances.
-        cumulative_probability = 0,
+    let cumulative_probability = 0;
         // the calculated cells to be returned
-        cells = {};
+    const cells = {};
 
     // a [probability mass function](https://en.wikipedia.org/wiki/Probability_mass_function)
     function probability_mass(x, lambda) {
@@ -1336,7 +1342,7 @@ export function poisson_distribution(lambda) {
 //
 // Values from Appendix 1, Table III of William W. Hines & Douglas C. Montgomery, "Probability and Statistics in
 // Engineering and Management Science", Wiley (1980).
-var chi_squared_distribution_table = {
+const chi_squared_distribution_table = {
     1: { "0.995":  0.00, "0.99":  0.00, "0.975":  0.00, "0.95":  0.00, "0.9":  0.02, "0.5":  0.45, "0.1":  2.71, "0.05":  3.84, "0.025":  5.02, "0.01":  6.63, "0.005":  7.88 },
     2: { "0.995":  0.01, "0.99":  0.02, "0.975":  0.05, "0.95":  0.10, "0.9":  0.21, "0.5":  1.39, "0.1":  4.61, "0.05":  5.99, "0.025":  7.38, "0.01":  9.21, "0.005": 10.60 },
     3: { "0.995":  0.07, "0.99":  0.11, "0.975":  0.22, "0.95":  0.35, "0.9":  0.58, "0.5":  2.37, "0.1":  6.25, "0.05":  7.81, "0.025":  9.35, "0.01": 11.34, "0.005": 12.84 },
@@ -1388,26 +1394,26 @@ var chi_squared_distribution_table = {
 // cells and `c` is the number of estimated parameters for the distribution.
 export function chi_squared_goodness_of_fit(data, distribution_type, significance): any {
     // Estimate from the sample data, a weighted mean.
-    var input_mean = mean(data),
-        // Calculated value of the χ2 statistic.
-        chi_squared = 0,
-        // Degrees of freedom, calculated as (number of class intervals -
-        // number of hypothesized distribution parameters estimated - 1)
-        degrees_of_freedom,
-        // Number of hypothesized distribution parameters estimated, expected to be supplied in the distribution test.
-        // Lose one degree of freedom for estimating `lambda` from the sample data.
-        c = 1,
-        // The hypothesized distribution.
-        // Generate the hypothesized distribution.
-        hypothesized_distribution = distribution_type(input_mean),
-        observed_frequencies = [],
-        expected_frequencies = [],
-        k;
+    const input_mean = mean(data);
+    // Calculated value of the χ2 statistic.
+    let chi_squared = 0;
+    // Degrees of freedom, calculated as (number of class intervals -
+    // number of hypothesized distribution parameters estimated - 1)
+    let degrees_of_freedom;
+    // Number of hypothesized distribution parameters estimated, expected to be supplied in the distribution test.
+    // Lose one degree of freedom for estimating `lambda` from the sample data.
+    let c = 1;
+    // The hypothesized distribution.
+    // Generate the hypothesized distribution.
+    const hypothesized_distribution = distribution_type(input_mean);
+    const observed_frequencies = [];
+    const expected_frequencies = [];
+    let k;
 
     // Create an array holding a histogram from the sample data, of
     // the form `{ value: numberOfOcurrences }`
-    var i: number;
-    for (let i = 0; i < data.length; i++) {
+    let i: number;
+    for (i = 0; i < data.length; i++) {
         if (observed_frequencies[data[i]] === undefined) {
             observed_frequencies[data[i]] = 0;
         }
@@ -1417,7 +1423,7 @@ export function chi_squared_goodness_of_fit(data, distribution_type, significanc
     // The histogram we created might be sparse - there might be gaps
     // between values. So we iterate through the histogram, making
     // sure that instead of undefined, gaps have 0 values.
-    for (let i = 0; i < observed_frequencies.length; i++) {
+    for (i = 0; i < observed_frequencies.length; i++) {
         if (observed_frequencies[i] === undefined) {
             observed_frequencies[i] = 0;
         }
@@ -1458,14 +1464,14 @@ export function chi_squared_goodness_of_fit(data, distribution_type, significanc
     degrees_of_freedom = observed_frequencies.length - c - 1;
     //return chi_squared_distribution_table[degrees_of_freedom][significance] < chi_squared;
     
-    var row = chi_squared_distribution_table[degrees_of_freedom];
+    const row = chi_squared_distribution_table[degrees_of_freedom];
     if (!row) {
         return {chi_squared: "None", testSignificance: "None"};
     }
-    var keys = [0.995, 0.99, 0.975, 0.95, 0.9, 0.5, 0.1, 0.05, 0.025, 0.01, 0.005].reverse();
-    var testSignificance = 1.0;
+    const keys = [0.995, 0.99, 0.975, 0.95, 0.9, 0.5, 0.1, 0.05, 0.025, 0.01, 0.005].reverse();
+    let testSignificance = 1.0;
     for (let i = 0; i < keys.length; i++) {
-        var value = row[keys[i]];
+        const value = row[keys[i]];
         if (value < chi_squared) {
             testSignificance = keys[i];
             break;
@@ -1483,12 +1489,12 @@ export function chi_squared_goodness_of_fit(data, distribution_type, significanc
 // feature that lets you treat simple_statistics as a native feature
 // of Javascript.
 export function mixin(array): any {
-    var support = !!(Object.defineProperty && Object.defineProperties);
+    const support = !!(Object.defineProperty && Object.defineProperties);
     if (!support) throw new Error('without defineProperty, simple-statistics cannot be mixed in');
 
     // only methods which work on basic arrays in a single step
     // are supported
-    var arrayMethods = ['median', 'standard_deviation', 'sum',
+    const arrayMethods = ['median', 'standard_deviation', 'sum',
         'sample_skewness',
         'mean', 'min', 'max', 'quantile', 'geometric_mean',
         'harmonic_mean', 'root_mean_square'];
@@ -1499,7 +1505,7 @@ export function mixin(array): any {
         return function() {
             // cast any arguments into an array, since they're
             // natively objects
-            var args = Array.prototype.slice.apply(arguments);
+            const args = Array.prototype.slice.apply(arguments);
             // make the first argument the array itself
             args.unshift(this);
             // return the result of the ss method
@@ -1508,7 +1514,7 @@ export function mixin(array): any {
     }
 
     // select object to extend
-    var extending: any;
+    let extending: any;
     if (array) {
         // create a shallow copy of the array so that our internal
         // operations do not change it by reference
@@ -1521,7 +1527,7 @@ export function mixin(array): any {
     // the array as the first argument.
     // We use [defineProperty](https://developer.mozilla.org/en-US/docs/JavaScript/Reference/Global_Objects/Object/defineProperty)
     // because it allows these properties to be non-enumerable:
-    // `for (var in x)` loops will not run into problems with this
+    // `for (variable in x)` loops will not run into problems with this
     // implementation.
     for (let i = 0; i < arrayMethods.length; i++) {
         Object.defineProperty(extending, arrayMethods[i], {

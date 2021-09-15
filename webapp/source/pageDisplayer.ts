@@ -8,22 +8,22 @@ import ClientState = require("./ClientState");
 "use strict";
 
 // For tracking what page the application is on
-var currentPageID = null;
-var currentPageSpecification = null;
-var currentPage;
+let currentPageID = null;
+let currentPageSpecification = null;
+let currentPage;
 
-var panelBuilder: PanelBuilder;
+let panelBuilder: PanelBuilder;
 
-var project: Project;
-var clientState: ClientState;
+let project: Project;
+let clientState: ClientState;
 
-var PageDisplayer: any = {
+const PageDisplayer: any = {
     controller: function(args) {
         ;
     },
     
     view: function(controller, args) {
-        var contentsDiv;
+        let contentsDiv;
         
         // Setting the hash may trigger another call to the showPage function eventually, but as the new page will already be set, it should not loop further
         clientState.updateHashIfNeededForChangedClientState();
@@ -64,14 +64,14 @@ export function showPage(pageID, forceRefresh = false, isRedrawAlreadyQueued = f
         return;
     }
 
-    var pageSpecification;
+    let pageSpecification;
     try {
         pageSpecification = panelBuilder.getPageSpecificationForPageID(pageID);
     } catch (e) {
         console.log("Problem finding pageSpecification for", pageID);
     }
     
-    var badPage = null;
+    let badPage = null;
 
     if (clientState.leavingPageCallback()) clientState.leavingPageCallback()();
     

@@ -16,9 +16,9 @@ if (console === undefined) console = {"log": function(){ } };
 //This is to distinguish between running under WordPress or running under Node.js
 function calculateAjaxPath() {
     if (!window["ajaxurl"]) {
-        var path = window.location.href;
+        const path = window.location.href;
         console.log("window.location.href", path);
-        var baseDirectoryPosition = path.indexOf("/wp-content/");
+        const baseDirectoryPosition = path.indexOf("/wp-content/");
         if (baseDirectoryPosition !== -1) {
             window["ajaxurl"] = path.substring(0, baseDirectoryPosition) + "/wp-admin/admin-ajax.php";
             console.log("set ajaxurl to", window["ajaxurl"]);

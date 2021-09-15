@@ -8,7 +8,7 @@ import questionnaireGeneration = require("../questionnaireGeneration");
 "use strict";
 
 function add_checkboxQuestionConfigurationPanel(panelBuilder: PanelBuilder, model, fieldSpecification) {
-    var storageFunction = valuePathResolver.newValuePathForFieldSpecification(model, fieldSpecification);
+    const storageFunction = valuePathResolver.newValuePathForFieldSpecification(model, fieldSpecification);
     let questionPrompt =  "Enter a <strong>label</strong> for the checkbox shown in this question.";
     if (model.indexOf("AnnotationQuestion") >= 0) questionPrompt += " <em>You can change this checkbox label after you start using the question.</em>"
 

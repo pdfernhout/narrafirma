@@ -1,9 +1,9 @@
 import kludgeForUseStrict = require("../../kludgeForUseStrict");
 "use strict";
 
-// this is no longer being used
+// this file is no longer being used
 
-var panel: Panel = {
+const panel: Panel = {
     id: "panel_chooseParticipantQuestion",
     modelClass: "ParticipantQuestionChoice",
     panelFields: [

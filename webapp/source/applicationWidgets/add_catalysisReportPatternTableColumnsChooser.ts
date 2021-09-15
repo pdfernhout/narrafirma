@@ -6,14 +6,14 @@ import Globals = require("../Globals");
 "use strict";
 
 function add_catalysisReportPatternTableColumnsChooser(panelBuilder: PanelBuilder, model, fieldSpecification) {
-    var project = Globals.project();
+    const project = Globals.project();
     
-    var catalysisReportIdentifier = Globals.clientState().catalysisReportIdentifier();
+    const catalysisReportIdentifier = Globals.clientState().catalysisReportIdentifier();
     if (!catalysisReportIdentifier) return m("div", "Please select a catalysis report");
     
-    var prompt = panelBuilder.buildQuestionLabel(fieldSpecification);
+    const prompt = panelBuilder.buildQuestionLabel(fieldSpecification);
         
-    var storageFunction = valuePathResolver.newValuePathForFieldSpecification(model, fieldSpecification);
+    const storageFunction = valuePathResolver.newValuePathForFieldSpecification(model, fieldSpecification);
 
     const allColumnIDs = {
         "patternName": true,
@@ -44,7 +44,7 @@ function add_catalysisReportPatternTableColumnsChooser(panelBuilder: PanelBuilde
     }
 
     function isChecked(shortName, value = undefined) {
-        var map = storageFunction() || {};
+        const map = storageFunction() || {};
         if (value === undefined) {
             return !!map[shortName];
         }

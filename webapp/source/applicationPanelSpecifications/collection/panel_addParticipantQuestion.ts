@@ -10,7 +10,7 @@ function matchQuestionType(model, typesToMatch) {
         return false;
 }
 
-var panel: Panel = {
+const panel: Panel = {
     id: "panel_addParticipantQuestion",
     modelClass: "ParticipantQuestion",
     panelFields: [

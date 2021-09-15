@@ -2,7 +2,7 @@ import Globals = require("../../Globals");
 import kludgeForUseStrict = require("../../kludgeForUseStrict");
 "use strict";
 
-var panel: Panel = {
+const panel: Panel = {
     id: "page_explorePatterns",
     displayName: "Explore patterns",
     tooltipText: "Look at graphs of your data, discover useful patterns, and write observations and interpretations about them.",

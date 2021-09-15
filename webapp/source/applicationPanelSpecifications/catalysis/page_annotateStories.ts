@@ -2,7 +2,7 @@ import Globals = require("../../Globals");
 import kludgeForUseStrict = require("../../kludgeForUseStrict");
 "use strict";
 
-var panel: Panel = {
+const panel: Panel = {
     id: "page_annotateStories",
     displayName: "Annotate stories",
     tooltipText: "Answer questions about the stories you collected.",

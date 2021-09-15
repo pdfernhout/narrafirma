@@ -22,7 +22,7 @@ class PanelSpecificationCollection {
 
     // TODO: Maybe should remove this function? Currently only used by one test
     addPanelSpecificationFromJSONText(panelSpecificationJSONText) {
-        var panelSpecification = JSON.parse(panelSpecificationJSONText);
+        const panelSpecification = JSON.parse(panelSpecificationJSONText);
         this.addPanelSpecification(panelSpecification);
         return panelSpecification;
     }
@@ -37,7 +37,7 @@ class PanelSpecificationCollection {
             this.pageIDToPageSpecificatiomMap[panelSpecification.id] = panelSpecification;
             
             if (!panelSpecification.isHeader) {
-                var list = this.childPageIDListForHeaderID[this.lastHeader] || [];
+                const list = this.childPageIDListForHeaderID[this.lastHeader] || [];
                 list.push(panelSpecification.id);
                 this.childPageIDListForHeaderID[this.lastHeader] = list;
             } else {
@@ -45,9 +45,9 @@ class PanelSpecificationCollection {
             }
         }
         
-        var modelClass = panelSpecification.modelClass;
+        const modelClass = panelSpecification.modelClass;
         if (modelClass) {
-            var model = this.modelClassToModelFieldSpecificationsMap[modelClass];
+            let model = this.modelClassToModelFieldSpecificationsMap[modelClass];
             if (!model) {
                 model = [];
                 this.modelClassToModelFieldSpecificationsMap[modelClass] = model;
@@ -55,13 +55,13 @@ class PanelSpecificationCollection {
         }
         
         for (let i = 0; i < panelSpecification.panelFields.length; i++) {
-            var fieldSpecification = panelSpecification.panelFields[i];
+            const fieldSpecification = panelSpecification.panelFields[i];
             this.addFieldSpecification(modelClass, fieldSpecification);
         }
     }
     
     addFieldSpecification(modelClass, fieldSpecification) {
-        var model = this.modelClassToModelFieldSpecificationsMap[modelClass];
+        const model = this.modelClassToModelFieldSpecificationsMap[modelClass];
         // TODO: Is this modelClass line still needed?
         fieldSpecification.modelClass = modelClass;
         this.allFieldSpecifications.push(fieldSpecification);
@@ -76,7 +76,7 @@ class PanelSpecificationCollection {
     }
      
     initialDataForField(fieldSpecification) {
-        var valueType = fieldSpecification.valueType;
+        const valueType = fieldSpecification.valueType;
         if (valueType === "string") return "";
         if (valueType === "array") return [];
         if (valueType === "dictionary") return {};
@@ -89,15 +89,15 @@ class PanelSpecificationCollection {
     
     // This builds a specific model based on the name of the model, using data from one or more pages or panels that define that model
     buildModel(modelName) {
-        var model = {__type: modelName};
-        var modelFieldSpecifications = this.modelClassToModelFieldSpecificationsMap[modelName];
+        const model = {__type: modelName};
+        const modelFieldSpecifications = this.modelClassToModelFieldSpecificationsMap[modelName];
         if (!modelFieldSpecifications) {
             console.log("ERROR: No model defined for model name", modelName);
             throw new Error("No model defined for model name: " + modelName);
         }
         
         for (let i = 0; i < modelFieldSpecifications.length; i++) {
-            var fieldSpecification = modelFieldSpecifications[i];
+            const fieldSpecification = modelFieldSpecifications[i];
             if (!fieldSpecification.valueType) console.log("WARNING: Missing valueType for fieldSpecification", fieldSpecification);
             if (fieldSpecification.valueType && fieldSpecification.valueType !== "none") {
                 model[fieldSpecification.id] = this.initialDataForField(fieldSpecification);
@@ -109,7 +109,7 @@ class PanelSpecificationCollection {
     // This ignores the model type for the page or panel and just puts all the model fields into the supplied model
     addFieldsToModel(model, fieldSpecifications) {
         for (let i = 0; i < fieldSpecifications.length; i++) {
-            var fieldSpecification = fieldSpecifications[i];
+            const fieldSpecification = fieldSpecifications[i];
             if (!fieldSpecification.valueType) console.log("WARNING: Missing valueType for fieldSpecification", fieldSpecification);
             if (fieldSpecification.valueType && fieldSpecification.valueType !== "none") {
                 model[fieldSpecification.id] = this.initialDataForField(fieldSpecification);

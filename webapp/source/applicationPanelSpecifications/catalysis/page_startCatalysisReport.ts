@@ -1,7 +1,7 @@
 import kludgeForUseStrict = require("../../kludgeForUseStrict");
 "use strict";
 
-var panel: Panel = {
+const panel: Panel = {
     id: "page_startCatalysisReport",
     displayName: "Start catalysis report",
     tooltipText: "Create a place to store your catalysis report.",

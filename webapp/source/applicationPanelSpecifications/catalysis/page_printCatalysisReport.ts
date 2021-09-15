@@ -2,7 +2,7 @@ import Globals = require("../../Globals");
 import kludgeForUseStrict = require("../../kludgeForUseStrict");
 "use strict";
 
-var panel: Panel = {
+const panel: Panel = {
     id: "page_printCatalysisReport",
     displayName: "Print catalysis report",
     tooltipText: "Export the graphs you've selected, and the observations and interpretations you've written, to use in a sensemaking session.",

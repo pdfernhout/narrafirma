@@ -9,7 +9,7 @@ import m = require("mithril");
 // TODO: Using a global here to avoid parameterizing mounted components until the following Mithril issue is resolved or clarified:
 // https://github.com/lhorie/mithril.js/issues/638
 // If this is null, no dialog is drawn. If this is a valid configuration, dialog will be displayed.
-var globalDialogConfiguration = null;
+let globalDialogConfiguration = null;
 
 // Leaving one dialog mounted all the time to try to get around with re-creation of grids when dialog opens; maybe Mithril bug?
 export function initialize() {
@@ -19,7 +19,7 @@ export function initialize() {
 // TODO: Translate: Change to taking a translate ID
 // TODO: Buttons don't show up if window too narrow for dialog
 export function confirm(message, okCallback) {
-    var confirmed = window.confirm(message);
+    const confirmed = window.confirm(message);
     if (confirmed) okCallback();
 }
 
@@ -42,8 +42,7 @@ class MithrilDialog {
     }
     
     static view(controller) {
-        var dialogContent = [];
-        
+        let dialogContent = [];
         if (globalDialogConfiguration) {
             try {
                 dialogContent = controller.calculateView(globalDialogConfiguration);
@@ -54,13 +53,12 @@ class MithrilDialog {
                 // dialogContent = m("div", "Problem creating dialog");
             }
         }
-        
         return m("div.dialogContentWrapper", dialogContent); 
     }
     
     calculateView(args) {
-        var dialogConfiguration = args;
-        var internalView;
+        const dialogConfiguration = args;
+        let internalView;
         try {
             internalView = dialogConfiguration.dialogConstructionFunction(dialogConfiguration, hideDialogMethod);
         } catch (e) {
@@ -68,7 +66,7 @@ class MithrilDialog {
             internalView = m("div", "Problem creating view");
         }
         
-        var parts = [
+        const parts = [
             m("b", translate(dialogConfiguration.dialogTitle)),
             m("div.modal-internal", internalView)
         ];
@@ -103,9 +101,8 @@ export function openTextEditorDialog(text, dialogTitle, dialogOKButtonLabel, dia
     if (!dialogTitle) dialogTitle = "Editor";
     if (!dialogOKButtonLabel) dialogOKButtonLabel = "OK";
     
-    var model = {text: text};
-    
-    var dialogConfiguration = {
+    const model = {text: text};
+    const dialogConfiguration = {
         dialogModel: model,
         dialogTitle: dialogTitle,
         dialogClass: undefined,
@@ -138,15 +135,14 @@ export function openProgressDialog(progressText, dialogTitle, cancelButtonLabel,
     if (!dialogTitle) dialogTitle = "Progress";
     if (!cancelButtonLabel) cancelButtonLabel = "Cancel";
     
-    var model = {
+    const model = {
         progressText: progressText,
         hideDialogMethod: hideDialogMethod,
         redraw: m.redraw,
         cancelled: false,
         failed: false
     };
-    
-    var dialogConfiguration = {
+    const dialogConfiguration = {
         dialogModel: model,
         dialogTitle: dialogTitle,
         dialogClass: undefined,
@@ -170,15 +166,14 @@ export function openFinishedDialog(finishedText, dialogTitle, okButtonLabel, can
     if (!okButtonLabel) okButtonLabel = "OK";
     if (!cancelButtonLabel) cancelButtonLabel = "Cancel";
     
-    var model = {
+    const model = {
         finishedText: finishedText,
         hideDialogMethod: hideDialogMethod,
         redraw: m.redraw,
         cancelled: false,
         failed: false
     };
-    
-    var dialogConfiguration = {
+    const dialogConfiguration = {
         dialogModel: model,
         dialogTitle: dialogTitle,
         dialogClass: undefined,
@@ -204,7 +199,7 @@ export function openListChoiceDialog(initialChoice, choices, columns, dialogTitl
     if (!dialogTitle) dialogTitle = "Choices";
     if (!dialogOKButtonLabel) dialogOKButtonLabel = "Choose";
     
-    var dialogConfiguration = {
+    const dialogConfiguration = {
         key: "standardListChooser",
         initialChoice: initialChoice,
         choices: choices,
@@ -229,7 +224,7 @@ function build_listChooserDialogContent(dialogConfiguration, hideDialogMethod) {
     
     function makeNewListItem(args, choice) {
         // TODO: Translate
-        var name = prompt("New project name?");
+        const name = prompt("New project name?");
         if (!name) return;
         hideDialogMethod();
         args.dialogOKCallback({id: name, name: name, isNew: true});

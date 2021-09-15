@@ -1,7 +1,7 @@
 import kludgeForUseStrict = require("../kludgeForUseStrict");
 "use strict";
 
-var recommendations = {
+const recommendations = {
     "categories": {
         "Eliciting questions": [
             "directed questions",

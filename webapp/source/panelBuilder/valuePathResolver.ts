@@ -43,14 +43,14 @@ class ValuePathResolver {
     }
     
     resolveModelAndField() {
-        var currentModel = this.baseModel;
-        var currentKey: string;
+        let currentModel = this.baseModel;
+        let currentKey: string;
         
         // Parse the dependency path
-        var pathParts = this.valuePath.split("/");
+        let pathParts = this.valuePath.split("/");
         
-        var isGlobalReference = false;
-        var useTripleStore = false;
+        let isGlobalReference = false;
+        let useTripleStore = false;
         
         // If the path starts with "/", use the context as the model
         if (pathParts[0] === "") {
@@ -73,9 +73,9 @@ class ValuePathResolver {
                 useTripleStore = true;
             }
             
-            var nextModel;
-            var currentModelDirectFieldValue = currentModel[currentKey];
-            var useAccessorFunction = !useTripleStore && typeof currentModelDirectFieldValue === "function";
+            let nextModel;
+            const currentModelDirectFieldValue = currentModel[currentKey];
+            const useAccessorFunction = !useTripleStore && typeof currentModelDirectFieldValue === "function";
             
             if (useTripleStore) {
                 this.failIfAccessFunctionRequired();
@@ -104,25 +104,24 @@ class ValuePathResolver {
             useTripleStore = true;
         }
         
-        var field = pathParts[0];
-        var result = {
+        const field = pathParts[0];
+        const result = {
             model: currentModel,
             field: field,
             isGlobalReference: isGlobalReference,
             useTripleStore: useTripleStore
         };
-        
         return result;
     }
     
     resolve(value = undefined): any {
-        var modelAndField = this.resolveModelAndField();
+        const modelAndField = this.resolveModelAndField();
         if (!modelAndField) {
             console.log("ERROR: modelAndField is undefined or null", this);
             return null;
         }
-        var modelFieldDirectValue = modelAndField.model[modelAndField.field];
-        var useAccessorFunction = !modelAndField.useTripleStore && typeof modelFieldDirectValue === "function";
+        const modelFieldDirectValue = modelAndField.model[modelAndField.field];
+        const useAccessorFunction = !modelAndField.useTripleStore && typeof modelFieldDirectValue === "function";
         
         if (value !== undefined) {
             if (modelAndField === undefined) {
@@ -168,12 +167,12 @@ class ValuePathResolver {
 }
 
 export function newValuePathForFieldSpecification(model, fieldSpecification) {
-    var valuePath: string = fieldSpecification.valuePath;
+    let valuePath: string = fieldSpecification.valuePath;
     if (!valuePath) valuePath = fieldSpecification.id;
     return newValuePath(model, valuePath);
 }
 
 export function newValuePath(model, valuePath: string): Function {
-    var valuePathResolver = new ValuePathResolver(model, valuePath);
+    const valuePathResolver = new ValuePathResolver(model, valuePath);
     return valuePathResolver.resolve.bind(valuePathResolver);
 }

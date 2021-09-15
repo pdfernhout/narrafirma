@@ -6,14 +6,14 @@ import Globals = require("../Globals");
 "use strict";
 
 function add_catalysisReportGraphTypesChooser(panelBuilder: PanelBuilder, model, fieldSpecification) {
-    var project = Globals.project();
+    const project = Globals.project();
     
-    var catalysisReportIdentifier = Globals.clientState().catalysisReportIdentifier();
+    const catalysisReportIdentifier = Globals.clientState().catalysisReportIdentifier();
     if (!catalysisReportIdentifier) return m("div", "Please select a catalysis report");
     
-    var prompt = panelBuilder.buildQuestionLabel(fieldSpecification);
+    const prompt = panelBuilder.buildQuestionLabel(fieldSpecification);
         
-    var storageFunction = valuePathResolver.newValuePathForFieldSpecification(model, fieldSpecification);
+    const storageFunction = valuePathResolver.newValuePathForFieldSpecification(model, fieldSpecification);
 
     const allGraphTypes = {
         "bar graphs": true,
@@ -80,7 +80,7 @@ function add_catalysisReportGraphTypesChooser(panelBuilder: PanelBuilder, model,
     ]
 
     function isChecked(shortName, value = undefined) {
-        var map = storageFunction() || {};
+        const map = storageFunction() || {};
         if (value === undefined) {
             return !!map[shortName];
         }
@@ -89,7 +89,7 @@ function add_catalysisReportGraphTypesChooser(panelBuilder: PanelBuilder, model,
     }
 
     function buildQuestionCheckbox(aName, id, count): any {
-        var nameToDisplay;
+        let nameToDisplay;
         if (count == 1) {
             nameToDisplay = " " + count + " " + graphTypesToSingularDisplayNamesMap[id];
         } else {
@@ -118,12 +118,10 @@ function add_catalysisReportGraphTypesChooser(panelBuilder: PanelBuilder, model,
         storageFunction({});
     }
 
-    var allGraphTypesAsArray = Object.keys(allGraphTypes);
-
-    var questions = project.allQuestionsThatCouldBeGraphedForCatalysisReport(catalysisReportIdentifier, true);
-    var graphTypesToCreate = project.tripleStore.queryLatestC(catalysisReportIdentifier, "graphTypesToCreate");
-    var graphMultiChoiceQuestionsAgainstThemselves = project.tripleStore.queryLatestC(catalysisReportIdentifier, "graphMultiChoiceQuestionsAgainstThemselves");
-    var totalGraphCount = 0;
+    const questions = project.allQuestionsThatCouldBeGraphedForCatalysisReport(catalysisReportIdentifier, true);
+    const graphTypesToCreate = project.tripleStore.queryLatestC(catalysisReportIdentifier, "graphTypesToCreate");
+    const graphMultiChoiceQuestionsAgainstThemselves = project.tripleStore.queryLatestC(catalysisReportIdentifier, "graphMultiChoiceQuestionsAgainstThemselves");
+    let totalGraphCount = 0;
 
     let columnTDs = [];
     for (let i = 0; i < columnNames.length; i++) {
@@ -153,7 +151,7 @@ function add_catalysisReportGraphTypesChooser(panelBuilder: PanelBuilder, model,
 }
 
 function tipForGraphCount(totalGraphCount) {
-    var tip;
+    let tip;
     if (totalGraphCount === 1) {
         tip = totalGraphCount + " graph selected"
     } else if (totalGraphCount < 5000) {
@@ -169,7 +167,7 @@ function tipForGraphCount(totalGraphCount) {
 }
 
 function tipStyleForGraphCount(totalGraphCount) {
-    var tipStyle;
+    let tipStyle;
     if (totalGraphCount < 5000) {
         tipStyle = "[style=margin-left:1em]";
     } else if (totalGraphCount < 10000) {
@@ -183,7 +181,7 @@ function tipStyleForGraphCount(totalGraphCount) {
 }
 
 // Question types that have data associated with them for filters and graphs
-var nominalQuestionTypes = ["select", "boolean", "checkbox", "checkboxes", "radiobuttons"];
+const nominalQuestionTypes = ["select", "boolean", "checkbox", "checkboxes", "radiobuttons"];
 
 function graphCountForGraphType(graphType, questions, graphMultiChoiceQuestionsAgainstThemselves) {
     if (!questions) return 0;
@@ -192,7 +190,7 @@ function graphCountForGraphType(graphType, questions, graphMultiChoiceQuestionsA
         return 5; // change if add more data integrity graphs
     }
 
-    var graphCount = 0;
+    let graphCount = 0;
 
     if (graphType === "texts") {
         questions.forEach((question) => {
@@ -212,7 +210,7 @@ function graphCountForGraphType(graphType, questions, graphMultiChoiceQuestionsA
         return graphCount;
     }
     
-    var nominalQuestions = [];
+    const nominalQuestions = [];
     questions.forEach((question) => {
         if (nominalQuestionTypes.indexOf(question.displayType) !== -1)  {
             nominalQuestions.push(question);
@@ -223,7 +221,7 @@ function graphCountForGraphType(graphType, questions, graphMultiChoiceQuestionsA
         return nominalQuestions.length;
     }
     
-    var scaleQuestions = [];
+    const scaleQuestions = [];
     questions.forEach((question) => {
         if (question.displayType === "slider") {
             scaleQuestions.push(question);
@@ -236,14 +234,14 @@ function graphCountForGraphType(graphType, questions, graphMultiChoiceQuestionsA
  
     // when creating question combinations, prevent mirror duplicates (axb, bxa) and self-matching questions (axa)
     // unless they want axa for multi-choice (checkboxes) questions
-    var usedQuestions;
+    let usedQuestions;
     // two choice questions
     if (graphType === "tables") {
         usedQuestions = [];
         nominalQuestions.forEach((question1) => {
             usedQuestions.push(question1);
             nominalQuestions.forEach((question2) => {
-                var okayToGraphQuestionAgainstItself = graphMultiChoiceQuestionsAgainstThemselves && question1.displayName === question2.displayName && question2.displayType === "checkboxes";
+                const okayToGraphQuestionAgainstItself = graphMultiChoiceQuestionsAgainstThemselves && question1.displayName === question2.displayName && question2.displayType === "checkboxes";
                 if (!okayToGraphQuestionAgainstItself && usedQuestions.indexOf(question2) !== -1) return;
                 graphCount++;
             });
@@ -275,7 +273,7 @@ function graphCountForGraphType(graphType, questions, graphMultiChoiceQuestionsA
         nominalQuestions.forEach((question1) => {
             usedQuestions.push(question1);
             nominalQuestions.forEach((question2) => {
-                var okayToGraphQuestionAgainstItself = graphMultiChoiceQuestionsAgainstThemselves && question1.displayName === question2.displayName && question2.displayType === "checkboxes";
+                const okayToGraphQuestionAgainstItself = graphMultiChoiceQuestionsAgainstThemselves && question1.displayName === question2.displayName && question2.displayType === "checkboxes";
                 if (!okayToGraphQuestionAgainstItself && usedQuestions.indexOf(question2) !== -1) return;
                 scaleQuestions.forEach((question3) => {
                     graphCount++;

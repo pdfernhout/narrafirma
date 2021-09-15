@@ -2,18 +2,18 @@ import kludgeForUseStrict = require("../kludgeForUseStrict");
 "use strict";
 
 // Messages used by pages and created from design
-var pageMessages = {};
+let pageMessages = {};
 
 // Messages specific to the editing application
-var applicationMessages = {};
+let applicationMessages = {};
 
 // Dynamically added extra translations like for survey questions
-var extraTranslations = {};
+let extraTranslations = {};
 
-var debugTranslations = false;
+let debugTranslations = false;
 
 function lookupTranslation(id) {
-    var result = pageMessages[id];
+    let result = pageMessages[id];
     if (!result && result !== "") result = applicationMessages[id];
     if (!result && result !== "") result = extraTranslations[id];
     return result;
@@ -30,21 +30,21 @@ function translate(tag, defaultText = undefined) {
         return defaultText || "";
     }
     if (tag.charAt(0) !== "#") {
-        var translation = lookupTranslation(tag);
+        const translation = lookupTranslation(tag);
         if (translation) return translation;
         if (debugTranslations) console.log("no translation available for:", tag);
         if (defaultText !== null && typeof defaultText !== 'undefined') return defaultText;
         return tag;
     }
     // Special translation is done if tag starts with a hash mark, where can also supply optional translation string at end
-    var id = tag.substring(1);
-    var suppliedText = "";
-    var splitPoint = id.indexOf("|");
+    let id = tag.substring(1);
+    let suppliedText = "";
+    const splitPoint = id.indexOf("|");
     if (splitPoint !== -1) {
         suppliedText = id.substring(splitPoint + 1);
         id = id.substring(0, splitPoint);
     }
-    var result = lookupTranslation(id);
+    let result = lookupTranslation(id);
     if (result === undefined) {
         if (suppliedText) {
             result = suppliedText;
@@ -52,7 +52,7 @@ function translate(tag, defaultText = undefined) {
             result = defaultText;
         } else {
             // Just return the tag, which starts with a # which should indicate an issue
-            var error = "ERROR: missing text for: " + tag;
+            const error = "ERROR: missing text for: " + tag;
             console.log("translate problem", error);
             if (debugTranslations) {
                 result = error;

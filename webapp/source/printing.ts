@@ -1832,7 +1832,7 @@ function printQuizScoreResult(field, tripleStore, lookupID, panelSpecificationCo
         let answerWeight = 0;
         let index = 0;
         if (questionAnswer) {
-            var choices = panelSpecificationCollection.getFieldSpecificationForFieldID(field.displayConfiguration[i]).valueOptions;
+            const choices = panelSpecificationCollection.getFieldSpecificationForFieldID(field.displayConfiguration[i]).valueOptions;
             index = choices.indexOf(questionAnswer);
             if (index === choices.length - 1) {
                 answerWeight = 0;

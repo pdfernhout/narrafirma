@@ -6,7 +6,7 @@ import kludgeForUseStrict = require("../kludgeForUseStrict");
 
 // TODO: Note everything has a shortName; id currently being used in those cases; do we really need both id and shortName?
 
-var templates = [
+const templates = [
     {
         "id": "elicitationQuestions",
         "name": "Elicitation questions",
@@ -1982,9 +1982,9 @@ var templates = [
 ];
   
 function convertSemicolonsToNewlinesForOptions(section) {
-    var questions = section.questions;
-    for (var questionIndex in questions) {
-        var question = questions[questionIndex];
+    const questions = section.questions;
+    for (let questionIndex in questions) {
+        const question = questions[questionIndex];
         if (question.options) {
             question.options = question.options.replace(/;/g, "\n");
         }
@@ -1992,10 +1992,10 @@ function convertSemicolonsToNewlinesForOptions(section) {
     return section;
 }
 
-export var elicitationQuestions = convertSemicolonsToNewlinesForOptions(templates[0]);
-export var storyQuestions = convertSemicolonsToNewlinesForOptions(templates[1]);
-export var participantQuestions = convertSemicolonsToNewlinesForOptions(templates[2]);
-export var annotationQuestions = convertSemicolonsToNewlinesForOptions(templates[3]);
-export var storyCollectionActivities = convertSemicolonsToNewlinesForOptions(templates[4]);
-export var sensemakingActivities = convertSemicolonsToNewlinesForOptions(templates[5]);
+export const elicitationQuestions = convertSemicolonsToNewlinesForOptions(templates[0]);
+export const storyQuestions = convertSemicolonsToNewlinesForOptions(templates[1]);
+export const participantQuestions = convertSemicolonsToNewlinesForOptions(templates[2]);
+export const annotationQuestions = convertSemicolonsToNewlinesForOptions(templates[3]);
+export const storyCollectionActivities = convertSemicolonsToNewlinesForOptions(templates[4]);
+export const sensemakingActivities = convertSemicolonsToNewlinesForOptions(templates[5]);
 

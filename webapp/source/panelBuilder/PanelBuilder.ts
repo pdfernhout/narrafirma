@@ -12,10 +12,10 @@ import Project = require("../Project");
 "use strict";
 
 // Developer local debug flag to cause an Exception if a widget type is missing instead of put in placeholder panel
-var debugFailIfMissingWidgets = false;
+let debugFailIfMissingWidgets = false;
 
 // This is the tag to put into prompting text for functionResult items where you want the result to go
-var ResultTagToReplace = "{{result}}";
+const ResultTagToReplace = "{{result}}";
 
 // TODO: Need a better approach for calling JavaScript function than this
 window["narraFirma_launchApplication"] = browser.launchApplication;
@@ -29,22 +29,17 @@ window["narraFirma_launchApplication"] = browser.launchApplication;
 
 function addButton(panelBuilder: PanelBuilder, model, fieldSpecification, callback): any {
     if (!callback) callback = panelBuilder.buttonClicked.bind(panelBuilder, model, fieldSpecification);
-
-    var options: any = {
-        onclick: callback
-    };
-    
+    const options: any = { onclick: callback };
     if (fieldSpecification.displayClass) options.class = fieldSpecification.displayClass;
 
     let displayPrompt = fieldSpecification.displayPrompt;
     if (typeof fieldSpecification.displayPrompt === "function") displayPrompt = displayPrompt(this, model, fieldSpecification);
     // TODO: Translate and changing display prompt won't mix well
-    var text = m("span", {"class": "button-text"}, translate(fieldSpecification.id + "::prompt", displayPrompt));
- 
-    var parts = [text];
+    const text = m("span", {"class": "button-text"}, translate(fieldSpecification.id + "::prompt", displayPrompt));
+    const parts = [text];
    
     if (fieldSpecification.displayIconClass) {
-        var icon = m("span", {"class": fieldSpecification.displayIconClass});
+        const icon = m("span", {"class": fieldSpecification.displayIconClass});
         if (fieldSpecification.displayIconPosition === "right") {
             parts.push(icon);
         } else {
@@ -52,10 +47,7 @@ function addButton(panelBuilder: PanelBuilder, model, fieldSpecification, callba
         }
     }
 
-    var button = m("button", options, parts);
-
-    // TODO: Improve the naming of displayPreventBreak, maybe by using displayConfiguration somehow, perhaps by changing the meaning of that field to something else
-
+    const button = m("button", options, parts);
     if (fieldSpecification.displayPreventBreak) return button;
     return [button, m("br")];
 }
@@ -66,8 +58,8 @@ function add_html(panelBuilder: PanelBuilder, model, fieldSpecification, callbac
 }
 
 function add_image(panelBuilder: PanelBuilder, model, fieldSpecification, callback): any {
-    var imageSource = fieldSpecification.displayConfiguration;
-    var questionText = translate(fieldSpecification.id + "::prompt", fieldSpecification.displayPrompt || "");
+    const imageSource = fieldSpecification.displayConfiguration;
+    const questionText = translate(fieldSpecification.id + "::prompt", fieldSpecification.displayPrompt || "");
 
     return m("div.narrafirma-image", { key: fieldSpecification.id }, [
         panelBuilder.addAllowedHTMLToPrompt(questionText),
@@ -80,29 +72,14 @@ function add_image(panelBuilder: PanelBuilder, model, fieldSpecification, callba
 }
 
 function add_functionResult(panelBuilder: PanelBuilder, model, fieldSpecification, callback): any {
-    // This should now be triggered via a Mithril redraw...
-    
-    var value = panelBuilder.calculateFunctionResult(model, fieldSpecification);
-    
-    var baseText = translate(fieldSpecification.id + "::prompt", fieldSpecification.displayPrompt);
- 
-    var calculatedText = panelBuilder.calculateFunctionResult(model, fieldSpecification);
-    
-    var newLabelText = panelBuilder.substituteCalculatedResultInBaseText(baseText, calculatedText);
-    
+    const baseText = translate(fieldSpecification.id + "::prompt", fieldSpecification.displayPrompt);
+    const calculatedText = panelBuilder.calculateFunctionResult(model, fieldSpecification);
+    const newLabelText = panelBuilder.substituteCalculatedResultInBaseText(baseText, calculatedText);
     return m("div.functionResult", panelBuilder.addAllowedHTMLToPrompt(newLabelText));
 }
 
-/* Defaults for displayConfiguration:
-{
-   itemPanelID: undefined,
-   itemPanelSpecification: undefined,
-   idProperty: "_id",
-   gridConfiguration: {...}
-}
- */
 function add_grid(panelBuilder, model, fieldSpecification) {
-    var prompt = panelBuilder.buildQuestionLabel(fieldSpecification);
+    const prompt = panelBuilder.buildQuestionLabel(fieldSpecification);
     return m("div", {"class": "narrafirma-question-type-grid-plus-prompt"}, [
         prompt,
         m.component(<any>GridWithItemPanel, {key: fieldSpecification.id, panelBuilder: panelBuilder, model: model, fieldSpecification: fieldSpecification, readOnly: panelBuilder.readOnly})
@@ -111,7 +88,7 @@ function add_grid(panelBuilder, model, fieldSpecification) {
 
 function addStandardPlugins() {
     // shared with survey builder
-    var displayQuestion = standardWidgets.displayQuestion;
+    const displayQuestion = standardWidgets.displayQuestion;
     PanelBuilder.addPlugin("boolean", displayQuestion);
     PanelBuilder.addPlugin("checkbox", displayQuestion);
     PanelBuilder.addPlugin("checkboxes", displayQuestion);
@@ -132,7 +109,7 @@ function addStandardPlugins() {
     PanelBuilder.addPlugin("image", add_image);
 }
 
-var buildingFunctions = {};
+const buildingFunctions = {};
 
 // This class builds panels from field specifications.
 // Field specifications define what widget to display and how to hook that widget to a model.
@@ -174,7 +151,7 @@ class PanelBuilder {
     }
     
     addMissingWidgetPlaceholder(panelBuilder, model, fieldSpecification) {
-        var prompt = panelBuilder.buildQuestionLabel(fieldSpecification);
+        const prompt = panelBuilder.buildQuestionLabel(fieldSpecification);
         return m("div", [
             prompt,
             m("b", "Unsupported widget type: " + fieldSpecification.displayType + " for: " + fieldSpecification.id)
@@ -182,26 +159,26 @@ class PanelBuilder {
     }
     
     buildField(model, fieldSpecification) {
-        var displayVisible = fieldSpecification.displayVisible;
+        let displayVisible = fieldSpecification.displayVisible;
         if (displayVisible === undefined) displayVisible = true;
         if (typeof displayVisible === "function") displayVisible = displayVisible(this, model, fieldSpecification);
         if (!displayVisible) return m("div"); 
 
-        var addFunction = buildingFunctions[fieldSpecification.displayType];
+        let addFunction = buildingFunctions[fieldSpecification.displayType];
         if (!addFunction) {
             if (debugFailIfMissingWidgets) {
                 // Would be thrown if you forget to call "PanelBuilder.addStandardPlugins();" or similar at the beginning of your application
-                var error = "ERROR: unsupported field display type: " + fieldSpecification.displayType;
+                const error = "ERROR: unsupported field display type: " + fieldSpecification.displayType;
                 console.log(error);
                 throw new Error(error);
             }
             addFunction = this.addMissingWidgetPlaceholder.bind(this);
         }
         if (_.isString(addFunction)) {
-            var addFunctionName = addFunction;
+            const addFunctionName = addFunction;
             addFunction = this[addFunctionName];
             if (!addFunction) {
-                var error2 = "ERROR: missing addFunction for: " + addFunctionName + " for field display type: " + fieldSpecification.displayType;
+                const error2 = "ERROR: missing addFunction for: " + addFunctionName + " for field display type: " + fieldSpecification.displayType;
                 console.log(error2);
                 throw new Error(error2);
             }
@@ -221,10 +198,10 @@ class PanelBuilder {
             throw new Error("fieldSpecifications are not defined");
         }
         
-        var fields = [];
-        for (var fieldSpecificationIndex = 0; fieldSpecificationIndex < fieldSpecifications.length; fieldSpecificationIndex++) {
-            var fieldSpecification = fieldSpecifications[fieldSpecificationIndex];
-            var widget = this.buildField(model, fieldSpecification);
+        const fields = [];
+        for (let fieldSpecificationIndex = 0; fieldSpecificationIndex < fieldSpecifications.length; fieldSpecificationIndex++) {
+            const fieldSpecification = fieldSpecifications[fieldSpecificationIndex];
+            const widget = this.buildField(model, fieldSpecification);
             fields.push(widget);
         }
         return fields;
@@ -232,9 +209,9 @@ class PanelBuilder {
     
     // Build an entire panel; panel can be either a string ID referring to a panel or it can be a panel definition itself
     buildPanel(panelOrPanelID, model) {
-        var fieldSpecifications;
+        let fieldSpecifications;
         if (_.isString(panelOrPanelID)) {
-            var panel = this.getPanelDefinitionForPanelID(panelOrPanelID);
+            const panel = this.getPanelDefinitionForPanelID(panelOrPanelID);
             fieldSpecifications = panel.panelFields;
         } else if (panelOrPanelID.buildPanel) {
             // Call explicit constructor function
@@ -257,13 +234,10 @@ class PanelBuilder {
         if (!this.panelSpecificationCollection) {
             throw new Error("No panelSpecificationCollection set in PanelBuilder so can not resolve panelID: " + panelID);
         }
-        
-        var panelSpecification = this.panelSpecificationCollection.getPanelSpecificationForPanelID(panelID);
-        
+        const panelSpecification = this.panelSpecificationCollection.getPanelSpecificationForPanelID(panelID);
         if (!panelSpecification) {
             throw new Error("No panelSpecification found by PanelBuilder for panelID: " + panelID);
         }
-        
         return panelSpecification;
     }
     
@@ -272,13 +246,10 @@ class PanelBuilder {
         if (!this.panelSpecificationCollection) {
             throw new Error("No panelSpecificationCollection set in PanelBuilder so can not resolve pageID: " + pageID);
         }
-        
-        var pageSpecification = this.panelSpecificationCollection.getPageSpecificationForPageID(pageID);
-        
+        const pageSpecification = this.panelSpecificationCollection.getPageSpecificationForPageID(pageID);
         if (!pageSpecification) {
             throw new Error("No pageSpecification found by PanelBuilder for pageID: " + pageID);
         }
-        
         return pageSpecification;
     }
     
@@ -318,13 +289,13 @@ class PanelBuilder {
     
     // This will only be valid during the building process for a page
     helpPageURLForField(fieldSpecification) {
-        var section = fieldSpecification.helpSection;
+        let section = fieldSpecification.helpSection;
         if (!section) section = this.currentHelpSection;
-        var pageID = fieldSpecification.helpPage;
+        let pageID = fieldSpecification.helpPage;
         if (!pageID) pageID = this.currentHelpPage;
-        var helpID = fieldSpecification.helpID;
+        let helpID = fieldSpecification.helpID;
         if (!helpID) helpID = fieldSpecification.id;
-        var url = "";   
+        let url = "";   
         if (section && pageID) {
             url = '/help/' + section + "/help_" + pageID + '.html';
             if (helpID) url += '#' + helpID;
@@ -335,8 +306,8 @@ class PanelBuilder {
     // TODO: Fix all this so attaching actual JavaScript function not text to be interpreted
     htmlForInformationIcon(url) {
         if (!url) return "";
-        var template = '<img src="{iconFile}" height=16 width=16 title="{title}" onclick="window.narraFirma_launchApplication(\'{url}\', \'help\')">';
-        var replacements = {
+        const template = '<img src="{iconFile}" height=16 width=16 title="{title}" onclick="window.narraFirma_launchApplication(\'{url}\', \'help\')">';
+        const replacements = {
             // TODO: Remove unused images from project
             // "/images/Info_blauw.png"
             // "/images/Blue_question_mark_icon.svg"
@@ -346,8 +317,8 @@ class PanelBuilder {
         };
         
         function replace(template, values) {
-            var result = template;
-            for (var key in replacements) {
+            let result = template;
+            for (let key in replacements) {
                 result = result.split('{' + key + '}').join(replacements[key]);
                 // result = result.replace(new RegExp('{' + key + '}', 'gi'), replacements[key]);
             }
@@ -359,7 +330,7 @@ class PanelBuilder {
     
     addAllowedHTMLToPrompt(text) {
         try {
-            var result = sanitizeHTML.generateSanitizedHTMLForMithril(text);
+            const result = sanitizeHTML.generateSanitizedHTMLForMithril(text);
             return result;
         } catch (error) {
             alert(error);
@@ -368,7 +339,7 @@ class PanelBuilder {
     }
     
     substituteCalculatedResultInBaseText(baseText: string, calculatedText: string): string {
-        var newLabelText;
+        let newLabelText;
         if (baseText.indexOf(ResultTagToReplace) !== -1) {
             newLabelText = baseText.replace(ResultTagToReplace, calculatedText);
         } else {

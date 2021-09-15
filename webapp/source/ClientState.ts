@@ -17,12 +17,12 @@ function hash(newValue = null) {
 
 // getHashParameters derived from: http://stackoverflow.com/questions/4197591/parsing-url-hash-fragment-identifier-with-javascript
 function getHashParameters(hash): any {
-    var result = {};
-    var match;
+    const result = {};
+    let match;
     // Regex for replacing addition symbol with a space
-    var plusMatcher = /\+/g;
-    var parameterSplitter = /([^&;=]+)=?([^&;]*)/g;
-    var decode = function (s) { return decodeURIComponent(s.replace(plusMatcher, " ")); };
+    const plusMatcher = /\+/g;
+    const parameterSplitter = /([^&;=]+)=?([^&;]*)/g;
+    const decode = function (s) { return decodeURIComponent(s.replace(plusMatcher, " ")); };
     while (true) {
         match = parameterSplitter.exec(hash);
         if (!match) break;
@@ -74,13 +74,13 @@ class ClientState {
     // Read-only convenience accessor
     storyCollectionIdentifier(newValue = undefined) {
         if (newValue) throw new Error("storyCollectionIdentifier: setting value is not supported");
-        var storyCollectionIdentifier = this._project.findStoryCollectionID(this._storyCollectionName);
+        const storyCollectionIdentifier = this._project.findStoryCollectionID(this._storyCollectionName);
         if (!storyCollectionIdentifier) return null;
         return storyCollectionIdentifier;
     }
 
     haveStoryCollectionAndShowingAdvancedOptions() {
-        var storyCollectionIdentifier = this._project.findStoryCollectionID(this._storyCollectionName);
+        const storyCollectionIdentifier = this._project.findStoryCollectionID(this._storyCollectionName);
         if (!storyCollectionIdentifier) return null;
         return this._showAdvancedOptions;
     }
@@ -122,13 +122,13 @@ class ClientState {
     // Read-only convenience accessor
     catalysisReportIdentifier(newValue = undefined) {
         if (newValue) throw new Error("catalysisReportIdentifier: setting value is not supported");
-        var catalysisReportIdentifier = this._project.findCatalysisReport(this._catalysisReportName);
+        const catalysisReportIdentifier = this._project.findCatalysisReport(this._catalysisReportName);
         if (!catalysisReportIdentifier) return null;
         return catalysisReportIdentifier;
     }
 
     haveCatalysisReportAndShowingAdvancedOptions() {
-        var catalysisReportIdentifier = this._project.findCatalysisReport(this._catalysisReportName);
+        const catalysisReportIdentifier = this._project.findCatalysisReport(this._catalysisReportName);
         if (!catalysisReportIdentifier) return null;
         return this._showAdvancedOptions;
     }
@@ -141,13 +141,13 @@ class ClientState {
     }
 
     storyFormIdentifier() {
-        var storyFormIdentifier = this._project.findStoryFormID(this._storyFormName);
+        const storyFormIdentifier = this._project.findStoryFormID(this._storyFormName);
         if (!storyFormIdentifier) return null;
         return storyFormIdentifier;
     }
 
     haveStoryFormAndShowingAdvancedOptions() {
-        var storyFormIdentifier = this._project.findStoryFormID(this._storyFormName);
+        const storyFormIdentifier = this._project.findStoryFormID(this._storyFormName);
         if (!storyFormIdentifier) return null;
         return this._showAdvancedOptions;
     }
@@ -219,8 +219,8 @@ class ClientState {
     }
     
     initialize() {
-        var fragment = hash();
-        var initialHashParameters = getHashParameters(fragment);
+        const fragment = hash();
+        const initialHashParameters = getHashParameters(fragment);
         if (initialHashParameters["project"]) this._projectIdentifier = initialHashParameters["project"];
         if (initialHashParameters["page"]) this._pageIdentifier = "page_" + initialHashParameters["page"];
         if (initialHashParameters["storyCollection"]) this._storyCollectionName = initialHashParameters["storyCollection"];
@@ -232,37 +232,31 @@ class ClientState {
     }
     
     hashStringForClientState() {
-        var result = "";
-        
-        var fields = [
+        let result = "";
+        const fields = [
             {id: "_projectIdentifier", key: "project"},
             {id: "_pageIdentifier", key: "page"},
             {id: "_storyCollectionName", key: "storyCollection"},
             {id: "_catalysisReportName", key: "catalysisReport"},
             {id: "_debugMode", key: "debugMode"}
         ];
-        
         for (let i = 0; i < fields.length; i++) {
-            var field = fields[i];
-    
-            var value = this[field.id];
+            const field = fields[i];
+            let value = this[field.id];
             if (!value) continue;
-            
             if (field.key === "page" && value) value = value.substring("page_".length);
-            
             if (result) result += "&";
             result += field.key + "=" + encodeURIComponent(value);
         }
-        
         return result;
     }
      
     urlHashFragmentChanged(pageDisplayer) {
-        var newHash = hash();
+        const newHash = hash();
         console.log("urlHashFragmentChanged", newHash);
-        var hashParameters = getHashParameters(newHash);
+        const hashParameters = getHashParameters(newHash);
         
-        var currentProjectIdentifier = this._projectIdentifier;
+        const currentProjectIdentifier = this._projectIdentifier;
         if (currentProjectIdentifier) {
             if (hashParameters.project && hashParameters.project !== currentProjectIdentifier) {
                 // Force a complete page reload for now, as needs to create a new Pointrel client
@@ -275,7 +269,7 @@ class ClientState {
             this._projectIdentifier = hashParameters.project;
         }
          
-        var selectedPage = hashParameters.page;
+        let selectedPage = hashParameters.page;
         if (!selectedPage) {
             selectedPage = PanelSetup.startPage();
         } else {
@@ -302,7 +296,7 @@ class ClientState {
     }
     
     updateHashIfNeededForChangedClientState() {
-        var newHash = this.hashStringForClientState();
+        const newHash = this.hashStringForClientState();
         if (newHash !== hash()) hash(newHash);
     }  
 }

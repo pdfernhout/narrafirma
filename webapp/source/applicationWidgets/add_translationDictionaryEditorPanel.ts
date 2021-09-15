@@ -122,8 +122,8 @@ function add_translationDictionaryEditorPanel(panelBuilder: PanelBuilder, model,
     });
 
     function doThings() {
-        var thingsYouCanDoElement = <HTMLTextAreaElement>document.getElementById("thingsYouCanDo_actionRequested");
-        var thing = thingsYouCanDoElement.value;
+        const thingsYouCanDoElement = <HTMLTextAreaElement>document.getElementById("thingsYouCanDo_actionRequested");
+        const thing = thingsYouCanDoElement.value;
         switch (thing) {
             case "Create or update translation dictionary":
                 createOrUpdateTranslationDictionary();
@@ -256,7 +256,7 @@ function add_translationDictionaryEditorPanel(panelBuilder: PanelBuilder, model,
 
     function previewStoryForm() {
         window["narraFirma_previewQuestionnaire"] = storyForm;
-        var w = window.open("survey.html#preview=" + (new Date().toISOString()), "_blank");
+        const w = window.open("survey.html#preview=" + (new Date().toISOString()), "_blank");
     }
 
     function htmlPartsForDictionary(text, dict) {

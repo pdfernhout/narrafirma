@@ -1,7 +1,7 @@
 import Globals = require("../../Globals");
 "use strict";
 
-var panel: Panel = {
+const panel: Panel = {
     id: "page_clusterInterpretations",
     displayName: "Cluster interpretations and/or observations",
     tooltipText: "Draw your interpretations and/or observations together into clusters that make them more accessible during sensemaking.",
