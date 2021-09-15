@@ -19,10 +19,14 @@ function calculateAjaxPath() {
         const path = window.location.href;
         console.log("window.location.href", path);
         const baseDirectoryPosition = path.indexOf("/wp-content/");
+        const bedrockBaseDirectoryPosition = path.indexOf("/app/plugins/narrafirma/");
         if (baseDirectoryPosition !== -1) {
             window["ajaxurl"] = path.substring(0, baseDirectoryPosition) + "/wp-admin/admin-ajax.php";
             console.log("set ajaxurl to", window["ajaxurl"]);
-        }
+        } else if (bedrockBaseDirectoryPosition !== -1) {
+            window["ajaxurl"] = "/wp/wp-admin/admin-ajax.php";
+            console.log("set ajaxurl to", window["ajaxurl"]);
+          }
     }
 }
 calculateAjaxPath();
