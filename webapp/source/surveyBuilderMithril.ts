@@ -10,12 +10,6 @@ const writeInTag = "WriteInEntry_";
 // TODO: Fix overly long lines and remove next line disabling check
 /* tslint:disable:max-line-length */
 
-// Accessibility References:
-// http://usabilitygeek.com/10-free-web-based-web-site-accessibility-evaluation-tools/
-// http://validator.w3.org/mobile/
-// http://achecker.ca/checker/index.php#output_div [first used testing tool]
-// http://webaim.org/techniques/forms/controls
- 
 const idsMade = {};
 let idCount = 0;
 let currentLanguage = "";
