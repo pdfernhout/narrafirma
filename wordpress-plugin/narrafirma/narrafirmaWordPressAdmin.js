@@ -64,9 +64,6 @@
         }
     };
 
-    // NF WP entry project
-    // NLEDU5
-    
     function anonymousAccessCheckbox(controller, journalIdentifier, journalDefinition, field) {
         var checked = journalDefinition[field].indexOf(true) !== -1;
         var updateAnonymousAccess = function(newCheckedValue) {
@@ -146,7 +143,7 @@
         var newName = prompt("Please enter a short name for the new project. It must be 20 characters or shorter.");
         if (!newName) return;
         if (newName.length > 20) {
-            alert("That project name is " + newName.length + " characters long. Please try again with name that is 20 characters or shorter.");
+            alert("That project name is " + newName.length + " characters long. Please try again with a name that is 20 characters or shorter.");
             return;
         }
         var key = narrafirmaProjectPrefix + newName;
