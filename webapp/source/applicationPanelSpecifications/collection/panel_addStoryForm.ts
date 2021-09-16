@@ -79,6 +79,17 @@ const panel: Panel = {
             displayPrompt: "You can enter a web link (URL) for an <strong>image</strong> to be shown at the top of the form.",
             displayVisible: function(panelBuilder, model) { return !!Globals.clientState().showAdvancedOptions(); }
         },
+        {
+            id: "questionForm_video",
+            valueType: "string",
+            displayType: "text",
+            displayName: "Video",
+            displayPrompt: `To display an <strong>embedded video</strong> after your text introduction, enter one of two things here.
+                For a <strong>YouTube video</strong>: (a) login to your YouTube account, (b) go to the video's page,
+                (c) click Share, (d) click Embed, (e) copy the text YouTube shows you, and (f) paste it here.
+                For an <strong>mp4 video</strong> hosted on a web site: paste the video's web link (URL) here.`,
+            displayVisible: function(panelBuilder, model) { return !!Globals.clientState().showAdvancedOptions(); }
+        },
 
         // choose eliciting question(s) - basic
         {

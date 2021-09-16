@@ -67,6 +67,26 @@ export function loadCSS(document, cssText) {
         styleElement.innerHTML = cssText;
     }
   }
+
+function stringUpTo(aString: string, upToWhat: string) {
+    if (upToWhat !== "") {
+        return aString.split(upToWhat)[0];
+    } else {
+        return aString;
+    }
+}
+
+function stringBeyond(aString: string, beyondWhat: string) {
+    if (beyondWhat !== "") {
+        return aString.split(beyondWhat).pop();
+    } else {
+        return aString;
+    }
+}
+
+function stringBetween(wholeString: string, startString: string, endString: string) {
+    return stringUpTo(stringBeyond(wholeString.trim(), startString), endString);
+}
   
 // Redrawing
 
@@ -909,6 +929,31 @@ export function buildSurveyForm(surveyDiv, storyForm, doneCallback, surveyOption
             imageHTML = "img[src='" + storyForm.image + "'][class='narrafirma-survey-image']";
         }
 
+        let videoPart;
+        if (storyForm.video) {
+
+            const isYouTubeVideo = storyForm.video.indexOf("iframe") >= 0;
+
+            if (isYouTubeVideo) {
+                const width = stringBetween(storyForm.video, 'width="', '"');
+                const height = stringBetween(storyForm.video, 'height="', '"');
+                const source = stringBetween(storyForm.video, 'src="', '"');
+                videoPart = m("iframe", {
+                    src: source,
+                    width: width || 560,
+                    height: height || 315,
+                    class: "narrafirma-survey-introductory-video-youtube"
+                })
+            } else {
+                videoPart = m("video", {
+                    src: storyForm.video,
+                    type: "video/mp4",
+                    controls: "controls",
+                    class: "narrafirma-survey-introductory-video-mp4"
+                });
+            }
+        }
+
         let showSurveyResultPane = false;
         if (submitted === "success") {
             switch (storyForm.showSurveyResultPane) {
@@ -934,6 +979,7 @@ export function buildSurveyForm(surveyDiv, storyForm, doneCallback, surveyOption
             startQuestions.map(function(question, index) {
                 return displayQuestion(null, null, question, storyForm);
             }),
+            videoPart,
             
             stories.map(function(story, index) {
                 return displayStoryQuestions(story, index);

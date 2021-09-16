@@ -103,6 +103,16 @@ textarea:-moz-read-only { /* For Firefox */
 	background-color: #c7daf7;
 }
 
+.narrafirma-survey-introductory-video-youtube {
+    margin: 0 1em 1em 1em;
+}
+
+.narrafirma-survey-introductory-video-mp4 {
+    margin: 0 1em 1em 1em;
+    width: 560px;
+    height: 315px;
+}
+
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ story areas ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 .narrafirma-survey-story {

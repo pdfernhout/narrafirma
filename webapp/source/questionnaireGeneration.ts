@@ -161,6 +161,7 @@ export const formFieldsInfo: FormFieldInfo[] = [
     // not translateable
 
     {tripleStoreFieldID: "questionForm_image", exportImportID: "Image", canBeTranslated: false},
+    {tripleStoreFieldID: "questionForm_video", exportImportID: "Video", canBeTranslated: false},
     {tripleStoreFieldID: "questionForm_maxNumStories", exportImportID: "Max num stories", default: "no limit", canBeTranslated: false},
     {tripleStoreFieldID: "questionForm_showSurveyResultPane", exportImportID: "Show survey result", canBeTranslated: false},
     {tripleStoreFieldID: "questionForm_defaultLanguage", exportImportID: "Default language", canBeTranslated: false},
@@ -173,6 +174,10 @@ const prefixLength = "questionForm_".length;
 formFieldsInfo.forEach((field) => { field.objectFieldID = field.tripleStoreFieldID.substr(prefixLength); });
 
 const displayTypeToValueTypeMap = {
+    // used in survey only
+    image: "none",
+    video: "none",
+
     // Used in survey and in other parts of the application
     boolean: 'boolean',
     label: "none",
@@ -186,7 +191,6 @@ const displayTypeToValueTypeMap = {
     slider: "number",
     
     // Used only in other parts of the application
-    image: "none",
     grid: 'array',
     clusteringDiagram: 'object',
     quizScoreResult: "none",

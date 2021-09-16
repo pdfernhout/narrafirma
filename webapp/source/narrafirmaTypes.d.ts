@@ -132,6 +132,7 @@ interface StoryFormTemplate {
         questionForm_title?: string;
         questionForm_startText?: string;
         questionForm_image?: string;
+        questionForm_video?: string;
         questionForm_endText?: string;
         questionForm_aboutYouText?: string;
         questionForm_thankYouPopupText?: string;
@@ -197,6 +198,7 @@ interface StoryFormFields {
     title?: string;
     startText?: string;
     image?: string;
+    video?: string;
     endText?: string;
     aboutYouText?: string;
     thankYouPopupText?: string;
