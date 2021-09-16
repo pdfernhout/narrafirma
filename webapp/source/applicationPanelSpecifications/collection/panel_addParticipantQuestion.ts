@@ -63,54 +63,29 @@ const panel: Panel = {
             displayPrompt: "Enter a list of <strong>answers</strong> participants can choose for this question, one answer per line.",
             displayVisible: function(panelBuilder, model) { return matchQuestionType(model, ["select", "radiobuttons", "checkboxes"]); }
         },
-        {
-            id: "participantQuestion_listBoxRows",
-            valueType: "string",
-            valueOptions: ["2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20"],
-            displayType: "select",
-            displayName: "List box rows",
-            displayPrompt: `How many <strong>list box rows</strong> do you want to show for this question? Leave this field blank to show a drop-down list.`,
-            displayVisible: function(panelBuilder, model) { return matchQuestionType(model, ["select"]); }
-        },
-        {
-            id: "participantQuestion_textBoxLength",
-            valueType: "string",
-            valueOptions: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", 
-                "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32", "33", "34", "35", "36", "37", "38", "39", 
-                "40", "41", "42", "43", "44", "45", "46", "47", "48", "49", "50", "51", "52", "53", "54", "55", "56", "57", "58", "59", "60"],
-            displayType: "select",
-            displayName: "Text box length",
-            displayPrompt: `<strong>How long</strong> do you want this text box to be, in "em" units? (An "em" is the width of a capital "M.") Leave blank for a long text box. 
-                (Note that this option only specifies the length of the text box on the screen. It does not limit the number of characters participants can enter.)`,
-            displayVisible: function(panelBuilder, model) { return matchQuestionType(model, ["text"]); }
-        },
-        {
-            id: "participantQuestion_maxNumAnswers",
-            valueType: "string",
-            valueOptions: ["2", "3", "4", "5", "6", "7", "8", "9", "10"],
-            displayType: "select",
-            displayName: "Max number of answers",
-            displayPrompt: `What is the <strong>maximum number of checkboxes</strong> a participant can check? (Leave blank for no limit.)`,
-            displayVisible: function(panelBuilder, model) { return matchQuestionType(model, ["checkboxes"]); }
-        },
-        {
-            id: "participantQuestion_writeInTextBoxLabel",
-            valuePath: "participantQuestion_writeInTextBoxLabel",
-            valueType: "string",
-            displayType: "text",
-            displayConfiguration: "20",
-            displayName: "Write-in answer label",
-            displayPrompt: `If you want participants to be able to append an extra <strong>write-in answer</strong> for this question,
-                enter a label for the write-in text box here.`,
-            displayVisible: function(panelBuilder, model) { return matchQuestionType(model, ["boolean", "checkbox", "checkboxes", "text", "textarea", "select", "radiobuttons", "slider"]); }
-        },
+
+
+        // buttons to choose advanced options, import options, copy from template 
 
         {
-            id: "participantQuestion_notes",
-            valueType: "string",
-            displayType: "textarea",
-            displayName: "Notes",
-            displayPrompt: "Enter any <b>notes</b> you want to remember about this question."
+            id: "participantQuestion_showOrHideAdvancedOptions",
+            valueType: "none",
+            displayType: "button",
+            displayConfiguration: "showOrHideAdvancedOptions",
+            displayName: "Show/hide advanced options",
+            displayPreventBreak: true,
+            displayPrompt: function(panelBuilder, model) { return Globals.clientState().showAdvancedOptions() ? "Hide advanced options" : "Show advanced options"; },
+            displayVisible: function(panelBuilder, model) { return !panelBuilder.readOnly; }
+        },
+        {
+            id: "participantQuestion_showOrHideImportOptions",
+            valueType: "none",
+            displayType: "button",
+            displayConfiguration: "showOrHideImportOptions",
+            displayName: "Show/hide import options",
+            displayPrompt: function(panelBuilder, model) { return Globals.clientState().showImportOptions() ? "Hide import options" : "Show import options"; },
+            displayPreventBreak: true,
+            displayVisible: function(panelBuilder, model) { return !panelBuilder.readOnly; }
         },
         {
             id: "SPECIAL_templates_participantQuestions",
@@ -123,19 +98,79 @@ const panel: Panel = {
             }
         },
 
+        // advanced options
+
+        {
+            id: "participantQuestion_optionImageLinks",
+            valuePath: "participantQuestion_optionImageLinks",
+            valueType: "string",
+            displayType: "textarea",
+            displayName: "Option image links",
+            displayPrompt: "If you want to show <strong>images</strong> for each answer, enter a series of web links (URLs) here, one per answer, in the same order as above.",
+            displayVisible: function(panelBuilder, model) { return matchQuestionType(model, ["radiobuttons", "checkboxes"]) && !!Globals.clientState().showAdvancedOptions(); }
+        },
+        {
+            id: "participantQuestion_optionImagesWidth",
+            valuePath: "participantQuestion_optionImagesWidth",
+            valueType: "string",
+            displayType: "select",
+            valueOptions: ["20", "30", "40", "50", "60", "70", "80", "90", "100", "110", "120", "130",  "140", "150", "160", "170", "180", "190", "200"],
+            displayName: "Option images width",
+            displayPrompt: "How wide do you want your answer images to be, in pixels?",
+            displayVisible: function(panelBuilder, model) { return matchQuestionType(model, ["radiobuttons", "checkboxes"]) && !!Globals.clientState().showAdvancedOptions(); }
+        },
+        {
+            id: "participantQuestion_listBoxRows",
+            valueType: "string",
+            valueOptions: ["2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20"],
+            displayType: "select",
+            displayName: "List box rows",
+            displayPrompt: `How many <strong>list box rows</strong> do you want to show for this question? Leave this field blank to show a drop-down list.`,
+            displayVisible: function(panelBuilder, model) { return matchQuestionType(model, ["select"]) && !!Globals.clientState().showAdvancedOptions(); }
+        },
+        {
+            id: "participantQuestion_textBoxLength",
+            valueType: "string",
+            valueOptions: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", 
+                "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32", "33", "34", "35", "36", "37", "38", "39", 
+                "40", "41", "42", "43", "44", "45", "46", "47", "48", "49", "50", "51", "52", "53", "54", "55", "56", "57", "58", "59", "60"],
+            displayType: "select",
+            displayName: "Text box length",
+            displayPrompt: `<strong>How long</strong> do you want this text box to be, in "em" units? (An "em" is the width of a capital "M.") Leave blank for a long text box. 
+                (Note that this option only specifies the length of the text box on the screen. It does not limit the number of characters participants can enter.)`,
+            displayVisible: function(panelBuilder, model) { return matchQuestionType(model, ["text"]) && !!Globals.clientState().showAdvancedOptions(); }
+        },
+        {
+            id: "participantQuestion_maxNumAnswers",
+            valueType: "string",
+            valueOptions: ["2", "3", "4", "5", "6", "7", "8", "9", "10"],
+            displayType: "select",
+            displayName: "Max number of answers",
+            displayPrompt: `What is the <strong>maximum number of checkboxes</strong> a participant can check? (Leave blank for no limit.)`,
+            displayVisible: function(panelBuilder, model) { return matchQuestionType(model, ["checkboxes"]) && !!Globals.clientState().showAdvancedOptions(); }
+        },
+        {
+            id: "participantQuestion_writeInTextBoxLabel",
+            valuePath: "participantQuestion_writeInTextBoxLabel",
+            valueType: "string",
+            displayType: "text",
+            displayConfiguration: "20",
+            displayName: "Write-in answer label",
+            displayPrompt: `If you want participants to be able to append an extra <strong>write-in answer</strong> for this question,
+                enter a label for the write-in text box here.`,
+            displayVisible: function(panelBuilder, model) { return matchQuestionType(model, ["boolean", "checkbox", "checkboxes", "text", "textarea", "select", "radiobuttons", "slider"]) && !!Globals.clientState().showAdvancedOptions(); }
+        },
+        {
+            id: "participantQuestion_notes",
+            valueType: "string",
+            displayType: "textarea",
+            displayName: "Notes",
+            displayPrompt: "Enter any <b>notes</b> you want to remember about this question.",
+            displayVisible: function(panelBuilder, model) { return !!Globals.clientState().showAdvancedOptions(); }
+        },
 
         // import options
 
-        {
-            id: "participantQuestion_showOrHideImportOptions",
-            valueType: "none",
-            displayType: "button",
-            displayConfiguration: "showOrHideImportOptions",
-            displayName: "Show/hide import options",
-            displayPrompt: function(panelBuilder, model) { return Globals.clientState().showImportOptions() ? "Hide import options" : "Show import options"; },
-            displayPreventBreak: false,
-            displayVisible: function(panelBuilder, model) { return !panelBuilder.readOnly; }
-        },
         {
             id: "participantQuestions_import_header",
             valueType: "none",

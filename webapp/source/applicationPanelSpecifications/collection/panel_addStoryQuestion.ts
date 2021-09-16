@@ -63,6 +63,60 @@ const panel: Panel = {
             displayPrompt: "Enter a list of <strong>answers</strong> participants can choose for this question, one answer per line.",
             displayVisible: function(panelBuilder, model) { return matchQuestionType(model, ["select", "radiobuttons", "checkboxes"]); }
         },
+
+        // buttons to choose advanced options, import options, copy from template 
+
+        {
+            id: "storyQuestion_showOrHideAdvancedOptions",
+            valueType: "none",
+            displayType: "button",
+            displayConfiguration: "showOrHideAdvancedOptions",
+            displayName: "Show/hide advanced options",
+            displayPreventBreak: true,
+            displayPrompt: function(panelBuilder, model) { return Globals.clientState().showAdvancedOptions() ? "Hide advanced options" : "Show advanced options"; },
+            displayVisible: function(panelBuilder, model) { return !panelBuilder.readOnly; }
+        },
+        {
+            id: "storyQuestion_showOrHideImportOptions",
+            valueType: "none",
+            displayType: "button",
+            displayConfiguration: "showOrHideImportOptions",
+            displayName: "Show/hide import options",
+            displayPrompt: function(panelBuilder, model) { return Globals.clientState().showImportOptions() ? "Hide import options" : "Show import options"; },
+            displayPreventBreak: true,
+            displayVisible: function(panelBuilder, model) { return !panelBuilder.readOnly; }
+        },
+        {
+            id: "SPECIAL_templates_storyQuestions",
+            valueType: "none",
+            displayType: "templateList",
+            displayConfiguration: "storyQuestions",
+            displayPrompt: "Copy a question from a template",
+            displayPreventBreak: false,
+            displayVisible: function(panelBuilder, model) { return !panelBuilder.readOnly; }
+        },
+
+        // advanced options
+
+        {
+            id: "storyQuestion_optionImageLinks",
+            valuePath: "storyQuestion_optionImageLinks",
+            valueType: "string",
+            displayType: "textarea",
+            displayName: "Option image links",
+            displayPrompt: "If you want to show <strong>images</strong> for each answer, enter a series of web links (URLs) here, one per answer, in the same order as above.",
+            displayVisible: function(panelBuilder, model) { return matchQuestionType(model, ["radiobuttons", "checkboxes"]) && !!Globals.clientState().showAdvancedOptions(); }
+        },
+        {
+            id: "storyQuestion_optionImagesWidth",
+            valuePath: "storyQuestion_optionImagesWidth",
+            valueType: "string",
+            displayType: "select",
+            valueOptions: ["20", "30", "40", "50", "60", "70", "80", "90", "100", "110", "120", "130",  "140", "150", "160", "170", "180", "190", "200"],
+            displayName: "Option images width",
+            displayPrompt: "How wide do you want your answer images to be, in pixels?",
+            displayVisible: function(panelBuilder, model) { return matchQuestionType(model, ["radiobuttons", "checkboxes"]) && !!Globals.clientState().showAdvancedOptions(); }
+        },
         {
             id: "storyQuestion_listBoxRows",
             valueType: "string",
@@ -82,7 +136,7 @@ const panel: Panel = {
             displayName: "Text box length",
             displayPrompt: `<strong>How long</strong> do you want this text box to be, in "em" units? (An "em" is the width of a capital "M.") Leave blank for a long text box. 
                 (Note that this option only specifies the length of the text box on the screen. It does not limit the number of characters participants can enter.)`,
-            displayVisible: function(panelBuilder, model) { return matchQuestionType(model, ["text"]); }
+            displayVisible: function(panelBuilder, model) { return matchQuestionType(model, ["text"]) && !!Globals.clientState().showAdvancedOptions(); }
         },
         {
             id: "storyQuestion_maxNumAnswers",
@@ -91,7 +145,7 @@ const panel: Panel = {
             displayType: "select",
             displayName: "Max number of answers",
             displayPrompt: `What is the <strong>maximum number of checkboxes</strong> a participant can check? (Leave blank for no limit.)`,
-            displayVisible: function(panelBuilder, model) { return matchQuestionType(model, ["checkboxes"]); }
+            displayVisible: function(panelBuilder, model) { return matchQuestionType(model, ["checkboxes"]) && !!Globals.clientState().showAdvancedOptions(); }
         },
         {
             id: "storyQuestion_writeInTextBoxLabel",
@@ -102,41 +156,19 @@ const panel: Panel = {
             displayName: "Write-in answer label",
             displayPrompt: `If you want participants to be able to append an extra <strong>write-in answer</strong> for this question,
                 enter a label for the write-in text box here.`,
-            displayVisible: function(panelBuilder, model) { return matchQuestionType(model, ["boolean", "checkbox", "checkboxes", "text", "textarea", "select", "radiobuttons", "slider"]); }
+            displayVisible: function(panelBuilder, model) { return matchQuestionType(model, ["boolean", "checkbox", "checkboxes", "text", "textarea", "select", "radiobuttons", "slider"]) && !!Globals.clientState().showAdvancedOptions(); }
         },
-        
-
-        // notes and templates
-
         {
             id: "storyQuestion_notes",
             valueType: "string",
             displayType: "textarea",
             displayName: "Notes",
-            displayPrompt: "Enter any <b>notes</b> you want to remember about this question."
+            displayPrompt: "Enter any <b>notes</b> you want to remember about this question.",
+            displayVisible: function(panelBuilder, model) { return !!Globals.clientState().showAdvancedOptions(); }
         },
-        {
-            id: "SPECIAL_templates_storyQuestions",
-            valueType: "none",
-            displayType: "templateList",
-            displayConfiguration: "storyQuestions",
-            displayPrompt: "Copy a question from a template",
-            displayVisible: function(panelBuilder, model) { return panelBuilder.readOnly === false; }
-        },
-
 
         // import options
 
-        {
-            id: "storyQuestion_showOrHideImportOptions",
-            valueType: "none",
-            displayType: "button",
-            displayConfiguration: "showOrHideImportOptions",
-            displayName: "Show/hide import options",
-            displayPrompt: function(panelBuilder, model) { return Globals.clientState().showImportOptions() ? "Hide import options" : "Show import options"; },
-            displayPreventBreak: false,
-            displayVisible: function(panelBuilder, model) { return !panelBuilder.readOnly; }
-        },
         {
             id: "storyQuestions_import_header",
             valueType: "none",

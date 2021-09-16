@@ -44,6 +44,10 @@ legend {
 	margin-left: -2em;
 }
 
+legend span.narrafirma-survey-prompt {
+    margin-bottom: 0;
+}
+
 textarea {
     width: 100%;
     height: auto;
@@ -109,7 +113,7 @@ label.narrafirma-survey-prompt {
     margin: 0.3em 0 0 0.5em;
 }
 
-span.narrafirma-survey-prompt { /* used in "please choose a question" question */
+span.narrafirma-survey-prompt { 
     margin: 0.3em 0 1em 0.5em;
 }
 
@@ -319,6 +323,23 @@ input[type='textarea'].narrafirma-survey-write-in-textarea {
     -moz-box-sizing: border-box;
     -webkit-box-sizing: border-box;
     resize: vertical;
+}
+
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ radio buttons or check boxes with answer images ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
+table.narrafirma-survey-answer-images {
+    border-collapse: collapse;
+    margin-top: 0.25em;
+}
+
+td.narrafirma-survey-answer-images {
+    padding: 0.75em; 
+    text-align: center;
+    vertical-align: top;
+}
+
+img.narrafirma-survey-answer-image {
+    margin-top: 0.25em;
 }
 
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ tell another story ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */

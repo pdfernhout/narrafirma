@@ -212,29 +212,45 @@ function displayQuestion(builder, model, fieldSpecification, storyForm) {
             });
         }
 
-        const questionParts = [
+        let questionParts = [
             fieldSpecification.valueOptions.map(function (option, index) {
                 const optionName = (typeof option === "string") ? option : option.name;
                 const optionValue = (typeof option === "string") ? option : option.value;
                 const optionID = getIdForText(fieldID + "_" + option);
-                return [
-                    m("input[type=checkbox]", {
-                        id: optionID, 
-                        checked: !!value[optionValue], 
-                        onchange: function(event) {
-                            value[optionValue] = event.target.checked; 
-                            standardChangeMethod(null, value); 
-                            if (fieldSpecification.displayConfiguration) {
-                                disableUncheckedBoxesIfReachedMaxNumAnswers(checkBoxIDsForThisQuestion);
-                            }
+                 
+                const checkboxPart = m("input[type=checkbox]", {
+                    id: optionID, 
+                    checked: !!value[optionValue], 
+                    onchange: function(event) {
+                        value[optionValue] = event.target.checked; 
+                        standardChangeMethod(null, value); 
+                        if (fieldSpecification.displayConfiguration) {
+                            disableUncheckedBoxesIfReachedMaxNumAnswers(checkBoxIDsForThisQuestion);
                         }
-                    }),
-                    m("label", {"for": optionID}, sanitizeHTML.generateSmallerSetOfSanitizedHTMLForMithril(tr(optionName))),
-                    m("br")
-                ];
+                    }
+                });
+
+                let optionParts = [];
+                if (fieldSpecification.optionImageLinks && index < fieldSpecification.optionImageLinks.length) {
+                    let imageHTML = "";
+                    imageHTML = "img[src='" +  fieldSpecification.optionImageLinks[index] + "'][class='narrafirma-survey-answer-image']";
+                    if (fieldSpecification.optionImagesWidth) imageHTML += '[style="width: ' + fieldSpecification.optionImagesWidth + 'px"]';
+                    optionParts = [m("td.narrafirma-survey-answer-images", [
+                        checkboxPart,
+                        m("label", {"for": optionID}, sanitizeHTML.generateSmallerSetOfSanitizedHTMLForMithril(tr(optionName)), m("br"), m(imageHTML), m("br"))])
+                    ];
+                } else {
+                    optionParts = [
+                        checkboxPart,
+                        m("label", {"for": optionID}, sanitizeHTML.generateSmallerSetOfSanitizedHTMLForMithril(tr(optionName))), m("br")
+                    ];
+                }
+                return optionParts;
             })
         ];
-
+        if (fieldSpecification.optionImageLinks) {
+            questionParts = [m("table.narrafirma-survey-answer-images", m("tr.narrafirma-survey-answer-images", questionParts))];
+        }
         questionParts.unshift(m("legend", questionLabel[0]));
         questionLabel = [];
         return questionParts;     
@@ -243,18 +259,33 @@ function displayQuestion(builder, model, fieldSpecification, storyForm) {
     //////////////////////////////////////////////////////////////// radio buttons ////////////////////////////////////////////////////////////////
     function displayRadioButtonsQuestion() {
         delete questionLabel[0].attrs["for"];
-        const questionParts = [
+        let questionParts = [];
+        questionParts = [
             fieldSpecification.valueOptions.map(function (option, index) {
                 const optionName = (typeof option === "string") ? option : option.name;
                 const optionValue = (typeof option === "string") ? option : option.value;
                 const optionID = getIdForText(fieldID + "_" + optionValue);
-                return [
-                    m("input[type=radio]", {id: optionID, value: optionValue, name: fieldSpecification.id, checked: value === optionValue, onchange: standardChangeMethod.bind(null, null, optionValue) }),
-                    m("label", {"for": optionID}, sanitizeHTML.generateSmallerSetOfSanitizedHTMLForMithril(tr(optionName))), 
-                    m("br")
-                ];
+                let optionParts = [];
+                if (fieldSpecification.optionImageLinks && index < fieldSpecification.optionImageLinks.length) {
+                    let imageHTML = "";
+                    imageHTML = "img[src='" +  fieldSpecification.optionImageLinks[index] + "'][class='narrafirma-survey-answer-image']";
+                    if (fieldSpecification.optionImagesWidth) imageHTML += '[style="width: ' + fieldSpecification.optionImagesWidth + 'px"]';
+                    optionParts = [m("td.narrafirma-survey-answer-images", [
+                        m("input[type=radio]", {id: optionID, value: optionValue, name: fieldSpecification.id, checked: value === optionValue, onchange: standardChangeMethod.bind(null, null, optionValue) }),
+                        m("label", {"for": optionID}, sanitizeHTML.generateSmallerSetOfSanitizedHTMLForMithril(tr(optionName)), m("br"), m(imageHTML), m("br"))])
+                    ];
+                } else {
+                    optionParts = [
+                        m("input[type=radio]", {id: optionID, value: optionValue, name: fieldSpecification.id, checked: value === optionValue, onchange: standardChangeMethod.bind(null, null, optionValue) }),
+                        m("label", {"for": optionID}, sanitizeHTML.generateSmallerSetOfSanitizedHTMLForMithril(tr(optionName))), m("br")
+                    ];
+                }
+                return optionParts;
             })
         ];
+        if (fieldSpecification.optionImageLinks) {
+            questionParts = [m("table.narrafirma-survey-answer-images", m("tr.narrafirma-survey-answer-images", questionParts))];
+        }
         questionParts.unshift(m("legend", questionLabel[0]));
         questionLabel = [];
         return questionParts;

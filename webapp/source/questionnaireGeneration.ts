@@ -227,13 +227,21 @@ export function convertEditorQuestions(editorQuestions, prefixQPA) {
         const prompt = question[keyPrefix + "text"];
         const writeInTextBoxLabel = question[keyPrefix + "writeInTextBoxLabel"];
 
-        const options = [];
+        let options = [];
         const optionsString = question[keyPrefix + "options"];
         if (optionsString) {
             // TODO: Improve option handling so can have standard IDs for options
             const splitOptions = optionsString.split("\n");
-            splitOptions.map(function(option) { if (option.trim()) options.push(option.trim()); })
+            options = splitOptions.map(function(option) { if (option.trim()) return option.trim(); })
         }
+
+        let optionImageLinks = [];
+        const optionImageLinksString = question[keyPrefix + "optionImageLinks"];
+        if (optionImageLinksString) {
+            const splitOptionImageLinks = optionImageLinksString.split("\n");
+            optionImageLinks = splitOptionImageLinks.map(function(link) { if (link.trim()) return link.trim(); })
+        }
+        const optionImagesWidth = question[keyPrefix + "optionImagesWidth"];
 
         const valueType = displayTypeToValueTypeMap[questionType];
         if (!valueType) console.log("ERROR: Could not resolve valueType for ", question);
@@ -280,6 +288,8 @@ export function convertEditorQuestions(editorQuestions, prefixQPA) {
             displayPrompt: prompt,
             displayType: questionType,
             valueOptions: valueOptions, 
+            optionImageLinks: optionImageLinks,
+            optionImagesWidth: optionImagesWidth,
             displayConfiguration: displayConfiguration,
             writeInTextBoxLabel: writeInTextBoxLabel,
             import_columnName: import_columnName,
