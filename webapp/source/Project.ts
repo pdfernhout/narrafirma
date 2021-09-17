@@ -404,20 +404,27 @@ class Project {
                 console.log("ERROR: null or undefined story collection pointer in catalysis report ", catalysisReportIdentifier);
             } else {
                 const storyCollectionIdentifier = this.tripleStore.queryLatestC(storyCollectionPointer, "storyCollection");
-                const storiesForThisCollection = surveyCollection.getStoriesForStoryCollection(storyCollectionIdentifier);
                 const questionnaire = surveyCollection.getQuestionnaireForStoryCollection(storyCollectionIdentifier);
+
+                let storiesForThisCollection = surveyCollection.getStoriesForStoryCollection(storyCollectionIdentifier);
+                storiesForThisCollection = this.storiesForStoryCollectionWithFilter(storyCollectionIdentifier, storiesForThisCollection, questionnaire, filter, showWarnings);
                 result = result.concat(storiesForThisCollection);
-                const filterParts = filter.split("&&").map(function(item) {return item.trim()});
-                for (let partIndex = 0; partIndex < filterParts.length; partIndex++) {
-                    const filteredResult = this.storiesForStoryCollectionWithFilter(storyCollectionIdentifier, result, questionnaire, filterParts[partIndex], showWarnings);
-                    result = filteredResult;
-                }
             }
         }); 
         return result;
     }
 
     storiesForStoryCollectionWithFilter(storyCollectionIdentifier, storiesForThisCollection, questionnaire, filter, showWarnings = false) {
+        let result = [];
+        result = result.concat(storiesForThisCollection);
+        const filterParts = filter.split("&&").map(function(item) {return item.trim()});
+        for (let partIndex = 0; partIndex < filterParts.length; partIndex++) {
+            result = this.storiesForStoryCollectionWithSingleFilter(storyCollectionIdentifier, result, questionnaire, filterParts[partIndex], showWarnings);
+        }
+        return result;
+    }
+
+    storiesForStoryCollectionWithSingleFilter(storyCollectionIdentifier, storiesForThisCollection, questionnaire, filter, showWarnings = false) {
         let result = [];
         const questionAndAnswers = filter.split("==").map(function(item) {return item.trim()});
         let warningShown = false;
