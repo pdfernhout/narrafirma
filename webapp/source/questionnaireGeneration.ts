@@ -11,7 +11,11 @@ import surveyBuilderMithril = require("./surveyBuilderMithril");
 export const formFieldsInfo: FormFieldInfo[] = [
 
     // Starting out
-
+    {tripleStoreFieldID: "questionForm_image", 
+        exportImportID: "Image", 
+        canBeTranslated: true,
+        section: "Starting out", 
+        explanation: "Web link for image to show at top of form"},
     {tripleStoreFieldID: "questionForm_title", 
         exportImportID: "Title", 
         canBeTranslated: true, 
@@ -22,6 +26,16 @@ export const formFieldsInfo: FormFieldInfo[] = [
         canBeTranslated: true, 
         section: "Starting out", 
         explanation: "Introduction to story form"},
+    {tripleStoreFieldID: "questionForm_video", 
+        exportImportID: "Video", 
+        canBeTranslated: true,
+        section: "Starting out", 
+        explanation: "Web link or iframe embed code for introductory video"},
+    {tripleStoreFieldID: "questionForm_textAfterVideo", 
+        exportImportID: "After-video text", 
+        canBeTranslated: true, 
+        section: "Starting out", 
+        explanation: "Text to show after introductory video"},
 
     // Choosing a story-eliciting question
 
@@ -160,8 +174,6 @@ export const formFieldsInfo: FormFieldInfo[] = [
 
     // not translateable
 
-    {tripleStoreFieldID: "questionForm_image", exportImportID: "Image", canBeTranslated: false},
-    {tripleStoreFieldID: "questionForm_video", exportImportID: "Video", canBeTranslated: false},
     {tripleStoreFieldID: "questionForm_maxNumStories", exportImportID: "Max num stories", default: "no limit", canBeTranslated: false},
     {tripleStoreFieldID: "questionForm_showSurveyResultPane", exportImportID: "Show survey result", canBeTranslated: false},
     {tripleStoreFieldID: "questionForm_defaultLanguage", exportImportID: "Default language", canBeTranslated: false},
@@ -252,7 +264,7 @@ export function convertEditorQuestions(editorQuestions, prefixQPA) {
 
         // default valueOptions and displayConfiguration to undefined so no object fields will appear set for these if not otherwise set
         valueOptions = undefined;
-        if (["select", "radiobuttons", "checkboxes"].indexOf(questionType) >= 0) {
+        if (["checkbox", "select", "radiobuttons", "checkboxes"].indexOf(questionType) >= 0) {
             valueOptions = options;
         } 
 
@@ -264,8 +276,10 @@ export function convertEditorQuestions(editorQuestions, prefixQPA) {
             } else if (options.length > 1) {
                 displayConfiguration = options;
             }
+        } else if (questionType === "checkbox") {
+            displayConfiguration = options[0];
         } else if (questionType === "text") {
-            displayConfiguration = !isNaN(Number(question[keyPrefix + "textBoxLength"])) ? question[keyPrefix + "textBoxLength"] : "";
+            displayConfiguration = !isNaN(Number(question[keyPrefix + "textBoxLength"])) ? question[keyPrefix + "textBoxLength"] : 40;
         } else if (questionType === "select") {
             displayConfiguration = !isNaN(Number(question[keyPrefix + "listBoxRows"])) ? question[keyPrefix + "listBoxRows"] : "";
         } else if (questionType === "checkboxes") {

@@ -103,14 +103,24 @@ textarea:-moz-read-only { /* For Firefox */
 	background-color: #c7daf7;
 }
 
-.narrafirma-survey-introductory-video-youtube {
-    margin: 0 1em 1em 1em;
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ introductory video ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
+.narrafirma-survey-introductory-video-streaming {
+    display: block;
+    text-align: center;
+    margin: 0 auto 1em auto;
 }
 
 .narrafirma-survey-introductory-video-mp4 {
-    margin: 0 1em 1em 1em;
+    display: block;
+    text-align: center;
+    margin: 0 auto 0.5em auto;
     width: 560px;
     height: 315px;
+}
+
+.narrafirma-survey-text-after-introductory-video {
+    margin: 0.3em 0 0 0.5em;
 }
 
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ story areas ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */

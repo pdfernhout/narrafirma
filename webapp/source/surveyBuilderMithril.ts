@@ -85,7 +85,34 @@ function stringBeyond(aString: string, beyondWhat: string) {
 }
 
 function stringBetween(wholeString: string, startString: string, endString: string) {
+    if (wholeString.indexOf(startString) < 0 || wholeString.indexOf(endString) < 0) return "";
     return stringUpTo(stringBeyond(wholeString.trim(), startString), endString);
+}
+
+function mithrilForVideoInfo(videoInfoString) {
+    if (!videoInfoString) return m("div");
+    if (videoInfoString.indexOf("iframe") >= 0) {
+        const width = stringBetween(videoInfoString, 'width="', '"');
+        const height = stringBetween(videoInfoString, 'height="', '"');
+        const source = stringBetween(videoInfoString, 'src="', '"');
+        const title = stringBetween(videoInfoString, 'title="', '"');
+        const allow = stringBetween(videoInfoString, 'allow="', '"');
+        return m("iframe", {
+            src: source,
+            width: width || 560,
+            title: title || "Introductory video",
+            height: height || 315,
+            class: "narrafirma-survey-introductory-video-streaming",
+            allow: allow,
+        })
+    } else {
+        return m("video", {
+            src: videoInfoString,
+            type: "video/mp4",
+            controls: "controls",
+            class: "narrafirma-survey-introductory-video-mp4"
+        });
+    }
 }
   
 // Redrawing
@@ -924,35 +951,8 @@ export function buildSurveyForm(surveyDiv, storyForm, doneCallback, surveyOption
             return questionParts;
         }
         
-        let imageHTML;
-        if (storyForm.image) {
-            imageHTML = "img[src='" + storyForm.image + "'][class='narrafirma-survey-image']";
-        }
-
-        let videoPart;
-        if (storyForm.video) {
-
-            const isYouTubeVideo = storyForm.video.indexOf("iframe") >= 0;
-
-            if (isYouTubeVideo) {
-                const width = stringBetween(storyForm.video, 'width="', '"');
-                const height = stringBetween(storyForm.video, 'height="', '"');
-                const source = stringBetween(storyForm.video, 'src="', '"');
-                videoPart = m("iframe", {
-                    src: source,
-                    width: width || 560,
-                    height: height || 315,
-                    class: "narrafirma-survey-introductory-video-youtube"
-                })
-            } else {
-                videoPart = m("video", {
-                    src: storyForm.video,
-                    type: "video/mp4",
-                    controls: "controls",
-                    class: "narrafirma-survey-introductory-video-mp4"
-                });
-            }
-        }
+        const imageHTML = storyForm.image ? "img[src='" + tr(storyForm.image) + "'][class='narrafirma-survey-image']" : "";
+        const videoPart = mithrilForVideoInfo(tr(storyForm.video));
 
         let showSurveyResultPane = false;
         if (submitted === "success") {
@@ -980,6 +980,7 @@ export function buildSurveyForm(surveyDiv, storyForm, doneCallback, surveyOption
                 return displayQuestion(null, null, question, storyForm);
             }),
             videoPart,
+            m("div.narrafirma-survey-text-after-introductory-video", storyForm.textAfterVideo || ""),
             
             stories.map(function(story, index) {
                 return displayStoryQuestions(story, index);

@@ -56,6 +56,14 @@ const panel: Panel = {
             displayPrompt: "Starting out"
         },
         {
+            id: "questionForm_image",
+            valueType: "string",
+            displayType: "text",
+            displayName: "Image",
+            displayPrompt: "To show an <strong>image</strong> at the top of the form (above the title), enter a web link (URL) here.",
+            displayVisible: function(panelBuilder, model) { return !!Globals.clientState().showAdvancedOptions(); }
+        },
+        {
             id: "questionForm_title",
             valueType: "string",
             displayType: "text",
@@ -71,23 +79,25 @@ const panel: Panel = {
             displayPrompt: "Enter an <strong>introduction</strong> to be shown at the start of the story form, after the title."
         },
         // start - advanced
-        {
-            id: "questionForm_image",
-            valueType: "string",
-            displayType: "text",
-            displayName: "Image",
-            displayPrompt: "You can enter a web link (URL) for an <strong>image</strong> to be shown at the top of the form.",
-            displayVisible: function(panelBuilder, model) { return !!Globals.clientState().showAdvancedOptions(); }
-        },
+        
         {
             id: "questionForm_video",
             valueType: "string",
             displayType: "text",
             displayName: "Video",
-            displayPrompt: `To display an <strong>embedded video</strong> after your text introduction, enter one of two things here.
-                For a <strong>YouTube video</strong>: (a) login to your YouTube account, (b) go to the video's page,
-                (c) click Share, (d) click Embed, (e) copy the text YouTube shows you, and (f) paste it here.
-                For an <strong>mp4 video</strong> hosted on a web site: paste the video's web link (URL) here.`,
+            displayPrompt: `To display an <strong>introductory video</strong> (after the text introduction), enter one of two things here.
+                For an <strong>mp4 file</strong> hosted on a web site, enter the video's web link (URL).
+                For a <strong>streaming</strong> video, login to your streaming service (YouTube, Vimeo, etc.), select the video,
+                click Share or Embed, copy the HTML code given to you (it should start with an "iframe" tag), and paste it here.
+                (You may have to set embedding permissions for the video.)`,
+            displayVisible: function(panelBuilder, model) { return !!Globals.clientState().showAdvancedOptions(); }
+        },
+        {
+            id: "questionForm_textAfterVideo",
+            valueType: "string",
+            displayType: "textarea",
+            displayName: "Introduction",
+            displayPrompt: "Enter any text you want to show <strong>after the introductory video</strong> here.",
             displayVisible: function(panelBuilder, model) { return !!Globals.clientState().showAdvancedOptions(); }
         },
 
