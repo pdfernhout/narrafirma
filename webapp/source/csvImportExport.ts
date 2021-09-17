@@ -1298,6 +1298,7 @@ function questionForItem(item, questionCategory) {
     let valueType = "string";
     let questionType = "text";
     let valueOptions;
+    let optionImageLinks;
     let import_columnName;
     let import_answerNames;
     let import_minScaleValue = "";
@@ -1310,6 +1311,7 @@ function questionForItem(item, questionCategory) {
     let writeInTextBoxLabel = "";
     let listBoxRows = undefined;
     let textBoxLength = undefined;
+    let optionImagesWidth = undefined;
     const optionsString = item["Options"] || "";
     if (optionsString) {
         const optionParts = optionsString.split("|");
@@ -1334,6 +1336,12 @@ function questionForItem(item, questionCategory) {
                     alert('Import error: For the Multiple choice question "' + item["Short name"] + '," the number of list box rows ("' + listBoxRows + '") is not a number.');
                     listBoxRows = "";
                 }
+            } else if (part.indexOf("optionImagesWidth=") >= 0) {
+                optionImagesWidth = stringBeyond(part, "optionImagesWidth=");
+                if (optionImagesWidth && isNaN(optionImagesWidth)) {
+                    alert('Import error: For the Multiple choice question "' + item["Short name"] + '," the option image width ("' + optionImagesWidth + '") is not a number.');
+                    optionImagesWidth = "";
+                }
             }
         });
     }
@@ -1356,6 +1364,7 @@ function questionForItem(item, questionCategory) {
         const valueAndImportOptions = valueAndImportOptionsForAnswers(answers);
         valueOptions = valueAndImportOptions[0];
         import_answerNames = valueAndImportOptions[1];
+        optionImageLinks = valueAndImportOptions[2];
         if (answers.length < 2) {
             alert('Import error: For the Multiple choice question "' + item["Short name"] + '", there must be at least two entries in the Answers columns.');
         }
@@ -1364,6 +1373,7 @@ function questionForItem(item, questionCategory) {
         const valueAndImportOptions = valueAndImportOptionsForAnswers(answers);
         valueOptions = valueAndImportOptions[0];
         import_answerNames = valueAndImportOptions[1];
+        optionImageLinks = valueAndImportOptions[2];
         if (answers.length < 2) {
             alert('Import error: For the Radiobuttons question "' + item["Short name"] + '", there must be at least two entries in the Answers columns.');
         }
@@ -1412,7 +1422,9 @@ function questionForItem(item, questionCategory) {
     question[questionCategory + "_shortName"] = item["Short name"];
     question[questionCategory + "_text"] = item["Long name"];
     if (valueOptions) question[questionCategory + "_options"] = valueOptions.join("\n");
+    if (optionImageLinks) question[questionCategory + "_optionImageLinks"] = optionImageLinks.join("\n");
     if (maxNumAnswers) question[questionCategory + "_maxNumAnswers"] = maxNumAnswers;
+    if (optionImagesWidth) question[questionCategory + "_optionImagesWidth"] = optionImagesWidth;
     if (listBoxRows) question[questionCategory + "_listBoxRows"] = listBoxRows;
     if (writeInTextBoxLabel) question[questionCategory + "_writeInTextBoxLabel"] = writeInTextBoxLabel;
     if (textBoxLength) question[questionCategory + "_textBoxLength"] = textBoxLength;
@@ -1428,17 +1440,22 @@ function questionForItem(item, questionCategory) {
 function valueAndImportOptionsForAnswers(answers) {
     const valueOptions = [];
     const import_answerNames = [];
+    const optionImageLinks = [];
     for (let i = 0; i < answers.length; i++) {
-        const dataAndDisplay = answers[i].split("|");
-        if (dataAndDisplay.length > 1) {
-            import_answerNames.push(dataAndDisplay[0]);
-            valueOptions.push(dataAndDisplay[1]);
+        const splitAnswersString = answers[i].split("|");
+        if (splitAnswersString.length > 2) {
+            import_answerNames.push(splitAnswersString[0]);
+            valueOptions.push(splitAnswersString[1]);
+            optionImageLinks.push(splitAnswersString[2]);
+        } else if (splitAnswersString.length > 1) {
+            import_answerNames.push(splitAnswersString[0]);
+            valueOptions.push(splitAnswersString[1]);
         } else {
             valueOptions.push(answers[i]);
             import_answerNames.push(answers[i]);
         }
     }
-    return [valueOptions, import_answerNames];
+    return [valueOptions, import_answerNames, optionImageLinks];
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1572,6 +1589,9 @@ export function exportQuestionnaire(questionnaire = null) {
             }
             if (question.textBoxLength) {
                 options.push("textBoxLength=" + question.textBoxLength);
+            }
+            if (question.optionImagesWidth) {
+                options.push("optionImagesWidth=" + question.optionImagesWidth);
             }
             outputLine.push(options.join("|"));  
             if (question.displayType === "slider") {
@@ -1720,6 +1740,9 @@ export function exportQuestionnaireForImport(questionnaire = null) { // to prese
             }
             if (question.textBoxLength) {
                 options.push("textBoxLength=" + question.textBoxLength);
+            }
+            if (question.optionImagesWidth) {
+                options.push("optionImagesWidth=" + question.optionImagesWidth);
             }
             outputLine.push(options.join("|"));  
 
