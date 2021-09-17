@@ -166,7 +166,19 @@ can't write any observations about it.
 			<li>For a <b>boolean</b> question, the answer specified in your filter must be either "yes" or "no." </li>
 			<li>For a <b>checkbox</b> question, the answer must be either "true" or "false."</li>
 			<li>For a <b>slider</b>, you <i>must</i> specify both ends of the range. Scale ranges must be inclusive.</li>
-			<li>You can't filter on the number of stories told. It's not a normal question; it's generated.</li>
+			<li>To filter on <b>story length</b>, enter "Story length == " followed by a lower and upper character limit, separated by two equals signs.
+				You must specify both numbers. 
+				For an inclusive limit, use a square bracket. For an exclusive limit, use a parenthesis. 
+				For example, the filter "Story length == [100 == 200)" will include only stories whose text length is 100 to 199 characters.
+				The filter "Story length == (50 == 100]" will include only stories whose text length is 51 to 100 characters.
+				If you leave out the brackets or parentheses, inclusive limits will be assumed.
+			</li>
+			<li>To filter on <b>story texts</b>, enter "Story text == " followed by any number of exact-match texts, separated by two equals signs.
+				For example, the filter "Story text == Office == office" will include only stories in which the word "Office" or "office" appears.
+				Multiple texts will operate as an OR query; stories with <i>any</i> of the texts will be included.
+				To create an AND query, write multiple "Story text" filters and connect them with two ampersands.
+			</li>
+			<li>You can't filter on the number of stories told.</li>
 			<li>Spaces around the equals signs and ampersands are optional. They get trimmed off.</li>
 			<li>Why <i>two</i> equals signs? Why <i>two</i> ampersands? Because you might have one equals sign or ampersand in a question name or answer.</li>
 			<li>If you have multiple story collections in your catalysis report, all matching stories will be included, as long as the question and answer names match (exactly).</li>

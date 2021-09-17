@@ -424,10 +424,9 @@ class Project {
         return result;
     }
 
-    storiesForStoryCollectionWithSingleFilter(storyCollectionIdentifier, storiesForThisCollection, questionnaire, filter, showWarnings = false) {
+    storiesForStoryCollectionWithSingleFilter(storyCollectionIdentifier, storiesToFilter, questionnaire, filter, showWarnings = false) {
         let result = [];
         const questionAndAnswers = filter.split("==").map(function(item) {return item.trim()});
-        let warningShown = false;
         let questionShortName = questionAndAnswers[0];
 
         let negateFilter = false;
@@ -436,102 +435,154 @@ class Project {
             questionShortName = questionShortName.slice(1);
         }
 
+        // special case: filtering on story length
+        // notation: [ denotes an inclusive range; ( denotes an exclusive range
+        // e.g., [start, end) means the length must be >= start and < end
+        // if [ or ( is left out, [ is assumed
+        if (filter.indexOf("Story length") >= 0) {
+
+            const lowerAndUpperLimits = questionAndAnswers.slice(1);
+            let lowerLimit = undefined;
+            let upperLimit = undefined;
+
+            if (lowerAndUpperLimits.length < 2) {
+                if (showWarnings) alert("To filter by story length, you must enter two numbers.");
+                return storiesToFilter;
+            }
+
+            let lowerLimitString = lowerAndUpperLimits[0];
+            const lowerLimitIsInclusive = lowerLimitString.indexOf("(") < 0;
+            lowerLimitString = lowerLimitString.replace("[", "");
+            lowerLimitString = lowerLimitString.replace("(", "");
+            if (isNaN(Number(lowerLimitString))) {
+                if (showWarnings) alert("The lower story length limit you entered (" + lowerLimitString + ") is not a number.");
+                return storiesToFilter;
+            } 
+            lowerLimit = Number(lowerLimitString);
+
+            let upperLimitString = lowerAndUpperLimits[1];
+            const upperLimitIsInclusive = upperLimitString.indexOf(")") < 0;
+            upperLimitString = upperLimitString.replace("]", "");
+            upperLimitString = upperLimitString.replace(")", "");
+            if (isNaN(Number(upperLimitString))) {
+                if (showWarnings) alert("The upper story length limit you entered (" + upperLimitString + ") is not a number.");
+                return storiesToFilter;
+            } 
+            upperLimit = Number(upperLimitString);
+
+            if (lowerLimit >= upperLimit) {
+                if (showWarnings) alert("The lower story length limit must be less than the upper story length limit.");
+                return storiesToFilter;
+            }
+
+            const storiesThatMatchFilter = [];
+            for (let storyIndex = 0; storyIndex < storiesToFilter.length; storyIndex++) {
+                const story = storiesToFilter[storyIndex];
+                const storyLength = story.storyLength();
+                let storyLengthIsAboveLowerLimit = lowerLimitIsInclusive ? storyLength >= lowerLimit : storyLength > lowerLimit;
+                let storyLengthIsBelowUpperLimit = upperLimitIsInclusive ? storyLength <= upperLimit : storyLength < upperLimit;
+                let storyMatches = storyLengthIsAboveLowerLimit && storyLengthIsBelowUpperLimit;
+                if (negateFilter) storyMatches = !storyMatches;
+                if (storyMatches) storiesThatMatchFilter.push(story);
+            }
+            return storiesThatMatchFilter;
+        }
+            
+         // special case: filtering on story text
+        if (filter.indexOf("Story text") >= 0) {
+            const searchTexts = questionAndAnswers.slice(1);
+            const storiesThatMatchFilter = [];
+            for (let storyIndex = 0; storyIndex < storiesToFilter.length; storyIndex++) {
+                const story = storiesToFilter[storyIndex];
+                const storyText = story.storyText();
+                let storyMatches = false;
+                searchTexts.forEach((text) => { storyMatches = storyMatches || storyText.indexOf(text) >= 0; });
+                if (negateFilter) storyMatches = !storyMatches;
+                if (storyMatches) storiesThatMatchFilter.push(story);
+            }
+            return storiesThatMatchFilter;
+        }
+
+        // general case: filtering on answers to questions
         const questionID = this.questionIDForQuestionShortNameGivenQuestionnaire(questionShortName, questionnaire);
         let question = this.questionForQuestionIDGivenQuestionnaire(questionID, questionnaire, storyCollectionIdentifier);
         let answers = [];
-        let lowerLimit = undefined;
-        let upperLimit = undefined;
+        let lowerSliderLimit = undefined;
+        let upperSliderLimit = undefined;
 
         if (question) {
             answers = questionAndAnswers.slice(1);
             if (question.displayType == "boolean") {
                 if (answers[0] != "yes" && answers[0] != "no") {
-                    if (showWarnings && !warningShown) 
-                        alert("This question (" + questionShortName + ") is a boolean question. The specified answer must be either yes or no.");
-                    question = null;
-                    warningShown = true;
+                    if (showWarnings) alert("This question (" + questionShortName + ") is a boolean question. The specified answer must be either yes or no.");
+                    return storiesToFilter;
                 }
             } else if (question.displayType == "checkbox") {
                 if (answers[0] != "true" && answers[0] != "false") {
-                    if (showWarnings && !warningShown) 
-                        alert("This question (" + questionShortName + ")  is a checkbox question. The specified answer must be either true or false.");
-                    question = null;
-                    warningShown = true;
+                    if (showWarnings) alert("This question (" + questionShortName + ")  is a checkbox question. The specified answer must be either true or false.");
+                    return storiesToFilter;
                 }
             } else if (question.displayType == "slider") { 
-                lowerLimit = parseInt(answers[0]);
-                if (isNaN(lowerLimit)) {
-                    if (showWarnings && !warningShown) 
-                        alert("This question (" + questionShortName + ") has a numerical range, and the lower limit you specified (" + answers[0] + ") doesn't seem to be a number.");
-                    question = null;
-                    warningShown = true;
+                lowerSliderLimit = parseInt(answers[0]);
+                if (isNaN(lowerSliderLimit)) {
+                    if (showWarnings) alert("This question (" + questionShortName + ") has a numerical range, and the lower limit you specified (" + answers[0] + ") doesn't seem to be a number.");
+                    return storiesToFilter;
                 }
                 if (answers.length > 1) {
-                    upperLimit = parseInt(answers[1]);
-                    if (isNaN(upperLimit)) {
-                        if (showWarnings && !warningShown) 
-                            alert("This question (" + questionShortName + ") has a numerical range, and the upper limit you specified (" + answers[1] + ") doesn't seem to be a number.");
-                        question = null;
-                        warningShown = true;
+                    upperSliderLimit = parseInt(answers[1]);
+                    if (isNaN(upperSliderLimit)) {
+                        if (showWarnings) alert("This question (" + questionShortName + ") has a numerical range, and the upper limit you specified (" + answers[1] + ") doesn't seem to be a number.");
+                        return storiesToFilter;
                     }
                 } else { 
-                    if (showWarnings && !warningShown) 
-                        alert("This question (" + questionShortName + ") has a numerical range, but you only specified one number. You need to specify a lower and upper limit (inclusive).");
-                    question = null;
-                    warningShown = true;
+                    if (showWarnings) alert("This question (" + questionShortName + ") has a numerical range, but you only specified one number. You need to specify a lower and upper limit (inclusive).");
+                    return storiesToFilter;
                 }
             }
         } else {
-            if (showWarnings && !warningShown) 
-                alert('No question used by the story collection "' + storyCollectionIdentifier + '" matches the name: ' + questionShortName);
-            result = result.concat(storiesForThisCollection);
-            warningShown = true;
+            if (showWarnings) alert('No question used by the story collection "' + storyCollectionIdentifier + '" matches the name: ' + questionShortName);
+            return storiesToFilter;
         }
 
-        if (question) {
-            const storiesThatMatchFilter = [];
-            for (let storyIndex = 0; storyIndex < storiesForThisCollection.length; storyIndex++) {
-                const story = storiesForThisCollection[storyIndex];
-                const value = story.fieldValue(question.id)
-                let storyMatches = false;
-                if (question.displayType == "boolean") {
-                    storyMatches = (answers[0] == "yes" && value) || (answers[0] == "no" && !value);
-                } else if (question.displayType == "checkbox") {
-                    storyMatches = (answers[0] == "true" && value) || (answers[0] == "false" && !value);
-                } else if (value !== undefined && value !== null && value !== {} && value !== "") {
-                    if (question.displayType == "slider") {
-                        const valueAsInt = parseInt(value);
-                        if (valueAsInt >= lowerLimit && valueAsInt <= upperLimit) {
+        if (!question) {
+            return storiesToFilter;
+        }
+
+        const storiesThatMatchFilter = [];
+        for (let storyIndex = 0; storyIndex < storiesToFilter.length; storyIndex++) {
+            const story = storiesToFilter[storyIndex];
+            const value = story.fieldValue(question.id)
+            let storyMatches = false;
+            if (question.displayType == "boolean") {
+                storyMatches = (answers[0] == "yes" && value) || (answers[0] == "no" && !value);
+            } else if (question.displayType == "checkbox") {
+                storyMatches = (answers[0] == "true" && value) || (answers[0] == "false" && !value);
+            } else if (value !== undefined && value !== null && value !== {} && value !== "") {
+                if (question.displayType == "slider") {
+                    const valueAsInt = parseInt(value);
+                    if (valueAsInt >= lowerSliderLimit && valueAsInt <= upperSliderLimit) {
+                        storyMatches = true;
+                    }
+                } else if (typeof(value) == "string") { // select, radiobuttons
+                    for (let answerIndex = 0; answerIndex < answers.length; answerIndex++) {
+                        if (value.trim() == answers[answerIndex]) {
                             storyMatches = true;
-                        }
-                    } else if (typeof(value) == "string") { // select, radiobuttons
-                        for (let answerIndex = 0; answerIndex < answers.length; answerIndex++) {
-                            if (value.trim() == answers[answerIndex]) {
-                                storyMatches = true;
-                                break;
-                            }
-                        }
-                    } else { // checkboxes
-                        for (let answerIndex = 0; answerIndex < answers.length; answerIndex++) {
-                            if (value[answers[answerIndex]] && value[answers[answerIndex]] == true) {
-                                storyMatches = true;
-                                break;
-                            }
+                            break;
                         }
                     }
-                }
-                if (negateFilter) {
-                    if (!storyMatches) {
-                        storiesThatMatchFilter.push(story);
-                    }
-                } else {
-                    if (storyMatches) {
-                        storiesThatMatchFilter.push(story);
+                } else { // checkboxes
+                    for (let answerIndex = 0; answerIndex < answers.length; answerIndex++) {
+                        if (value[answers[answerIndex]] && value[answers[answerIndex]] == true) {
+                            storyMatches = true;
+                            break;
+                        }
                     }
                 }
             }
-            result = result.concat(storiesThatMatchFilter);
-        } // if question
+            if (negateFilter) storyMatches = !storyMatches;
+            if (storyMatches) storiesThatMatchFilter.push(story);
+        }
+        result = result.concat(storiesThatMatchFilter);
         return result;
     }
 
