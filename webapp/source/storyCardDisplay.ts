@@ -367,7 +367,7 @@ export function generateStoryCardContent(storyModel, questionsToInclude, options
 
     let textForElicitingQuestion: any = [];
     // if questionsToInclude is unspecified, it is not being called in the "print story cards" page, so include this
-    if (!questionsToInclude || Object.keys(questionsToInclude).indexOf("elicitingQuestion") >= 0) {
+    if (!questionsToInclude || questionsToInclude["elicitingQuestion"]) {
         textForElicitingQuestion = m(
             ".narrafirma-story-card-eliciting-question", 
             [wrap("span", "narrafirma-story-card-eliciting-question-name", "Eliciting question: "), 
@@ -376,7 +376,7 @@ export function generateStoryCardContent(storyModel, questionsToInclude, options
     
     let textForNumStoriesTold: any = [];
     // if questionsToInclude is unspecified, it is not being called in the "print story cards" page, so include this
-    if (!questionsToInclude || Object.keys(questionsToInclude).indexOf("numStoriesTold") >= 0) {
+    if (!questionsToInclude || questionsToInclude["numStoriesTold"]) {
         textForNumStoriesTold = m(
             ".narrafirma-story-card-num-stories-question", 
             [wrap("span", "narrafirma-story-card-num-stories-question-name", "Number of stories told by this participant: "), 
@@ -385,7 +385,7 @@ export function generateStoryCardContent(storyModel, questionsToInclude, options
 
     let textForStoryLength: any = [];
     // if questionsToInclude is unspecified, it is not being called in the "print story cards" page, so include this
-    if (!questionsToInclude || Object.keys(questionsToInclude).indexOf("storyLength") >= 0) {
+    if (!questionsToInclude || questionsToInclude["storyLength"]) {
         textForStoryLength = m(
             ".narrafirma-story-card-story-length-question", 
             [wrap("span", "narrafirma-story-card-story-length-question-name", "Story length: "), 
@@ -394,7 +394,7 @@ export function generateStoryCardContent(storyModel, questionsToInclude, options
 
     let textForCollectionDate: any = [];
     // if questionsToInclude is unspecified, it is not being called in the "print story cards" page, so include this
-    if (!questionsToInclude || Object.keys(questionsToInclude).indexOf("collectionDate") >= 0) {
+    if (!questionsToInclude || questionsToInclude["collectionDate"]) {
         textForCollectionDate = m(
             ".narrafirma-story-card-collection-date-question", 
             [wrap("span", "narrafirma-story-card-collection-date-question-name", "Collection date: "), 
@@ -402,7 +402,7 @@ export function generateStoryCardContent(storyModel, questionsToInclude, options
     }
     let textForLanguage: any = [];
     // if questionsToInclude is unspecified, it is not being called in the "print story cards" page, so include this
-    if (!questionsToInclude || Object.keys(questionsToInclude).indexOf("language") >= 0) {
+    if (!questionsToInclude || questionsToInclude["language"]) {
         textForCollectionDate = m(
             ".narrafirma-story-card-language-question", 
             [wrap("span", "narrafirma-story-card-language-question-name", "Language: "), 
