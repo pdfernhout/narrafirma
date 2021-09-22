@@ -5,15 +5,19 @@
    
     console.log("narrafirmaWordpressAdmin called");
     
-    var narrafirmaProjectPrefix = "NarraFirmaProject-";
+    const narrafirmaProjectPrefix = "NarraFirmaProject-";
     
     // The div containing the form to edit JSON directly
-    var jsonForm;
+    let jsonForm;
     
     // The textarea in the form
-    var journalsTextarea;
+    let journalsTextarea;
     
     /* global m */
+
+    function replaceAll(str, find, replace) {
+        return str.replace(new RegExp(find, 'g'), replace);
+    }
     
     var NarraFirmaAdminComponent = {
         controller: function(data) {
@@ -25,7 +29,7 @@
             };
         },
         view: function(controller) {
-            var isJSONUnchanged = true;
+            let isJSONUnchanged = true;
             try {
                 isJSONUnchanged = JSON.stringify(controller.originalJournalDefinitions) === JSON.stringify(controller.journalDefinitions);
             } catch (e) {
@@ -34,31 +38,33 @@
                 
             const buttonStyle = "font-size: 1.2em; background: #ffbb84; padding: 0.3em; margin-bottom: 0.5em";
             return m("div", [
-                m("h3", "NarraFirma projects"), 
-                m("p", `
-                    To specify project permissions, enter one or more space-separated WordPress user IDs (e.g. samsmith) or 
-                    WordPress roles (e.g. administrator, editor, author, contributor, subscriber). 
-                    Only give write access to people you trust. 
-                    `),
+                m("h1", "Projects"), 
+                m("p", `To specify project permissions, enter one or more space-separated WordPress user IDs (e.g. samsmith) or 
+                    roles (e.g. administrator, editor, author, contributor, subscriber) in the boxes below.`),
                 Object.keys(controller.journalDefinitions).length ? 
                 Object.keys(controller.journalDefinitions).map(function(journalIdentifier) {
-                    return displayJournal(controller, journalIdentifier);
-                }) : m("p[style='font-weight: bold; font-style: italic;']", "No projects yet! Create a new one.")
-                ,
-                m("button", {"style": buttonStyle, onclick: cancelChanges.bind(null, controller), disabled: isJSONUnchanged}, "Cancel changes"),
-                " ",
-                m("button", {"style": buttonStyle, onclick: saveChanges.bind(null, controller), disabled: isJSONUnchanged}, "Save changes"),
-                " ",
-                m("button", {"style": buttonStyle, onclick: newProject.bind(null, controller)}, "Create New Project"),
-                m("p", `New projects are not saved until you click the \"Save changes\" button. 
-                    Deleting a project will make it unavailable, but the data will still be stored and can be re-accessed 
-                    by creating a project with the same name.
-                    `),
-                m("br"),
-                m("div[style='margin-top: 1em;']", [
-                    m("input[type=checkbox][style='margin-left:0.5em']", 
-                        {id: "narrafirma-displayJSON", onclick: m.withAttr("checked", showJSONChecked.bind(null, controller)), checked: controller.showJSON}),
-                        m("span", {"for": "narrafirma-displayJSON"}, "Edit project permissions directly as JSON"),
+                    const definition = controller.journalDefinitions[journalIdentifier];
+                    if (!definition.hasOwnProperty("archived") || !definition.archived) {
+                        return displayJournal(controller, journalIdentifier);
+                    }
+                }) : m("p[style='font-weight: bold; font-style: italic;']", "No projects yet! Create a new one."),
+                m("div"), {style: "margin: 0.5em 0"}, [
+                    m("button", {"style": buttonStyle, onclick: cancelChanges.bind(null, controller), disabled: isJSONUnchanged}, "Cancel changes"),
+                    " ",
+                    m("button", {"style": buttonStyle, onclick: saveChanges.bind(null, controller), disabled: isJSONUnchanged}, "Save changes"),
+                    " ",
+                    m("button", {"style": buttonStyle, onclick: newProject.bind(null, controller)}, "Create New Project"),
+                ],
+                m("div", `New projects and changes to permissions are not saved until you click the \"Save changes\" button.`),
+                m("div", {style: 'margin-top: 1em;'}, [
+                    m("hr", {style: "border-top: 2px solid gray"}),
+                    m("input[type=checkbox]", {
+                            style: 'margin-left:0.5em', 
+                            id: "narrafirma-displayJSON", 
+                            onclick: m.withAttr("checked", showJSONChecked.bind(null, controller)), 
+                            checked: controller.showJSON
+                        }),
+                        m("span", {for: "narrafirma-displayJSON"}, "Edit project permissions directly as JSON"),
                     ])
             ]);
         }
@@ -79,64 +85,80 @@
             writeJournalDefinitionsToTextarea(controller.journalDefinitions);
         };
         const id = "narrafirma-anonymous-access-" + field;
-        return m("div", {"style": "margin-left: 2em"}, [
+        return m("div", {style: "margin: 0.5em 0"}, [
             m("input[type=checkbox]", {id: id, onclick: m.withAttr("checked", updateAnonymousAccess), checked: checked}),
-            m("label", {"for": id}, "Anonymous (not logged in) site visitors have " + field + " access "),
+            m("label", {"for": id}, "Allow " + field + " access to anonymous (not logged in) site visitors"),
         ]);
     }
-    
+
     function permissionsEditor(controller, journalIdentifier, journalDefinition, field, message) {
-        var permissionsToDisplay = journalDefinition[field].filter(function (each) {
-            return each !== true;
-        });
+        var permissionsToDisplay = journalDefinition[field].filter(function (each) { return each !== true; });
         var checked = journalDefinition[field].indexOf(true) !== -1;
-        return m("label", {style: "margin-left: 2em"}, [
-            message + ": ",
-            m("input[type=text]", {style: "width: 90%; margin-left: 2em;", value: permissionsToDisplay.join(" "), onchange: function (event) {
-                var items = event.currentTarget.value.trim().split(/\s+/g);
-                if (checked) items.push(true);
-                journalDefinition[field] = items;
-                console.log("on change", items);
-                writeJournalDefinitionsToTextarea(controller.journalDefinitions);
-            }}),
-            m("br")
+        const id = "narrafirma-permission-" + journalIdentifier + "-" + field;
+        return m("div", [
+            m("span", {style: "font-weight: bold"}, field.charAt(0).toUpperCase() + field.slice(1) + " access"),
+            m("label", {for: id, style: "display: block; padding: 0.5em 0"}, message),
+            m("input[type=text]", {
+                id: id, 
+                style: "width: 80%; margin: 0.5em 0", 
+                value: permissionsToDisplay.join(" "), 
+                onchange: function (event) {
+                    var items = event.currentTarget.value.trim().split(/\s+/g);
+                    if (checked) items.push(true);
+                    journalDefinition[field] = items;
+                    console.log("on change", items);
+                    writeJournalDefinitionsToTextarea(controller.journalDefinitions);
+                }
+            })
         ]);
     }
-    
+
     function displayJournal(controller, journalIdentifier) {
-        var journalDefinition = controller.journalDefinitions[journalIdentifier];
-        return m("div.narrafirma-project[style='background-color:#d5dae6;']", [
-            m("br"),
-            m("span", {style: "font-size: 1.3em; font-weight: 600; margin-left: 0.5em;"}, [
-                 'Project: ',
-                 journalIdentifier.substring(narrafirmaProjectPrefix.length)
-            ]),
-            m("button.delete-button", {style: "margin-left: 0.5em", onclick: deleteJournal.bind(null, controller, journalIdentifier)}, "Delete"),
-            m("br"),
-            m("br"),
+        const journalDefinition = controller.journalDefinitions[journalIdentifier];
+        const projectShortName = journalIdentifier.substring(narrafirmaProjectPrefix.length);
 
-            permissionsEditor(controller, journalIdentifier, journalDefinition, "survey", "These WordPress user IDs or roles have SURVEY access (can take the survey but cannot see or change information on project screens)"),
-            anonymousAccessCheckbox(controller, journalIdentifier, journalDefinition, "survey"),
-            m("br"),
-            m("br"),
+        const archiveProject = function(event) {
+            const prompt = "Are you sure you want to archive (hide) this project?";
+            if (confirm(prompt)) {
+                journalDefinition["archived"] = true;
+                console.log("Archived project ", journalIdentifier);
+                writeJournalDefinitionsToTextarea(controller.journalDefinitions);
+                const tableName = "wp_narrafirma_j_narrafirmaproject_" + replaceAll(projectShortName, " ", "_").toLowerCase();
+                const message = 'You have archived the project "' + projectShortName + '."' +
+                    '\n\nTo un-archive this project, create a new project with the same name. ' + 
+                    'You can also check "Edit project permissions directly as JSON," then change the value of the project\'s "archived" field (from true to false). ' +
+                    '\n\nTo delete the project permanently, (a) check "Edit project permissions directly as JSON," (b) remove the project\'s entire entry from the list, ' +
+                    ' then (c) use a WordPress plugin to delete the project\'s database table, which is called:\n\n    ' + tableName;
+                alert(message);
+                document.getElementById("submit").click();
+            }
+        };
+        
+        const tableCells = [];
+        tableCells.push(m("td", {style: "padding: 1em; text-align: left; border: 1px solid gray"}, [
+            permissionsEditor(controller, journalIdentifier, journalDefinition, "survey", "These WordPress user IDs or roles can take the survey but cannot see or change information on project screens."),
+            anonymousAccessCheckbox(controller, journalIdentifier, journalDefinition, "survey")
+        ]));
+        tableCells.push(m("td", {style: "padding: 1em; text-align: left; border: 1px solid gray"}, [
+            permissionsEditor(controller, journalIdentifier, journalDefinition, "read", "These WordPress user IDs or roles can see but not change information on project screens."),
+            anonymousAccessCheckbox(controller, journalIdentifier, journalDefinition, "read")
+        ]));
+        tableCells.push(m("td", {style: "padding: 1em; text-align: left; border: 1px solid gray"}, [
+            permissionsEditor(controller, journalIdentifier, journalDefinition, "write", "These WordPress user IDs or roles can see and change information on project screens. (Only give write access to people you trust.)"),
+            anonymousAccessCheckbox(controller, journalIdentifier, journalDefinition, "write")
+        ])); 
 
-            permissionsEditor(controller, journalIdentifier, journalDefinition, "read", "These WordPress user IDs or roles have READ access (can see but not change information on project screens)"),
-            anonymousAccessCheckbox(controller, journalIdentifier, journalDefinition, "read"),
-            m("br"),
-            m("br"),
+        const tableRows = [];
+        tableRows.push(m("tr", [
+            m("td", {colspan: 2}, m("h2", {style: "margin: 0.5em 0;"}, projectShortName)),
+            m("td", {style: "text-align: right"}, m("button", {style: "font-size: 1em; margin-right: 0.5em;", onclick: archiveProject}, "Archive"))
+        ]));
+        tableRows.push(m("tr", tableCells));
 
-            permissionsEditor(controller, journalIdentifier, journalDefinition, "write", "These WordPress user IDs or roles have WRITE access (can see and change information on project screens; can also take the survey)"),
-            anonymousAccessCheckbox(controller, journalIdentifier, journalDefinition, "write"),
-            m("br"),
+        const parts = [];
+        parts.push(m("table", {style: "border-collapse: collapse"}, tableRows));
 
-            m("hr")
-        ]);
-    }
-    
-    function deleteJournal(controller, key) {
-        if (!confirm("Are you sure you want to delete: " + key + "?")) return;
-        delete controller.journalDefinitions[key];
-        writeJournalDefinitionsToTextarea(controller.journalDefinitions);
+        return(m("div", {style: 'background-color: #d5dae6; padding: 0.5em; margin: 1em 0;'}, parts));
     }
     
     function newProject(controller) {
@@ -148,13 +170,16 @@
         }
         var key = narrafirmaProjectPrefix + newName;
         if (controller.journalDefinitions[key]) {
-            alert("A project with that name already exists.");
-            return;
+            if (!controller.journalDefinitions[key].hasOwnProperty("archived") || !controller.journalDefinitions[key]["archived"]) {
+                alert("A project with that name already exists.");
+                return;
+            }
         }
         controller.journalDefinitions[key] = {
             write: [],
             read: [],
-            survey: []
+            survey: [],
+            archived: false
         };
         writeJournalDefinitionsToTextarea(controller.journalDefinitions);
     }
@@ -175,10 +200,12 @@
         if (controller.showJSON) {
             display = "block";
         }
-        jsonForm.style.display = display;
+        if (jsonForm) {
+            jsonForm.style.display = display;
+        }
     }
     
-    function writeJournalDefinitionsToTextarea(journalDefinitions) {
+    function writeJournalDefinitionsToTextarea(journalDefinitions) { 
         journalsTextarea.value = JSON.stringify(journalDefinitions, null, 4);
     }
     
@@ -195,9 +222,13 @@
     
     function startup() {
         jsonForm = document.getElementById("narrafirma-json-form");
-        jsonForm.style.display = 'none';
-        journalsTextarea = document.getElementsByName("narrafirma_admin_settings[journals]")[0];
-        m.mount(document.getElementById("narrafirma-project-list-editor"), NarraFirmaAdminComponent);
+        if (!jsonForm) {
+            m.mount(document.body, m("div", "JSON form could not be found."));
+        } else {
+            jsonForm.style.display = 'none';
+            journalsTextarea = document.getElementsByName("narrafirma_admin_settings[journals]")[0];
+            m.mount(document.getElementById("narrafirma-project-list-editor"), NarraFirmaAdminComponent);
+        }
     }
     
     // From: http://stackoverflow.com/questions/807878/javascript-that-executes-after-page-load

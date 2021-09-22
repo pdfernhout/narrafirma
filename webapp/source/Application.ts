@@ -208,14 +208,17 @@ class Application {
             for (let key in response.journalPermissions) {
                 if (!_.startsWith(key, narrafirmaProjectPrefix)) continue;
                 const permissions = response.journalPermissions[key];
-                projects.push({
-                    id: key,
-                    name: key.substring(narrafirmaProjectPrefix.length),
-                    read: permissions.read,
-                    write: permissions.write,
-                    // in node.js this is called "administrate"; in WordPress it is called "admin"
-                    admin: permissions.admin || permissions.administrate
-                });
+                if (!permissions.hasOwnProperty("archived") || !permissions.archived) {
+                    projects.push({
+                        id: key,
+                        name: key.substring(narrafirmaProjectPrefix.length),
+                        read: permissions.read,
+                        write: permissions.write,
+                        archived: false,
+                        // in node.js this is called "administrate"; in WordPress it is called "admin"
+                        admin: permissions.admin || permissions.administrate
+                    });
+                }
             }
             
             if (!projects.length) {
@@ -269,7 +272,15 @@ class Application {
                 loginLink = null;
             }
             const prompt = m("div", [m("span", message), loginLink ? loginLink : [], m("span", ".")]);
-            dialogSupport.openListChoiceDialog(null, projects, columns, "NarraFirma Projects", prompt, isNewAllowed, (projectChoice) => {
+
+            const nonArchivedProjects = [];
+            projects.forEach((project) => {
+                if (!project.hasOwnProperty("archived") || !project.archived) {
+                    nonArchivedProjects.push(project);
+                }
+            })
+
+            dialogSupport.openListChoiceDialog(null, nonArchivedProjects, columns, "NarraFirma Projects", prompt, isNewAllowed, (projectChoice) => {
                 if (!projectChoice) return;
                 
                 this.projectIdentifier = projectChoice.id;

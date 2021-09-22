@@ -67,13 +67,17 @@ class NarraFirmaSettingsPage
     function install() {
         global $wpdb;
         global $pointrelServerVersion;
-        
-        // Default the options if they are not already defined
-        $options = array (
+        defaultOptions();
+    }
+
+    function defaultOptions() {
+        global $pointrelServerVersion;
+        // {'db_version':'pointrel20150417-0.0.4-wp', 'journals':{}}
+        $this->options = array (
             'journals' => '{}',
             'db_version' => $pointrelServerVersion
         );
-        add_option( 'narrafirma_admin_settings', $options );
+        add_option( 'narrafirma_admin_settings', $this->options );
     }
     
     // Runs on plugin uninstall
@@ -102,26 +106,25 @@ class NarraFirmaSettingsPage
     
         // Set class property
         $this->options = get_option( 'narrafirma_admin_settings' );
-        
+        if (!$this->options) defaultOptions();
         $baseDirectory = plugins_url( 'narrafirma' );
-    
         $launchLink = $baseDirectory . "/webapp/narrafirma.html";
     
         ?>
 <div class="wrap">
 
-    <h2><?php echo "NarraFirma $NARRAFIRMA_VERSION"; ?></h2>
+    <h1><?php echo "NarraFirma $NARRAFIRMA_VERSION"; ?></h1>
     <p>The NarraFirma&trade; web application supports Participatory Narrative Inquiry. 
     PNI helps ordinary people share ordinary stories to discover insights they can use. 
     To learn more about PNI, visit <a href="http://www.narrafirma.com" target="_blank">narrafirma.com</a>
     or <a href="http://www.workingwithstories.org" target="_blank">workingwithstories.org</a>.
     </p>
-    <p style="margin-bottom: 2em">
+    <p style="margin-bottom: 1em">
     <i>The NarraFirma plugin uses WordPress as an application server, 
     user authentication system, and data store. Using WordPress in this way makes NarraFirma easier to install and 
     configure. NarraFirma is not otherwise integrated with WordPress pages and runs in its own web page.</i>
     </p>
-    <h2 style="text-align: center"><a style="border: 1px solid gray; text-decoration: none; background: #ffbb84; color: black; padding: 0.5em;" href="<?php echo $launchLink; ?>" target="_blank">Start NarraFirma</a></h2>
+    <h2 style="text-align: center"><a style="border: 1px solid gray; text-decoration: none; background: #ffbb84; color: black; padding: 0.5em 1.5em;" href="<?php echo $launchLink; ?>" target="_blank">Start NarraFirma</a></h2>
     
     <div id="narrafirma-project-list-editor">
     </div>
@@ -136,30 +139,46 @@ class NarraFirmaSettingsPage
         ?>
         </form>
         
-        <div id="narrafirma-example">
-            <h3>Help on changing project settings</h3>
-            <p>This is an example of what a project definition looks like in JSON format.</p>
-            <pre>
+<div id="narrafirma-example">
+    <h3>Help on changing project settings</h3>
+    
+    <table style="border-collapse: collapse">
+    <tr>
+        <td style="vertical-align: top; padding-right: 3em;">
+            <p>This is an example of NarraFirma JSON configuration data for a simple installation with two project definitions.</p>
+            <pre style="font-family: sans-serif">
 {
-    "NarraFirmaProject-My Project": {
+    "NarraFirmaProject-Pilot Project": {
             "write": ["editor", "pdfernhout", "cfkurtz"],
             "read": ["subscriber"],
-            "survey": ["subscriber", true]
+            "survey": ["member", true],
+            "archived": false
+    },
+    "NarraFirmaProject-Main Project": {
+            "write": ["editor", "pdfernhout", "cfkurtz"],
+            "read": ["subscriber"],
+            "survey": ["member", true],
+            "archived": false
     }
 }</pre>
-            <p>
-            The project name must start with "NarraFirmaProject-". 
-            The rest of the project name (e.g., "My Project") must be 20 characters or shorter.
-</p>
-<p>
-            List WordPress roles or user IDs in quotes, separated by commas, for each type of permission you want to specify.
-            To grant any type of permission to anonymous (not logged in) site visitors, add <b>true</b> (not in quotes) to the list.
-        </p>
-        <p>
-            If you edit your settings in this way and then see an error message (or a blank screen) when you open a project, 
-            come back to the JSON configuration and check your syntax. 
-            Make sure all the quotes and commas and square/curly brackets are in place as in the example.
-            </p>
+        </td>
+        <td style="vertical-align: top">
+            <p>Tips on editing project definitions:</p>
+            <ul style="list-style: disc; padding: 1em">
+                <li>Before you make any changes to your JSON configuration data, copy the whole thing and paste it somewhere as a backup and reference.</li>
+                <li>The project name must start with "NarraFirmaProject-". The rest of the project name (e.g., "Pilot Project") must be 20 characters or shorter.</li>
+                <li>For each project, list WordPress roles or user IDs in quotes, separated by commas, for each type of permission you want to specify.</li>
+                <li>To grant any type of permission to anonymous (not logged in) site visitors, add <b>true</b> (not in quotes) to any of the lists.</li>
+                <li>To create a new project, copy an existing project (or one of the examples on the left), then change the project name and field values.</li>
+                <li>To restore an archived project, change the value of its "archived" field from <b>true</b> to <b>false</b>.</li>
+                <li>If you edit your JSON configuration data and then see an error message (or a blank screen) when you open a project, come back and check your syntax.
+                Make sure all of the quotes, commas, square brackets, and curly braces are in place (in matching pairs) as in the example.
+                Note the commas <i>between</i> project definitions in the overall list; don't leave them out.</li>
+            </ul>
+        </td>
+    </tr>
+    </table>
+
         </div>
     </div>
 
@@ -221,7 +240,7 @@ class NarraFirmaSettingsPage
     }
 
     public function display_journals() {
-            printf('<textarea cols="40" rows="5" name="narrafirma_admin_settings[journals]" style="white-space: pre-wrap;">%s</textarea>',
+            printf('<textarea cols="80" rows="12" name="narrafirma_admin_settings[journals]" style="white-space: pre-wrap;resize: both;">%s</textarea>',
             isset( $this->options['journals'] ) ? esc_textarea( $this->options['journals']) : ''
         );
     }
@@ -360,8 +379,8 @@ function faiIfNotAuthorized($requestedCapability, $journalIdentifier, $topicIden
     
     // error_log("faiIfNotAuthorized '$userIdentifier' $requestedCapability $journalIdentifier '$topicIdentifier'");
     
-    // TODO: Handle errors if missing...
     $options = get_option( 'narrafirma_admin_settings' );
+    if (!$options) defaultOptions();
     $journals = json_decode( $options['journals'] );
     
     if (!isset($journals->$journalIdentifier)) {
@@ -482,16 +501,17 @@ function pointrel20150417_currentUserInformation($apiRequest) {
 	
 	$journalPermissions = array();
 	
-	// TODO: Handle errors if missing...
 	$options = get_option( 'narrafirma_admin_settings' );
+    if (!$options) defaultOptions();
 	$journals = json_decode( $options['journals'] );
 	
 	foreach($journals as $name => $permissions) {
         $admin = current_user_can( 'manage_options' );
         $write = $admin || isUserAuthorized($userID, $permissions->write);
 	    $read = $write || isUserAuthorized($userID, $permissions->read);
+        $archived = $permissions->archived;
 	    if ($read) {
-	        $journalPermissions[$name] = array("read" => $read, "write" => $write, "admin" => $admin);
+	        $journalPermissions[$name] = array("read" => $read, "write" => $write, "admin" => $admin, "archived" => $archived);
 	    }
 	}
 	
@@ -574,8 +594,8 @@ function pointrel20150417_reportJournalStatus($apiRequest) {
         
     $journalIdentifier = $apiRequest->journalIdentifier;
     
-    // TODO: Handle errors if missing...
     $options = get_option( 'narrafirma_admin_settings' );
+    if (!$options) defaultOptions();
     $journals = json_decode( $options['journals'] );
     
     if (!isset($journals->$journalIdentifier)) {
@@ -591,6 +611,7 @@ function pointrel20150417_reportJournalStatus($apiRequest) {
     $write = $admin || isUserAuthorized($userID, $permissions->write);
     $read = $write || isUserAuthorized($userID, $permissions->read);
     $survey = $write || isUserAuthorized($userID, $permissions->survey);
+    $archived = $permissions->archived;
 
     // No support for authorization only for specific topics, other than survey
     
@@ -601,6 +622,7 @@ function pointrel20150417_reportJournalStatus($apiRequest) {
             'admin' => $admin,
             'write' => $write,
             'read' => $read,
+            'archived' => $archived,
             // Added survey which NodeJS version does not have
             'survey' => $survey
         )
