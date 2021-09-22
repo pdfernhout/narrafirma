@@ -44,7 +44,7 @@ two questions, you will see only stories that match both criteria, such as for e
 <p>
 You can also use this page to &mdash; very carefully &mdash; do any of these things.
 </p>
-<ol>
+<ul>
 <li>You can correct mistakes in your entered stories.
 If you entered your stories by hand, you may have mistyped an entry; edit your mistakes here.
 </li>
@@ -59,7 +59,7 @@ To mark a story to be ignored, enter <em>any</em> text in the "Reason to ignore"
 That story will be left out of all graphs and reports, and will be visible only on this page.
 (You can sort by the "Ignore" field to see the stories you have chosen to ignore and why.)
 </li>
-</ol>
+</ul>
 <p>
 To change a story, select it in the table, click "Edit," and make your changes. Be careful!
 </p>
@@ -68,16 +68,33 @@ To change a story, select it in the table, click "Edit," and make your changes. 
 <div class="heading">Frequently-asked questions</div>
 
 <div class="question">
-Why can't I just delete stories?
+Why do I have to mark stories as ignored? Why can't I just delete them?
 </div>
 <div class="question-answer">
 <p>
-NarraFirma does not let you delete stories completely. 
-This is to avoid accidentally deleting important information.
-If you need to permanently delete a story, here's how to do it.
-Export your story collection to CSV, remove the offending story row in a spreadsheet program,
-and import the CSV file as a new story collection. 
+It's one thing to lose your own work, but losing the time and attention of the dozens or hundreds
+of people who told stories in your project is much worse. You can't get those stories back again.
+So we have designed NarraFirma to protect your stories by passing over them rather than fully deleting them from its database.
 </p>
+<p>However, you <i>can</i> permanently delete a story if you need to. Here's how.</p>
+<ol>
+	<li>Export your story collection to a CSV file.</li>
+	<li>Using a spreadsheet program, delete the row that describes the story you want to remove.</li>
+	<li>Import the changed CSV file into NarraFirma as a new story collection.</li>
+	<li>Delete the previous version of the story collection.</li>
+</ol>
+<p>This will prevent the story from appearing on the "Review incoming stories" page.</p>
+	
+<p>There is a second layer of ignoring that you may also want to bypass. A deleted story collection, like an ignored story, is not actually removed from the NarraFirma database. 
+	It is simply unmoored from the project, and it floats, disconnected, in the database. A deleted story collection can be brought back to life
+	by creating a new collection with the (exact) same name. We chose to do this, again, to prevent the accidental loss of stories.</p>
+<p>So, if you want to make sure that a story (and the story collection that holds it) does not exist anywhere in your project:</p>
+	<ol>
+		<li>Go to the "Import &amp; Export" page, under "Project administration."</li>
+		<li>Export a "project snapshot with stories" to a JSON file. This will export the project, but it will skip over any disconnected story collections in the database.</li>
+		<li>Reset the project. This will remove all of its data.</li>
+		<li>Import your saved JSON project file, choosing the option "project snapshot (with or without stories)." Now the story you removed does not exist anywhere in the project.</li>
+	</ol>
 </div>
 
 </div>
