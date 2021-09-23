@@ -119,7 +119,7 @@ class NarraFirmaSettingsPage
     To learn more about PNI, visit <a href="http://www.narrafirma.com" target="_blank">narrafirma.com</a>
     or <a href="http://www.workingwithstories.org" target="_blank">workingwithstories.org</a>.
     </p>
-    <p style="margin-bottom: 1em">
+    <p style="margin-bottom: 2em">
     Note: The NarraFirma plugin uses WordPress as an application server, 
     user authentication system, and data store. Using WordPress in this way makes NarraFirma easier to install and 
     configure. NarraFirma is not otherwise integrated with WordPress pages and runs in its own web page.
@@ -166,10 +166,10 @@ class NarraFirmaSettingsPage
             <p>Tips on editing project definitions:</p>
             <ul style="list-style: disc; padding: 1em">
                 <li>Before you make any changes to your JSON configuration data, copy the whole thing and paste it somewhere as a backup and reference.</li>
-                <li>The project name must start with "NarraFirmaProject-". The rest of the project name (e.g., "Pilot Project") must be 20 characters or shorter.</li>
+                <li>Every project name must start with "NarraFirmaProject-". The rest of the project name (e.g., "Pilot Project") must be 20 characters or shorter.</li>
                 <li>For each project, list WordPress roles or user IDs in quotes, separated by commas, for each type of permission you want to specify.</li>
                 <li>To grant any type of permission to anonymous (not logged in) site visitors, add <b>true</b> (not in quotes) to any of the lists.</li>
-                <li>To create a new project, copy an existing project (or one of the examples on the left), then change the project name and field values.</li>
+                <li>To create a new project, copy an existing project (or one of the examples on the left), then change the project's name and field values.</li>
                 <li>To restore an archived project, change the value of its "archived" field from <b>true</b> to <b>false</b>.</li>
                 <li>If you edit your JSON configuration data and then see an error message (or a blank screen) when you open a project, come back and check your syntax.
                 Make sure all of the quotes, commas, square brackets, and curly braces are in place (in matching pairs) as in the example.
@@ -562,7 +562,11 @@ function pointrel20150417_resetJournal($apiRequest) {
     }
 
     $table_name = tableNameForJournal($journalIdentifier);
-    $backup_table_name = substr($table_name, 0, 50) . "-" . strtotime("now");
+
+    // backup table name is the same, but with "b" in place of the usual "j"
+    $sanitizedJournalName = preg_replace('/[^a-zA-Z0-9_]+/', '_', $journalIdentifier);
+    $backup_table_name = $wpdb->prefix . 'narrafirma_b_' . $sanitizedJournalName;
+    $backup_table_name = strtolower($backup_table_name);
 
     $success = $wpdb->query("RENAME TABLE `$table_name` TO `$backup_table_name`");
     if ($success === false) {
