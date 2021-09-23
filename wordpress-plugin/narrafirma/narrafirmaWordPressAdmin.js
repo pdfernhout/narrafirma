@@ -19,7 +19,7 @@
         return str.replace(new RegExp(find, 'g'), replace);
     }
     
-    var NarraFirmaAdminComponent = {
+    const NarraFirmaAdminComponent = {
         controller: function(data) {
             return {
                 showJSON: false,
@@ -51,10 +51,10 @@
             const noProjectsText = "No projects yet! Create a new one."
 
             return m("div", [
-                m("h1", "Projects"), 
+                m("h1", "NarraFirma Projects"), 
                 numNonArchivedProjects ? m("p", instructionsText) : m("div"),
                 numNonArchivedProjects ? Object.keys(controller.journalDefinitions).map(function(key) { return displayJournal(controller, key);}) 
-                    : m("p", {style: 'font-weight: bold; font-style: italic;margin:1em'}, noProjectsText),
+                    : m("p", {style: 'font-weight: bold; font-style: italic; margin: 2em'}, noProjectsText),
                 m("div"), {style: "margin: 0.5em 0"}, [
                     numNonArchivedProjects ? m("button", {"style": buttonStyle, onclick: cancelChanges.bind(null, controller), disabled: isJSONUnchanged}, "Cancel changes") : "",
                     " ",
@@ -78,8 +78,8 @@
     };
 
     function anonymousAccessCheckbox(controller, journalIdentifier, journalDefinition, field) {
-        var checked = journalDefinition[field].indexOf(true) !== -1;
-        var updateAnonymousAccess = function(newCheckedValue) {
+        const checked = journalDefinition[field].indexOf(true) !== -1;
+        const updateAnonymousAccess = function(newCheckedValue) {
             if (newCheckedValue) {
                 if (journalDefinition[field].indexOf(true) === -1) {
                     journalDefinition[field].push(true);
@@ -92,25 +92,32 @@
             writeJournalDefinitionsToTextarea(controller.journalDefinitions);
         };
         const id = "narrafirma-anonymous-access-" + field;
+        let prompt = "";
+        if (field === "survey") {
+            prompt = "take the survey";
+        } else if (field === "read") {
+            prompt = "see information on project pages";
+        } else if (field === "write") {
+            prompt = "change information on project pages";
+        } 
         return m("div", {style: "margin: 0.5em 0"}, [
             m("input[type=checkbox]", {id: id, onclick: m.withAttr("checked", updateAnonymousAccess), checked: checked}),
-            m("label", {"for": id}, "Allow " + field + " access to anonymous (not logged in) site visitors"),
+            m("label", {"for": id}, "Anonymous (not logged in) site visitors can " + prompt),
         ]);
     }
 
     function permissionsEditor(controller, journalIdentifier, journalDefinition, field, message) {
-        var permissionsToDisplay = journalDefinition[field].filter(function (each) { return each !== true; });
-        var checked = journalDefinition[field].indexOf(true) !== -1;
-        const id = "narrafirma-permission-" + journalIdentifier + "-" + field;
+        const permissionsToDisplay = journalDefinition[field].filter(function (each) { return each !== true; });
+        const checked = journalDefinition[field].indexOf(true) !== -1;
         return m("div", [
             m("span", {style: "font-weight: bold"}, field.charAt(0).toUpperCase() + field.slice(1) + " access"),
-            m("label", {for: id, style: "display: block; padding: 0.5em 0"}, message),
+            m("div", {style: "display: block; padding: 0.5em 0"}, message),
             m("input[type=text]", {
-                id: id, 
-                style: "width: 80%; margin: 0.5em 0", 
+                id: "narrafirma-permission-" + journalIdentifier + "-" + field, 
+                style: "width: 90%; margin: 0.5em 0", 
                 value: permissionsToDisplay.join(" "), 
                 onchange: function (event) {
-                    var items = event.currentTarget.value.trim().split(/\s+/g);
+                    const items = event.currentTarget.value.trim().split(/\s+/g);
                     if (checked) items.push(true);
                     journalDefinition[field] = items;
                     console.log("on change", items);
@@ -144,15 +151,15 @@
         
         const tableCells = [];
         tableCells.push(m("td", {style: "padding: 1em; text-align: left; border: 1px solid gray"}, [
-            permissionsEditor(controller, journalIdentifier, journalDefinition, "survey", "These WordPress user IDs or roles can take the survey but cannot see or change information on project screens."),
+            permissionsEditor(controller, journalIdentifier, journalDefinition, "survey", "These WordPress user IDs or roles can take the survey but cannot see any project pages."),
             anonymousAccessCheckbox(controller, journalIdentifier, journalDefinition, "survey")
         ]));
         tableCells.push(m("td", {style: "padding: 1em; text-align: left; border: 1px solid gray"}, [
-            permissionsEditor(controller, journalIdentifier, journalDefinition, "read", "These WordPress user IDs or roles can see but not change information on project screens."),
+            permissionsEditor(controller, journalIdentifier, journalDefinition, "read", "These WordPress user IDs or roles can see but not change information on project pages."),
             anonymousAccessCheckbox(controller, journalIdentifier, journalDefinition, "read")
         ]));
         tableCells.push(m("td", {style: "padding: 1em; text-align: left; border: 1px solid gray"}, [
-            permissionsEditor(controller, journalIdentifier, journalDefinition, "write", "These WordPress user IDs or roles can see and change information on project screens. (Only give write access to people you trust.)"),
+            permissionsEditor(controller, journalIdentifier, journalDefinition, "write", "These WordPress user IDs or roles can see and change information on project pages. (Only give write access to people you trust.)"),
             anonymousAccessCheckbox(controller, journalIdentifier, journalDefinition, "write")
         ])); 
 
@@ -170,13 +177,13 @@
     }
     
     function newProject(controller) {
-        var newName = prompt("Please enter a short name for the new project. It must be 20 characters or shorter.");
+        const newName = prompt("Please enter a short name for the new project. It must be 20 characters or shorter.");
         if (!newName) return;
         if (newName.length > 20) {
             alert("That project name is " + newName.length + " characters long. Please try again with a name that is 20 characters or shorter.");
             return;
         }
-        var key = narrafirmaProjectPrefix + newName;
+        const key = narrafirmaProjectPrefix + newName;
         if (controller.journalDefinitions[key]) {
             if (!controller.journalDefinitions[key].hasOwnProperty("archived") || !controller.journalDefinitions[key]["archived"]) {
                 alert("A project with that name already exists.");
@@ -204,7 +211,7 @@
     
     function showJSONChecked(controller, checked) {
         controller.showJSON = checked;
-        var display = "none";
+        let display = "none";
         if (controller.showJSON) {
             display = "block";
         }
@@ -218,7 +225,7 @@
     }
     
     function readJournalDefinitionsFromTextarea() {
-        var text = journalsTextarea.value;
+        const text = journalsTextarea.value;
         console.log("readJournalDefinitionsFromTextarea", text);
         try {
             return JSON.parse(text);
@@ -244,8 +251,8 @@
         window.attachEvent('onload', startup);
     } else {
         if (window.onload) {
-            var curronload = window.onload;
-            var newonload = function() {
+            const curronload = window.onload;
+            const newonload = function() {
                 curronload();
                 startup();
             };
