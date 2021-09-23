@@ -32,17 +32,50 @@ function mannWhitneyU(x: number[], y: number[]) {
     const smallu = Math.min(u1, u2);
     
     // correction factor for tied scores
-    const T = Math.sqrt(tiecorrect(ranked));
+    // was: const T = Math.sqrt(tiecorrect(ranked));
+    // Note: in the scipy commit of Mar 26, 2009 (https://github.com/scipy/scipy/commit/e40b50ef1600c25d1a31005a71b9c148271aa8e5)
+    // the sqrt was removed. The commit says "correct tiecorrection" but does not say WHY the correction was made.
+    // In this mailing list post (https://mail.python.org/pipermail/scipy-user/2009-February/019766.html), it says:
+    // ------------------------------------------------------------------------
+    // I think there is a mistake in the tie handling of stats.mannwhitneyu
+    // In the calculation of the standard error the sqrt is taken twice.
+    // 
+    //     T = np.sqrt(tiecorrect(ranked))  # correction factor for tied scores
+    //     if T == 0:
+    //         raise ValueError, 'All numbers are identical in amannwhitneyu'
+    //     sd = np.sqrt(T*n1*n2*(n1+n2+1)/12.0)
+    // 
+    // I don't have the formulas for the tie correction, but from looking at the tie correction
+    // in Sturlas version of ranksums, it seems that the first sqrt shouldn't be there.
+    // ------------------------------------------------------------------------
+    // The post is signed by "Josef," which is the same name as the person who made the commit (probably Josef Perktold).
+    // The correction does seem to fit the calculations on the Wikipedia page:
+    // https://en.wikipedia.org/wiki/Mann%E2%80%93Whitney_U_test#Normal_approximation_and_tie_correction
+    const T = tiecorrect(ranked);
+    
     if (T === 0) {
-        throw new Error("All numbers are identical.");
+        throw new Error("Mann-Whitney U test: All numbers are identical.");
     }
-    
+
     const sd = Math.sqrt(T * n1 * n2 * (n1 + n2 + 1) / 12.0);
-    
-    // normal approximation for prob calc
-    const z = Math.abs((bigu - n1 * n2 / 2.0) / sd);
+
+    // Note: scipy has a "use_continuity" argument for the continuity correction of 0.5 in the calculation of z
+    // I think that because NF often deals with small sample sizes, 
+    // and because it has pseudo-continuous data (scale markings are integers, and they are not measurements),
+    // it is best to apply the correction in all cases rather than ask the user what they want to do for each test.
+    // However, let us keep the option (set to a constant) in case we want to offer it to users later.
+    const use_continuity = true;
+    let z;
+    if (use_continuity) {
+        // normal approximation for prob calc with continuity correction
+        z = Math.abs((bigu - 0.5 - n1 * n2 / 2.0) / sd);
+    } else {
+        // normal approximation for prob calc without continuity correction
+        z = Math.abs((bigu - n1 * n2 / 2.0) / sd);
+    }
+
     const p = 1.0 - jStat.normal.cdf(z, 0, 1);
-    
+
     return {p: p, u: smallu, n1: n1, n2: n2};
 }
 
