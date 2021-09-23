@@ -5,59 +5,8 @@ M - medium priority
 L - low priority
 W - wish list
 
------------ new to-dos for next pulse of work - summer/fall 2021
-
-GENERAL
-do:
-- replace rawgit with jsDelivr
-- docker LATEST connection
-- check possible bug related to mann whitney square root (see pull request)
-- deal with all issues raised on github
-- change nav buttons at end of page to make it clear you are going to a page, not doing a thing
-- add project nickname field user can easily change (shows on all pages, reports etc)
-- add a way to delete/archive projects/data in WP version
-consider:
-- upgrade to later node.js version?
-- upgrade to later d3 library version?
-- fix all vars?
-- cypress testing?
-- improve slow reading of large projects in WP version?
-
-COLLECTION / SURVEYING / IMPORT
-do:
-  DONE - support specified limit on how many check boxes you can check on a survey
-  DONE allow user to change colors used in survey for better accessibility
-  DONE fix mobile phone arrangement of slider (see example screenshot) where slider labels were badly wrapped
-  DONE evaluate accessibility of surveys using published standard(s)
-  DONE number to right of slider should be in tab order (enter to popup dialog) for better accessibility
-- make sure short name IDs entered by user when defining questions are unique
-- add support for multi-language surveys - for all texts, questions, answers - use delimiter plus language question
-- change so case does NOT matter in codes (question types, etc) in csv input in story form file (but first check effect on existing data)
-consider
-- implement "other" text box on choice questions? - what to do with "other" texts? generate companion text question? 
-- display images (via links) as answers (with names for graphs)?
-- display videos (via links) for survey introduction and question texts?
-- add support for uploading, storing, displaying images?
-- add support for recording, storing, playing audio stories?
-
-CATALYSIS
-do:
-  DONE - improve graph labels 
-- real time lumping using textarea specification (as with filters)
-- in help, add mention of how to set cluster order number (plus mention on clustering page itself)
-consider:
-- add theming page, where user reads each story, gives it 1-3 themes, merges themes into smaller numbers, becomes "theme" question
-- write ODT version of catalysis report
-- see if there is any way to avoid so much scrolling on the explore patterns page - tabs? split into two pages?
-
-SENSEMAKING
-do:
-- filters in print-story-cards not working correctly (how? check email from user)
-- the "eliciting question" question shows up on the story cards even when not selected (check email)
-
-probably not going to do on this pulse 
-- look at whether/how to add date/time of collection to info about stories to graph (similar to story length)
-- consider time of collection graph - this just seems to be lower priority to me
+IN NEXT RELEASE:
+- export ODT version of catalysis report
 
 =============== OLDER TODOS LIST ===================
 
@@ -68,6 +17,8 @@ BUILD
 
 VERSIONING
 M Create script or procedure to deal with SVN for WordPress' plugin archive
+M Upgrade to later node.js version
+M Upgrade to later d3 library version
 
 LOGGING
 W Think through logging in the server, perhaps using a library
@@ -86,6 +37,7 @@ W Final review of all strings in code looking for TODO translate items or simila
 TESTING
 W Unit tests
 W Continuous integration server that runs tests
+W Cypress testing
 
 SECURITY
 W Hash password when sending from client to server (not strictly needed if use ssh, and without ssh everything is potentially insecure from MITM attacks)
@@ -98,6 +50,7 @@ W Ensure timestamp for latest triple store messages is being set on server and n
 W Simplify Pointrel system further, like to not have message trace adding so PHP WordPress plugin code can be simpler and quicker
 W Simplify Pointrel system further, like to only store triples instead of general arbitrary message objects
 W Show deleted-but-not-really items as greyed-out and "archived"; allow user to bring them back, instead of being surprised when reusing a name
+W Improve slow reading of large projects in WP version
 
 QUESTIONS
 W Improve how options are specified for questions in question designer rather than use text box
@@ -203,6 +156,48 @@ M Improve reporting on startup for loading project data with some kind of progre
 M When import story form, hundreds of triples can be generated which take minutes to send to the server (with no progress feedback, even though done in background) -- may be related to console logging
 
 ==== DONE
+
+--- Release 1.5.0
+
+Added (survey): Multi-lingual surveys (partipant can choose language; choice is saved for graphing)
+Added (survey): Option to embed introductory video (streaming or mp4)
+Added (survey): Story collection date question (generated or imported)
+Added (survey): For all question types, option to allow write-in answer (for "other" answers or follow-up questions)
+Added (survey): For "select" question type, option to show full list box instead of drop-down list 
+Added (survey): For "select" question type, option to set no-choice text (e.g., "-- select --")
+Added (survey): For "boolean" question type, option to set yes/no texts
+Added (survey): For "text" question type, option to set width of textbox (in "em" units)
+Added (survey): For "radio buttons" and "check boxes" question types, option to include image links to show below answers
+
+Added (catalysis): Ability to change annotation questions while answering them (to build answer lists that emerge from reading stories)
+Added (catalysis): Templates for annotation questions
+Added (catalysis, sensemaking): Real-time display lumping (merging of similar answers) in catalysis graphs and statistics
+Added (catalysis, sensemaking): Ability to filter stories by story length
+Added (catalysis, sensemaking): Ability to filter stories by searching for specific pieces of text
+
+Added (usability): Option to set project nickname, which shows on pages and reports within project
+Added (usability): Buttons to hide or show advanced and import options for story forms and for questions
+Added (usability): Iaproved text-box widths throughout the pages, so shorter texts have shorter text boxes
+Added (usability): Added "Delete" button to remove projects in WordPress version
+Added (usability): Better explanation/labeling of cluster order in catalysis clustering
+
+Changed (catalysis): Moved annotation facility from collection to catalysis; improved annotation process
+Changed (usability): Improved process of adding questions to story forms and changing question order
+Changed (usability): Shortened length of text boxes for shorter entry fields (e.g., names, labels)
+Changed (usability): Reduced number of entry fields that appear in situations where they don't apply
+Changed (usability): Application now checks that your question short name is unique (instead of asking you to check it yourself)
+Changed (usability): Navigation buttons now say "Previous page" and "Next page" (to make it more clear that you are going to a page, not doing something)
+Changed (WordPress): Revamped WordPress launch/options page 
+Changed (stability): Changed almost all "var" variables to "const" or "let" variables
+
+Fixed (catalysis): Bug where missing custom graph size for catalysis report could result in printed graphs with zero height
+Fixed (catalysis): Bug where no-answer answers for boolean and checkbox questions were being graphed as no or false instead of no-answer
+Fixed (sensemaking): Bug where generated questions (e.g., Eliciting question) still appeared in story cards when their check boxes were unchecked
+Fixed (sensemaking): Bug where story filter with && combination did not work when printing story cards
+Fixed (usability): Issue where last few lines of home-page right-side links could pop over to bottom left
+Fixed (usability): Many small CSS element spacing awkwardnesses
+Fixed (WordPress): Changed "Delete" button (which did not work correctly) to "Archive" button; explained archiving more clearly
+Fixed (statistics): Updated Mann-Whitney U test for two improvements in scipy code from which it was derived
 
 --- Release 1.4.2 
 
