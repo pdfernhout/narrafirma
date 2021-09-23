@@ -120,9 +120,9 @@ class NarraFirmaSettingsPage
     or <a href="http://www.workingwithstories.org" target="_blank">workingwithstories.org</a>.
     </p>
     <p style="margin-bottom: 1em">
-    <i>The NarraFirma plugin uses WordPress as an application server, 
+    Note: The NarraFirma plugin uses WordPress as an application server, 
     user authentication system, and data store. Using WordPress in this way makes NarraFirma easier to install and 
-    configure. NarraFirma is not otherwise integrated with WordPress pages and runs in its own web page.</i>
+    configure. NarraFirma is not otherwise integrated with WordPress pages and runs in its own web page.
     </p>
     <h2 style="text-align: center"><a style="border: 1px solid gray; text-decoration: none; background: #ffbb84; color: black; padding: 0.5em 1.5em;" href="<?php echo $launchLink; ?>" target="_blank">Start NarraFirma</a></h2>
     

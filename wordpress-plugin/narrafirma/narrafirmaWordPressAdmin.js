@@ -37,27 +37,34 @@
             }
                 
             const buttonStyle = "font-size: 1.2em; background: #ffbb84; padding: 0.3em; margin-bottom: 0.5em";
+            let numNonArchivedProjects = 0;
+            const keys = Object.keys(controller.journalDefinitions);
+            keys.forEach((key) => {
+                const definition = controller.journalDefinitions[key];
+                if (!definition.hasOwnProperty("archived") || !definition.archived) {
+                    numNonArchivedProjects++;
+                }
+            });
+
+            const instructionsText = `To specify project permissions, enter one or more space-separated WordPress user IDs (e.g. samsmith) or 
+                roles (e.g. administrator, editor, author, contributor, subscriber) in the boxes below.`
+            const noProjectsText = "No projects yet! Create a new one."
+
             return m("div", [
                 m("h1", "Projects"), 
-                m("p", `To specify project permissions, enter one or more space-separated WordPress user IDs (e.g. samsmith) or 
-                    roles (e.g. administrator, editor, author, contributor, subscriber) in the boxes below.`),
-                Object.keys(controller.journalDefinitions).length ? 
-                Object.keys(controller.journalDefinitions).map(function(journalIdentifier) {
-                    const definition = controller.journalDefinitions[journalIdentifier];
-                    if (!definition.hasOwnProperty("archived") || !definition.archived) {
-                        return displayJournal(controller, journalIdentifier);
-                    }
-                }) : m("p[style='font-weight: bold; font-style: italic;']", "No projects yet! Create a new one."),
+                numNonArchivedProjects ? m("p", instructionsText) : m("div"),
+                numNonArchivedProjects ? Object.keys(controller.journalDefinitions).map(function(key) { return displayJournal(controller, key);}) 
+                    : m("p", {style: 'font-weight: bold; font-style: italic;margin:1em'}, noProjectsText),
                 m("div"), {style: "margin: 0.5em 0"}, [
-                    m("button", {"style": buttonStyle, onclick: cancelChanges.bind(null, controller), disabled: isJSONUnchanged}, "Cancel changes"),
+                    numNonArchivedProjects ? m("button", {"style": buttonStyle, onclick: cancelChanges.bind(null, controller), disabled: isJSONUnchanged}, "Cancel changes") : "",
                     " ",
-                    m("button", {"style": buttonStyle, onclick: saveChanges.bind(null, controller), disabled: isJSONUnchanged}, "Save changes"),
+                    numNonArchivedProjects ? m("button", {"style": buttonStyle, onclick: saveChanges.bind(null, controller), disabled: isJSONUnchanged}, "Save changes") : "",
                     " ",
                     m("button", {"style": buttonStyle, onclick: newProject.bind(null, controller)}, "Create New Project"),
                 ],
-                m("div", `New projects and changes to permissions are not saved until you click the \"Save changes\" button.`),
-                m("div", {style: 'margin-top: 1em;'}, [
-                    m("hr", {style: "border-top: 2px solid gray"}),
+                numNonArchivedProjects ? m("div", `New projects (and changes to permissions) are not saved until you click the \"Save changes\" button.`) : m("div"),
+                m("div", [
+                    m("hr", {style: "border-top: 3px solid gray; margin-top: 1.5em; margin-bottom: 1em"}),
                     m("input[type=checkbox]", {
                             style: 'margin-left:0.5em', 
                             id: "narrafirma-displayJSON", 
@@ -115,6 +122,7 @@
 
     function displayJournal(controller, journalIdentifier) {
         const journalDefinition = controller.journalDefinitions[journalIdentifier];
+        if (journalDefinition.hasOwnProperty("archived") && journalDefinition.archived) return m("div");
         const projectShortName = journalIdentifier.substring(narrafirmaProjectPrefix.length);
 
         const archiveProject = function(event) {
