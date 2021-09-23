@@ -43,7 +43,7 @@ const panel: Panel = {
             valuePath: "/clientState/storyFormIdentifier/questionForm_languageChoiceQuestion_text",
             valueType: "string",
             displayType: "text",
-            displayConfiguration: "60",
+            displayConfiguration: "80",
             displayName: "Language choice question text",
             displayPrompt: "Enter a question participants will answer to <strong>choose a language</strong> in which to view the story form.",
             displayVisible: function(panelBuilder, model) { return !!Globals.clientState().storyFormIdentifier(); }

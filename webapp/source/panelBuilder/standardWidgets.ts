@@ -159,7 +159,7 @@ export function displayQuestion(panelBuilder: PanelBuilder, model, fieldSpecific
 
         const lengthAsNumber = Number(fieldSpecification.displayConfiguration);
         if (!isNaN(lengthAsNumber)) {
-            standardValueOptions["style"] = "width: " + lengthAsNumber + "em";
+            standardValueOptions["style"] = "width: " + lengthAsNumber + "%";
         }
         return [m("input[class=narrafirma-textbox]", standardValueOptions), m("br")];
     }

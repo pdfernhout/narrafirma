@@ -131,12 +131,10 @@ const panel: Panel = {
         {
             id: "participantQuestion_textBoxLength",
             valueType: "string",
-            valueOptions: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", 
-                "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32", "33", "34", "35", "36", "37", "38", "39", 
-                "40", "41", "42", "43", "44", "45", "46", "47", "48", "49", "50", "51", "52", "53", "54", "55", "56", "57", "58", "59", "60"],
+            valueOptions: ["5", "10", "15", "20", "25", "30", "35", "40", "45", "50", "55", "60", "65", "70", "75", "80", "85", "90", "95", "100"],
             displayType: "select",
             displayName: "Text box length",
-            displayPrompt: `<strong>How long</strong> do you want this text box to be, in "em" units? (An "em" is the width of a capital "M.") Leave blank for a long text box. 
+            displayPrompt: `<strong>How long</strong> do you want this text box to be, in percentage units? Leave blank for a long text box. 
                 (Note that this option only specifies the length of the text box on the screen. It does not limit the number of characters participants can enter.)`,
             displayVisible: function(panelBuilder, model) { return matchQuestionType(model, ["text"]) && !!Globals.clientState().showAdvancedOptions(); }
         },
@@ -157,7 +155,7 @@ const panel: Panel = {
             displayConfiguration: "20",
             displayName: "Write-in answer label",
             displayPrompt: `If you want participants to be able to append an extra <strong>write-in answer</strong> for this question,
-                enter a label for the write-in text box here.`,
+                enter a label for the write-in text box here. (To display a multi-line text area, start the label with two asterisks.)`,
             displayVisible: function(panelBuilder, model) { return matchQuestionType(model, ["boolean", "checkbox", "checkboxes", "text", "textarea", "select", "radiobuttons", "slider"]) && !!Globals.clientState().showAdvancedOptions(); }
         },
         {
