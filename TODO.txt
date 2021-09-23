@@ -166,7 +166,7 @@ Added (survey): For all question types, option to allow write-in answer (for "ot
 Added (survey): For "select" question type, option to show full list box instead of drop-down list 
 Added (survey): For "select" question type, option to set no-choice text (e.g., "-- select --")
 Added (survey): For "boolean" question type, option to set yes/no texts
-Added (survey): For "text" question type, option to set width of textbox (in "em" units)
+Added (survey): For "text" question type, option to set width of textbox (in percentage units)
 Added (survey): For "radio buttons" and "check boxes" question types, option to include image links to show below answers
 
 Added (catalysis): Ability to change annotation questions while answering them (to build answer lists that emerge from reading stories)
