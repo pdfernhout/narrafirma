@@ -768,6 +768,7 @@ table.narrafirma-translation-dictionary {
     border-collapse: collapse;
     table-layout: auto;
     margin-left: 2em;
+    width: 95%;
 }
 
 td.narrafirma-translation-language {
@@ -778,16 +779,17 @@ td.narrafirma-translation-language {
 
 td.narrafirma-translation-textbox {
     text-align: left;
+    width: 95%;
 }
 
 input[type=text].narrafirma-translation-textbox {
     margin: 0.25em 0.25em 0.5em 0.25em;
-    width: 70em;
+    width: 95%;
 }
 
 textarea.narrafirma-translation-textbox {
     margin: 0.25em 0.25em 0.5em 0.25em;
-    width: 70em;
+    width: 95%;
     resize: vertical;
 }
 
