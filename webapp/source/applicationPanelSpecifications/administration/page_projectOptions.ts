@@ -15,12 +15,12 @@ const panel: Panel = {
             id: "projectOptions_projectNickname",
             valueType: "string",
             displayType: "text",
-            displayConfiguration: "20",
+            displayConfiguration: "40",
             displayName: "Nickname",
             displayPrompt: `Enter a <strong>project nickname</strong> you want to appear on within-the-project pages and reports.
-                (Note that the project's real name will still appear in several places: 
-                in your browser's address bar and development console, in the list of projects you see before you open the project, in any exported files, and in the project's stored files.
-                If you want to change this project's actual name, export its full history, create a new project with a new name,
+                (The project's real name will still appear in your browser's address bar and development console, 
+                in the list of projects you see before you open the project, in any exported files, and in the project's stored files.
+                If you want to change this project's actual name, export its full history, create a new project with a different name,
                 and import the project file to that empty project.)`
         },
 
