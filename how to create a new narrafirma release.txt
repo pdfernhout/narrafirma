@@ -106,7 +106,8 @@ G1. In the VSC terminal, type
 
     git tag
 
-This will show you all the previous tags.
+This will show you all the previous tags. (To get out of the context
+in which the tags are shown, type Q.)
 
 G2. Create a git tag, with a command like this:
 
