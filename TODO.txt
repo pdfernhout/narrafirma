@@ -176,10 +176,10 @@ Added (catalysis, sensemaking): Ability to filter stories by story length
 Added (catalysis, sensemaking): Ability to filter stories by searching for specific pieces of text
 
 Added (usability): Option to set project nickname, which shows on pages and reports within project
-Added (usability): Buttons to hide or show advanced and import options for story forms and for questions
+Added (usability): Buttons to hide or show advanced and import options for questions, story forms, observations
 Added (usability): Improved text-box widths throughout the pages, so shorter texts have shorter text boxes
 Added (usability): Better explanation/labeling of cluster order in catalysis clustering
-Added (WordPress): Ability to "archive" (hide) projects
+Added (usability): Ability to "archive" (hide) WordPress projects
 
 Changed (catalysis): Moved annotation facility from collection to catalysis; improved annotation process
 Changed (usability): Added "choosers" to improve process of adding questions to story forms and changing question order
@@ -187,7 +187,7 @@ Changed (usability): Shortened length of text boxes for shorter entry fields (e.
 Changed (usability): Reduced number of entry fields that appear in situations where they don't apply
 Changed (usability): Application now checks that your question short name is unique (instead of asking you to check it yourself)
 Changed (usability): Navigation buttons now say "Previous page" and "Next page" (to make it more clear that you are going to a page, not doing something)
-Changed (WordPress): Revamped WordPress launch/options page 
+Changed (usability): Revamped WordPress launch/options page 
 Changed (stability): Changed almost all "var" variables to "const" or "let" variables
 
 Fixed (catalysis): Bug where missing custom graph size for catalysis report could result in printed graphs with zero height
@@ -196,7 +196,8 @@ Fixed (sensemaking): Bug where generated questions (e.g., Eliciting question) st
 Fixed (sensemaking): Bug where story filter with && combination did not work when printing story cards
 Fixed (usability): Issue where last few lines of home-page right-side links could pop over to bottom left
 Fixed (usability): Many small CSS element spacing awkwardnesses
-Fixed (statistics): Updated Mann-Whitney U test for two improvements in scipy code from which it was derived
+Fixed (stability): Bug where application did not load under WordPress when installed on Bedrock server
+Fixed (stability): Updated Mann-Whitney U test for two improvements in scipy code from which it was derived
 
 --- Release 1.4.2 
 

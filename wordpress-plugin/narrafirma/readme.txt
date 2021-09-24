@@ -7,9 +7,9 @@ Author URI: http://www.cfkurtz.com
 Author: Cynthia Kurtz and Paul Fernhout
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=DGVVDT2D49QA8
 Requires at least: 4.3.1
-Tested up to: 5.8.0
+Tested up to: 5.8.1
 Stable tag: trunk
-Version: 1.4.2
+Version: 1.5.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -105,6 +105,48 @@ We strongly suggest that you set up any web site on which you intend to install 
 12. Here the NarraFirma user is reflecting on the entire project, to learn from it and to keep good records for the future.
 
 == Changelog ==
+
+= 1.5.0 =
+
+Added (survey): Multi-lingual surveys (partipant can choose language; choice is saved for graphing)
+Added (survey): Option to embed introductory video (streaming or mp4)
+Added (survey): Story collection date question (generated or imported)
+Added (survey): For all question types, option to allow write-in answer (for "other" answers or follow-up questions)
+Added (survey): For "select" question type, option to show full list box instead of drop-down list 
+Added (survey): For "select" question type, option to set no-choice text (e.g., "-- select --")
+Added (survey): For "boolean" question type, option to set yes/no texts
+Added (survey): For "text" question type, option to set width of textbox (in percentage units)
+Added (survey): For "radio buttons" and "check boxes" question types, option to include image links to show below answers
+
+Added (catalysis): Ability to change annotation questions while answering them (to build answer lists that emerge from reading stories)
+Added (catalysis): Templates for annotation questions
+Added (catalysis, sensemaking): Real-time display lumping (merging of similar answers) in catalysis graphs and statistics
+Added (catalysis, sensemaking): Ability to filter stories by story length
+Added (catalysis, sensemaking): Ability to filter stories by searching for specific pieces of text
+
+Added (usability): Option to set project nickname, which shows on pages and reports within project
+Added (usability): Buttons to hide or show advanced and import options for questions, story forms, observations
+Added (usability): Improved text-box widths throughout the pages, so shorter texts have shorter text boxes
+Added (usability): Better explanation/labeling of cluster order in catalysis clustering
+Added (usability): Ability to "archive" (hide) WordPress projects
+
+Changed (catalysis): Moved annotation facility from collection to catalysis; improved annotation process
+Changed (usability): Added "choosers" to improve process of adding questions to story forms and changing question order
+Changed (usability): Shortened length of text boxes for shorter entry fields (e.g., names, labels)
+Changed (usability): Reduced number of entry fields that appear in situations where they don't apply
+Changed (usability): Application now checks that your question short name is unique (instead of asking you to check it yourself)
+Changed (usability): Navigation buttons now say "Previous page" and "Next page" (to make it more clear that you are going to a page, not doing something)
+Changed (usability): Revamped WordPress launch/options page 
+Changed (stability): Changed almost all "var" variables to "const" or "let" variables
+
+Fixed (catalysis): Bug where missing custom graph size for catalysis report could result in printed graphs with zero height
+Fixed (catalysis): Bug where no-answer answers for boolean and checkbox questions were being graphed as no or false instead of no-answer
+Fixed (sensemaking): Bug where generated questions (e.g., Eliciting question) still appeared in story cards when their check boxes were unchecked
+Fixed (sensemaking): Bug where story filter with && combination did not work when printing story cards
+Fixed (usability): Issue where last few lines of home-page right-side links could pop over to bottom left
+Fixed (usability): Many small CSS element spacing awkwardnesses
+Fixed (stability): Bug where application did not load under WordPress when installed on Bedrock server
+Fixed (stability): Updated Mann-Whitney U test for two improvements in scipy code from which it was derived
 
 = 1.4.2 =
 
@@ -450,6 +492,9 @@ loading application, getting user information, or retrieving project data.
 change logs, see the [GitHub repository](https://github.com/pdfernhout/narrafirma).
 
 == Upgrade Notice ==
+
+= 1.5.0 =
+This major upgrade adds new features for surveying (e.g., write-in answers, multi-lingual surveys) and catalysis (e.g., display lumping, better support for qualitative analysis).
 
 = 1.4.2 =
 This minor upgrade makes some usability changes, improves survey usability and accessibility, and fixes a few small bugs. 
