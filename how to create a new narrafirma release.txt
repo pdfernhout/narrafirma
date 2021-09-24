@@ -210,7 +210,7 @@ WINDOW 2: Navigate to NarraFirma/wordpress plugin/release zips. If there is an u
 
 WINDOW 3: Navigate to Workspace/narrafirma-wp/trunk.
 
-Copy the narrafirma.zip file from the distribution folder (WINDOW 1) to the "release zips" folder (WINDOW 3). Unzip it in place. (This folder is temporary. You can delete it later.)
+Copy the narrafirma.zip file from the distribution folder (WINDOW 1) to the "release zips" folder (WINDOW 2). Unzip it in place. (This folder is temporary. You can delete it later.)
 
 I4. Copy the unzipped folder's contents (BUT NOT the "assets" folder) to
 Workspace/narrafirma-wp/trunk (WINDOW 3). Choose "Replace" and "Apply to all" so all of the files are replaced with new versions.
@@ -231,7 +231,7 @@ If any new files have been added, they will have a ? to the left of their names 
 
     svn add <file name>
 
-for each new file. Copy the file name from the "svn status" output.
+for each new file. Copy the file name from the "svn status" output (the whole thing, starting with "trunk").
 
 Any new file added to the project has to be handled
 this way. DO NOT LEAVE NEW FILES OUT OF THE RELEASE!!! Any files with a question mark will not be added to the WordPress version of the code, and the plugin will falter when that code is accessed. (Never mind how I know that.)
