@@ -157,6 +157,10 @@ M When import story form, hundreds of triples can be generated which take minute
 
 ==== DONE
 
+--- Release 1.5.1
+
+Fixed: Bug where catalysis report graphs did not print (list comparison was set backwards, sorry)
+
 --- Release 1.5.0
 
 Added (survey): Multi-lingual surveys (partipant can choose language; choice is saved for graphing)

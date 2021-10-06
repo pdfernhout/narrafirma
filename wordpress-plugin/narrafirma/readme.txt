@@ -9,7 +9,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Requires at least: 4.3.1
 Tested up to: 5.8.1
 Stable tag: trunk
-Version: 1.5.0
+Version: 1.5.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -105,6 +105,10 @@ We strongly suggest that you set up any web site on which you intend to install 
 12. Here the NarraFirma user is reflecting on the entire project, to learn from it and to keep good records for the future.
 
 == Changelog ==
+
+= 1.5.1 = 
+
+Fixed: Bug where catalysis report graphs did not print (list comparison was set backwards, sorry)
 
 = 1.5.0 =
 
@@ -492,6 +496,9 @@ loading application, getting user information, or retrieving project data.
 change logs, see the [GitHub repository](https://github.com/pdfernhout/narrafirma).
 
 == Upgrade Notice ==
+
+= 1.5.1 = 
+This minor upgrade fixes one tiny but important bug (catalysis report graphs did not print).
 
 = 1.5.0 =
 This major upgrade adds new features for surveying (e.g., write-in answers, multi-lingual surveys) and catalysis (e.g., display lumping, better support for qualitative analysis).
