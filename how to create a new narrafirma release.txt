@@ -15,6 +15,8 @@ In Visual Studio Code (VSC), search on the old version number in all files (*.*)
 replace the old with the new version number. Make sure it is changed in
 narrafirma.php and package.JSON.
 
+DO NOT FORGET TO CHANGE package.JSON. You did that once.
+
 ====================================================================
 B. Update to-do list
 ====================================================================
