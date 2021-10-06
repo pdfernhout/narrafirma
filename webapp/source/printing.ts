@@ -927,7 +927,7 @@ function printObservation(observationID, observationIndex, clusterIndex, idTagSt
     resultItems.push(m("div.narrafirma-catalysis-report-observation-description", printText(observation.observationDescription)));
 
     let selectionCallback;
-    if (graphTypesThatDontGetPrinted.indexOf(observation.pattern.graphType) < 0) {
+    if (graphTypesThatDontGetPrinted.indexOf(observation.pattern.graphType) >= 0) {
         resultItems.push(printReturnAndBlankLine());
     } else {
         const pattern = observation.pattern;
