@@ -183,8 +183,15 @@ class PointrelClient {
             if (httpRequest.readyState === 4) {
                 if (httpRequest.status >= 200 && httpRequest.status < 300) {
                     if (successCallback) {
-                        const response = JSON.parse(httpRequest.responseText);
-                        successCallback(response);
+                        try {
+                            const response = JSON.parse(httpRequest.responseText);
+                            successCallback(response);
+                        } catch(error) {
+                            const message = 'Error: Unexpected XMLHttpRequest.responseText (should be JSON format):\n\n' + httpRequest.responseText;
+                            console.error(message);
+                            alert(message);
+                            errorCallback({status: httpRequest.status, message: httpRequest.responseText});
+                        }
                     }
                 } else {
                     // TODO: Might these sometimes be JSON?
