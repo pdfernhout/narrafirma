@@ -217,6 +217,8 @@ Copy the narrafirma.zip file from the distribution folder (WINDOW 1) to the "rel
 I4. Copy the unzipped folder's contents (BUT NOT the "assets" folder) to
 Workspace/narrafirma-wp/trunk (WINDOW 3). Choose "Replace" and "Apply to all" so all of the files are replaced with new versions.
 
+NOW CLOSE WINDOW 3. You don't need it anymore, and it will cause problems later if you leave it open.
+
 I4a. Go back to the VSC terminal and type:
 
     svn update
@@ -241,7 +243,16 @@ this way. DO NOT LEAVE NEW FILES OUT OF THE RELEASE!!! Any files with a question
 Check that every file has either an "M" or an "A" in front of it. 
 No files should have question mark in front of them.
 
-I5. Go back to the terminal view in VSC (looking at narrafirma-wp) and remove
+I4c. Check for removed files
+
+If "svn update" shows you files that have been "restored" because they exist locally but not on the WordPress SVN repository,
+you need to remove them from there. Type
+
+    svn delete <file name>
+
+for each "restored" file.
+
+I5. Still in the terminal view in VSC (looking at narrafirma-wp), remove
 all .DS_Store files from the narrafirma-wp folder. Type
 
     find . -name ".DS_Store" -type f -delete
