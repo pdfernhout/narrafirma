@@ -475,7 +475,7 @@ function displayQuestion(builder, model, fieldSpecification, storyForm) {
         const writeInDivParts = [
             m("span.narrafirma-survey-write-in-prompt"), addAllowedHTMLToPrompt(tr(label)),
             m(mString, {
-                id: getIdForText(fieldSpecification.id) + "_input",
+                id: getIdForText(fieldID + "_writeIn"),
                 value: model[writeInTag + fieldSpecification.id] || "", 
                 onchange: function(event) { 
                     if (event && event.target.value) {
