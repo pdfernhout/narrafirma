@@ -5,9 +5,6 @@ M - medium priority
 L - low priority
 W - wish list
 
-IN NEXT RELEASE:
-- export ODT version of catalysis report
-
 =============== OLDER TODOS LIST ===================
 
 ------------- Infrastructure -------------
@@ -156,6 +153,12 @@ M Improve reporting on startup for loading project data with some kind of progre
 M When import story form, hundreds of triples can be generated which take minutes to send to the server (with no progress feedback, even though done in background) -- may be related to console logging
 
 ==== DONE
+
+--- Release 1.5.2
+
+Changed: Improved usability of clustering interface (used in planning and catalysis)
+Fixed: Improved error message when JSON was expected but HTML was received (the HTML could be an error message; now it is shown)
+Fixed: Small (probably invisible) bug where id for write-in fields was not given story id prefix
 
 --- Release 1.5.1
 

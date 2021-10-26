@@ -9,7 +9,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Requires at least: 4.3.1
 Tested up to: 5.8.1
 Stable tag: trunk
-Version: 1.5.1
+Version: 1.5.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -105,6 +105,12 @@ We strongly suggest that you set up any web site on which you intend to install 
 12. Here the NarraFirma user is reflecting on the entire project, to learn from it and to keep good records for the future.
 
 == Changelog ==
+
+= 1.5.2 = 
+
+Changed: Improved usability of clustering interface (used in planning and catalysis)
+Fixed: Improved error message when JSON was expected but HTML was received (the HTML could be an error message; now it is shown)
+Fixed: Small (probably invisible) bug where id for write-in fields was not given story id prefix
 
 = 1.5.1 = 
 
@@ -496,6 +502,9 @@ loading application, getting user information, or retrieving project data.
 change logs, see the [GitHub repository](https://github.com/pdfernhout/narrafirma).
 
 == Upgrade Notice ==
+
+= 1.5.2 =
+This minor upgrade makes the clustering process (used in planning and catalysis) a little easier. It also fixes a few small bugs.
 
 = 1.5.1 = 
 This minor upgrade fixes one tiny but important bug (catalysis report graphs did not print).
