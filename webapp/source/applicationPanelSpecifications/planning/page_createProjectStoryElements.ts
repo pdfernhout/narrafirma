@@ -63,7 +63,7 @@ const panel: Panel = {
             valueType: "none",
             displayType: "label",
             displayPrompt: `
-                <b>3</b>. When you have considered all of your project stories,
+                <b>4</b>. When you have considered all of your project stories,
                 press the button below to copy the new items to the next clustering diagram. 
             `
         },        
@@ -79,9 +79,9 @@ const panel: Panel = {
             valueType: "object",
             displayType: "clusteringDiagram",
             displayPrompt: `
-                <b>4</b>. Now <b>cluster</b> your answers together. 
+                <b>5</b>. Now <b>cluster</b> your answers together. 
                 Drag the circles to place like with like.<br> 
-                <b>5</b>. Give each cluster of answers a <b>name</b>. 
+                <b>6</b>. Give each cluster of answers a <b>name</b>. 
                 Click the <b>New cluster</b> button to represent each answer cluster name on the diagram.
             `
         },
@@ -90,7 +90,7 @@ const panel: Panel = {
            valueType: "none",
             displayType: "label",
             displayPrompt: `
-                <b>6</b>. Press the button below to copy the answer cluster names to the next clustering diagram. 
+                <b>7</b>. Press the button below to copy the answer cluster names to the next clustering diagram. 
             `
         },        
         {
@@ -105,7 +105,7 @@ const panel: Panel = {
             valueType: "object",
             displayType: "clusteringDiagram",
             displayPrompt: `
-                <b>7</b>. Describe each cluster by adding <b>attributes</b> to it as new items. 
+                <b>8</b>. Describe each cluster by adding <b>attributes</b> to it as new items. 
                 Ask yourself: What is good and bad about this cluster? What helps you, and what works against you? 
                 Where is the opportunity, and where is the challenge? Create at least two positive and two negative 
                 attributes for each cluster. (If you can't think of both positive and negative attributes, keep trying. 
@@ -117,7 +117,7 @@ const panel: Panel = {
             valueType: "none",
             displayType: "label",
             displayPrompt: `
-                <b>8</b>. Press the button below to copy the new attribute items to the next clustering diagram. 
+                <b>9</b>. Press the button below to copy the new attribute items to the next clustering diagram. 
             `
         },        
         {
@@ -132,8 +132,8 @@ const panel: Panel = {
             valueType: "object",
             displayType: "clusteringDiagram",
             displayPrompt: `
-                <b>9</b>. <b>Rearrange</b> the attributes into <em>new</em> clusters, placing like with like as you did before.<br>
-                <b>10</b>. <b>Create new clusters</b> with new names and descriptions. These are your story elements.
+                <b>10</b>. <b>Rearrange</b> the attributes into <em>new</em> clusters, placing like with like as you did before.<br>
+                <b>11</b>. <b>Create new clusters</b> with new names and descriptions. These are your story elements.
             `
         }
     ]
