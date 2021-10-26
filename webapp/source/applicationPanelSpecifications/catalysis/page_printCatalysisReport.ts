@@ -16,8 +16,7 @@ const panel: Panel = {
                 On this page you can print a <strong>catalysis report</strong>.
                 You can organize the report by the
                 <strong>perspectives</strong> (clusters of interpretations) or <strong>themes</strong> (clusters of observations)
-                you created on the previous page.
-                The report can also include an introduction and other optional elements.
+                you created on the previous page. The report can also include an introduction and other optional elements.
                 `
         },
         {
@@ -64,17 +63,6 @@ const panel: Panel = {
             }
         },   
         {
-            id: "catalysisReportPrint_includeObservationsWithNoInterpretations",
-            valuePath: "/clientState/catalysisReportIdentifier/catalysisReportPrint_includeObservationsWithNoInterpretations",
-            valueType: "boolean",
-            displayType: "checkbox",
-            displayConfiguration: "Include observations with no interpretations",
-            displayPrompt: "Do you want to include observations that have <strong>no interpretations</strong> associated with them?",
-            displayVisible: function(panelBuilder, model) {
-                return !!Globals.clientState().catalysisReportIdentifier();
-            }
-        }, 
-        {
             id: "catalysisReportPrint_printButton",
             valuePath: "/clientState/catalysisReportName",
             valueType: "none",
@@ -111,7 +99,18 @@ const panel: Panel = {
             displayVisible: function(panelBuilder, model) {
                 return !!Globals.clientState().haveCatalysisReportAndShowingAdvancedOptions();
             }
-        },        
+        },    
+        {
+            id: "catalysisReportPrint_includeObservationsWithNoInterpretations",
+            valuePath: "/clientState/catalysisReportIdentifier/catalysisReportPrint_includeObservationsWithNoInterpretations",
+            valueType: "boolean",
+            displayType: "checkbox",
+            displayConfiguration: "Include observations with no interpretations",
+            displayPrompt: "Do you want to include observations that have <strong>no interpretations</strong> associated with them?",
+            displayVisible: function(panelBuilder, model) {
+                return !!Globals.clientState().haveCatalysisReportAndShowingAdvancedOptions();
+            }
+        },     
         {
             id: "configureCatalysisReport_showStatsPanelsInReport",
             valueType: "boolean",
