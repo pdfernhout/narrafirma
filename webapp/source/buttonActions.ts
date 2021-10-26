@@ -439,9 +439,11 @@ export function copyInterpretationsToClusteringDiagram() {
                 }
                 if (item.strength === undefined || item.bodyColor === undefined || newStrength != item.strength) {
                     item.strength = newStrength;
-                    ClusteringDiagram.setItemColorBasedOnStrength(item, newStrength);
                     itemChanged = true;
                 }
+                // recalculate item color even if strength is unchanged, because unassigned-strength color was changed in NF 1.5.2
+                // in older versions the color was too dark (not enough contrast)
+                ClusteringDiagram.setItemColorBasedOnStrength(item, item.strength);
                 if (item.notesExtra === undefined || newNotesExtra === null || newNotesExtra != item.notesExtra) {
                     item.notesExtra = newNotesExtra;
                     itemChanged = true;
@@ -480,7 +482,7 @@ export function copyInterpretationsToClusteringDiagram() {
 
     project.tripleStore.addTriple(catalysisReportIdentifier, "interpretationsClusteringDiagram", clusteringDiagram);
     if (addedItemCount === 0 && updatedItemCount === 0) {
-        toaster.toast("The clustering surface is up to date.");
+        toaster.toast("The clustering space is up to date.");
     } else {
         toaster.toast("Added " + addedItemCount + " interpretations and updated " + updatedItemCount +  " interpretations in the clustering surface.");
     }
@@ -546,9 +548,11 @@ export function copyObservationsToClusteringDiagram() {
                 }
                 if (item.strength === undefined || item.bodyColor === undefined || newStrength != item.strength) {
                     item.strength = newStrength;
-                    ClusteringDiagram.setItemColorBasedOnStrength(item, newStrength);
                     itemChanged = true;
                 }
+                // recalculate item color even if strength is unchanged, because unassigned-strength color was changed in NF 1.5.2
+                // in older versions the color was too dark (not enough contrast)
+                ClusteringDiagram.setItemColorBasedOnStrength(item, item.strength);
                 if (itemChanged) updatedItemCount++;
             }
         }

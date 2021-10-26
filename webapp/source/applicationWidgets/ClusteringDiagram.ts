@@ -79,10 +79,12 @@ function forEach(theArray, theFunction) {
 
 class ClusteringDiagram {
     model: ClusteringDiagramModel = null;
+    project = Globals.project();
     
     mainButtons = [];
     
     configuration: string;
+    useContext: string;
     storageFunction: Function;
     autosave: boolean = false;
     lastSelectedItem: ClusteringDiagramItem  = null;
@@ -92,11 +94,14 @@ class ClusteringDiagram {
     itemToDisplayObjectMap: {key: string; element: d3.Selection<any>} = <any>{};
     
     d3DivForResizing: d3.Selection<any> = null;
+    doThingsSelectID = generateRandomUuid("doThingsSelect_");
     background = null;
     showStrengthColors = true;
 
     selectionRect = null;
     selectionRectUUID = generateRandomUuid("selectionRect_");
+    parentChildLinesGroup = null;
+    parentChildLinesUUID = generateRandomUuid("parentChildLines_");
     selectedItems = [];
     rubberBanding = false;
     shiftKeyIsBeingHeldDownWhileRubberBanding = false;
@@ -112,7 +117,9 @@ class ClusteringDiagram {
     surfaceWidthBeingEdited = 0;
     surfaceHeightBeingEdited = 0;
 
-    static defaultItemBodyColor = "#abb6ce"; 
+    showReorderDialog = false;
+
+    static defaultItemBodyColor = "#bcbcbc"; 
     static defaultClusterBodyColor = "#84c8ff";
     static defaultBorderColor = "black";
     static defaultBorderWidth = 1;
@@ -178,13 +185,8 @@ class ClusteringDiagram {
         const result = [];
         if (!clusteringDiagram) return result;
         
-        const clusters = clusteringDiagram.items.filter(function (item) {
-            return item.type === "cluster";
-        });
-        
-        const items = clusteringDiagram.items.filter(function (item) {
-            return item.type === "item";
-        });
+        const clusters = clusteringDiagram.items.filter(function (item) { return item.type === "cluster"; });
+        const items = clusteringDiagram.items.filter(function (item) { return item.type === "item"; });
         
         items.forEach((item) => {
             item.clusterDistance = Number.MAX_VALUE;
@@ -213,7 +215,7 @@ class ClusteringDiagram {
     static itemColor_strong = "#ff9138";
     static itemColor_medium = "#ffbb84";
     static itemColor_weak = "#ffe5d1";
-    static itemColor_unassigned = "#979696";
+    static itemColor_unassigned = "#bcbcbc";
 
     static setItemColorBasedOnStrength(item: ClusteringDiagramItem, strength: string) {
         switch (strength) {
@@ -237,13 +239,14 @@ class ClusteringDiagram {
     
     constructor(configuration: string, storageFunction: Function, autosave) {
         this.configuration = configuration;
+        this.useContext = (this.configuration === "interpretations" || this.configuration === "observations") ? "catalysis" : "planning";
         this.storageFunction = storageFunction; 
         this.autosave = autosave;
         this.model = storageFunction();
         if (!this.model) {
             this.model = ClusteringDiagram.newDiagramModel();
         }
-        this.setupMainButtons();
+        this.setupOptionsAndButtons();
         this.setupMainSurface();
     }
     
@@ -334,132 +337,42 @@ class ClusteringDiagram {
         });
         
         this.background.call(drag);
-        
-        this.mainSurface = this._mainSurface.append('g')
-            .attr('class', 'mainSurface');
-        
-        this.selectionRect = this.mainSurface.append('rect')
-            .attr('class', this.selectionRectUUID);
-
+        this.mainSurface = this._mainSurface.append('g').attr('class', 'mainSurface');
         this.recreateDisplayObjectsForAllItems();
-
-        /* TODO: What to do about handle?
-        const handle = new ResizeHandle({
-            targetId: divUUID,
-            // Need either activeResize true or animateSizing false so that onResize will only be called when totally done resizing
-            // and not with animation still running and node not quite the final size
-            // Updating seems to look worse with activeResize true as canvas still draws old size while rectangle shrinks or grows 
-            // activeResize: true,
-            animateSizing: false,
-            // style: "bottom: 4px; right: 4px;",
-            onResize: this.updateSizeOfCanvasFromResizeHandle.bind(this)
-        }).placeAt(divForResizing);
-        // Need to call startup as made div and added it outside of existing connected ContentPane
-        handle.startup();
-        */
     }
 
-    setupMainButtons() {
-        if (this.configuration !== "interpretations" && this.configuration !== "observations") {
-            this.newButton("newItemButton", "New item", () => {
-                const aNewItem = this.newItem("item");
-                this.openEntryDialog(aNewItem, false);
-            });
+    setupOptionsAndButtons() {
+        let thingsYouCanDo;
+        if (this.useContext === "planning") {
+            thingsYouCanDo = [
+                "Create new answer",
+                "Create new cluster name",
+                "Edit selected answer or cluster name",
+                "Delete selected answer or cluster name",
+                "Resize clustering space",
+                "Edit answers and clusters in JSON format"
+            ];
+        } else if (this.useContext === "catalysis") {
+            thingsYouCanDo = [
+                "Create new cluster name",
+                "Edit selected cluster name",
+                "Delete selected cluster name",
+                "Show/hide selected item/cluster in report",
+                "Change cluster print order",
+                "Resize clustering space",
+                "Toggle observation strength colors"
+            ];
         }
-        
-        this.newButton("newClusterButton", "New cluster", () => {
-            const aNewItem = this.newItem("cluster");
-            this.openEntryDialog(aNewItem, false);
-        });
-        
-        if (this.configuration !== "interpretations" && this.configuration !== "observations") {
-            this.newButton("editItemButton", "Edit", () => {
-                if (this.lastSelectedItem) {
-                    this.openEntryDialog(this.lastSelectedItem, true);
-                } else {
-                // TODO: Translate
-                    alert("Please select an item to edit.");
-                }
-            });
-        } else { // in clustering interpretations/observations, can only edit clusters, not items
-            this.newButton("editItemButton", "Edit cluster", () => {
-                if (this.lastSelectedItem && this.lastSelectedItem.type === "cluster") {
-                    this.openEntryDialog(this.lastSelectedItem, true);
-                } else {
-                // TODO: Translate
-                    alert("Please select a cluster to edit.");
-                }
-            });
-        }
-    
-        // allow user to delete items even if they are interpretations/observations
-        this.newButton("deleteButton", "Delete", () => {
-            if (!this.lastSelectedItem) {
-                // TODO: Translate
-                alert("Please select an item or cluster to delete.");
-                return;
-            }
-            const itemOrCluster = this.lastSelectedItem.type === "cluster" ? "cluster" : "item";
-            dialogSupport.confirm("Are you sure you want to delete the " + itemOrCluster + " called '" + this.lastSelectedItem.name + "'?", () => {
-                this.updateDisplayForChangedItem(this.lastSelectedItem, "delete");
-                const itemIndex = this.model.items.indexOf(this.lastSelectedItem);
-                if (itemIndex >= 0) {
-                    this.model.items.splice(itemIndex, 1);
-                }
-                this.clearSelection();
-                this.incrementChangesCount();
-            });
-        });
+        const selectOptions = [];
+        thingsYouCanDo.forEach((thing, index) => { selectOptions.push(m("option", {value: thing, selected: undefined}, thing)); });
+        this.mainButtons.push(m("select.narrafirma-clustering-diagram-do-things-select", {id: this.doThingsSelectID}, selectOptions));
 
-        if (this.configuration === "interpretations" || this.configuration === "observations") {
-            this.newButton("showHideItem", "Show or hide in report", () => {
-                if (this.selectedItems.length > 0) {
-                    this.selectedItems.forEach(item => {
-                        if (item.hidden === undefined) item.hidden = false;
-                        item.hidden = !item.hidden;
-                        this.updateDisplayForChangedItem(item, "update");
-                        this.incrementChangesCount();
-                    });
-                } else {
-                // TODO: Translate
-                    alert("Please select at least one item or cluster to show or hide.");
-                }
-            });
-        }
+        const self = this; // must copy "this" because "this" inside an event handler is the DOM element
+        this.mainButtons.push(m("button.narrafirma-clustering-diagram-do-things-button", {onclick: function() { self.doThing(self.doThingsSelectID) } }, "Do it")); 
 
-        // spacer to show that the two sets of buttons have different scopes of action
-        this.mainButtons.push(m("span", {"style": "display: inline-block; width: 2em;"}, " "));
-        
-        this.newButton("surfaceSizeButton", "Change surface size", () => {
-            this.openSurfaceSizeDialog();
-        });
-
-        if (this.configuration === "interpretations" || this.configuration === "observations") {
-            this.newButton("showHideColors", "Toggle strength colors", () => {
-                this.showStrengthColors = !this.showStrengthColors;
-                this.recreateDisplayObjectsForAllItems();
-            });
-        }
-        
         if (!this.autosave) {
-            this.newButton("saveChangesButton", "Save Changes", () => {
-                this.saveChanges();
-            });
+            this.mainButtons.push(m("button.narrafirma-clustering-diagram-save-changes", {onclick: function() {self.saveChanges()}}, "Save changes"));
         }
-        
-        if (this.configuration !== "interpretations" && this.configuration !== "observations") {
-            // cannot allow users to do this if interpretations or observations, because they could cause the
-            // items to become unmoored from the interpretations or observations they represent
-            this.newButton("sourceButton", "Diagram Source", () => {
-                this.openSourceDialog(JSON.stringify(this.model, null, 2));
-            });
-        }
-    }
-
-    newButton(name, label, callback) {
-        const button = m("button", {onclick: callback, "class": name}, label);
-        this.mainButtons.push(button);
-        return button;
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -489,9 +402,13 @@ class ClusteringDiagram {
         if (this.showEntryDialog) {
             entryDialog.push(this.buildEntryDialog());
         }
-        let surfaceSizeDialog = [];
+        const surfaceSizeDialog = [];
         if (this.showSurfaceSizeDialog) {
             surfaceSizeDialog.push(this.buildSurfaceSizeDialog());
+        }
+        const reorderDialog = [];
+        if (this.showReorderDialog) {
+            reorderDialog.push(this.buildReorderDialog());
         }
         
         this.model.items.forEach(function(item) {
@@ -506,7 +423,8 @@ class ClusteringDiagram {
             m("div", {config: this.configSurface.bind(this)}),
             this.mainButtons,
             entryDialog,
-            surfaceSizeDialog
+            surfaceSizeDialog,
+            reorderDialog
         ]);
     }
     
@@ -519,9 +437,7 @@ class ClusteringDiagram {
                 bodyColor = ClusteringDiagram.defaultItemBodyColor;
             }
         }
-        if (item.hidden) {
-            bodyColor = "white";
-        }
+        if (item.hidden) { bodyColor = "white"; }
 
         let textColor = item.textColor;
         if (!textColor) textColor = ClusteringDiagram.defaultTextColor;
@@ -537,52 +453,44 @@ class ClusteringDiagram {
         
         let textStyle = item.textStyle;
         if (!textStyle) textStyle = ClusteringDiagram.defaultTextStyle;
+        if (item.type === "cluster") { 
+            textStyle.weight = "bold"; 
+        } else {
+            textStyle.weight = "normal"; 
+        }
     
         let group;
-        if (item.type === "cluster") {
-            group = surface.insert('g', ':first-child')
-                .attr('transform', 'translate(' + item.x + ',' + item.y + ')')
-                .attr('class', 'item');
-        } else {
-            group = surface.append('g')
-                .attr('transform', 'translate(' + item.x + ',' + item.y + ')')
-                .attr('class', 'item');
-        }
+        group = surface.append('g')
+            .attr('transform', 'translate(' + item.x + ',' + item.y + ')')
+            .attr('class', 'item');
     
         // TODO: Does this work with SVG elements? Are they really D3 selections? Or maybe could also map data to element with D3?
         group.item = item;
     
         if (item.type === "cluster") {
-            const clusterRectangleOuter = group.append("circle")
-                .attr("r", radius * 3)
+            const clusterCircle = group.append("circle")
+                .attr("r", radius) 
                 .attr("cx", 0)
                 .attr("cy", 0)
-                .style("fill", d3.rgb(bodyColor))
-                .style("opacity", 0.25)
-                .style("stroke", d3.rgb(borderColor))
-                .style("stroke-width", borderWidth * 2);
-            group.circle = clusterRectangleOuter;
+                .style("cursor", "pointer")
+                .style("fill", bodyColor)
+                .style("opacity", 0.8)
+                .style("stroke", borderColor)
+                .style("stroke-width", borderWidth);
+            group.circle = clusterCircle;
         } else {
             const itemCircle = group.append("circle")
                 .attr("r", radius)
                 .attr("cx", 0)
                 .attr("cy", 0)
-                .style("fill", d3.rgb(bodyColor))
-                .style("opacity", 0.75)
-                .style("stroke", d3.rgb(borderColor))
+                .style("cursor", "pointer")
+                .style("fill", bodyColor)
+                .style("opacity", 0.8)
+                .style("stroke", borderColor)
                 .style("stroke-width", borderWidth);
             group.circle = itemCircle;
         }
-        
-        let hoverText = item.name;
-        if (item.notes) hoverText += " -- " + item.notes;
-        if (item.notesExtra) hoverText += "\n----------\n" + item.notesExtra;
-        if (item.strength) hoverText += " [Strength: " + item.strength + "]"; 
-        if (item.hidden) hoverText += ' (hidden)';
 
-        group.append("title")
-            .text(hoverText);
-        
         group.borderColor = borderColor;
         group.borderWidth = borderWidth;
         
@@ -590,7 +498,14 @@ class ClusteringDiagram {
         if (item.order) textToShow = item.order + ". " + item.name;
         if (!textToShow) textToShow = item.notes.split(" ").slice(0, 10).join(" ") + " ...";
         this.addText(group, textToShow, radius * 1.5, textStyle, textColor);
-    
+
+        let hoverText = item.name;
+        if (item.hidden) hoverText += ' (hidden)';
+        if (item.notes) hoverText += " -- " + item.notes;
+        if (item.notesExtra) hoverText += "\n---\nObservation: " + item.notesExtra;
+        if (item.strength) hoverText += " [Strength: " + item.strength + "]"; 
+        group.append("title").text(hoverText);
+
         group.on("mousedown", () => {
             this.selectItem(item, d3.event.shiftKey);
         });
@@ -598,6 +513,29 @@ class ClusteringDiagram {
         const self = this;
         const drag = d3.behavior.drag();
         let moved = false;
+
+        function drawParentChildLines(item) {
+            let parentOrChildren = [];
+            if (item.type === "item") {
+                const closestCluster = self.closestClusterToItem(item);
+                if (closestCluster) parentOrChildren.push(closestCluster);
+            } else {
+                const closestItems = self.itemsClosestToCluster(item);
+                if (closestItems.length) parentOrChildren = parentOrChildren.concat(closestItems);
+            }
+            self.parentChildLinesGroup.selectAll("*").remove();
+            parentOrChildren.forEach((parentOrChild) => {
+                self.parentChildLinesGroup.append('line')
+                    .style("stroke", "black")
+                    .style("stroke-width", 1)
+                    .style("stroke-dasharray", 4)
+                    .style("opacity", 1.0)
+                    .attr("x1", item.x)
+                    .attr("y1", item.y)
+                    .attr("x2", parentOrChild.x)
+                    .attr("y2", parentOrChild.y);
+            });
+        }
         
         drag.on("dragstart", function () {
             if (!item) {
@@ -605,6 +543,7 @@ class ClusteringDiagram {
                 self.rubberBandingStartX = d3.event.x;
                 self.rubberBandingStartY = d3.event.y;
             }
+            drawParentChildLines(item);
             moved = false;
         });
 
@@ -617,29 +556,27 @@ class ClusteringDiagram {
                 item.x = Math.min(self.model.surfaceWidthInPixels, Math.max(0, Math.round(item.x + (<any>d3.event).dx)));
                 item.y = Math.min(self.model.surfaceHeightInPixels, Math.max(0, Math.round(item.y + (<any>d3.event).dy)));
                 const displayObject = self.itemToDisplayObjectMap[item.uuid];
-                if (displayObject) {
-                    displayObject.attr('transform', 'translate(' + item.x + ',' + item.y + ')');
-                }
+                if (displayObject) displayObject.attr('transform', 'translate(' + item.x + ',' + item.y + ')');
+                drawParentChildLines(item);
             });
             moved = true;
         });
         
         drag.on("dragend", function() {
-            if (moved) {
-                if (item) {
-                    self.incrementChangesCount();
-                } 
-            }
+            self.parentChildLinesGroup.selectAll("*").remove();
+            if (moved && item) self.incrementChangesCount();
         });
         
         group.call(drag);
     
-        /*
-        group.on("dblclick", (e) => {
-            // alert("triggered ondblclick");
-            this.go(group.item.url);
+        group.on("dblclick", () => {
+            if (this.useContext === "planning") {
+                self.openEntryDialog(item, true);
+            } else if (this.useContext === "catalysis") {
+                if (item.type === "cluster") self.openEntryDialog(item, true);
+            }
+            m.redraw();
         });
-        */
     
         this.itemToDisplayObjectMap[item.uuid] = group;
         return group;
@@ -648,6 +585,7 @@ class ClusteringDiagram {
     addText(group, itemText, maxWidth, textStyle, textColor) {
         if (itemText === undefined) itemText = "[missing text]";
         const text = group.append("text")
+            .style("cursor", "pointer")
             .style("font-family", textStyle.family)
             .style("font-size", textStyle.size)
             .style("font-weight", textStyle.weight)
@@ -766,7 +704,6 @@ class ClusteringDiagram {
     
     updateDiagram(newDiagram) {
         if (!newDiagram) return;
-        
         if (this.model.changesCount === newDiagram.changesCount) {
             // Optimize out reflections of our changes back to us if the diagrams are the same
             // Extra cautious to compare JSON; otherwise probably could just return
@@ -777,11 +714,8 @@ class ClusteringDiagram {
         } // else {
             // console.log("updateDiagram: changes counts do not match", this.diagram.changesCount, newDiagram.changesCount);
         // }
-        
         this.model = newDiagram;
-        
         this.recreateDisplayObjectsForAllItems();
-        
         this.clearSelection();
         this.updateSizeOfSurfaceFromModel();
     }
@@ -790,9 +724,174 @@ class ClusteringDiagram {
         this.itemToDisplayObjectMap = <any>{};
         this.mainSurface.selectAll("*").remove();
         this.selectionRect = this.mainSurface.append('rect').attr('class', this.selectionRectUUID);
-        this.model.items.forEach(function (item) {
-            this.addDisplayObjectForItem(this.mainSurface, item);
-        }, this);
+        this.parentChildLinesGroup = this.mainSurface.append('g').attr('class', this.parentChildLinesUUID);
+        this.model.items.forEach(function (item) { this.addDisplayObjectForItem(this.mainSurface, item); }, this);
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // things you can do
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    doThing(selectID) {
+        const select = <HTMLSelectElement>document.getElementById(selectID);
+        if (!select) {
+            const message = 'Error: Cannot find drop-down list box with id "' + selectID + '" on HTML page. Please report this error.';
+            alert(message);
+            console.error(message);
+            return;
+        }
+        const choice = select.value;
+        switch (choice) {
+            case "Create new answer": // planning
+                this.createNewItem();
+                break;
+            case "Create new cluster name": // either
+                this.createNewClusterName();
+                break;
+            case "Edit selected answer or cluster name": // planning
+                this.editSelectedItemOrCluster();
+                break;
+            case "Edit selected cluster name": // catalysis
+                this.editSelectedCluster();
+                break;
+            case "Delete selected answer or cluster name": // planning
+                this.deleteSelectedItemOrCluster();
+                break;
+            case "Delete selected cluster name": // catalysis
+                this.deleteSelectedCluster();
+                break;
+            case "Show/hide selected item/cluster in report": // catalysis
+                this.showOrHideItemOrClusterInReport();
+                break;
+            case "Change cluster print order": // catalysis
+                this.openReorderDialog();
+                break;
+            case "Resize clustering space": // either
+                this.openSurfaceSizeDialog();
+                break;
+            case "Toggle observation strength colors": // catalysis
+                this.toggleStrengthColors();
+                break;
+            case "Edit answers and clusters in JSON format": // planning
+                this.openSourceDialog(JSON.stringify(this.model, null, 2));
+                break;
+            default:
+                alert("Please choose an action from the list before you click the button.");
+                break;
+        }
+    }
+
+    createNewItem() {
+        const aNewItem = this.newItem("item");
+        this.openEntryDialog(aNewItem, false);
+    }
+
+    createNewClusterName() {
+        const aNewClusterName = this.newItem("cluster");
+        this.openEntryDialog(aNewClusterName, false);
+    }
+
+    editSelectedItemOrCluster() {
+        if (this.lastSelectedItem) {
+            this.openEntryDialog(this.lastSelectedItem, true);
+        } else {
+            alert("Please select an answer or cluster name to edit.");
+        }
+    }
+
+    editSelectedCluster() {
+        if (this.lastSelectedItem && this.lastSelectedItem.type === "cluster") {
+            this.openEntryDialog(this.lastSelectedItem, true);
+        } else {
+            alert("Please select a cluster name to edit.");
+        }
+    }
+
+    deleteSelectedItemOrCluster() {
+        if (!this.lastSelectedItem) {
+            alert("Please select an answer or cluster name to delete.");
+            return;
+        }
+        const itemOrCluster = this.lastSelectedItem.type === "cluster" ? "cluster" : "item";
+        dialogSupport.confirm("Are you sure you want to delete the " + itemOrCluster + " called '" + this.lastSelectedItem.name + "'?", () => {
+            this.updateDisplayForChangedItem(this.lastSelectedItem, "delete");
+            const itemIndex = this.model.items.indexOf(this.lastSelectedItem);
+            if (itemIndex >= 0) {
+                this.model.items.splice(itemIndex, 1);
+            }
+            this.clearSelection();
+            this.incrementChangesCount();
+        });
+    }
+
+    deleteSelectedCluster() {
+        if (!this.lastSelectedItem || this.lastSelectedItem.type != "cluster") {
+            alert("Please select a cluster name to delete.");
+            return;
+        }
+        dialogSupport.confirm("Are you sure you want to delete the cluster name '" + this.lastSelectedItem.name + "'?", () => {
+            this.updateDisplayForChangedItem(this.lastSelectedItem, "delete");
+            const itemIndex = this.model.items.indexOf(this.lastSelectedItem);
+            if (itemIndex >= 0) {
+                this.model.items.splice(itemIndex, 1);
+            }
+            this.clearSelection();
+            this.incrementChangesCount();
+        });
+    }
+    
+    showOrHideItemOrClusterInReport() {
+        if (this.selectedItems.length > 0) {
+            this.selectedItems.forEach(item => {
+                if (item.hidden === undefined) item.hidden = false;
+                item.hidden = !item.hidden;
+                this.updateDisplayForChangedItem(item, "update");
+
+                if (item.type === "cluster") {
+                    const itemsClosestToThisCluster = this.itemsClosestToCluster(item);
+                    itemsClosestToThisCluster.forEach((clusteredItem) => {
+                        clusteredItem.hidden = item.hidden;
+                        this.updateDisplayForChangedItem(clusteredItem, "update");
+                    })
+                }
+                this.incrementChangesCount();
+            });
+        } else {
+            alert("Please select at least one item or cluster to show or hide.");
+        }
+    }
+
+    itemsClosestToCluster(clusterToCheck) {
+        const clusters = this.model.items.filter(function (item) { return item.type === "cluster"; });
+        const items = this.model.items.filter(function (item) { return item.type === "item"; });
+        const result = [];
+        items.forEach((item) => {
+            const closestCluster = this.closestClusterToItem(item);
+            if (closestCluster.name === clusterToCheck.name) result.push(item);
+        });
+        return result;
+    }
+
+    closestClusterToItem(item) {
+        const clusters = this.model.items.filter(function (item) { return item.type === "cluster"; });
+        let smallestDistanceToACluster = Number.MAX_VALUE;
+        let closestCluster = null;
+        for (let i = 0; i < clusters.length; i++) {
+            const cluster = clusters[i];
+            const dx = item.x - cluster.x;
+            const dy = item.y - cluster.y;
+            const distanceToThisCluster = Math.sqrt(dx * dx + dy * dy);
+            if (distanceToThisCluster < smallestDistanceToACluster) {
+                smallestDistanceToACluster = distanceToThisCluster;
+                closestCluster = cluster;
+            }
+        }
+        return closestCluster;
+    }
+
+    toggleStrengthColors() {
+        this.showStrengthColors = !this.showStrengthColors;
+        this.recreateDisplayObjectsForAllItems();
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -819,7 +918,7 @@ class ClusteringDiagram {
              "Choose a new width and height for the clustering surface.",
              m("br"),
              m("br"),
-             m('label', {"for": "sizeDialog_width"}, "Width:"),
+             m('label', {for: "sizeDialog_width", style: "margin-right: 0.5em"}, "Width:"),
              m("select", {
                  id: "sizeDialog_width",
                  // the reason to do this is because this redraw method is called WHILE the user is holding down the OK button
@@ -832,7 +931,7 @@ class ClusteringDiagram {
              }, widthOptions),
              m('br'),
              m('br'),
-             m('label', {"for": "sizeDialog_height"}, "Height:"),
+             m('label', {for: "sizeDialog_height", style: "margin-right: 0.5em"}, "Height:"),
              m("select", {
                  id: "sizeDialog_height",
                  value: this.showSurfaceSizeDialog ? this.surfaceHeightBeingEdited : this.model.surfaceHeightInPixels,
@@ -846,7 +945,89 @@ class ClusteringDiagram {
              m("button", {onclick: () => {this.showSurfaceSizeDialog = false;}}, "Cancel"),
              m("button", {onclick: () => {this.acceptChangesToSurfaceSize();}}, "OK")
          ]));
-     }
+    }
+
+    openReorderDialog() {
+        this.showReorderDialog = true;
+    }    
+
+    buildReorderDialog() {
+        if (!this.model) return m("div");
+        const clusters = this.model.items.filter(function (item) { return item.type === "cluster"; });
+        let atLeastOneClusterHasNoOrderValueSet = false;
+        clusters.sort(function(a, b) { 
+            if (a.order && b.order) {
+                return (a.order > b.order) ? 1 : -1;
+            } else {
+                atLeastOneClusterHasNoOrderValueSet = true;
+                return (a > b) ? 1 : -1; // alphabetical
+            }
+        });
+        if (atLeastOneClusterHasNoOrderValueSet) {
+            clusters.forEach((cluster, index) => { cluster.order = index + 1; });
+        }
+        const selectOptions = clusters.map((cluster) => { return m("option", {value: cluster.name}, cluster.name); });
+
+        const self = this;
+        return m("div.overlay", m("div.modal-content", {"style": "width: 30%"}, [
+            "Click the up and down arrows to reorder clusters.",
+            m("br"),
+            m("br"),
+            m("select", {size: 10, id: "orderDialogSelect"}, selectOptions),
+            m('br'),
+            m("button", {onclick: () => {self.moveSelectedClusterUp();}}, "↑"),
+            m("button", {onclick: () => {self.moveSelectedClusterDown();}}, "↓"),
+            m("button", {onclick: () => {self.closeReorderDialog();}}, "Close")
+        ]));        
+    }
+
+    moveSelectedClusterUp() {
+        const element = <HTMLSelectElement>document.getElementById("orderDialogSelect");
+        if (!element || element.selectedIndex < 0 || element.selectedIndex - 1 < 0) return;
+
+        const selectedOption = element.options[element.selectedIndex];
+        const selectedCluster = this.clusterForName(selectedOption.value);
+
+        const optionAboveSelectedOption = element.options[element.selectedIndex - 1];
+        const clusterAboveSelectedCluster = this.clusterForName(optionAboveSelectedOption.value);
+
+        const oldSelectedClusterOrder = selectedCluster.order;
+        selectedCluster.order = clusterAboveSelectedCluster.order;
+        clusterAboveSelectedCluster.order = oldSelectedClusterOrder;
+
+        if (element.selectedIndex > 0) element.selectedIndex--; 
+        this.incrementChangesCount();
+        this.recreateDisplayObjectsForAllItems();
+    }
+
+    moveSelectedClusterDown() {
+        const element = <HTMLSelectElement>document.getElementById("orderDialogSelect");
+        if (!element || element.selectedIndex < 0 || element.selectedIndex + 1 > element.options.length - 1) return;
+
+        const selectedOption = element.options[element.selectedIndex];
+        const selectedCluster = this.clusterForName(selectedOption.value);
+        
+        const optionBelowSelectedOption = element.options[element.selectedIndex + 1];
+        const clusterBelowSelectedCluster = this.clusterForName(optionBelowSelectedOption.value);
+
+        const oldSelectedClusterOrder = selectedCluster.order;
+        selectedCluster.order = clusterBelowSelectedCluster.order;
+        clusterBelowSelectedCluster.order = oldSelectedClusterOrder;
+
+        if (element.selectedIndex < element.options.length - 1) element.selectedIndex++; 
+        this.incrementChangesCount();
+        this.recreateDisplayObjectsForAllItems();
+    }
+
+    clusterForName(name) {
+        const matchingClusterNames = this.model.items.filter(function (item) { return item.type === "cluster" && item.name === name; });
+        return (matchingClusterNames.length > 0) ? matchingClusterNames[0] : null;
+    }
+
+    closeReorderDialog() {
+        this.showReorderDialog = false;
+        this.recreateDisplayObjectsForAllItems();
+    }
     
     openEntryDialog(item, isExistingItem) {
         this.itemBeingEdited = item;
@@ -878,6 +1059,7 @@ class ClusteringDiagram {
             }));
         result.push(m("br"));
 
+        /*
         if (this.configuration === "interpretations" || this.configuration === "observations") {
             result.push(m("br"));
             result.push(m('label', {for: "itemDialog_order", style: "margin-right: 0.5em"}, "Order in printed report"));
@@ -891,6 +1073,7 @@ class ClusteringDiagram {
             }));
             result.push(m("br"));
         }
+        */
         
         result.push(m("br"));
         result.push(m("button", {onclick: () => {this.showEntryDialog = false;}}, "Cancel"));
