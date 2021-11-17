@@ -81,13 +81,17 @@ installation.
 F1. Open the Bitnami Wordpress Stack application (icon is a gear with
 manager-osx)
 
-F2. In the Bitnami app, click "Manage Servers" then start MySQL and Apache Web
-Server.
+F2. In the Bitnami app, click the "Services" tab, then start the Apache Web
+Server, MySQL, and PHP-FPM. 
 
-F3. In a browser go to localhost:8082/wordpress. You may need to temporarily
-turn off the node.js server if you are running it on the same port. (The port is
-set in the Bitnami Wordpress Stack application, under "Configure" for the Apache
-server.)
+F3. In the Bitnami app, click the "General" tab, then click "Go to Application." 
+The browser should take you to the WordPress site. 
+
+(You may need to temporarily turn off the node.js server if you are running it 
+on the same port. Or you can change the WordPress port. 
+It is set in the Bitnami Wordpress Stack application, 
+under the "Network" tab. To change it, in the "Network" tab,
+select the "localhost" server, then click "Edit.")
 
 F4. Login to WordPress. In the WordPress dashboard,
 deactivate and delete the old version of the NarraFirma plugin.
