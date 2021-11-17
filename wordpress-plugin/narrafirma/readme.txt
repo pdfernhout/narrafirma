@@ -9,7 +9,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Requires at least: 4.3.1
 Tested up to: 5.8.2
 Stable tag: trunk
-Version: 1.5.3
+Version: 1.5.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -105,6 +105,10 @@ We strongly suggest that you set up any web site on which you intend to install 
 12. Here the NarraFirma user is reflecting on the entire project, to learn from it and to keep good records for the future.
 
 == Changelog ==
+
+= 1.5.4 =
+
+Fixed: Small bug in display lumping code that could cause a lumped count to be off when somebody chose and then un-chose an answer
 
 = 1.5.3 =
 
@@ -506,6 +510,9 @@ loading application, getting user information, or retrieving project data.
 change logs, see the [GitHub repository](https://github.com/pdfernhout/narrafirma).
 
 == Upgrade Notice ==
+
+= 1.5.4 = 
+This minor upgrade fixes a small bug in the display lumping system. (A lumped count could be off when somebody chose and then un-chose an answer.)
 
 = 1.5.3 =
 This minor upgrade adds the option to set the catalysis graph height as well as width (onscreen and in the printed report).

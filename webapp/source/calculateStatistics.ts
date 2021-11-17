@@ -65,7 +65,7 @@ export function getChoiceValueForQuestionAndStory(question, story, unansweredTex
                 for (let i = 0; i < answersToLump.length; i++) {
                     const answerToLump = answersToLump[i];
                     const lumpedAnswer = lumpingCommands[question.displayName][answerToLump];
-                    if (value.hasOwnProperty(answerToLump)) {
+                    if (value.hasOwnProperty(answerToLump) && value[answerToLump]) {
                         delete answersToReport[answerToLump];
                         answersToReport[lumpedAnswer] = true;
                     }
