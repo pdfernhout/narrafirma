@@ -245,6 +245,7 @@ export function initializedGraphHolder(allStories, options) {
         showStatsPanelsInReport: options.showStatsPanelsInReport,
         customStatsTextReplacements: options.customStatsTextReplacements,
         customGraphWidth: options.customGraphWidth,
+        customGraphHeight: options.customGraphHeight,
         patternDisplayConfiguration: {hideNoAnswerValues: false, useLumpingCommands: true},
         adjustedCSS: options.adjustedCSS,
         graphTypesToCreate: {},
@@ -255,27 +256,29 @@ export function initializedGraphHolder(allStories, options) {
 
 const defaultLargeGraphWidth = 800;
 
-function makeChartFramework(chartPane: HTMLElement, chartType, size, margin, customGraphWidth) {
+function makeChartFramework(chartPane: HTMLElement, chartType, size, margin, customGraphWidth, customGraphHeight) {
 
-    let largeGraphWidth = customGraphWidth || defaultLargeGraphWidth;
+    const largeGraphWidth = customGraphWidth || defaultLargeGraphWidth;
+    const largeGraphHeight = customGraphHeight || Math.round(largeGraphWidth * 0.75);
+
     let fullWidth = 0;
     let fullHeight = 0;
-    if (size == "large") {
+    if (size == "large") { // specified or default width and height
         fullWidth = largeGraphWidth;
-        fullHeight = Math.round(largeGraphWidth * 0.75);;
-    } else if (size === "tall") {
+        fullHeight = largeGraphHeight;
+    } else if (size === "tall") { // square: height = width
         fullWidth = largeGraphWidth;
         fullHeight = largeGraphWidth;       
-    } else if (size == "small") {
+    } else if (size == "small") { // 1/3 of width and height
         fullWidth = largeGraphWidth / 3;
-        fullHeight = largeGraphWidth / 3;
-    } else if (size == "medium") {
+        fullHeight = largeGraphHeight / 3;
+    } else if (size == "medium") { // 1/2 of width and height
         fullWidth = largeGraphWidth / 2;
-        fullHeight = largeGraphWidth / 2;
-    } else if (size == "medium-large") {
+        fullHeight = largeGraphHeight / 2;
+    } else if (size == "medium-large") { // 2/3 of width and height
         fullWidth = 2 * largeGraphWidth / 3;
-        fullHeight = 2 * largeGraphWidth / 3;
-    } else if (size == "thumbnail") {
+        fullHeight = 2 * largeGraphHeight / 3;
+    } else if (size == "thumbnail") { // small square
         fullWidth = 101;
         fullHeight = 101;
     } else {
@@ -952,7 +955,7 @@ export function d3BarChartForValues(graphHolder: GraphHolder, plotItems, xLabels
     if (maxItemsPerBar >= 100) margin.left += letterSize;
     if (maxItemsPerBar >= 1000) margin.left += letterSize;
     
-    const chart = makeChartFramework(chartPane, "barChart", "large", margin, graphHolder.customGraphWidth);
+    const chart = makeChartFramework(chartPane, "barChart", "large", margin, graphHolder.customGraphWidth, graphHolder.customGraphHeight);
     const chartBody = chart.chartBody;
 
     const statistics = calculateStatistics.calculateStatisticsForBarGraphValues(function(plotItem) { return plotItem.value; });
@@ -1229,7 +1232,7 @@ export function d3HistogramChartForValues(graphHolder: GraphHolder, plotItems, c
     const chartPane = newChartPane(graphHolder, style);   
     if (!isSmallFormat) addTitlePanelForChart(chartPane, chartTitle);
 
-    const chart = makeChartFramework(chartPane, "histogram", chartSize, margin, graphHolder.customGraphWidth);
+    const chart = makeChartFramework(chartPane, "histogram", chartSize, margin, graphHolder.customGraphWidth, graphHolder.customGraphHeight);
     const chartBody = chart.chartBody;
     
     const values = plotItems.map(function(item) { return parseFloat(item.value); });
@@ -1553,7 +1556,7 @@ export function d3ScatterPlot(graphHolder: GraphHolder, xAxisQuestion, yAxisQues
     const chartTitle = "" + nameForQuestion(xAxisQuestion) + " x " + nameForQuestion(yAxisQuestion);
     if (!isSmallFormat) addTitlePanelForChart(chartPane, chartTitle);
 
-    const chart = makeChartFramework(chartPane, "scatterPlot", chartSize, margin, graphHolder.customGraphWidth);
+    const chart = makeChartFramework(chartPane, "scatterPlot", chartSize, margin, graphHolder.customGraphWidth, graphHolder.customGraphHeight);
     const chartBody = chart.chartBody;
     
     chart.subgraphQuestion = choiceQuestion;
@@ -1929,7 +1932,7 @@ export function d3ContingencyTable(graphHolder: GraphHolder, xAxisQuestion, yAxi
     if (rowCount > 10) { 
         graphSize = "tall";
     }
-    const chart = makeChartFramework(chartPane, "contingencyChart", graphSize, margin, graphHolder.customGraphWidth);
+    const chart = makeChartFramework(chartPane, "contingencyChart", graphSize, margin, graphHolder.customGraphWidth, graphHolder.customGraphHeight);
     const chartBody = chart.chartBody;
 
     let statistics;
@@ -2380,7 +2383,7 @@ export function d3CorrelationMap(graphHolder: GraphHolder, scaleQuestions, choic
     const chartPane = newChartPane(graphHolder, style);
     const margin = {top: 0, right: 10, bottom: 10, left: 0};
     if (!isSmallFormat) addTitlePanelForChart(chartPane, "Correlation map");
-    const chart = makeChartFramework(chartPane, "correlationMap", chartSize, margin, graphHolder.customGraphWidth);
+    const chart = makeChartFramework(chartPane, "correlationMap", chartSize, margin, graphHolder.customGraphWidth, graphHolder.customGraphHeight);
     const chartBody = chart.chartBody;
     chart.subgraphQuestion = choiceQuestion;
     chart.subgraphChoice = option;
@@ -2753,7 +2756,7 @@ export function d3ScatterPlotForPopup(graphHolder: GraphHolder, parentNode, xAxi
     parentNode.appendChild(chartPane);
     
     const margin = {top: 0, right: 0, bottom: 0, left: 0};
-    const chart = makeChartFramework(chartPane, "scatterPlot", "thumbnail", margin, null);
+    const chart = makeChartFramework(chartPane, "scatterPlot", "thumbnail", margin, null, null);
     const chartBody = chart.chartBody;
 
     const xScale = d3.scale.linear()
@@ -2802,7 +2805,7 @@ export function d3HistogramChartForPopup(graphHolder: GraphHolder, parentNode, s
     parentNode.appendChild(chartPane);
 
     const margin = {top: 0, right: 0, bottom: 0, left: 0};
-    const chart = makeChartFramework(chartPane, "histogram", "thumbnail", margin, null);
+    const chart = makeChartFramework(chartPane, "histogram", "thumbnail", margin, null, null);
     
     const xScale = d3.scale.linear()
         .domain([0, 100])

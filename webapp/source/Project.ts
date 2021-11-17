@@ -34,7 +34,9 @@ class Project {
     static default_correlationLineChoice = "0.05";
     static default_customLabelLengthLimit = "30";
     static default_customReportGraphWidth = 800;
+    static default_customReportGraphHeight = 600;
     static default_customDisplayGraphWidth = 800;
+    static default_customDisplayGraphHeight = 600;
     static default_customGraphPadding = 0;
     static default_numStoryLengthCategories = 4;
     static default_graphTypesToCreate = {

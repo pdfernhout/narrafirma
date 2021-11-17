@@ -45,6 +45,7 @@ interface GraphHolder {
     statisticalInfo?: string;
     customStatsTextReplacements?: string;
     customGraphWidth: number;
+    customGraphHeight: number;
     customGraphPadding?: number;
     outputFontModifierPercent?: number;
     adjustedCSS?: string;

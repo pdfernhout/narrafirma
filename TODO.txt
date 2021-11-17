@@ -154,6 +154,10 @@ M When import story form, hundreds of triples can be generated which take minute
 
 ==== DONE
 
+--- Release 1.5.3
+
+Added: Option to set custom graph height as well as width
+
 --- Release 1.5.2
 
 Changed: Improved usability of clustering interface (used in planning and catalysis)

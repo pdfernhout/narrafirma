@@ -196,11 +196,42 @@ const panel: Panel = {
             valuePath: "/clientState/catalysisReportIdentifier/customDisplayGraphWidth",
             valueType: "string",
             displayType: "select",
-            valueOptions: ["400", "450", "500", "550", "600", "650", "700", "750", "800", "850", "900", "950", "1000", "1050", "1100", "1150", "1200", "1250", "1300", "1350", "1400", "1450", "1500", "1550", "1600", "1650", "1700", "1750", "1800", "1850", "1900", "1950", "2000"],
+            valueOptions: ["400", "425", "450", "475", 
+                "500", "525", "550", "575", "600", "625", "650", "675", 
+                "700", "725", "750", "775", "800", "825", "850", "875", 
+                "900", "925", "950", "975", "1000", "1025", "1050", "1075", 
+                "1100", "1125", "1150", "1175", "1200", "1225", "1250", "1275", 
+                "1300", "1325", "1350", "1375", "1400", "1425", "1450", "1475", 
+                "1500", "1525", "1550", "1575", "1600", "1625", "1650", "1675", 
+                "1700", "1725", "1750", "1725", "1800", "1825", "1850", "1875", 
+                "1900", "1925", "1950", "1975", "2000"],
             displayName: "Custom display graph width",
             displayPrompt: `<strong>How wide should graphs be</strong> on the "Explore patterns" page, in pixels? 
                 (This choice affects graphs in the application only. 
                 If no selection is made here, graphs will be 800 pixels wide.)`,
+            displayVisible: function(panelBuilder, model) {
+                return !!Globals.clientState().haveCatalysisReportAndShowingAdvancedOptions();
+            }
+        },
+        {
+            id: "configureCatalysisReport_customDisplayGraphHeight",
+            valuePath: "/clientState/catalysisReportIdentifier/customDisplayGraphHeight",
+            valueType: "string",
+            displayType: "select",
+            valueOptions: ["200", "225", "250", "275", "300", "325", "350", "375",
+                "400", "425", "450", "475", 
+                "500", "525", "550", "575", "600", "625", "650", "675", 
+                "700", "725", "750", "775", "800", "825", "850", "875", 
+                "900", "925", "950", "975", "1000", "1025", "1050", "1075", 
+                "1100", "1125", "1150", "1175", "1200", "1225", "1250", "1275", 
+                "1300", "1325", "1350", "1375", "1400", "1425", "1450", "1475", 
+                "1500", "1525", "1550", "1575", "1600", "1625", "1650", "1675", 
+                "1700", "1725", "1750", "1725", "1800", "1825", "1850", "1875", 
+                "1900", "1925", "1950", "1975", "2000"],
+            displayName: "Custom display graph height",
+            displayPrompt: `<strong>How tall</strong> should graphs be on the "Explore patterns" page, in pixels? 
+                (This choice affects graphs in the application only. 
+                If no selection is made here, graphs will be 600 pixels tall.)`,
             displayVisible: function(panelBuilder, model) {
                 return !!Globals.clientState().haveCatalysisReportAndShowingAdvancedOptions();
             }

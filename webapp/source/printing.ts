@@ -351,6 +351,7 @@ export function printCatalysisReport() {
     options["hideNumbersOnContingencyGraphs"] = project.tripleStore.queryLatestC(catalysisReportIdentifier, "hideNumbersOnContingencyGraphs") || false;
     options["useTableForInterpretationsFollowingObservation"] = project.tripleStore.queryLatestC(catalysisReportIdentifier, "useTableForInterpretationsFollowingObservation") || false;
     options["customGraphWidth"] = parseInt(project.tripleStore.queryLatestC(catalysisReportIdentifier, "customReportGraphWidth")) || Project.default_customReportGraphWidth;
+    options["customGraphHeight"] = parseInt(project.tripleStore.queryLatestC(catalysisReportIdentifier, "customReportGraphHeight")) || Project.default_customReportGraphHeight;
     options["catalysisReportIdentifier"] = catalysisReportIdentifier;
 
     options["outputFontModifierPercent"] = parseInt(project.tripleStore.queryLatestC(catalysisReportIdentifier, "outputFontModifierPercent"));
@@ -1048,6 +1049,7 @@ function initializedGraphHolder(allStories, options) {
         showStatsPanelsInReport: options.showStatsPanelsInReport,
         customStatsTextReplacements: options.customStatsTextReplacements,
         customGraphWidth: options.customGraphWidth,
+        customGraphHeight: options.customGraphHeight,
         patternDisplayConfiguration: {hideNoAnswerValues: false, useLumpingCommands: true},
         adjustedCSS: options.adjustedCSS,
         lumpingCommands: options.lumpingCommands,
