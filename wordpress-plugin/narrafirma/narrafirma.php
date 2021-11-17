@@ -29,7 +29,7 @@ namespace NarraFirma;
 
 defined( 'ABSPATH' ) or die( 'Plugin must be run from inside WordPress' );
 
-$NARRAFIRMA_VERSION = '1.5.3';
+$NARRAFIRMA_VERSION = '1.5.4';
 
 $pointrelServerVersion = "pointrel20150417-0.0.4-wp";
 
