@@ -4,7 +4,7 @@ Plugin Name: NarraFirma
 Plugin URI: http://narrafirma.com
 Description: Participatory Narrative Inquiry in a box. Gather stories and make sense of challenges and opportunities in your community or organization.
 Author: Cynthia F. Kurtz and Paul D. Fernhout
-Version: 1.5.4
+Version: 1.5.5
 Author URI: http://cfkurtz.com
 License: GPLv2 or later
 */
@@ -29,7 +29,7 @@ namespace NarraFirma;
 
 defined( 'ABSPATH' ) or die( 'Plugin must be run from inside WordPress' );
 
-$NARRAFIRMA_VERSION = '1.5.4';
+$NARRAFIRMA_VERSION = '1.5.5';
 
 $pointrelServerVersion = "pointrel20150417-0.0.4-wp";
 
@@ -67,17 +67,13 @@ class NarraFirmaSettingsPage
     function install() {
         global $wpdb;
         global $pointrelServerVersion;
-        defaultOptions();
-    }
-
-    function defaultOptions() {
-        global $pointrelServerVersion;
-        // {'db_version':'pointrel20150417-0.0.4-wp', 'journals':{}}
-        $this->options = array (
+        
+        // Default the options if they are not already defined
+        $options = array (
             'journals' => '{}',
             'db_version' => $pointrelServerVersion
         );
-        add_option( 'narrafirma_admin_settings', $this->options );
+        add_option( 'narrafirma_admin_settings', $options );
     }
     
     // Runs on plugin uninstall
@@ -106,7 +102,6 @@ class NarraFirmaSettingsPage
     
         // Set class property
         $this->options = get_option( 'narrafirma_admin_settings' );
-        if (!$this->options) defaultOptions();
         $baseDirectory = plugins_url( 'narrafirma' );
         $launchLink = $baseDirectory . "/webapp/narrafirma.html";
     
@@ -378,9 +373,9 @@ function faiIfNotAuthorized($requestedCapability, $journalIdentifier, $topicIden
     $userIdentifier = wp_get_current_user()->user_login;
     
     // error_log("faiIfNotAuthorized '$userIdentifier' $requestedCapability $journalIdentifier '$topicIdentifier'");
-    
+
+    // TODO: Handle errors if missing...
     $options = get_option( 'narrafirma_admin_settings' );
-    if (!$options) defaultOptions();
     $journals = json_decode( $options['journals'] );
     
     if (!isset($journals->$journalIdentifier)) {
@@ -501,8 +496,8 @@ function pointrel20150417_currentUserInformation($apiRequest) {
 	
 	$journalPermissions = array();
 	
+    // TODO: Handle errors if missing...
 	$options = get_option( 'narrafirma_admin_settings' );
-    if (!$options) defaultOptions();
 	$journals = json_decode( $options['journals'] );
 	
 	foreach($journals as $name => $permissions) {
@@ -598,8 +593,8 @@ function pointrel20150417_reportJournalStatus($apiRequest) {
         
     $journalIdentifier = $apiRequest->journalIdentifier;
     
+    // TODO: Handle errors if missing...
     $options = get_option( 'narrafirma_admin_settings' );
-    if (!$options) defaultOptions();
     $journals = json_decode( $options['journals'] );
     
     if (!isset($journals->$journalIdentifier)) {

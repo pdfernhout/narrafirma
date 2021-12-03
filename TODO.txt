@@ -5,6 +5,12 @@ M - medium priority
 L - low priority
 W - wish list
 
+============ new things noticed recently
+
+- in import, the delimiter for multiple choices within one CSV cell should default to a comma (it does not default to anything),
+and it should tell the user (in the interface and in the import guide) that it defaults to a comma
+(or should it default to something else? what is best for legacy data?)
+
 =============== OLDER TODOS LIST ===================
 
 ------------- Infrastructure -------------
@@ -153,6 +159,10 @@ M Improve reporting on startup for loading project data with some kind of progre
 M When import story form, hundreds of triples can be generated which take minutes to send to the server (with no progress feedback, even though done in background) -- may be related to console logging
 
 ==== DONE
+
+--- Release 1.5.5 
+
+Fixed: Critical bug in WordPress PHP code that could cause new NarraFirma installations to show a blank screen instead of the setup page
 
 --- Release 1.5.4
 
