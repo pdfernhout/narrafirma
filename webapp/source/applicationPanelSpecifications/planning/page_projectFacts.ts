@@ -11,7 +11,7 @@ const panel: Panel = {
             id: "project_projectFacts",
             valueType: "none",
             displayType: "label",
-            displayPrompt: "On this page you will enter some <strong>facts</strong> about your project. The information you enter here will appear in your project report."
+            displayPrompt: `You can use this page to enter some <strong>facts</strong> about your project.`
         },
         {
             id: "project_title",

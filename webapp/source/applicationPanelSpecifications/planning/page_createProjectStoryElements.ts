@@ -13,7 +13,10 @@ const panel: Panel = {
             id: "project_storyElements_instructions",
             valueType: "none",
             displayType: "label",
-            displayPrompt: "On this page you will use your project stories to create <b>story elements</b>. Story elements are abstract representations of the meanings found in stories. Going through this exercise can help you think about what you want to happen in your project. (You can also do this exercise on paper. If you do that, skip to the bottom of this page to enter the story elements you created.)"
+            displayPrompt: `You can use this page to create <b>story elements</b> based on your project stories. 
+                Story elements are abstract representations of the meanings found in stories. 
+                Going through this exercise can help you think about what you want to happen in your project. 
+                (You can also do this exercise on paper. If you do that, skip to the bottom of this page to enter the story elements you created.)`
         },
         {
             id: "project_storyElements__questionType",

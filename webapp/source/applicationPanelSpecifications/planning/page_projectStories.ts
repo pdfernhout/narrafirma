@@ -11,7 +11,8 @@ const panel: Panel = {
             id: "project_projectStories",
             valueType: "none",
             displayType: "label",
-            displayPrompt: "On this page you will tell yourself some <strong>project stories</strong> about how your project might play out. These stories will help you think about how best to plan the project."
+            displayPrompt: `You can use this page to tell yourself some <strong>project stories</strong> about how your project might play out. 
+                Project stories help you think through your project's goals and consider its risks and opportunities.`
         },
         {
             id: "project_projectStoriesList",

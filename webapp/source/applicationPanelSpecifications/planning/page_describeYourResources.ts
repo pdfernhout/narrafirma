@@ -11,7 +11,7 @@ const panel: Panel = {
             id: "project_aboutYou",
             valueType: "none",
             displayType: "label",
-            displayPrompt: "On this page are a few questions about the <strong>resources</strong> available to you in carrying out your PNI project. As with the previous questions about participant groups, these choices will impact the recommendations you see later on in your project."
+            displayPrompt: "On this page are a few questions about the <strong>resources</strong> available to you in carrying out your PNI project."
         },
         {
             id: "aboutYou_experience",

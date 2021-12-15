@@ -10,13 +10,9 @@ const panel: Panel = {
             id: "assessment_intro",
             valueType: "none",
             displayType: "label",
-            displayPrompt: "On this page you can assess the <strong>story sharing culture</strong> of your community or organization. (This page is not connected to the recommendations system, but it can help you plan your project, especially if you are unsure about your participants.)"
-        },
-        {
-            id: "assessment_intro_more",
-            valueType: "none",
-            displayType: "label",
-            displayPrompt: "Before you answer these questions, you should spend some time <strong>listening to people</strong> sharing stories together in the places where they normally gather."
+            displayPrompt: `You can use this page to think about the <strong>story sharing culture</strong> of your community or organization.
+                Before you answer these questions, 
+                you should spend some time <strong>listening to people</strong> sharing stories together in the places where they normally gather.`
         },
         {
             id: "assessment_narrativeFreedom",

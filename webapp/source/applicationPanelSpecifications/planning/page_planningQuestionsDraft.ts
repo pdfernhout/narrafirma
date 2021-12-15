@@ -10,7 +10,10 @@ const panel: Panel = {
             id: "project_draftQuestionsLabel",
             valueType: "none",
             displayType: "label",
-            displayPrompt: "On this page you will answer some <strong>planning questions</strong> about your project: its goals, relationships, focus, range, scope, and emphasis. If you don't have good answers for these questions right now, don't worry; you will have a chance to work on them again later."
+            displayPrompt: `You can use this page to answer some <strong>planning questions</strong> about your project: 
+                its goals, relationships, focus, range, scope, and emphasis. 
+                If you don't have good answers for these questions right now, don't worry; these are only <strong>draft answers</strong>.
+                You will have a chance to revise them later.`
         },
         {
             id: "project_pniQuestions_goal_draft",
