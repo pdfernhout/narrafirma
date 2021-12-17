@@ -290,7 +290,14 @@ export function updateQuestionnaireForStoryCollection(storyCollectionIdentifier)
 }
 
 export function showStoryAsJSONData(model, fieldSpecification) {
-    var text = JSON.stringify(model, null, 4); // 4 is the number of pretty-print nesting indentation spaces
+    // don't show questionnaire 
+    function replacer(key, value) {
+        if (key === "questionnaire") {
+            return undefined;
+        } 
+        return value;
+    }
+    var text = JSON.stringify(model, replacer, 4); // 4 is the number of pretty-print nesting indentation spaces
     dialogSupport.openTextEditorDialog(text, "Story", "Close", closeShowDialogClicked, false, true);
 }
 
