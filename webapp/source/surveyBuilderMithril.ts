@@ -200,7 +200,13 @@ function displayQuestion(builder, model, fieldSpecification, storyForm) {
         if (type === "input") {
             const lengthAsNumber = Number(fieldSpecification.displayConfiguration);
             if (!isNaN(lengthAsNumber)) {
-                return [m(type, {style: "width: " + lengthAsNumber + "%"}, standardValueOptions), m("br")];
+                const valueOptionsWithWidth = {
+                    value: value,
+                    style: "width: " + lengthAsNumber + "%",
+                    id: getIdForText(fieldID),
+                    onchange: standardChangeMethod,
+                };
+                return [m(type, valueOptionsWithWidth), m("br")];
             } else {
                 return [m(type, standardValueOptions), m("br")];
             }
