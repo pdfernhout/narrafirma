@@ -411,6 +411,13 @@ export class StoryBrowser {
             displayPrompt: "Reason to ignore story (enter any text here to leave this story out of all graphs and reports)",
             displayClass: "narrafirma-ignore-story"
         });
+        this.itemPanelSpecification.panelFields.push({
+            id: "showJSON",
+            valueType: "none",
+            displayType: "button",
+            displayPrompt: "Show story as raw JSON data",
+            displayConfiguration: "showStoryAsJSON"
+        });
         
         /*
         // TODO: What to do about current selection in filter widgets?

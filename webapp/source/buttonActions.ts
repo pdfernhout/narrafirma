@@ -289,6 +289,15 @@ export function updateQuestionnaireForStoryCollection(storyCollectionIdentifier)
     return;
 }
 
+export function showStoryAsJSONData(model, fieldSpecification) {
+    var text = JSON.stringify(model, null, 4); // 4 is the number of pretty-print nesting indentation spaces
+    dialogSupport.openTextEditorDialog(text, "Story", "Close", closeShowDialogClicked, false, true);
+}
+
+function closeShowDialogClicked(text, hideDialogMethod) {     
+    hideDialogMethod();
+}
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // catalysis
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -625,6 +634,8 @@ export const exportProject = projectImportExport.exportProject;
 export const importProject = projectImportExport.importProject;
 export const resetProject = projectImportExport.resetProject;
 export const exportEntireProject = projectImportExport.exportEntireProject;
+
+export const showStoryAsJSON = showStoryAsJSONData;
 
 export const printStoryForm = printing.printStoryForm;
 export const printStoryCards = printing.printStoryCards;
