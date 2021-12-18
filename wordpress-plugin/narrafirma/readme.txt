@@ -111,6 +111,7 @@ We strongly suggest that you set up any web site on which you intend to install 
 Changed: Added "start here" label to home-page diagram, so beginners have a hint at what to click on first
 Changed: Revamped help system to (a) clarify interactions between pages and (b) add previous-next links between help pages
 Changed: In story cards, added bold tags so word processors will show selected answers even if style information is lost
+Changed: While looking at stories in "Review incoming stories" can now see raw JSON story data
 Fixed: Bug where survey could refuse to save story because it seemed to have no name (though it did)
 Fixed: Bug where question name with leading or trailing space did not match choice made in story form (now extra spaces are trimmed out)
 Fixed: Bug where "Active on web?" column on "Start story collection" page showed "checked" for all story collections (instead of yes or no)
