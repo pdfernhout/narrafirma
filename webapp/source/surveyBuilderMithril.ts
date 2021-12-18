@@ -425,7 +425,8 @@ function displayQuestion(builder, model, fieldSpecification, storyForm) {
                 leftSideText = fieldSpecification.displayConfiguration[0];
                 rightSideText = fieldSpecification.displayConfiguration[1];
             }
-            if (fieldSpecification.displayConfiguration.length > 2) {
+            // fieldSpecification.displayConfiguration[2] can exist but be undefined
+            if (fieldSpecification.displayConfiguration.length > 2 && fieldSpecification.displayConfiguration[2]) {
                 doesNotApplyText = fieldSpecification.displayConfiguration[2];
             }
         }
