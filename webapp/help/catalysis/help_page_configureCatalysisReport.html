@@ -9,44 +9,60 @@
 <div class="header">
 	<span class="narrafirma-name">NarraFirma&trade; Help</span>
 	<span class="breadcrumb">
-	<a href="../dashboard/help_page_dashboard.html">Home</a> &gt; 
-	<a href="help_page_catalysis.html">Catalysis</a> &gt; 
-	Configure catalysis report
+		<a href="../dashboard/help_page_dashboard.html">Home</a> &gt; 
+		<a href="help_page_catalysis.html">Catalysis</a> &gt; 
+		Configure catalysis report
+	</span>
+	<span class="prev_next">
+		&lt;&lt;
+		<a href="help_page_startCatalysisReport.html">Start catalysis report</a> 
+		||
+		<a href="help_page_explorePatterns.html">Explore patterns</a> 
+		&gt;&gt; 
 	</span>
 </div>
 
 <div id="page-configure-catalysis-report" class="page">
 
-<div class="page-title">Configure catalysis report</div>
+<h1 class="page-title">Configure catalysis report</h1>
 <div class="text">
 <p>
-Use this page to choose how you will work with stories on the "Explore patterns" page and how your
+Use this page to choose how you will work with stories on the <a href="help_page_explorePatterns.html">Explore patterns</a> page and how your
 catalysis report will be generated. 
 </p>
 </div>
 
-<div class="heading">What to do here</div>
+<h2 class="heading">What to do here</h2>
 
 <div class="text">
 <p>
-Choose which graph types and questions you want to include in your catalysis report.
-Any graph types and questions left unchecked here will not appear in the 
+Choose a catalysis report to configure. 
+Choose which graph types and questions you want to see on the 
 <a href="help_page_explorePatterns.html">Explore patterns</a> page.
+Then, if you want to, read through the options on the rest of the page. 
+You don't have to answer all of the questions. They all have default values.
 </p>
-<p>
-Then, if you want to, read through the options on the rest of the page. You don't have to answer all of the questions. They all have default values.
-</p>
-		
 </div>
 
-<div class="heading">Frequently-asked questions</div>
+<h2 class="heading">Connections to other pages</h2>
+
+<div class="text">
+<p>
+	In order to configure a catalysis report on this page, you must first
+	create the report on the <a href="help_page_startCatalysisReport.html">Start catalysis report</a> page.
+	Options you set on this page will affect the <a href="help_page_explorePatterns.html">Explore patterns</a> page
+	and the <a href="help_page_printCatalysisReport.html">Print catalysis report</a> page.
+</p>
+</div>
+
+<h2 class="heading">Frequently-asked questions</h2>
 <ul>
-	<li><a href="#graphtypes">Can you explain the different graph types?</a></li>
-	<li><a href="#hiddenobservations">What happens to my observations when I hide a graph type or question?</a></li>
-	<li><a href="#statthreshold">How should I set the subset threshold for statistical tests?</a></li>
-	<li><a href="#statthresholdlater">What if I change my mind about the statistical threshold later?</a></li>
 	<li><a href="#hidegraphtypes">Why would I want to hide graph types from view?</a></li>
 	<li><a href="#hidequestions">Why would I want to hide questions from view?</a></li>
+	<li><a href="#hiddenobservations">What happens to my observations when I hide a graph type or question?</a></li>
+	<li><a href="#graphtypes">Can you explain the different graph types?</a></li>
+	<li><a href="#statthreshold">How should I set the subset threshold for statistical tests?</a></li>
+	<li><a href="#statthresholdlater">What if I change my mind about the statistical threshold later?</a></li>
 	<li><a href="#filtering">How do I filter the stories used in the report?</a></li>
 	<li><a href="#displaylumping_works">How does display lumping work?</a></li>
 	<li><a href="#displaylumping_useful">Why is display lumping useful?</a></li>
@@ -54,52 +70,9 @@ Then, if you want to, read through the options on the rest of the page. You don'
 	<li><a href="#exportimport">Please explain exporting and importing report elements.</a></li>
 </ul>
 
-<div class="question">
-	<a id="graphtypes">Can you explain the different graph types?</a>
-</div>
-<div class="question-answer">
-<p>The graph types are described in detail on the <a href="help_page_explorePatterns.html">Explore patterns</a> 
-help page.</p>
-</div>
-
-<div class="question">
-	<a id="hiddenobservations">What happens to my observations when I hide a graph type or question?</a>
-</div>
-<div class="question-answer">
-<p>
-Any question or graph type you uncheck here will not show up on the 
-<a href="help_page_explorePatterns.html">Explore patterns</a> page.
-However, if you write an observation about a pattern and then hide its question or graph type, the observation will
-still appear in the printed report. 
-</p>
-</div>
-
-<div class="question">
-	<a id="statthreshold">How should I set the subset threshold for statistical tests?</a>
-</div>
-<div class="question-answer">
-<p>
-If you have lots of stories, you might
-want to strengthen the results of your statistical tests by removing all small
-story subsets from comparison. The higher this threshold the stronger (and fewer) your statistical results will be.
-Be aware that choosing a threshold below 30 will result in test results with weaker power, which
-can only be considered suggestive, not conclusive.
-</p>
-</div>
-		
-<div class="question">
-	<a id="statthresholdlater">What if I change my mind about the statistical threshold later?</a>
-</div>
-<div class="question-answer">
-<p>
-Changing your statistical threshold might
-change some test values. If you do change this value, be careful to update any
-observations you've already written that depend on statistical test values.
-</div>
-<div class="question">
-
+<h3 class="question">
 	<a id="hidegraphtypes">Why would I want to hide graph types from view?</a>
-</div>
+</h3>
 <div class="question-answer">
 <p>
 Looking at all of the graphs for your project might be overwhelming; sometimes there are thousands. 
@@ -110,23 +83,65 @@ concentrate on right now.
 </p>
 </div>
 
-<div class="question">
+<h3 class="question">
 	<a id="hidequestions">Why would I want to hide questions from view?</a>
-</div>
+</h3>
 <div class="question-answer">
 <p>
 Sometimes questions don't turn out to be very useful, 
 because participants didn't understand them, or the answer possibilities you gave didn't appeal to participants,
 or there wasn't as much variety as you expected to find.
 For whatever reason, you may not want to include every question from your story form
-in your catalysis report. If you can't see a question on the <a href="help_page_explorePatterns.html">Explore Patterns</a> page, you
-can't write any observations about it. 
+in your catalysis report. 
 </p>
 </div>
 
-<div class="question">
-	<a id="filtering">How do I filter the stories used in the report?</a>
+<h3 class="question">
+	<a id="hiddenobservations">What happens to my observations when I hide a graph type or question?</a>
+</h3>
+<div class="question-answer">
+<p>
+Any question or graph type you uncheck here will not show up on the 
+<a href="help_page_explorePatterns.html">Explore patterns</a> page.
+However, if you write an observation about a pattern and then hide its question or graph type, the observation will
+still appear in the printed report. 
+</p>
 </div>
+
+<h3 class="question">
+	<a id="graphtypes">Can you explain the different graph types?</a>
+</h3>
+<div class="question-answer">
+<p>The graph types are described in detail on the <a href="help_page_explorePatterns.html">Explore patterns</a> 
+help page.</p>
+</div>
+
+<h3 class="question">
+	<a id="statthreshold">How should I set the subset threshold for statistical tests?</a>
+</h3>
+<div class="question-answer">
+<p>
+If you have lots of stories, you might
+want to strengthen the results of your statistical tests by removing all small
+story subsets from comparison. The higher this threshold the stronger (and fewer) your statistical results will be.
+Be aware that choosing a threshold below 30 will result in test results with weaker power, which
+can only be considered suggestive, not conclusive.
+</p>
+</div>
+		
+<h3 class="question">
+	<a id="statthresholdlater">What if I change my mind about the statistical threshold later?</a>
+</h3>
+<div class="question-answer">
+<p>
+Changing your statistical threshold might
+change some test values. If you do change this value, be careful to update any
+observations you've already written that depend on statistical test values.
+</div>
+
+<h3 class="question">
+	<a id="filtering">How do I filter the stories used in the report?</a>
+</h3>
 <div class="question-answer">
 	<p>You can use a filter to <b>limit the scope of your catalysis report</b> to a specific subset of stories.
 		This feature is useful when you have an important division in your story collection, such as when your stories were collected in different locations
@@ -193,9 +208,9 @@ can't write any observations about it.
 		</ul>
 </div>
 
-<div class="question">
+<h3 class="question">
 	<a id="displaylumping_works">How does <b>display lumping</b> work?</a>
-</div>
+</h3>
 <div class="question-answer">
 	<p>
 		You can lump answers permanently as you import your data from a CSV file.
@@ -204,8 +219,8 @@ can't write any observations about it.
 		changing your stored data. 
 	</p>
 	<p>
-		To use display lumping, go to the <b>Configure catalysis report</b> page and find the box labeled
-		"If you want to use <strong>display lumping</strong> for choice questions, enter your lumping commands here."
+		To use display lumping, find the box labeled
+		"<strong>If you want to use display lumping for choice questions, enter your lumping commands here.</strong>"
 		In that box, for each set of answers you want to lump together, on its own line,
 		enter 
 		<ul>
@@ -255,9 +270,9 @@ can't write any observations about it.
 		</ul>
 </div>
 
-<div class="question">
+<h3 class="question">
 	<a id="displaylumping_useful">Why is display lumping useful?</a>
-</div>
+</h3>
 <div class="question-answer">
 	<p>
 	The catalysis process almost always requires that you choose some answers to lump together. 
@@ -298,9 +313,9 @@ can't write any observations about it.
 	</p>
 </div>
 
-<div class="question">
+<h3 class="question">
 		<a id="opaquedot">What's this about an opaque dot?</a>
-		</div>
+		</h3>
 		<div class="question-answer">
 		<p>
 		If you have a lot of data points, or if you imported data collected with a different slider scale, you may
@@ -309,9 +324,9 @@ can't write any observations about it.
 		</p>
 		</div>
 				
-<div class="question">
+<h3 class="question">
 	<a id="exportimport">Please explain exporting and importing report elements.</a>
-	</div>
+	</h3>
 	<div class="question-answer">
 	<p>
 	A catalysis report contains observations, interpretations, and perspectives that refer to patterns (graphs or sets of graphs) in the story collection(s) connected to that report.
@@ -342,7 +357,6 @@ can't write any observations about it.
 	<p>Notes:</p>
 	<ul>
 		<li>Observations are identified by their connections to patterns. Patterns are combinations of questions. Questions are identified by their short names.
-			Interpretations depend on observations. Perspectives depend on interpretations.
 			Thus the critical connection between two catalysis reports lies in the short names of the questions their patterns refer to.
 			So you can transfer elements from one catalysis report to another 
 			<i>as long as the question short names are identical</i>. 

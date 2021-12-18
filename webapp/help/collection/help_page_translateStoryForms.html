@@ -13,16 +13,23 @@
 	<a href="help_page_collection.html">Collection</a> &gt; 
 	Translate story forms
 	</span>
+	<span class="prev_next">
+		&lt;&lt;
+		<a href="help_page_designStoryForms.html">Design, generate, or import story forms</a> 
+		||
+		<a href="help_page_startStoryCollection.html">Start story collection</a> 
+		&gt;&gt; 
+	</span>
 </div>
 
 <div id="page-collection-translate-story-forms" class="page">
 
-<div class="page-title">Translate story forms</div>
+<h1 class="page-title">Translate story forms</h1>
 <div class="text">
 	<p>In your story form, you can provide participants with a <b>choice of languages</b>.
 		For example, a three-language story form might start like this.</p>
 
-<p><img src="help_translate_question.png" width="600" border="1px solid black"></p>
+<p><img src="help_translate_question.png" width="600" style="border: 1px solid gray"></p>
 
 <p>When a participant chooses a language from the list, the form will redraw itself in that language. 
 	When the participant submits the form, NarraFirma will save the participant's language choice as a question you can graph.
@@ -35,7 +42,7 @@
 </p> 
 </div>
 
-<div class="heading">What to do here</div>
+<h2 class="heading">What to do here</h2>
 
 <div class="text">
 <ol>
@@ -45,60 +52,72 @@
 		(Tip: It's a good idea to write your choose-a-language question in every language you intend to support, as in the example above.)
 	</li>
 	<li>Enter a list of additional languages you want to support (one per line).</li>
-	<li>Choose "Create or update translation dictionary" and click "Do it." A lot of empty text boxes will appear, one for each field-language combination.</li>
+	<li>Choose <b>Create or update translation dictionary</b> from the drop-down list of actions, then click <b>Do it</b>. 
+		Many empty text boxes will appear, one for each text-language combination.</li>
 	<li>Fill in the translations for each text. 
-		Do not translate the explanations that are shown after each text (in a smaller, italic font). They are meant to help you understand the context in which each text is used.</li>
+		Do not translate the explanations that are shown after each text (in a smaller, italic font). 
+		They are meant to help you understand the context in which each text is used.</li>
 	<li>Alternatively, you can export your translation dictionary to a CSV file, enter your translations there, and import the file.
 		(Do not edit the default-language texts. Save the file as CSV with UTF-8 character encoding.)
 	</li>
-	<li>Periodically test your story form by choosing "Preview story form" and clicking "Do it." Run through each language choice, making sure the form reads correctly.</li>
+	<li>Periodically test your story form by choosing <b>Preview story form</b> and clicking <b>Do it</b>. 
+		Run through each language choice, making sure the form reads correctly.</li>
 </ol>
 </div>
 
-<div class="heading">Frequently-asked questions</div>
+<h2 class="heading">Connections to other pages</h2>
 
-<div class="question">
-What will happen if I change a text in the story form, or in the questions it uses, after I write the translation dictionary?
-</div>
-<div class="question-answer">
+<div class="text">
 <p>
-The translation facility in NarraFirma is a simple one. It links translated texts to default-language texts. 
-It has no idea where those texts belong in the form.
+The translation facility in NarraFirma is a simple one. 
+It matches each translatable piece of text to one or more additional-language versions of that piece of text. 
+NarraFirma has no idea where these translatable texts belong on the story form. 
+It only knows, for example, that instead of writing "How you feel about this story?"
+it should (sometimes) write "Que pensez-vous de cette histoire?"
 </p><p>
-If you enter translations for a text, and then change the text in your story form, your translations of that text
-will become "orphaned," or detached from the form. They will still be stored in the form, but they will 
-never be displayed on it, because the default text to which they are linked has been removed.
+This means that if you enter translations for a text, then <i>change</i> the original text (in its question or story form), 
+your translations of that text will become <b>orphaned</b>, or detached from the question or form. 
+They will still be <i>stored</i> in the question or form, but they will 
+never be <i>displayed</i>, because the original piece of text to which they are linked no longer exists.
 </p>
-<p>When this happens, there is an easy fix. Choose "Show orphaned translations," then click "Do it." 
-	Copy the texts shown there and paste them into the text boxes for the field's new default text.
-	The orphaned translations will stay in the form until you remove them. (Choose "Remove orphaned translations," then click "Do it.")
+<p>When this happens, there is an easy fix. Choose <b>Show orphaned translations</b> from the drop-down list of actions, then click <b>Do it</b>. 
+Copy each of the translated texts shown, and paste it into the text box for that field's <i>new</i> translatable text.
+</p><p>
+To minimize the need to fix orphaned translations like this, we recommend that you <b>design and test your story form
+in its default language <i>before</i> you enter any translations</b>. 
+</p><p>
+Orphaned translations stay in the story form until you remove them.
+To remove them, choose <b>Remove orphaned translations</b>, then click <b>Do it</b>.
 </p>
-<p>To minimize the need to fix orphaned translations, we recommend that you design and test your story form
-	in its default language <i>before</i> you enter your translations. 
+<p>The one other connection between this page and other pages in NarraFirma is that translated story forms
+	produce a "Language" question, the results of which you can graph in the <a href="../catalysis/help_page_catalysis.html">Catalysis</a>
+	section of NarraFirma.
 </p>
 </div>
 
-<div class="question">
+<h2 class="heading">Frequently-asked questions</h2>
+
+<h3 class="question">
 Can you explain the CSV import process in more detail?
-</div>
+</h3>
 <div class="question-answer">
 <ol>
-	<li>Fill in the three fields at the top of the "Translate story forms" page. Make sure to enter a default language, a language question, and at least one additional language.</li>
-	<li>Synchronize the translation dictionary with your story form by choosing "Create or update translation dictionary" and clicking "Do it."</li>
-	<li>Choose "Export translation dictionary." Choose a file location.</li>
+	<li>Fill in the three fields at the top of this page. Make sure to enter a default language, a language question, and at least one additional language.</li>
+	<li>Synchronize the translation dictionary with your story form by choosing <b>Create or update translation dictionary</b> and clicking <b>Do it</b>.</li>
+	<li>Choose <b>Export translation dictionary</b>. Choose a file location.</li>
 	<li>Send the CSV file to your translator. Ask them to edit <i>only</i> the columns labeled with the alternative languages.
-		They should not edit the default-language texts. Also ask them to make sure the file stays in CSV format with UTF-8 character encoding.
+		They should not edit the default-language (primary) texts. Also ask them to make sure the file stays in CSV format with UTF-8 character encoding.
 		(The CSV delimiter used will be the one you set on the "Project options" page, under "Project administration.")</li>
-	<li>When you get the translated file back, go to the "Translate story forms" page. 
-		Select the story form, choose "Import translations from CSV," then click "Do it."
+	<li>When you get the translated file back, go back to this page. 
+		Select the story form, choose <b>Import translations from CSV</b>, then click <b>Do it</b>.
 		The new translations should appear in the form fields on the page. You can review them, and you can preview the story form.
 	</li>
 </ol>
 </div>
 
-<div class="question">
+<h3 class="question">
 If I imported my story form from a CSV file, should my translation dictionary be part of that file?
-</div>
+</h3>
 <div class="question-answer">
 <p>
 	Translation dictionaries are only used to display story forms in NarraFirma-administered surveys.

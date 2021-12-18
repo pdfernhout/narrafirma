@@ -17,14 +17,14 @@
 
 <div id="page-import-export" class="page">
 
-<div class="page-title">Import and export</div>
+<h1 class="page-title">Import and export</h1>
 <div class="text">
 <p>
 On this page you can export your data for backup, or import to restore a project.
 </p>
 </div>
 
-<div class="heading">What to do here</div>
+<h2 class="heading">What to do here</h2>
 
 <div class="text">
 <p>
@@ -32,11 +32,19 @@ Export the current project to a file for backup, reset (empty) the project, or i
 </p>
 </div>
 
-<div class="heading">Frequently-asked questions</div>
+<h2 class="heading">Connections to other pages</h2>
 
-<div class="question">
-Should I export a project snapshot or a project history?
+<div class="text">
+<p>
+	This page has the potential to affect every other page in your project. Use it carefully.
+</p>
 </div>
+
+<h2 class="heading">Frequently-asked questions</h2>
+
+<h3 class="question">
+Should I export a project snapshot or a project history?
+</h3>
 <div class="question-answer">
 <p>
 As you work in NarraFirma, the software saves every action you take using "messages" that together form a history. 
@@ -47,7 +55,7 @@ Journaling also makes it easier to implement an undo system (which we have not y
 A project snapshot does not include these historical messages; it simply saves the current state of each element in the project.
 Because we haven't yet implemented any project-level undo functionality, it doesn't (yet) 
 make any difference if you save a project snapshot or a project history, but in the future
-it will (might) matter.
+it might matter.
 </p>
 <p>The one exception to that "it doesn't matter" statement is that, if you are exporting a project so you can reset it
 	and then restore it without disconnected stories (see below), you do need to choose the snapshot export.
@@ -55,9 +63,9 @@ it will (might) matter.
 </p>
 </div>
 		
-<div class="question">
+<h3 class="question">
 Why can't I save a project history without stories?
-</div>
+</h3>
 <div class="question-answer">
 <p>
 A project history is a record of everything that took place since you started the project, including the addition of stories, changes to stories,
@@ -65,9 +73,9 @@ and references to stories. It would be hard (and possibly damaging to a potentia
 </p>
 </div>
 
-<div class="question">
+<h3 class="question">
 Can I use import and export to copy a project?
-</div>
+</h3>
 <div class="question-answer">
 <p>
 Yes. You can export the project (with or without collected stories) to a file, then create
@@ -75,9 +83,9 @@ a new, empty project and import the data into it.
 </p>
 </div>
 
-<div class="question">
+<h3 class="question">
 Can I use the export function to move or copy a project from a WordPress to a Node.js version of NarraFirma (or vice versa)?
-</div>
+</h3>
 <div class="question-answer">
 <p>
 Yes. The file format is independent of either back end. Just export the project, create a new (empty) project
@@ -85,9 +93,9 @@ in your other installation of NarraFirma, and import the project into it.
 </p>
 </div>
 
-<div class="question">
+<h3 class="question">
 Can I import a project on top of an existing project, to restore it to a previous state?
-</div>
+</h3>
 <div class="question-answer">
 <p>
 Don't do that. It will have unpredictable results. 
@@ -95,37 +103,46 @@ You should always import a project file to an empty project.
 </p>
 </div>
 
-<div class="question">
+<h3 class="question">
 Is exporting the project the only way to save the stories I collected?
-</div>
+</h3>
 <div class="question-answer">
 <p>
 No. You can export your stories, and your story forms, as CSV (spreadsheet) files from the
-"Export stories or story forms" page in the "Collection" section of NarraFirma.
+<a href="../collection/help_page_exportStories.html">Export stories or story forms</a> page.
 </p>
 </div>
 
-<div class="question">
+<h3 class="question">
 What is the format of exported projects?
-</div>
+</h3>
 <div class="question-answer">
 <p>
-Projects are exported in JSON format. You can open a project file in any browser and see the elements defined in it. 
+Projects are exported in JSON format. You can open a project file in any browser or text editor and see the elements defined in it. 
 </p>
 </div>
 		
-<div class="question">
+<h3 class="question">
 Can I use the export function to translate the entire project to another piece of software, like a word processor?
-</div>
+</h3>
 <div class="question-answer">
 <p>
-Sort of, but the better way is to go to the Administration-Print page and print a project report. 
+Sort of, but the better way is to go to the project-administration <a href="help_page_print.html">Print</a> page and print a project report. 
 </p>
 </div>
 
-<div class="question">
-Why would I want to reset a project?
+<h3 class="question">
+If I have a problem with a project, can I export it, edit its JSON file using a word processor, then import it into an empty (or reset) project?
+</h3>
+<div class="question-answer">
+<p>
+Yes. Just be careful, and make a backup copy before you make any changes.
+</p>
 </div>
+
+<h3 class="question">
+Why would I want to reset a project?
+</h3>
 <div class="question-answer">
 <p>
 	To avoid accidentally losing stories, NarraFirma does not delete stories when you delete a story collection.
@@ -143,9 +160,9 @@ But if you have loaded several hundred stories several times, you might notice a
 In that case, you can use the export-reset-import process to trim out the hidden stories and speed things up.</p>
 </div>
 
-<div class="question">
+<h3 class="question">
 After I reset a project, are the stories that were removed gone forever?
-</div>
+</h3>
 <div class="question-answer">
 <p>When you reset a project, NarraFirma makes a backup copy of it first. To restore the backup:</p>
 <ul>
@@ -176,9 +193,9 @@ After I reset a project, are the stories that were removed gone forever?
 </p>
 </div>
 
-<div class="question">
+<h3 class="question">
 But what if I actually wanted to remove the stories forever?
-</div>
+</h3>
 <div class="question-answer">
 <p>That's easily done. If you are using WordPress, delete the backup table. If you are using node.js, delete the backup folder.</p>
 </div>

@@ -17,40 +17,54 @@
 
 <div id="page-print" class="page">
 
-<div class="page-title">Print</div>
+<h1 class="page-title">Print</h1>
 <div class="text">
 <p>
-On this page you can print a project report. This page also serves to remind you of all the pages from which you can print things about your project.
+On this page you can print a <b>project report</b>: a record of everything you entered into the project, rendered as plain HTML. A project report
+does not include any stories, but it does include every choice you made and every word you typed while you were using NarraFirma to work on the project.
+A project report is a version of your project you can access after you stop using NarraFirma.
 </p>
 </div>
 
-<div class="heading">What to do here</div>
+<h2 class="heading">What to do here</h2>
 
 <div class="text">
 <p>
-Print a project report or follow a link to print something else about the project.
+Print a project report.
+</p><p>
+You can also use this page to follow links to print other things about the project.
 </p>
 </div>
 
-<div class="heading">Frequently-asked questions</div>
+<h2 class="heading">Connections to other pages</h2>
 
-<div class="question">
+<div class="text">
+<p>
+	This page depends on every other page in NarraFirma, but it has no impact on any other page.
+</p>
+</div>
+
+<h2 class="heading">Frequently-asked questions</h2>
+
+<h3 class="question">
 Can I open a project report in my word processor?
-</div>
+</h3>
 <div class="question-answer">
 <p>
-Yes. The HTML document uses CSS styles, and they are included in the file (instead of referencing an external CSS file),
-so your word processor might be able to pick them up and use them as document styles. Even if the styles don't come out right,
-you will still be able to edit and style the text manually.
+Maybe. The HTML document uses CSS styles, and they are included in the file (instead of referencing an external CSS file).
+Some word processors can pick up CSS styles and use them as document styles. If that doesn't work, we recommend the
+use of <a href="https://pandoc.org/">Pandoc</a>, which does a good job of converting HTML files 
+to a variety of word processing formats, such as ODT and DOCX. 
 </p>
 </div>
 
-<div class="question">
+<h3 class="question">
 Can I print a project report, edit it, and then import it back into NarraFirma?
-</div>
+</h3>
 <div class="question-answer">
 <p>
-No. Unlike an exported file, a printed report cannot be read by NarraFirma. It is for your use outside the program.
+No. Unlike an <a href="help_page_importExport.html">exported</a> JSON file, a printed HTML project report cannot be read by NarraFirma. 
+It is for your use outside the program.
 </p>
 </div>
 

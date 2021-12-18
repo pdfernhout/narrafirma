@@ -9,22 +9,29 @@
 <div class="header">
 	<span class="narrafirma-name">NarraFirma&trade; Help</span>
 	<span class="breadcrumb">
-	<a href="../dashboard/help_page_dashboard.html">Home</a> &gt; 
-	<a href="help_page_catalysis.html">Catalysis</a> &gt; 
-	Explore patterns
+		<a href="../dashboard/help_page_dashboard.html">Home</a> &gt; 
+		<a href="help_page_catalysis.html">Catalysis</a> &gt; 
+		Explore patterns
+	</span>
+	<span class="prev_next">
+		&lt;&lt;
+		<a href="help_page_configureCatalysisReport.html">Configure catalysis report</a> 
+		||
+		<a href="help_page_clusterInterpretations.html">Cluster interpretations and/or observations</a> 
+		&gt;&gt; 
 	</span>
 </div>
 
 <div id="page-explore-patterns" class="page">
 
-<div class="page-title">Explore patterns</div>
+<h1 class="page-title">Explore patterns</h1>
 <div class="text">
 <p>
 On this page you can look at graphs that describe your data, make observations about them, and interpret your observations.
 </p>
 </div>
 
-<div class="heading">What to do here</div>
+<h2 class="heading">What to do here</h2>
 
 <div class="text">
 <p>
@@ -79,7 +86,21 @@ by whether they have been marked as remarkable and whether you have written obse
 </p>
 </div>
 
-<div class="heading">Tips for making the most of this page</div>
+<h2 class="heading">Connections to other pages</h2>
+
+<div class="text">
+<p>
+	In order to use this page, you must first
+	create a catalysis report on the <a href="help_page_startCatalysisReport.html">Start catalysis report</a> page.
+	Options you set on the <a href="help_page_configureCatalysisReport.html">Configure catalysis report</a> page 
+	will affect how graphs are drawn and how statistical tests are calculated on this page.
+	The observations, interpretations, and ideas you write on this page will affect the
+	<a href="help_page_clusterInterpretations.html">Cluster interpretations and/or observations</a> page
+	and the <a href="help_page_printCatalysisReport.html">Print catalysis report</a> page.
+</p>
+</div>
+
+<h2 class="heading">Tips for making the most of this page</h2>
 
 <div class="text">
 <p>This is the most complicated page in the entire NarraFirma application.
@@ -126,7 +147,7 @@ and interpretations.
 		The question didn't make sense to people, or it didn't apply to their stories,
 		or (most often) there was little variation in the responses.
 		Once you are sure that a question is not worth considering, you can 
-		uncheck its checkbox on the "Configure catalysis report" page.
+		uncheck its checkbox on the <a href="help_page_configureCatalysisReport.html">Configure catalysis report</a> page.
 		This will reduce the number of patterns generated and streamline your task.
 	</li>
 	<li>
@@ -135,7 +156,7 @@ and interpretations.
 		catalysis report. As you write your observations, give each one a strength value.
 		Create a consistent system, like this one:
 		<ul><li>
-			To be marked as strong, a pattern must be both obvious and surprising to everyone who sees it.</li>
+			To be marked as strong, a pattern must be (most likely) both obvious and surprising to everyone who sees it.</li>
 			<li>
 				To be marked as medium, a pattern should be difficult (but not impossible) to dispute, and at least moderately interesting.</li>
 			</li>
@@ -154,7 +175,7 @@ and interpretations.
 </ul>
 </div>
 
-<div class="heading">Frequently-asked questions</div>
+<h2 class="heading">Frequently-asked questions</h2>
 
 <p style="margin-left: 0.5em"><b>Things you can see</b></p>
 <ul>
@@ -186,9 +207,9 @@ and interpretations.
 	<li><a href="#competing">Why should I write two competing interpretations for each observation?</a></li>
 </ul>
 
-<div class="question">
+<h3 class="question">
 		<a id="graphtypes">Can you explain the different graph types?</a>
-		</div>
+		</h3>
 		<div class="question-answer">
 		<table border="0" cellspacing="12" cellpadding="4">
 		<tr>
@@ -236,11 +257,11 @@ and interpretations.
 			<td valign="top"><img src="graphThumbnail_tables.png" height="64px" alt="table"></td>
 			<td valign="top">A <b>table</b> shows the counts of stories
 				for which both questions were answered in the way indicated by the row and column of the grid.
-				You might know these as <i>contingency tables</i>.
+				You might know these as <i>contingency tables</i> or <i>contingency charts</i>.
 				For example, a table might show the concurrence of two questions: "Who acted responsibly in this story?" and
-				"Who was <i>supposed</i> to have responsibility in this story?" A
-				One bubble on the graph might show how many stories for which participants said that one person 
-				took care of another person's responsibility.
+				"Who was <i>supposed</i> to have responsibility in this story?"
+				One bubble on the graph might show how many stories for which participants said someone 
+				took care of someone else's responsibility.
 				<br><br>
 				If there are unfilled ellipses on the graph, they indicate how many stories would be <i>expected</i>
 				to have those two answers, if the answers were filled in randomly. The formula for expected counts
@@ -383,13 +404,13 @@ and interpretations.
 		</table>
 		</div>
 
-<div class="question">
+<h3 class="question">
 	<a id="stattests">What statistical tests are being reported?</a>
-</div>
+</h3>
 <div class="question-answer">
 <ul>
 <li>
-For a contingency graph (two choice questions), the statistic is the 
+For a contingency table (two choice questions), the statistic is the 
 <a href="https://en.wikipedia.org/wiki/Chi-squared_test">chi-squared test</a>.</li>
 <li>For multiple histograms with mutually exclusive choices, 
 the test is the 
@@ -406,9 +427,9 @@ the data is normally distributed, to be conservative.
 </p>
 </div>
 
-<div class="question">
+<h3 class="question">
 		<a id="hidestattests">Can I hide the statistical results?</a>
-	</div>
+	</h3>
 	<div class="question-answer">
 	<p>Yes. 
 		Go to the "Configure catalysis report" page and uncheck the check box under "Would you prefer to hide statistical results on the Explore Patterns page?"
@@ -421,9 +442,9 @@ the data is normally distributed, to be conservative.
 	</p>
 	</div>
 	
-<div class="question">
+<h3 class="question">
 	<a id="skewnesskurtosis">What is skewness? What is kurtosis?</a>
-</div>
+</h3>
 <div class="question-answer">
 <p>
 	Skewness is a measure of how far the distribution is skewed away from being symmetrical. 
@@ -438,9 +459,9 @@ the data is normally distributed, to be conservative.
 <img src="help_kurtosis.png" width="200">
 </div>
 
-<div class="question">
+<h3 class="question">
 	<a id="notmutuallyexclusive">Why do some of the table rows say "None (choices not mutually exclusive)"?</a>
-</div>
+</h3>
 <div class="question-answer">
 <p>
 That's because some of the tests (chi-squared, Mann-Whitney U) can only be run on mutually exclusive choices. 
@@ -449,9 +470,9 @@ are combined with other questions.
 </p>
 </div>
 		
-<div class="question">
+<h3 class="question">
 	<a id="formattexts">How can I format the texts in my observations and interpretations?</a>
-</div>
+</h3>
 <div class="question-answer">
 <p>
 You can control the formatting of your observation and interpretation texts in three ways. 
@@ -467,9 +488,9 @@ You can control the formatting of your observation and interpretation texts in t
 </ol>
 </div>
 
-<div class="question">
+<h3 class="question">
 	<a id="saveselection">Can I save the list of stories I'm looking at under a graph?</a>
-</div>
+</h3>
 <div class="question-answer">
 <p>
 	Yes you can.
@@ -490,9 +511,9 @@ You can record and use more than one selection, and you can
 </p>
 </div>
 
-<div class="question">
+<h3 class="question">
 		<a id="multiplepatterns">How can I write an observation that refers to multiple patterns?</a>
-		</div>
+		</h3>
 		<div class="question-answer">
 		<ul>
 			<li>Under the box where you describe your observation, find the box labeled "To include additional patterns."</li>
@@ -509,10 +530,10 @@ You can record and use more than one selection, and you can
 		</p>
 		</div>
 		
-<div class="question">
+<h3 class="question">
 	<a id="deletedobservation">Help! I deleted an observation, but I didn't mean to, and now the interpretations
 I wrote under it are also gone. Can I get it (and them) back?</a>
-</div>
+</h3>
 <div class="question-answer">
 <p>
 If you deleted only the name and text of an observation, you can get the interpretations back.
@@ -528,10 +549,10 @@ Just write a new observation name and/or text, and your interpretations will rea
 </p>
 </div>
 	
-<div class="question">
+<h3 class="question">
 	<a id="changestories">I've got some observations written, but I've suddenly realized that I have to change something about my stories.
 Do I have to start all over again?</a>
-</div>
+</h3>
 <div class="question-answer">
 <p>
 If you need to change your stories but do not need to create a new story collection, you can just go ahead and
@@ -550,20 +571,19 @@ change your stories. Be sure to go back over your observations to see if you nee
 </p>
 </div>
 
-<div class="question">
+<h3 class="question">
 	<a id="lumping">If I asked a question, and it had a lot of possible answers, and some of the answer counts turned out to be really low, is there
 anything I can do about it?</a>
-</div>
+</h3>
 <div class="question-answer">
 <p>
 Yes there is. You can use display lumping, which is explained in the help for the <a href="help_page_configureCatalysisReport.html">Configure catalysis report</a> page.
-to do this.
 </p>
 </div>
 
-<div class="question">
+<h3 class="question">
 	<a id="linkingquestions">What are linking questions for?</a>
-</div>
+</h3>
 <div class="question-answer">
 	<p>Linking questions help readers of your catalysis report understand <strong>how each observation is connected to its interpretations</strong>. 
 		They do this by framing a question to which your interpretations are answers.
@@ -581,9 +601,9 @@ to do this.
 	</p>
 </div>
 
-<div class="question">
+<h3 class="question">
 		<a id="interpparts">Why does an interpretation have a main text plus an idea and questions? What should I write there?</a>
-	</div>
+	</h3>
 	<div class="question-answer">
 		<p>The interpretation's <b>main text</b> is exactly that, an interpretation of the observation, a viewpoint on what it means.
 			It is an explanation of the observation from a particular perspective.
@@ -604,9 +624,9 @@ to do this.
 			</p>
 		</div>
 
-<div class="question">
+<h3 class="question">
 	<a id="competing">Why should I write two competing interpretations for each observation?</a>
-</div>
+</h3>
 <div class="question-answer">
 <p>
 Here is an excerpt from <em><a href="http://www.workingwithstories.org">Working with Stories</a></em>

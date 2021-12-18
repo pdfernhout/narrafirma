@@ -9,15 +9,22 @@
 <div class="header">
 	<span class="narrafirma-name">NarraFirma&trade; Help</span>
 	<span class="breadcrumb">
-	<a href="../dashboard/help_page_dashboard.html">Home</a> &gt; 
-	<a href="help_page_catalysis.html">Catalysis</a> &gt; 
-	Print catalysis report
+		<a href="../dashboard/help_page_dashboard.html">Home</a> &gt; 
+		<a href="help_page_catalysis.html">Catalysis</a> &gt; 
+		Print catalysis report
+	</span>
+	<span class="prev_next">
+		&lt;&lt;
+		<a href="help_page_clusterInterpretations.html">Cluster interpretations and/or observations</a> 
+		||
+		<a href="../sensemaking/help_page_sensemaking.html">Sensemaking</a> 
+		&gt;&gt;
 	</span>
 </div>
 
 <div id="page-print-catalysis-report" class="page">
 
-<div class="page-title">Print catalysis report</div>
+<h1 class="page-title">Print catalysis report</h1>
 <div class="text">
 <p>
 This page is simple: you use it to print a copy of the catalysis report you created
@@ -25,7 +32,7 @@ in the previous pages.
 </p>
 </div>
 
-<div class="heading">What to do here</div>
+<h2 class="heading">What to do here</h2>
 
 <div class="text">
 <p>
@@ -34,11 +41,24 @@ page will appear with the report on it.
 </p>
 </div>
 
-<div class="heading">Frequently-asked questions</div>
+<h2 class="heading">Connections to other pages</h2>
 
-<div class="question">
-	How can I open a catalysis report in my word processor?
+<div class="text">
+<p>
+	In order to print a catalysis report on this page, you must first
+	create it (on the <a href="help_page_startCatalysisReport.html">Start catalysis report</a> page),
+	add some observations and/or interpretations to it (on the <a href="help_page_explorePatterns.html">Explore patterns</a> page),
+	and cluster the observations and/or interpretations (on the <a href="help_page_clusterInterpretations.html">Cluster interpretations and/or observations</a> page).
+	This page is also affected by the options you set on the 
+	<a href="help_page_configureCatalysisReport.html">Configure catalysis report</a> page.
+</p>
 </div>
+
+<h2 class="heading">Frequently-asked questions</h2>
+
+<h3 class="question">
+	How can I open a catalysis report in my word processor?
+</h3>
 <div class="question-answer">
 	<p>
 		<a href="https://pandoc.org/">Pandoc</a> does a good job of converting NarraFirma's HTML reports 
@@ -58,9 +78,9 @@ page will appear with the report on it.
 </p>
 </div>
 
-<div class="question">
+<h3 class="question">
 How can I format my report sections?
-</div>
+</h3>
 <div class="question-answer">
 <p>
 You can control the formatting of your report sections in three ways. 
@@ -77,12 +97,12 @@ You can control the formatting of your report sections in three ways.
 </div>
 </div>
 
-<div class="question">
+<h3 class="question">
 How do I use the "Custom CSS" feature?
-</div>
+</h3>
 <div class="question-answer">
 <p>
-Click "Print selected catalysis report," 
+Click <b>Print selected catalysis report</b>, 
 then use your browser to <strong>inspect</strong> any element of the report you want to change. 
 </p>
 <p>
@@ -108,15 +128,15 @@ Then print the report again to see your change.
 (You can't just reload the report page; you have to click the "Print selected catalysis report" button again.)
 </p>
 <p>You can also style the elements of your graphs. For example, this
-	line will make the "observed" circles in your contingency graphs red:</p>
+	line will make the "observed" circles in your contingency graphs green:</p>
 <div class="book-quote">
-<code>     .contingencyChart ellipse.storyCluster.observed { stroke: red; }</code>
+<code>     .contingencyChart ellipse.storyCluster.observed { stroke: green; }</code>
 </div>
 </div>
 
-<div class="question">
+<h3 class="question">
 One of my PNG graphs is empty.
-</div>
+</h3>
 <div class="question-answer">
 <p>
 Firefox sometimes has a problem generating PNG graphs when there are special
@@ -126,9 +146,9 @@ open it in a program that edits SVG (like Inkscape) and save it to PNG there.
 </p>
 </div>
 
-<div class="question">
+<h3 class="question">
 Why would I want to report only observations?
-</div>
+</h3>
 <div class="question-answer">
 <p>
 So you can facilitate and record a <b>group catalysis session</b>, where a group of people writes and clusters 

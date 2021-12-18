@@ -2,18 +2,22 @@
 
 body { 
 	font-family: Arial, Helvetica, sans-serif;
-	font-size: 1.05em;
+	font-size: 1em;
 	text-align: left; 
 	background: white; 
 	margin: 0;
 }
 
+p {
+	margin-bottom: 1em;
+}
+
 a:link {
-	color: #3e62aa;
+	color: #1f3258;
 }
 
 a:visited {
-	color: #18243d;
+	color: #000000;
 }
 
 a:hover {
@@ -21,12 +25,11 @@ a:hover {
 }
 
 a:active {
-	color: #b35d1b;
+	color: #6e3000;
 }
 
 li {
-	margin-top: 0.2em;
-	margin-bottom: 0.2em;
+	margin: 0.2em 0 0.2 0;
 }
 
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Navigation ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
@@ -41,12 +44,19 @@ li {
 .narrafirma-name {
 	font-size: 1em;
 	color: black;
-	font-weight: 700;
+	font-weight: bold;
 	padding: 0 2em 0 0;
 }
 
 .breadcrumb {
-	font-size: 0.8em;
+	font-size: 0.9em;
+}
+
+.prev_next {
+	display: block;
+	float: right;
+	font-size: 0.9em;
+	text-align: right;
 }
 
 .page {
@@ -55,35 +65,42 @@ li {
 
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Page styles ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-.page-title {
+h1.page-title {
 	font-size: 1.6em;
-	font-weight: 700;
-	padding: 12px 10px 12px 10px;
+	font-weight: bold;
+	margin: 0 0 0.1em 0;
+	padding: 0.5em 0.5em 0.25em 0.5em;
 }
 
-.heading {
+h2.heading {
+	background: #b0d4d4;
+	border-bottom: 1px solid #97b4b4;
 	font-size: 1.2em;
-	font-weight: 700;
-	padding: 8px 10px 6px 10px;
+	font-weight: bold;
+	margin: 0 0 0.5em 0;
+	padding: 0.5em 0.5em 0.25em 0.5em;
 }
 
 .text {
-	background: #c5d2eb;
-	padding: 4px 10px 4px 10px;
-	margin: 0px 10px 0px 10px;
+	background: inherit;
+	padding: 0 0.5em 0 0.5em;
+	margin: 0 0.5em 0 0.25em;
 }
 
-.question {
-	background: #b0d4d4;
+h3.question {
+	background: #c5d2eb;
 	font-style: italic;
-	padding: 9px 10px 8px 10px;
-	margin: 0px 10px 0px 10px;
+	font-weight: normal;
+	font-size: 1.0em;
+	padding: 0.75em 0.5em 0.5em 0.5em;
+	margin: 0.75em 0 0 0;
+	border-bottom: 1px solid #89a5a5;
 }
 
 .question-answer {
-	background: #c5d2eb;
-	padding: 4px 10px 4px 10px;
-	margin: 0px 10px 10px 10px;
+	background: inherit;
+	padding: 0 0.5em 0 0.5em;
+	margin: 0 0.5em 0 0.5em;
 }
 
 .narrafirma-pni-phases-image {
@@ -91,10 +108,10 @@ li {
 }
 
 .book-quote {
-	margin: 20px;
-	padding: 20px;
-	background: #f1f1f1;
-	border: 1px solid black;
+	margin: 0.5em 0 0.5em 0;
+	padding: 1em;
+	background: inherit;
+	border: 2px solid #c5d2eb;
 }
 
 .book-quote-heading {
