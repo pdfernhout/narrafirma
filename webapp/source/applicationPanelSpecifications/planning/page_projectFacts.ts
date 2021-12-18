@@ -11,7 +11,8 @@ const panel: Panel = {
             id: "project_projectFacts",
             valueType: "none",
             displayType: "label",
-            displayPrompt: `You can use this page to enter some <strong>facts</strong> about your project.`
+            displayPrompt: `You can use this page to enter some <strong>facts</strong> about your project.
+                For more information, click the Help link in the upper-right hand corner of the page.`
         },
         {
             id: "project_title",

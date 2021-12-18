@@ -5,11 +5,13 @@ M - medium priority
 L - low priority
 W - wish list
 
-============ new things noticed recently
+============ new things noticed/mentioned recently
 
 - in import, the delimiter for multiple choices within one CSV cell should default to a comma (it does not default to anything),
 and it should tell the user (in the interface and in the import guide) that it defaults to a comma
 (or should it default to something else? what is best for legacy data?)
+- for questions about participants, add some "what is your opinion" type questions to the templates
+- consider improving the printing of collection/sensemaking session agendas; it is ugly
 
 =============== OLDER TODOS LIST ===================
 
@@ -159,6 +161,16 @@ M Improve reporting on startup for loading project data with some kind of progre
 M When import story form, hundreds of triples can be generated which take minutes to send to the server (with no progress feedback, even though done in background) -- may be related to console logging
 
 ==== DONE
+
+--- Release 1.5.6
+
+Changed: Added "start here" label to home-page diagram, so beginners have a hint at what to click on first
+Changed: Revamped help system to (a) clarify interactions between pages and (b) add previous-next links between help pages
+Changed: In story cards, added bold tags so word processors will show selected answers even if style information is lost
+Fixed: Bug where survey could refuse to save story because it seemed to have no name (though it did)
+Fixed: Bug where question name with leading or trailing space did not match choice made in story form (now extra spaces are trimmed out)
+Fixed: Bug where "Active on web?" column on "Start story collection" page showed "checked" for all story collections (instead of yes or no)
+Fixed: Bug where instructions on "Create project story elements" page were out of synch with changed clustering-diagram interface
 
 --- Release 1.5.5 
 

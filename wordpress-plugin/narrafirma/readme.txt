@@ -9,7 +9,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Requires at least: 4.3.1
 Tested up to: 5.8.2
 Stable tag: trunk
-Version: 1.5.5
+Version: 1.5.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -105,6 +105,16 @@ We strongly suggest that you set up any web site on which you intend to install 
 12. Here the NarraFirma user is reflecting on the entire project, to learn from it and to keep good records for the future.
 
 == Changelog ==
+
+= 1.5.6 =
+
+Changed: Added "start here" label to home-page diagram, so beginners have a hint at what to click on first
+Changed: Revamped help system to (a) clarify interactions between pages and (b) add previous-next links between help pages
+Changed: In story cards, added bold tags so word processors will show selected answers even if style information is lost
+Fixed: Bug where survey could refuse to save story because it seemed to have no name (though it did)
+Fixed: Bug where question name with leading or trailing space did not match choice made in story form (now extra spaces are trimmed out)
+Fixed: Bug where "Active on web?" column on "Start story collection" page showed "checked" for all story collections (instead of yes or no)
+Fixed: Bug where instructions on "Create project story elements" page were out of synch with changed clustering-diagram interface
 
 = 1.5.5 =
 
@@ -515,8 +525,11 @@ change logs, see the [GitHub repository](https://github.com/pdfernhout/narrafirm
 
 == Upgrade Notice ==
 
+= 1.5.6 =
+This minor but critical upgrade fixes a bug where the survey erroneously believed entered stories had no names. It also fixes a few smaller bugs and improves the help system.
+
 = 1.5.5 =
-This minor but critical upgrade fixes a bug in the WordPress PHP code that could cause new NarraFirma installations to show a blank screen instead of the setup page
+This minor but critical upgrade fixes a bug in the WordPress PHP code that could cause new NarraFirma installations to show a blank screen instead of the setup page.
 
 = 1.5.4 = 
 This minor upgrade fixes a small bug in the display lumping system. (A lumped count could be off when somebody chose and then un-chose an answer.)
