@@ -79,7 +79,7 @@ function displayHTMLForCheckboxes(fieldSpecification, fieldName, value) {
         optionsAlreadyConsidered.push(option);
         if (options.length-1) options.push(wrap("span", answerClass + "-comma", ", "));
         if (value && value[option]) {
-            options.push(wrap("span", "narrafirma-story-card-checkboxes-selected " + answerClass + "-selected", option));
+            options.push(wrap("b", "narrafirma-story-card-checkboxes-selected " + answerClass + "-selected", option));
             atLeastOneOptionWasChecked = true;
         } else {
             options.push(wrap("span", "narrafirma-story-card-checkboxes-unselected " + answerClass + "-unselected", option));
@@ -101,7 +101,7 @@ function displayHTMLForRadioButtons(fieldSpecification, fieldName, value) {
         optionsAlreadyConsidered.push(option);
         if (options.length-1) options.push(wrap("span", answerClass + "-comma", ", "));
         if (value && value === option) {
-            options.push(wrap("span", "narrafirma-story-card-radiobuttons-selected " + answerClass + "-selected", option));
+            options.push(wrap("b", "narrafirma-story-card-radiobuttons-selected " + answerClass + "-selected", option));
             atLeastOneOptionWasChecked = true;
         } else {
             options.push(wrap("span", "narrafirma-story-card-radiobuttons-unselected " + answerClass + "-unselected", option));
@@ -123,7 +123,7 @@ function displayHTMLForSelect(fieldSpecification, fieldName, value) {
         optionsAlreadyConsidered.push(option);
         if (options.length-1) options.push(wrap("span", answerClass + "-comma", ", "));
         if (value && value === option) {
-            options.push(wrap("span", "narrafirma-story-card-select-selected " + answerClass + "-selected", option));
+            options.push(wrap("b", "narrafirma-story-card-select-selected " + answerClass + "-selected", option));
             atLeastOneOptionWasChecked = true;
         } else {
             options.push(wrap("span", "narrafirma-story-card-select-unselected " + answerClass + "-unselected", option));
@@ -426,7 +426,7 @@ export function generateStoryCardContent(storyModel, questionsToInclude, options
     }
     
     const storyCardContent = m("div[class=storyCard]", [
-        wrap("div", "narrafirma-story-card-story-title", storyName),
+        wrap("div", "narrafirma-story-card-story-title", m("b", storyName)),
         storyTextAtTop,
         formattedFields,
         storyTextAtBottom,
