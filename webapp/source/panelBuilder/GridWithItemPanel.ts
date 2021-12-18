@@ -649,7 +649,11 @@ class GridWithItemPanel {
                 } else if (column.displayType == "boolean") { // value is true or false
                     reformattedValue = value ? "yes" : "no";
                 } else if (column.displayType == "checkbox") { // value is true or false
-                    reformattedValue = value ? "checked" : "unchecked";
+                    if (typeof(value) === "string") {
+                        reformattedValue = value; // for "is web form enabled" on "start story collection" page, the value is "yes" or "no"
+                    } else {
+                        reformattedValue = value ? "checked" : "unchecked";
+                    }
                 } else if (column.displayType == "checkboxes") { // value is a dictionary; some values could be false
                     const positiveValues = [];
                     Object.keys(value).forEach(function(key, index) { if (key && value[key]) positiveValues.push(key); });
