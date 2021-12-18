@@ -34,11 +34,12 @@ function add_shortNameQuestionConfigurationPanel(panelBuilder: PanelBuilder, mod
     }
 
     function setNewShortName(newShortName) {
-        const existingShortName = existingShortNameThatMatchesNewShortName(newShortName);
+        const newShortNameTrimmed = newShortName.trim();
+        const existingShortName = existingShortNameThatMatchesNewShortName(newShortNameTrimmed);
         if (existingShortName) {
             alert('The short name "' + existingShortName + '" has already been used in this project. Please choose another short name.');
         } else {
-            storageFunction(newShortName);       
+            storageFunction(newShortNameTrimmed);       
         }
     }
 
