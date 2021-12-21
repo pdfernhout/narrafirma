@@ -262,16 +262,16 @@ class Application {
             // TODO: Only allow new project button for admins
             let isNewAllowed = false;
 
-            let loginLink;
+            let loginOrOutLink;
             let message;
             if (this.userIdentifier === "anonymous") {
                 message = "Please select a NarraFirma project to work on - or ";
-                loginLink = m("a", {href: this.loginLink("href"), title: "Login"}, "log in");
+                loginOrOutLink = m("a", {href: this.loginLink("href"), title: "Login"}, "log in");
             } else {
-                message = "Hello " + this.userIdentifier + ". Please select a NarraFirma project to work on"
-                loginLink = null;
+                message = "Hello " + this.userIdentifier + ". Please select a NarraFirma project to work on - or "
+                loginOrOutLink = m("a", {href: this.logoutLink("href"), title: "Logout"}, "log out");
             }
-            const prompt = m("div", [m("span", message), loginLink ? loginLink : [], m("span", ".")]);
+            const prompt = m("div", [m("span", message), loginOrOutLink ? loginOrOutLink : [], m("span", ".")]);
 
             const nonArchivedProjects = [];
             projects.forEach((project) => {
@@ -318,6 +318,21 @@ class Application {
             return loginURL;
         } else {
             return '<a href="/' + loginURL + '">login</a>';
+        }
+    }
+
+    logoutLink(hrefOrLink = "link") {
+        const isWordPressAJAX = !!window["ajaxurl"];
+        let logoutURL;
+        if (isWordPressAJAX) {
+            logoutURL = "wordpress/wp-login.php?action=logout";
+        } else {
+            logoutURL = "logout";
+        }
+        if (hrefOrLink === "href") {
+            return logoutURL;
+        } else {
+            return '<a href="/' + logoutURL + '">logout</a>';
         }
     }
     
