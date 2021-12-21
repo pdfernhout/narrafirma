@@ -9,7 +9,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Requires at least: 4.3.1
 Tested up to: 5.8.2
 Stable tag: trunk
-Version: 1.5.6
+Version: 1.5.7
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -105,6 +105,11 @@ We strongly suggest that you set up any web site on which you intend to install 
 12. Here the NarraFirma user is reflecting on the entire project, to learn from it and to keep good records for the future.
 
 == Changelog ==
+
+= 1.5.7 =
+
+Changed: In Node.js version, added logout link to choose-project page
+Fixed: Bug (in WordPress version only) where setting and then deleting read-access permission role/id would allow anonymous read permission
 
 = 1.5.6 =
 
@@ -525,6 +530,9 @@ loading application, getting user information, or retrieving project data.
 change logs, see the [GitHub repository](https://github.com/pdfernhout/narrafirma).
 
 == Upgrade Notice ==
+
+= 1.5.7 =
+This minor but critical upgrade fixes a bug (in the WordPress version of NF only) where entering and then deleting a user id or role in the "read access" field for a project caused NF to allow anonymous users to view project pages.
 
 = 1.5.6 =
 This minor but critical upgrade fixes a bug where the survey erroneously believed entered stories had no names. It also fixes a few smaller bugs and improves the help system.

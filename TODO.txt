@@ -162,6 +162,11 @@ M When import story form, hundreds of triples can be generated which take minute
 
 ==== DONE
 
+--- Release 1.5.7
+
+Changed: In Node.js version, added logout link to choose-project page
+Fixed: Bug (in WordPress version only) where setting and then deleting read-access permission role/id would allow anonymous read permission
+
 --- Release 1.5.6
 
 Changed: Added "start here" label to home-page diagram, so beginners have a hint at what to click on first
