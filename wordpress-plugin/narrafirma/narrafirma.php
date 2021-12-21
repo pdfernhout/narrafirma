@@ -360,8 +360,14 @@ function isUserAuthorized($userID, $permissions) {
     // error_log("isUserAuthorized '" . $userID . "' " . print_r($permissions, true));
     foreach($permissions as $nameOrRole) {
         // error_log("isUserAuthorized loop '$userID' '$nameOrRole'");
+        // if $nameOrRole is the boolean value true, it means anonymous access is set on
         if ($nameOrRole === true) return true;
-        if ($nameOrRole == $userID) return true;
+        if ($nameOrRole == $userID) {
+            // if admin sets nameOrRole and then deletes it, it is an empty string
+            // but the userID of an anonymous user is an empty string
+            // so we must test for the case where nameOrRole is an empty string but not a boolean "true" 
+            if ($nameOrRole != "") return true;
+        }
         if (current_user_can($nameOrRole)) return true;
     }
     return false;
@@ -388,7 +394,9 @@ function faiIfNotAuthorized($requestedCapability, $journalIdentifier, $topicIden
     
     $permissions = $journals->$journalIdentifier;
     $admin = current_user_can( 'manage_options' );
-    
+
+    // error_log("REQUEST " . "$requestedCapability");
+
     if ($requestedCapability == "admin" && $admin) return;
     
     // Need to check if can write always as might be needed for checking if can read
