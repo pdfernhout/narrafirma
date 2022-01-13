@@ -22,7 +22,8 @@ function add_storyFormQuestionsChooser(panelBuilder: PanelBuilder, model, fieldS
 
     const questionChoicesSelectBoxID = fieldSpecification.displayConfiguration + "_questions_chosen";
     let questionChoicesInForm = [];
-    const questionChoicesSetID = storyForm["questionForm_" + questionCategory + "Questions"];
+    const setClassName = "questionForm_" + questionCategory + "Questions";
+    let questionChoicesSetID = storyForm[setClassName];
     if (questionChoicesSetID) {
         const questionChoicesIDsList = project.tripleStore.getListForSetIdentifier(questionChoicesSetID);
         questionChoicesIDsList.forEach((id) => {
@@ -30,6 +31,9 @@ function add_storyFormQuestionsChooser(panelBuilder: PanelBuilder, model, fieldS
             questionChoice.id = id;
             questionChoicesInForm.push(questionChoice);
         });
+    } else {
+        questionChoicesSetID = project.tripleStore.newIdForSet(setClassName);
+        project.tripleStore.addTriple(model, setClassName, questionChoicesSetID);
     }
     questionChoicesInForm.sort(function(a, b) {
         // in legacy data, the "order" field could have letters in it
