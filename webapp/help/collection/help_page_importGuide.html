@@ -20,7 +20,7 @@
 <h1 class="page-title">A guide to importing data into NarraFirma from other survey systems</div>
 <div class="text">
 <p>
-<h2 id="toc">Table of contents</h2>
+<h2 class="heading" id="toc">Table of contents</h2>
 </p>
 <ul>
     <li><b><a href="#beforeyoustart">Before you start: requirements</a></b></li>
@@ -85,7 +85,7 @@
 
 </div>
 
-<div class="heading" id="beforeyoustart">Before you start: Requirements for a data file NarraFirma can read</div>
+<h2 class="heading" id="beforeyoustart">Before you start: Requirements for a data file NarraFirma can read</h2>
 <div class="text">
 <p>
 NarraFirma assumes that any file of story data you import has these features:
@@ -165,7 +165,7 @@ If your data file doesn't meet these requirements, you will need to edit the fil
 <p>The following sections tell you how to import data to NarraFirma from another surveying system.</p>
 </div>
 
-<div class="heading" id="exporttocsv">Step One: Export your data to CSV</div>
+<h2 class="heading" id="exporttocsv">Step One: Export your data to CSV</h2>
 <div class="text">
 <p>
 Go into your surveying system and choose either <b>CSV</b> (comma-separated values) or <b>XLS</b> (Excel) export. 
@@ -176,7 +176,7 @@ then looking at the data files you get and seeing which format is the easiest to
 </p>
 </div>
 
-<div class="heading" id="lookatheaders">Step Two: Look at your data file headers</div>
+<h2 class="heading" id="lookatheaders">Step Two: Look at your data file headers</h2>
 <div class="text">
 <p>
 Open your CSV or XLS file using your favorite spreadsheet program. 
@@ -221,7 +221,7 @@ then mess with the options there until your data looks correct.
 
 </div>
 
-<div class="heading" id="describedata">Step Three: Describe your data to NarraFirma</div>
+<h2 class="heading" id="describedata">Step Three: Describe your data to NarraFirma</h2>
 <div class="text">
 <p>
 There are two ways to tell NarraFirma how to interpret your data:
@@ -346,7 +346,7 @@ that might be an easier option for you. On the other hand, if you don't want to 
 
 </div>
 
-<div class="heading" id="usingnf">Describe your data to NarraFirma by building a story form in NarraFirma</div>
+<h3 class="heading" id="usingnf">Describe your data to NarraFirma by building a story form in NarraFirma</h3>
 <div class="text">
 <p>
 If you were collecting your data using NarraFirma as a surveying system, you would follow a process like this:
@@ -360,7 +360,7 @@ If you were collecting your data using NarraFirma as a surveying system, you wou
 <p>When you import data into NarraFirma, it works best to follow the same sequence.
 </p>
 
-<h2 id="nf_eliciting">Eliciting questions</h2>
+<h4 class="heading" id="nf_eliciting">Eliciting questions</h4>
 
 <p>If you gave people a choice of questions to answer by telling a story, or if you asked people a series of questions (that they answered by telling stories),
     you are likely to have in your data file a column that recorded which question they answered.
@@ -397,7 +397,7 @@ If you were collecting your data using NarraFirma as a surveying system, you wou
     <i>which</i> eliciting question each person picked ("EQuestion" in our example) when you get to <a href="#nf_form">creating your story form</a>.
 </p>
 
-<h2 id="nf_stories">Questions about stories</h2>
+<h4 class="heading" id="nf_stories">Questions about stories</h4>
 
 <p>Now look at your data file and go through all the questions that were asked <i>about stories</i>. Go to the 
 <b>Write questions about stories</b> page. For each story-related question in your data file, under the table of questions, click <b>Add</b>, then describe the question.
@@ -465,13 +465,13 @@ Here's what the import options for the "LongAgo" question look like in NarraFirm
     use <a href="../catalysis/help_page_configureCatalysisReport.html">display lumping</a> instead.
     </p>
 
-<h4 id="nf_datatypes">Import data types</h4>
+<h4 class="heading" id="nf_datatypes">Import data types</h4>
 
 <p>Now let's talk about those import data types. It is important to chose the right import type for each question in your data file,
     because if you don't, the data will be garbled coming in. 
 </p>
 
-<h4 id="nf_singlechoice">Single choice questions</h4>
+<h5 id="nf_singlechoice">Single choice questions</h5>
 
 <p>This type of question covers one column, each cell of which contains only one text answer. That answer <i>exactly</i> matches one of the options given for the question
     (in the "Import options" part of the question definition). 
@@ -492,7 +492,7 @@ Here's what the import options for the "LongAgo" question look like in NarraFirm
         </tr>
         </table>
 
-<h4 id="nf_singlechoiceindexed">Single choice indexed questions</h4>
+<h5 id="nf_singlechoiceindexed">Single choice indexed questions</h5>
 
 <p>This type of question covers one column, each cell of which contains a <i>number</i> that corresponds to the option chosen for the question.
     In our example data file, the "Source" question is of this type:</p>
@@ -517,7 +517,7 @@ Here's what the import options for the "LongAgo" question look like in NarraFirm
     just be entering 1, 2, 3, and so on.
 </p>
 
-<h4 id="nf_scale">Scale questions</h4>
+<h5 id="nf_scale">Scale questions</h5>
 
 <p>This type of question covers one column, and its cells contain numbers that correspond to locations along a linear scale. 
         Scale values <i>must</i> be integers. NarraFirma does not accept floating-point (real) numbers for scales.
@@ -549,7 +549,7 @@ Here's what the import options for the "LongAgo" question look like in NarraFirm
 
 <img src="help_importGuide_questionScaleRange.png">
 
-<h4 id="nf_text">Text questions</h4>
+<h5 id="nf_text">Text questions</h5>
 
 <p>This type of question is just a bit of text somebody said or typed in. 
     There are no answers to list for this data type.
@@ -570,7 +570,7 @@ Here's what the import options for the "LongAgo" question look like in NarraFirm
         </tr>
         </table>
 
-<h4 id="nf_multicolumntexts">Multi-choice multi-column text questions</h4>
+<h5 id="nf_multicolumntexts">Multi-choice multi-column text questions</h5>
 
 <p>This type of question covers multiple columns, one per answer. The header for each column in the set is identical - it has just the name of the question in it. 
     The cell values of all the columns contain <i>exact</i> matches for the options given for the question.
@@ -596,7 +596,7 @@ Here's what the import options for the "LongAgo" question look like in NarraFirm
     </tr>
     </table>
 
-<h4 id="nf_multicolumnyesno">Multi-choice multi-column yes/no questions</h4>
+<h5 id="nf_multicolumnyesno">Multi-choice multi-column yes/no questions</h5>
 
 <p>This type of question covers multiple columns, one per answer. The column headers in such a set are <i>not</i> identical.
 Each has in it the question name <i>and</i> the answer name for that column. The cell values themselves contain a binary
@@ -626,7 +626,7 @@ In our example data file, the "Needed" question is of this type:</p>
     "Yes no questions yes indicator," "Yes no questions Q-A separator," and "Yes no questions Q-A ending."
 </p>
 
-<h4 id="nf_multicolumndelimited">Multi-choice single-column delimited questions</h4>
+<h5 id="nf_multicolumndelimited">Multi-choice single-column delimited questions</h5>
 
 <p>This type of question covers one column. The cells contain all of the answers to the question (which exactly match those on the given list), separated by something (usually a comma). 
         In our example data file, the "Helped" question is of this type:</p>
@@ -649,7 +649,7 @@ In our example data file, the "Needed" question is of this type:</p>
 <p>A story form with this type of question in it requires you to define one import option <a href="#nf_form">at the level of the story form</a>: 
     "Multi choice single column delimiter."</p>
 
-<h4 id="nf_multicolumndelimitedindexed">Multi-choice single-column delimited indexed questions</h4>
+<h5 id="nf_multicolumndelimitedindexed">Multi-choice single-column delimited indexed questions</h5>
 
 <p>This type of question covers one column. The cells contain all of the answers to the question, but they are not the answer texts.
     They are index numbers for the chosen answers. In our example data file, the "Surprised" question is of this type:
@@ -675,7 +675,7 @@ In our example data file, the "Needed" question is of this type:</p>
             
 
 
-<h4 id="nf_ifnomatch">If your data doesn't match any of these types</h4>
+<h5 id="nf_ifnomatch">If your data doesn't match any of these types</h5>
 
 <p>If you are looking at a column of data in your file and you can't match it to any of these types,
     you can usually fix the problem with some careful editing of your CSV file in a spreadsheet. 
@@ -684,7 +684,7 @@ In our example data file, the "Needed" question is of this type:</p>
     and keep multiple versions of your file, so you can fix mistakes.
 </p>
 
-<h2 id="nf_participants">Questions about participants</h2>
+<h4 class="heading" id="nf_participants">Questions about participants</h4>
 
 <p>When you have got through all the questions in your data file that have to do with stories, it is time to tell NarraFirma
     about the questions you asked about people. Go to the <b>Write participant questions</b> page.
@@ -697,7 +697,7 @@ In our example data file, the "Needed" question is of this type:</p>
     <li>If it's a scale question, if you need to, enter a special scale range.</li>
 </ul>
 
-<h2 id="nf_form">Create your story form</h2>
+<h4 class="heading" id="nf_form">Create your story form</h4>
 
 <p>Once you have entered all of your eliciting questions, questions about stories, and questions about participants,
     you need to enter some <b>overall import options</b> to help NarraFirma read your data. 
@@ -870,7 +870,7 @@ In our example data file, the "Needed" question is of this type:</p>
 
 </div>
 
-<div class="heading" id="usingcsv">Describe your data to NarraFirma by importing a story form CSV file you created in a spreadsheet program</div>
+<h3 class="heading" id="usingcsv">Describe your data to NarraFirma by importing a story form CSV file you created in a spreadsheet program</h3>
 <div class="text">
 <p>
 To describe your data to NarraFirma by importing a CSV file, the first thing you should do is <b>create a new, empty spreadsheet file</b>.
@@ -913,7 +913,7 @@ Look at each column name and think about the data in that column so you can desc
 Let's go through the columns in our example data file one at a time.
 </p>
 
-<h2 id="csv_participantID">Participant identifier</h2>
+<h4 class="heading" id="csv_participantID">Participant identifier</h4>
 
 <p>Your data file may identify participants by a name or number or unique ID. In our example data file, the participant IDs look like this:
     </p>
@@ -963,7 +963,7 @@ Let's go through the columns in our example data file one at a time.
     is unique. 
 </p>
 
-<h2 id="csv_eliciting">Eliciting question</h2>
+<h4 class="heading" id="csv_eliciting">Eliciting question</h4>
 
 <p>In our example data file, the "EQuestion" column tells NarraFirma which question people answered by telling a story. It looks like this:</p>
 
@@ -1029,7 +1029,7 @@ Let's go through the columns in our example data file one at a time.
        NarraFirma will create a generic eliciting question ("What happened?") and assign it to all of your stories.
     </p>
 
-<h2 id="csv_storytexts">Story texts</h2>
+<h4 class="heading" id="csv_storytexts">Story texts</h4>
 
 <p>In our example data file, the "SText" column holds the story texts.</p>
 
@@ -1075,7 +1075,7 @@ you must use an import option to tell NarraFirma how to read this column. Enter 
 
 <p>This tells NarraFirma that it can find your story texts in a column labeled with the header "SText".</p>
 
-<h2 id="csv_storytitles">Story titles</h2>
+<h4 class="heading" id="csv_storytitles">Story titles</h4>
 
 <p>In our example data file, the "STitle" column holds the story titles.</p>
 
@@ -1118,7 +1118,7 @@ you must use an import option to tell NarraFirma how to read this column. Enter 
         </tr>
     </table>
 
-<h2 id="csv_storycollectiondates">Story collection dates</h2>
+<h4 class="heading" id="csv_storycollectiondates">Story collection dates</h4>
 
 <p>If the data from your survey system includes the date of each survey submission, you can read that data into NarraFirma and use it to create graphs.
 Date information must be in the ISO 8601 format (YYYY-MM-DD), and anything that comes after the first ten characters (usually a time stamp) will be ignored. 
@@ -1150,7 +1150,7 @@ If your dates aren't in ISO 8601 format, use a spreadsheet program to convert th
         </tr>
     </table>
 
-<h2 id="csv_storycollectionlanguages">Story collection languages</h2>
+<h4 class="heading" id="csv_storycollectionlanguages">Story collection languages</h4>
 
 <p>If the data from your survey system includes the language of each survey, you can read that data into NarraFirma and use it to create graphs.</p>
 
@@ -1180,7 +1180,7 @@ If your dates aren't in ISO 8601 format, use a spreadsheet program to convert th
         </tr>
     </table>
 
-<h2 id="csv_singlechoice">Single choice questions</h2>
+<h4 class="heading" id="csv_singlechoice">Single choice questions</h4>
 
 <p>
     In our example data file, the column labeled "LongAgo" describes how long ago the events of the story happened. 
@@ -1265,7 +1265,7 @@ The original data is lost during import and is not retained. If you want to lump
 use <a href="../catalysis/help_page_configureCatalysisReport.html">display lumping</a> instead.
 </p>
 
-<h2 id="csv_singlechoiceindexed">Single choice indexed questions</h2>
+<h4 class="heading" id="csv_singlechoiceindexed">Single choice indexed questions</h4>
 
 <p>Some survey systems don't write the actual choice the person picked in the data file. Instead, they write the index number
     of the choice - that is, its place in the list of choices. For example, if the choices for "Favorite fruit" are "apple, pear, banana",
@@ -1323,7 +1323,7 @@ use <a href="../catalysis/help_page_configureCatalysisReport.html">display lumpi
     In this case you don't need separate data and graph names for the answers, because the "names" in the data file are digits.
 </p>
 
-<h2 id="csv_scale">Scale questions</h2>
+<h4 class="heading" id="csv_scale">Scale questions</h4>
 
 <p>In our example data file, the column labeled "Remember" has a series of numbers that represent locations along a linear scale.
     </p>
@@ -1404,7 +1404,7 @@ use <a href="../catalysis/help_page_configureCatalysisReport.html">display lumpi
 
 <p>If you specify the scale range in both places, the question scale range will take precedence (so you can set a general scale range, plus a special one for only one or a few questions).</p>
 
-<h2 id="csv_text">Text questions</h2>
+<h4 class="heading" id="csv_text">Text questions</h4>
 
 <p>The "Text" question type is simple: the cell in your data file should contain the text of the answer. In our example data file, the "Comment"
     question is like this.
@@ -1448,7 +1448,7 @@ use <a href="../catalysis/help_page_configureCatalysisReport.html">display lumpi
         </tr>
     </table>
     
-<h2 id="csv_multicolumntext">Multi-choice multi-column text questions</h2>
+<h4 class="heading" id="csv_multicolumntext">Multi-choice multi-column text questions</h4>
 
 <p>The next two columns to consider in our example data file are both called "Feel about." The cells in these two columns 
     have texts in them that correspond to the available answers for that question.
@@ -1511,7 +1511,7 @@ Specify this type of column thus:</p>
         Because you might want to export a story form from one NarraFirma project and import it into another one.
     </p>
 
-<h2 id="csv_multicolumnyesno">Multi-choice multi-column yes/no questions</h2>
+<h4 class="heading" id="csv_multicolumnyesno">Multi-choice multi-column yes/no questions</h4>
 
 <p>In our example data file, the cells in the next two columns, "Needed [help]" and "Needed [understanding]," do not have answer texts in them. 
     Instead, they have the words "Yes" and "No," like this:</p>
@@ -1633,7 +1633,7 @@ Specify this type of column thus:</p>
     <i>edit</i> your headers (for this type of question) in a spreadsheet program.
 </p>
 
-<h2 id="csv_multicolumndelimited">Multi-choice single-column delimited questions</h2>
+<h4 class="heading" id="csv_multicolumndelimited">Multi-choice single-column delimited questions</h4>
 
 <p>
 In our example data file, the column labeled "Helped" has data in which there are multiple answers separated by commas. It looks like this:
@@ -1716,7 +1716,7 @@ For this data type you need to tell NarraFirma how the answers in your data cell
     Often this separator will be a comma. If your answer separator is a space, do not put a space in the column. Put the word "space."
 </p>
 
-<h2 id="csv_multicolumndelimitedindexed">Multi-choice single-column delimited indexed questions</h2>
+<h4 class="heading" id="csv_multicolumndelimitedindexed">Multi-choice single-column delimited indexed questions</h4>
 
 <p>
 In our example data file, the column labeled "Surprised" has data in which there are multiple numerical answers. It looks like this:
@@ -1809,7 +1809,7 @@ This question type is just like the "Single choice indexed" question type, excep
         </p>
         
 
-<h2 id="csv_lesserknown">Lesser-known question types</h2>
+<h4 class="heading" id="csv_lesserknown">Lesser-known question types</h4>
 
 <p>Technically, there are four other question types NarraFirma uses internally and <i>could</i> read during import:</p>
 <ul>
@@ -1823,7 +1823,7 @@ This question type is just like the "Single choice indexed" question type, excep
     technically matched them, you could handle the same data using the types described above. So it's probably best to ignore them.
 </p>
 
-<h2 id="csv_formleveloptions">Form-level import options</h2>
+<h4 class="heading" id="csv_formleveloptions">Form-level import options</h4>
 
 <p>There are some other import options you can (and should) specify about your story form in your CSV file. 
     Some form-level options have been addressed above in relation to the data types they support, but there 
@@ -1932,11 +1932,11 @@ This question type is just like the "Single choice indexed" question type, excep
                 </tr>
             </table>
 
-<h2 id="csv_specialproblems">Special problems and solutions</h2>
+<h4 class="heading" id="csv_specialproblems">Special problems and solutions</h4>
 
 <p>These are some problems or special situations you might encounter when importing data.</p>
 
-<h3>Your story texts cover more than one question.</h3>
+<h5>Your story texts cover more than one question.</h5>
 
 <p>Sometimes it's a good idea to give people an opportunity to say more about a story later on in the survey or interview.
     In that case, you might want to <i>append</i> those additional texts to the story. You can tell NarraFirma to do this 
@@ -1993,7 +1993,7 @@ This question type is just like the "Single choice indexed" question type, excep
 </p>
 
 
-<h3>Your single- or multi-choice answers include "other" write-in answers.</h3>
+<h5>Your single- or multi-choice answers include "other" write-in answers.</h5>
 
 <p>In many surveying packages, you can display an "other" write-in answer field in which a participant 
     can fill in their own answer to the question, like this:
@@ -2027,7 +2027,7 @@ This question type is just like the "Single choice indexed" question type, excep
     Then follow the two steps above.
     </p>
 
-<h3>You have a lot of incomplete survey results you want to ignore.</h3>
+<h5>You have a lot of incomplete survey results you want to ignore.</h5>
 
 <p>Sometimes you end up with a lot of survey results where people didn't tell stories, or they just typed in a few words and then quit. You can
     deal with this (without having to delete data rows by hand) by setting a minimum number of words per story. By "words" we mean "things separated
@@ -2059,7 +2059,7 @@ This question type is just like the "Single choice indexed" question type, excep
     (This does not include any fields appended to the story text.)
 </p>
 
-<h3>You have a lot of extra columns you want to ignore.</h3>
+<h5>You have a lot of extra columns you want to ignore.</h5>
 
 <p>Most survey systems add in a lot of extra columns with information like when the person took the survey and how long it took them to do it. 
     That's all nice information, but if you don't care about it, it's in your way. You can delete these columns by hand, but if you don't want to,
@@ -2096,7 +2096,7 @@ This question type is just like the "Single choice indexed" question type, excep
     when you <a href="#checkestories">check your stories</a>.
 </p>
 
-<h3>The naming schemes in your column names conflict.</h3>
+<h5>The naming schemes in your column names conflict.</h5>
 
 <p>Here's another possible problem. LimeSurvey uses the same syntax to denote a question type 
     (e.g., "Remember[SLIDER]") and an answer name (e.g., "Feeling[happy]"). 
@@ -2128,12 +2128,12 @@ In the LimeSurvey example, you would ask NarraFirma to strip out "[SLIDER]" and 
 
 <p><b>Be careful with this option.</b> Remember that these texts will be removed from <i>every</i> header. Make sure you aren't garbling any headers by doing this.</p>
 
-<h3>You wrote some test stories, and now you want to ignore them.</h3>
+<h5>You wrote some test stories, and now you want to ignore them.</h5>
 
 <p>This isn't an option you can specify, but if the story title or story text on any row in your data file consists of <i>exactly</i> the text "testing123" (capitalized or not),
 NarraFirma will ignore that row of data.</p>
 
-<h2 id="csv_formoptions">Form options you can specify</h2>
+<h4 class="heading" id="csv_formoptions">Form options you can specify</h4>
 
 <p>
     In your CSV story form file, you can also specify messages to participants, to be shown at the start and end of your story form. 
@@ -2162,7 +2162,7 @@ NarraFirma will ignore that row of data.</p>
     make sure it is fully contained within the spreadsheet cell and doesn't spill over to other cells.
 </p>		
 
-<h2 id="csv_othernotes">Other notes on the story form CSV file format</h2>
+<h4 class="heading" id="csv_othernotes">Other notes on the story form CSV file format</h4>
 
 <p>These are some other technical details you might find useful about the CSV story form file format.</p>
 
@@ -2188,14 +2188,14 @@ NarraFirma will ignore that row of data.</p>
         <li>Example story form CSV files can be found in the <b>samples</b> folder in your NarraFirma installation.</li>
 </ul>
 
-<h2 id="csv_importfile">Import your story form CSV file</h2>
+<h4 class="heading" id="csv_importfile">Import your story form CSV file</h4>
 
 <p>Once you have finished writing your CSV file, go to the <b>Design, generate, or import story forms</b> page.
 On that page, click <b>Import CSV story form file</b>. Choose the file name you saved. If NarraFirma has any problems reading the file, it will give you some
 error messages. If not, look over the story form in the NarraFirma interface. (Use the instructions above to make sure everything looks the way it should.)
 Then you will be ready to create a story collection and import your stories to it.</p>
     
-<h2 id="csv_completedfile">Our finished example story form CSV file</h2>
+<h4 class="heading" id="csv_completedfile">Our finished example story form CSV file</h4>
 
 <p>This is what the completed story form CSV file looks like for our example data set. 
 </p>
@@ -2440,7 +2440,7 @@ Then you will be ready to create a story collection and import your stories to i
 
 </div>
 
-<div class="heading" id="checkstories">Step Four: Check your story data</div>
+<h2 class="heading" id="checkstories">Step Four: Check your story data</h2>
 <div class="text">
 <p>
 </p>
@@ -2487,7 +2487,7 @@ When you are sure that your data looks correct, it's time to import your stories
 </div>
 
 
-<div class="heading" id="importstories">Step Five: Import your stories</div>
+<h2 class="heading" id="importstories">Step Five: Import your stories</h2>
 <div class="text">
 <p>
 Whether you created a NarraFirma story form inside NarraFirma or by importing a CSV file, you should now be at the point where
@@ -2505,7 +2505,7 @@ Before you can import your data file, you need to <b>create a story collection</
  
 </div>
 
-<div class="heading" id="spotcheck">Step Six: Check your data again</div>
+<h2 class="heading" id="spotcheck">Step Six: Check your data again</h2>
 <div class="text">
         <p>
                 When you import data into NarraFirma, even if you have checked it using the browser console,
@@ -2515,7 +2515,7 @@ Before you can import your data file, you need to <b>create a story collection</
             </p>
 </div>
 
-<div class="heading" id="tips">Tips and tricks</div>
+<h2 class="heading" id="tips">Tips and tricks</h2>
 <div class="text">
 
 <p>These are some things we've noticed that you might find helpful.
@@ -2556,7 +2556,7 @@ Before you can import your data file, you need to <b>create a story collection</
     </ul>
 </div>
 
-<div class="heading" id="exportstories">Exporting stories from NarraFirma</div>
+<h2 class="heading" id="exportstories">Exporting stories from NarraFirma</h2>
 <div class="text">
 
 <p>You can export story forms and story collections from NarraFirma to CSV format for backup, for transfer to another NarraFirma installation,
@@ -2572,7 +2572,7 @@ Before you can import your data file, you need to <b>create a story collection</
     </ul>
 </div>
 
-<div class="heading" id="needmorehelp">Need more help?</div>
+<h2 class="heading" id="needmorehelp">Need more help?</h2>
 <div class="text">
 <p>
         <b>Please report any problems this guide did not solve for you</b>. If you had trouble importing data into NarraFirma that this guide did not help you fix, 

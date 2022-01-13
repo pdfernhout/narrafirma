@@ -32,6 +32,10 @@ li {
 	margin: 0.2em 0 0.2 0;
 }
 
+table, th, td {
+	border: 0.5px solid lightgray;
+}
+
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Navigation ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 .header { 
@@ -75,10 +79,33 @@ h1.page-title {
 h2.heading {
 	background: #b0d4d4;
 	border-bottom: 1px solid #97b4b4;
+	font-size: 1.4em;
+	font-weight: bold;
+	margin: 0.5em 0 0.5em 0;
+	padding: 0.5em 0.5em 0.25em 0.5em;
+}
+
+h3.heading {
+	background: #ddf1f1;
+	border-bottom: 1px solid #97b4b4;
 	font-size: 1.2em;
 	font-weight: bold;
-	margin: 0 0 0.5em 0;
+	margin: 0.5em 0 0.5em 0;
 	padding: 0.5em 0.5em 0.25em 0.5em;
+}
+
+h4.heading {
+	border-bottom: 2px solid #97b4b4;
+	font-size: 1.1em;
+	font-weight: bold;
+	margin: 0 0 0.5em 0;
+	padding: 0.5em 0.5em 0.25em 0;
+}
+
+h5 {
+	font-size: 1em;
+	font-weight: bold;
+	font-style: italic;
 }
 
 .text {
