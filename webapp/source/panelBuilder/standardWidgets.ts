@@ -394,7 +394,8 @@ export function displayQuestion(panelBuilder: PanelBuilder, model, fieldSpecific
                 rightSideText = fieldSpecification.displayConfiguration[1];
             }
             if (fieldSpecification.displayConfiguration.length > 2) {
-                doesNotApplyText = fieldSpecification.displayConfiguration[2];
+                if (fieldSpecification.displayConfiguration[2])
+                    doesNotApplyText = fieldSpecification.displayConfiguration[2];
             }
         }
         
