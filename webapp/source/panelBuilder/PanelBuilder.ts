@@ -54,7 +54,11 @@ function addButton(panelBuilder: PanelBuilder, model, fieldSpecification, callba
 
 function add_html(panelBuilder: PanelBuilder, model, fieldSpecification, callback): any {
     // add_html should only be called for NarraFirma application-supplied code, so trusting this should be OK
-    return m("div.htmlWidget", {key: fieldSpecification.id, class: fieldSpecification.displayClass}, m.trust(fieldSpecification.displayPrompt));
+    let divClass = "htmlWidget";
+    if (fieldSpecification.displayPrompt.indexOf("<input") >= 0) {
+        divClass = "hiddenHtmlWidget"
+    }
+    return m("div." + divClass, {key: fieldSpecification.id, class: fieldSpecification.displayClass}, m.trust(fieldSpecification.displayPrompt));
 }
 
 function add_image(panelBuilder: PanelBuilder, model, fieldSpecification, callback): any {

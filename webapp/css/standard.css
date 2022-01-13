@@ -400,6 +400,10 @@ button:disabled {
     margin: 8px; 
 }
 
+.hiddenHtmlWidget {
+    display: none;
+}
+
 .narrafirma-page-name {
     font-weight: 700;
     font-size: 1.3em;
