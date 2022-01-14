@@ -162,6 +162,12 @@ M When import story form, hundreds of triples can be generated which take minute
 
 ==== DONE
 
+--- Release 1.5.8
+
+Added: Bulk annotation import from CSV file
+Fixed: Bug where question links to new story form were not being correctly created (causing it to be impossible to add questions to form)
+Fixed: Formatting mistakes in help system
+
 --- Release 1.5.7
 
 Changed: In Node.js version, added logout link to choose-project page

@@ -9,7 +9,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Requires at least: 4.3.1
 Tested up to: 5.8.2
 Stable tag: trunk
-Version: 1.5.7
+Version: 1.5.8
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -105,6 +105,12 @@ We strongly suggest that you set up any web site on which you intend to install 
 12. Here the NarraFirma user is reflecting on the entire project, to learn from it and to keep good records for the future.
 
 == Changelog ==
+
+= 1.5.8 =
+
+Added: Bulk annotation import from CSV file
+Fixed: Bug where question links to new story form were not being correctly created (causing it to be impossible to add questions to form)
+Fixed: Formatting mistakes in help system
 
 = 1.5.7 =
 
@@ -530,6 +536,9 @@ loading application, getting user information, or retrieving project data.
 change logs, see the [GitHub repository](https://github.com/pdfernhout/narrafirma).
 
 == Upgrade Notice ==
+
+= 1.5.8 =
+This minor but (yes, again) critical upgrade fixes a bug where the buttons to add questions to a newly created story form did not work. It also adds CSV import for annotations.
 
 = 1.5.7 =
 This minor but critical upgrade fixes a bug (in the WordPress version of NF only) where entering and then deleting a user id or role in the "read access" field for a project caused NF to allow anonymous users to view project pages.
