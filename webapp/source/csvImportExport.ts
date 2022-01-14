@@ -195,7 +195,7 @@ function processCSVContentsForStories(contents, saveStories, writeLog, questionn
     const headerAndItems = processCSVContents(contents, function (header, row) {
 
         rowNumber++;
-        log("DEBUG||<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< PROCESSING ROW " + rowNumber + " >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+        log("DEBUG||----- PROCESSING ROW " + rowNumber);
         const newItem = {};
         let saveStory = true;
 
@@ -762,7 +762,7 @@ function processCSVContentsForStories(contents, saveStories, writeLog, questionn
         // write answer counts to bottom of console log
         const questionNames = Object.keys(logQuestionAnswerCounts);
         if (questionNames.length > 0) {
-            console.info("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< ANSWER COUNTS >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+            console.info("---------- Answer counts");
             for (let questionIndex = 0; questionIndex < questionNames.length; questionIndex++) {
                 const questionName = questionNames[questionIndex];
                 let answerOutputText = "";
@@ -891,6 +891,416 @@ function changeValueForCustomScaleValues(value, question, questionnaire) {
             return adjustedValue;
         }
     }
+}
+
+//------------------------------------------------------------------------------------------------------------------------------------------
+// reading annotations
+//------------------------------------------------------------------------------------------------------------------------------------------
+
+function processCSVContentsForAnnotations(contents, saveAnnotations, writeLog, questionnaire = null) {
+
+    // set up log
+    const logItems = [];
+    const logQuestionAnswerCounts = {};
+
+    function log(text) {
+        if (writeLog) {
+            if (logItems.indexOf(text) < 0) {
+                logItems.push(text);
+            }
+        }
+    }
+
+    function count(questionName, answerName) {
+        if (!logQuestionAnswerCounts[questionName]) {
+            logQuestionAnswerCounts[questionName] = {};
+        }
+        if (!logQuestionAnswerCounts[questionName][answerName]) {
+            logQuestionAnswerCounts[questionName][answerName] = 0;
+        }
+        logQuestionAnswerCounts[questionName][answerName]++;
+    }
+
+    // check for a story collection, story form, and annotation questions
+    const storyCollectionName = Globals.clientState().storyCollectionName();
+    if (!storyCollectionName) {
+        alert("Please select a story collection.");
+        return;
+    }
+    if (!questionnaire) {
+        questionnaire = surveyCollection.getQuestionnaireForStoryCollection(storyCollectionName, true); // second param is alertIfProblem
+        if (!questionnaire) {
+            alert("The currently selected story collection has no associated story form.");
+            return;
+        }
+    }
+    const stories = surveyCollection.getStoriesForStoryCollection(storyCollectionName, true); // second param is includeIgnored
+    if (stories.length < 1) {
+        alert("The currently selected story collection has no stories in it.");
+        return;
+    }
+    const annotationQuestions = questionnaireGeneration.convertEditorQuestions(project.collectAllAnnotationQuestions(), "A_");
+    if (annotationQuestions.length < 1) {
+        alert("The current project has no annotation questions.");
+        return;
+    }
+
+    // start log
+    log("INFO||Annotation import check for story collection: " + storyCollectionName);
+    log("INFO||Data column headers and cell values are only logged the FIRST time their unique value is encountered. Subsequent identical messages are suppressed.");
+
+    // set up progress bar
+    let messageText = "";
+    if (saveAnnotations) {
+        messageText = "Progress importing annotations";
+    } else {
+        messageText = "Progress checking annotations";
+    }
+    const progressModel = dialogSupport.openProgressDialog("Processing CSV file...", messageText, "Cancel", dialogCancelled);
+    
+    let rowNumber = 0;
+
+    // callback function to process file contents
+    const headerAndItems = processCSVContents(contents, function (header, row) {
+        rowNumber++;
+        log("DEBUG||----- Processing row " + rowNumber);
+        
+        let storyToAnnotate = null;
+        const annotationsForThisStory = {};
+
+        // story name MUST be first cell in row, and story text MUST be second cell in row
+        // this is because the match between row and story can depend on name, text, or both - so they must be read together
+        const annotationStoryName = row[0];
+        const annotationStoryText = row[1];
+        const matchingStories = stories.filter(function(story) {
+            return story.model.storyName === annotationStoryName && story.model.storyText === annotationStoryText;
+        });
+        const storyTextForMessage = (annotationStoryText.length > 100) ? annotationStoryText.slice(0, 100) + " ..." : annotationStoryText;
+        if (matchingStories.length == 0) {
+            log('WARN||No story matched the name "' + annotationStoryName + '" and text "' + storyTextForMessage + '".');
+        } else if (matchingStories.length == 1) {
+            storyToAnnotate = matchingStories[0];
+            log('INFO||Matched annotation to story "' + annotationStoryName + '" with text "' + storyTextForMessage + '".');
+        } else {
+            log('WARN||Multiple stories match the name "' + annotationStoryName + '" and text "' + storyTextForMessage + '".');
+        }
+        if (!storyToAnnotate) {
+            return null;
+        }
+
+        for (let fieldIndex = 2; fieldIndex < header.length; fieldIndex++) {
+            let value = row[fieldIndex];
+            if (value === undefined) continue; 
+            value = value.trim();
+            if (value === "") continue; 
+
+            let headerName = header[fieldIndex];
+            let question = null;
+            for (let i = 0; i < annotationQuestions.length; i++) {
+                if (annotationQuestions[i].displayName === headerName) {
+                    question = annotationQuestions[i];
+                    break;
+                } 
+            }
+            if (!question) {
+                log("LOG||NO MATCHING QUESTION FOUND for data column name: " + headerName);
+                continue; 
+            }
+
+            const questionName = question.displayName;
+            const questionType = question.displayType;
+            log("LOG||Data column name: " + headerName + " matched with question: " + questionName);
+
+            if (["text", "textarea"].indexOf(questionType) >= 0) {
+                annotationsForThisStory[questionName] = value;
+            } else if (["boolean", "checkbox"].indexOf(questionType) >= 0) {
+                const trimmedValue = value.trim().toLowerCase();
+                if (trimmedValue === "yes" || trimmedValue === "true") {
+                    annotationsForThisStory[questionName] = true;
+                } else if (trimmedValue === "no" || trimmedValue === "false") {
+                    annotationsForThisStory[questionName] = false;
+                }
+            } else if (["select", "radiobuttons"].indexOf(questionType) >= 0) {
+                const answerNameToUse = getDisplayAnswerNameForDataAnswerName(value, question);
+                if (answerNameToUse) {
+                    if (!annotationsForThisStory[questionName]) count(questionName, answerNameToUse);
+                    annotationsForThisStory[questionName] = answerNameToUse;
+                    log("LOG||Answer for " + questionName + " (" + questionType + "): " + answerNameToUse);
+                } else { 
+                    let listToShow = question.import_answerNames;
+                    if (!listToShow) listToShow = question.valueOptions;
+                    log("ERROR||Answer for " + questionName + " (" + questionType + "): NO MATCHING ANSWER FOUND for answer name [" + value + 
+                        "] out of list [" + listToShow.join(" | ") + "]");
+                }
+            } else if (questionType === "slider") {
+                let valueAsFloat = parseFloat(value.replace(",", "."));
+                if (valueAsFloat % 1 !== 0) 
+                    log("ERROR||Answer for " + questionName + " (" + questionType + "): Should be an integer but is not. It has been truncated.");
+                const valueAsInt = parseInt(value);
+                const adjustedValue = changeValueForCustomScaleValues(valueAsInt, question, questionnaire);
+                annotationsForThisStory[questionName] = adjustedValue;
+                let infoString = "LOG||Answer for " + questionName + " (" + questionType + "): " + adjustedValue;
+                if (adjustedValue != valueAsInt) 
+                    infoString += " (adjusted from " + valueAsInt + ")";
+                log(infoString);
+                count(questionName, adjustedValue);
+            } else if (questionType === "checkboxes") {
+                const answerNameToUse = getDisplayAnswerNameForDataAnswerName(value, question);
+                if (answerNameToUse) {
+                    if (!annotationsForThisStory[questionName]) annotationsForThisStory[questionName] = {};
+                    if (!annotationsForThisStory[questionName][answerNameToUse]) count(questionName, answerNameToUse);
+                    annotationsForThisStory[questionName][answerNameToUse] = true;
+                    log("LOG||Answer for " + questionName + " (" + questionType + "): " + answerNameToUse);
+                    
+                } else { // no match, log error
+                    let listToShow = question.import_answerNames;
+                    if (!listToShow) listToShow = question.valueOptions;
+                    log("ERROR||Answer for " + questionName + " (" + questionType + "): NO MATCHING ANSWER FOUND for answer name [" + value + 
+                        "] out of list [" + listToShow.join(" | ") + "]");
+                }             
+            }
+        }
+        if (saveAnnotations) {
+            return {story: storyToAnnotate, annotations: annotationsForThisStory};
+        } else {
+            return null;
+        }
+    });
+
+    const header = headerAndItems.header;
+    if (!header) {
+        alert("ERROR: No header line found in CSV data file.")
+        return;
+    }
+
+    const changes = [];
+    if (saveAnnotations) {
+        const items = headerAndItems.items;
+        items.forEach((item) => {
+            const story = item.story;
+            const annotations = item.annotations;
+            const questionNames = Object.keys(annotations);
+            questionNames.forEach((questionName) => {
+                if (story.model.storyID && questionName && (annotations[questionName] !== undefined)) {
+                    changes.push({id: story.model.storyID, field: "A_" + questionName, value: annotations[questionName]});
+                } else {
+                    log('INFO||For the story "' + story.model.storyName + '", there is no answer for the question "' + questionName + '".'); 
+                }
+            });
+        });
+    } 
+
+    if (saveAnnotations && !changes.length) {
+        alert("ERROR: No annotations to import.");
+        progressModel.hideDialogMethod();
+        progressModel.redraw();
+        return;
+    }
+    
+    function dialogCancelled(dialogConfiguration, hideDialogMethod) {
+        progressModel.cancelled = true;
+        hideDialogMethod();
+    }
+    
+    const wizardPane = {
+        forward: function () {
+            console.log("annotation import success");
+            if (progressModel.failed) return;
+            sendNextChange();
+        },
+        failed: function () {
+            console.log("annotation import failed");
+            if (progressModel.failed) return;
+            progressModel.failed = true;
+            alert("Problem saving annotation; check the console for details.");
+            progressModel.hideDialogMethod();
+            progressModel.redraw();
+        }
+    };
+    
+    const totalChangeCount = changes.length;
+    let changeIndexToSend = 0;
+    let numChangesSentSoFar = 0;
+    
+    function sendNextChange() {
+        if (progressModel.cancelled) {
+            alert("Cancelled after sending " + numChangesSentSoFar + " annotations to server.");
+        } else if (changeIndexToSend >= changes.length) {
+            alert("Finished sending " + numChangesSentSoFar + " annotations to server.");
+            progressModel.hideDialogMethod();
+            progressModel.redraw();
+        } else {
+            const change = changes[changeIndexToSend++];
+            numChangesSentSoFar++;
+            progressModel.progressText = "Sending " + numChangesSentSoFar + "/" + totalChangeCount + " annotations to server";
+            progressModel.redraw();
+            const message = project.tripleStore.makeAddTripleMessage(change.id, change.field, change.value);
+            project.pointrelClient.sendMessage(message, function(error, result) {
+                if (error) {
+                    console.log("Problem saving annotation", error);
+                    if (wizardPane && wizardPane.failed) {
+                        wizardPane.failed();
+                    } else {
+                        alert("Problem saving annotation; check the console for details.");
+                    }
+                    return;
+                }
+                console.log("Annotation stored");
+                if (wizardPane) {
+                    wizardPane.forward();
+                } else {
+                    // TODO: Translate
+                    alert("Annotations stored.");
+                }
+            });
+        }
+    }
+    
+    // Start sending survey results
+    if (saveAnnotations) {
+        sendNextChange();
+    }
+    
+    if (writeLog) {
+        const consoleMessageCounts = {"INFO": 0, "WARN": 0, "LOG": 0, "DEBUG": 0, "ERROR": 0};
+        if (logItems.length > 0) {
+            console.clear();
+            logItems.forEach(function(item) {
+                const typeAndText = item.split("||");
+                const type = typeAndText[0];
+                const text = typeAndText[1];
+                if (type === "INFO") {
+                    console.info(text);
+                    consoleMessageCounts["INFO"]++;
+                } else if (type === "WARN") {
+                    console.warn(text);
+                    consoleMessageCounts["WARN"]++;
+                } else if (type === "LOG") {
+                    console.log(text);
+                    consoleMessageCounts["LOG"]++;
+                } else if (type === "DEBUG") {
+                    console.debug(text);
+                    consoleMessageCounts["DEBUG"]++;
+                } else if (type === "ERROR") {
+                    console.error(text);
+                    consoleMessageCounts["ERROR"]++;
+                }
+            });
+        }
+        // write answer counts to bottom of console log
+        const questionNames = Object.keys(logQuestionAnswerCounts);
+        if (questionNames.length > 0) {
+            console.info("---------- Answer counts");
+            for (let questionIndex = 0; questionIndex < questionNames.length; questionIndex++) {
+                const questionName = questionNames[questionIndex];
+                let answerOutputText = "";
+                const answerInfo = logQuestionAnswerCounts[questionName];
+                const answerNames = Object.keys(answerInfo);
+                for (let answerIndex = 0; answerIndex < answerNames.length; answerIndex++) {
+                    const answerName = answerNames[answerIndex];
+                    answerOutputText += answerName + ": " + answerInfo[answerName];
+                    if (answerIndex < answerNames.length-1) {
+                        answerOutputText += "; "
+                    }
+                }
+                console.info(questionName + ": " + answerOutputText);
+            }
+        }
+        // tell user log is complete
+        alert("Finished checking " + rowNumber + " rows. Check browser console for these messages: "
+            + consoleMessageCounts["DEBUG"] + " debug, "
+            + consoleMessageCounts["LOG"] + " log, "
+            + consoleMessageCounts["INFO"] + " info, "
+            + consoleMessageCounts["WARN"] + " warning, "
+            + consoleMessageCounts["ERROR"] + " error. ");
+    }
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// exporting annotations
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+function exportAnnotationsForCurrentStoryCollectionToCSV() {
+    const storyCollectionName = Globals.clientState().storyCollectionName();
+    if (!storyCollectionName) {
+        alert("Please select a story collection first.");
+        return;
+    }
+    
+    const questionnaire = surveyCollection.getQuestionnaireForStoryCollection(storyCollectionName);
+    if (!questionnaire) {
+        alert("The story collection has not been initialized with a story form: " + storyCollectionName);
+        return;
+    }
+
+    const allStories = surveyCollection.getStoriesForStoryCollection(storyCollectionName, true);
+    const header1 = [];
+    const header2 = [];
+      
+    function header(contents, secondHeader = "") {
+        header1.push(contents);
+        header2.push(secondHeader);
+    }
+    
+    // Put initial header
+    header("Story title", ";"); // use semicolon to make second line a comment
+    header("Story text");
+    
+    function headersForQuestions(questions) {
+        for (let i = 0; i < questions.length; i++) {
+            const question = questions[i];
+            if (["label", "header"].indexOf(question.displayType) >= 0) break;
+            if (question.valueOptions && question.displayType === "checkboxes") {
+                question.valueOptions.forEach(function(option) {
+                    header(question.displayName, option);   
+               });
+            } else {
+                header(question.displayName);
+            }
+        }
+    }
+    const annotationQuestions = project.collectAllAnnotationQuestions();
+    const adjustedAnnotationQuestions = questionnaireGeneration.convertEditorQuestions(annotationQuestions, "A_");
+    headersForQuestions(adjustedAnnotationQuestions);
+  
+    let output = "";
+    const delimiter = Globals.clientState().csvDelimiter();
+    function addOutputLine(line) { output = addCSVOutputLine(output, line, delimiter); }
+    
+    addOutputLine(header1);
+    addOutputLine(header2);
+    
+    function dataForQuestions(questions, story: surveyCollection.Story, outputLine) {
+        for (let i = 0; i < questions.length; i++) {
+            const question = questions[i];
+            if (["label", "header"].indexOf(question.displayType) >= 0) break;
+            let value = story.fieldValue(question.id);
+            if (value === undefined || value === null) value = "";
+            if (question.valueOptions && question.displayType === "checkboxes") {
+               question.valueOptions.forEach(function(option) {
+                   outputLine.push(value[option] ? option : "");   
+               });
+            } else {
+                outputLine.push(value);
+            }
+            if (question.writeInTextBoxLabel) {
+                const writeInValue = story.fieldValueWriteIn(question.id);
+                outputLine.push(writeInValue ? writeInValue : "");
+            }
+        }
+    }
+    
+    allStories.forEach(function (story) {
+        const outputLine = [];
+        outputLine.push(story.storyName()); 
+        outputLine.push(story.storyText());
+        dataForQuestions(adjustedAnnotationQuestions, story, outputLine);
+        addOutputLine(outputLine);
+    }); 
+    
+    const storyCollectionBlob = new Blob([output], {type: "text/csv;charset=utf-8"});
+    // TODO: This seems to clear the console in FireFox 40; why?
+    saveAs(storyCollectionBlob, "export_annotations_" + storyCollectionName + ".csv");
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -2025,7 +2435,7 @@ export function exportStoryCollection() {
     }
     
     // Put initial header
-    header("Story title");
+    header("Story title", ";"); // use semicolon to make second line a comment
     header("Story text");
     header("Collection date");
     header("Language");
@@ -2086,6 +2496,7 @@ export function exportStoryCollection() {
         outputLine.push(story.storyName()); 
         outputLine.push(story.storyText());
         outputLine.push(story.storyCollectionDate() || "");
+        outputLine.push(story.storyLanguage() || "");
         outputLine.push(story.elicitingQuestion());
         dataForQuestions(questionnaire.storyQuestions, story, outputLine);
         dataForQuestions(questionnaire.participantQuestions, story, outputLine);
@@ -2544,6 +2955,32 @@ export function importCSVQuestionnaire() {
         return;
     }
     chooseCSVFileToImport(processCSVContentsForQuestionnaire, true, false);
+}
+
+export function importCSVAnnotations() {
+    if (!Globals.clientState().storyCollectionName()) {
+        // TODO: Translate
+        return alert("You need to select a story collection before you can import annotations to it.");
+    }
+    // save stories, do not write verbose log
+    chooseCSVFileToImport(processCSVContentsForAnnotations, true, false);
+}
+
+export function checkCSVAnnotations() {
+    if (!Globals.clientState().storyCollectionName()) {
+        // TODO: Translate
+        return alert("You need to select a story collection before you can check a story CSV file.");
+    }
+    // do not save stories, do write verbose log
+    chooseCSVFileToImport(processCSVContentsForAnnotations, false, true);
+}
+
+export function exportAnnotationsToCSV() {
+    if (!Globals.clientState().storyCollectionName()) {
+        // TODO: Translate
+        return alert("You need to select a story collection before you can export annotations from it.");
+    }
+    exportAnnotationsForCurrentStoryCollectionToCSV();
 }
 
 export function importTranslationDictionary(questionnaire) {

@@ -46,6 +46,7 @@ The special <b>mass editing mode</b> on this page (and this page alone) helps yo
 <p>
 Below the list of stories, you can see graphs of your answer counts.
 </p>
+<p>You can also import annotations from a CSV spreadsheet file.</p>
 </div>
 
 <h2 class="heading">Connections to other pages</h2>
@@ -131,6 +132,95 @@ I have too many stories to answer annotation questions for all of them! What sho
 				and hitting the Control (or Command) key, plus the up and down arrows, to see if you can jump up and down more easily. 
 			</li>
 		</ul>
+	</div>
+
+<h3 class="question">
+	How should I go about importing annotations?
+</h3>
+<div class="question-answer">
+	<p>This is the best way to do it, I think.</p>
+	<ol>
+		<li>Write your annotation <b>questions</b>.</li>
+		<li>For a small number of stories, say five or ten, <b>answer the questions by hand</b>, using the "Annotate questions" page.
+			As you do this, think about your questions and make sure you are happy with them.</li>
+		<li><b>Export</b> your hand-entered annotations to a CSV file.</li>
+		<li><b>Open the file</b> in a spreadsheet program. Look at its structure.</li>
+		<li><b>Maintain that structure</b> as you type or paste in the remainder of your annotations. Don't touch the story names and texts. Just add data to the other columns.</li>
+		<li>Check that your annotations will import correctly by clicking <b>Check before importing</b> and using your browser console to look for errors. Look for:
+			<ul>
+				<li>rows that don't match any stories</li>
+				<li>rows that match multiple stories</li>
+				<li>header names that don't match question names</li>
+				<li>answers not found in the lists of fixed answers specified in the questions</li>
+			</ul>
+		</li>
+		<li>When you find no more errors, <b>import</b> your annotations.</li>
+		<li>Double-check that your annotations have been imported correctly by looking at the <b>graphs</b> on the "Annotate stories" page (below the list of stories).
+			Spot-check a few graph totals against the totals in your spreadsheet.
+		</li>
+	</ol>
+</div>
+
+<h3 class="question">
+	What is the correct format for importing annotations?
+</h3>
+<div class="question-answer">
+	<p>
+		For each story in your collection, the first two columns in your annotations CSV file <i>must</i> be the <b>story name</b> and <b>story text</b>, exactly as they appear in NarraFirma.
+		Both name and text need to match before any annotations will be applied to a story. This is to prevent accidental assignment when multiple stories
+		have the same names or texts. 
+	</p>
+	<p>
+		For each column <i>after</i> the name and text, enter data that matches the annotation questions you created in NarraFirma. You cannot create annotation questions
+		by importing a CSV file (as you can with story forms). You have to create the questions in NarraFirma itself. Write the short name of each
+		question in the header of the column(s) for that question.
+	</p>
+		For a <b>boolean</b> or <b>checkbox</b> question, use one column, and write either "true", "false", "yes", or "no." 
+	</p>
+	</p>
+		For a <b>select</b> or <b>radiobuttions</b> question, use one column, and write the answer in the column. It must exactly match one of the fixed answers entered for the question.
+	</p>
+	</p>
+		For a <b>slider</b> question, use one column, and write the number in the column. It must be a value between 0 and 100, inclusive.
+	</p>
+	<p>
+		For a <b>checkboxes</b> question, use as many columns as there are fixed answers entered for the question. Write the question short name
+		as the header of each column (yes, over and over). Write each answer, exactly as specified in the fixed list of answers, in its own column.
+		Do not write multiple answers in the same column.
+		For example:
+	</p>
+	<table>
+		<tr><th>Story name</th><th>Story text</th><th>Feeling</th><th>Feeling</th><th>Feeling</th></tr>
+		<tr><td>The blue dog</td><td>Once there was a blue dog.</td><td>happy</td><td></td><td></td></tr>
+		<tr><td>The red hen</td><td>Once there was a red hen.</td><td></td><td>sad</td><td></td></tr>
+		<tr><td>The yellow spider</td><td>Once there was a yellow spider.</td><td></td><td></td><td>bored</td></tr>
+		<tr><td>The green cat</td><td>Once there was a green cat.</td><td>happy</td><td></td><td></td></tr>
+	</table>
+</div>
+
+<h3 class="question">
+	What happens if I import the same annotations twice?
+</h3>
+<div class="question-answer">
+	<p>
+		New annotations always overwrite older annotations. However, <b>empty cells in the CSV file will not delete existing data</b>.
+		Any answers that are in one import but not in the next will not be removed. So for example, if you say a story has the value "happy"
+		for the question "Feeling," and then you import the same file again, but with "happy" removed, the answer "happy" will still be connected to the story
+		(because it was imported the first time). You can only <i>add</i> data by importing annotations. You cannot <i>remove</i> data in this way.
+		To remove an annotation answer, change it on the "Annotate stories" page.
+	</p>
+</div>
+
+<h3 class="question">
+	Is there a way to remove all of my imported annotations at once?
+</h3>
+<div class="question-answer">
+	<p>
+		Yes. Go back to the Collection part of NarraFirma. 
+		Export your entire story collection to a CSV file. Remove the annotation data. Then re-import the story data into a new story collection.
+		Your annotation questions will still exist (they are stored in the project), but there will be no annotation <i>data</i> in the new story collection.
+	</p>
+</div>
 
 </div>
 

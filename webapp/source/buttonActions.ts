@@ -636,6 +636,9 @@ export const exportQuestionnaire = csvImportExport.exportQuestionnaire;
 export const exportQuestionnaireForImport = csvImportExport.exportQuestionnaireForImport;
 export const exportStoryCollection = csvImportExport.exportStoryCollection;
 export const autoFillStoryForm = csvImportExport.autoFillStoryForm;
+export const exportAnnotationsToCSV = csvImportExport.exportAnnotationsToCSV;
+export const checkCSVAnnotations = csvImportExport.checkCSVAnnotations;
+export const importCSVAnnotations = csvImportExport.importCSVAnnotations;
 
 export const exportProject = projectImportExport.exportProject;
 export const importProject = projectImportExport.importProject;
