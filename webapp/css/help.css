@@ -34,6 +34,21 @@ li {
 
 table, th, td {
 	border: 0.5px solid lightgray;
+	border-collapse: collapse;
+	padding: 0.2em;
+}
+
+table.noborders {
+	border: none;
+}
+
+td.noborders {
+	border: none;
+}
+
+td.borderbottom {
+	border: none;
+	border-bottom: 1px solid black;
 }
 
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Navigation ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
@@ -116,11 +131,10 @@ h5 {
 
 h3.question {
 	background: #c5d2eb;
-	font-style: italic;
-	font-weight: normal;
+	font-weight: bold;
 	font-size: 1.0em;
 	padding: 0.75em 0.5em 0.5em 0.5em;
-	margin: 0.75em 0 0 0;
+	margin: 0.75em 0 0.5em 0;
 	border-bottom: 1px solid #89a5a5;
 }
 
