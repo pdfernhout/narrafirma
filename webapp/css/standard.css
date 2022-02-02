@@ -391,9 +391,8 @@ input[type="submit"].narrafirma-login-button:hover {
 }
 
 .narrafirma-questionAnswer { /* this is now used to display the reminder on the section page */
-    background-color: var(--color-notice);
-    border: 2px solid var(--color-button);
-    margin: 0.5em 0 0 1em;
+    background-color: var(--color-table);
+    margin: 0.5em 3em 0 3em;
     padding: 0.5em;
 }
 
