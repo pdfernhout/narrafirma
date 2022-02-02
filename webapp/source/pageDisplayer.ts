@@ -45,7 +45,13 @@ const PageDisplayer: any = {
             }
         }
         clientState.anHTMLElementValueIsBeingSetBecauseOfAnIncomingMessage(false);
-        return m("div.pageContents", {key: "pageContents"}, contentsDiv);
+
+        // show or hide explanations of pages on section-dashboard pages
+        // if nothing is stored for this option, show the explanations (default to support for new user)
+        const showPageExplanations = project.tripleStore.queryLatestC(project.projectIdentifier, "projectOptions_showPageExplanations");
+        const extraClass = (showPageExplanations === undefined || showPageExplanations === "yes") ? ".verbose" : "";
+
+        return m("div.pageContents" + extraClass, {key: "pageContents"}, contentsDiv);
     }
 };
 

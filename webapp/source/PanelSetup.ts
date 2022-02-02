@@ -1,3 +1,4 @@
+
 import PanelSpecificationCollection = require("./panelBuilder/PanelSpecificationCollection");
 import translate = require("./panelBuilder/translate");
 import m = require("mithril");
@@ -19,6 +20,7 @@ export function panelSpecificationCollection() {
 }
 
 function addExtraFieldSpecificationsForPageSpecification(pageID, pageSpecification) {
+
     function addPageChangeButton(newPageID, idExtra, prompt, displayIconClass) {
         // TODO: Translate
         if (displayIconClass !== "homeButtonImage") {
@@ -59,14 +61,15 @@ function addExtraFieldSpecificationsForPageSpecification(pageID, pageSpecificati
                     "#dashboard_status_entry::prompt",
                     "You can enter <strong>reminders</strong> about this page here. They will appear on this section's home page."
                 )
-        };
+            };
             _panelSpecificationCollection.addFieldSpecificationToPanelSpecification(pageSpecification, completionStatusEntryFieldSpecification);
         } else {
             // Dashboard page
             // Put in dashboard
             let childPageIDs = _panelSpecificationCollection.getChildPageIDListForHeaderID(pageID);
             if (!childPageIDs) childPageIDs = [];
-            // Add a display to this page for each child page in the same section
+
+            // Add a link (plus explanation) to this page for each child page in the section
             for (let childPageIndex = 0; childPageIndex < childPageIDs.length; childPageIndex++) {
                 const childPageID = childPageIDs[childPageIndex];
                 const statusViewID = childPageID + "_reminders_dashboard";
@@ -74,14 +77,10 @@ function addExtraFieldSpecificationsForPageSpecification(pageID, pageSpecificati
                 if (!childPageSpecification) console.log("Error: problem finding page definition for", childPageID);
                 if (childPageSpecification && childPageSpecification.displayType === "page") {
                     let prompt = translate(childPageID + "::title", childPageSpecification.displayName);
-                    // Wrap the prompt as a link to the page
-                    const properties: any = {
-                        href: "javascript:narrafirma_openPage('" + childPageID + "')"
-                    }
-                    if (childPageSpecification.tooltipText) {
-                        properties.title = childPageSpecification.tooltipText;
-                    }
+                    const properties: any = { href: "javascript:narrafirma_openPage('" + childPageID + "')" }
+                    // properties.title = childPageSpecification.pageExplanation; // not easy to show/hide these later on, so just not using this anymore
                     prompt = m("div.narrafirma-dashboard-page-link", m("a", properties, prompt));
+                    prompt = m("div.narrafirma-dashboard-page-div", [prompt, m("div.narrafirma-dashboard-page-link-explanation", childPageSpecification.pageExplanation)]);
                     if (childPageSpecification.headerAbove) { 
                         prompt = [m("div.narrafirma-dashboard-header", childPageSpecification.headerAbove), prompt]; 
                     }

@@ -262,7 +262,8 @@ interface StoryFormFields {
 interface Panel {
     id: string;
     displayName?: string;
-    tooltipText?: string;
+    pageExplanation?: string;
+    pageCategories?: string;
     headerAbove?: string;
     panelFields: PanelField[];
     modelClass?: string;
