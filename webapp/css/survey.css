@@ -25,6 +25,7 @@ html, body {
 }
 
 body {
+    background-color: var(--color-body);
     min-height: 100%;
     font-size: 1em;
     overflow-y: scroll;

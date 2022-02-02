@@ -355,7 +355,7 @@ export function printCatalysisReport() {
     options["catalysisReportIdentifier"] = catalysisReportIdentifier;
 
     options["outputFontModifierPercent"] = parseInt(project.tripleStore.queryLatestC(catalysisReportIdentifier, "outputFontModifierPercent"));
-    options["adjustedCSS"] = graphStyle.modifyFontSize(graphStyle.graphResultsPaneCSS, options["outputFontModifierPercent"]);
+    options["adjustedCSS"] = graphStyle.modifyFontSize(graphStyle.graphResultsPaneCSS(null), options["outputFontModifierPercent"]);
 
     const strengthsToInclude = [];
     const strengthTextsToReport = [];
@@ -1147,20 +1147,23 @@ function printGraphWithGraphNode(graphNode: HTMLElement, graphHolder: GraphHolde
 
     const svgNode = graphNode.querySelector("svg");
     if (!svgNode) return null;
+    svgNode.setAttribute("version", "1.1");
+    svgNode.setAttribute("xmlns", "http://www.w3.org/2000/svg");
+    svgNode.setAttribute("xmlns:xlink", "http://www.w3.org/1999/xlink");
 
     const titleNode = graphNode.querySelector(".narrafirma-graph-title");
     const statisticsNode = graphNode.querySelector(".narrafirma-statistics-panel");
 
     const styleNode = document.createElement("style");
-    styleNode.type = 'text/css';
-    // custom CSS must come AFTER other CSS, because the second declaration of the same class will override the earlier setting
-    
-    let styleNodeText =  "<![CDATA[" + graphHolder.adjustedCSS;
-    if (customCSS) styleNodeText += customCSS;
-    styleNodeText += "]]>";
+    styleNode.setAttribute('type', 'text/css');
+
+    let styleDefs = graphStyle.graphResultsPaneCSS(svgNode);
+    styleDefs = graphStyle.modifyFontSize(styleDefs, graphHolder.outputFontModifierPercent);
+
+    const styleNodeText =  "<![CDATA[\n" + styleDefs + ((customCSS) ? customCSS : "") + "]]>";
     styleNode.innerHTML = styleNodeText;
     svgNode.insertBefore(styleNode, svgNode.firstChild);
-    
+
     const result = [];
     if (titleNode) result.push(m.trust(titleNode.outerHTML));
     
