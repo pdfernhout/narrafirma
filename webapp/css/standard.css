@@ -24,7 +24,7 @@ Special warning areas f88a57
     --color-link: #014b4b;
 
     /* buttons */
-    --color-button: #ffbb84;
+    --color-button: #ffc698;
     --color-button-hover: #ffa25f;
     --color-button-selected: #ffa861;
     --color-button-selected-hover: #f88e37;
@@ -46,7 +46,7 @@ Special warning areas f88a57
     --color-dialog-internal-border: black;
 
     /* working areas */
-    --color-editing: #d2dbf0; 
+    --color-editing: #d6dff0; 
     --color-viewing: white;
     --color-story-card: white;
 
@@ -65,7 +65,7 @@ Special warning areas f88a57
     --color-icon-table-border: gray; /* graph types, question types */
 
     /* notices, warnings, errors */
-    --color-notice: #ffe1aa;
+    --color-notice: #dcecec;
     --color-notice-border: black;
     --color-warning: #f88a57;
     --color-error: red;
@@ -159,6 +159,7 @@ a:active {
 
 textarea, input, select { /* override because expanded in survey */
     margin-top: 0.2em;
+    background-color: white;
     border: 1px solid var(--color-textbox-border);
 }
 
@@ -293,6 +294,10 @@ input[type="submit"].narrafirma-login-button:hover {
     text-decoration: none;
 }
 
+#narrafirma-next-page:hover, #narrafirma-previous-page:hover {
+    background-color: var(--color-button-hover);
+}
+
 #narrafirma-next-page.narrafirma-link-disabled,  #narrafirma-previous-page.narrafirma-link-disabled {
     background-color: var(--color-button-disabled);
     border: 1px solid var(--color-text-disabled);
@@ -343,6 +348,11 @@ input[type="submit"].narrafirma-login-button:hover {
     margin-left: 1.0em;
 }
 
+.narrafirma-section-page-image {
+    margin: 0.5em 1em 0.25em 0.5em;
+    width: 300px;
+}
+
 .narrafirma-dashboard-story-collection-status table {
     border-collapse: collapse;
     margin-right: 1em;
@@ -371,7 +381,7 @@ input[type="submit"].narrafirma-login-button:hover {
 
 .narrafirma-dashboard-page-link {
 	display: block;
-	margin: 0.25em 0 0 1em;
+	margin: 0.2em 0 0 1em;
     font-size: 1.05em;
 }
 
@@ -385,13 +395,12 @@ input[type="submit"].narrafirma-login-button:hover {
 
 .narrafirma-dashboard-page-link-explanation {
     display: none;
-    margin-left: 1em; 
-    margin-top: 0.2em;
+    margin: 0.2em 0 0 1em;
     font-weight: normal;
 }
 
 .narrafirma-questionAnswer { /* this is now used to display the reminder on the section page */
-    background-color: var(--color-table);
+    background-color: var(--color-notice);
     margin: 0.5em 3em 0 3em;
     padding: 0.5em;
 }
@@ -430,8 +439,13 @@ input[type="submit"].narrafirma-login-button:hover {
 }
 
 .narrafirma-home-page-link {
-    display: block;
+    display: table; /* display block sets the width at 100% of the page */
     margin-bottom: 0.2em;
+}
+
+.narrafirma-home-page-section-link {
+    display: inline;
+    margin-right: 0.2em;
 }
 
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Buttons bottom of page (and elsewhere) ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */

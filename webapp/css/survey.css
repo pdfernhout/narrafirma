@@ -17,7 +17,7 @@
 }
 
 html, body {
-	font-family: Arial, Helvetica, sans-serif;
+	font-family: Helvetica, Arial, sans-serif;
     height: 100%;
     width: 100%;
     margin: 0;
@@ -53,14 +53,14 @@ textarea {
     width: 100%;
     height: auto;
     margin-top: 0.5em;
-	font-family: Arial, Helvetica, sans-serif;
+	font-family: Helvetica, Arial, sans-serif;
 	font-size: 1em;
     resize: vertical;
 }
 
 input, select {
     margin-top: 0.5em;
-	font-family: Arial, Helvetica, sans-serif;
+	font-family: Helvetica, Arial, sans-serif;
 	font-size: 1em;
 }
 
