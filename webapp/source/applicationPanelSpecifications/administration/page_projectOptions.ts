@@ -13,6 +13,13 @@ const panel: Panel = {
             displayType: "label",
             displayPrompt: "On this page you can set project-wide options."
         },
+
+        {
+            id: "projectOptions_generalsettings_header",
+            valueType: "none",
+            displayType: "header",
+            displayPrompt: "General options"
+        },
         {
             id: "projectOptions_projectNickname",
             valueType: "string",
@@ -24,6 +31,16 @@ const panel: Panel = {
                 in the list of projects you see before you open the project, in any exported files, and in the project's stored files.
                 If you want to change this project's actual name, export its full history, create a new project with a different name,
                 and import the project file to that empty project.)`
+        },
+        {
+            id: "projectOptions_showPageExplanations",
+            valueType: "string",
+            displayType: "radiobuttons",
+            valueOptions: ["yes", "no"],
+            displayName: "Verbose",
+            displayPrompt: `Would you like to see an <strong>explanation</strong> of each page 
+                under its link on the section page where it appears? 
+                (If no choice is made here, explanations will be shown.)`
         },
 
         {
@@ -41,16 +58,6 @@ const panel: Panel = {
             displayPrompt: `How do you want CSV files to be <strong>delimited</strong>? 
                 That is, what character do you want to use to mark boundaries between cells?
                 (If no choice is made here, a comma delimiter will be used.)`
-        },
-        {
-            id: "projectOptions_showPageExplanations",
-            valueType: "string",
-            displayType: "radiobuttons",
-            valueOptions: ["yes", "no"],
-            displayName: "Verbose",
-            displayPrompt: `Would you like to see an <strong>explanation</strong> of each page 
-                under its link on the section page where it appears? 
-                (If no choice is made here, explanations will be shown.)`
         },
     ]
 };
