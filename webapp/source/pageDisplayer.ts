@@ -17,6 +17,14 @@ let panelBuilder: PanelBuilder;
 let project: Project;
 let clientState: ClientState;
 
+function stringBeyond(aString: string, beyondWhat: string) {
+    if (beyondWhat !== "") {
+        return aString.split(beyondWhat).pop();
+    } else {
+        return aString;
+    }
+}
+
 const PageDisplayer: any = {
     controller: function(args) {
         ;
@@ -33,10 +41,25 @@ const PageDisplayer: any = {
         } else {
             // Create the display widgets for this page
             try {
-                contentsDiv = m("div", {"class": "narrafirma-" + currentPageID}, [
-                    m("div.narrafirma-page-name", currentPageSpecification.displayName),
-                    panelBuilder.buildPanel(currentPageID, project.projectIdentifier)
-                ]);
+                const parts = [];
+                const pageNameWithoutPrefix = stringBeyond(currentPageSpecification.id, "page_");
+                let isSectionPage = currentPageSpecification.section === pageNameWithoutPrefix;
+                if (currentPageSpecification.section === "dashboard" || currentPageSpecification.section === "administration") isSectionPage = false;
+
+                if (isSectionPage) {
+                    const sectionImageURL = "./images/section_" + currentPageSpecification.section + ".png";
+                    const imagePart = m("img", {
+                        class: "narrafirma-section-page-image",
+                        alt: currentPageSpecification.section + " section image",
+                        src: sectionImageURL});
+                    parts.push(imagePart);
+                } else {
+                    parts.push(m("div.narrafirma-page-name", currentPageSpecification.displayName));
+                }
+
+                parts.push(panelBuilder.buildPanel(currentPageID, project.projectIdentifier));
+                contentsDiv = m("div", {"class": "narrafirma-" + currentPageID}, parts);
+
             } catch (e) {
                 console.log("ERROR: When trying to view page", currentPageID, e);
                 // TODO: Translate
