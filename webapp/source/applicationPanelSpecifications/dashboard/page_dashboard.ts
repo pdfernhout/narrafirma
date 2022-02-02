@@ -6,6 +6,13 @@ const panel: Panel = {
     displayName: "Home",
     panelFields: [
         {
+            id: "project_homepage_label",
+            valueType: "none",
+            displayType: "html",
+            displayPrompt: `This is the home page of your <a href="//www.workingwithstories.org" target="_blank">participatory narrative inquiry</a> project. 
+                Click on any of the colored boxes below to work on that phase of your project.`
+        },
+        {
             id: "project_mainDashboardPNIPhasesDiagram",
             valueType: "none",
             displayType: "html",
