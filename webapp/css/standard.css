@@ -67,8 +67,9 @@ Special warning areas f88a57
     /* notices, warnings, errors */
     --color-notice: #dcecec;
     --color-notice-border: black;
-    --color-warning: #f88a57;
-    --color-error: red;
+    --color-warning-text: #f88a57;
+    --color-error-border: red;
+    --color-error-text: red;
 
     /* recommendations */
     --color-recommendation-no: black;
@@ -267,11 +268,11 @@ input[type="submit"].narrafirma-login-button:hover {
 }
 
 .narrafirma-serverstatus-waiting-last-error {
-	border: 2px solid var(--color-error);
+	border: 2px solid var(--color-error-border);
 }
 
 .narrafirma-serverstatus-failure {
-	border: 2px solid var(--color-error);
+	border: 2px solid var(--color-error-border);
 }
 
 #narrafirma-project-name {
@@ -322,7 +323,7 @@ input[type="submit"].narrafirma-login-button:hover {
     font-weight: bold;
     padding: 0 0.75em 0 0.5em;
     float: right;
-    color: var(--color-error);
+    color: var(--color-error-text);
 }
 
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Dashboard (home page) ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
@@ -1414,7 +1415,7 @@ table.filterTable td {
 
 #gridHeaderProgressMessage {
     margin-left: 0.5em; 
-    color: var(--color-warning); 
+    color: var(--color-warning-text); 
     font-weight: bold;
 }
 
