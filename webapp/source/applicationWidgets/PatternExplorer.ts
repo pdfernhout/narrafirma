@@ -550,7 +550,12 @@ class PatternExplorer {
         const buildObservationsAndInterpretationsPanels = () => {
             const result = [];
 
-            const remarkable = PatternExplorer.getOrSetWhetherPatternIsMarkedAsRemarkable(this.project, this.catalysisReportIdentifier, this.currentPattern);
+            let remarkable = PatternExplorer.getOrSetWhetherPatternIsMarkedAsRemarkable(this.project, this.catalysisReportIdentifier, this.currentPattern);
+
+            // update legacy data in which the remarkable value is not set but there is an observation (so the remarkable value SHOULD be set to "yes")
+            if (!remarkable && this.observationAccessors.length > 0) {
+                remarkable = PatternExplorer.getOrSetWhetherPatternIsMarkedAsRemarkable(this.project, this.catalysisReportIdentifier, this.currentPattern, "yes");
+            }
             result.push(m("span", {class: "narrafirma-mark-pattern-text"}, "Remarkable?"));
             result.push(m("button", {class: "narrafirma-mark-pattern-button", 
                 onclick: this.setRemarkableFlag.bind(this, "yes"), disabled: remarkable === "yes"}, m("span.button-text ", "yes"))); 
