@@ -4,14 +4,17 @@ import kludgeForUseStrict = require("../../kludgeForUseStrict");
 const panel: Panel = {
     id: "page_prepareProjectPresentation",
     displayName: "Prepare outline of project presentation",
-    tooltipText: "Create an outline you can use to present your project to other people.",
+    pageExplanation: "Create a simple project outline you can use to explain what happened in your project to other people.",
+    pageCategories: "record",
     headerAbove: "Support Your Community",
     panelFields: [
         {
             id: "project_presentationLabel",
             valueType: "none",
             displayType: "label",
-            displayPrompt: "You can use this page to build an outline for a <strong>presentation</strong> about your project to show to others. After you finish building your outline, you can export it, open it in your word processor, format your writing, and add material from NarraFirma's final project report."
+            displayPrompt: `This is a simple page you can use to build a simple outline for a <strong>presentation</strong> about your project. 
+                You could also build this outline in a word processor. Writing it here keeps the outline
+                bundled with the rest of your project, so it's easier to look back on later.`
         },
         {
             id: "project_presentationElementsList",

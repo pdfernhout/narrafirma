@@ -15,7 +15,7 @@ const panel: Panel = {
             id: "administrationIntroLabel",
             valueType: "none",
             displayType: "label",
-            displayPrompt: "In the administration section, you can do house-keeping actions like backing up data. Below are links to each activity, along with any reminders you may have entered on them."
+            displayPrompt: "In the administration section, you can do <strong>house-keeping</strong> actions like backing up data. Below are links to each activity, along with any reminders you may have entered on them."
         }
     ]
 };

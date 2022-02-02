@@ -7,7 +7,8 @@ import kludgeForUseStrict = require("../../kludgeForUseStrict");
 const panel: Panel = {
     id: "page_createProjectStoryElements",
     displayName: "Create project story elements",
-    tooltipText: "Work with your stories to think about how you should plan your project.",
+    pageExplanation: "Follow up your story sharing exercise with a sensemaking exercise that will help you think through your project plans.",
+    pageCategories: "plan",
     panelFields: [
         {
             id: "project_storyElements_instructions",

@@ -4,7 +4,8 @@ import kludgeForUseStrict = require("../../kludgeForUseStrict");
 const panel: Panel = {
     id: "page_recordInterventions",
     displayName: "Enter intervention records",
-    tooltipText: "Reflect on the interventions you carried out to capture what happened and what you learned.",
+    pageExplanation: "Reflect on any interventions you carried out. Record what happened and what you learned from it.",
+    pageCategories: "record",
     headerAbove: "Think About What Happened",
     panelFields: [
         {

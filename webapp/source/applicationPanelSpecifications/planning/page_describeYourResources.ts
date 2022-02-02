@@ -3,7 +3,8 @@ import kludgeForUseStrict = require("../../kludgeForUseStrict");
 
 const panel: Panel = {
     id: "page_describeYourResources",
-    tooltipText: "Think about the resources you can draw on.",
+    pageExplanation: "Answer questions about your resources. Think about how they affect your plans. (Your answers will be used to recommend options on other pages.)",
+    pageCategories: "plan",
     displayName: "Describe your resources",
     
     panelFields: [

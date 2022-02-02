@@ -4,6 +4,8 @@ import kludgeForUseStrict = require("../../kludgeForUseStrict");
 const panel: Panel = {
     id: "page_projectOptions",
     displayName: "Project options",
+    pageExplanation: "Change options that affect your entire project.",
+    pageCategories: "configure",
     panelFields: [
         {
             id: "projectOptions_header",
@@ -39,6 +41,16 @@ const panel: Panel = {
             displayPrompt: `How do you want CSV files to be <strong>delimited</strong>? 
                 That is, what character do you want to use to mark boundaries between cells?
                 (If no choice is made here, a comma delimiter will be used.)`
+        },
+        {
+            id: "projectOptions_showPageExplanations",
+            valueType: "string",
+            displayType: "radiobuttons",
+            valueOptions: ["yes", "no"],
+            displayName: "Verbose",
+            displayPrompt: `Would you like to see an <strong>explanation</strong> of each page 
+                under its link on the section page where it appears? 
+                (If no choice is made here, explanations will be shown.)`
         },
     ]
 };

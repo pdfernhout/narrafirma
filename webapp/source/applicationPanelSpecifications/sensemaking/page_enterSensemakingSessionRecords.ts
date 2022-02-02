@@ -4,7 +4,8 @@ import kludgeForUseStrict = require("../../kludgeForUseStrict");
 const panel: Panel = {
     id: "page_enterSensemakingSessionRecords",
     displayName: "Enter sensemaking session records",
-    tooltipText: "Reflect on your sensemaking sessions to capture what happened and what you learned.",
+    pageExplanation: "Reflect on your sensemaking sessions. Think about what you saw and heard and learned.",
+    pageCategories: "record",
     headerAbove: "Think About What Happened",
     panelFields: [
         {

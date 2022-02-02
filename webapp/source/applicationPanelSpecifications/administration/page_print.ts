@@ -4,6 +4,8 @@ import kludgeForUseStrict = require("../../kludgeForUseStrict");
 const panel: Panel = {
     id: "page_print",
     displayName: "Print",
+    pageExplanation: "Generate a whole-project report that displays everything you entered into NarraFirma so you can use it elsewhere.",
+    pageCategories: "output",
     panelFields: [
         {
             id: "print_header",

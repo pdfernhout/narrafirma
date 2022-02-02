@@ -5,8 +5,9 @@ import kludgeForUseStrict = require("../../kludgeForUseStrict");
 const panel: Panel = {
     id: "page_writeAnnotationsAboutStories",
     displayName: "Write annotation questions",
-    tooltipText: "Create questions to answer about the stories you collected.",
-    headerAbove: "Annotate Stories with Qualitative Codes",
+    pageExplanation: "Design research questions you will answer as you study the stories you collected. The answers will create patterns you can explore to discover insights you can use.",
+    pageCategories: "input",
+    headerAbove: "Create and Answer Research Questions",
     panelFields: [
         {
             id: "project_annotationQuestionsLabel",
@@ -15,7 +16,6 @@ const panel: Panel = {
             displayPrompt: `On this page you can create <strong>annotation questions</strong> 
                that you will use to add qualitative research codes or tags to your story texts. For details on how annotation works, see the help system.`
         },   
-        
         {
             id: "project_annotationQuestionsList",
             valueType: "array",

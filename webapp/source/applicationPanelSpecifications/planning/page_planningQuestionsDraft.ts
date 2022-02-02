@@ -4,7 +4,8 @@ import kludgeForUseStrict = require("../../kludgeForUseStrict");
 const panel: Panel = {
     id: "page_planningQuestionsDraft",
     displayName: "Answer PNI planning questions",
-    tooltipText: "Start working on answers to questions about your project's goals, relationships, focus, range, scope, and emphasis.",
+    pageExplanation: "Write first-draft descriptions of your project's goals, relationships, focus, range, scope, and emphasis.",
+    pageCategories: "plan",
     panelFields: [
         {
             id: "project_draftQuestionsLabel",

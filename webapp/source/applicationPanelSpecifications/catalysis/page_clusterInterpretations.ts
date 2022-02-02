@@ -4,14 +4,15 @@ import Globals = require("../../Globals");
 const panel: Panel = {
     id: "page_clusterInterpretations",
     displayName: "Cluster interpretations and/or observations",
-    tooltipText: "Draw your interpretations and/or observations together into clusters that make them more accessible during sensemaking.",
+    pageExplanation: "Gather the interpretations and observations you created on the previous page into groups whose names will become the headings of your catalysis report.",
+    pageCategories: "review, input",
     panelFields: [
         {
             id: "project_interpretationsClusteringLabel",
             valueType: "none",
             displayType: "label",
             displayPrompt: `
-                On this page you will <strong>cluster</strong> your interpretations and/or observations into groups that will divide your catalysis report into sections.
+                On this page you can <strong>cluster</strong> your interpretations and/or observations into groups that will divide your catalysis report into sections.
                 (If you can't decide whether to cluster by interpretations or observations, see the help system.)`
         },
         {

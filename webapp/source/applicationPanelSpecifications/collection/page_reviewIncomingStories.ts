@@ -5,7 +5,8 @@ import kludgeForUseStrict = require("../../kludgeForUseStrict");
 const panel: Panel = {
     id: "page_reviewIncomingStories",
     displayName: "Review incoming stories",
-    tooltipText: "Look at the stories you have collected, fix data entry mistakes, and mark stories to be ignored.",
+    pageExplanation: "Look over the stories you have collected. Remove personal information; translate stories; edit stories for clarity or length; fix data entry mistakes.",
+    pageCategories: "review, input",
     headerAbove: "Review and Repair",
     panelFields: [
         {

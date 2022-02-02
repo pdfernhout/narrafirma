@@ -5,7 +5,8 @@ import kludgeForUseStrict = require("../../kludgeForUseStrict");
 const panel: Panel = {
     id: "page_enterStories",
     displayName: "Enter or import stories",
-    tooltipText: "Add stories you collected off-line.",
+    pageExplanation: "Input stories you collected outside of NarraFirma, whether in an off-line session or using another online surveying system.",
+    pageCategories: "input",
     panelFields: [
         {
             id: "enterStories_Label",

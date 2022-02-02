@@ -4,15 +4,16 @@ import kludgeForUseStrict = require("../../kludgeForUseStrict");
 const panel: Panel = {
     id: "page_participantGroups",
     displayName: "Describe participant groups",
-    tooltipText: "Think about the people who will be telling stories.",
-    headerAbove: "Think about Context",
+    pageExplanation: "Answer questions about your storytellers. Think about how their needs affect your plans. (Your answers will be used to recommend options on other pages.)",
+    pageCategories: "plan",
+    headerAbove: "Consider Context",
     panelFields: [
         {
             id: "project_aboutParticipantGroups",
             valueType: "none",
             displayType: "label",
             displayPrompt: 
-            `On this page you will think about groups of <strong>participants</strong> you want to involve in your project. 
+            `On this page you can think about groups of <strong>participants</strong> you want to involve in your project. 
             (Examples might be: doctors and patients; staff and customers; natives, immigrants, and tourists.).`
         },
         {

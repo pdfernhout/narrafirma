@@ -5,8 +5,9 @@ import kludgeForUseStrict = require("../../kludgeForUseStrict");
 const panel: Panel = {
     id: "page_printCatalysisReport",
     displayName: "Print catalysis report",
-    tooltipText: "Export the graphs you've selected, and the observations and interpretations you've written, to use in a sensemaking session.",
-    headerAbove: "Wrap Up Catalysis",
+    pageExplanation: "Output your catalysis report so you can use it in the sensemaking phase of your project.",
+    pageCategories: "output",
+    headerAbove: "Get Ready for Sensemaking",
     panelFields: [
         {
             id: "catalysisReportPrint_label",
@@ -17,6 +18,16 @@ const panel: Panel = {
                 You can organize the report by the
                 <strong>perspectives</strong> (clusters of interpretations) or <strong>themes</strong> (clusters of observations)
                 you created on the previous page. The report can also include an introduction and other optional elements.
+                `
+        },
+        {
+            id: "catalysisReportPrint_label_pandoc",
+            valueType: "none",
+            displayType: "html",
+            displayPrompt: `
+                Note: If you would like to edit your catalysis report in a word processor, we strongly recommend you look into 
+                <a href="https://pandoc.org" target="_blank">pandoc</a>, 
+                which does a great job of converting NarraFirma's HTML reports into many other document formats. 
                 `
         },
         {

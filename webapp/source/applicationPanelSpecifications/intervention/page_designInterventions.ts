@@ -4,7 +4,8 @@ import kludgeForUseStrict = require("../../kludgeForUseStrict");
 const panel: Panel = {
     id: "page_designInterventions",
     displayName: "Design intervention plans",
-    tooltipText: "Write out plans for interventions you want to carry out.",
+    pageExplanation: "Describe any interventions you plan to carry out: what will happen, who will be involved, what resources you will need. Review recommendations based on your answers on the previous page.",
+    pageCategories: "plan",
     panelFields: [
         {
             id: "project_interventionLabel",

@@ -10,10 +10,10 @@ const panel: Panel = {
             valueType: "none",
             displayType: "label",
             displayPrompt: 
-`In the catalysis phase of your PNI project, you will look for <strong>patterns</strong>
-in the stories people told and in their answers to questions. You will build on these
-patterns by adding <strong>annotations</strong>, <strong>observations</strong>, <strong>interpretations</strong> and <strong>ideas</strong> that will 
-catalyze thought and discussion during the sensemaking phase of your project.`
+                `In the catalysis phase of your PNI project, you can look for <strong>patterns</strong>
+                as you study the stories people told and their answers to questions. 
+                You can build on these patterns by writing <strong>observations</strong>, <strong>interpretations</strong>, and <strong>ideas</strong>
+                that will catalyze thought and discussion during the sensemaking phase of your project.`
         }
     ]
 };

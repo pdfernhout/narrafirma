@@ -4,14 +4,15 @@ import kludgeForUseStrict = require("../../kludgeForUseStrict");
 const panel: Panel = {
     id: "page_chooseCollectionMethods",
     displayName: "Choose collection methods",
-    tooltipText: "Decide how you will collect stories.",
+    pageExplanation: "Decide how you will collect stories (surveys? interviews? group sessions?). Describe your plans. View recommendations based on questions you answered in the Planning section.",
+    pageCategories: "plan",
     headerAbove: "Plan Your Story Collection",
     panelFields: [
         {
             id: "project_methodsIntro",
             valueType: "none",
             displayType: "label",
-            displayPrompt: "On this page you will plan your story collection <strong>methods</strong>, or the ways you will collect stories."
+            displayPrompt: "On this page you can plan your story collection <strong>methods</strong>, or the ways you will collect stories."
         },
         {
             id: "SPECIAL_methodRecommendations",

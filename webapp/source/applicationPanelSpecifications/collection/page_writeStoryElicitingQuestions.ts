@@ -4,14 +4,15 @@ import kludgeForUseStrict = require("../../kludgeForUseStrict");
 const panel: Panel = {
     id: "page_writeStoryElicitingQuestions",
     displayName: "Write story eliciting questions",
-    tooltipText: "Think of questions you want people to answer by telling stories.",
+    pageExplanation: "Come up with some questions you will ask participants to answer by sharing stories of their experiences.",
+    pageCategories: "input",
     headerAbove: "Design Your Questions and Story Forms",
     panelFields: [
         {
             id: "project_elicitingQuestionsLabel",
             valueType: "none",
             displayType: "label",
-            displayPrompt: "On this page you will design the questions you will use <strong>to ask people to tell stories</strong>. You need at least one question for people to answer. We recommend giving people three to five questions to choose from."
+            displayPrompt: "On this page you can design the questions you will use <strong>to ask people to tell stories</strong>. You need at least one question for people to answer. We recommend giving people three to five questions to choose from."
         },
         {
             id: "project_elicitingQuestionsList",

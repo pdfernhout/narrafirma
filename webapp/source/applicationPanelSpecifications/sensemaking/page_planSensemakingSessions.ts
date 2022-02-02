@@ -4,7 +4,8 @@ import kludgeForUseStrict = require("../../kludgeForUseStrict");
 const panel: Panel = {
     id: "page_planSensemakingSessions",
     displayName: "Plan sensemaking sessions",
-    tooltipText: "Create an agenda you will use as people read, talk about, and work with the stories you collected.",
+    pageExplanation: "Create a printable agenda you can use to help your participants read, talk about, and work with the stories you collected (and optionally, with the catalysis report you prepared).",
+    pageCategories: "plan",
     panelFields: [
         {
             id: "project_sensemakingSessionPlansLabel",

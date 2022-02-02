@@ -4,12 +4,14 @@ import kludgeForUseStrict = require("../../kludgeForUseStrict");
 const panel: Panel = {
     id: "page_importExport",
     displayName: "Import & Export",
+    pageExplanation: "Backup or restore project data, or copy it from one project to another.",
+    pageCategories: "manage",
     panelFields: [
         {
             id: "importExport_header",
             valueType: "none",
             displayType: "label",
-            displayPrompt: "This page can be used to export project data (for backup or transfer), to reset (empty) a project, or to import project data to an empty project."
+            displayPrompt: "On this page you can export project data (for backup or transfer), reset (empty) a project, or import project data into an empty project."
         },
         {
             id: "importExport_exportHeader",

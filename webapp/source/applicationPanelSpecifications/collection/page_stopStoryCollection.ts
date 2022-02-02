@@ -4,7 +4,8 @@ import kludgeForUseStrict = require("../../kludgeForUseStrict");
 const panel: Panel = {
     id: "page_stopStoryCollection",
     displayName: "Stop story collection",
-    tooltipText: "Deactivate your online surveys.",
+    pageExplanation: 'Deactivate online survey collection. (You can also do this on the "Start story collection" page.)',
+    pageCategories: "manage",
     headerAbove: "Wrap Up Story Collection",
     panelFields: [
         {
