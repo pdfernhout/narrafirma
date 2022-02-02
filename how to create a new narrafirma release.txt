@@ -11,11 +11,16 @@ NarraFirma in the future).
 A. Update version numbers
 ====================================================================
 
-In Visual Studio Code (VSC), search on the old version number in all files (*.*) and
-replace the old with the new version number. Make sure it is changed in
-narrafirma.php and package.JSON.
+In Visual Studio Code (VSC), replace the old version number with the new version number. 
 
-DO NOT FORGET TO CHANGE package.JSON. You did that once.
+Version numbers are in these files:
+- package.json
+- versions.ts
+- wordpress-plugin/narrafirma/narrafirma.php (in two places!)
+
+And (in the list of all versions) in:
+- TODO.txt 
+- wordpress-plugin/narrafirma/readme.txt
 
 ====================================================================
 B. Update to-do list
