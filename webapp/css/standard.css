@@ -65,6 +65,7 @@ Special warning areas f88a57
     --color-icon-table-border: gray; /* graph types, question types */
 
     /* notices, warnings, errors */
+    --color-reminder: #e9eef7;
     --color-notice: #dcecec;
     --color-notice-border: black;
     --color-warning-text: #f88a57;
@@ -300,6 +301,7 @@ input[type="submit"].narrafirma-login-button:hover {
 }
 
 #narrafirma-next-page.narrafirma-link-disabled,  #narrafirma-previous-page.narrafirma-link-disabled {
+    display: none;
     background-color: var(--color-button-disabled);
     border: 1px solid var(--color-text-disabled);
     box-shadow: 1px 1px 1px var(--color-box-shadow);
@@ -401,7 +403,7 @@ input[type="submit"].narrafirma-login-button:hover {
 }
 
 .narrafirma-questionAnswer { /* this is now used to display the reminder on the section page */
-    background-color: var(--color-notice);
+    background-color: var(--color-reminder);
     margin: 0.5em 3em 0 3em;
     padding: 0.5em;
 }
@@ -445,7 +447,7 @@ input[type="submit"].narrafirma-login-button:hover {
 }
 
 .narrafirma-home-page-section-link {
-    display: inline;
+    display: table;
     margin-right: 0.2em;
 }
 
@@ -535,12 +537,12 @@ button:disabled {
     margin-left: 0.25em;
 }
 
- .narrafirma-reminder {
-     background-color: var(--color-notice);
+ .questionPrompt.narrafirma-reminder {
+    background-color: var(--color-reminder);
  }
 
  .questionExternal.narrafirma-reminder {
-    background-color: var(--color-notice);
+    background-color: var(--color-reminder);
     margin-top: 0.4em;
  }
 
