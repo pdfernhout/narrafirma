@@ -116,11 +116,11 @@ function add_dashboardStoryCollectionStatusDisplay(panelBuilder: PanelBuilder, m
     // section links (to use if can't click on image)
     const sectionLinks = [
         m("p"),
-        m("a.narrafirma-home-page-section-link", {href: 'javascript:narrafirma_openPage("page_planning")', title: "Go to planning section", tabindex: 0}, "Planning"),
-        m("a.narrafirma-home-page-section-link", {href: 'javascript:narrafirma_openPage("page_collection")', title: "Go to collection section", tabindex: 0}, "Collection"),
-        m("a.narrafirma-home-page-section-link", {href: 'javascript:narrafirma_openPage("page_catalysis")', title: "Go to catalysis section", tabindex: 0}, "Catalysis"),
-        m("a.narrafirma-home-page-section-link", {href: 'javascript:narrafirma_openPage("page_sensemaking")', title: "Go to sensemaking section", tabindex: 0}, "Sensemaking"),
-        m("a.narrafirma-home-page-section-link", {href: 'javascript:narrafirma_openPage("page_intervention")', title: "Go to intervention section", tabindex: 0}, "Intervention"),
+        m("a.narrafirma-home-page-section-link", {href: 'javascript:narrafirma_openPage("page_planning")', title: "Go to planning section", tabindex: 0}, "Planning"), m("span", "| "),
+        m("a.narrafirma-home-page-section-link", {href: 'javascript:narrafirma_openPage("page_collection")', title: "Go to collection section", tabindex: 0}, "Collection"),  m("span", "| "),
+        m("a.narrafirma-home-page-section-link", {href: 'javascript:narrafirma_openPage("page_catalysis")', title: "Go to catalysis section", tabindex: 0}, "Catalysis"), m("span", "| "),
+        m("a.narrafirma-home-page-section-link", {href: 'javascript:narrafirma_openPage("page_sensemaking")', title: "Go to sensemaking section", tabindex: 0}, "Sensemaking"), m("span", "| "),
+        m("a.narrafirma-home-page-section-link", {href: 'javascript:narrafirma_openPage("page_intervention")', title: "Go to intervention section", tabindex: 0}, "Intervention"), m("span", "| "),
         m("a.narrafirma-home-page-section-link", {href: 'javascript:narrafirma_openPage("page_return")', title: "Go to return section", tabindex: 0}, "Return"),
 
     ];
