@@ -9,7 +9,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Requires at least: 4.3.1
 Tested up to: 5.8.2
 Stable tag: trunk
-Version: 1.5.8
+Version: 1.5.9
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -105,6 +105,22 @@ We strongly suggest that you set up any web site on which you intend to install 
 12. Here the NarraFirma user is reflecting on the entire project, to learn from it and to keep good records for the future.
 
 == Changelog ==
+
+= 1.5.9 =
+
+Added: Brief introductory text (with link to WWS book) to home page
+Added: Section links to home page (on right, below story collections table, for better accessibility) 
+Changed: Moved page descriptions from popup tooltips to texts below page links; shown by default but can be turned off in project admin options
+Changed: Improved page descriptions to explain what each page is for and why you would want to use it
+Changed: Section pages (Planning, Collection, etc) now start with graphical icons that echo the home-page diagram (better continuity)
+Changed: Hid upper-right page navigation buttons (previous, next) in situations in which they had been disabled (gray)
+Changed: Made all links have a highlighted box when hovered over (for better accessibility)
+Changed: Consolidated all color designations in main CSS file into CSS vars (to make it easier to tweak colors)
+Changed: Tweaked some colors to make interface a bit calmer
+Changed: Removed hard-coded copy of CSS definitions for SVG-PNG conversion (now read directly from DOM); should reduce errors while changing CSS
+Changed: Default font from "Arial, Helvetica" to "Helvetica, Arial" (looks better?)
+Fixed: "Explore patterns" page now handles legacy case where observation exists but "remarkable" flag is not set
+Fixed: Bug where version number was not updated in place that makes correct version appear on Project admininstration page
 
 = 1.5.8 =
 
@@ -536,6 +552,9 @@ loading application, getting user information, or retrieving project data.
 change logs, see the [GitHub repository](https://github.com/pdfernhout/narrafirma).
 
 == Upgrade Notice ==
+
+= 1.5.9 =
+This minor "clarity" upgrade makes various small improvements to page descriptions, links, buttons, colors, and fonts. (Note: If you do not like the new page descriptions, you can hide them on the project options screen.)
 
 = 1.5.8 =
 This minor but (yes, again) critical upgrade fixes a bug where the buttons to add questions to a newly created story form did not work. It also adds CSV import for annotations.

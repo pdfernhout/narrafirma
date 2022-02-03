@@ -162,6 +162,22 @@ M When import story form, hundreds of triples can be generated which take minute
 
 ==== DONE
 
+--- Release 1.5.9
+
+Added: Brief introductory text (with link to WWS book) to home page
+Added: Section links to home page (on right, below story collections table, for better accessibility) 
+Changed: Moved page descriptions from popup tooltips to texts below page links; shown by default but can be turned off in project admin options
+Changed: Improved page descriptions to explain what each page is for and why you would want to use it
+Changed: Section pages (Planning, Collection, etc) now start with graphical icons that echo the home-page diagram (better continuity)
+Changed: Hid upper-right page navigation buttons (previous, next) in situations in which they had been disabled (gray)
+Changed: Made all links have a highlighted box when hovered over (for better accessibility)
+Changed: Consolidated all color designations in main CSS file into CSS vars (to make it easier to tweak colors)
+Changed: Tweaked some colors to make interface a bit calmer
+Changed: Removed hard-coded copy of CSS definitions for SVG-PNG conversion (now read directly from DOM); should reduce errors while changing CSS
+Changed: Default font from "Arial, Helvetica" to "Helvetica, Arial" (looks better?)
+Fixed: "Explore patterns" page now handles legacy case where observation exists but "remarkable" flag is not set
+Fixed: Bug where version number was not updated in place that makes correct version appear on Project admininstration page
+
 --- Release 1.5.8
 
 Added: Bulk annotation import from CSV file
