@@ -180,6 +180,10 @@ select[multiple] { /* only used in story browser */
     height: 140px;
 }
 
+a:focus, a:hover {
+    outline: 2px solid var(--color-button-hover);
+}
+
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Login page ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 .narrafirma-login-welcome-and-intro {
@@ -447,8 +451,8 @@ input[type="submit"].narrafirma-login-button:hover {
 }
 
 .narrafirma-home-page-section-link {
-    display: table;
-    margin-right: 0.2em;
+    display: inline;
+    margin: 0.2em 0.2em 0 0;
 }
 
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Buttons bottom of page (and elsewhere) ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
