@@ -9,7 +9,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Requires at least: 4.3.1
 Tested up to: 5.9
 Stable tag: trunk
-Version: 1.5.9
+Version: 1.5.10
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -105,6 +105,10 @@ We strongly suggest that you set up any web site on which you intend to install 
 12. Here the NarraFirma user is reflecting on the entire project, to learn from it and to keep good records for the future.
 
 == Changelog ==
+
+= 1.5.10 =
+
+Fixed: Bug where write-in answers were missing from the display of submitted stories and answers (which survey-takers can use to save a local copy of what they said).
 
 = 1.5.9 =
 
@@ -552,6 +556,9 @@ loading application, getting user information, or retrieving project data.
 change logs, see the [GitHub repository](https://github.com/pdfernhout/narrafirma).
 
 == Upgrade Notice ==
+
+= 1.5.10 =
+This minor upgrade fixes a small bug in which write-in survey answers were being left out of the "this is what you said" copy-and-paste display.
 
 = 1.5.9 =
 This minor "clarity" upgrade makes various small improvements to page descriptions, links, buttons, colors, and fonts. (Note: If you do not like the new page descriptions, you can hide them on the project options screen.)

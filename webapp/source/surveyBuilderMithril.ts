@@ -849,6 +849,10 @@ export function buildSurveyForm(surveyDiv, storyForm, doneCallback, surveyOption
                         parts.push(response);
                     }
                 }
+                if (writeInTag + question.id in story) {
+                    const writeinValue = story[writeInTag + question.id];
+                    parts.push(writeinValue);
+                }
             });
             parts.push("");
         });
@@ -865,6 +869,10 @@ export function buildSurveyForm(surveyDiv, storyForm, doneCallback, surveyOption
                 } else {
                     parts.push(response);
                 }
+            }
+            if (writeInTag + question.id in surveyResult.participantData) {
+                const writeinValue = surveyResult.participantData[writeInTag + question.id];
+                parts.push(writeinValue);
             }
         });
         const surveyResultPaneHeader = tr(storyForm.surveyResultPaneHeader || defaultFormTexts.surveyResultPaneHeader);
