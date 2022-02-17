@@ -10,6 +10,27 @@ const serverURL = "/api/pointrel20150417";
 
 // TODO: Rethink this as a more general way to watch models within the project (so, with arbitrary object IDs, not just the project ID)
 
+function stringUpTo(aString: string, upToWhat: string) {
+    if (upToWhat !== "") {
+        return aString.split(upToWhat)[0];
+    } else {
+        return aString;
+    }
+}
+
+function stringBeyond(aString: string, beyondWhat: string) {
+    if (beyondWhat !== "") {
+        return aString.split(beyondWhat).pop();
+    } else {
+        return aString;
+    }
+}
+
+function stringBetween(wholeString: string, startString: string, endString: string) {
+    if (wholeString.indexOf(startString) < 0 || wholeString.indexOf(endString) < 0) return "";
+    return stringUpTo(stringBeyond(wholeString.trim(), startString), endString);
+}
+
 class Project {
 
     journalIdentifier: string;
@@ -195,12 +216,19 @@ class Project {
     }
     
     private collectAllQuestionsForQuestionList(questionListName: string) {
+        const shortNameKey = stringBetween(questionListName, "project_", "QuestionsList") + "Question_shortName";
         const questionIdentifiers: Array<string> = this.getListForField(questionListName);
         const questions = [];
+
         questionIdentifiers.forEach((questionIdentifier) => {
             const question = this.tripleStore.makeObject(questionIdentifier, true);
-            if (!question.id) question.id = questionIdentifier;
-            questions.push(question);
+            // if a question does not have a short name, pass over it (it may be an empty question they entered by mistake)
+            const shortName = question[shortNameKey];
+            if (shortName) {
+                // fill in id if missing
+                if (!question.id) question.id = questionIdentifier;
+                questions.push(question);
+            }
         });
         return questions;
     }

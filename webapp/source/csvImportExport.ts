@@ -2069,7 +2069,9 @@ function addCSVOutputLine(output, line, delimiter) {
         } else {
             output += delimiter;
         }
-        if (typeof item == 'number') {
+        if (item === undefined) { 
+            itemToSave = "";
+        } else if (typeof item == 'number') {
             itemToSave = "" + item;
         } else if (typeof item == "boolean") {
             itemToSave = item ? "true" : "false";
