@@ -162,6 +162,10 @@ M When import story form, hundreds of triples can be generated which take minute
 
 ==== DONE
 
+--- Release 1.5.11
+
+Fixed: Improved error handling for empty (no-name) questions. Was choking on them during export.
+
 --- Release 1.5.10
 
 Fixed: Bug where write-in answers were missing from the display of submitted stories and answers to questions (for survey-takers to save a local copy of what they said).
