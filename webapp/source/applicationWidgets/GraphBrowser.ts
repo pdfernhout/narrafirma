@@ -6,6 +6,7 @@ import valuePathResolver = require("../panelBuilder/valuePathResolver");
 import Project = require("../Project");
 import Globals = require("../Globals");
 import m = require("mithril");
+import { GraphHolder } from "../GraphHolder";
 
 "use strict";
 

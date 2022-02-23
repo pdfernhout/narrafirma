@@ -17,6 +17,8 @@ import toaster = require("../panelBuilder/toaster");
 import canvg = require("canvgModule");
 import jszip = require("jszip");
 import saveAs = require("FileSaver");
+import { GraphHolder } from "../GraphHolder";
+import { Story } from "../surveyCollection";
 
 "use strict";
 
@@ -169,7 +171,7 @@ class PatternExplorer {
 
     graphHolder: GraphHolder;
     
-    modelForStoryGrid = {storiesSelectedInGraph: []};
+    modelForStoryGrid: {storiesSelectedInGraph: Story[]} = {storiesSelectedInGraph: []};
     storyGridFieldSpecification: any = null;
     storyGrid: GridWithItemPanel = null;
 
@@ -1159,7 +1161,7 @@ class PatternExplorer {
         this.storyGrid.updateData();
     }
 
-    updateStoriesPane(stories) {
+    updateStoriesPane(stories: Story[]) {
         this.modelForStoryGrid.storiesSelectedInGraph = stories;
         this.storyGrid.updateData();
     }
@@ -1670,7 +1672,7 @@ class PatternExplorer {
         this.showStoriesInSeparateWindow(sampledStories, "sampled from graph selection", "Sampled stories");
     }
 
-    showStoriesInSeparateWindow(stories, sayAboutSelection, windowTitle) {
+    showStoriesInSeparateWindow(stories: Story[], sayAboutSelection, windowTitle) {
         let i;
         let text;
         const selectionName = this.nameForCurrentGraphSelection();
@@ -1733,16 +1735,16 @@ class PatternExplorer {
         // story names first
         text = "Names of stories (" + stories.length + ") " + sayAboutSelection + " - " + selectionName + "\n\n";
         for (let i = 0; i < stories.length; i++) {
-            text += stories[i].indexInStoryCollection() + ". " + stories[i].model.storyName + textWithAnswersToSelectedQuestions(stories[i]) + "\n";
+            text += stories[i].indexInStoryCollection() + ". " + stories[i].storyName() + textWithAnswersToSelectedQuestions(stories[i]) + "\n";
         }
 
         // then full story texts
         text += "\nStories (" + stories.length + ") " + sayAboutSelection + " - " + selectionName + "\n";
         const header = "\n----------------------------------------------------------------------------------------------------\n";
         for (let i = 0; i < stories.length; i++) {
-            text += "\n" + stories[i].indexInStoryCollection() + ". " + stories[i].model.storyName + textWithAnswersToSelectedQuestions(stories[i]);
+            text += "\n" + stories[i].indexInStoryCollection() + ". " + stories[i].storyName() + textWithAnswersToSelectedQuestions(stories[i]);
             if (this.numStoryCollectionsIncludedInReport > 1) text += "\nStory collection: " + stories[i].storyCollectionIdentifier();
-            text += header + stories[i].model.storyText + "\n";
+            text += header + stories[i].storyText() + "\n";
         }
 
         dialogSupport.openTextEditorDialog(text, windowTitle, "Close", this.closeCopyStoriesDialogClicked.bind(this), false);

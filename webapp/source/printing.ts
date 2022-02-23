@@ -14,6 +14,7 @@ import versions = require("./versions");
 import translate = require("./panelBuilder/translate");
 import jszip = require("jszip");
 import saveAs = require("FileSaver");
+import { GraphHolder } from "./GraphHolder";
 
 "use strict";
 

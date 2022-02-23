@@ -4,6 +4,7 @@ import m = require("mithril");
 import calculateStatistics = require("../calculateStatistics");
 import _ = require("lodash");
 import Globals = require("../Globals");
+import { GraphHolder } from "../GraphHolder";
 
 "use strict";
 
@@ -1180,10 +1181,10 @@ export function d3HistogramChartForDataIntegrity(graphHolder: GraphHolder, scale
         const storiesByParticipant = {};
         for (let storyIndex in stories) {
             const story = stories[storyIndex];
-            if (storiesByParticipant[story.model.participantID]) {
-                storiesByParticipant[story.model.participantID].push(story);
+            if (storiesByParticipant[story.participantID()]) {
+                storiesByParticipant[story.participantID()].push(story);
             } else {
-                storiesByParticipant[story.model.participantID] = [story];
+                storiesByParticipant[story.participantID()] = [story];
             }
         }
         for (let participantID in storiesByParticipant) {

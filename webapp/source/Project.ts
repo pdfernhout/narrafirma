@@ -617,7 +617,7 @@ class Project {
     }
 
     allStoriesInProject() {
-        let result = [];
+        let result: surveyCollection.Story[] = [];
         const storyCollectionsIdentifier = this.tripleStore.queryLatestC(this.projectIdentifier, "project_storyCollections");
         const storyCollectionItems = this.tripleStore.getListForSetIdentifier(storyCollectionsIdentifier);
         if (storyCollectionItems.length === 0) return [];
@@ -984,7 +984,7 @@ class Project {
         return this.languageQuestion(languages);
     }
 
-    languagesForListOfStories(stories) {
+    languagesForListOfStories(stories: surveyCollection.Story[]) {
         const languages = [];
         stories.forEach((story) => { 
             const language = story.storyLanguage();

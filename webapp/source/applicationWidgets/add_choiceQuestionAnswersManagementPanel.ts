@@ -128,13 +128,13 @@ function add_choiceQuestionAnswersManagementPanel(panelBuilder: PanelBuilder, mo
             if (value) {
                 if (typeof value == "string") { // select, radiobuttons - value is string
                     if (value === answer) {
-                        project.tripleStore.addTriple(story.model.storyID, questionID, newAnswer);
+                        project.tripleStore.addTriple(story.storyID(), questionID, newAnswer);
                     }
                 } else { // checkboxes - value is dictionary
                     if (value.hasOwnProperty(answer)) {
                         delete value[answer];
                         if (newAnswer) value[newAnswer] = true;
-                        project.tripleStore.addTriple(story.model.storyID, questionID, value);
+                        project.tripleStore.addTriple(story.storyID(), questionID, value);
                     }
                 }
             }

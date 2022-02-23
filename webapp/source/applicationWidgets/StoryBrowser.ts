@@ -34,7 +34,7 @@ function isMatch(story: surveyCollection.Story, questionChoice, selectedAnswerCh
     return !!selectedAnswerChoices[questionAnswer];
 }
 
-function optionsFromQuestion(question, stories) {
+function optionsFromQuestion(question, stories: surveyCollection.Story[]) {
     // TODO: Translate text for options, at least booleans?
     const options = [];
     if (!question) return options;

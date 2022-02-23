@@ -31,7 +31,7 @@ function setStoryField(storyID, fieldName, value) {
 
 // A Story class where data can be overriden
 export class Story {
-    constructor(public model) {
+    constructor(private model) {
     }
     
     storyID() {
@@ -44,6 +44,10 @@ export class Story {
      
     questionnaire() {
         return this.model.questionnaire;
+    }
+
+    participantID() {
+        return this.model.participantID;
     }
     
     ignore(newValue = undefined) {
@@ -215,7 +219,7 @@ export function getStoriesForStoryCollection(storyCollectionIdentifier, includeI
             console.log("Problem processing survey result", message, e);
         }
     });
-
+    
     return result;
 }
 

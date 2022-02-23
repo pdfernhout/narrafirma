@@ -81,7 +81,7 @@ function add_shortNameQuestionConfigurationPanel(panelBuilder: PanelBuilder, mod
                 // the stored value will never be referenced again (unless the question name is changed back to what it was)
                 const value = story.fieldValue(oldQuestionID);
                 story.fieldValue(newQuestionID, value);
-                project.tripleStore.addTriple(story.model.storyID, newQuestionID, value);
+                project.tripleStore.addTriple(story.storyID(), newQuestionID, value);
             });
             question.annotationQuestion_shortName = newShortName;
             project.tripleStore.addTriple(model, "annotationQuestion_shortName", question.annotationQuestion_shortName);

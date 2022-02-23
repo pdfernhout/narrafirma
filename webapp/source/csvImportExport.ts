@@ -65,12 +65,20 @@ const observationNoteIdentifier = "[note]";
 // reading CSV - in general
 //------------------------------------------------------------------------------------------------------------------------------------------
 
+interface CSVItem {
+    story: surveyCollection.Story;
+    annotations: {};
+    Type: string;
+    Answers: string[];
+    About: string;
+}
+
 function processCSVContents(contents, callbackForItem) {
 
     const delimiter = Globals.clientState().csvDelimiter();
     const csv = d3.dsv(delimiter, "text/plain");
     const rows = csv.parseRows(contents);
-    const items = [];
+    const items: CSVItem[] = [];
     let header = null;
     
     for (let rowIndex = 0; rowIndex < rows.length; rowIndex++) {
@@ -973,7 +981,7 @@ function processCSVContentsForAnnotations(contents, saveAnnotations, writeLog, q
         const annotationStoryName = row[0];
         const annotationStoryText = row[1];
         const matchingStories = stories.filter(function(story) {
-            return story.model.storyName === annotationStoryName && story.model.storyText === annotationStoryText;
+            return story.storyName() === annotationStoryName && story.storyText() === annotationStoryText;
         });
         const storyTextForMessage = (annotationStoryText.length > 100) ? annotationStoryText.slice(0, 100) + " ..." : annotationStoryText;
         if (matchingStories.length == 0) {
@@ -1081,10 +1089,10 @@ function processCSVContentsForAnnotations(contents, saveAnnotations, writeLog, q
             const annotations = item.annotations;
             const questionNames = Object.keys(annotations);
             questionNames.forEach((questionName) => {
-                if (story.model.storyID && questionName && (annotations[questionName] !== undefined)) {
-                    changes.push({id: story.model.storyID, field: "A_" + questionName, value: annotations[questionName]});
+                if (story.storyID() && questionName && (annotations[questionName] !== undefined)) {
+                    changes.push({id: story.storyID(), field: "A_" + questionName, value: annotations[questionName]});
                 } else {
-                    log('INFO||For the story "' + story.model.storyName + '", there is no answer for the question "' + questionName + '".'); 
+                    log('INFO||For the story "' + story.storyName() + '", there is no answer for the question "' + questionName + '".'); 
                 }
             });
         });

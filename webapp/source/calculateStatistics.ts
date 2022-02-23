@@ -270,7 +270,7 @@ function collectValuesForTwoChoices(stories: surveyCollection.Story[], field1, f
     return result;
 }
 
-export function calculateStatisticsForPattern(pattern, stories, minimumStoryCountRequiredForTest, unansweredText, includeNAValues, lumpingCommands, progressUpdater, patternNumber, numPatterns, howOftenToUpdateProgressMessage) {
+export function calculateStatisticsForPattern(pattern, stories: surveyCollection.Story[], minimumStoryCountRequiredForTest, unansweredText, includeNAValues, lumpingCommands, progressUpdater, patternNumber, numPatterns, howOftenToUpdateProgressMessage) {
     const graphType = pattern.graphType;
     let statistics = null;
 
