@@ -162,6 +162,11 @@ M When import story form, hundreds of triples can be generated which take minute
 
 ==== DONE
 
+--- Release 1.5.12
+
+Fixed: Bug where the texts of edited stories did not appear correctly in the "Show story texts for copying" popup window on the "Explore Patterns" page.
+Fixed: Bug where annotations might not match existing stories correctly during import and bulk changes.
+
 --- Release 1.5.11
 
 Fixed: Improved error handling for empty (no-name) questions. Was choking on them during export.

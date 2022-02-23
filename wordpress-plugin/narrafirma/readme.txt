@@ -7,9 +7,9 @@ Author URI: http://www.cfkurtz.com
 Author: Cynthia Kurtz and Paul Fernhout
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=DGVVDT2D49QA8
 Requires at least: 4.3.1
-Tested up to: 5.9
+Tested up to: 5.9.1
 Stable tag: trunk
-Version: 1.5.11
+Version: 1.5.12
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -105,6 +105,11 @@ We strongly suggest that you set up any web site on which you intend to install 
 12. Here the NarraFirma user is reflecting on the entire project, to learn from it and to keep good records for the future.
 
 == Changelog ==
+
+= 1.5.12 =
+
+Fixed: Bug where the texts of edited stories did not appear correctly in the "Show story texts for copying" popup window on the "Explore Patterns" page.
+Fixed: Bug where annotations might not match existing stories correctly during import and bulk changes.
 
 = 1.5.11 = 
 
@@ -560,6 +565,9 @@ loading application, getting user information, or retrieving project data.
 change logs, see the [GitHub repository](https://github.com/pdfernhout/narrafirma).
 
 == Upgrade Notice ==
+
+= 1.5.12 =
+This minor upgrade fixes two bugs: (a) the texts of edited stories did not appear correctly in the "Show story texts for copying" popup on the "Explore Patterns" page, and (b) annotation import and bulk change might not work correctly for edited stories.
 
 = 1.5.11 =
 This tiny upgrade improves error handling for empty (no-name) questions. The application was choking on them during export.
