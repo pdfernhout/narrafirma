@@ -51,7 +51,7 @@ function add_storyFormQuestionsChooser(panelBuilder: PanelBuilder, model, fieldS
     // create mithril options for list box with question lookup ids
     const questionChoicesInFormSelectOptions = [];
     questionChoicesInForm.forEach((questionChoice, index) => {
-        questionChoicesInFormSelectOptions.push(m("option", {value: questionChoice.id, selected: undefined}, questionChoice[questionCategory + "Question"]));
+        questionChoicesInFormSelectOptions.push(m("option", {value: questionChoice.id, selected: undefined}, questionChoice[questionCategory + "Question"].trim()));
     });
 
     /////////////////// right side - questions available to choose
@@ -72,7 +72,7 @@ function add_storyFormQuestionsChooser(panelBuilder: PanelBuilder, model, fieldS
     createdQuestions.forEach((createdQuestion) => {
         let questionIsAleadyInForm = false;
         questionChoicesInForm.forEach((questionChoice) => {
-            if (questionChoice[questionCategory + "Question"] === createdQuestion[questionCategory + "Question_shortName"]) {
+            if (questionChoice[questionCategory + "Question"].trim() === createdQuestion[questionCategory + "Question_shortName"].trim()) {
                 questionIsAleadyInForm = true;
                 return;
             }
@@ -85,7 +85,7 @@ function add_storyFormQuestionsChooser(panelBuilder: PanelBuilder, model, fieldS
     // create mithril options for list box with question lookup ids
     const createdQuestionsNotInFormSelectOptions = [];
     createdQuestionsNotInForm.forEach((question) => {
-        let name = question[questionCategory + "Question_shortName"];
+        let name = question[questionCategory + "Question_shortName"].trim();
         createdQuestionsNotInFormSelectOptions.push(m("option", {value: question.id, selected: undefined}, name));
     });
 
@@ -161,11 +161,11 @@ function add_storyFormQuestionsChooser(panelBuilder: PanelBuilder, model, fieldS
 
         const template = {"order": newOrder};
         if (questionCategory === "eliciting") {
-            template["elicitingQuestion"] = selectedOption.text;
+            template["elicitingQuestion"] = selectedOption.text.trim();
         } else if (questionCategory === "story") {
-            template["storyQuestion"] = selectedOption.text;
+            template["storyQuestion"] = selectedOption.text.trim();
         } else if (questionCategory === "participant") {
-            template["participantQuestion"] = selectedOption.text;
+            template["participantQuestion"] = selectedOption.text.trim();
         }
         const itemClassName = fieldSpecification.displayConfiguration + "QuestionChoice";
 
@@ -176,7 +176,7 @@ function add_storyFormQuestionsChooser(panelBuilder: PanelBuilder, model, fieldS
         const element = <HTMLSelectElement>document.getElementById(questionChoicesSelectBoxID);
         if (!element || element.selectedIndex < 0) return;
         const selectedOption = element.options[element.selectedIndex];
-        project.tripleStore.deleteSetItem(questionChoicesSetID, selectedOption.value);
+        project.tripleStore.deleteSetItem(questionChoicesSetID, selectedOption.value.trim());
     }
 
     const columnTDs = [];
