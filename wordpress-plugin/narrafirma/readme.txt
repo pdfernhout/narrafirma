@@ -9,7 +9,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Requires at least: 4.3.1
 Tested up to: 5.9.1
 Stable tag: trunk
-Version: 1.5.12
+Version: 1.5.13
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -105,6 +105,11 @@ We strongly suggest that you set up any web site on which you intend to install 
 12. Here the NarraFirma user is reflecting on the entire project, to learn from it and to keep good records for the future.
 
 == Changelog ==
+
+= 1.5.13 =
+
+Fixed: Bug where choose-questions-for-story-form widget was not matching up questions correctly if question short names had extra (leading or trailing) blank spaces. (Now any extra blank spaces are trimmed off.)
+Fixed: Bug where extra (empty) lines in choice-question available-answers lists were creating malformed survey HTML, causing the error "Something went wrong loading the survey questionnaire from the server." (Blank lines are now being trimmed out correctly.) 
 
 = 1.5.12 =
 
@@ -565,6 +570,9 @@ loading application, getting user information, or retrieving project data.
 change logs, see the [GitHub repository](https://github.com/pdfernhout/narrafirma).
 
 == Upgrade Notice ==
+
+= 1.5.13 =
+This minor upgrade fixes two tiny bugs you might have run into if you had extra (blank) leading or trailing spaces in your question short names, or if you had extra (empty) lines in your available-answers lists. NF now deals more elegantly with both situations.
 
 = 1.5.12 =
 This minor upgrade fixes two bugs: (a) the texts of edited stories did not appear correctly in the "Show story texts for copying" popup on the "Explore Patterns" page, and (b) annotation import and bulk change might not work correctly for edited stories.

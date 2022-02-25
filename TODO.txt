@@ -162,6 +162,11 @@ M When import story form, hundreds of triples can be generated which take minute
 
 ==== DONE
 
+--- Release 1.5.13
+
+Fixed: Bug where choose-questions-for-story-form widget was not matching up questions correctly if question short names had extra (leading or trailing) blank spaces. (Now any extra blank spaces are trimmed off.)
+Fixed: Bug where extra (empty) lines in choice-question available-answers lists were creating malformed survey HTML, causing the error "Something went wrong loading the survey questionnaire from the server." (Blank lines are now being trimmed out correctly.) 
+
 --- Release 1.5.12
 
 Fixed: Bug where the texts of edited stories did not appear correctly in the "Show story texts for copying" popup window on the "Explore Patterns" page.
