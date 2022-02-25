@@ -248,14 +248,14 @@ export function convertEditorQuestions(editorQuestions, prefixQPA) {
         if (optionsString) {
             // TODO: Improve option handling so can have standard IDs for options
             const splitOptions = optionsString.split("\n");
-            options = splitOptions.map(function(option) { if (option.trim()) return option.trim(); })
+            options = splitOptions.filter(function(option) { if (option.trim()) return option.trim(); })
         }
 
         let optionImageLinks = [];
         const optionImageLinksString = question[keyPrefix + "optionImageLinks"];
         if (optionImageLinksString) {
             const splitOptionImageLinks = optionImageLinksString.split("\n");
-            optionImageLinks = splitOptionImageLinks.map(function(link) { if (link.trim()) return link.trim(); })
+            optionImageLinks = splitOptionImageLinks.filter(function(link) { if (link.trim()) return link.trim(); })
         }
         const optionImagesWidth = question[keyPrefix + "optionImagesWidth"];
 
@@ -294,7 +294,7 @@ export function convertEditorQuestions(editorQuestions, prefixQPA) {
         const importOptionsString = question[keyPrefix + "import_answerNames"];
         if (importOptionsString && typeof importOptionsString === "string") {
             const splitImportOptions = importOptionsString.split("\n");
-            splitImportOptions.map(function(option) { if (option.trim()) importOptions.push(option.trim()); })
+            splitImportOptions.filter(function(option) { if (option.trim()) importOptions.push(option.trim()); })
         } else {
             importOptions = question[keyPrefix + "import_answerNames"];
         }
