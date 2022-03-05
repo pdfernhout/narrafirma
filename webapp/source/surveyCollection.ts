@@ -207,7 +207,17 @@ export function getStoriesForStoryCollection(storyCollectionIdentifier, includeI
                 }
 
                 // Add some fields for displaying information
-                story.questionnaire = surveyResult.questionnaire;
+                // note: we must check both field names (questionnaire and storyForm)
+                // because I stupidly changed "questionnaire" to "storyForm" 
+                // without realizing I was messing up references in the data;
+                // I put it back later, but either name could be in legacy data
+                if (surveyResult.questionnaire) {
+                    story.questionnaire = surveyResult.questionnaire;
+                } else if (surveyResult.storyForm) {
+                    story.questionnaire = surveyResult.storyForm;
+                } else {
+                    console.log("ERROR: story has no story form reference.")
+                }
                 story.indexInStoryCollection = ++numStoriesAddedForCollection;
                 story.storyCollectionIdentifier = storyCollectionIdentifier;
                 const wrappedStory = new Story(story);

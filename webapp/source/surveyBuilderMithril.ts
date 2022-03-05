@@ -614,7 +614,7 @@ export function buildSurveyForm(surveyDiv, storyForm, doneCallback, surveyOption
     const surveyResult = {
         __type: "org.workingwithstories.storyFormResponse",
         // TODO: Think about whether to include entire storyForm or something else perhaps
-        storyForm: storyForm,
+        questionnaire: storyForm,
         responseID: generateRandomUuid("storyFormResponse"),
         stories: [],
         language: currentLanguage,

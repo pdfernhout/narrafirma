@@ -162,6 +162,10 @@ M When import story form, hundreds of triples can be generated which take minute
 
 ==== DONE
 
+--- Release 1.5.14
+
+Fixed: Bug in printing story cards where story-form question-answers were not appearing.
+
 --- Release 1.5.13
 
 Fixed: Bug where choose-questions-for-story-form widget was not matching up questions correctly if question short names had extra (leading or trailing) blank spaces. (Now any extra blank spaces are trimmed off.)
