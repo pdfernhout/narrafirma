@@ -9,7 +9,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Requires at least: 4.3.1
 Tested up to: 5.9.1
 Stable tag: trunk
-Version: 1.5.14
+Version: 1.5.15
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -105,6 +105,10 @@ We strongly suggest that you set up any web site on which you intend to install 
 12. Here the NarraFirma user is reflecting on the entire project, to learn from it and to keep good records for the future.
 
 == Changelog ==
+
+= 1.5.15 =
+
+Changed: Dealt more gracefully with situation in which multi-choice question (checkboxes) was changed to single-choice question (select) after data was collected. Was choking on wrong data type during story export.
 
 = 1.5.14 =
 
@@ -574,6 +578,9 @@ loading application, getting user information, or retrieving project data.
 change logs, see the [GitHub repository](https://github.com/pdfernhout/narrafirma).
 
 == Upgrade Notice ==
+
+= 1.5.15 =
+This minor upgrade deals more gracefully with a situation in which a multi-choice question (checkboxes) was changed to a single-choice question (select) after data was collected.
 
 = 1.5.14 =
 This minor upgrade fixes a bug in printing story cards where story-form question-answers were not appearing.

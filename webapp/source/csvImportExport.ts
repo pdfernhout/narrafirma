@@ -2492,7 +2492,23 @@ export function exportStoryCollection() {
                    outputLine.push(value[option] ? option : "");   
                });
             } else {
-                outputLine.push(value);
+                // deal with pathological case where object data exists for select question (it should not)
+                // this could happen if user changed checkboxes question to select question after adding data
+                // there should be only one true value in the dictionary, so find it, then output that key
+                if (question.displayType === "select" && typeof value === "object") {
+                    const keys = Object.keys(value);
+                    for (let keyIndex = 0; keyIndex < keys.length; keyIndex++) {
+                        const thisKey = keys[keyIndex];
+                        const thisValue = value[thisKey];
+                        if (thisValue) {
+                            outputLine.push(thisKey);
+                            console.log("WARNING: Found multi-choice answer for single-choice question. Writing first answer marked true.", value, question);
+                            break;
+                        }
+                    }
+                } else {
+                    outputLine.push(value);
+                }
             }
             if (question.writeInTextBoxLabel) {
                 const writeInValue = story.fieldValueWriteIn(question.id);

@@ -162,6 +162,10 @@ M When import story form, hundreds of triples can be generated which take minute
 
 ==== DONE
 
+--- Release 1.5.15
+
+Changed: Dealt more gracefully with situation in which multi-choice question (checkboxes) was changed to single-choice question (select) after data was collected. Was choking on wrong data type during story export.
+
 --- Release 1.5.14
 
 Fixed: Bug in printing story cards where story-form question-answers were not appearing.
