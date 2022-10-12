@@ -502,7 +502,7 @@ class PatternExplorer {
                     displayType: "grid",
                     displayConfiguration: "panel_addInterpretation",
                     displayName: "Interpretations",
-                    displayPrompt: "Enter at least two <strong>competing interpretations</strong> for the observation.",
+                    displayPrompt: "Enter at least two <strong>competing interpretations</strong> for this observation.",
                 }
             ]
         };

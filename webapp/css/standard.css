@@ -53,7 +53,7 @@ Special warning areas f88a57
     /* grids */
     --color-grid: white;
     --color-grid-border: black;
-    --color-grid-border-disabled: gray;
+    --color-grid-border-disabled: #dbd9d9;
     --color-grid-selected-even: #ffe9c4;
     --color-grid-selected-odd: #ffe9c4;
     --color-grid-unselected-even: white;
@@ -644,7 +644,7 @@ button:disabled {
 .questionExternal.narrafirma-question-type-filterNotice {
     background-color: var(--color-notice);
     margin-bottom: 0.2em;
-    padding: 0.2em 0.2em 0.2em 0.4em;
+    padding: 0.5em 0.5em 0.5em 1em;
     font-style: italic;
 }
 
@@ -996,21 +996,21 @@ textarea.narrafirma-translation-textbox {
 
 .narrafirma-griditempanel-divwithbutton-editing {
     background-color: var(--color-grid);
-    border: 1px solid var(--color-grid-border);
-    margin: 1em;
+    border: 4px groove var(--color-grid-border);
+    margin: 0.5em;
 }
 
 .narrafirma-griditempanel-divwithbutton-viewing {
     background-color: var(--color-grid);
     color: var(--color-text-disabled);
-	margin: 1em;
-	border: 1px solid var(--color-grid-border-disabled);
+	margin: 0.5em;
+	border: 4px groove var(--color-grid-border-disabled);
 }
 
 button.narrafirma-griditempanel-close-button {
     display: block;
-    width: 10em;
-    margin: 0.6em 1em 0 auto;
+    padding: 0.4em 2em 0.4em 2em;
+    margin: 0.5em auto 0.25em auto;
 }
 
 .narrafirma-griditempanel-editing {
