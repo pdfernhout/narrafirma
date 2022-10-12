@@ -38,7 +38,7 @@ const Navigation: any = {
             m("span[id=narrafirma-project-name]", Globals.project().projectNameOrNickname()),
             m("span[id=narrafirma-breadcrumbs]", buildBreadcrumbs(controller)),
             Globals.project().readOnly ? m("span[id=narrafirma-read-only]", 
-                {title: "Project is read-only for this user. Local changes can be made, but they will not be saved on the server and will be lost if the page is reloaded."}, 
+                {title: "You have read-only access to this project. You can make local changes, but they will not be saved to the server and will be lost when you reload the page."}, 
                 "Read only") : [],
             // These next links float right and so are added in reverse order
             userIdentifier === "anonymous" ?

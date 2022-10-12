@@ -406,7 +406,9 @@ class Application {
                     Globals.project().currentUserHasAdminAccess = project.admin;
                     // this.panelBuilder.readOnly = isReadOnly;
                     if (this.readOnly) {
-                        toaster.toast("Project is read-only for this user");
+                        toaster.toast(`You have read-only access to this project. 
+                            You can make local changes, but they will not be saved to the server 
+                            and will be lost when you reload the page.`, "Message", 5000);
                         Globals.project().pointrelClient.suspendOutgoingMessages(true);
                     }
                 });
