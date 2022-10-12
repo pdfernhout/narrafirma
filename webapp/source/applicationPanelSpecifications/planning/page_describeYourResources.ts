@@ -3,7 +3,7 @@ import kludgeForUseStrict = require("../../kludgeForUseStrict");
 
 const panel: Panel = {
     id: "page_describeYourResources",
-    pageExplanation: "Answer questions about your resources. Think about how they affect your plans. (Your answers will be used to recommend options on other pages.)",
+    pageExplanation: "Answer questions about your resources. Your answers will drive recommendations that appear on other pages.",
     pageCategories: "plan",
     displayName: "Describe your resources",
     

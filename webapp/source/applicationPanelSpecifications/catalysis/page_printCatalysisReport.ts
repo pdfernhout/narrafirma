@@ -5,9 +5,8 @@ import kludgeForUseStrict = require("../../kludgeForUseStrict");
 const panel: Panel = {
     id: "page_printCatalysisReport",
     displayName: "Print catalysis report",
-    pageExplanation: "Output your catalysis report so you can use it in the sensemaking phase of your project.",
+    pageExplanation: "Export your catalysis report in HTML format.",
     pageCategories: "output",
-    headerAbove: "Get Ready for Sensemaking",
     panelFields: [
         {
             id: "catalysisReportPrint_label",

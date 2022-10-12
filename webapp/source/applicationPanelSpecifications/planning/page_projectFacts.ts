@@ -4,16 +4,16 @@ import kludgeForUseStrict = require("../../kludgeForUseStrict");
 const panel: Panel = {
     id: "page_projectFacts",
     displayName: "Enter project facts",
-    pageExplanation: "Write down some basic information about your project: who is doing it, where, when, and why.",
+    pageExplanation: "Record basic information about your project.",
     pageCategories: "plan",
-    headerAbove: "Get Started",
+    headerAbove: "Orient",
     panelFields: [
         {
             id: "project_projectFacts",
             valueType: "none",
             displayType: "label",
-            displayPrompt: `You can use this page to enter some <strong>facts</strong> about your project.
-                For more information, click the Help link in the upper-right hand corner of the page.`
+            displayPrompt: `Use this page to enter some <strong>facts</strong> about your project.
+                For more information (on this or any other page), click the Help button in the upper-right hand corner of the page.`
         },
         {
             id: "project_title",

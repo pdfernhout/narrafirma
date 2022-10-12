@@ -25,7 +25,7 @@ function addExtraFieldSpecificationsForPageSpecification(pageID, pageSpecificati
         // TODO: Translate
         if (displayIconClass !== "homeButtonImage") {
             const sectionPageSpecification = _panelSpecificationCollection.getPageSpecificationForPageID(newPageID);
-            prompt += ": " + sectionPageSpecification.displayName;
+            prompt += sectionPageSpecification.displayName;
         }
         let iconPosition = "left";
         if (displayIconClass === "rightButtonImage") iconPosition = "right";
@@ -78,9 +78,8 @@ function addExtraFieldSpecificationsForPageSpecification(pageID, pageSpecificati
                 if (childPageSpecification && childPageSpecification.displayType === "page") {
                     let prompt = translate(childPageID + "::title", childPageSpecification.displayName);
                     const properties: any = { href: "javascript:narrafirma_openPage('" + childPageID + "')" }
-                    // properties.title = childPageSpecification.pageExplanation; // not easy to show/hide these later on, so just not using this anymore
-                    prompt = m("div.narrafirma-dashboard-page-link", m("a", properties, prompt));
-                    prompt = m("div.narrafirma-dashboard-page-div", [prompt, m("div.narrafirma-dashboard-page-link-explanation", childPageSpecification.pageExplanation)]);
+                    const explanationDiv = m("div.narrafirma-dashboard-page-link-explanation", childPageSpecification.pageExplanation);
+                    prompt = m("div.narrafirma-dashboard-page-link", [m("a", properties, prompt), explanationDiv]);
                     if (childPageSpecification.headerAbove) { 
                         prompt = [m("div.narrafirma-dashboard-header", childPageSpecification.headerAbove), prompt]; 
                     }
@@ -90,7 +89,6 @@ function addExtraFieldSpecificationsForPageSpecification(pageID, pageSpecificati
                         id: statusViewID,
                         valueType: "none",
                         displayType: "questionAnswer",
-                        // displayName: prompt,
                         displayPrompt: prompt,
                         displayConfiguration: childPageID + "_reminders"
                     };
@@ -102,16 +100,16 @@ function addExtraFieldSpecificationsForPageSpecification(pageID, pageSpecificati
         // Add button at bottom of each page to move to previous
         if (pageSpecification.previousPageID) {
             // TODO: Translate
-            addPageChangeButton(pageSpecification.previousPageID, "_previousPageButton", "Previous page", "leftButtonImage");
+            addPageChangeButton(pageSpecification.previousPageID, "_previousPageButton", "", "leftButtonImage");
         } else {
-            addPageChangeButton(_startPage, "_returnToDashboardButton", "Go to home page", "homeButtonImage");
+            addPageChangeButton(_startPage, "_returnToDashboardButton", "Home", "homeButtonImage");
         }
    
         // Add button at bottom of each page to move forward
         if (pageSpecification.nextPageID) {
-            addPageChangeButton(pageSpecification.nextPageID, "_nextPageButton", "Next page", "rightButtonImage");
+            addPageChangeButton(pageSpecification.nextPageID, "_nextPageButton", "", "rightButtonImage");
         } else {
-            addPageChangeButton(_startPage, "_returnToDashboardButton", "Go to home page", "homeButtonImage");
+            addPageChangeButton(_startPage, "_returnToDashboardButton", "Home", "homeButtonImage");
         }
     }
 }

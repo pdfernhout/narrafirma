@@ -4,7 +4,7 @@ import kludgeForUseStrict = require("../../kludgeForUseStrict");
 const panel: Panel = {
     id: "page_enterCollectionSessionRecords",
     displayName: "Enter story collection session records",
-    pageExplanation: "If you collected your stories in group sessions, answer some reflective questions about what happened and what you learned.",
+    pageExplanation: "Answer reflective questions about your story-sharing sessions.",
     pageCategories: "record",
     panelFields: [
         {

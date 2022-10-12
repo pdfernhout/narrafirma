@@ -5,7 +5,7 @@ import kludgeForUseStrict = require("../../kludgeForUseStrict");
 const panel: Panel = {
     id: "page_exportStories",
     displayName: "Export stories or story forms",
-    pageExplanation: "Save a story form or story collection to a CSV spreadsheet file for backup or for use outside of NarraFirma.",
+    pageExplanation: "Save a story form or collection to a spreadsheet file.",
     pageCategories: "output",
     panelFields: [
         {

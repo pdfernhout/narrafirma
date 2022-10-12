@@ -5,9 +5,9 @@ import Globals = require("../../Globals");
 const panel: Panel = {
     id: "page_printStoryCards",
     displayName: "Print story cards",
-    pageExplanation: "Prepare the stories you collected, along with answers to questions about them, so people can use them during sensemaking sessions.",
+    pageExplanation: "Get your stories ready for use in sensemaking.",
     pageCategories: "output",
-    headerAbove: "Get Ready for Sensemaking",
+    headerAbove: "Prepare",
     panelFields: [
         {
             id: "printStoryCards_introduction",

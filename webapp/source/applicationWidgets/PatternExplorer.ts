@@ -340,7 +340,7 @@ class PatternExplorer {
                 {
                     id: "thingsYouCanDoPanel_actionRequested",
                     valuePath: "selectionActionRequested",
-                    displayPrompt: "These are some <strong>things you can do</strong> based on the graph above and the selection you have made in it.",
+                    displayPrompt: "These are some <strong>things you can do</strong> based on the pattern above and the selection you have made in it.",
                     displayType: "select",
                     displayWithoutQuestionDivs: true,
                     valueOptions: [
@@ -372,7 +372,7 @@ class PatternExplorer {
                     {
                         id: "thingsYouCanDoPanel_actionRequested",
                         valuePath: "selectionActionRequested",
-                        displayPrompt: "These are some <strong>things you can do</strong> based on the graph above.",
+                        displayPrompt: "These are some <strong>things you can do</strong> based on the pattern above.",
                         displayType: "select",
                         displayWithoutQuestionDivs: true,
                         valueOptions: [
@@ -422,7 +422,7 @@ class PatternExplorer {
                     id: "observationPanel_description",
                     valuePath: "/clientState/observationAccessor/observationDescription",
                     displayName: "Observation description",
-                    displayPrompt: "Enter an <strong>observation</strong> about the pattern here. (To add another observation, click the plus button.)",
+                    displayPrompt: "Enter an <strong>observation</strong> about the pattern here. (To add another, click the plus button.)",
                     displayType: "textarea"
                 },
                 {
@@ -502,7 +502,7 @@ class PatternExplorer {
                     displayType: "grid",
                     displayConfiguration: "panel_addInterpretation",
                     displayName: "Interpretations",
-                    displayPrompt: "Enter at least two <strong>competing interpretations</strong> for the observation here.",
+                    displayPrompt: "Enter at least two <strong>competing interpretations</strong> for the observation.",
                 }
             ]
         };
@@ -558,18 +558,20 @@ class PatternExplorer {
             if (!remarkable && this.observationAccessors.length > 0) {
                 remarkable = PatternExplorer.getOrSetWhetherPatternIsMarkedAsRemarkable(this.project, this.catalysisReportIdentifier, this.currentPattern, "yes");
             }
-            result.push(m("span", {class: "narrafirma-mark-pattern-text"}, "Remarkable?"));
-            result.push(m("button", {class: "narrafirma-mark-pattern-button", 
+            let remarkableItems = [];
+            remarkableItems.push(m("span.narrafirma-mark-pattern-text", ["Is this pattern ", m("b", "remarkable"), "?"]));
+            remarkableItems.push(m("button", {class: "narrafirma-mark-pattern-button", 
                 onclick: this.setRemarkableFlag.bind(this, "yes"), disabled: remarkable === "yes"}, m("span.button-text ", "yes"))); 
-            result.push(m("button", {class: "narrafirma-mark-pattern-button", 
+            remarkableItems.push(m("button", {class: "narrafirma-mark-pattern-button", 
                 onclick: this.setRemarkableFlag.bind(this, "maybe"), disabled: remarkable === "maybe"}, m("span.button-text ", "maybe")));
-            result.push(m("button", {class: "narrafirma-mark-pattern-button", 
+            remarkableItems.push(m("button", {class: "narrafirma-mark-pattern-button", 
                 onclick: this.setRemarkableFlag.bind(this, "no"), disabled: remarkable === "no"}, m("span.button-text ", "no")));
-            result.push(m("button", {class: "narrafirma-mark-pattern-button", 
+            remarkableItems.push(m("button", {class: "narrafirma-mark-pattern-button", 
                 onclick: this.setRemarkableFlag.bind(this, "redundant"), disabled: remarkable === "redundant"}, m("span.button-text ", "redundant")));
-            result.push(m("button", {class: "narrafirma-mark-pattern-button", 
+            remarkableItems.push(m("button", {class: "narrafirma-mark-pattern-button", 
                 onclick: this.setRemarkableFlag.bind(this, ""), disabled: remarkable === undefined || remarkable === ""}, 
                 m("span.button-text ", "unmarked"))); 
+            result.push(m("div", remarkableItems));
 
             if (this.observationAccessors.length === 0) {
                 result.push(m("button", {style: "margin-left: 0.8em", 
@@ -628,7 +630,7 @@ class PatternExplorer {
             const buildGridHeader = () => {
                 return m("div.patterns-grid-header", 
                     patternsAndStrengthsToDisplayAbovePatternsTable, 
-                    m("span#gridHeaderProgressMessage" + (this.progressMessage ? ".pleaseWaitStatisticsOverlay" : ""), this.progressMessage),
+                    m("div#gridHeaderProgressMessage" + (this.progressMessage ? ".pleaseWaitStatisticsOverlay" : ""), this.progressMessage),
                     this.progressMessage ? cancelButton : [],
                 );
             };
@@ -662,7 +664,7 @@ class PatternExplorer {
             } else { 
                 const numStories = this.modelForStoryGrid.storiesSelectedInGraph.length;
                 const storyOrStoriesWord = (numStories > 1) ? "stories" : "story";
-                const selectedStoriesText = "" + numStories + " " + storyOrStoriesWord + " in selection - " + this.nameForCurrentGraphSelection();
+                const selectedStoriesText = "Choose among " + numStories + " " + storyOrStoriesWord + " in selection - " + this.nameForCurrentGraphSelection();
                 parts = [
                     buildGridHeader(),
                     this.patternsGrid.calculateView(),
@@ -680,7 +682,7 @@ class PatternExplorer {
                             buildObservationsAndInterpretationsPanels(),
                         ] :
                         // TODO: Translate
-                        m("div.narrafirma-choose-pattern", "Please select a pattern to view in the table above.")
+                        m("div.narrafirma-choose-pattern", "Please choose a pattern to view in the table above.")
                 ];
             }
         }
@@ -718,9 +720,9 @@ class PatternExplorer {
             numInterpretations += interpretationIDs.length;
         }
 
-        result += "" + this.modelForPatternsGrid.patterns.length + (this.modelForPatternsGrid.patterns.length !== 1 ? " patterns" : " pattern");
+        result += "Choose among " + this.modelForPatternsGrid.patterns.length + (this.modelForPatternsGrid.patterns.length !== 1 ? " patterns" : " pattern");
         if (Object.keys(strengthCounts).length) {
-            result += ", " + nonBlankObservations.length + (nonBlankObservations.length !== 1 ? " observations" : " observation");
+            result += " with " + nonBlankObservations.length + (nonBlankObservations.length !== 1 ? " observations" : " observation");
             result += " (by strength, ";
             let keyCount = 0;
             Object.keys(strengthCounts).forEach(function(key) {
@@ -728,7 +730,7 @@ class PatternExplorer {
                 if (keyCount < 2) result += "; ";
                 keyCount++;
             });
-            result += "; none: " + numObservationsWithoutStrengths + "), ";
+            result += "; none: " + numObservationsWithoutStrengths + ") and ";
         }
         result += numInterpretations + (numInterpretations !== 1 ? " interpretations" : " interpretation");
         return result;

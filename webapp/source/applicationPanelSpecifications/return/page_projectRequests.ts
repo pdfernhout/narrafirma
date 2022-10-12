@@ -4,7 +4,7 @@ import kludgeForUseStrict = require("../../kludgeForUseStrict");
 const panel: Panel = {
     id: "page_projectRequests",
     displayName: "Respond to requests for post-project support",
-    pageExplanation: "Record any requests you get for help as your project winds down, so you can meet them now and remember them later.",
+    pageExplanation: "Make a note of any requests or inquiries you get as your project winds down.",
     pageCategories: "record",
     panelFields: [
         {

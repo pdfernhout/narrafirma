@@ -4,7 +4,7 @@ import kludgeForUseStrict = require("../../kludgeForUseStrict");
 const panel: Panel = {
     id: "page_writeProjectSynopsis",
     displayName: "Write project synopsis",
-    pageExplanation: 'Summarize your project with a brief "elevator speech" paragraph you can use to explain what you are doing to other people.',
+    pageExplanation: 'Write a summary paragraph you can use to explain your project.',
     pageCategories: "plan",
     panelFields: [
         {

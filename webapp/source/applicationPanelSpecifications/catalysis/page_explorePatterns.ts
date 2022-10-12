@@ -5,9 +5,8 @@ import kludgeForUseStrict = require("../../kludgeForUseStrict");
 const panel: Panel = {
     id: "page_explorePatterns",
     displayName: "Explore patterns",
-    pageExplanation: "Look at patterns in the answers to the questions you asked. Write observations, interpretations, and ideas about those patterns.",
+    pageExplanation: "Look for patterns in your data. Write observations, interpretations, and ideas.",
     pageCategories: "review, input",
-    headerAbove: "Build Your Catalysis Report",
     panelFields: [
         {
             id: "explorePatternsLabel",

@@ -5,9 +5,9 @@ import kludgeForUseStrict = require("../../kludgeForUseStrict");
 const panel: Panel = {
     id: "page_reviewIncomingStories",
     displayName: "Review incoming stories",
-    pageExplanation: "Look over the stories you have collected. Remove personal information; translate stories; edit stories for clarity or length; fix data entry mistakes.",
+    pageExplanation: "Look over your collected stories. Clean, trim, fix errors, translate.",
     pageCategories: "review, input",
-    headerAbove: "Review and Repair",
+    headerAbove: "Review",
     panelFields: [
         {
             id: "collectedStoriesDuringCollectionLabel",

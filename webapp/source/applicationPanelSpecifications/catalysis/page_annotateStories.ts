@@ -5,7 +5,7 @@ import kludgeForUseStrict = require("../../kludgeForUseStrict");
 const panel: Panel = {
     id: "page_annotateStories",
     displayName: "Annotate stories",
-    pageExplanation: "For each story in your story collection, answer the research questions you created on the previous page.",
+    pageExplanation: "Answer the research questions you created.",
     pageCategories: "review, input",
     panelFields: [
         {

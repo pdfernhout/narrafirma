@@ -4,9 +4,9 @@ import kludgeForUseStrict = require("../../kludgeForUseStrict");
 const panel: Panel = {
     id: "page_startStoryCollection",
     displayName: "Start story collection",
-    pageExplanation: "Create a story collection: a container that will hold a group of stories related to a particular story form. Start or stop collecting stories over the internet.",
+    pageExplanation: "Create a container that will hold a group of stories. Activate or deactivate a web survey.",
     pageCategories: "manage",
-    headerAbove: "Collect Stories",
+    headerAbove: "Collect",
     panelFields: [
         {
             id: "storyCollection_createCollectionLabel",

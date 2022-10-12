@@ -198,9 +198,9 @@ const sections = [
             "page_planningQuestionsDraft",
             "page_participantGroups",
             "page_describeYourResources",
+            "page_assessStorySharing",
             "page_projectStories",
             "page_createProjectStoryElements",
-            "page_assessStorySharing",
             "page_revisePNIPlanningQuestions",
             "page_writeProjectSynopsis"
         ],

@@ -4,9 +4,9 @@ import kludgeForUseStrict = require("../../kludgeForUseStrict");
 const panel: Panel = {
     id: "page_participantGroups",
     displayName: "Describe participant groups",
-    pageExplanation: "Answer questions about your storytellers. Think about how their needs affect your plans. (Your answers will be used to recommend options on other pages.)",
+    pageExplanation: "Answer questions about your storytellers. Your answers will drive recommendations that appear on other pages.",
     pageCategories: "plan",
-    headerAbove: "Consider Context",
+    headerAbove: "Contemplate",
     panelFields: [
         {
             id: "project_aboutParticipantGroups",

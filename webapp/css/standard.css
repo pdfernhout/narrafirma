@@ -21,10 +21,10 @@ Special warning areas f88a57
     --color-header-border: #9cbbbb; 
 
     /* links */
-    --color-link: #014b4b;
+    --color-link: #002727;
 
     /* buttons */
-    --color-button: #ffc698;
+    --color-button: #fcc79a;
     --color-button-hover: #ffa25f;
     --color-button-selected: #ffa861;
     --color-button-selected-hover: #f88e37;
@@ -65,8 +65,9 @@ Special warning areas f88a57
     --color-icon-table-border: gray; /* graph types, question types */
 
     /* notices, warnings, errors */
-    --color-reminder: #e9eef7;
-    --color-notice: #dcecec;
+    --color-reminder: #f2f7f7;
+    --color-reminder-border: #b0d4d4;
+    --color-notice: #eafafa;
     --color-notice-border: black;
     --color-warning-text: #f88a57;
     --color-error-border: red;
@@ -161,6 +162,9 @@ a:active {
 
 textarea, input, select { /* override because expanded in survey */
     margin-top: 0.2em;
+    margin-left: 1em;
+    padding-top: 0.2em;
+    padding-bottom: 0.2em;
     background-color: white;
     border: 1px solid var(--color-textbox-border);
 }
@@ -188,7 +192,7 @@ a:focus, a:hover {
 
 .narrafirma-login-welcome-and-intro {
     background-color: var(--color-header);
-    border-bottom: 4px solid var(--color-button); 
+    border-bottom: 4px solid var(--color-button); /* cfk */
     padding: 0.2em;
     margin-bottom: 1em;
 }
@@ -246,21 +250,24 @@ input[type="submit"].narrafirma-login-button:hover {
 
 #navigationDiv {
     background-color: var(--color-header);
-    border-bottom: 4px solid var(--color-button); 
-	padding: 0.75em 0.2em 0.2em 0em;
+    border-top: 2px solid var(--color-header-border); 
+    border-bottom: 2px solid var(--color-header-border); 
     position: fixed;
     top: 0;
     left: 0;
     z-index: 999;
     width: 100%;
-    height: 1.8em;
+    height: 1.6em;
+    padding: 0.75em 0.2em 0.5em 0em;
+    margin-bottom: 2em;
 }
 
 #narrafirma-name {
-    font-size: 1.1em;
-    font-weight: bold;
+    display: inline-block;
+    border-right: 2px solid var(--color-header-border); 
+    font-size: 1em;
     margin: 0 0 0 0.5em; 
-    padding: 0.25em;
+    padding-right: 0.5em;
     color: var(--color-text);
 }
 
@@ -281,9 +288,11 @@ input[type="submit"].narrafirma-login-button:hover {
 }
 
 #narrafirma-project-name {
-    font-weight: bold;
-    font-size: 1.1em;
-    margin: 0 2em 0 0.5em;
+    display: inline-block;
+    border-right: 2px solid var(--color-header-border); 
+    font-size: 1em;
+    padding-right: 0.5em;
+    margin: 0 0.5em 0 0.5em;
 }
 
 #narrafirma-breadcrumbs {
@@ -312,21 +321,25 @@ input[type="submit"].narrafirma-login-button:hover {
     text-decoration: none;
 }
 
-#narrafirma-help-link {
+.narrafirma-help-link {
     font-size: 0.9em;
-    padding-right: 1em;
+    padding: 0.35em 0.75em 0.35em 0.75em;
+    margin: -0.2em 1em 0 0;
     float: right;
+    background-color: var(--color-button);
+    box-shadow: 1px 1px 1px var(--color-box-shadow);
+    text-decoration: none;
 }
 
 #narrafirma-logout-link, #narrafirma-login-link {
     font-size: 0.9em;
     float: right;
+    padding: 0.2em 0.5em 0.1em 0.5em;
     margin-right: 0.75em;
 }
 
 #narrafirma-read-only {
     font-size: 0.9em;
-    font-weight: bold;
     padding: 0 0.75em 0 0.5em;
     float: right;
     color: var(--color-error-text);
@@ -355,11 +368,6 @@ input[type="submit"].narrafirma-login-button:hover {
     margin-left: 1.0em;
 }
 
-.narrafirma-section-page-image {
-    margin: 0.5em 1em 0.25em 0.5em;
-    width: 300px;
-}
-
 .narrafirma-dashboard-story-collection-status table {
     border-collapse: collapse;
     margin-right: 1em;
@@ -383,13 +391,13 @@ input[type="submit"].narrafirma-login-button:hover {
 	display: block;
 	font-weight: bold;
     font-size: 1.1em;
-	margin: 0.5em 0 0.7em 0;
+	margin: 0.5em 0 0.7em 0.5em;
 }
 
 .narrafirma-dashboard-page-link {
 	display: block;
-	margin: 0.2em 0 0 1em;
-    font-size: 1.05em;
+	margin: 0 0 0.1em 0.5em;
+    font-size: 1em;
 }
 
 .narrafirma-dashboard-page-div {
@@ -397,19 +405,21 @@ input[type="submit"].narrafirma-login-button:hover {
 }
 
 .verbose .narrafirma-dashboard-page-link-explanation {
-    display: block;
+    display: inline;
+    margin-left: 0.7em;
+    font-size: 0.85em;
+    color: rgb(125, 125, 125);
 }
 
 .narrafirma-dashboard-page-link-explanation {
     display: none;
-    margin: 0.2em 0 0 1em;
-    font-weight: normal;
 }
 
 .narrafirma-questionAnswer { /* this is now used to display the reminder on the section page */
+    border-left: 3px solid var(--color-reminder-border);
     background-color: var(--color-reminder);
-    margin: 0.5em 3em 0 3em;
-    padding: 0.5em;
+    margin: 0.3em 0.3em 0 10%;
+    padding: 0.3em;
 }
 
 .narrafirma-questionAnswer:empty { /* if no reminder entered, do not show */
@@ -463,12 +473,11 @@ form {
  
 .narrafirma-page-change-button {
     font-size: 1em;
-    min-width: 10em;
+    min-width: 4em;
     border: none;
     box-shadow: 1px 1px 1px var(--color-box-shadow);
-    margin-bottom: 0.5em;
-    margin-top: 1em;
-    padding: 0.4em;
+    margin: 1em 0 0.5em 0.5em;
+    padding: 0.3em 0.6em 0.3em 0.6em;
 }
 
 button {
@@ -546,6 +555,7 @@ button:disabled {
  }
 
  .questionExternal.narrafirma-reminder {
+    border-top: 1px solid var(--color-reminder-border);
     background-color: var(--color-reminder);
     margin-top: 0.4em;
  }
@@ -572,7 +582,12 @@ button:disabled {
     font-size: 1.3em;
     margin: 0.5em 0 0 0.35em;
 }
- 
+
+.narrafirma-section-page-image {
+    margin: 1em 0 0 1em;
+    width: 260px;
+}
+
 .questionExternal {
 	background-color: var(--color-editing);
     padding: 0.2em;
@@ -607,6 +622,7 @@ button:disabled {
 .questionPrompt {
     padding: 0.4em 0.4em 0.1em 0.4em;
     display: block;
+    line-height: 1.2em;
 }
 
 .narrafirma-question-type-radiobuttons .questionPrompt  {
@@ -641,6 +657,7 @@ button:disabled {
 
 .narrafirma-question-type-grid-plus-prompt .questionPrompt {
     margin-bottom: 0.5em;
+    margin-left: 0.5em;
 }
 .narrafirma-question-type-grid-plus-prompt .narrafirma-griditempanel-divwithbutton-editing .questionPrompt {
     margin-bottom: 0;
@@ -1415,8 +1432,12 @@ table.filterTable td {
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Explore patterns page ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 .patterns-grid-header {
-    margin-left: 1.4em;
+    margin-left: 1em;
     margin-top: 1em;
+}
+
+.narrafirma-explore-patterns-page-section {
+    font-size: 1.3em;
 }
 
 #gridHeaderProgressMessage {
@@ -1426,19 +1447,18 @@ table.filterTable td {
 }
 
 .pleaseWaitStatisticsOverlay {
-	font-size: 1em;
-	font-weight: bold;
+	font-size: 0.9em;
 	text-align: center;
-	width: 300px;
+	width: 30%;
 	height: 70px;
-	margin: 0.5em 0 0 00;
+	margin: 0.5em 0 0 0;
 	padding: 0.5em 3em 0.5em 0.5em;
-    border: 2px solid var(--color-header-border);
+    border: 1px solid var(--color-header-border);
     background-color: var(--color-table);
-    border-radius: 6px;
+    border-radius: 4px;
     background-image: url('../images/dojo-Standby-loading.gif');
     background-repeat: no-repeat;
-    background-position: 98% 80%;
+    background-position: 50% 80%;
     z-index: 1001;
 }
 

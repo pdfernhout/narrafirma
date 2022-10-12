@@ -5,7 +5,7 @@ import kludgeForUseStrict = require("../../kludgeForUseStrict");
 const panel: Panel = {
     id: "page_translateStoryForms",
     displayName: "Translate story forms",
-    pageExplanation: "Offer your participants the opportunity to read your story form in any of multiple languages.",
+    pageExplanation: "Enter translations to display your story form in multiple languages.",
     pageCategories: "input",
     panelFields: [
         {

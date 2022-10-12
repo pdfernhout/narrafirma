@@ -10,9 +10,8 @@ const panel: Panel = {
             valueType: "none",
             displayType: "label",
             displayPrompt: 
-                `In the planning phase of your PNI project, you can make <strong>decisions</strong> about how your project will proceed. 
-                You can think about your goals, your topic, your participants, and any opportunities and dangers you might encounter 
-                during the project.`
+                `In this phase of PNI, you decide what you are going to do. 
+                You consider your goals, topic, and participants; ponder opportunities and dangers; and firm up your plans.`
         }
     ]
 };

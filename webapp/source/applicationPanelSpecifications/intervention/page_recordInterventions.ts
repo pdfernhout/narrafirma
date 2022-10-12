@@ -4,9 +4,9 @@ import kludgeForUseStrict = require("../../kludgeForUseStrict");
 const panel: Panel = {
     id: "page_recordInterventions",
     displayName: "Enter intervention records",
-    pageExplanation: "Reflect on any interventions you carried out. Record what happened and what you learned from it.",
+    pageExplanation: "Describe interventions you carried out.",
     pageCategories: "record",
-    headerAbove: "Think About What Happened",
+    headerAbove: "Reflect",
     panelFields: [
         {
             id: "project_interventionRecordsLabel",

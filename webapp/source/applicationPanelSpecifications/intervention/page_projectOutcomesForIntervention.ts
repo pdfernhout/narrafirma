@@ -4,9 +4,9 @@ import kludgeForUseStrict = require("../../kludgeForUseStrict");
 const panel: Panel = {
     id: "page_projectOutcomesForIntervention",
     displayName: "Answer questions about project outcomes",
-    pageExplanation: "Describe the outcome of your project (so far) for each participant group. (Your answers will be used to recommend interventions on the next page.)",
+    pageExplanation: "Describe your project from the perspective of each participant group. Your answers will drive recommendations that appear on the next page.",
     pageCategories: "plan",
-    headerAbove: "Plan Interventions",
+    headerAbove: "Plan",
     panelFields: [
         {
             id: "project_outcomes_intro",

@@ -5,7 +5,7 @@ import kludgeForUseStrict = require("../../kludgeForUseStrict");
 const panel: Panel = {
     id: "page_printQuestionForms",
     displayName: "Print story forms",
-    pageExplanation: "Generate a plain-text version of your story form to send in emails or to print and use in group sessions or interviews.",
+    pageExplanation: "Generate a plain-text your story form to to print or send.",
     pageCategories: "output",
     panelFields: [
         {
@@ -15,7 +15,7 @@ const panel: Panel = {
             displayPrompt: `
                 On this page you can print story forms for off-line use. 
                 Later, you can enter the completed forms into your story collection (see "Enter or import stories").
-                You can change the way your printed story form appears by entering custom CSS on the "Design, generate, or import story forms" page.
+                You can change the way your printed story form appears by entering custom CSS on the "Build story forms" page.
                 `
         },
         {

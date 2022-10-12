@@ -4,7 +4,7 @@ import kludgeForUseStrict = require("../../kludgeForUseStrict");
 const panel: Panel = {
     id: "page_assessStorySharing",
     displayName: "Assess story sharing",
-    pageExplanation: "Use an assessment tool to ponder how stories flow in your community or organization.",
+    pageExplanation: "Use an assessment quiz to consider how stories flow in your community or organization.",
     pageCategories: "plan",
     panelFields: [
         {

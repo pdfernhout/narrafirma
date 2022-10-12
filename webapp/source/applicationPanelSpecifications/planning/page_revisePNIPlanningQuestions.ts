@@ -4,9 +4,9 @@ import kludgeForUseStrict = require("../../kludgeForUseStrict");
 const panel: Panel = {
     id: "page_revisePNIPlanningQuestions",
     displayName: "Revise PNI planning questions",
-    pageExplanation: "Go back to the PNI planning questions (goals, relationships, focus, range, scope, emphasis) and see if you want to improve on the draft descriptions you wrote before.",
+    pageExplanation: "Revisit your project's goals, relationships, focus, range, scope, and emphasis.",
     pageCategories: "plan",
-    headerAbove: "Wrap Up Planning",
+    headerAbove: "Wrap Up",
     panelFields: [
         {
             id: "project_improvePlanningDrafts",

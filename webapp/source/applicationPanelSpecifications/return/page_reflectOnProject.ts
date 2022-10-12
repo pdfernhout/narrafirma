@@ -4,8 +4,9 @@ import kludgeForUseStrict = require("../../kludgeForUseStrict");
 const panel: Panel = {
     id: "page_reflectOnProject",
     displayName: "Reflect on the project",
-    pageExplanation: "Answer some questions about the project. Think about what happened, what surprised you, and what you learned. Make a record you can look back on later.",
+    pageExplanation: "Answer questions about what happened, what surprised you, and what you learned.",
     pageCategories: "record",
+    headerAbove: "Reflect",
     panelFields: [
         {
             id: "project_reflectLabel",

@@ -4,9 +4,9 @@ import kludgeForUseStrict = require("../../kludgeForUseStrict");
 const panel: Panel = {
     id: "page_prepareProjectPresentation",
     displayName: "Prepare outline of project presentation",
-    pageExplanation: "Create a simple project outline you can use to explain what happened in your project to other people.",
+    pageExplanation: "Create a simple outline you can use to tell people the story of your project.",
     pageCategories: "record",
-    headerAbove: "Support Your Community",
+    headerAbove: "Explain",
     panelFields: [
         {
             id: "project_presentationLabel",

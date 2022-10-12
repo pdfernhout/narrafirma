@@ -4,7 +4,7 @@ import kludgeForUseStrict = require("../../kludgeForUseStrict");
 const panel: Panel = {
     id: "page_writeQuestionsAboutParticipants",
     displayName: "Write questions about participants",
-    pageExplanation: "Ask participants to describe themselves by answering factual and/or reflective questions.",
+    pageExplanation: "Build a library of questions about people.",
     pageCategories: "input",
     panelFields: [
         {

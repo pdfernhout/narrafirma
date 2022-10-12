@@ -4,7 +4,7 @@ import kludgeForUseStrict = require("../../kludgeForUseStrict");
 const panel: Panel = {
     id: "page_planStoryCollectionSessions",
     displayName: "Plan story collection sessions",
-    pageExplanation: "If you plan to collect stories in group sessions, you can design printable agendas for them, with time frames and group activities.",
+    pageExplanation: "Design printable agendas for story-sharing sessions.",
     pageCategories: "plan",
     panelFields: [
         {

@@ -10,10 +10,9 @@ const panel: Panel = {
             valueType: "none",
             displayType: "label",
             displayPrompt:
-`In the collection phase of your PNI project, you can decide on story collection <strong>methods</strong>; 
-write <strong>questions</strong> for story elicitation and interpretation; design story <strong>forms</strong>; 
-collect stories over the <strong>web</strong>; and plan story collection <strong>sessions</strong>. You can also 
-<strong>review</strong> incoming stories and enter <strong>records</strong> of story collection sessions.`
+                `In this phase of PNI, you choose story collection methods, 
+                build a library of questions, use them to create story forms, 
+                and collect and review your stories.`
         }
     ]
 };

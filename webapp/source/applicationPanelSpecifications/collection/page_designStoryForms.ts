@@ -3,8 +3,8 @@ import kludgeForUseStrict = require("../../kludgeForUseStrict");
 
 const panel: Panel = {
     id: "page_designStoryForms",
-    displayName: "Design, generate, or import story forms",
-    pageExplanation: "Bring your eliciting, interpretive, and descriptive questions together into a story form: an open-ended invitation to remember, reflect, and be heard.",
+    displayName: "Build story forms",
+    pageExplanation: "Draw from your question libraries to create surveys and interview scripts.",
     pageCategories: "input",
     panelFields: [
         {

@@ -4,8 +4,9 @@ import Globals = require("../../Globals");
 const panel: Panel = {
     id: "page_clusterInterpretations",
     displayName: "Cluster interpretations and/or observations",
-    pageExplanation: "Gather the interpretations and observations you created on the previous page into groups whose names will become the headings of your catalysis report.",
+    pageExplanation: "Pull together what you have built into a coherent report.",
     pageCategories: "review, input",
+    headerAbove: "Consolidate",
     panelFields: [
         {
             id: "project_interpretationsClusteringLabel",
