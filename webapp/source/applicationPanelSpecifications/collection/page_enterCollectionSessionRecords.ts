@@ -19,7 +19,7 @@ const panel: Panel = {
             displayType: "grid",
             displayConfiguration: "panel_addCollectionSessionRecord",
             displayName: "Story collection session records",
-            displayPrompt: "These are the sessions records you have created so far."
+            displayPrompt: "These are the session records you have added. Click on a record to edit it."
         }
     ]
 };
