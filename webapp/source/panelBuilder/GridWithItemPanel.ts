@@ -373,6 +373,7 @@ class GridWithItemPanel {
     }
     
     private selectItemInList(e) {
+        if (!this.validateSelectedItem()) return;
         const itemID = e.target.getAttribute("data-item-index");
         const item = this.dataStore.itemForId(itemID);
         if (item !== undefined) {
@@ -413,6 +414,21 @@ class GridWithItemPanel {
             return errors;
         }
         return [];
+    }
+
+    private validateSelectedItem() {
+        if (this.isEditing()) {
+            const item = this.selectedItem;
+            if (item) {
+                const errors = this.validateItem(item);
+                if (errors.length) {
+                    // TODO: Translate
+                    alert(errors);
+                    return false;
+                }
+            }
+        }
+        return true;
     }
     
     private bottomEditorForItem(panelBuilder, item, mode) {
@@ -495,21 +511,11 @@ class GridWithItemPanel {
             default:
                throw new Error("Unexpected direction: " + direction);
         }
-        if (this.isEditing()) {
-            const item = this.selectedItem;
-            if (item) {
-                const errors = this.validateItem(item);
-                if (errors.length) {
-                    // TODO: Translate
-                    alert(errors);
-                    return;
-                }
-            }
-        }
+        if (!this.validateSelectedItem()) return;
         this.setSelectedItem(this.dataStore.itemForIndex(newPosition));
         this.isNavigationalScrollingNeeded = direction;
     }
-    
+
     private createButtons(item = undefined) {
         const buttons = [];
        
