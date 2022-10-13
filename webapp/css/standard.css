@@ -516,11 +516,11 @@ button:disabled {
 }
 
 .homeButtonImage {
-    background-image: url(../images/ionicicons/home.svg);
+    background-image: url(../images/ionicicons/home-outline.svg);
     background-repeat: no-repeat;
     background-size: auto 100%;
-    width: 20px;
-    height: 20px;
+    width: 22px;
+    height: 22px;
     text-align: center;
     display: inline-block;
     vertical-align: middle;
@@ -528,7 +528,7 @@ button:disabled {
 }
 
 .leftButtonImage {
-    background-image: url(../images/ionicicons/arrow-left-a.svg);
+    background-image: url(../images/ionicicons/arrow-back-outline.svg);
     background-repeat: no-repeat;
     background-size: auto 100%;
     width: 20px;
@@ -540,7 +540,7 @@ button:disabled {
 }
 
 .rightButtonImage {
-    background-image: url(../images/ionicicons/arrow-right-a.svg);
+    background-image: url(../images/ionicicons/arrow-forward-outline.svg);
     background-repeat: no-repeat;
     background-size: auto 100%;
     width: 20px;
