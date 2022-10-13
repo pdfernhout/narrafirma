@@ -14,13 +14,24 @@ function add_storyFormQuestionsChooser(panelBuilder: PanelBuilder, model, fieldS
     if (!storyForm) return m("div");
     
     const prompt = panelBuilder.buildQuestionLabel(fieldSpecification);
+
+    // get all questions in project now so you can look up question texts for "QuestionChoice" objects
     const questionCategory = fieldSpecification.displayConfiguration.toLowerCase();
+    let createdQuestions = [];
+    if (fieldSpecification.displayConfiguration === "Eliciting") {
+        createdQuestions = project.collectAllElicitingQuestions();
+    } else if (fieldSpecification.displayConfiguration === "Story") {
+        createdQuestions = project.collectAllStoryQuestions();
+    } else if (fieldSpecification.displayConfiguration === "Participant") {
+        createdQuestions = project.collectAllParticipantQuestions();
+    }
 
     /////////////////// left side - questions chosen for form
     // these are not questions; they are "QuestionChoice" objects 
-    // with only two fields: elicitingQuestion, storyQuestion, or participantQuestion, and order
+    // with only two fields: elicitingQuestion, storyQuestion, or participantQuestion (which is the question's short name); and order
 
     const questionChoicesSelectBoxID = fieldSpecification.displayConfiguration + "_questions_chosen";
+
     let questionChoicesInForm = [];
     const setClassName = "questionForm_" + questionCategory + "Questions";
     let questionChoicesSetID = storyForm[setClassName];
@@ -51,21 +62,22 @@ function add_storyFormQuestionsChooser(panelBuilder: PanelBuilder, model, fieldS
     // create mithril options for list box with question lookup ids
     const questionChoicesInFormSelectOptions = [];
     questionChoicesInForm.forEach((questionChoice, index) => {
-        questionChoicesInFormSelectOptions.push(m("option", {value: questionChoice.id, selected: undefined}, questionChoice[questionCategory + "Question"].trim()));
+        const shortName = questionChoice[questionCategory + "Question"].trim();
+        let displayName = shortName;
+
+        const question = getQuestionForShortName(createdQuestions, shortName);
+        if (question) {
+            const questionText = question[questionCategory + "Question_text"].trim();
+            const trucatedQuestionText = truncateQuestionText(questionText);
+            displayName += " (" + trucatedQuestionText + ")";
+        }
+        questionChoicesInFormSelectOptions.push(m("option", {value: questionChoice.id, selected: undefined}, displayName));
     });
 
     /////////////////// right side - questions available to choose
     // these are questions, not question choices
 
     const questionsCreatedSelectBoxID = fieldSpecification.displayConfiguration + "_questions_created";
-    let createdQuestions = [];
-    if (fieldSpecification.displayConfiguration === "Eliciting") {
-        createdQuestions = project.collectAllElicitingQuestions();
-    } else if (fieldSpecification.displayConfiguration === "Story") {
-        createdQuestions = project.collectAllStoryQuestions();
-    } else if (fieldSpecification.displayConfiguration === "Participant") {
-        createdQuestions = project.collectAllParticipantQuestions();
-    }
 
     // only display created questions that are not already in the form
     const createdQuestionsNotInForm = [];
@@ -85,9 +97,32 @@ function add_storyFormQuestionsChooser(panelBuilder: PanelBuilder, model, fieldS
     // create mithril options for list box with question lookup ids
     const createdQuestionsNotInFormSelectOptions = [];
     createdQuestionsNotInForm.forEach((question) => {
-        let name = question[questionCategory + "Question_shortName"].trim();
-        createdQuestionsNotInFormSelectOptions.push(m("option", {value: question.id, selected: undefined}, name));
+        const shortName = question[questionCategory + "Question_shortName"].trim();
+        const truncatedQuestionText = truncateQuestionText(question[questionCategory + "Question_text"].trim());
+        const displayName = shortName + " (" + truncatedQuestionText + ")";
+        createdQuestionsNotInFormSelectOptions.push(m("option", {value: question.id, selected: undefined}, displayName));
     });
+
+    function getQuestionForShortName(createdQuestions, shortName) {
+        const matchingQuestions = createdQuestions.filter(function(question) {
+            return question[questionCategory + "Question_shortName"] === shortName;
+        })
+        if (matchingQuestions.length >= 1) {
+            return matchingQuestions[0];
+        } else {
+            return null;
+        }
+    }
+
+    function truncateQuestionText(text) {
+        const maxQuestionTextWords = 10;
+        const words = text.split(" ");
+        if (words.length > maxQuestionTextWords) {
+            return words.slice(0, maxQuestionTextWords-1).join(" ") + " ...";
+        } else {
+            return text;
+        }
+    }
 
     // these up and down methods swap rather than set the "order" fields of the "QuestionChoice" objects
     // because in the past (before NF 1.5.0), the order was typed in by the user and could include letters
