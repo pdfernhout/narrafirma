@@ -135,7 +135,9 @@ label.narrafirma-survey-prompt {
 }
 
 span.narrafirma-survey-prompt { 
-    margin: 0.3em 0 1em 0.5em;
+    margin: 0 0 0 0.5em;
+    display: inline-block;
+    line-height: 1.3em;
 }
 
 .narrafirma-survey-question-external {
