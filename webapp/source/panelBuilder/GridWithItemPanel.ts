@@ -277,12 +277,12 @@ class GridWithItemPanel {
         // TODO: Improve navigation enabling
         // CFK const navigationDisabled = (this.isEditing() && !this.gridConfiguration.massEditingMode) || this.dataStore.isEmpty() || undefined;
         const navigationDisabled = this.dataStore.data.indexOf(this.selectedItem) === -1 || this.dataStore.isEmpty() || undefined;
-        buttons.push(m("button", {onclick: this.navigateClicked.bind(this, "start"), disabled: navigationDisabled}, translate("#button_navigateStart|[<<")));
-        buttons.push(m("button", {onclick: this.navigateClicked.bind(this, "previous"), disabled: navigationDisabled}, translate("#button_navigatePrevious|<")));
-        buttons.push(m("button", {onclick: this.navigateClicked.bind(this, "next"), disabled: navigationDisabled}, translate("#button_navigateNext|>")));
-        buttons.push(m("button", {onclick: this.navigateClicked.bind(this, "end"), disabled: navigationDisabled}, translate("#button_navigateEnd|>>]")));
+        buttons.push(m("button", {onclick: this.navigateClicked.bind(this, "start"), disabled: navigationDisabled}, translate("#button_navigateStart|⇤")));
+        buttons.push(m("button", {onclick: this.navigateClicked.bind(this, "previous"), disabled: navigationDisabled}, translate("#button_navigatePrevious|←")));
+        buttons.push(m("button", {onclick: this.navigateClicked.bind(this, "next"), disabled: navigationDisabled}, translate("#button_navigateNext|→")));
+        buttons.push(m("button", {onclick: this.navigateClicked.bind(this, "end"), disabled: navigationDisabled}, translate("#button_navigateEnd|⇥")));
         if (this.gridConfiguration.randomButton)
-            buttons.push(m("button", {onclick: this.navigateClicked.bind(this, "random"), disabled: navigationDisabled}, translate("#button_navigateRandom|>>]")));
+            buttons.push(m("button", {onclick: this.navigateClicked.bind(this, "random"), disabled: navigationDisabled}, translate("#button_navigateRandom|Random")));
     }
 
     calculateView() {
@@ -319,7 +319,7 @@ class GridWithItemPanel {
         
         let buttons = [];
         if (this.gridConfiguration.addButton) {
-            const addButton = m("button", {onclick: this.addItem.bind(this), disabled: addButtonDisabled}, translate("#button_Add|Add"));
+            const addButton = m("button", {onclick: this.addItem.bind(this), disabled: addButtonDisabled}, "+ " + translate("#button_Add|Add"));
             buttons.push(addButton);
         }
         
@@ -508,7 +508,7 @@ class GridWithItemPanel {
         const disabled = this.readOnly || unavailable;
         
         if (this.gridConfiguration.removeButton) {
-            const removeButton = m("button", {onclick: this.deleteItem.bind(this, item), disabled: disabled, "class": "fader"}, translate("#button_Remove|Remove"));
+            const removeButton = m("button", {onclick: this.deleteItem.bind(this, item), disabled: disabled, "class": "fader"}, "☓ " + translate("#button_Remove|Remove"));
             buttons.push(removeButton);
         }
 
