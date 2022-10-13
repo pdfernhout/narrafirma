@@ -18,7 +18,7 @@ Special warning areas f88a57
 
     /* headers */
     --color-header: #b0d4d4; 
-    --color-header-border: #9cbbbb; 
+    --color-header-border: #638989; 
 
     /* links */
     --color-link: #002727;
@@ -34,7 +34,7 @@ Special warning areas f88a57
     /* text boxes */
     --color-text: black;
     --color-text-disabled: gray;
-    --color-textbox-border: black;
+    --color-textbox-border: #9cbbbb;
     --color-textbox-border-disabled: gray;
     --color-box-shadow: gray;
 
@@ -66,7 +66,7 @@ Special warning areas f88a57
 
     /* notices, warnings, errors */
     --color-reminder: #f2f7f7;
-    --color-reminder-border: #b0d4d4;
+    --color-reminder-border: #638989;
     --color-notice: #eafafa;
     --color-notice-border: black;
     --color-warning-text: #f88a57;
@@ -340,7 +340,7 @@ input[type="submit"].narrafirma-login-button:hover {
 
 #narrafirma-read-only {
     font-size: 0.9em;
-    padding: 0 0.75em 0 0.5em;
+    padding: 0.25em 0.75em 0.25em 0.5em;
     float: right;
     color: var(--color-error-text);
 }
@@ -567,10 +567,9 @@ button:disabled {
  /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Pages with entry fields ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 .htmlWidget, .narrafirma-image {
-    margin-bottom: 4px;
     border-radius: 12px;
-    padding: 8px;
-    margin: 8px; 
+    padding: 0.25em; 
+    margin: 0.5em 0 0.25em 0.35em; 
 }
 
 .hiddenHtmlWidget {
@@ -580,8 +579,8 @@ button:disabled {
 .narrafirma-page-name {
     font-weight: 700;
     font-size: 1.3em;
-    margin: 0.5em 0 0 0.35em;
-}
+    margin: 1em 0 0 0.5em;
+} 
 
 .narrafirma-section-page-image {
     margin: 1em 0 0 1em;
@@ -656,8 +655,7 @@ button:disabled {
 }
 
 .narrafirma-question-type-grid-plus-prompt .questionPrompt {
-    margin-bottom: 0.5em;
-    margin-left: 0.5em;
+    margin-left: 0.4em;
 }
 .narrafirma-question-type-grid-plus-prompt .narrafirma-griditempanel-divwithbutton-editing .questionPrompt {
     margin-bottom: 0;
@@ -1233,7 +1231,6 @@ table.filterTable td {
 }
 
 .narrafirma-griditempanel-editing .storyCard {
-    border: 1px solid gray;
     margin-top: 0.6em;
 }
 
@@ -1441,25 +1438,25 @@ table.filterTable td {
 }
 
 #gridHeaderProgressMessage {
-    margin-left: 0.5em; 
     color: var(--color-warning-text); 
     font-weight: bold;
 }
 
 .pleaseWaitStatisticsOverlay {
-	font-size: 0.9em;
+	font-size: 1em;
 	text-align: center;
 	width: 30%;
-	height: 70px;
-	margin: 0.5em 0 0 0;
-	padding: 0.5em 3em 0.5em 0.5em;
-    border: 1px solid var(--color-header-border);
+	margin: 1.5em auto 0 2em;
+	padding: 0.5em;
+    border: 2px solid var(--color-header-border);
     background-color: var(--color-table);
-    border-radius: 4px;
-    background-image: url('../images/dojo-Standby-loading.gif');
-    background-repeat: no-repeat;
     background-position: 50% 80%;
     z-index: 1001;
+}
+
+.narrafirma-statistics-cancel-button {
+    margin: 0.5em 0 1.5em 2em;
+    padding: 0.25em 0.5em;
 }
 
 .narrafirma-pattern-browser-no-graph-message {
@@ -1535,6 +1532,10 @@ label {
     padding: 8px;
 }
 
+.narrafirma-catalysis-patterns-grid-label {
+    margin: 0, 0, 0.1em, 0;
+}
+
 .narrafirma-choose-catalysis-report {
     text-align: center;
     margin: 2em auto 2em auto;
@@ -1557,6 +1558,12 @@ label {
     display: inline-block;
     vertical-align: bottom;
     margin: 0 0.75em 0.5em 0.75em;
+}
+
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Clustering page ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
+.clustering {
+    margin-left: 0.75em;
 }
 
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Catalysis report ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
