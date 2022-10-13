@@ -275,7 +275,6 @@ class GridWithItemPanel {
     
     addNavigationButtons(buttons) {
         // TODO: Improve navigation enabling
-        // CFK const navigationDisabled = (this.isEditing() && !this.gridConfiguration.massEditingMode) || this.dataStore.isEmpty() || undefined;
         const navigationDisabled = this.dataStore.data.indexOf(this.selectedItem) === -1 || this.dataStore.isEmpty() || undefined;
         buttons.push(m("button", {onclick: this.navigateClicked.bind(this, "start"), disabled: navigationDisabled}, translate("#button_navigateStart|⇤")));
         buttons.push(m("button", {onclick: this.navigateClicked.bind(this, "previous"), disabled: navigationDisabled}, translate("#button_navigatePrevious|←")));
@@ -463,7 +462,7 @@ class GridWithItemPanel {
             const errors = this.validateItem(item);
             if (errors.length) {
                 // TODO: Translate
-                alert("There are validation errors:\n\n" + errors);
+                alert(errors);
                 return;
             }
         }
@@ -496,6 +495,17 @@ class GridWithItemPanel {
             default:
                throw new Error("Unexpected direction: " + direction);
         }
+        if (this.isEditing()) {
+            const item = this.selectedItem;
+            if (item) {
+                const errors = this.validateItem(item);
+                if (errors.length) {
+                    // TODO: Translate
+                    alert(errors);
+                    return;
+                }
+            }
+        }
         this.setSelectedItem(this.dataStore.itemForIndex(newPosition));
         this.isNavigationalScrollingNeeded = direction;
     }
@@ -503,7 +513,6 @@ class GridWithItemPanel {
     private createButtons(item = undefined) {
         const buttons = [];
        
-        // cfk const unavailable = (this.isEditing() && !this.gridConfiguration.massEditingMode) || (!item && !this.selectedItem) || undefined;
         const unavailable = (!item && !this.selectedItem) || undefined;
         const disabled = this.readOnly || unavailable;
         
