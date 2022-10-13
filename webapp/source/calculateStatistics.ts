@@ -308,7 +308,7 @@ export function calculateStatisticsForPattern(pattern, stories: surveyCollection
     }
 
     if (progressUpdater && (patternNumber % howOftenToUpdateProgressMessage == 0)) { // only report progress every total/100 graphs; makes it go faster
-        progressUpdater.progressMessage = "Calculating statistics for pattern " + patternNumber + " of " + numPatterns;
+        progressUpdater.progressMessage = "Calculating statistics for pattern " + patternNumber + " of " + numPatterns + "...";
         progressUpdater.redraw();
     }
 }
