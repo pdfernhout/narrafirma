@@ -288,6 +288,7 @@ class PatternExplorer {
             idProperty: "id",
             columnsToDisplay: true,
             navigationButtons: true,
+            specialHiddenPanelForPatternExplorer: true,
             selectCallback: this.patternSelected.bind(this)
         };
         const patternsGridFieldSpecification = {
@@ -502,7 +503,7 @@ class PatternExplorer {
                     displayType: "grid",
                     displayConfiguration: "panel_addInterpretation",
                     displayName: "Interpretations",
-                    displayPrompt: "Enter at least two <strong>competing interpretations</strong> for this observation.",
+                    displayPrompt: "Enter at least two <strong>competing interpretations</strong> for this observation. Click on an interpretation to edit it.",
                 }
             ]
         };
@@ -621,7 +622,7 @@ class PatternExplorer {
         } else {
             const patternsAndStrengthsToDisplayAbovePatternsTable = this.patternsAndStrengthsToDisplayAbovePatternsTable();
 
-            const cancelButton = m("button", {
+            const cancelButton = m("button.narrafirma-statistics-cancel-button", {
                 onclick: () => {
                     this.calculationsCanceled = true;
                     this.progressMessage = "";
@@ -629,9 +630,9 @@ class PatternExplorer {
             }, "Cancel");
             const buildGridHeader = () => {
                 return m("div.patterns-grid-header", 
-                    patternsAndStrengthsToDisplayAbovePatternsTable, 
                     m("div#gridHeaderProgressMessage" + (this.progressMessage ? ".pleaseWaitStatisticsOverlay" : ""), this.progressMessage),
                     this.progressMessage ? cancelButton : [],
+                    patternsAndStrengthsToDisplayAbovePatternsTable, 
                 );
             };
 
@@ -664,7 +665,7 @@ class PatternExplorer {
             } else { 
                 const numStories = this.modelForStoryGrid.storiesSelectedInGraph.length;
                 const storyOrStoriesWord = (numStories > 1) ? "stories" : "story";
-                const selectedStoriesText = "Choose among " + numStories + " " + storyOrStoriesWord + " in selection - " + this.nameForCurrentGraphSelection();
+                const selectedStoriesText = numStories + " " + storyOrStoriesWord + " in selection - " + this.nameForCurrentGraphSelection() + ". Click on a story to view it.";
                 parts = [
                     buildGridHeader(),
                     this.patternsGrid.calculateView(),
@@ -720,9 +721,9 @@ class PatternExplorer {
             numInterpretations += interpretationIDs.length;
         }
 
-        result += "Choose among " + this.modelForPatternsGrid.patterns.length + (this.modelForPatternsGrid.patterns.length !== 1 ? " patterns" : " pattern");
+        result += this.modelForPatternsGrid.patterns.length + (this.modelForPatternsGrid.patterns.length !== 1 ? " patterns" : " pattern");
         if (Object.keys(strengthCounts).length) {
-            result += " with " + nonBlankObservations.length + (nonBlankObservations.length !== 1 ? " observations" : " observation");
+            result += ", " + nonBlankObservations.length + (nonBlankObservations.length !== 1 ? " observations" : " observation");
             result += " (by strength, ";
             let keyCount = 0;
             Object.keys(strengthCounts).forEach(function(key) {
@@ -730,10 +731,11 @@ class PatternExplorer {
                 if (keyCount < 2) result += "; ";
                 keyCount++;
             });
-            result += "; none: " + numObservationsWithoutStrengths + ") and ";
+            result += "; none: " + numObservationsWithoutStrengths + "), ";
         }
         result += numInterpretations + (numInterpretations !== 1 ? " interpretations" : " interpretation");
-        return result;
+        result += ". Click on a pattern to view it."
+        return m("div.narrafirma-catalysis-patterns-grid-label", result);
     }
 
     insertGraphResultsPaneConfig(element: HTMLElement, isInitialized: boolean, context: any) {

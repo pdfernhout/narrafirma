@@ -37,7 +37,6 @@ export class StoryAnnotationBrowser {
                     viewButton: true,
                     editButton: true,
                     navigationButtons: true,
-                    massEditingMode: true,
                     randomButton: true,
                     maxColumnCount: 13 // three for index, name, and text, 10 more for annotation questions
                }
@@ -65,10 +64,11 @@ export class StoryAnnotationBrowser {
             this.grid.updateDisplayConfigurationAndData(this.gridFieldSpecification.displayConfiguration);
         }
         
-        const promptText = panelBuilder.addAllowedHTMLToPrompt(args.fieldSpecification.displayPrompt) + " (" + this.allStories.length + ")";
+        const promptText = panelBuilder.addAllowedHTMLToPrompt(args.fieldSpecification.displayPrompt) 
+            + " (" + this.allStories.length + "). Click on a story to annotate it.";
         const prompt =  m("span", {"class": "questionPrompt"}, promptText);
         
-        let parts;
+        let parts; 
         
         if (!this.storyCollectionIdentifier) {
             parts = [m("div", "Please select a story collection to annotate.")];

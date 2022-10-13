@@ -21,23 +21,18 @@ interface GridConfiguration {
     idProperty?: string;
     maxColumnCount?: number;
     inlineButtons?: boolean;
-    viewButton?: boolean;
     addButton?: boolean;
     removeButton?: boolean;
-    editButton?: boolean;
-    duplicateButton?: boolean;
-    moveUpDownButtons?: boolean;
     navigationButtons?: boolean;
+    specialHiddenPanelForPatternExplorer?: boolean;
     randomButton?: boolean;
     // For next field, Array could be ["fieldName1", "fieldName2", ...]
     columnsToDisplay?: boolean | Array<String>;
     customButton?: any;
     validateAdd?: string;
     validateEdit?: string;
-    shouldNextItemBeSelectedAfterItemRemoved?: boolean;
     selectCallback?: Function;
     transformDisplayedValues?: Function;
-    massEditingMode?: boolean;
 }
 
 interface GridDisplayConfiguration {

@@ -131,25 +131,16 @@ class ItemPanel {
 const defaultGridConfiguration: GridConfiguration = {
     idProperty: undefined,
     
-    viewButton: true,
     addButton: true,
     removeButton: true,
-    editButton: true,
+
     columnsToDisplay: false,
     inlineButtons: false,
-    navigationButtons: false,
+    navigationButtons: true, // trying to have these always on
     
-    // Flag for whether removing an item then selects the next item after it
-    // This flag makes it easy to quickly delete a lot of items, which is maybe not good in some cases
-    shouldNextItemBeSelectedAfterItemRemoved: false,
-   
     customButton: null,
     validateAdd: null,
     validateEdit: null,
-    duplicateButton: false,
-
-    // TODO: Need to make work:
-    moveUpDownButtons: false
 };
 
 const sortCharacterUp = "\u25B2";
@@ -171,15 +162,14 @@ class GridWithItemPanel {
     valueProperty: Function;
     panelBuilder: PanelBuilder = null;
     
-    // viewing, editing, adding
+    // viewing, editing, adding - these are no longer being used
+    // except for the one case, in the pattern explorer, where nothing is shown
     displayMode = null;
     
     // TODO: Multiple select
     private selectedItem = null;
     
     isNavigationalScrollingNeeded: string = null;
-    
-    doubleClickAction = null;
     
     sortBy: string = null;
     sortDirection: string = "ascending";
@@ -285,7 +275,8 @@ class GridWithItemPanel {
     
     addNavigationButtons(buttons) {
         // TODO: Improve navigation enabling
-        const navigationDisabled = (this.isEditing() && !this.gridConfiguration.massEditingMode) || this.dataStore.isEmpty() || undefined;
+        // CFK const navigationDisabled = (this.isEditing() && !this.gridConfiguration.massEditingMode) || this.dataStore.isEmpty() || undefined;
+        const navigationDisabled = this.dataStore.data.indexOf(this.selectedItem) === -1 || this.dataStore.isEmpty() || undefined;
         buttons.push(m("button", {onclick: this.navigateClicked.bind(this, "start"), disabled: navigationDisabled}, translate("#button_navigateStart|[<<")));
         buttons.push(m("button", {onclick: this.navigateClicked.bind(this, "previous"), disabled: navigationDisabled}, translate("#button_navigatePrevious|<")));
         buttons.push(m("button", {onclick: this.navigateClicked.bind(this, "next"), disabled: navigationDisabled}, translate("#button_navigateNext|>")));
@@ -361,9 +352,6 @@ class GridWithItemPanel {
                 const sortBy = e.target.getAttribute("data-sort-by");
                 if (sortBy) {
                     // Sorting derived from: http://lhorie.github.io/mithril-blog/vanilla-table-sorting.htm
-                    // Don't sort if have move up/down buttons
-                    if (this.gridConfiguration.moveUpDownButtons) return;
-
                     if (this.sortBy === sortBy) {
                         if (this.sortDirection === "ascending") {
                             this.sortDirection = "descending";
@@ -381,34 +369,19 @@ class GridWithItemPanel {
                     this.selectItemInList(e);
                 }
             },
-            ondblclick: (e) => {
-                const prop = e.target.getAttribute("data-sort-by");
-                if (!prop) {
-                    if (this.selectedItem && this.doubleClickAction) {
-                        this.doubleClickAction(this.selectedItem);
-                    }
-                }
-            },
             config: this.ensureTableRowIsVisibleConfig.bind(this)
         };
     }
     
     private selectItemInList(e) {
-        if (this.isEditing() && !this.gridConfiguration.massEditingMode) return;
         const itemID = e.target.getAttribute("data-item-index");
         const item = this.dataStore.itemForId(itemID);
         if (item !== undefined) {
             this.setSelectedItem(item);
-            if (this.gridConfiguration.viewButton) {
-                if (this.gridConfiguration.massEditingMode) {
-                    if (!this.displayMode) {
-                        this.displayMode = "viewing";
-                    }
-                } else {
-                    this.displayMode = "viewing";
-                }
+            if (!this.gridConfiguration.specialHiddenPanelForPatternExplorer) {
+                this.displayMode = "editing";
             }
-        }
+         }
     }
     
     setSelectedItem(item) {
@@ -468,18 +441,6 @@ class GridWithItemPanel {
         
         if (item === this.selectedItem) {
             this.setSelectedItem(null);
-            
-            if (this.gridConfiguration.shouldNextItemBeSelectedAfterItemRemoved) {
-                if (index === this.dataStore.length()) {
-                    index = index - 1;
-                }  
-                if (!this.dataStore.isEmpty()) {
-                    this.setSelectedItem(this.dataStore.itemForIndex(index));
-                } else {
-                   this.setSelectedItem(null);
-                }
-                this.isNavigationalScrollingNeeded = "delete";
-            }
         }
     }
     
@@ -495,36 +456,7 @@ class GridWithItemPanel {
         this.setSelectedItem(item);
         this.displayMode = "viewing";
     }
-    
-    private duplicateItem(item) {        
-        if (!item) item = this.selectedItem;
         
-        // TODO: May not need this
-        if (this.isEditing()) {
-            alert("The edit must be finished before duplicating an item");
-            return;
-        }
-
-        if (!item) {
-            alert("Please select an item to duplicate first");
-            return;
-        }
-        
-        const newItem = this.dataStore.makeCopyOfItemWithNewId(item);
-        this.setSelectedItem(newItem);
-        this.displayMode = "adding";
-    }
-
-    private moveItemUp(item) {
-        if (!item) item = this.selectedItem;
-        this.dataStore.moveItemUp(item);
-    }
-    
-    private moveItemDown(item) {
-        if (!item) item = this.selectedItem;
-        this.dataStore.moveItemDown(item);
-    }
-    
     private doneClicked(item) {
         // TODO: Should ensure the data is saved
         if (this.isEditing()) {
@@ -571,7 +503,8 @@ class GridWithItemPanel {
     private createButtons(item = undefined) {
         const buttons = [];
        
-        const unavailable = (this.isEditing() && !this.gridConfiguration.massEditingMode) || (!item && !this.selectedItem) || undefined;
+        // cfk const unavailable = (this.isEditing() && !this.gridConfiguration.massEditingMode) || (!item && !this.selectedItem) || undefined;
+        const unavailable = (!item && !this.selectedItem) || undefined;
         const disabled = this.readOnly || unavailable;
         
         if (this.gridConfiguration.removeButton) {
@@ -579,31 +512,7 @@ class GridWithItemPanel {
             buttons.push(removeButton);
         }
 
-        if (this.gridConfiguration.editButton) {
-            let editButtonDisabled = disabled;
-            if (this.gridConfiguration.massEditingMode && this.isEditing()) editButtonDisabled = true;
-            const editButton = m("button", {onclick: this.editItem.bind(this, item), disabled: editButtonDisabled, "class": "fader"}, translate("#button_Edit|Edit"));
-            buttons.push(editButton);
-        }
-        
-        if (this.gridConfiguration.viewButton) {
-            const viewButton = m("button", {onclick: this.viewItem.bind(this, item), disabled: unavailable || this.isViewing(), "class": "fader"}, translate("#button_View|View"));
-            buttons.push(viewButton); 
-        }
-        
-        if (this.gridConfiguration.duplicateButton) {
-            const duplicateButton = m("button", {onclick: this.duplicateItem.bind(this, item), disabled: disabled}, translate("#button_Duplicate|Duplicate"));
-            buttons.push(duplicateButton);
-        }
-             
-        if (this.gridConfiguration.moveUpDownButtons) {
-            const upButton = m("button", {onclick: this.moveItemUp.bind(this, item), disabled: disabled}, translate("#button_Up|Up"));
-            buttons.push(upButton);
-            const downButton = m("button", {onclick: this.moveItemDown.bind(this, item), disabled: disabled}, translate("#button_Down|Down"));
-            buttons.push(downButton);
-        }
-        
-        if (this.gridConfiguration.customButton) {
+          if (this.gridConfiguration.customButton) {
             const options = this.gridConfiguration.customButton;
             let customButtonClickedPartial;
             if (_.isString(options.callback)) {
@@ -611,9 +520,6 @@ class GridWithItemPanel {
                 customButtonClickedPartial = this.panelBuilder.buttonClicked.bind(this.panelBuilder, this.model, fakeFieldSpecification);
             } else {
                 customButtonClickedPartial = (event) => { options.callback(this, item); };
-            }
-            if (!this.gridConfiguration.viewButton) {
-                this.doubleClickAction = customButtonClickedPartial;
             }
             const customButton = m("button", {onclick: customButtonClickedPartial, disabled: disabled}, translate(options.customButtonLabel));
             buttons.push(customButton);
