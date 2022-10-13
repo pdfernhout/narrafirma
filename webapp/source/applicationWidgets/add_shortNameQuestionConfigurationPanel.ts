@@ -16,7 +16,7 @@ function add_shortNameQuestionConfigurationPanel(panelBuilder: PanelBuilder, mod
     const isAnnotationQuestion = model.indexOf("AnnotationQuestion") >= 0;
     const storageFunction = valuePathResolver.newValuePathForFieldSpecification(model, fieldSpecification);
 
-    let questionPrompt =  `Enter a <strong>short name</strong> for the question. It will appear in lists and on graphs. It must be unique within the project.`;
+    let questionPrompt =  `Enter a <strong>short name</strong> for the question. It will appear in lists and on graphs. It is required and must be unique within the project.`;
     if (isAnnotationQuestion) questionPrompt += " <em>Changing this question's short name here will change it in this question and in your stories.</em> "
     
     // methods that apply to all types of questions
@@ -93,7 +93,7 @@ function add_shortNameQuestionConfigurationPanel(panelBuilder: PanelBuilder, mod
     if (isAnnotationQuestion) {
         let value = storageFunction();
         if (value === undefined) { // no name set
-            parts.push(m("div.questionInternal", [m("input", {id: fieldSpecification.id, class: "narrafirma-textbox", style: "width: 20em;", value: storageFunction() || "", disabled: panelBuilder.readOnly, 
+            parts.push(m("div.questionInternal", [m("input", {id: fieldSpecification.id, class: "narrafirma-textbox-required", style: "width: 20em;", value: storageFunction() || "", disabled: panelBuilder.readOnly, 
                     onchange: function(event) { setNewShortName(event.target.value) }})]));
         } else { // name set already
             if (!changeAnnotationQuestionShortNamePanelIsOpen) {
@@ -103,7 +103,7 @@ function add_shortNameQuestionConfigurationPanel(panelBuilder: PanelBuilder, mod
                 if (!panelBuilder.readOnly)
                     parts.push(m("button", {id: "openChangeShortNamePanel", onclick: function() {openChangeAnnotationQuestionShortNamePanel()}}, "Change")); 
             } else {
-                parts.push(m("input", {id: fieldSpecification.id, class: "narrafirma-textbox-short", value: storageFunction() || "", disabled: panelBuilder.readOnly}));
+                parts.push(m("input", {id: fieldSpecification.id, class: "narrafirma-textbox-short-required", value: storageFunction() || "", disabled: panelBuilder.readOnly}));
                 if (!panelBuilder.readOnly) {
                     parts.push(m("button", {id: "confirmShortNameChange", style: "background-color: #f88a57", onclick: function() {changeAnnotationQuestionShortName()}}, "Confirm")); 
                     parts.push(m("button", {id: "cancelShortNameChange", style: "background-color: #ffe1aa", onclick: function() {cancelChangingAnnotationQuestionShortName()}}, "Cancel")); 
@@ -111,7 +111,7 @@ function add_shortNameQuestionConfigurationPanel(panelBuilder: PanelBuilder, mod
             }
         }
     } else { // not an annotation question
-        parts.push(m("div.questionInternal", [m("input", {id: fieldSpecification.id, class: "narrafirma-textbox", style: "width: 20em;", value: storageFunction() || "", disabled: panelBuilder.readOnly, 
+        parts.push(m("div.questionInternal", [m("input", {id: fieldSpecification.id, class: "narrafirma-textbox-required", style: "width: 20em;", value: storageFunction() || "", disabled: panelBuilder.readOnly, 
                 onchange: function(event) { setNewShortName(event.target.value) }})]));
     }
     return m("div.questionExternal", parts);

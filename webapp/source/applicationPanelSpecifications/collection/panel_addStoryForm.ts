@@ -12,8 +12,9 @@ const panel: Panel = {
             valueType: "string",
             displayType: "text",
             displayConfiguration: "20",
+            required: true,
             displayName: "Short name",
-            displayPrompt: "Enter a short <strong>name</strong> for the story form. It must be unique within the project."
+            displayPrompt: "Enter a short <strong>name</strong> for the story form. It is required and must be unique within the project."
         },
 
         // show/hide buttons

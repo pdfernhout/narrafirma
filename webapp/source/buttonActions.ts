@@ -264,6 +264,41 @@ export function setQuestionnaireForStoryCollection(storyCollectionIdentifier): b
     return true;
 }
 
+export function checkThatItemHasShortName(itemID): boolean {
+    if (!itemID) return false;
+    const item = project.tripleStore.makeObject(itemID, true);
+    if (!item) return false; 
+
+    // item types whose short names are required, for lookup:
+    // eliciting, story, participant, and annotation questions
+    // story forms
+    // story collections
+    // catalysis reports
+
+    let itemType = null;
+    if (itemID.indexOf("ElicitingQuestion") >= 0) {
+        itemType = "elicitingQuestion";
+    } else if (itemID.indexOf("StoryQuestion") >= 0) {
+        itemType = "storyQuestion";
+    } else if (itemID.indexOf("ParticipantQuestion") >= 0) {
+        itemType = "participantQuestion";
+    } else if (itemID.indexOf("AnnotationQuestion") >= 0) {
+        itemType = "annotationQuestion";
+    } else if (itemID.indexOf("StoryForm") >= 0) {
+        itemType = "questionForm";
+    } else if (itemID.indexOf("CatalysisReport") >= 0) {
+        itemType = "catalysisReport";
+    } else if (itemID.indexOf("StoryCollection") >= 0) {
+        itemType = "storyCollection";
+    } else {
+        const message = "Error: Unsupported short-name validation check for item: " + itemID;
+        alert(message);
+        console.log(message);
+    }
+    const shortNameKey = itemType + "_shortName";
+    return item[shortNameKey] && item[shortNameKey].length > 0;
+}
+
 export function updateQuestionnaireForStoryCollection(storyCollectionIdentifier) {
     if (!storyCollectionIdentifier) {
         alert("Problem: No storyCollectionIdentifier");

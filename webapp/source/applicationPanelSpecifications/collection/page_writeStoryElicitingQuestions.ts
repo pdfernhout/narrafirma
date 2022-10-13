@@ -25,6 +25,8 @@ const panel: Panel = {
                     editButton: true,
                     addButton: true,
                     removeButton: true,
+                    validateAdd: "requireShortName",
+                    validateEdit: "requireShortName",
                     navigationButtons: true,
                     columnsToDisplay: ["elicitingQuestion_text", "elicitingQuestion_shortName"]
                 }

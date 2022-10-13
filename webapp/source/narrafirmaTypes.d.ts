@@ -49,6 +49,7 @@ interface PanelField {
     valueType: string;
     displayType: string;
     displayPrompt: any;
+    required?: boolean;
     valuePath?: string;
     valueOptions?: string | string[] | Object;
     valueOptionsSubfield?: string;

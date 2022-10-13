@@ -9,11 +9,11 @@ const panel: Panel = {
             id: "catalysisReport_shortName",
             valueType: "string",
             displayType: "text",
-            displayConfiguration: "20",
+            displayConfiguration: "30",
+            required: true,
             displayName: "Catalysis report name",
             displayPrompt: `Please give this catalysis report a short <strong>name</strong>.
-                A catalysis report must have a name. 
-                The name must be unique within the project, and it must not be changed after you start using the catalysis report.`
+                The name is required, must be unique within the project, and must not be changed after you start using the catalysis report.`
         },
         {
             id: "catalysisReport_storyCollections",

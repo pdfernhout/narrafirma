@@ -25,6 +25,8 @@ const panel: Panel = {
                     columnsToDisplay: ["participantQuestion_text", "participantQuestion_type", "participantQuestion_shortName", "participantQuestion_options"],
                     viewButton: true,
                     editButton: true,
+                    validateAdd: "requireShortName",
+                    validateEdit: "requireShortName",
                     addButton: true,
                     removeButton: true, 
                     navigationButtons: true,

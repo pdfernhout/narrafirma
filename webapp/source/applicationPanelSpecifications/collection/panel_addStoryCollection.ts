@@ -11,11 +11,11 @@ const panel: Panel = {
             valueType: "string",
             displayType: "text",
             displayConfiguration: "20",
+            required: true,
             displayName: "Story collection name",
             displayPrompt: `
                 Please give this story collection a short <strong>name</strong>.
-                A story collection must have a name. 
-                The name must be unique within the project, and it must not be changed after you start using the collection.
+                This name is required, must be unique within the project, and must not be changed after you start using the collection.
             `
         },
         {

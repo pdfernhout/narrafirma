@@ -23,6 +23,8 @@ const panel: Panel = {
                 gridConfiguration: {
                     viewButton: true,
                     editButton: true,
+                    validateAdd: "requireShortName",
+                    validateEdit: "requireShortName",
                     addButton: true,
                     removeButton: true,
                     navigationButtons: true,

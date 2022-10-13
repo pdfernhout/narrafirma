@@ -22,6 +22,7 @@ const panel: Panel = {
                 itemPanelID: "panel_addStoryCollection",
                 gridConfiguration: {
                     validateAdd: "storeQuestionnaireInStoryCollection",
+                    validateEdit: "requireShortName",
                     viewButton: true,
                     editButton: true,
                     addButton: true,

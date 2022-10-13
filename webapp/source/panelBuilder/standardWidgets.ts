@@ -157,11 +157,16 @@ export function displayQuestion(panelBuilder: PanelBuilder, model, fieldSpecific
         questionLabel[0].attrs["for"] = getIdForText(fieldID);
         questionLabel[0].tag = "label";
 
+        let className = "narrafirma-textbox";
+        if (fieldSpecification.required) {
+            className += "-required";
+        }
+
         const lengthAsNumber = Number(fieldSpecification.displayConfiguration);
         if (!isNaN(lengthAsNumber)) {
             standardValueOptions["style"] = "width: " + lengthAsNumber + "%";
         }
-        return [m("input[class=narrafirma-textbox]", standardValueOptions), m("br")];
+        return [m("input[class=" + className + "]", standardValueOptions), m("br")];
     }
 
     ///////////////////////////////////////////////////////////////////// textarea /////////////////////////////////////////////////////////////////////

@@ -28,6 +28,8 @@ const panel: Panel = {
                     columnsToDisplay: ["annotationQuestion_text", "annotationQuestion_type", "annotationQuestion_shortName", "annotationQuestion_options"],
                     viewButton: true,
                     editButton: true,
+                    validateAdd: "requireShortName",
+                    validateEdit: "requireShortName",
                     addButton: true,
                     removeButton: true, 
                     navigationButtons: true,

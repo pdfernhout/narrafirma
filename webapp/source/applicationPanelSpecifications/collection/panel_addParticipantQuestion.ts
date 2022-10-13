@@ -22,19 +22,19 @@ const panel: Panel = {
             displayPrompt: "Enter a <strong>question</strong> to ask people about themselves."
         },
         {
+            id: "participantQuestion_shortName",
+            valueType: "object",
+            displayType: "shortNameQuestionConfigurationPanel",
+            displayName: "Short name",
+            displayPrompt: "Please enter a short <strong>name</strong> we can use to refer to the question. <strong>It must be unique within the project.</strong>"
+        },
+        {
             id: "participantQuestion_type",
             valueType: "none",
             displayType: "questionTypeChooser",
             displayConfiguration: "participant",
             displayName: "Type",
             displayPrompt: "How do you want participants to <strong>answer</strong> this question?"
-        },
-        {
-            id: "participantQuestion_shortName",
-            valueType: "object",
-            displayType: "shortNameQuestionConfigurationPanel",
-            displayName: "Short name",
-            displayPrompt: "Please enter a short <strong>name</strong> we can use to refer to the question. <strong>It must be unique within the project.</strong>"
         },
         {
             id: "participantQuestion_checkbox_config",
