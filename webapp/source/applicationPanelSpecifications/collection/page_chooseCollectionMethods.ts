@@ -27,7 +27,7 @@ const panel: Panel = {
             displayType: "grid",
             displayConfiguration: "panel_addStoryCollectionMethod",
             displayName: "Story collection methods",
-            displayPrompt: "These are the ways you will be collecting stories."
+            displayPrompt: "These are the story collection methods you have added. Click on a method to edit it."
         }
     ]
 };

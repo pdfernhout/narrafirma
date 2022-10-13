@@ -25,11 +25,12 @@ const panel: Panel = {
                     editButton: true,
                     addButton: true,
                     removeButton: true,
+                    navigationButtons: true,
                     columnsToDisplay: ["catalysisReport_shortName", "catalysisReport_notes", "catalysisReport_about", "catalysisReport_conclusion"]
                 }
             },
             displayName: "Catalysis reports",
-            displayPrompt: "These are the catalysis reports you have created so far."
+            displayPrompt: "These are the catalysis reports you have added. Click on a report to edit it."
         }
     ]
 };

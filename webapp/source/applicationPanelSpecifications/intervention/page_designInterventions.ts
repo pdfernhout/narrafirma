@@ -26,7 +26,7 @@ const panel: Panel = {
             displayType: "grid",
             displayConfiguration: "panel_addIntervention",
             displayName: "Intervention plans",
-            displayPrompt: "These are the intervention plans you have created so far."
+            displayPrompt: "These are the intervention plans you have added. Click on a plan to edit it."
         }
     ]
 };

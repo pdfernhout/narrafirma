@@ -20,7 +20,7 @@ const panel: Panel = {
             displayType: "grid",
             displayConfiguration: "panel_addSensemakingSessionRecord",
             displayName: "Sensemaking session records",
-            displayPrompt: "These are the session records you have created so far."
+            displayPrompt: "These are the session records you have added. Click on a record to edit it."
         }
     ]
 };

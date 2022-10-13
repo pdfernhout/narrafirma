@@ -27,11 +27,12 @@ const panel: Panel = {
                     editButton: true,
                     addButton: true,
                     removeButton: true,
+                    navigationButtons: true,
                     columnsToDisplay: ["questionForm_shortName", "questionForm_title", "questionForm_startText"]
                 }
             },
             displayName: "Story forms",
-            displayPrompt: "These are the story forms you have created so far."
+            displayPrompt: "These are the story forms you have added. Click on a story form to edit it."
         },
 
 
@@ -46,7 +47,7 @@ const panel: Panel = {
             valueType: "none",
             displayType: "label",
             displayClass: "narrafirma-question-type-label-not-white",
-            displayPrompt: `You can start your story form by filling it with <strong>all of the questions you have created</strong>. 
+            displayPrompt: `You can start a story form by filling it with <strong>all of the questions you have created</strong>. 
                 This will place it into the list above. Afterwards, you can fine-tune its appearance. `
         },
         {

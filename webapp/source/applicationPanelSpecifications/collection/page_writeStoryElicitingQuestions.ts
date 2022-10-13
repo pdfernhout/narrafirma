@@ -25,11 +25,12 @@ const panel: Panel = {
                     editButton: true,
                     addButton: true,
                     removeButton: true,
+                    navigationButtons: true,
                     columnsToDisplay: ["elicitingQuestion_text", "elicitingQuestion_shortName"]
                 }
             },
             displayName: "Story eliciting questions",
-            displayPrompt: "These are the <strong>eliciting questions</strong> you have created so far."
+            displayPrompt: "These are the eliciting questions you have added. Click on a question to edit it."
         },
         {
             id: "SPECIAL_elicitingQuestionRecommendations",

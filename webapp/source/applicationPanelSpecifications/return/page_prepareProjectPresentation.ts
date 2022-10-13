@@ -22,7 +22,7 @@ const panel: Panel = {
             displayType: "grid",
             displayConfiguration: "panel_addPresentationElement",
             displayName: "Statements",
-            displayPrompt: "These are the presentation elements you have created so far."
+            displayPrompt: "These are the presentation elements you have added. Click on an element to edit it."
         },
         {
             id: "projectPresentation_exportPresentationOutlineButton",

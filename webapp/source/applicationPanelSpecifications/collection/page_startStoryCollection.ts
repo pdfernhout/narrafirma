@@ -26,6 +26,7 @@ const panel: Panel = {
                     editButton: true,
                     addButton: true,
                     removeButton: true,
+                    navigationButtons: true,
                     customButton: {customButtonLabel: "Activate or Deactivate Web Form", callback: "toggleWebActivationOfSurvey"},
                     columnsToDisplay: ["storyCollection_shortName", "storyCollection_questionnaireIdentifier", "storyCollection_activeOnWeb", "storyCollection_notes"],
                     transformDisplayedValues: function (value, fieldName) {
@@ -35,7 +36,7 @@ const panel: Panel = {
                 }
             },
             displayName: "Story collections",
-            displayPrompt: "These are the story collections you have created so far."
+            displayPrompt: "These are the story collections you have added. Click on a collection to edit it."
         },
     ]
 };

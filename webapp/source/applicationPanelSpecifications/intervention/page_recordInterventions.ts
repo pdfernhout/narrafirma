@@ -20,7 +20,7 @@ const panel: Panel = {
             displayType: "grid",
             displayConfiguration: "panel_addInterventionRecord",
             displayName: "Intervention records",
-            displayPrompt: "These are the intervention records you have created so far."
+            displayPrompt: "These are the intervention records you have added. Click on a record to edit it."
         }
     ]
 };

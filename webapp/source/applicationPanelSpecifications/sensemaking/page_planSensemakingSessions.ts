@@ -26,7 +26,7 @@ const panel: Panel = {
             displayType: "grid",
             displayConfiguration: "panel_addSensemakingSessionPlan",
             displayName: "Sensemaking session plans",
-            displayPrompt: "These are the session plans you have created so far."
+            displayPrompt: "These are the session plans you have added. Click on a plan to edit it."
         }
     ]
 };

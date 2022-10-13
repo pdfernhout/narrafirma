@@ -26,7 +26,7 @@ const panel: Panel = {
             displayType: "grid",
             displayConfiguration: "panel_addStoryCollectionSession",
             displayName: "Story collection session plans",
-            displayPrompt: "<strong>Plans</strong> for story collection sessions lay out what you will do and how. Each plan can be used in multiple sessions."
+            displayPrompt: "These are the session plans you have added. Click on a plan to edit it. (A single plan can be used for multiple sessions.)"
         }
     ]
 };

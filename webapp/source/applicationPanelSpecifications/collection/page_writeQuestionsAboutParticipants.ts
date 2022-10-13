@@ -18,7 +18,7 @@ const panel: Panel = {
             valueType: "array",
             displayType: "grid",
             displayName: "Participant questions",
-            displayPrompt: "These are the questions you have written so far.",
+            displayPrompt: "These are the questions you have added. Click on a question to edit it.",
             displayConfiguration: {
                 itemPanelID: "panel_addParticipantQuestion",
                 gridConfiguration: {

@@ -21,7 +21,7 @@ const panel: Panel = {
             valueType: "array",
             displayType: "grid",
             displayName: "Annotation questions",
-            displayPrompt: "These are the annotation questions you have created so far.",
+            displayPrompt: "These are the annotation questions you have added. Click on a question to edit it.",
             displayConfiguration: {
                 itemPanelID: "panel_addAnnotationQuestion",
                 gridConfiguration: {
