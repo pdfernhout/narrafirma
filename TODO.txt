@@ -162,6 +162,18 @@ M When import story form, hundreds of triples can be generated which take minute
 
 ==== DONE
 
+--- Release 1.5.16
+
+Added: Icons for (nearly) every button.
+Changed: Simplified header at top of all pages.
+Changed: Simplified and reorganized all section pages (Planning, Collection, etc).
+Changed: Removed View and Edit buttons under all "GridWithItemPanel" list tables. Now all items in lists can be edited live, without separate view-only step.
+Changed: Renamed "Design, generate, or import story forms" page to "Build story forms."
+Changed: When editing story forms, can now see question texts as well as short names.
+Changed: Improved validation of short-name fields in questions (eliciting, about stories, about participants, annotation), story forms, story collections, and catalysis reports.
+Fixed: Bug where activity lists in printed agendas for story-collecting sessions and sensemaking sessions were not properly sorted.
+Fixed: Error where survey introduction text did not wrap correctly.
+
 --- Release 1.5.15
 
 Changed: Dealt more gracefully with situation in which multi-choice question (checkboxes) was changed to single-choice question (select) after data was collected. Was choking on wrong data type during story export.

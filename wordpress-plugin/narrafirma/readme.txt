@@ -7,9 +7,9 @@ Author URI: http://www.cfkurtz.com
 Author: Cynthia Kurtz and Paul Fernhout
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=DGVVDT2D49QA8
 Requires at least: 4.3.1
-Tested up to: 5.9.1
+Tested up to: 6.0.3
 Stable tag: trunk
-Version: 1.5.15
+Version: 1.5.16
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -105,6 +105,18 @@ We strongly suggest that you set up any web site on which you intend to install 
 12. Here the NarraFirma user is reflecting on the entire project, to learn from it and to keep good records for the future.
 
 == Changelog ==
+
+= 1.5.16 =
+
+Added: Icons for (nearly) every button.
+Changed: Simplified header at top of all pages.
+Changed: Simplified and reorganized all section pages (Planning, Collection, etc).
+Changed: Removed View and Edit buttons under all "GridWithItemPanel" list tables. Now all items in lists can be edited live, without separate view-only step.
+Changed: Renamed "Design, generate, or import story forms" page to "Build story forms."
+Changed: When editing story forms, can now see question texts as well as short names.
+Changed: Improved validation of short-name fields in questions (eliciting, about stories, about participants, annotation), story forms, story collections, and catalysis reports.
+Fixed: Bug where activity lists in printed agendas for story-collecting sessions and sensemaking sessions were not properly sorted.
+Fixed: Error where survey introduction text did not wrap correctly.
 
 = 1.5.15 =
 
@@ -578,6 +590,9 @@ loading application, getting user information, or retrieving project data.
 change logs, see the [GitHub repository](https://github.com/pdfernhout/narrafirma).
 
 == Upgrade Notice ==
+
+= 1.5.16 =
+This minor upgrade makes many small improvements to clarity and usability.
 
 = 1.5.15 =
 This minor upgrade deals more gracefully with a situation in which a multi-choice question (checkboxes) was changed to a single-choice question (select) after data was collected.
