@@ -19,6 +19,7 @@ const panel: Panel = {
             valueType: "none",
             displayType: "button",
             displayConfiguration: "storyCollectionStop",
+            displayIconClass: "activateOrDeactivateButtonImage",
             displayPrompt: "Disable All Web-based Story Collection"
         },
         {

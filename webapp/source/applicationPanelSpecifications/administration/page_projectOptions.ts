@@ -6,6 +6,7 @@ const panel: Panel = {
     displayName: "Project options",
     pageExplanation: "Change options that affect your entire project.",
     pageCategories: "configure",
+    headerAbove: "Manage",
     panelFields: [
         {
             id: "projectOptions_header",

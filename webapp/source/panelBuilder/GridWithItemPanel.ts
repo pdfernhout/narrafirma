@@ -136,7 +136,7 @@ const defaultGridConfiguration: GridConfiguration = {
 
     columnsToDisplay: false,
     inlineButtons: false,
-    navigationButtons: true, // trying to have these always on
+    navigationButtons: true, 
     
     customButton: null,
     validateAdd: null,
@@ -274,14 +274,26 @@ class GridWithItemPanel {
     }
     
     addNavigationButtons(buttons) {
-        // TODO: Improve navigation enabling
         const navigationDisabled = this.dataStore.data.indexOf(this.selectedItem) === -1 || this.dataStore.isEmpty() || undefined;
-        buttons.push(m("button", {onclick: this.navigateClicked.bind(this, "start"), disabled: navigationDisabled}, translate("#button_navigateStart|⇤")));
-        buttons.push(m("button", {onclick: this.navigateClicked.bind(this, "previous"), disabled: navigationDisabled}, translate("#button_navigatePrevious|←")));
-        buttons.push(m("button", {onclick: this.navigateClicked.bind(this, "next"), disabled: navigationDisabled}, translate("#button_navigateNext|→")));
-        buttons.push(m("button", {onclick: this.navigateClicked.bind(this, "end"), disabled: navigationDisabled}, translate("#button_navigateEnd|⇥")));
+
+        if (this.dataStore.data.length >= 6)
+            buttons.push(m("button", {onclick: this.navigateClicked.bind(this, "start"), disabled: navigationDisabled}, 
+                m("span", {class: "buttonWithNoTextImage navigateToStartIconImage"})));
+
+        if (this.dataStore.data.length >= 2)
+            buttons.push(m("button", {onclick: this.navigateClicked.bind(this, "previous"), disabled: navigationDisabled}, 
+                m("span", {class: "buttonWithNoTextImage navigatePreviousIconImage"})));
+        if (this.dataStore.data.length >= 2)
+            buttons.push(m("button", {onclick: this.navigateClicked.bind(this, "next"), disabled: navigationDisabled}, 
+                m("span", {class: "buttonWithNoTextImage navigateNextIconImage"})));
+
+        if (this.dataStore.data.length >= 6)
+            buttons.push(m("button", {onclick: this.navigateClicked.bind(this, "end"), disabled: navigationDisabled}, 
+                m("span", {class: "buttonWithNoTextImage navigateToEndIconImage"})));
+
         if (this.gridConfiguration.randomButton)
-            buttons.push(m("button", {onclick: this.navigateClicked.bind(this, "random"), disabled: navigationDisabled}, translate("#button_navigateRandom|Random")));
+            buttons.push(m("button", {onclick: this.navigateClicked.bind(this, "random"), disabled: navigationDisabled}, 
+                m("span", {class: "buttonWithTextImage navigateRandomButtonImage"}), translate("#button_navigateRandom|Random")));
     }
 
     calculateView() {
@@ -318,7 +330,8 @@ class GridWithItemPanel {
         
         let buttons = [];
         if (this.gridConfiguration.addButton) {
-            const addButton = m("button", {onclick: this.addItem.bind(this), disabled: addButtonDisabled}, "+ " + translate("#button_Add|Add"));
+            const addButton = m("button", {onclick: this.addItem.bind(this), disabled: addButtonDisabled}, 
+                m("span", {class: "buttonWithTextImage addButtonImage"}), translate("#button_Add|Add"));
             buttons.push(addButton);
         }
         
@@ -433,7 +446,8 @@ class GridWithItemPanel {
     
     private bottomEditorForItem(panelBuilder, item, mode) {
         return m("div.narrafirma-griditempanel-divwithbutton" + "-" + mode + "ing", [
-            m("button", {onclick: this.doneClicked.bind(this, item), class: "narrafirma-griditempanel-close-button"}, "Close"),
+            m("button", {onclick: this.doneClicked.bind(this, item), class: "narrafirma-griditempanel-close-button"}, 
+                m("span", {class: "buttonWithTextImage closeButtonImage"}), "Close"),
             m.component(<any>ItemPanel, {key: this.fieldSpecification.id + "_" + "bottomEditor" + "_" + mode, panelBuilder: panelBuilder, item: item, grid: this, mode: mode})
         ]);
     }
@@ -523,7 +537,8 @@ class GridWithItemPanel {
         const disabled = this.readOnly || unavailable;
         
         if (this.gridConfiguration.removeButton) {
-            const removeButton = m("button", {onclick: this.deleteItem.bind(this, item), disabled: disabled, "class": "fader"}, "☓ " + translate("#button_Remove|Remove"));
+            const removeButton = m("button", {onclick: this.deleteItem.bind(this, item), disabled: disabled, "class": "fader"}, 
+                m("span", {class: "buttonWithTextImage removeButtonImage"}), translate("#button_Remove|Remove"));
             buttons.push(removeButton);
         }
 
@@ -536,7 +551,8 @@ class GridWithItemPanel {
             } else {
                 customButtonClickedPartial = (event) => { options.callback(this, item); };
             }
-            const customButton = m("button", {onclick: customButtonClickedPartial, disabled: disabled}, translate(options.customButtonLabel));
+            const customButton = m("button", {onclick: customButtonClickedPartial, disabled: disabled}, 
+                m("span", {class: options.customButtonIconClass}), translate(options.customButtonLabel));
             buttons.push(customButton);
         }
         

@@ -491,15 +491,18 @@ export function displayQuestion(panelBuilder: PanelBuilder, model, fieldSpecific
         parts = displayCheckboxQuestion();
     } else if (displayType === "checkboxes") {
         parts = [m("fieldset", displayCheckboxesQuestion())];
-        if (isAnnotationQuestion) parts.push(m("button.narrafirma-add-annotation-choice", {style: "margin-left: 1.5em", onclick: addAnnotationAnswer}, "Add New Answer"));
+        if (isAnnotationQuestion) parts.push(m("button.narrafirma-add-annotation-choice", {style: "margin-left: 1.5em", onclick: addAnnotationAnswer}, 
+            m("span", {class: "buttonWithTextImage addButtonImage"}), "Add New Answer"));
     } else if (displayType === "radiobuttons") {
         parts = [m("fieldset", displayRadioButtonsQuestion())];
-        if (isAnnotationQuestion) parts.push(m("button.narrafirma-add-annotation-choice", {style: "margin-left: 1.5em", onclick: addAnnotationAnswer}, "Add New Answer"));
+        if (isAnnotationQuestion) parts.push(m("button.narrafirma-add-annotation-choice", {style: "margin-left: 1.5em", onclick: addAnnotationAnswer}, 
+            m("span", {class: "buttonWithTextImage addButtonImage"}), "Add New Answer"));
     } else if (displayType === "boolean") {
         parts = [m("fieldset", displayBooleanQuestion())];
     } else if (displayType === "select") {
         parts = displaySelectQuestion();
-        if (isAnnotationQuestion) parts.push(m("button.narrafirma-add-annotation-choice", {onclick: addAnnotationAnswer}, "Add New Answer"));
+        if (isAnnotationQuestion) parts.push(m("button.narrafirma-add-annotation-choice", {onclick: addAnnotationAnswer}, 
+            m("span", {class: "buttonWithTextImage addButtonImage"}), "Add New Answer"));
     } else if (displayType === "slider") {
         parts = displaySliderQuestion();
 

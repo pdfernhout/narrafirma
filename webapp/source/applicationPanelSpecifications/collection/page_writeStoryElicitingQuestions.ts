@@ -12,7 +12,11 @@ const panel: Panel = {
             id: "project_elicitingQuestionsLabel",
             valueType: "none",
             displayType: "label",
-            displayPrompt: "On this page you can design the questions you will use <strong>to ask people to tell stories</strong>. You need at least one question for people to answer. We recommend giving people three to five questions to choose from."
+            displayPrompt: `On this page you can build a 
+                <strong>library of questions you will invite people to answer by telling stories</strong>.
+                You will draw on this library as you build your story forms. 
+                Each story form must contain at least one story-eliciting question.
+                `
         },
         {
             id: "project_elicitingQuestionsList",
@@ -38,6 +42,7 @@ const panel: Panel = {
             id: "SPECIAL_elicitingQuestionRecommendations",
             valueType: "none",
             displayType: "recommendationTable",
+            displayIconClass: "recommendationsButtonImage",
             displayConfiguration: "elicitingQuestions",
             displayPrompt: "Recommendations for eliciting questions"
         }

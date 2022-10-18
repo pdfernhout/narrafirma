@@ -368,7 +368,11 @@ class ClusteringDiagram {
         this.mainButtons.push(m("select.narrafirma-clustering-diagram-do-things-select", {id: this.doThingsSelectID}, selectOptions));
 
         const self = this; // must copy "this" because "this" inside an event handler is the DOM element
-        this.mainButtons.push(m("button.narrafirma-clustering-diagram-do-things-button", {onclick: function() { self.doThing(self.doThingsSelectID) } }, "Do it")); 
+        this.mainButtons.push(
+            m("button", 
+                {onclick: function() { self.doThing(self.doThingsSelectID) } }, 
+                m("span", {class: "buttonWithTextImage doItButtonImage"}), "Do it")
+            ); 
 
         if (!this.autosave) {
             this.mainButtons.push(m("button.narrafirma-clustering-diagram-save-changes", {onclick: function() {self.saveChanges()}}, "Save changes"));

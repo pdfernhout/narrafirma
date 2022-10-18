@@ -110,6 +110,7 @@ const panel: Panel = {
             displayType: "templateList",
             displayConfiguration: "annotationQuestions",
             displayPrompt: "Copy a question from a template",
+            displayIconClass: "copyButtonImage",
             displayVisible: function(panelBuilder, model) { return panelBuilder.readOnly === false; }
         },
 

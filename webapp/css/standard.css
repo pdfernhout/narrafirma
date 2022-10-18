@@ -47,13 +47,13 @@ Special warning areas f88a57
     --color-dialog-internal-border: black;
 
     /* working areas */
-    --color-editing: #d6dff0; 
+    --color-editing: #e4eaf4; 
     --color-viewing: white;
     --color-story-card: white;
 
     /* grids */
     --color-grid: white;
-    --color-grid-border: black;
+    --color-grid-border: #9cbbbb;
     --color-grid-border-disabled: #dbd9d9;
     --color-grid-selected-even: #ffe9c4;
     --color-grid-selected-odd: #ffe9c4;
@@ -67,7 +67,7 @@ Special warning areas f88a57
 
     /* notices, warnings, errors */
     --color-reminder: #f2f7f7;
-    --color-reminder-border: #638989;
+    --color-reminder-border: #7db9b9;
     --color-notice: #eafafa;
     --color-notice-border: black;
     --color-warning-text: #f88a57;
@@ -473,12 +473,18 @@ form {
  }
  
 .narrafirma-page-change-button {
-    font-size: 1em;
-    min-width: 4em;
+    font-size: 0.9em;
+    min-width: 6em;
     border: none;
-    box-shadow: 1px 1px 1px var(--color-box-shadow);
+    background-color: var(--color-reminder);
+    box-shadow: 1px 1px 1px var(--color-reminder-border);
     margin: 1em 0 0.5em 0.5em;
     padding: 0.3em 0.6em 0.3em 0.6em;
+}
+
+.narrafirma-page-change-button:hover {
+    color: white;
+    background-color: var(--color-reminder-border);
 }
 
 button {
@@ -506,29 +512,7 @@ button:disabled {
     vertical-align: middle;
 }
 
-.wwsButtonImage {
-	background-image: url(../images/WWS_BookCover_front_tiny.png);
-    background-repeat: no-repeat;
-	width: 43px;
-	height: 60px;
-	text-align: center;
-	vertical-align: middle;
-}
-
-.homeButtonImage {
-    background-image: url(../images/ionicicons/home-outline.svg);
-    background-repeat: no-repeat;
-    background-size: auto 100%;
-    width: 16px;
-    height: 16px;
-    text-align: center;
-    display: inline-block;
-    vertical-align: middle;
-    margin-right: 0.25em;
-}
-
-.leftButtonImage {
-    background-image: url(../images/ionicicons/arrow-back-outline.svg);
+.buttonWithTextImage {
     background-repeat: no-repeat;
     background-size: auto 100%;
     width: 20px;
@@ -539,24 +523,69 @@ button:disabled {
     margin-right: 0.25em;
 }
 
-.rightButtonImage {
-    background-image: url(../images/ionicicons/arrow-forward-outline.svg);
+/* all of these are invoked along with buttonWithTextImage */
+.homeButtonImage { background-image: url(../images/ionicicons/home-outline.svg); }
+.leftButtonImage { background-image: url(../images/ionicicons/arrow-back-outline.svg); }
+.rightButtonImage { background-image: url(../images/ionicicons/arrow-forward-outline.svg); margin-left: 0.25em}
+
+.recommendationsButtonImage { background-image: url(../images/ionicicons/bulb-outline.svg); }
+
+.addButtonImage { background-image: url(../images/ionicicons/add-outline.svg); }
+.removeButtonImage { background-image: url(../images/ionicicons/trash-outline.svg); }
+.copyButtonImage { background-image: url(../images/ionicicons/copy-outline.svg); }
+
+.doItButtonImage { background-image: url(../images/ionicicons/play-outline.svg); }
+
+.clearButtonImage { background-image: url(../images/ionicicons/close-outline.svg); }
+.checkButtonImage { background-image: url(../images/ionicicons/shield-checkmark-outline.svg); }
+.previewButtonImage { background-image: url(../images/ionicicons/paper-plane-outline.svg); }
+
+.importButtonImage { background-image: url(../images/ionicicons/enter-outline.svg); }
+.exportButtonImage { background-image: url(../images/ionicicons/exit-outline.svg); }
+
+.navigateRandomButtonImage { background-image: url(../images/ionicicons/dice-outline.svg); }
+
+.closeButtonImage { background-image: url(../images/ionicicons/close-outline.svg); }
+.changeButtonImage { background-image: url(../images/ionicicons/build-outline.svg); }
+.confirmButtonImage { background-image: url(../images/ionicicons/checkmark-outline.svg); }
+.cancelButtonImage { background-image: url(../images/ionicicons/close-outline.svg); }
+
+.upButtonImage { background-image: url(../images/ionicicons/chevron-up-outline.svg); }
+.downButtonImage { background-image: url(../images/ionicicons/chevron-down-outline.svg); }
+
+.printButtonImage { background-image: url(../images/ionicicons/print-outline.svg); }
+
+.showButtonImage { background-image: url(../images/ionicicons/eye-outline.svg); }
+.hideButtonImage { background-image: url(../images/ionicicons/eye-off-outline.svg); }
+
+.generateButtonImage{ background-image: url(../images/ionicicons/color-wand-outline.svg); }
+.updateButtonImage { background-image: url(../images/ionicicons/sync-outline.svg); }
+.activateOrDeactivateButtonImage { background-image: url(../images/ionicicons/globe-outline.svg); }
+.helpButtonImage{ background-image: url(../images/ionicicons/help-outline.svg); }
+.selectAllButtonImage { background-image: url(../images/ionicicons/checkmark-done-outline.svg); }
+
+.buttonWithNoTextImage {
     background-repeat: no-repeat;
     background-size: auto 100%;
     width: 20px;
     height: 20px;
     text-align: center;
-    display: inline-block; 
+    display: inline-block;
     vertical-align: middle;
-    margin-left: 0.25em;
 }
+
+/* all of these are invoked along with buttonWithNoTextImage */
+.navigateToStartIconImage { background-image: url(../images/ionicicons/play-skip-back-outline.svg); }
+.navigatePreviousIconImage { background-image: url(../images/ionicicons/previous-outline.svg); }
+.navigateNextIconImage { background-image: url(../images/ionicicons/play-outline.svg); }
+.navigateToEndIconImage { background-image: url(../images/ionicicons/play-skip-forward-outline.svg); }
 
  .questionPrompt.narrafirma-reminder {
     background-color: var(--color-reminder);
  }
 
  .questionExternal.narrafirma-reminder {
-    border-top: 1px solid var(--color-reminder-border);
+    border: 1px solid var(--color-reminder-border);
     background-color: var(--color-reminder);
     margin-top: 0.4em;
  }
@@ -1005,7 +1034,7 @@ textarea.narrafirma-translation-textbox {
 
 .narrafirma-griditempanel-divwithbutton-editing {
     background-color: var(--color-grid);
-    border: 4px groove var(--color-grid-border);
+    border: 4px groove var(--color-editing);
     margin: 0.5em;
 }
 

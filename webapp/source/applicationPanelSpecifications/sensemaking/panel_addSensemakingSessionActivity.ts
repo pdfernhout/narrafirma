@@ -109,6 +109,7 @@ const panel: Panel = {
             displayType: "templateList",
             displayConfiguration: "sensemakingActivities",
             displayPrompt: "Copy activity from template",
+            displayIconClass: "copyButtonImage",
             displayVisible: function(panelBuilder, model) {
                 return panelBuilder.readOnly === false;
             }

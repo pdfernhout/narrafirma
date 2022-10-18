@@ -361,6 +361,7 @@ class PatternExplorer {
                 {
                     id: "thingsYouCanDoPanel_doThingsWithSelectedStories",
                     displayPrompt: "Do it",
+                    displayIconClass: "doItButtonImage",
                     displayType: "button",
                     displayPreventBreak: true,
                     displayConfiguration: this.doThingsWithSelectedStories.bind(this),
@@ -385,6 +386,7 @@ class PatternExplorer {
                     {
                         id: "thingsYouCanDoPanel_doThingsWithSelectedStories",
                         displayPrompt: "Do it",
+                        displayIconClass: "doItButtonImage",
                         displayType: "button",
                         displayPreventBreak: true,
                         displayConfiguration: this.doThingsWithSelectedStories.bind(this),
@@ -448,6 +450,7 @@ class PatternExplorer {
                     displayType: "button",
                     displayConfiguration: "showOrHideAdvancedOptions",
                     displayName: "Show/hide advanced options",
+                    displayIconClass: function(panelBuilder, model) { return Globals.clientState().showAdvancedOptions() ? "hideButtonImage" : "showButtonImage"; },
                     displayPrompt: function(panelBuilder, model) { return Globals.clientState().showAdvancedOptions() ? "Hide advanced options" : "Show advanced options"; },
                     displayPreventBreak: false,
                     displayVisible: function(panelBuilder, model) { return !panelBuilder.readOnly; }
@@ -577,7 +580,7 @@ class PatternExplorer {
             if (this.observationAccessors.length === 0) {
                 result.push(m("button", {style: "margin-left: 0.8em", 
                     disabled: remarkable !== "yes",
-                    onclick: this.addObservationTabClick.bind(this),}, m("span.button-text ", "Add observation")));
+                    onclick: this.addObservationTabClick.bind(this),}, m("span", {class: "buttonWithTextImage addButtonImage"}), "Add observation"));
             } else {
                 let tabs = [];
                 for (let i = 0; i < this.observationAccessors.length; i++) {

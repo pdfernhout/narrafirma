@@ -17,6 +17,7 @@ const panel: Panel = {
             id: "SPECIAL_collectionSessionRecommendations",
             valueType: "none",
             displayType: "recommendationTable",
+            displayIconClass: "recommendationsButtonImage",
             displayConfiguration: "sessions",
             displayPrompt: "Recommendations for story collection sessions"
         },

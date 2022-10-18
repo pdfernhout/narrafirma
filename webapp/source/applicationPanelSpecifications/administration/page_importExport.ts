@@ -6,6 +6,7 @@ const panel: Panel = {
     displayName: "Import & Export",
     pageExplanation: "Backup or restore project data, or copy it from one project to another.",
     pageCategories: "manage",
+    headerAbove: "Integrate",
     panelFields: [
         {
             id: "importExport_header",
@@ -34,6 +35,7 @@ const panel: Panel = {
             id: "importExport_exportProject",
             valueType: "none",
             displayType: "button",
+            displayIconClass: "exportButtonImage",
             displayConfiguration: "exportProject",
             displayPrompt: "Export project"
         },
@@ -79,6 +81,7 @@ const panel: Panel = {
             id: "importExport_showDeletedStoryCollections",
             valueType: "none",
             displayType: "button",
+            displayIconClass: "showButtonImage",
             displayConfiguration: "showListOfRemovedStoryCollections",
             displayPrompt: "Show removed story collections"
         },
@@ -86,6 +89,7 @@ const panel: Panel = {
             id: "importExport_resetProject",
             valueType: "none",
             displayType: "button",
+            displayIconClass: "removeButtonImage",
             displayConfiguration: "resetProject",
             displayPrompt: "Reset project"
         },
@@ -117,6 +121,7 @@ const panel: Panel = {
             id: "importExport_importProject",
             valueType: "none",
             displayType: "button",
+            displayIconClass: "importButtonImage",
             displayConfiguration: "importProject",
             displayPrompt: "Import project"
         },

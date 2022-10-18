@@ -29,6 +29,7 @@ const panel: Panel = {
             valueType: "none",
             displayType: "button",
             displayPrompt: "Print presentation outline",
+            displayIconClass: "printButtonImage",
             displayConfiguration: "exportPresentationOutline",
         }
     ]

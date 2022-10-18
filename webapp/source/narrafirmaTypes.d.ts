@@ -55,6 +55,7 @@ interface PanelField {
     valueOptionsSubfield?: string;
     displayName?: string;
     displayConfiguration?: any;
+    displayIconClass?: any;
     displayVisible?: any;
     displayReadOnly?: any;
     displayTransformValue?: any;

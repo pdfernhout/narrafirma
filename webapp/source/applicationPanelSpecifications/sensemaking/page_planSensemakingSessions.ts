@@ -17,6 +17,7 @@ const panel: Panel = {
             id: "sensemakingSessionRecommendations",
             valueType: "none",
             displayType: "recommendationTable",
+            displayIconClass: "recommendationsButtonImage",
             displayConfiguration: "sessions",
             displayPrompt: "Recommendations for sensemaking sessions"
         },

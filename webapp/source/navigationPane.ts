@@ -45,9 +45,12 @@ const Navigation: any = {
                 m("a[id=narrafirma-login-link]", {href: loginCommand, title: "Log in (instead of being anonymous)"}, 'Log in') : 
                 m("a[id=narrafirma-logout-link]", {href: logoutCommand, title: "Log out the current user"}, 'Log out (' + userIdentifier + ')'),
            
-            m("a[id=narrafirma-help-link]", {href: launchHelpCommand, title: "Open online help for this page", "class": "narrafirma-help-link"}, "Help"),
-            m("a[id=narrafirma-next-page]", {href: nextPageLink(), title: nextPageTitle(), "class": nextPageClass()}, "⇨"),
-            m("a[id=narrafirma-previous-page]", {href: previousPageLink(), title:  previousPageTitle(), "class": previousPageClass()}, "⇦")
+            m("a[id=narrafirma-help-link]", {href: launchHelpCommand, title: "Open online help for this page", "class": "narrafirma-help-link"}, 
+                m("span.button-text", "Help")),
+            m("a[id=narrafirma-next-page]", {href: nextPageLink(), title: nextPageTitle(), "class": nextPageClass()}, 
+                m("span", {class: "buttonWithNoTextImage rightButtonImage"})),
+            m("a[id=narrafirma-previous-page]", {href: previousPageLink(), title:  previousPageTitle(), "class": previousPageClass()}, 
+                m("span", {class: "buttonWithNoTextImage leftButtonImage"}))
         ]);
     }
 };

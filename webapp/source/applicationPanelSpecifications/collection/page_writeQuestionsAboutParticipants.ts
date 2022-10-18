@@ -11,7 +11,9 @@ const panel: Panel = {
             id: "project_participantQuestionsLabel",
             valueType: "none",
             displayType: "label",
-            displayPrompt: "On this page you can write questions to ask people about <strong>themselves</strong>."
+            displayPrompt: `On this page you can build a <strong>library of questions about people</strong>.
+            You will draw on this library as you build your story forms. `
+                        
         },
         {
             id: "project_participantQuestionsList",
@@ -37,6 +39,7 @@ const panel: Panel = {
             id: "SPECIAL_participantQuestionRecommendations",
             valueType: "none",
             displayType: "recommendationTable",
+            displayIconClass: "recommendationsButtonImage",
             displayConfiguration: "participantQuestions",
             displayPrompt: "Recommendations for participant questions"
         }

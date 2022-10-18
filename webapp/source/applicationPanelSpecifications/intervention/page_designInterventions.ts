@@ -17,6 +17,7 @@ const panel: Panel = {
             id: "interventionRecommendations",
             valueType: "none",
             displayType: "recommendationTable",
+            displayIconClass: "recommendationsButtonImage",
             displayConfiguration: "interventions",
             displayPrompt: "Recommendations for intervention plans"
         },

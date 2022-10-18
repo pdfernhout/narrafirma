@@ -31,6 +31,7 @@ const panel: Panel = {
             valueType: "none",
             displayType: "button",
             displayConfiguration: "enterSurveyResult",
+            displayIconClass: "addButtonImage",
             displayPrompt: "Add Story...",
             displayPreventBreak: true,
             displayVisible: function(panelBuilder, model) {
@@ -42,6 +43,7 @@ const panel: Panel = {
             displayType: "button",
             displayConfiguration: "checkCSVStories",
             displayPreventBreak: true,
+            displayIconClass: "checkButtonImage",
             displayPrompt: "Check stories in CSV file (view log in browser console) ...",
             displayVisible: function(panelBuilder, model) {
                 return !!Globals.clientState().storyCollectionIdentifier();}
@@ -51,6 +53,7 @@ const panel: Panel = {
             valueType: "none",
             displayType: "button",
             displayConfiguration: "importCSVStories",
+            displayIconClass: "importButtonImage",
             displayPrompt: "Import stories from CSV file...",
             displayVisible: function(panelBuilder, model) {
                 return !!Globals.clientState().storyCollectionIdentifier();}

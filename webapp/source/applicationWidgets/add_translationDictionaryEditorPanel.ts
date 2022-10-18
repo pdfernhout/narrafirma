@@ -315,7 +315,7 @@ function add_translationDictionaryEditorPanel(panelBuilder: PanelBuilder, model,
 
     const parts = [];
     parts.push(m("select", {id: "thingsYouCanDo_actionRequested", style: "margin-left: 0.5em;"}, thingsYouCanDoSelectOptions));
-    parts.push(m("button", {id: "thingsYouCanDo_button", onclick: doThings}, "Do it"));
+    parts.push(m("button", {id: "thingsYouCanDo_button", onclick: doThings}, m("span", {class: "buttonWithTextImage doItButtonImage"}), "Do it"));
 
     if (keysOfTranslationDictionary.length > 0) {
         const instructionsPrompt = `Enter translations for each text in the story form, as shown below. (Don't translate the explanations in italics.) 

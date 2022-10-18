@@ -27,17 +27,7 @@ function addExtraFieldSpecificationsForPageSpecification(pageID, pageSpecificati
             const sectionPageSpecification = _panelSpecificationCollection.getPageSpecificationForPageID(newPageID);
             prompt += sectionPageSpecification.displayName;
         }
-        let iconPosition = "";
-        let arrowChar = "";
-        if (displayIconClass === "leftButtonImage") {
-            iconPosition = "left";
-            arrowChar = "⇦ ";
-            prompt = arrowChar + prompt;
-        } else if (displayIconClass === "rightButtonImage") {
-            iconPosition = "right";
-            arrowChar = " ⇨";
-            prompt = prompt + arrowChar;
-        } 
+        const iconPosition = (displayIconClass === "rightButtonImage") ? "right" : "left";
         const returnToDashboardButtonSpecification = {
             "id": pageID + idExtra,
             "valueType": "none",
@@ -48,7 +38,7 @@ function addExtraFieldSpecificationsForPageSpecification(pageID, pageSpecificati
                 "action": "guiOpenSection",
                 "section": newPageID
             },
-            displayIconClass: (displayIconClass == "homeButtonImage") ? displayIconClass : null,
+            displayIconClass: "buttonWithTextImage " + displayIconClass,
             displayPreventBreak: true,
             displayIconPosition: iconPosition
         };

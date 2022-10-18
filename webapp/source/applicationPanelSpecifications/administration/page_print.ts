@@ -27,6 +27,7 @@ const panel: Panel = {
             valueType: "none",
             displayType: "button",
             displayConfiguration: "printProjectReport",
+            displayIconClass: "printButtonImage",
             displayPrompt: "Print project report"
         },
         {

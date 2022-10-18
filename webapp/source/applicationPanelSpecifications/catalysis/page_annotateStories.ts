@@ -35,20 +35,11 @@ const panel: Panel = {
                 return !Globals.clientState().atLeastOneAnnotationQuestionExists();}
         },
         {
-            id: "project_exportCSVAnnotations",
-            valueType: "none",
-            displayType: "button",
-            displayConfiguration: "exportAnnotationsToCSV",
-            displayPreventBreak: true,
-            displayPrompt: "Export annotations to CSV",
-            displayVisible: function(panelBuilder, model) {
-                return !!Globals.clientState().storyCollectionIdentifier();}
-        },
-        {
             id: "project_checkCSVAnnotations",
             valueType: "none",
             displayType: "button",
             displayConfiguration: "checkCSVAnnotations",
+            displayIconClass: "checkButtonImage",
             displayPreventBreak: true,
             displayPrompt: "Check before importing",
             displayVisible: function(panelBuilder, model) {
@@ -59,10 +50,23 @@ const panel: Panel = {
             valueType: "none",
             displayType: "button",
             displayConfiguration: "importCSVAnnotations",
+            displayIconClass: "importButtonImage",
+            displayPreventBreak: true,
             displayPrompt: "Import from CSV",
             displayVisible: function(panelBuilder, model) {
                 return !!Globals.clientState().storyCollectionIdentifier();}
         },
+        {
+            id: "project_exportCSVAnnotations",
+            valueType: "none",
+            displayType: "button",
+            displayConfiguration: "exportAnnotationsToCSV",
+            displayIconClass: "exportButtonImage",
+            displayPrompt: "Export annotations to CSV",
+            displayVisible: function(panelBuilder, model) {
+                return !!Globals.clientState().storyCollectionIdentifier();}
+        },
+
         {
             id: "project_csvFileUploader",
             valueType: "none",

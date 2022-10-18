@@ -105,6 +105,7 @@ const panel: Panel = {
             displayType: "templateList",
             displayConfiguration: "storyCollectionActivities",
             displayPrompt: "Copy an activity from a template",
+            displayIconClass: "copyButtonImage",
             displayVisible: function(panelBuilder, model) {
                 return panelBuilder.readOnly === false;
             }

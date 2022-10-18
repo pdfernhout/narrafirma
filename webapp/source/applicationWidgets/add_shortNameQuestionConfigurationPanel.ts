@@ -101,12 +101,15 @@ function add_shortNameQuestionConfigurationPanel(panelBuilder: PanelBuilder, mod
                 const editingStyle = "margin-left: 1em";
                 parts.push(m("span", {style: panelBuilder.readOnly ? readOnlyStyle : editingStyle}, sanitizeHTML.generateSanitizedHTMLForMithril(value)));
                 if (!panelBuilder.readOnly)
-                    parts.push(m("button", {id: "openChangeShortNamePanel", onclick: function() {openChangeAnnotationQuestionShortNamePanel()}}, "Change")); 
+                    parts.push(m("button", {id: "openChangeShortNamePanel", onclick: function() {openChangeAnnotationQuestionShortNamePanel()}}, 
+                        m("span", {class: "buttonWithTextImage changeButtonImage"}), "Change")); 
             } else {
                 parts.push(m("input", {id: fieldSpecification.id, class: "narrafirma-textbox-short-required", value: storageFunction() || "", disabled: panelBuilder.readOnly}));
                 if (!panelBuilder.readOnly) {
-                    parts.push(m("button", {id: "confirmShortNameChange", style: "background-color: #f88a57", onclick: function() {changeAnnotationQuestionShortName()}}, "Confirm")); 
-                    parts.push(m("button", {id: "cancelShortNameChange", style: "background-color: #ffe1aa", onclick: function() {cancelChangingAnnotationQuestionShortName()}}, "Cancel")); 
+                    parts.push(m("button", {id: "confirmShortNameChange", style: "background-color: #f88a57", onclick: function() {changeAnnotationQuestionShortName()}}, 
+                        m("span", {class: "buttonWithTextImage confirmButtonImage"}), "Confirm")); 
+                    parts.push(m("button", {id: "cancelShortNameChange", style: "background-color: #ffe1aa", onclick: function() {cancelChangingAnnotationQuestionShortName()}}, 
+                        m("span", {class: "buttonWithTextImage cancelButtonImage"}), "Cancel")); 
                 }
             }
         }

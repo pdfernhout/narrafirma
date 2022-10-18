@@ -66,6 +66,7 @@ const panel: Panel = {
             valueType: "none",
             displayType: "button",
             displayConfiguration: "printStoryCards",
+            displayIconClass: "printButtonImage",
             displayPrompt: "Print Story Cards",
             displayPreventBreak: true,
             displayVisible: function(panelBuilder, model) {
@@ -78,9 +79,8 @@ const panel: Panel = {
             displayType: "button",
             displayConfiguration: "showOrHideAdvancedOptions",
             displayName: "Show/hide advanced options",
-            displayPrompt: function(panelBuilder, model) {
-                return Globals.clientState().showAdvancedOptions() ? "Hide advanced options" : "Show advanced options";
-            },
+            displayIconClass: function(panelBuilder, model) { return Globals.clientState().showAdvancedOptions() ? "hideButtonImage" : "showButtonImage"; },
+            displayPrompt: function(panelBuilder, model) { return Globals.clientState().showAdvancedOptions() ? "Hide advanced options" : "Show advanced options"; },
             displayPreventBreak: false,
             displayVisible: function(panelBuilder, model) {
                 return !!Globals.clientState().storyCollectionIdentifier();

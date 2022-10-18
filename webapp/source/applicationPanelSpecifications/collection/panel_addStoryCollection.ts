@@ -49,6 +49,7 @@ const panel: Panel = {
             displayType: "button",
             displayConfiguration: "updateQuestionnaireForStoryCollection",
             displayPrompt: "Update Story Form",
+            displayIconClass: "updateButtonImage",
             displayVisible: function(panelBuilder, model) {
                 return panelBuilder.readOnly === false;
             }

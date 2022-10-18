@@ -30,7 +30,8 @@ const panel: Panel = {
             displayType: "button",
             displayConfiguration: "exportQuestionnaire",
             displayPreventBreak: true,
-            displayPrompt: "Export story form with options for NarraFirma-native import...",
+            displayIconClass: "exportButtonImage",
+            displayPrompt: "Export story form (for import to NarraFirma)...",
             displayVisible: function(panelBuilder, model) {
                 return !!Globals.clientState().storyCollectionIdentifier();}
         },
@@ -39,7 +40,9 @@ const panel: Panel = {
             valueType: "none",
             displayType: "button",
             displayConfiguration: "exportQuestionnaireForImport",
-            displayPrompt: "Export story form with options for external import...",
+            displayIconClass: "exportButtonImage",
+            displayPreventBreak: true,
+            displayPrompt: "Export story form (for import to other software)...",
             displayVisible: function(panelBuilder, model) {
                 return !!Globals.clientState().storyCollectionIdentifier();}
         },
@@ -48,6 +51,7 @@ const panel: Panel = {
             valueType: "none",
             displayType: "button",
             displayConfiguration: "exportStoryCollection",
+            displayIconClass: "exportButtonImage",
             displayPrompt: "Export story collection...",
             displayVisible: function(panelBuilder, model) {
                 return !!Globals.clientState().storyCollectionIdentifier();}

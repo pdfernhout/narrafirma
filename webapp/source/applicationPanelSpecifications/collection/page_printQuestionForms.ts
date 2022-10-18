@@ -33,6 +33,7 @@ const panel: Panel = {
             valueType: "none",
             displayType: "button",
             displayConfiguration: "printStoryForm",
+            displayIconClass: "printButtonImage",
             displayPrompt: "Print Story Form",
             displayVisible: function(panelBuilder, model) {
                 return !!Globals.clientState().storyCollectionIdentifier();}

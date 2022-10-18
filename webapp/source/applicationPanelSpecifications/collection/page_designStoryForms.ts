@@ -58,6 +58,7 @@ const panel: Panel = {
             displayType: "button",
             displayConfiguration: "autoFillStoryForm",
             displayPreventBreak: true,
+            displayIconClass: "generateButtonImage",
             displayPrompt: "Generate story form using all existing questions..."
         },
         {
@@ -100,6 +101,7 @@ const panel: Panel = {
             id: "project_importStoryFormAndDataFromCSV",
             valueType: "none",
             displayType: "button",
+            displayIconClass: "importButtonImage",
             displayConfiguration: "importCSVQuestionnaire",
             displayPrompt: "Import CSV story form file..."
         },

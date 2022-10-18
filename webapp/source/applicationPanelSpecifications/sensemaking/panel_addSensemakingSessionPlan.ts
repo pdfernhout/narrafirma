@@ -100,6 +100,7 @@ const panel: Panel = {
             valueType: "none",
             displayType: "button",
             displayPrompt: "Print session agenda",
+            displayIconClass: "printButtonImage",
             displayConfiguration: "printSensemakingSessionAgenda",
             displayVisible: function(panelBuilder, model) {
                 return panelBuilder.readOnly === false;

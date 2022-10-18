@@ -74,9 +74,8 @@ const panel: Panel = {
             displayType: "button",
             displayConfiguration: "showOrHideAdvancedOptions",
             displayName: "Show/hide advanced options",
-            displayPrompt: function(panelBuilder, model) {
-                return Globals.clientState().showAdvancedOptions() ? "Hide advanced options" : "Show advanced options";
-            },
+            displayIconClass: function(panelBuilder, model) { return Globals.clientState().showAdvancedOptions() ? "hideButtonImage" : "showButtonImage"; },
+            displayPrompt: function(panelBuilder, model) { return Globals.clientState().showAdvancedOptions() ? "Hide advanced options" : "Show advanced options"; },
             displayPreventBreak: false,
             displayVisible: function(panelBuilder, model) {
                 return !!Globals.clientState().catalysisReportIdentifier();
@@ -563,24 +562,26 @@ const panel: Panel = {
             }
         },
         {
-            id: "catalysisReport_exportElements",
+            id: "catalysisReport_importElements",
             valueType: "none",
             displayType: "button",
-            displayConfiguration: "exportCatalysisReportElements",
-            displayName: "Export elements",
-            displayPrompt: "Export report elements to CSV",
+            displayIconClass: "importButtonImage",
+            displayConfiguration: "importCatalysisReportElements",
+            displayName: "Import elements",
             displayPreventBreak: true,
+            displayPrompt: "Import report elements from CSV",
             displayVisible: function(panelBuilder, model) {
                 return !!Globals.clientState().haveCatalysisReportAndShowingAdvancedOptions();
             }
         },
         {
-            id: "catalysisReport_importElements",
+            id: "catalysisReport_exportElements",
             valueType: "none",
             displayType: "button",
-            displayConfiguration: "importCatalysisReportElements",
-            displayName: "Import elements",
-            displayPrompt: "Import report elements from CSV",
+            displayConfiguration: "exportCatalysisReportElements",
+            displayName: "Export elements",
+            displayIconClass: "exportButtonImage",
+            displayPrompt: "Export report elements to CSV",
             displayVisible: function(panelBuilder, model) {
                 return !!Globals.clientState().haveCatalysisReportAndShowingAdvancedOptions();
             }

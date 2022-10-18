@@ -24,12 +24,23 @@ export function confirm(message, okCallback) {
 }
 
 export function addButtonThatLaunchesDialog(fieldSpecification, dialogConfiguration) {
-    return m("button", {
+    const parts = [m("span", {"class": "button-text"}, translate(fieldSpecification.id, fieldSpecification.displayPrompt))];
+    if (fieldSpecification.displayIconClass) {
+        const icon = m("span", {"class": "buttonWithTextImage " + fieldSpecification.displayIconClass});
+        if (fieldSpecification.displayIconPosition === "right") {
+            parts.push(icon);
+        } else {
+            parts.unshift(icon);
+        }
+    }
+    const button = m("button", {
         "class": "narrafirma-dialog-launching-button", 
         onclick: function() {
             openDialog(dialogConfiguration);
         }
-    }, translate(fieldSpecification.id, fieldSpecification.displayPrompt));
+    }, parts);
+    if (fieldSpecification.displayPreventBreak) return button;
+    return [button, m("br")];
 }
 
 function hideDialogMethod() {

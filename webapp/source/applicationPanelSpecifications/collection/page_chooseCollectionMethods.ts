@@ -19,6 +19,7 @@ const panel: Panel = {
             valueType: "none",
             displayType: "recommendationTable",
             displayConfiguration: "venues",
+            displayIconClass: "recommendationsButtonImage",
             displayPrompt: "Method recommendations"
         },
         {

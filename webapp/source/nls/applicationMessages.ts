@@ -33,10 +33,10 @@ const messages = {
     button_Duplicate: "Duplicate",
     button_Up: "Move Up",
     button_Down: "Move Down",
-    button_navigateStart: "⇤", 
-    button_navigatePrevious: "←",
-    button_navigateNext: "→",
-    button_navigateEnd: "⇥",
+    button_navigateStart: "First", 
+    button_navigatePrevious: "Previous",
+    button_navigateNext: "Next",
+    button_navigateEnd: "Last",
     button_navigateRandom: "Random",
     
     // Story browser button

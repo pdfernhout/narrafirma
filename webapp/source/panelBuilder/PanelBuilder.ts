@@ -39,7 +39,9 @@ function addButton(panelBuilder: PanelBuilder, model, fieldSpecification, callba
     const parts = [text];
    
     if (fieldSpecification.displayIconClass) {
-        const icon = m("span", {"class": fieldSpecification.displayIconClass});
+        let displayIconClass = fieldSpecification.displayIconClass;
+        if (typeof fieldSpecification.displayIconClass === "function") displayIconClass = displayIconClass(this, model, fieldSpecification);
+        const icon = m("span", {"class": "buttonWithTextImage " + displayIconClass});
         if (fieldSpecification.displayIconPosition === "right") {
             parts.push(icon);
         } else {

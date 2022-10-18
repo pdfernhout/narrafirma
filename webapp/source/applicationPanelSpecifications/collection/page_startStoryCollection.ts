@@ -28,7 +28,10 @@ const panel: Panel = {
                     addButton: true,
                     removeButton: true,
                     navigationButtons: true,
-                    customButton: {customButtonLabel: "Activate or Deactivate Web Form", callback: "toggleWebActivationOfSurvey"},
+                    customButton: {
+                        customButtonLabel: "Activate or Deactivate Web Form", 
+                        customButtonIconClass: "buttonWithTextImage activateOrDeactivateButtonImage",
+                        callback: "toggleWebActivationOfSurvey"},
                     columnsToDisplay: ["storyCollection_shortName", "storyCollection_questionnaireIdentifier", "storyCollection_activeOnWeb", "storyCollection_notes"],
                     transformDisplayedValues: function (value, fieldName) {
                         if (fieldName !== "storyCollection_activeOnWeb") return value;

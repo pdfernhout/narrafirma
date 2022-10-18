@@ -11,7 +11,8 @@ const panel: Panel = {
             id: "project_storyQuestionsLabel",
             valueType: "none",
             displayType: "label",
-            displayPrompt: "On this page you can write questions to ask people <strong>about their stories</strong>."
+            displayPrompt: `On this page you can build a <strong>library of questions about stories</strong>.
+                You will draw on this library as you build your story forms. `
         },
         {
             id: "project_storyQuestionsList",
@@ -37,6 +38,7 @@ const panel: Panel = {
             id: "SPECIAL_storyQuestionRecommendations",
             valueType: "none",
             displayType: "recommendationTable",
+            displayIconClass: "recommendationsButtonImage",
             displayConfiguration: "storyQuestions",
             displayPrompt: "Recommendations for story questions"
         }

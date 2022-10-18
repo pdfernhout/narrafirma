@@ -143,8 +143,8 @@ function add_catalysisReportGraphTypesChooser(panelBuilder: PanelBuilder, model,
     return m("div.questionExternal", [
         prompt, m("div", [m("table", {"class": "narrafirma-graph-types-chooser-table"}, m("tr", columnTDs))]),
         m("span[style=margin-left: 0.5em]", "Select graph types:"),
-        m("button", { onclick: selectAll }, "Select all"),
-        m("button", { onclick: clearAll }, "Clear all"),
+        m("button", { onclick: selectAll }, m("span", {class: "buttonWithTextImage selectAllButtonImage"}), "Select all"),
+        m("button", { onclick: clearAll }, m("span", {class: "buttonWithTextImage clearButtonImage"}), "Clear all"),
         m("br"),
         m("p" + tipStyleForGraphCount(totalGraphCount), tipForGraphCount(totalGraphCount))
     ]);

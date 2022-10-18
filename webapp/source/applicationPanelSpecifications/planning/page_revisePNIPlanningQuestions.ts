@@ -18,6 +18,7 @@ const panel: Panel = {
             id: "project_pniQuestions_copyDraftsButton",
             valueType: "none",
             displayType: "button",
+            displayIconClass: "copyButtonImage",
             displayConfiguration: "copyDraftPNIQuestionVersionsIntoAnswers",
             displayPrompt: "Copy your draft versions into any empty answers below"
         },

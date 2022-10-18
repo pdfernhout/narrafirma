@@ -201,7 +201,7 @@ class Filter {
             this.name,
             m("br"),
             m("select", {onchange: this.filterPaneQuestionChoiceChanged.bind(this)}, selectOptions),
-            m("button", {disabled: isClearButtonDisabled, onclick: this.clearFilterPane.bind(this)}, "Clear"),
+            m("button", {disabled: isClearButtonDisabled, onclick: this.clearFilterPane.bind(this)}, m("span", {class: "buttonWithTextImage clearButtonImage"}), "Clear"),
             m("br"),
             m("select" + displayOrNotText, {onchange: this.filterPaneAnswerChoiceChanged.bind(this), multiple: "multiple"}, multiselectOptions)
         ]);
@@ -415,6 +415,7 @@ export class StoryBrowser {
             id: "showJSON",
             valueType: "none",
             displayType: "button",
+            displayIconClass: "showButtonImage",
             displayPrompt: "Show story as raw JSON data",
             displayConfiguration: "showStoryAsJSON"
         });

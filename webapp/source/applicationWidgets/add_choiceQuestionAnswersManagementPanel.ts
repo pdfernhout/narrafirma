@@ -182,15 +182,21 @@ function add_choiceQuestionAnswersManagementPanel(panelBuilder: PanelBuilder, mo
 
             if (!panelBuilder.readOnly) { 
                 if (answersWithOpenChangePanels.indexOf(answer) < 0) {
-                    partsForThisAnswer.push(m("button", {id: "moveAnswerUp", onclick: function() {moveAnswerUp(answer)}}, "↑")); 
-                    partsForThisAnswer.push(m("button", {id: "moveAnswerDown", onclick: function() {moveAnswerDown(answer)}}, "↓")); 
-                    partsForThisAnswer.push(m("button", {id: "changeAnswer", onclick: function() {showChangeAnswerPanel(answer)}}, "Change")); 
-                    partsForThisAnswer.push(m("button", {id: "removeAnswerFromList", onclick: function() {removeAnswer(answer)}}, "Remove")); 
+                    partsForThisAnswer.push(m("button", {id: "moveAnswerUp", onclick: function() {moveAnswerUp(answer)}}, 
+                        m("span", {class: "buttonWithTextImage upButtonImage"}), "Up")); 
+                    partsForThisAnswer.push(m("button", {id: "moveAnswerDown", onclick: function() {moveAnswerDown(answer)}}, 
+                        m("span", {class: "buttonWithTextImage downButtonImage"}), "Down")); 
+                    partsForThisAnswer.push(m("button", {id: "changeAnswer", onclick: function() {showChangeAnswerPanel(answer)}}, 
+                        m("span", {class: "buttonWithTextImage changeButtonImage"}), "Change")); 
+                    partsForThisAnswer.push(m("button", {id: "removeAnswerFromList", onclick: function() {removeAnswer(answer)}}, 
+                        m("span", {class: "buttonWithTextImage removeButtonImage"}),"Remove")); 
                 } else {
                     const inputID = question.annotationQuestion_shortName + "_" + answer + "_change";
                     partsForThisAnswer.push(m("input", {id: inputID, style: "margin-left: 1em"}));
-                    partsForThisAnswer.push(m("button", {id: "confirmAnswerChange", style: "background-color: #f88a57", onclick: function() {changeAnswer(answer, inputID)}}, "Confirm")); 
-                    partsForThisAnswer.push(m("button", {id: "cancelAnswerChange", style: "background-color: #ffe1aa", onclick: function() {cancelChangingAnswer(answer)}}, "Cancel")); 
+                    partsForThisAnswer.push(m("button", {id: "confirmAnswerChange", style: "background-color: #f88a57", onclick: function() {changeAnswer(answer, inputID)}}, 
+                        m("span", {class: "buttonWithTextImage confirmButtonImage"}), "Confirm")); 
+                    partsForThisAnswer.push(m("button", {id: "cancelAnswerChange", style: "background-color: #ffe1aa", onclick: function() {cancelChangingAnswer(answer)}}, 
+                        m("span", {class: "buttonWithTextImage cancelButtonImage"}), "Cancel")); 
                 }
             }
             parts.push(m("div.narrafirma-annotation-choice-answers-answer", partsForThisAnswer));
@@ -199,7 +205,7 @@ function add_choiceQuestionAnswersManagementPanel(panelBuilder: PanelBuilder, mo
         parts.push(m("div.narrafirma-annotation-choice-answers-answer", '(No answers have been created. Click "Add a New Answer" to create one.)'));
     }
     if (!panelBuilder.readOnly) { 
-        parts.push(m("button", {id: "addAnswerToList", onclick: function() {addAnswer()}}, "Add a New Answer")); 
+        parts.push(m("button", {id: "addAnswerToList", onclick: function() {addAnswer()}}, m("span", {class: "buttonWithTextImage addButtonImage"}), "Add a New Answer")); 
     }
 
     return m("div.questionExternal", 

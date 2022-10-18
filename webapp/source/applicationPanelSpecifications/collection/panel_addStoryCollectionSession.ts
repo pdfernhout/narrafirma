@@ -101,6 +101,7 @@ const panel: Panel = {
             id: "collectionSessionPlan_exportCollectionSessionAgendaButton",
             valueType: "none",
             displayType: "button",
+            displayIconClass: "printButtonImage",
             displayPrompt: "Print session agenda",
             displayConfiguration: "exportCollectionSessionAgenda",
             displayVisible: function(panelBuilder, model) {

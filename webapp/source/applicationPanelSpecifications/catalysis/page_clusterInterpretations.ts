@@ -72,6 +72,7 @@ const panel: Panel = {
             valueType: "none",
             displayType: "button",
             displayConfiguration: "copyInterpretationsToClusteringDiagram",
+            displayIconClass: "copyButtonImage",
             displayPrompt: "Copy or update interpretations",
             displayVisible: function(panelBuilder, model) {
                 return !!Globals.clientState().catalysisReportIdentifier();
@@ -129,6 +130,7 @@ const panel: Panel = {
             displayType: "button",
             displayConfiguration: "copyObservationsToClusteringDiagram",
             displayPrompt: "Copy or update observations",
+            displayIconClass: "copyButtonImage",
             displayVisible: function(panelBuilder, model) {
                 return !!Globals.clientState().catalysisReportIdentifier();
             }

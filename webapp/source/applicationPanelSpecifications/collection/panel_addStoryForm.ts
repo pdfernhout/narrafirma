@@ -25,6 +25,7 @@ const panel: Panel = {
             displayConfiguration: "previewQuestionForm",
             displayName: "Question form preview",
             displayPrompt: "Preview",
+            displayIconClass: "previewButtonImage",
             displayPreventBreak: true,
             displayVisible: function(panelBuilder, model) { return !panelBuilder.readOnly; }
         },
@@ -34,6 +35,7 @@ const panel: Panel = {
             displayType: "button",
             displayConfiguration: "showOrHideAdvancedOptions",
             displayName: "Show/hide advanced options",
+            displayIconClass: function(panelBuilder, model) { return Globals.clientState().showAdvancedOptions() ? "hideButtonImage" : "showButtonImage"; },
             displayPrompt: function(panelBuilder, model) { return Globals.clientState().showAdvancedOptions() ? "Hide advanced options" : "Show advanced options"; },
             displayPreventBreak: true,
             displayVisible: function(panelBuilder, model) { return !panelBuilder.readOnly; }
@@ -44,6 +46,7 @@ const panel: Panel = {
             displayType: "button",
             displayConfiguration: "showOrHideImportOptions",
             displayName: "Show/hide import options",
+            displayIconClass: function(panelBuilder, model) { return Globals.clientState().showImportOptions() ? "hideButtonImage" : "showButtonImage"; },
             displayPrompt: function(panelBuilder, model) { return Globals.clientState().showImportOptions() ? "Hide import options" : "Show import options"; },
             displayPreventBreak: false,
             displayVisible: function(panelBuilder, model) { return !panelBuilder.readOnly; }
@@ -636,6 +639,7 @@ const panel: Panel = {
             displayType: "button",
             displayConfiguration: "checkCSVDataFileWhileEditingStoryForm",
             displayName: "CSV file check",
+            displayIconClass: "checkButtonImage",
             displayPreventBreak: true,
             displayPrompt: "Check stories in CSV file (view log in browser console)...",
             displayVisible: function(panelBuilder, model) { return !panelBuilder.readOnly && !!Globals.clientState().showImportOptions(); }
@@ -646,6 +650,7 @@ const panel: Panel = {
             displayType: "button",
             displayConfiguration: "exportStoryFormWhileEditingIt_NativeFormat",
             displayName: "Export story form",
+            displayIconClass: "exportButtonImage",
             displayPrompt: "Export story form for NarraFirma-native import...",
             displayPreventBreak: true,
             displayVisible: function(panelBuilder, model) { return !panelBuilder.readOnly && !!Globals.clientState().showImportOptions(); }
@@ -656,6 +661,7 @@ const panel: Panel = {
             displayType: "button",
             displayConfiguration: "exportStoryFormWhileEditingIt_ExternalFormat",
             displayName: "Export story form",
+            displayIconClass: "exportButtonImage",
             displayPrompt: "Export story form for external import...",
             displayVisible: function(panelBuilder, model) { return !panelBuilder.readOnly && !!Globals.clientState().showImportOptions(); }
         },        
@@ -690,6 +696,7 @@ const panel: Panel = {
             displayConfiguration: "previewQuestionForm",
             displayName: "Question form preview",
             displayPrompt: "Preview",
+            displayIconClass: "previewButtonImage",
             displayPreventBreak: true,
             displayVisible: function(panelBuilder, model) { return !panelBuilder.readOnly; }
         },
@@ -699,6 +706,7 @@ const panel: Panel = {
             displayType: "button",
             displayConfiguration: "showOrHideAdvancedOptions",
             displayName: "Show/hide advanced options",
+            displayIconClass: function(panelBuilder, model) { return Globals.clientState().showAdvancedOptions() ? "hideButtonImage" : "showButtonImage"; },
             displayPrompt: function(panelBuilder, model) { return Globals.clientState().showAdvancedOptions() ? "Hide advanced options" : "Show advanced options"; },
             displayPreventBreak: true,
             displayVisible: function(panelBuilder, model) { return !panelBuilder.readOnly; }
@@ -709,6 +717,7 @@ const panel: Panel = {
             displayType: "button",
             displayConfiguration: "showOrHideImportOptions",
             displayName: "Show/hide import options",
+            displayIconClass: function(panelBuilder, model) { return Globals.clientState().showImportOptions() ? "hideButtonImage" : "showButtonImage"; },
             displayPrompt: function(panelBuilder, model) { return Globals.clientState().showImportOptions() ? "Hide import options" : "Show import options"; },
             displayPreventBreak: false,
             displayVisible: function(panelBuilder, model) { return !panelBuilder.readOnly; }

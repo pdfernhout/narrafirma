@@ -73,6 +73,7 @@ const panel: Panel = {
             displayConfiguration: "showOrHideAdvancedOptions",
             displayName: "Show/hide advanced options",
             displayPreventBreak: true,
+            displayIconClass: function(panelBuilder, model) { return Globals.clientState().showAdvancedOptions() ? "hideButtonImage" : "showButtonImage"; },
             displayPrompt: function(panelBuilder, model) { return Globals.clientState().showAdvancedOptions() ? "Hide advanced options" : "Show advanced options"; },
             displayVisible: function(panelBuilder, model) { return !panelBuilder.readOnly; }
         },
@@ -82,6 +83,7 @@ const panel: Panel = {
             displayType: "button",
             displayConfiguration: "showOrHideImportOptions",
             displayName: "Show/hide import options",
+            displayIconClass: function(panelBuilder, model) { return Globals.clientState().showImportOptions() ? "hideButtonImage" : "showButtonImage"; },
             displayPrompt: function(panelBuilder, model) { return Globals.clientState().showImportOptions() ? "Hide import options" : "Show import options"; },
             displayPreventBreak: true,
             displayVisible: function(panelBuilder, model) { return !panelBuilder.readOnly; }
@@ -92,6 +94,7 @@ const panel: Panel = {
             displayType: "templateList",
             displayConfiguration: "storyQuestions",
             displayPrompt: "Copy a question from a template",
+            displayIconClass: "copyButtonImage",
             displayPreventBreak: false,
             displayVisible: function(panelBuilder, model) { return !panelBuilder.readOnly; }
         },
