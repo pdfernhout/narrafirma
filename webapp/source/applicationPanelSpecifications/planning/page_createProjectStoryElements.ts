@@ -50,6 +50,7 @@ const panel: Panel = {
             id: "project_storyElements_copyButton1",
             valueType: "none",
             displayType: "button",
+            displayIconClass: "copyButtonImage",
             displayPrompt: "Copy planning stories to clustering diagram",
             displayConfiguration: "copyPlanningStoriesToClusteringDiagram"
         },
@@ -75,6 +76,7 @@ const panel: Panel = {
             id: "project_storyElements_copyButton2",
             valueType: "none",
             displayType: "button",
+            displayIconClass: "copyButtonImage",
             displayPrompt: "Copy new answers to next clustering diagram",
             displayConfiguration: "copyAnswersToClusteringDiagram"
         },
@@ -100,6 +102,7 @@ const panel: Panel = {
             id: "project_storyElements_copyButton3",
             valueType: "none",
             displayType: "button",
+            displayIconClass: "copyButtonImage",
             displayPrompt: "Copy new answers to next clustering diagram",
             displayConfiguration: "copyAnswerClustersToClusteringDiagram"
         },
@@ -128,6 +131,7 @@ const panel: Panel = {
             id: "project_storyElements_copyButton4",
             valueType: "none",
             displayType: "button",
+            displayIconClass: "copyButtonImage",
             displayPrompt: "Copy new attributes to next clustering diagram",
             displayConfiguration: "copyAttributesToClusteringDiagram"
         },
@@ -139,6 +143,33 @@ const panel: Panel = {
                 <b>10</b>. <b>Rearrange</b> the attributes into new, different clusters, placing like with like, as you did before.<br>
                 <b>11</b>. <b>Create new clusters</b> with new names and descriptions. These are your story elements.
             `
+        },
+        {
+            id: "project_storyElements_reflection_header",
+            valueType: "none",
+            displayType: "header",
+            displayPrompt: `Questions for reflection`
+        },
+        {
+            id: "project_storyElements_reflection_do",
+            valueType: "string",
+            displayType: "textarea",
+            displayName: "Things to do based on story elements exercise",
+            displayPrompt: `What does this exercise tell you that you should <strong>remember to do</strong> in your project?`
+        },
+        {
+            id: "project_storyElements_reflection_avoid",
+            valueType: "string",
+            displayType: "textarea",
+            displayName: "Things to avoid based on story elements exercise",
+            displayPrompt: `What does this exercise tell you that you should <strong>remember to avoid</strong> in your project?`
+        },
+        {
+            id: "project_storyElements_reflection_otherNotes",
+            valueType: "string",
+            displayType: "textarea",
+            displayName: "Other notes on story elements exercise",
+            displayPrompt: `Is there <strong>anything else</strong> you would like to remember about this exercise?`
         }
     ]
 };
