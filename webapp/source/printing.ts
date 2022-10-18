@@ -1582,6 +1582,12 @@ export function exportCollectionSessionAgenda(itemID) {
     const collectionSessionAgenda = project.tripleStore.makeObject(itemID, true);
     const activitiesListID = collectionSessionAgenda["collectionSessionPlan_activitiesList"];
     const activitiesList = project.tripleStore.getListForSetIdentifier(activitiesListID);
+
+    activitiesList.sort((a,b) => {
+        const aObject = project.tripleStore.makeObject(a, true);
+        const bObject = project.tripleStore.makeObject(b, true);
+        return (aObject.order < bObject.order) ? -1 : 1;
+    });
     
     const printItems = [
         m("div", "Story collection session agenda generated " + new Date()),
@@ -1604,7 +1610,13 @@ export function printSensemakingSessionAgenda(itemID) {
     const sensemakingSessionAgenda = project.tripleStore.makeObject(itemID, true);
     const activitiesListID = sensemakingSessionAgenda["sensemakingSessionPlan_activitiesList"];
     const activitiesList = project.tripleStore.getListForSetIdentifier(activitiesListID);
-    
+
+    activitiesList.sort((a,b) => {
+        const aObject = project.tripleStore.makeObject(a, true);
+        const bObject = project.tripleStore.makeObject(b, true);
+        return (aObject.order < bObject.order) ? -1 : 1;
+    });
+
     const printItems = [
         m("div", "Sensemaking session agenda generated " + new Date()),
         printReturnAndBlankLine()
