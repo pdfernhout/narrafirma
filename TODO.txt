@@ -162,6 +162,10 @@ M When import story form, hundreds of triples can be generated which take minute
 
 ==== DONE
 
+-- Release 1.5.17
+
+Fixed: Broken link on several help pages.
+
 --- Release 1.5.16
 
 Added: Icons for (nearly) every button.

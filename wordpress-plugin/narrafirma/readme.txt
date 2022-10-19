@@ -9,7 +9,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Requires at least: 4.3.1
 Tested up to: 6.0.3
 Stable tag: trunk
-Version: 1.5.16
+Version: 1.5.17
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -105,6 +105,10 @@ We strongly suggest that you set up any web site on which you intend to install 
 12. Here the NarraFirma user is reflecting on the entire project, to learn from it and to keep good records for the future.
 
 == Changelog ==
+
+= 1.5.17 -
+
+Fixed: Broken link on several help pages.
 
 = 1.5.16 =
 
@@ -590,6 +594,10 @@ loading application, getting user information, or retrieving project data.
 change logs, see the [GitHub repository](https://github.com/pdfernhout/narrafirma).
 
 == Upgrade Notice ==
+
+= 1.5.17 =
+
+This tiny upgrade fixes several broken links on help pages.
 
 = 1.5.16 =
 This minor upgrade makes many small improvements to clarity and usability.
