@@ -280,11 +280,15 @@ export function displayQuestion(panelBuilder: PanelBuilder, model, fieldSpecific
             });
         }
 
+        if (!fieldSpecification.valueOptions || fieldSpecification.valueOptions.length < 1) {
+            return [m("p", "Survey error: No options were created for this question.")];
+        }
+
         const questionParts = [
             fieldSpecification.valueOptions.map(function (option, index) {
                 const optionName = (typeof option === "string") ? option : option.name;
                 const optionValue = (typeof option === "string") ? option : option.value;
-                const optionID = getIdForText(fieldID + "_" + option);
+                const optionID = getIdForText(fieldID + "_" + option); 
                 return [
                     m("input[type=checkbox]", {
                         id: optionID, 

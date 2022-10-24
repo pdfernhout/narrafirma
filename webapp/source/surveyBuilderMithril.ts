@@ -256,6 +256,10 @@ function displayQuestion(builder, model, fieldSpecification, storyForm) {
             value = {};
             model[fieldSpecification.id] = value;
         }
+
+        if (!fieldSpecification.valueOptions || fieldSpecification.valueOptions.length < 1) {
+            return [m("p", "Survey error: No options were created for this question.")];
+        }
     
         const checkBoxIDsForThisQuestion = [];
         if (fieldSpecification.displayConfiguration) {
