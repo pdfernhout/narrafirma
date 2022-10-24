@@ -145,8 +145,14 @@ class Application {
             return storyFormSuccess ? null : ["Questionnaire could not be created for story collection."];
         } else if (functionName === "requireShortName") {
             const itemID = fieldSpecification.value;
-            const success = buttonActions.checkThatItemHasShortName(itemID);
+            let success = buttonActions.checkThatItemHasShortName(itemID);
             return success ? null : ["You must enter a short name for this item."];
+        } else if (functionName === "requireShortNameAndQuestionOptionsIfNecessary") {
+            const itemID = fieldSpecification.value;
+            let success = buttonActions.checkThatItemHasShortName(itemID);
+            if (!success) return ["You must enter a short name for this item."];
+            success = buttonActions.checkThatItemHasOptionListIfRequired(itemID);
+            return success ? null : ["You must enter at least two options for this type of question."];
         } else {
             console.log("TODO: calculateFunctionResultForGUI ", functionName, fieldSpecification);
             return "calculateFunctionResultForGUI UNFINISHED: " + functionName + " for: " + fieldSpecification.id;

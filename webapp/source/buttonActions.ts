@@ -299,6 +299,34 @@ export function checkThatItemHasShortName(itemID): boolean {
     return item[shortNameKey] && item[shortNameKey].length > 0;
 }
 
+export function checkThatItemHasOptionListIfRequired(itemID): boolean {
+    if (!itemID) return false;
+    const item = project.tripleStore.makeObject(itemID, true);
+    if (!item) return false; 
+
+    // item types whose option lists are required, for lookup:
+    // story and participant questions of the types radiobuttons, select, or checkboxes
+
+    let itemType = null;
+    if (itemID.indexOf("StoryQuestion") >= 0) {
+        itemType = "storyQuestion";
+    } else if (itemID.indexOf("ParticipantQuestion") >= 0) {
+        itemType = "participantQuestion";
+    } else {
+        const message = "Error: Unsupported options list validation check for item: " + itemID;
+        alert(message);
+        console.log(message);
+    }
+
+    const questionType = item[itemType + "_type"];
+    if (["radiobuttons", "select", "checkboxes"].indexOf(questionType) >= 0) {
+        const questionOptions = item[itemType + "_options"].split("\n");
+        return (questionOptions && questionOptions.length > 1); 
+    } else {
+        return true; 
+    }
+}
+
 export function updateQuestionnaireForStoryCollection(storyCollectionIdentifier) {
     if (!storyCollectionIdentifier) {
         alert("Problem: No storyCollectionIdentifier");
