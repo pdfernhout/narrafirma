@@ -115,57 +115,63 @@ export function generateSpecificTypeOfSanitizedHTMLForMithril(html, specifiedHTM
                 positionOfClosingAngleBracket = html.indexOf(">", i + 1);
             }
             if (positionOfClosingAngleBracket < 0) {
-                throw new Error('For the text "' + html + '", no closing angle bracket was found after position: ' + i);
-            }
-            let tagName = html.substring(i + 1, positionOfClosingAngleBracket);
-            i = positionOfClosingAngleBracket;
-            
-            let cssClass;
-            const parts = tagName.split(".");
-            if (parts.length > 1) {
-                tagName = parts[0];
-                cssClass = parts[1];
+                text = text + char;
+                // special case: sometimes people want just a < in an answer text
+                // such as for an age range of "<25"
+                // so I have changed this to NOT throw an error - instead, we will just show the unmatched bracket in the HTML text
+                // and hopefully, if they did want an html tag, they will see the unmatched bracket and fix it
+                // throw new Error('For the text "' + html + '", no closing angle bracket was found after position: ' + i);
             } else {
-                cssClass = undefined;
-            }
-            
-            if (/[^A-Za-z0-9]/.test(tagName)) {
-                throw new Error("Tag is not alphanumeric: " + tagName);
-            }
-            
-            if (cssClass && !allowedCSSClasses[cssClass]) {
-                throw new Error("CSS class is not allowed: " + cssClass);
-            }
-            
-            if (closing) {
-                const startTag = tags.pop();
-                if (startTag.tagName !== tagName) {
-                    throw new Error("Closing tag does not match opening tag for: " + tagName);
-                }
-                cssClass = startTag.cssClass;
-            }
-            
-            if (!specifiedHTMLTags[tagName]) {
-                throw new Error("Tag is not allowed: " + tagName);
-            }
-            
-            if (specifiedHTMLTags[tagName] === 2) {
-                // self-closing tag like BR
-                output.push([]);
-                closing = true;
-            }
-            
-            if (closing) {
-                let newTag;
-                if (cssClass) {
-                    newTag = m(tagName, {"class": cssClass}, output.pop());
+                let tagName = html.substring(i + 1, positionOfClosingAngleBracket);
+                i = positionOfClosingAngleBracket;
+                
+                let cssClass;
+                const parts = tagName.split(".");
+                if (parts.length > 1) {
+                    tagName = parts[0];
+                    cssClass = parts[1];
                 } else {
-                    newTag = m(tagName, output.pop());
+                    cssClass = undefined;
                 }
-                output[output.length - 1].push(newTag);
-            } else {
-                tags.push({tagName: tagName, cssClass: cssClass});
-                output.push([]);
+                
+                if (/[^A-Za-z0-9]/.test(tagName)) {
+                    throw new Error("Tag is not alphanumeric: " + tagName);
+                }
+                
+                if (cssClass && !allowedCSSClasses[cssClass]) {
+                    throw new Error("CSS class is not allowed: " + cssClass);
+                }
+                
+                if (closing) {
+                    const startTag = tags.pop();
+                    if (startTag.tagName !== tagName) {
+                        throw new Error("Closing tag does not match opening tag for: " + tagName);
+                    }
+                    cssClass = startTag.cssClass;
+                }
+                
+                if (!specifiedHTMLTags[tagName]) {
+                    throw new Error("Tag is not allowed: " + tagName);
+                }
+                
+                if (specifiedHTMLTags[tagName] === 2) {
+                    // self-closing tag like BR
+                    output.push([]);
+                    closing = true;
+                }
+                
+                if (closing) {
+                    let newTag;
+                    if (cssClass) {
+                        newTag = m(tagName, {"class": cssClass}, output.pop());
+                    } else {
+                        newTag = m(tagName, output.pop());
+                    }
+                    output[output.length - 1].push(newTag);
+                } else {
+                    tags.push({tagName: tagName, cssClass: cssClass});
+                    output.push([]);
+                }
             }
         } else {
             text = text + char;
