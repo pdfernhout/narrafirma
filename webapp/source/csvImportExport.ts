@@ -1774,7 +1774,7 @@ function questionForItem(item, questionCategory) {
         const valueAndImportOptions = valueAndImportOptionsForAnswers(answers);
         valueOptions = valueAndImportOptions[0];
         import_answerNames = valueAndImportOptions[1];
-        if (answers.length < 2) {
+        if (!answers || answers.length < 2) {
             alert('Import error: For the Single choice question "' + item["Short name"] + '", there must be at least two entries in the Answers columns.');
         }
     } else if (["Multi-choice multi-column texts", "Multi-choice multi-column yes/no", "Multi-choice single-column delimited", "Multi-choice single-column delimited indexed"].indexOf(itemType) >= 0) {
@@ -1783,7 +1783,7 @@ function questionForItem(item, questionCategory) {
         valueOptions = valueAndImportOptions[0];
         import_answerNames = valueAndImportOptions[1];
         optionImageLinks = valueAndImportOptions[2];
-        if (answers.length < 2) {
+        if (!answers || answers.length < 2) {
             alert('Import error: For the Multiple choice question "' + item["Short name"] + '", there must be at least two entries in the Answers columns.');
         }
     } else if (itemType === "Radiobuttons") {
@@ -1792,7 +1792,7 @@ function questionForItem(item, questionCategory) {
         valueOptions = valueAndImportOptions[0];
         import_answerNames = valueAndImportOptions[1];
         optionImageLinks = valueAndImportOptions[2];
-        if (answers.length < 2) {
+        if (!answers || answers.length < 2) {
             alert('Import error: For the Radiobuttons question "' + item["Short name"] + '", there must be at least two entries in the Answers columns.');
         }
     } else if (itemType === "Boolean") {
@@ -1807,13 +1807,13 @@ function questionForItem(item, questionCategory) {
     } else if (itemType === "Scale") {
         valueType = "number";
         questionType = "slider";
-        if (answers.length < 2) {
+        if (!answers || answers.length < 2) {
             alert('Import error: For the Slider question "' + item["Short name"] + '", there must be two labels (for the left and right of the slider) in the Answers columns.');
             valueOptions = ["",""]; // put in empty slider labels so that the graphs will at least draw 
         } else {
             valueOptions = [answers[0], answers[1]];
         }
-        if (answers.length > 2) {
+        if (answers && answers.length > 2) {
             let answerCount = 0;
             const minAndMax = answers.slice(2);
             minAndMax.forEach(function (textValue) {
@@ -1859,18 +1859,20 @@ function valueAndImportOptionsForAnswers(answers) {
     const valueOptions = [];
     const import_answerNames = [];
     const optionImageLinks = [];
-    for (let i = 0; i < answers.length; i++) {
-        const splitAnswersString = answers[i].split("|");
-        if (splitAnswersString.length > 2) {
-            import_answerNames.push(splitAnswersString[0]);
-            valueOptions.push(splitAnswersString[1]);
-            optionImageLinks.push(splitAnswersString[2]);
-        } else if (splitAnswersString.length > 1) {
-            import_answerNames.push(splitAnswersString[0]);
-            valueOptions.push(splitAnswersString[1]);
-        } else {
-            valueOptions.push(answers[i]);
-            import_answerNames.push(answers[i]);
+    if (answers) {
+        for (let i = 0; i < answers.length; i++) {
+            const splitAnswersString = answers[i].split("|");
+            if (splitAnswersString.length > 2) {
+                import_answerNames.push(splitAnswersString[0]);
+                valueOptions.push(splitAnswersString[1]);
+                optionImageLinks.push(splitAnswersString[2]);
+            } else if (splitAnswersString.length > 1) {
+                import_answerNames.push(splitAnswersString[0]);
+                valueOptions.push(splitAnswersString[1]);
+            } else {
+                valueOptions.push(answers[i]);
+                import_answerNames.push(answers[i]);
+            }
         }
     }
     return [valueOptions, import_answerNames, optionImageLinks];
