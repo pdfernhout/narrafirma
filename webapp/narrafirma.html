@@ -12,6 +12,7 @@
 
 <script>
 if (console === undefined) console = {"log": function(){ } };
+window.onerror = function(msg, url, line) { alert(msg + "\n\nPlease post this error message to the NarraFirma GitHub issues page. Additional information on the error can be found in your browser's development console."); }
 
 //This is to distinguish between running under WordPress or running under Node.js
 function calculateAjaxPath() {

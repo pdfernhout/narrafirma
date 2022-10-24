@@ -15,6 +15,7 @@
 
 <script>
 if (console === undefined) console = {"log": function(){ } };
+window.onerror = function(msg, url, line) { alert(msg + "\n\nPlease send this error message to your site administrator. Additional information on the error can be found in your browser's development console."); }
 
 var require = {
     baseUrl: '',
