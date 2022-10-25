@@ -79,7 +79,7 @@ input:read-only {
 
 textarea:read-only {
     border: 1px solid #979696;
-    color: #979696;
+    color: #434343;
     resize: vertical;
 }
 
