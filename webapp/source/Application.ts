@@ -164,6 +164,13 @@ class Application {
         
         window["narrafirma_openPage"] = (pageIdentifier) => {
             if (!pageIdentifier) return;
+
+            const openGridElements = document.getElementsByClassName("narrafirma-griditempanel-divwithbutton-editing");
+            if (openGridElements.length > 0) {
+                alert("Please click the Close button to finish working on the selected list item.")
+                return;
+            }
+
             Globals.clientState().pageIdentifier(pageIdentifier);
             Globals.clientState().updateHashIfNeededForChangedClientState();
             // Page displayer will handle cases where the hash is not valid and also optimizing out page redraws if staying on same page
