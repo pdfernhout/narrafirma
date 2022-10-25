@@ -147,10 +147,18 @@ class Application {
             const itemID = fieldSpecification.value;
             let success = buttonActions.checkThatItemHasShortName(itemID);
             return success ? null : ["You must enter a short name for this item."];
-        } else if (functionName === "requireShortNameAndQuestionOptionsIfNecessary") {
+        } else if (functionName === "requireShortNameAndType") {
             const itemID = fieldSpecification.value;
             let success = buttonActions.checkThatItemHasShortName(itemID);
             if (!success) return ["You must enter a short name for this item."];
+            success = buttonActions.checkThatQuestionHasType(itemID);
+            return success ? null : ["You must enter a question type for this item."];
+        } else if (functionName === "requireShortNameTypeAndQuestionOptionsIfNecessary") {
+            const itemID = fieldSpecification.value;
+            let success = buttonActions.checkThatItemHasShortName(itemID);
+            if (!success) return ["You must enter a short name for this item."];
+            success = buttonActions.checkThatQuestionHasType(itemID);
+            if (!success) return ["You must enter a question type for this item."];
             success = buttonActions.checkThatItemHasOptionListIfRequired(itemID);
             return success ? null : ["You must enter at least two options for this type of question."];
         } else {

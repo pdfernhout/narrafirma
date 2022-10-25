@@ -310,6 +310,31 @@ export function checkThatItemHasShortName(itemID): boolean {
     return item[shortNameKey] && item[shortNameKey].length > 0;
 }
 
+export function checkThatQuestionHasType(itemID): boolean {
+    if (!itemID) return false;
+    const item = project.tripleStore.makeObject(itemID, true);
+    if (!item) return false; 
+
+    // item types where question types are required, for lookup:
+    // story, participant, and annotation questions 
+
+    let itemType = null;
+    if (itemID.indexOf("StoryQuestion") >= 0) {
+        itemType = "storyQuestion";
+    } else if (itemID.indexOf("ParticipantQuestion") >= 0) {
+        itemType = "participantQuestion";
+    } else if (itemID.indexOf("AnnotationQuestion") >= 0) {
+        itemType = "annotationQuestion";
+    } else {
+        const message = "Error: Unsupported question type validation check for item: " + itemID;
+        alert(message);
+        console.log(message);
+    }
+
+    const questionType = item[itemType + "_type"];
+    return (questionType && questionType.length > 0);
+}
+
 export function checkThatItemHasOptionListIfRequired(itemID): boolean {
     if (!itemID) return false;
     const item = project.tripleStore.makeObject(itemID, true);
@@ -331,8 +356,13 @@ export function checkThatItemHasOptionListIfRequired(itemID): boolean {
 
     const questionType = item[itemType + "_type"];
     if (["radiobuttons", "select", "checkboxes"].indexOf(questionType) >= 0) {
-        const questionOptions = item[itemType + "_options"].split("\n");
-        return (questionOptions && questionOptions.length > 1); 
+        const questionOptionsString = item[itemType + "_options"];
+        if (questionOptionsString) {
+            const questionOptionsList = item[itemType + "_options"].split("\n");
+            return (questionOptionsList.length > 1); 
+        } else {
+            return false;
+        }
     } else {
         return true; 
     }
