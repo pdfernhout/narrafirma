@@ -9,7 +9,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Requires at least: 4.3.1
 Tested up to: 6.0.3
 Stable tag: trunk
-Version: 1.5.17
+Version: 1.5.18
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -106,7 +106,17 @@ We strongly suggest that you set up any web site on which you intend to install 
 
 == Changelog ==
 
-= 1.5.17 -
+= 1.5.18 =
+
+Added: Validation check to make sure that all questions have types.
+Added: Validation check to make sure that questions of types that require answer lists (select, radiobuttons, checkboxes) have answer lists. 
+Added: For validation support, if you are editing a list item and you click a page-change button, a message will appear asking you to close the currently open item first. (NF needs you to do this so it can run its validation checks.)
+Added: Global error pop-up that shows the same message as is posted to the development console (for those who don't know about or can't find the development console).
+Changed: Improved error reporting when questions that should have but are missing answer lists are imported from CSV.
+Changed: Improved error message in survey itself when a question that requires an answer list has no answer list. 
+Changed: NF's HTML cleanup process has always interpreted a single angle bracket (<) as the start of an HTML tag (and showed an error if there is no closing bracket). This is a problem for texts like "<25" (an age bracket). Now NF just prints out the < and lets you figure out if it's an incomplete HTML tag. 
+
+= 1.5.17 =
 
 Fixed: Broken link on several help pages.
 
@@ -594,6 +604,10 @@ loading application, getting user information, or retrieving project data.
 change logs, see the [GitHub repository](https://github.com/pdfernhout/narrafirma).
 
 == Upgrade Notice ==
+
+= 1.5.18 =
+
+This minor upgrade helps NF deal more gracefully with information users sometimes forget to provide. It also improves general error reporting.
 
 = 1.5.17 =
 

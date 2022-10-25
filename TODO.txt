@@ -162,6 +162,16 @@ M When import story form, hundreds of triples can be generated which take minute
 
 ==== DONE
 
+-- Release 1.5.18
+
+Added: Validation check to make sure that all questions have types.
+Added: Validation check to make sure that questions of types that require answer lists (select, radiobuttons, checkboxes) have answer lists. 
+Added: For validation support, if you are editing a list item and you click a page-change button, a message will appear asking you to close the currently open item first. (NF needs you to do this so it can run its validation checks.)
+Added: Global error pop-up that shows the same message as is posted to the development console (for those who don't know about or can't find the development console).
+Changed: Improved error reporting when questions that should have but are missing answer lists are imported from CSV.
+Changed: Improved error message in survey itself when a question that requires an answer list has no answer list. 
+Changed: NF's HTML cleanup process has always interpreted a single angle bracket (<) as the start of an HTML tag (and showed an error if there is no closing bracket). This is a problem for texts like "<25" (an age bracket). Now NF just prints out the < and lets you figure out if it's an incomplete HTML tag. 
+
 -- Release 1.5.17
 
 Fixed: Broken link on several help pages.
