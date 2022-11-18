@@ -322,6 +322,55 @@ const panel: Panel = {
             displayPrompt: "How long of a <strong>time period</strong> do you need these participants to look back on?"
         },
         {
+            id: "participantGroup_topic_dangerous",
+            valueType: "string",
+            valueOptions: [
+                "very dangerous",
+                "medium",
+                "not dangerous",
+                "mixed",
+                 "unknown"
+            ],
+            displayType: "select",
+            displayName: "Dangerous",
+            displayPrompt: "Do you think these participants will find this topic <strong>dangerous</strong> to talk about?"
+        },   
+        {
+            id: "participantGroup_topic_defensive",
+            valueType: "string",
+            valueOptions: [
+                "very defensive",
+                "medium",
+                "not defensive",
+                "mixed",
+                 "unknown"
+            ],
+            displayType: "select",
+            displayName: "Defensive",
+            displayPrompt: "Do you think these participants will feel <strong>defensive</strong> when asked to talk about this topic?"
+        },   
+        {
+            id: "participantGroup_topic_complicated",
+            valueType: "string",
+            valueOptions: [
+                "very complicated",
+                "medium",
+                "not complicated",
+                "mixed",
+                 "unknown"
+            ],
+            displayType: "select",
+            displayName: "Complicated",
+            displayPrompt: "Do you think these participants will find this topic <strong>complicated</strong> and hard to understand?"
+        },       
+
+        {
+            id: "participantGroup_notesHeader",
+            valueType: "none",
+            displayType: "header",
+            displayPrompt: "General notes"
+        },
+        {
             id: "participantGroup_notes",
             valueType: "string",
             displayType: "textarea",
