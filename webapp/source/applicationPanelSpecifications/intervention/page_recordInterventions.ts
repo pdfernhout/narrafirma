@@ -6,7 +6,7 @@ const panel: Panel = {
     displayName: "Enter intervention records",
     pageExplanation: "Describe interventions you carried out.",
     pageCategories: "record",
-    headerAbove: "Reflect",
+    headerAbove: "Wrap up",
     panelFields: [
         {
             id: "project_interventionRecordsLabel",

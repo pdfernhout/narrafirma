@@ -4,9 +4,8 @@ import kludgeForUseStrict = require("../../kludgeForUseStrict");
 const panel: Panel = {
     id: "page_reflectOnProject",
     displayName: "Reflect on the project",
-    pageExplanation: "Answer questions about what happened, what surprised you, and what you learned.",
+    pageExplanation: "Think about what happened in the entire project.",
     pageCategories: "record",
-    headerAbove: "Reflect",
     panelFields: [
         {
             id: "project_reflectLabel",
@@ -45,28 +44,28 @@ const panel: Panel = {
             id: "project_reflect_community_header",
             valueType: "none",
             displayType: "header",
-            displayPrompt: "Your community or organization"
+            displayPrompt: "The community or organization"
         },       
         {
             id: "project_reflect_community_knownow",
             valueType: "string",
             displayType: "textarea",
             displayName: "Community know now",
-            displayPrompt: "What do you <strong>know</strong> about your community or organization that you didn’t know before the project started?"
+            displayPrompt: "What do you <strong>know</strong> about the community or organization that you didn't know before the project started?"
         },
         {
             id: "project_reflect_community_dangersoppportunities",
             valueType: "string",
             displayType: "textarea",
             displayName: "Community dangers or opportunities",
-            displayPrompt: "Did this project uncover any <strong>dangers or opportunities</strong> about your community or organization? If so, what are they?"
+            displayPrompt: "Did this project uncover any <strong>dangers or opportunities</strong> about the community or organization? If so, what are they?"
         },
         {
             id: "project_reflect_community_future",
             valueType: "string",
             displayType: "textarea",
             displayName: "Community future",
-            displayPrompt: "How will what you have learned about your community or organization impact any <strong>future</strong> projects you do with or for it?"
+            displayPrompt: "How will what you have learned about the community or organization impact any <strong>future</strong> projects you do with or for it?"
         },
         {
             id: "project_reflect_yourself_header",

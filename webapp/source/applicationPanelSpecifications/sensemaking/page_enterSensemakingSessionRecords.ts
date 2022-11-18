@@ -6,7 +6,7 @@ const panel: Panel = {
     displayName: "Enter sensemaking session records",
     pageExplanation: "Answer questions about the sessions you held.",
     pageCategories: "record",
-    headerAbove: "Reflect",
+    headerAbove: "Wrap up",
     panelFields: [
         {
             id: "project_sensemakingSessionRecordsLabel",
