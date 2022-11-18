@@ -704,6 +704,21 @@ export function copyObservationsToClusteringDiagram() {
     }
 }
 
+export function copyPrivacyPolicy() {
+    const items = [];
+    if (!project) return;
+    const title = project.projectNameOrNickname() + ": Privacy Policy";
+    items.push(project.tripleStore.queryLatestC(project.projectIdentifier, "project_privacyPolicy_collect"));
+    items.push(project.tripleStore.queryLatestC(project.projectIdentifier, "project_privacyPolicy_identification"));
+    items.push(project.tripleStore.queryLatestC(project.projectIdentifier, "project_privacyPolicy_nondisclosure"));
+    items.push(project.tripleStore.queryLatestC(project.projectIdentifier, "project_privacyPolicy_distribution"));
+    items.push(project.tripleStore.queryLatestC(project.projectIdentifier, "project_privacyPolicy_invitation"));
+    items.push(project.tripleStore.queryLatestC(project.projectIdentifier, "project_privacyPolicy_permission"));
+    items.push(project.tripleStore.queryLatestC(project.projectIdentifier, "project_privacyPolicy_review"));
+    const result = items.join('\n\n');
+    dialogSupport.openTextEditorDialog(result, title, "Close", closeShowDialogClicked, false, true);
+}
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // project administration
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -752,6 +767,7 @@ export const exportEntireProject = projectImportExport.exportEntireProject;
 export const showStoryAsJSON = showStoryAsJSONData;
 
 export const printStoryForm = printing.printStoryForm;
+export const printPrivacyPolicy = printing.printPrivacyPolicy;
 export const printStoryCards = printing.printStoryCards;
 export const printCatalysisReport = printing.printCatalysisReport;
 export const importCatalysisReportElements = csvImportExport.importCSVCatalysisElements;

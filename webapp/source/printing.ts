@@ -1455,6 +1455,23 @@ export function printStoryForm(model, fieldSpecification, value) {
     printHTML(output);
 }
 
+export function printPrivacyPolicy(model, fieldSpecification, value) {
+    const project = Globals.project();
+    if (!project) return;
+    const vdom = m(".narrafirma-privacy-policy", [
+        m("div.narrafirma-privacy-policy-header", project.projectNameOrNickname() + ": Privacy Policy"),
+        m("div.narrafirma-privacy-policy-item", printText(project.tripleStore.queryLatestC(project.projectIdentifier, "project_privacyPolicy_collect"))),
+        m("div.narrafirma-privacy-policy-item", printText(project.tripleStore.queryLatestC(project.projectIdentifier, "project_privacyPolicy_identification"))),
+        m("div.narrafirma-privacy-policy-item", printText(project.tripleStore.queryLatestC(project.projectIdentifier, "project_privacyPolicy_nondisclosure"))),
+        m("div.narrafirma-privacy-policy-item", printText(project.tripleStore.queryLatestC(project.projectIdentifier, "project_privacyPolicy_distribution"))),
+        m("div.narrafirma-privacy-policy-item", printText(project.tripleStore.queryLatestC(project.projectIdentifier, "project_privacyPolicy_invitation"))),
+        m("div.narrafirma-privacy-policy-item", printText(project.tripleStore.queryLatestC(project.projectIdentifier, "project_privacyPolicy_permission"))),
+        m("div.narrafirma-privacy-policy-item", printText(project.tripleStore.queryLatestC(project.projectIdentifier, "project_privacyPolicy_review"))),
+    ]);
+    const output = generateHTMLForPage(project.projectNameOrNickname() + ": Privacy Policy", "css/survey.css", null, vdom, null);
+    printHTML(output);
+}
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Printing story cards
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

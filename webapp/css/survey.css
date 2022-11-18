@@ -559,7 +559,21 @@ textarea.narrafirma-survey-result-summary {
     resize: vertical;
 }
 
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ for printing privacy policy ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
+.narrafirma-privacy-policy {
+    font-size: 1 em;
+}
+
+.narrafirma-privacy-policy-header {
+    margin: 0.5em 0.5em 1em 0.5em;
+    font-weight: bold;
+    font-size: 1.2em;
+}
+
+.narrafirma-privacy-policy-item {
+    margin: 0.25em 0.5em 0.5em 0.5em;
+}
 
 
 
