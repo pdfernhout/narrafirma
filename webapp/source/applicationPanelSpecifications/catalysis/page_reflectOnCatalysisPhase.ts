@@ -13,7 +13,7 @@ const panel: Panel = {
             valueType: "none",
             displayType: "label",
             displayPrompt: `On this page you can answer some <strong>reflective questions</strong> 
-                that will help you learn from what happened and record what you learned.`
+                that will help you think about what happened.`
         },
         
         {
