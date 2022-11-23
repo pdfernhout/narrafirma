@@ -11,7 +11,7 @@ const panel: Panel = {
             id: "project_collectionRecordsIntroductionLabel",
             valueType: "none",
             displayType: "label",
-            displayPrompt: "On this page you can enter records for any group story <strong>sessions</strong> you held. (If you did not hold any group story sessions, you can skip this page.)"
+            displayPrompt: "On this page you can enter records for any story collecting interviews or <strong>sessions</strong> you held. (If you did not hold any story collecting sessions, you can skip this page.)"
         },
         {
             id: "project_collectionSessionRecordsList",

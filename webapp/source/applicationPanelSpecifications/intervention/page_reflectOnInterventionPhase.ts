@@ -16,46 +16,37 @@ const panel: Panel = {
         },
         
         {
+            id: "project_phaseReflections_intervention_happened",
+            valuePath: "project_phaseReflections_intervention_happened",
+            valueType: "string",
+            displayType: "textarea",
+            displayName: "What happened",
+            displayPrompt: "What <strong>happened</strong> in the intervention phase of your project?"
+        },
+        {
+            id: "project_phaseReflections_intervention_surprisedAndNot",
+            valuePath: "project_phaseReflections_intervention_surprisedAndNot",
+            valueType: "string",
+            displayType: "textarea",
+            displayName: "Surprised and Not",
+            displayPrompt: "What <strong>surprised</strong> you? What didn't?"
+        },
+        {
+            id: "project_phaseReflections_intervention_obstaclesAndOpportunities",
+            valuePath: "project_phaseReflections_intervention_obstaclesAndOpportunities",
+            valueType: "string",
+            displayType: "textarea",
+            displayName: "Obstacles and Opportunities",
+            displayPrompt: `Did any <strong>obstacles</strong> or <strong>opportunities</strong> play a part in how things went? 
+                Where did they come from? What did you do about them? How did that work out?`
+        },
+        {
             id: "project_phaseReflections_intervention_learned",
             valuePath: "project_phaseReflections_intervention_learned",
             valueType: "string",
             displayType: "textarea",
             displayName: "Learned",
-            displayPrompt: "What did you <strong>learn</strong> in the intervention phase of your project?"
-        },
-        {
-            id: "project_phaseReflections_intervention_surprised",
-            valuePath: "project_phaseReflections_intervention_surprised",
-            valueType: "string",
-            displayType: "textarea",
-            displayName: "Surprised",
-            displayPrompt: "What <strong>surprised</strong> you about what happened?"
-        },
-        {
-            id: "project_phaseReflections_intervention_notsurprised",
-            valuePath: "project_phaseReflections_intervention_notsurprised",
-            valueType: "string",
-            displayType: "textarea",
-            displayName: "Not surprised",
-            displayPrompt: "What <strong>didn't surprise</strong> you? What happened just as you thought it would?"
-        },
-        {
-            id: "project_phaseReflections_intervention_obstacles",
-            valuePath: "project_phaseReflections_intervention_obstacles",
-            valueType: "string",
-            displayType: "textarea",
-            displayName: "Obstacles",
-            displayPrompt: `Were there any <strong>obstacles</strong> that played a part in how things went? 
-                Where did they come from? What did you do to overcome them? How did that work out?`
-        },
-        {
-            id: "project_phaseReflections_intervention_opportunities",
-            valuePath: "project_phaseReflections_intervention_opportunities",
-            valueType: "string",
-            displayType: "textarea",
-            displayName: "Opportunities",
-            displayPrompt: `Did any <strong>opportunities</strong> play a part? 
-                Where did they come from? What did you do to take advantage of them? How did that work out?`
+            displayPrompt: "What did you <strong>learn</strong> from all of this?"
         },
         {
             id: "project_phaseReflections_intervention_newIdeas",
@@ -63,7 +54,7 @@ const panel: Panel = {
             valueType: "string",
             displayType: "textarea",
             displayName: "New ideas",
-            displayPrompt: "Did any <strong>new ideas</strong> emerge? How might you want to use those ideas in the future?"
+            displayPrompt: "Did any <strong>new ideas</strong> come up that you want to remember in the future?"
         },
         {
             id: "project_phaseReflections_intervention_issues",

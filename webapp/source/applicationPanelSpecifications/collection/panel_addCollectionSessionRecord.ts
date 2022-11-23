@@ -42,6 +42,14 @@ const panel: Panel = {
             displayPrompt: "Which of your collection session <strong>plans</strong> did you follow in this session? (And did you stick to the plan?)"
         },
         {
+            // moved this from interaction section, but cannot change id due to legacy data
+            id: "collectionSessionRecord_reflections_interaction_stories", 
+            valueType: "string",
+            displayType: "textarea",
+            displayName: "Stories",
+            displayPrompt: "What did you notice about the <strong>stories</strong> people told, retold, chose, and worked with during the session?"
+        },
+        {
             id: "collectionSessionRecord_notes",
             valueType: "string",
             displayType: "textarea",
@@ -110,12 +118,37 @@ const panel: Panel = {
             displayPrompt: "Describe the interactions <strong>between participants and facilitators</strong>."
         },
         {
-            id: "collectionSessionRecord_reflections_interaction_stories",
+            id: "collectionSessionRecord_reflections_interaction_intervention",
             valueType: "string",
             displayType: "textarea",
-            displayName: "Stories",
-            displayPrompt: "What did you notice about the <strong>stories</strong> people told, retold, chose, and worked with during the session?"
+            displayName: "Intervention",
+            displayPrompt: `Did you have to <strong>intervene</strong> at any time during this session, 
+                perhaps to guide someone back to story sharing? If so, what happened then?`
         },
+
+        {
+            id: "collectionSessionRecord_energyHeader",
+            valueType: "none",
+            displayType: "header",
+            displayPrompt: "Energy"
+        },
+        {
+            id: "collectionSessionRecord_reflections_energy_flowed",
+            valueType: "string",
+            displayType: "textarea",
+            displayName: "Flow of energy",
+            displayPrompt: `In what parts of this session would you say <strong>the energy flowed well</strong>?
+                Were there any parts in which the energy of the session got stuck?`
+        },
+        {
+            id: "collectionSessionRecord_reflections_energy_enjoyed",
+            valueType: "string",
+            displayType: "textarea",
+            displayName: "Enjoyment",
+            displayPrompt: `Which parts of the session do you think your participants <strong>enjoyed</strong> the most?
+                What about you? Which parts did you enjoy?`
+        },
+
         {
             id: "collectionSessionRecord_learningHeader",
             valueType: "none",
@@ -149,6 +182,13 @@ const panel: Panel = {
             displayType: "textarea",
             displayName: "New ideas",
             displayPrompt: "What <strong>new ideas</strong> did you gain from this session? What did you <strong>learn</strong> from it?"
+        },
+        {
+            id: "collectionSessionRecord_reflections_learning_style",
+            valueType: "string",
+            displayType: "textarea",
+            displayName: "Style",
+            displayPrompt: `What did this session tell you about your own unique <strong>style</strong> of facilitating story sharing?`
         },
         {
             id: "collectionSessionRecord_reflections_learning_wantToRemember",
