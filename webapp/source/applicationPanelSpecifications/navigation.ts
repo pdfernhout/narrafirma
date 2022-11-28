@@ -10,6 +10,7 @@ import page_planningQuestionsDraft = require("./planning/page_planningQuestionsD
 import page_participantGroups = require("./planning/page_participantGroups");
 import page_describeYourResources = require("./planning/page_describeYourResources");
 import page_projectStories = require("./planning/page_projectStories");
+import page_observeStorySharing = require("./planning/page_observeStorySharing");
 import page_createProjectStoryElements = require("./planning/page_createProjectStoryElements");
 import page_assessStorySharing = require("./planning/page_assessStorySharing");
 import page_revisePNIPlanningQuestions = require("./planning/page_revisePNIPlanningQuestions");
@@ -19,6 +20,8 @@ import page_reflectOnPlanningPhase = require("./planning/page_reflectOnPlanningP
 
 import panel_addParticipantGroup = require("./planning/panel_addParticipantGroup");
 import panel_projectStory = require("./planning/panel_projectStory");
+import panel_addStorySharingObservation = require("./planning/panel_addStorySharingObservation");
+import panel_addObservedStory = require("./planning/panel_addObservedStory");
 
 import page_collection = require("./collection/page_collection");
 import page_chooseCollectionMethods = require("./collection/page_chooseCollectionMethods");
@@ -116,6 +119,7 @@ navigationModules["page_participantGroups"] = page_participantGroups;
 navigationModules["page_describeYourResources"] = page_describeYourResources;
 navigationModules["page_projectStories"] = page_projectStories;
 navigationModules["page_createProjectStoryElements"] = page_createProjectStoryElements;
+navigationModules["page_observeStorySharing"] = page_observeStorySharing;
 navigationModules["page_assessStorySharing"] = page_assessStorySharing;
 navigationModules["page_revisePNIPlanningQuestions"] = page_revisePNIPlanningQuestions;
 navigationModules["page_reflectOnPlanningPhase"] = page_reflectOnPlanningPhase;
@@ -123,6 +127,8 @@ navigationModules["page_writeProjectSynopsis"] = page_writeProjectSynopsis;
 navigationModules["page_buildPrivacyPolicy"] = page_buildPrivacyPolicy;
 navigationModules["panel_addParticipantGroup"] = panel_addParticipantGroup;
 navigationModules["panel_projectStory"] = panel_projectStory;
+navigationModules["panel_addStorySharingObservation"] = panel_addStorySharingObservation;
+navigationModules["panel_addObservedStory"] = panel_addObservedStory;
 
 navigationModules["page_collection"] = page_collection;
 navigationModules["page_chooseCollectionMethods"] = page_chooseCollectionMethods;
@@ -235,6 +241,7 @@ const sections = [
             "page_planningQuestionsDraft",
             "page_participantGroups",
             "page_describeYourResources",
+            "page_observeStorySharing",
             "page_assessStorySharing",
             "page_projectStories",
             "page_createProjectStoryElements",
@@ -245,7 +252,9 @@ const sections = [
         ],
         panels: [
             "panel_addParticipantGroup",
-            "panel_projectStory"
+            "panel_projectStory",
+            "panel_addStorySharingObservation",
+            "panel_addObservedStory",
         ]
     },
     {
