@@ -325,6 +325,8 @@ export function checkThatQuestionHasType(itemID): boolean {
         itemType = "participantQuestion";
     } else if (itemID.indexOf("AnnotationQuestion") >= 0) {
         itemType = "annotationQuestion";
+    } else if (itemID.indexOf("ElicitingQuestion") >= 0) {
+        return true; // eliciting question types are not required
     } else {
         const message = "Error: Unsupported question type validation check for item: " + itemID;
         alert(message);
