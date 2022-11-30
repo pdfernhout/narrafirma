@@ -7,9 +7,9 @@ Author URI: http://www.cfkurtz.com
 Author: Cynthia Kurtz and Paul Fernhout
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=DGVVDT2D49QA8
 Requires at least: 4.3.1
-Tested up to: 6.0.3
+Tested up to: 6.1.1
 Stable tag: trunk
-Version: 1.5.18
+Version: 1.5.19
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -105,6 +105,16 @@ We strongly suggest that you set up any web site on which you intend to install 
 12. Here the NarraFirma user is reflecting on the entire project, to learn from it and to keep good records for the future.
 
 == Changelog ==
+
+= 1.5.19 =
+
+Added: Icons that show the actitivies on each page (manage, plan, enter, review, journal, export). Can be turned off in project options.
+Added: Tips at the bottom of the screen. Can be turned off in project options.
+Added: Page (in Planning) to help you observe and reflect on a story-sharing conversation.
+Added: Page (in Planning) to help you build and print a project privacy policy. 
+Added: Journaling pages for reflections at the end of each project phase.
+Added: In Planning, added a few more questions about participant groups (these new questions are not linked to the recommendations system).
+Fixed: Bug where a question type was being erroneously required for elicitation questions. (It exists there but is not important.)
 
 = 1.5.18 =
 
@@ -604,6 +614,10 @@ loading application, getting user information, or retrieving project data.
 change logs, see the [GitHub repository](https://github.com/pdfernhout/narrafirma).
 
 == Upgrade Notice ==
+
+= 1.5.19 =
+
+This minor upgrade adds more note-taking pages and improves the new-user experience with page-type icons and tips.
 
 = 1.5.18 =
 

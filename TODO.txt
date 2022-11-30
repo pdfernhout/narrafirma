@@ -162,6 +162,16 @@ M When import story form, hundreds of triples can be generated which take minute
 
 ==== DONE
 
+-- Release 1.5.19
+
+Added: Icons that show the actitivies on each page (manage, plan, enter, review, journal, export). Can be turned off in project options.
+Added: Tips at the bottom of the screen. Can be turned off in project options.
+Added: Page (in Planning) to help you observe and reflect on a story-sharing conversation.
+Added: Page (in Planning) to help you build and print a project privacy policy. 
+Added: Journaling pages for reflections at the end of each project phase.
+Added: In Planning, added a few more questions about participant groups (these new questions are not linked to the recommendations system).
+Fixed: Bug where a question type was being erroneously required for elicitation questions. (It exists there but is not important.)
+
 -- Release 1.5.18
 
 Added: Validation check to make sure that all questions have types.
