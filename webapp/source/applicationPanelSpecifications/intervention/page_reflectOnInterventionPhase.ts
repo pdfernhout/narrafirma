@@ -5,7 +5,7 @@ const panel: Panel = {
     id: "page_reflectOnInterventionPhase",
     displayName: "Reflect on the intervention phase",
     pageExplanation: "Think about what happened in this part of the project.",
-    pageCategories: "record",
+    pageCategories: "journal",
     panelFields: [
         {
             id: "project_phaseReflections_intervention_intro",

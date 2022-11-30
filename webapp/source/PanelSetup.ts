@@ -1,6 +1,7 @@
 
 import PanelSpecificationCollection = require("./panelBuilder/PanelSpecificationCollection");
 import translate = require("./panelBuilder/translate");
+import tips = require("./tips");
 import m = require("mithril");
 
 "use strict";
@@ -44,6 +45,18 @@ function addExtraFieldSpecificationsForPageSpecification(pageID, pageSpecificati
         };
         _panelSpecificationCollection.addFieldSpecificationToPanelSpecification(pageSpecification, returnToDashboardButtonSpecification); 
     }
+
+    function addTip() {
+        const prompt = tips.getRandomTip();
+        const tipSpecification = {
+            "id": pageID + "_tip",
+            "valueType": "none",
+            "displayPrompt": prompt,
+            "displayType": "html",
+            "displayClass": "narrafirma-tip",
+        };
+        _panelSpecificationCollection.addFieldSpecificationToPanelSpecification(pageSpecification, tipSpecification); 
+    }
     
     if (pageSpecification.section !== "dashboard") {
         if (!pageSpecification.isHeader) {
@@ -76,8 +89,24 @@ function addExtraFieldSpecificationsForPageSpecification(pageID, pageSpecificati
                 if (!childPageSpecification) console.log("Error: problem finding page definition for", childPageID);
                 if (childPageSpecification && childPageSpecification.displayType === "page") {
                     let prompt = translate(childPageID + "::title", childPageSpecification.displayName);
-                    const properties: any = { href: "javascript:narrafirma_openPage('" + childPageID + "')" }
-                    const explanationDiv = m("div.narrafirma-dashboard-page-link-explanation", childPageSpecification.pageExplanation);
+                    const properties: any = { href: "javascript:narrafirma_openPage('" + childPageID + "')" };
+                    
+                    const pageExplanationWithCategoryImages = [];
+                    const categories = childPageSpecification.pageCategories.split(", ");
+                    const allowedPageCategories = ["manage", "plan", "journal", "enter", "review", "export"];
+
+                    for (let categoryIndex in categories) {
+                        const category = categories[categoryIndex];
+                        if (allowedPageCategories.indexOf(category) >= 0) {
+                            const imageSpan = m("span", {class: "pageCategoryImage " + category + "CategoryImage", title: category});
+                            pageExplanationWithCategoryImages.push(imageSpan);
+                        } else {
+                           console.log("Error: Unrecognized page category: ", category);
+                        }
+                    }
+                    pageExplanationWithCategoryImages.push(childPageSpecification.pageExplanation);
+
+                    const explanationDiv = m("div.narrafirma-dashboard-page-link-explanation", pageExplanationWithCategoryImages);
                     prompt = m("div.narrafirma-dashboard-page-link", [m("a", properties, prompt), explanationDiv]);
                     if (childPageSpecification.headerAbove) { 
                         prompt = [m("div.narrafirma-dashboard-header", childPageSpecification.headerAbove), prompt]; 
@@ -111,6 +140,8 @@ function addExtraFieldSpecificationsForPageSpecification(pageID, pageSpecificati
             addPageChangeButton(_startPage, "_returnToDashboardButton", "Home", "homeButtonImage");
         }
     }
+
+    addTip();
 }
 
 export function processAllPanels() {

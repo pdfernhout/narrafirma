@@ -405,7 +405,7 @@ input[type="submit"].narrafirma-login-button:hover {
     display: block;
 }
 
-.verbose .narrafirma-dashboard-page-link-explanation {
+.showPageExplanations .narrafirma-dashboard-page-link-explanation {
     display: inline;
     margin-left: 0.7em;
     font-size: 0.85em;
@@ -593,6 +593,42 @@ button:disabled {
  .functionResult { /* used on "stop story collection" page */
      margin: 0.4em 0 1em 0.6em;
  }
+
+ /* these are used on dashboard pages but not on buttons */
+
+.showPageCategoryIcons .pageCategoryImage {
+    background-repeat: no-repeat;
+    background-size: auto 100%;
+    width: 20px;
+    height: 20px;
+    margin-right: 0.2em;
+    text-align: center;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.pageCategoryImage {
+    display: none;
+}
+
+/* manage, plan, journal, enter, review, output */
+.manageCategoryImage { background-image: url(../images/ionicicons/build-outline.svg); }
+.planCategoryImage { background-image: url(../images/ionicicons/bulb-outline.svg); }
+.enterCategoryImage { background-image: url(../images/ionicicons/create-outline.svg); }
+.exportCategoryImage { background-image: url(../images/ionicicons/print-outline.svg); }
+.reviewCategoryImage { background-image: url(../images/ionicicons/stats-chart-outline.svg); }
+.journalCategoryImage { background-image: url(../images/ionicicons/book-outline.svg); }
+
+.showTips .narrafirma-tip {
+    display: block;
+    font-size: 0.8em;
+    font-style: italic;
+    margin-right: 2em;
+}
+
+.narrafirma-tip {
+    display: none;
+}
 
  /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Pages with entry fields ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 

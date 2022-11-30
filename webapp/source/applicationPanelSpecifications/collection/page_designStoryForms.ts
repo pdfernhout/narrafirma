@@ -5,7 +5,7 @@ const panel: Panel = {
     id: "page_designStoryForms",
     displayName: "Build story forms",
     pageExplanation: "Draw from your question libraries to create surveys and interview scripts.",
-    pageCategories: "input",
+    pageCategories: "enter",
     panelFields: [
         {
             id: "storyForms_Label",

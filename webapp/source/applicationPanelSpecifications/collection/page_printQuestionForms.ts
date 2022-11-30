@@ -6,7 +6,7 @@ const panel: Panel = {
     id: "page_printQuestionForms",
     displayName: "Print story forms",
     pageExplanation: "Generate a plain-text your story form to to print or send.",
-    pageCategories: "output",
+    pageCategories: "export",
     panelFields: [
         {
             id: "printQuestionsForm_introduction",

@@ -6,7 +6,7 @@ const panel: Panel = {
     id: "page_printCatalysisReport",
     displayName: "Print catalysis report",
     pageExplanation: "Export your catalysis report in HTML format.",
-    pageCategories: "output",
+    pageCategories: "export",
     panelFields: [
         {
             id: "catalysisReportPrint_label",

@@ -6,7 +6,7 @@ const panel: Panel = {
     id: "page_exportStories",
     displayName: "Export stories or story forms",
     pageExplanation: "Save a story form or collection to a spreadsheet file.",
-    pageCategories: "output",
+    pageCategories: "export",
     panelFields: [
         {
             id: "exportStories_Label",

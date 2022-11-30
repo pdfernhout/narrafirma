@@ -6,7 +6,7 @@ const panel: Panel = {
     id: "page_annotateStories",
     displayName: "Annotate stories",
     pageExplanation: "Answer the research questions you created.",
-    pageCategories: "review, input",
+    pageCategories: "review, enter",
     panelFields: [
         {
             id: "project_annotateStoriesLabel",

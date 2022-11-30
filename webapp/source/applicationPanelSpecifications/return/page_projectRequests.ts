@@ -5,7 +5,7 @@ const panel: Panel = {
     id: "page_projectRequests",
     displayName: "Respond to requests for post-project support",
     pageExplanation: "Make a note of any requests or inquiries you get as your project winds down.",
-    pageCategories: "record",
+    pageCategories: "journal",
     panelFields: [
         {
             id: "project_returnRequestsLabel",

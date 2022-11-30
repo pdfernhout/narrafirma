@@ -5,7 +5,7 @@ const panel: Panel = {
     id: "page_configureCatalysisReport",
     displayName: "Configure catalysis report",
     pageExplanation: "Choose how you want to structure your catalysis report.",
-    pageCategories: "configure",
+    pageCategories: "manage",
     panelFields: [
         {
             id: "configureCatalysisReport_label",

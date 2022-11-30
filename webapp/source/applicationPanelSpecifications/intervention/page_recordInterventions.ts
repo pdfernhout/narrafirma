@@ -5,7 +5,7 @@ const panel: Panel = {
     id: "page_recordInterventions",
     displayName: "Enter intervention records",
     pageExplanation: "Describe interventions you carried out.",
-    pageCategories: "record",
+    pageCategories: "journal",
     headerAbove: "Wrap up",
     panelFields: [
         {

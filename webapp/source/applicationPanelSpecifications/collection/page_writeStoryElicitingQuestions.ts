@@ -5,7 +5,7 @@ const panel: Panel = {
     id: "page_writeStoryElicitingQuestions",
     displayName: "Write story eliciting questions",
     pageExplanation: "Build a library of questions that help people think of experiences to recount.",
-    pageCategories: "input",
+    pageCategories: "enter",
     headerAbove: "Design",
     panelFields: [
         {

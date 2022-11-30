@@ -5,7 +5,7 @@ const panel: Panel = {
     id: "page_gatherFeedback",
     displayName: "Gather feedback",
     pageExplanation: "Jot down comments people made about the project.",
-    pageCategories: "record",
+    pageCategories: "journal",
     headerAbove: "Listen",
     panelFields: [
         {

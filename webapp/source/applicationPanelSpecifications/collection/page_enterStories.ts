@@ -6,7 +6,7 @@ const panel: Panel = {
     id: "page_enterStories",
     displayName: "Enter or import stories",
     pageExplanation: "Input stories you collected outside of NarraFirma.",
-    pageCategories: "input",
+    pageCategories: "enter",
     panelFields: [
         {
             id: "enterStories_Label",

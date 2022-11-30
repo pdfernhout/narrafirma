@@ -5,7 +5,7 @@ const panel: Panel = {
     id: "page_projectOptions",
     displayName: "Project options",
     pageExplanation: "Change options that affect your entire project.",
-    pageCategories: "configure",
+    pageCategories: "manage",
     headerAbove: "Manage",
     panelFields: [
         {
@@ -40,8 +40,28 @@ const panel: Panel = {
             valueOptions: ["yes", "no"],
             displayName: "Verbose",
             displayPrompt: `Would you like to see an <strong>explanation</strong> of each page 
-                under its link on the section page where it appears? 
+                next to its link on the section page where it appears? 
                 (If no choice is made here, explanations will be shown.)`
+        },
+        {
+            id: "projectOptions_showPageCategoryIcons",
+            valueType: "string",
+            displayType: "radiobuttons",
+            valueOptions: ["yes", "no"],
+            displayName: "Page category icons",
+            displayPrompt: `When showing page explanations, would you also like to see an <strong>icon</strong> for each page,
+                so you can see what type of page it is? 
+                (The categories are: manage, plan, enter, review, journal, export.) 
+                (If no choice is made here, page-type icons will be shown.)`
+        },
+        {
+            id: "projectOptions_showTips",
+            valueType: "string",
+            displayType: "radiobuttons",
+            valueOptions: ["yes", "no"],
+            displayName: "Tips",
+            displayPrompt: `Would you like to see <strong>tips</strong> at the bottom of each page? 
+                (If no choice is made here, tips will be shown.)`
         },
 
         {

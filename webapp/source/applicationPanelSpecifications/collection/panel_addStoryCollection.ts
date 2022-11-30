@@ -55,20 +55,6 @@ const panel: Panel = {
             }
         },
         {
-            id: "storyCollection_note",
-            valueType: "none",
-            displayType: "label",
-            displayReadOnly: true,
-            displayPrompt: `
-                <span.narrafirma-special-warning>Also note: After you give your new story collection a name and choose a story form to go with it, 
-                <strong>don't forget to click the Close button</strong>. If you leave this panel without clicking the Close button, 
-                you will have created a story collection with no associated story form. 
-                This may lead you to see error messages when you try to do things that use the story form. 
-                If that happens, come back to this panel, 
-                choose the story form again, and click the "Update Story Form" button.</span>
-            `
-        },
-        {
             id: "storyCollection_activeOnWeb",
             valueType: "boolean",
             displayType: "checkbox",

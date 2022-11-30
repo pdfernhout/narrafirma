@@ -5,7 +5,7 @@ const panel: Panel = {
     id: "page_print",
     displayName: "Print",
     pageExplanation: "Generate a whole-project report that displays everything you entered into NarraFirma so you can use it elsewhere.",
-    pageCategories: "output",
+    pageCategories: "export",
     panelFields: [
         {
             id: "print_header",

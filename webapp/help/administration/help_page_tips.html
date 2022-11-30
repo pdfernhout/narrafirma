@@ -1,0 +1,137 @@
+<!DOCTYPE html> 
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>NarraFirma Help: Administration: Tips</title>
+    <link rel="stylesheet" href="../../css/help.css">
+</head>
+<body>
+<div class="header">
+	<span class="narrafirma-name">NarraFirma&trade; Help</span>
+	<span class="breadcrumb">
+	<a href="../dashboard/help_page_dashboard.html">Home</a> &gt; 
+	<a href="help_page_administration.html">Administration</a> &gt; 
+	Tips
+	</span>
+</div>
+
+<div id="page-tips" class="page">
+
+
+<h1 class="page-title">NarraFirma Tips</h1>
+<div class="text">
+    <p><b>These are some tips for using NarraFirma. These are the same tips as you can see at the bottom of each
+        NarraFirma page (if you haven't turned off the option).
+    </b></p>
+
+    <! -- These tips must be identical to those in tips.ts -- !>
+    
+    <h3>Getting started</h3>
+    <p>One way to get started with NarraFirma is to page through its help system, one page a time, just to see what you can do with it.</p>       
+    <p>If you aren't sure whether you need or want to use any page, click the Help button to read about its purpose.</p>
+    <p>Click the Help button on any NarraFirma page to find out how the page is connected to other NarraFirma pages.</p>
+    <p>The FAQ page at narrafirma.com has more answers to frequently asked questions.</p>
+
+    <h3>General</h3>
+    <p>You can safely ignore all of the pages of the types "plan" and "journal." (But don't discount them! They might be useful.)</p>
+    <p>Use the reminder at the bottom of any page to leave yourself a note. Reminders appear on section pages.</p>
+    <p>On section pages (Planning, etc), if you don't like the page descriptions and page-type icons, you can hide them in Home - Project administration - Project options.</p>
+    <p>You can print a whole-project report in Project administration - Print.</p>
+    <p>You can use simple HTML codes (b, i, ul/li, etc) on most NarraFirma fields that end up in exported or printed reports.</p>
+    <p>We recommend pandoc for converting all of NarraFirma's HTML reports to other formats.</p>
+
+    <h3>Technical</h3>
+    <p>Everything you enter into NarraFirma is saved as soon as you leave each field.</p>
+    <p>You can export your whole project to a file, then import it into another NarraFirma installation.</p>
+    <p>You can export a project file from a WordPress NarraFirma installation and import it into a Node.js NarraFirma installation (and vice versa).</p>
+    <p>It's useful to occasionally back up your NarraFirma project (Project administration - Import &amp; Export).</p>
+    <p>If you load a new version of NarraFirma and your browser doesn't show any changes, try clearing your browser cache.</p>
+    <p>If you hover your mouse over the word "NarraFirma" in the upper left corner of any NarraFirma page, you will see the version of NarraFirma you have installed.</p>
+    <p>If you type something into NarraFirma, then delete it, you might be able to find it again. On Node.js, look in the most recent files under server-data. In WordPress, find a plugin that shows you your table data.</p>
+    
+    <h3>Bugs</h3>
+    <p>If you find a bug in NarraFirma, tell us about it on the <a href="https://github.com/pdfernhout/narrafirma/issues">GitHub issues page</a>.</p>
+    <p>If NarraFirma isn't working the way it should, look at your browser's development console to see if there is an error message there.</p>
+    <p>To report a NarraFirma bug, tell us what you were doing and what happened. Screenshots (especially of your browser's development console) are extra helpful.</p>
+
+    <h3>Planning</h3>
+    <p>The Planning pages of NarraFirma can help you think through your project as you are getting started.</p>
+    <p>None of the Planning pages in NarraFirma limit what you can do on other pages. They are just there to help you think.</p>
+    <p>When you are clustering items on the "Create project story elements" page, two people can move items at the same time.</p>
+
+    <h3>Collection - General</h3>
+    <p>You can enter stories into NarraFirma in three ways: using a web survey, by entering each story yourself, and by importing a CSV spreadsheet file.</p>
+    <p>You can create printable agendas for your in-person or online story-sharing sessions.</p>
+    <p>If you are importing data from another surveying system, click Help, then Collection, then find the Guide to Importing Data.</p>
+
+    <h3>Collection - Building story forms</h3>
+    <p>The order of questions on the "Write questions about" pages does not matter. Only the order on the story form matters.</p>
+    <p>The short names you give to questions will appear on your graphs. Make them brief but clear.</p>
+    <p>You can include a video introduction in a story form.</p>
+    <p>Checkboxes questions can include images.</p>
+    <p>Write-in answers are particularly useful in pilot projects.</p>
+    <p>Keep your slider labels (left and right) short but meaningful.</p>
+    <p>Multiple-answer questions (of the checkboxes type) are often useful, but they cannot be used in some statistical tests because they are not mutually exclusive.</p>
+    <p>When you look at question recommendations, it doesn't change your questions. It's just to help you think.</p>
+    <p>You can give your survey participants the option to copy their contribution. Look at "Finishing the form."</p>
+    <p>You can use custom CSS to change how your survey looks.</p>
+    <p>If you want to, you can build your entire story form in a CSV spreadsheet, then import it.</p>
+    <p>If you want to translate your story form into multiple languages, build and test the form in one language first, then translate it.</p>
+    <p>It's a good idea to export your story collection to an external CSV file, just in case you want to see it outside of NarraFirma later.</p>
+    
+    <h3>Collection - Managing story collections</h3>
+    <p>If you make major changes to your story form (e.g., changing a question's type or short name), create a new story collection so your data matches your form.</p>
+    <p>If you make so many test story collections that they slow down project loading, you can remove them by resetting the project (carefully!) in Project administration - Import &amp; Export.</p>
+    <p>To prevent accidental data loss, you cannot delete stories. But you can mark them to be ignored on the  "Review incoming stories" page.</p>
+    <p>You can edit story names, texts, and answers to questions on the "Review incoming stories" page. Just be careful!</p>
+    <p>If your stories do not have names, you can give them names on the "Review incoming stories" page.</p>
+    <p>On the "Review incoming stories" page, you can see (and change) subsets of your stories as well as all of them.</p>
+    <p>Use the "Spot-check graphs" page to check over incoming stories to look for gaps in your coverage.</p>
+
+    <h3>Catalysis - General</h3>
+    <p>What's catalysis? It's the same thing as analysis, but it generates questions to ponder, not conclusions to accept or reject.</p>
+    <p>Save time during catalysis by unchecking questions with too little variation, leaving them out of your consideration.</p>
+    <p>As you explore patterns in your data, you can use display lumping to merge similar answers.</p>
+    <p>A catalysis report can include multiple story collections and multiple story forms.</p>
+    <p>When you are clustering items on the "Cluster interpretations and/or observations" page, two people can move items at the same time.</p>
+    <p>If you turn off a type of graph on the "Configure catalysis report" page, any observations linked to graphs of that type will still exist. You just won't be able to see them.</p>
+    <p>Clustered observations or interpretations become the headings of your catalysis report.</p>
+    <p>You can export observations, interpretations, and ideas from one catalysis report and import them into another one.</p>
+    <p>On the "Print catalysis report" page, you can export all of your graphs to PNG, SVG, or CSV.</p>
+    <p>You can change every English-language element of your catalysis report to your own language.</p>
+    <p>You can use custom CSS to change how your catalysis report looks.</p>
+    <p>We recommend pandoc for converting NarraFirma's HTML catalysis reports to other formats.</p>
+
+    <h3>Catalysis - Annotating stories</h3>
+    <p>You can use an annotation question to convert a free-text question to a fixed-list question (by reading and clustering the things people wrote in).</p>
+    <p>You can use an annotation question to mark and count your observations of storytelling patterns and styles.</p>
+    <p>You can use an annotation question to mark and count themes you find in your stories.</p>
+    <p>You can enter answers to annotation questions in NarraFirma or import them from a CSV spreadsheet file.</p>
+    <p>When annotating stories, you can use the Random button to code a randomly chosen subset of a large story collection.</p>
+    <p>Annotation questions are not connected to particular story forms. They are available to the whole project.</p>
+
+    <h3>Catalysis - Exploring patterns</h3>
+    <p>The "Explore patterns" page is the most complicated page in NarraFirma. Budget some time to take it in and read its Help page.</p>
+    <p>On the "Explore patterns" page, you can copy and paste excerpts from any story into an observation, interpretation, or idea.</p>
+    <p>On the "Explore patterns" page, you can sort your patterns by statistical significance.</p>
+    <p>On the "Explore patterns" page, you can sort your patterns by observation strength.</p>
+    <p>If few people picked one answer to a question, you might be able to lump it in with another answer using the "display lumping" feature.</p>
+    <p>You can override your general setting for display lumping on particular graphs.</p>
+    <p>You can hide or show how many people chose not to answer questions.</p>
+    <p>You can override your general setting for showing "No answer" counts on particular graphs.</p>
+    <p>When you are looking at a graph on the Explore Patterns page, you can save it as a CSV spreadsheet or an image.</p>
+    <p>When you are looking at a graph on the "Explore patterns" page, you can generate random subsets of selected stories. These are useful for reports.</p>
+    
+    <h3>Sensemaking, Intervention, and Return</h3>
+    <p>You can use the filtering function to print only some story cards.</p>
+    <p>You can use display lumping to merge similar answers in your story cards.</p>
+    <p>You can create highly customized story cards.</p>
+    <p>You can create printable agendas for your in-person or online sensemaking workshops.</p>
+    <p>We recommend pandoc for converting NarraFirma's HTML story cards to other formats.</p>
+ 
+</div>
+
+</div>
+
+</body>
+</html>

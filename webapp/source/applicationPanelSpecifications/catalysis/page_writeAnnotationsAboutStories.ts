@@ -6,7 +6,7 @@ const panel: Panel = {
     id: "page_writeAnnotationsAboutStories",
     displayName: "Write annotation questions",
     pageExplanation: "Design research questions to answer as you study your collected stories.",
-    pageCategories: "input",
+    pageCategories: "enter",
     headerAbove: "Interpret",
     panelFields: [
         {

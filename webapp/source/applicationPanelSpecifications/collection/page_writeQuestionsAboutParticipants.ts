@@ -5,7 +5,7 @@ const panel: Panel = {
     id: "page_writeQuestionsAboutParticipants",
     displayName: "Write questions about participants",
     pageExplanation: "Build a library of questions about people.",
-    pageCategories: "input",
+    pageCategories: "enter",
     panelFields: [
         {
             id: "project_participantQuestionsLabel",

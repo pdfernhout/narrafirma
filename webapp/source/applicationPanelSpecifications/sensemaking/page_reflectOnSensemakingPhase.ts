@@ -5,7 +5,7 @@ const panel: Panel = {
     id: "page_reflectOnSensemakingPhase",
     displayName: "Reflect on the sensemaking phase",
     pageExplanation: "Think about what happened in this part of the project.",
-    pageCategories: "record",
+    pageCategories: "journal",
     panelFields: [
         {
             id: "project_phaseReflections_sensemaking_intro",

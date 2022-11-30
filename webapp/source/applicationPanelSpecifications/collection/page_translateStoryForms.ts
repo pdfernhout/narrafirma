@@ -6,7 +6,7 @@ const panel: Panel = {
     id: "page_translateStoryForms",
     displayName: "Translate story forms",
     pageExplanation: "Enter translations to display your story form in multiple languages.",
-    pageCategories: "input",
+    pageCategories: "enter",
     panelFields: [
         {
             id: "translateStoryForm_Label",

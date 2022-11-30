@@ -6,7 +6,7 @@ const panel: Panel = {
     id: "page_printStoryCards",
     displayName: "Print story cards",
     pageExplanation: "Get your stories ready for use in sensemaking.",
-    pageCategories: "output",
+    pageCategories: "export",
     headerAbove: "Prepare",
     panelFields: [
         {

@@ -5,7 +5,7 @@ const panel: Panel = {
     id: "page_reflectOnProject",
     displayName: "Reflect on the project",
     pageExplanation: "Think about what happened in the entire project.",
-    pageCategories: "record",
+    pageCategories: "journal",
     panelFields: [
         {
             id: "project_reflectLabel",

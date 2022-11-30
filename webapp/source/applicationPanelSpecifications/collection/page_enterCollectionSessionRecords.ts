@@ -5,7 +5,7 @@ const panel: Panel = {
     id: "page_enterCollectionSessionRecords",
     displayName: "Enter story collection session records",
     pageExplanation: "Answer reflective questions about your story-sharing sessions.",
-    pageCategories: "record",
+    pageCategories: "journal",
     panelFields: [
         {
             id: "project_collectionRecordsIntroductionLabel",

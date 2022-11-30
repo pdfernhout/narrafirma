@@ -5,7 +5,7 @@ const panel: Panel = {
     id: "page_reflectOnCatalysisPhase",
     displayName: "Reflect on the catalysis phase",
     pageExplanation: "Think about what happened in this part of the project.",
-    pageCategories: "record",
+    pageCategories: "journal",
     headerAbove: "Wrap up",
     panelFields: [
         {

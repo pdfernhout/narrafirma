@@ -69,12 +69,22 @@ const PageDisplayer: any = {
         }
         clientState.anHTMLElementValueIsBeingSetBecauseOfAnIncomingMessage(false);
 
-        // show or hide explanations of pages on section-dashboard pages
-        // if nothing is stored for this option, show the explanations (default to support for new user)
-        const showPageExplanations = project.tripleStore.queryLatestC(project.projectIdentifier, "projectOptions_showPageExplanations");
-        const extraClass = (showPageExplanations === undefined || showPageExplanations === "yes") ? ".verbose" : "";
+        // for all of these optional displays
+        // if nothing is stored for the option, show the thing (default to support for new user)
 
-        return m("div.pageContents" + extraClass, {key: "pageContents"}, contentsDiv);
+        // show or hide explanations of pages on section-dashboard pages
+        const showPageExplanations = project.tripleStore.queryLatestC(project.projectIdentifier, "projectOptions_showPageExplanations");
+        const explanationsExtraClass = (showPageExplanations === undefined || showPageExplanations === "yes") ? ".showPageExplanations" : "";
+
+        // show or hide page category icons on section-dashboard pages
+        const showPageCategoryIcons = project.tripleStore.queryLatestC(project.projectIdentifier, "projectOptions_showPageCategoryIcons");
+        const iconsExtraClass = (showPageCategoryIcons === undefined || showPageCategoryIcons === "yes") ? ".showPageCategoryIcons" : "";
+
+        // show or hide tips
+        const showTips = project.tripleStore.queryLatestC(project.projectIdentifier, "projectOptions_showTips");
+        const tipsExtraClass = (showTips === undefined || showTips === "yes") ? ".showTips" : "";
+
+        return m("div.pageContents" + explanationsExtraClass + iconsExtraClass + tipsExtraClass, {key: "pageContents"}, contentsDiv);
     }
 };
 
