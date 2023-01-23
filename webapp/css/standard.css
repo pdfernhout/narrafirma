@@ -340,10 +340,15 @@ input[type="submit"].narrafirma-login-button:hover {
 }
 
 #narrafirma-read-only {
-    font-size: 0.9em;
-    padding: 0.25em 0.75em 0.25em 0.5em;
-    float: right;
+    display: inline-block;
+    font-size: 1em;
+    font-weight: bold;
+    padding: 0.25em 2em 0.25em 2em;
+    margin: 0 1em 0.25em 1em;
     color: var(--color-error-text);
+    background-color: var(--color-reminder);
+    border: 2px solid var(--color-error-text);
+    box-shadow: 2px 2px black;
 }
 
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Dashboard (home page) ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
