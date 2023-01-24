@@ -57,6 +57,42 @@ export class Story {
     storyText(newValue = undefined) {
         return this.fieldValue("storyText", newValue);
     }
+
+    storyAnswersDisplay() { // read-only, for showing story answers in graph browser
+
+        function displayNameAndValue(name, value) {
+            let displayText = "";
+            displayText += name.substring(2) + ": ";
+            if (typeof value === 'object') {
+                const valueKeys = Object.keys(value);
+                const valueTexts = valueKeys.map(function(key) {return value[key] ? key : null});
+                displayText += valueTexts.join(", ");
+            } else {
+                displayText += value;
+            }
+            return displayText;
+        }
+
+        let text = "";
+        const keys = Object.keys(this.model);
+        let i = 0;
+        const storyKeys = keys.filter(function(item) {return item.indexOf("S_") >= 0});
+        storyKeys.sort();
+        const storyTexts = storyKeys.map(function(item) {return displayNameAndValue(item, this.model[item]);}, this);
+        const allStoryTexts = storyTexts.join(". ");
+
+        const participantKeys = keys.filter(function(item) {return item.indexOf("P_") >= 0});
+        participantKeys.sort();
+        const participantTexts = participantKeys.map(function(item) {return displayNameAndValue(item, this.model[item]);}, this);
+        const allParticipantTexts = participantTexts.join(". ");
+
+        const annotationKeys = keys.filter(function(item) {return item.indexOf("A_") >= 0});
+        annotationKeys.sort();
+        const annotationTexts = annotationKeys.map(function(item) {return displayNameAndValue(item, this.model[item]);}, this);
+        const allAnnotationTexts = annotationTexts.join(". ");
+
+        return [allStoryTexts, allParticipantTexts, allAnnotationTexts].join(". ") + ".";
+    }
     
     storyName(newValue = undefined) {
         return this.fieldValue("storyName", newValue);

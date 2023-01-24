@@ -3,6 +3,7 @@ import questionnaireGeneration = require("../questionnaireGeneration");
 import surveyCollection = require("../surveyCollection");
 import valuePathResolver = require("../panelBuilder/valuePathResolver");
 // import PanelBuilder = require("../panelBuilder/PanelBuilder");
+import dialogSupport = require("../panelBuilder/dialogSupport");
 import Project = require("../Project");
 import Globals = require("../Globals");
 import m = require("mithril");
@@ -20,6 +21,8 @@ function questionForID(questions, id) {
     return null;
 }
 
+const showAnswersCheckboxID = 101;
+
 class GraphBrowser {
     project: Project = null;
     xAxisSelectValue = null;
@@ -28,6 +31,7 @@ class GraphBrowser {
     choices = [];
     storyCollectionIdentifier: string = null;
     selectedStories = [];
+    showAnswers = false;
     
     graphHolder: GraphHolder;
     
@@ -82,7 +86,7 @@ class GraphBrowser {
         }
         
         let parts;
-        
+
         if (!this.storyCollectionIdentifier) {
             parts = [m("div", "Please select a story collection to view")];
         } else {
@@ -93,16 +97,25 @@ class GraphBrowser {
                 m("br"),
                 m("div", {config: this.insertGraphResultsPaneConfig.bind(this)}),
                 m("div.narrafirma-graphbrowser-heading", "Selected stories (" + this.selectedStories.length + ")"),
+                (this.selectedStories.length > 0) ? 
+                    m("div.narrafirma-graphbrowser-showstories-buttons", [
+                        m("button.narrafirma-graphbrowser-show-stories-button", {onclick: this.showAllSelectedStoriesInSeparateWindow.bind(this)}, "Show in separate window"),
+                        m("button.narrafirma-graphbrowser-show-stories-button", {onclick: this.showRandom10SelectedStories.bind(this)}, "Sample 10"),
+                        m("button.narrafirma-graphbrowser-show-stories-button", {onclick: this.showRandom20SelectedStories.bind(this)}, "20"),
+                        m("button.narrafirma-graphbrowser-show-stories-button", {onclick: this.showRandom30SelectedStories.bind(this)}, "30"),
+                        m("input[type=checkbox]", {id: showAnswersCheckboxID, checked: this.showAnswers, onchange: this.changeShowAnswers.bind(this)}),
+                        m("label", {"for": showAnswersCheckboxID}, "Show answers to questions"),
+                    ]) : m("div", ""),
                 this.selectedStories.map((story) => {
                     return m("div", [
-                        m("b", story.indexInStoryCollection() + ". " + story.storyName()),
-                        m("br"),
-                        m("blockquote", story.storyText())
+                        m("div.narrafirma-graphbrowser-story-number-and-name", story.indexInStoryCollection() + ". " + story.storyName()),
+                        m("div.narrafirma-graphbrowser-story-text", story.storyText()),
+                        m("div.narrafirma-graphbrowser-answers", (this.showAnswers) ? story.storyAnswersDisplay() : "")
                     ]);
                 })
             ];
         }
-        
+
         // TODO: Need to set class
         return m("div", parts);
         
@@ -128,6 +141,74 @@ class GraphBrowser {
     storiesSelected(selectedStories) {
         // TODO: Finish
         this.selectedStories = selectedStories;
+    }
+
+    changeShowAnswers(event) {
+        this.showAnswers = event.target.checked;
+    }
+
+    showSelectedStoriesInSeparateWindow(stories, windowTitle, textTitle) {
+        let text = textTitle + "\n";
+        const header = "\n----------------------------------------------------------------------------------------------------\n";
+        for (let i = 0; i < stories.length; i++) {
+            text += "\n" + stories[i].indexInStoryCollection() + ". " + stories[i].storyName();
+            text += header + stories[i].storyText() + "\n\n";
+            if (this.showAnswers) {
+                text += stories[i].storyAnswersDisplay() + "\n"; 
+            }
+        }
+        dialogSupport.openTextEditorDialog(text, windowTitle, "Close", this.closeCopyStoriesDialogClicked.bind(this), false);
+    }
+
+    closeCopyStoriesDialogClicked(text, hideDialogMethod) {     
+        hideDialogMethod();
+    }
+
+    showAllSelectedStoriesInSeparateWindow(event) {
+        this.showSelectedStoriesInSeparateWindow(this.selectedStories, "Selected stories", "Selected stories");
+    }
+
+    sampleSelectedStories(sampleSize) {
+        const stories = this.selectedStories;
+        if (!stories.length) {
+            alert("Please select some stories to show.");
+            return;
+        }
+        let sampledStories = [];
+        if (stories.length <= sampleSize) {
+            sampledStories = sampledStories.concat(stories);
+        } else {   
+            const sampledStoryIDs = [];   
+            while (sampledStoryIDs.length < sampleSize) { 
+                const randomIndex = Math.max(0, Math.min(stories.length - 1, Math.round(Math.random() * stories.length) - 1));
+                if (sampledStoryIDs.indexOf(randomIndex) < 0) {
+                    sampledStoryIDs.push(randomIndex);
+                }
+            }
+            sampledStoryIDs.forEach(function(id) {
+                sampledStories.push(stories[id]);
+            });
+        }
+        sampledStories.sort(function(a, b) {
+            if (a.indexInStoryCollection() < b.indexInStoryCollection()) return -1;
+            if (a.indexInStoryCollection() > b.indexInStoryCollection()) return 1;
+            return 0;
+        });
+
+        const title = "Random sample of " + sampledStories.length + " stories from selection of " + this.selectedStories.length;
+        this.showSelectedStoriesInSeparateWindow(sampledStories, title, title);
+    }
+
+    showRandom10SelectedStories(event) {
+        this.sampleSelectedStories(10);
+    }
+
+    showRandom20SelectedStories(event) {
+        this.sampleSelectedStories(20);
+    }
+
+    showRandom30SelectedStories(event) {
+        this.sampleSelectedStories(30);
     }
     
     calculateOptionsForChoices(currentValue) {

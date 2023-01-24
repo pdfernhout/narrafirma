@@ -248,7 +248,7 @@ a:focus, a:hover {
 
 .narrafirma-login-welcome-and-intro {
     background-color: var(--color-header);
-    border-bottom: 4px solid var(--color-button); /* cfk */
+    border-bottom: 4px solid var(--color-button); 
     padding: 0.2em;
     margin-bottom: 1em;
 }
@@ -1337,6 +1337,14 @@ table.filterTable td {
     margin: 0 0 1em 1em;
     font-size: 0.9em;
     font-style: italic;
+}
+
+.narrafirma-graphbrowser-showstories-buttons {
+    margin: 0 0.5em 0.25em 0.75em;
+}
+
+.narrafirma-graphbrowser-showstories-buttons label { /* this looks too big by default */
+    margin-left: 0.1em;
 }
 
 .narrafirma-graphbrowser-show-stories-button {
