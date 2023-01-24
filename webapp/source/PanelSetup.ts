@@ -57,6 +57,17 @@ function addExtraFieldSpecificationsForPageSpecification(pageID, pageSpecificati
         };
         _panelSpecificationCollection.addFieldSpecificationToPanelSpecification(pageSpecification, tipSpecification); 
     }
+
+    function addReadOnlyWarning() {
+        const readOnlyWarningSpecification = {
+            "id": pageID + "_readOnlyWarning",
+            "valueType": "none",
+            "displayPrompt": "You have read-only access to this project. You can make local changes, but they will not be saved to the server.",
+            "displayType": "html",
+            "displayClass": "narrafirma-read-only-warning",
+        };
+        _panelSpecificationCollection.addFieldSpecificationToPanelSpecification(pageSpecification, readOnlyWarningSpecification); 
+    }
     
     if (pageSpecification.section !== "dashboard") {
         if (!pageSpecification.isHeader) {
@@ -140,8 +151,8 @@ function addExtraFieldSpecificationsForPageSpecification(pageID, pageSpecificati
             addPageChangeButton(_startPage, "_returnToDashboardButton", "Home", "homeButtonImage");
         }
     }
-
     addTip();
+    addReadOnlyWarning();
 }
 
 export function processAllPanels() {

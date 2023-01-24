@@ -424,7 +424,7 @@ class ClusteringDiagram {
         }, this);
         
         return m("div", [
-            m("div", {config: this.configSurface.bind(this)}),
+            m("div.narrafirma-clustering-surface", {config: this.configSurface.bind(this)}),
             this.mainButtons,
             entryDialog,
             surfaceSizeDialog,

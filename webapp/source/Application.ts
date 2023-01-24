@@ -439,7 +439,7 @@ class Application {
                     if (this.readOnly) {
                         toaster.toast(`You have read-only access to this project. 
                             You can make local changes, but they will not be saved to the server 
-                            and will be lost when you reload the page.`, "Message", 5000);
+                            and will be lost when you reload the page.`, "Message", 8000);
                         Globals.project().pointrelClient.suspendOutgoingMessages(true);
                     }
                 });

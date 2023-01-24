@@ -73,6 +73,8 @@ Special warning areas f88a57
     --color-warning-text: #f88a57;
     --color-error-border: red;
     --color-error-text: red;
+    --color-read-only-warning: rgb(177, 3, 3);
+    --color-read-only-warning-background: rgba(177, 3, 3, 0.2); /* for clustering surface, border will not draw for some reason */
 
     /* recommendations */
     --color-recommendation-no: black;
@@ -160,6 +162,59 @@ a:hover {
 a:active {
 	color: var(--color-link);
 }
+
+/* special overrides when project read-only warning is in effect */
+
+.showReadOnlyWarning textarea {
+    border-color: var(--color-read-only-warning);
+}
+
+.showReadOnlyWarning input {
+    border-color: var(--color-read-only-warning);
+}
+
+.showReadOnlyWarning select {
+    border-color: var(--color-read-only-warning);
+}
+
+.showReadOnlyWarning .narrafirma-textbox {
+    border-color: var(--color-read-only-warning);
+}
+
+.showReadOnlyWarning .narrafirma-clustering-surface {
+    background-color: var(--color-read-only-warning-background);
+    padding-top: 0.5em;
+    padding-bottom: 0.5em;
+}
+
+.showReadOnlyWarning .narrafirma-read-only-warning {
+    display: block;
+    border-radius: 0;
+    font-size: 1em;
+    padding: 0.25em 1em 0.25em 0;
+    margin: 0.5em 1em 0.5em 0.5em;
+    color: var(--color-read-only-warning);
+    
+}
+
+.narrafirma-read-only-warning {
+    display: none;
+}
+
+#narrafirma-read-only {
+    display: inline-block;
+    font-size: 0.9em;
+    padding: 0.25em 2em 0.25em 2em;
+    margin: 0 1em 0.25em 1em;
+    color: var(--color-read-only-warning);
+    background-color: var(--color-reminder);
+    border: 1px solid var(--color-read-only-warning);
+    box-shadow: 2px 2px black;
+}
+
+/* end read-only warning styles */
+
+
 
 textarea, input, select { /* override because expanded in survey */
     margin-top: 0.2em;
@@ -337,18 +392,6 @@ input[type="submit"].narrafirma-login-button:hover {
     float: right;
     padding: 0.2em 0.5em 0.1em 0.5em;
     margin-right: 0.75em;
-}
-
-#narrafirma-read-only {
-    display: inline-block;
-    font-size: 1em;
-    font-weight: bold;
-    padding: 0.25em 2em 0.25em 2em;
-    margin: 0 1em 0.25em 1em;
-    color: var(--color-error-text);
-    background-color: var(--color-reminder);
-    border: 2px solid var(--color-error-text);
-    box-shadow: 2px 2px black;
 }
 
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Dashboard (home page) ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
@@ -1279,7 +1322,25 @@ table.filterTable td {
 }
 
 .narrafirma-graphbrowser-heading {
-	margin: 0.4em 0 0.4em 0;
+	margin: 1em 0 0.5em 0;
+}
+
+.narrafirma-graphbrowser-story-number-and-name {
+    font-weight: bold;
+}
+
+.narrafirma-graphbrowser-story-text {
+    margin: 1em;
+}
+
+.narrafirma-graphbrowser-answers {
+    margin: 0 0 1em 1em;
+    font-size: 0.9em;
+    font-style: italic;
+}
+
+.narrafirma-graphbrowser-show-stories-button {
+	margin: 0.5em 0.25em 1em 0;
 }
 
 .singleChartStyleWithoutChildren {

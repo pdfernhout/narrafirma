@@ -84,7 +84,11 @@ const PageDisplayer: any = {
         const showTips = project.tripleStore.queryLatestC(project.projectIdentifier, "projectOptions_showTips");
         const tipsExtraClass = (showTips === undefined || showTips === "yes") ? ".showTips" : "";
 
-        return m("div.pageContents" + explanationsExtraClass + iconsExtraClass + tipsExtraClass, {key: "pageContents"}, contentsDiv);
+        // show or hide read-only warning
+        const showReadOnlyWarning = project.readOnly;
+        const readOnlyWarningExtraClass = project.readOnly ? ".showReadOnlyWarning" : "";
+
+        return m("div.pageContents" + explanationsExtraClass + iconsExtraClass + tipsExtraClass + readOnlyWarningExtraClass, {key: "pageContents"}, contentsDiv);
     }
 };
 
