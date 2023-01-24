@@ -9,7 +9,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Requires at least: 4.3.1
 Tested up to: 6.1.1
 Stable tag: trunk
-Version: 1.5.19
+Version: 1.5.20
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -105,6 +105,12 @@ We strongly suggest that you set up any web site on which you intend to install 
 12. Here the NarraFirma user is reflecting on the entire project, to learn from it and to keep good records for the future.
 
 == Changelog ==
+
+= 1.5.20 =
+
+Added: Spot-check graphs page now has buttons to show selected stories (or random sample) in pop-up window for copying and pasting elsewhere.
+Added: Spot-check graphs page can now show answers to questions about stories (in a simple format) for copying and pasting elsewhere.
+Added: Additional warnings to alert the user of read-only mode, in case they edit fields without realizing they are not logged in to an account with editing privileges.
 
 = 1.5.19 =
 
@@ -614,6 +620,10 @@ loading application, getting user information, or retrieving project data.
 change logs, see the [GitHub repository](https://github.com/pdfernhout/narrafirma).
 
 == Upgrade Notice ==
+
+= 1.5.20 =
+
+This minor upgrade adds two things: more noticeable warnings when you have read-only access to a project; and a bit more information on the "spot-check graphs" page.
 
 = 1.5.19 =
 

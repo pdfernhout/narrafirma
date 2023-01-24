@@ -162,6 +162,12 @@ M When import story form, hundreds of triples can be generated which take minute
 
 ==== DONE
 
+-- Release 1.5.20
+
+Added: Spot-check graphs page now has buttons to show selected stories (or random sample) in pop-up window for copying and pasting elsewhere.
+Added: Spot-check graphs page can now show answers to questions about stories (in a simple format) for copying and pasting elsewhere.
+Added: Additional warnings to alert the user of read-only mode, in case they edit fields without realizing they are not logged in to an account with editing privileges.
+
 -- Release 1.5.19
 
 Added: Icons that show the actitivies on each page (manage, plan, enter, review, journal, export). Can be turned off in project options.
