@@ -92,7 +92,7 @@ class GraphBrowser {
         } else {
             parts = [
                 m("select.graphBrowserSelect", {onchange: (event) => { this.xAxisSelectValue = event.target.value; this.updateGraph(); }}, this.calculateOptionsForChoices(this.xAxisSelectValue)),
-                " versus ",
+                m("span.narrafirma-graphbrowser-versus", "versus"),
                 m("select.graphBrowserSelect", {onchange: (event) => { this.yAxisSelectValue = event.target.value; this.updateGraph(); }}, this.calculateOptionsForChoices(this.yAxisSelectValue)),
                 m("br"),
                 m("div", {config: this.insertGraphResultsPaneConfig.bind(this)}),

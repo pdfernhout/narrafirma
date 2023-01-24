@@ -85,7 +85,6 @@ const PageDisplayer: any = {
         const tipsExtraClass = (showTips === undefined || showTips === "yes") ? ".showTips" : "";
 
         // show or hide read-only warning
-        const showReadOnlyWarning = project.readOnly;
         const readOnlyWarningExtraClass = project.readOnly ? ".showReadOnlyWarning" : "";
 
         return m("div.pageContents" + explanationsExtraClass + iconsExtraClass + tipsExtraClass + readOnlyWarningExtraClass, {key: "pageContents"}, contentsDiv);

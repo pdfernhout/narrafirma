@@ -182,6 +182,8 @@ a:active {
 }
 
 .showReadOnlyWarning .narrafirma-clustering-surface {
+    /* would like to change the border color of this div, but for some reason the border does not draw */
+    /* must be something about the svg inside it */
     background-color: var(--color-read-only-warning-background);
     padding-top: 0.5em;
     padding-bottom: 0.5em;
@@ -1321,6 +1323,11 @@ table.filterTable td {
     max-width: 40%
 }
 
+.narrafirma-graphbrowser-versus {
+    margin-left: 1em;
+    margin-right: 0;
+}
+
 .narrafirma-graphbrowser-heading {
 	margin: 1em 0 0.5em 0;
 }
@@ -1343,7 +1350,7 @@ table.filterTable td {
     margin: 0 0.5em 0.25em 0.75em;
 }
 
-.narrafirma-graphbrowser-showstories-buttons label { /* this looks too big by default */
+.narrafirma-graphbrowser-showstories-buttons label { /* this label looks too far away from its checkbox in this context */
     margin-left: 0.1em;
 }
 
