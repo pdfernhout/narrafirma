@@ -10,6 +10,14 @@ function matchQuestionType(model, typesToMatch) {
         return false;
 }
 
+function questionAllowsWriteInAnswers(model) {
+    const modelObject = Globals.project().tripleStore.makeObject(model, true);
+    if (modelObject)
+        return (modelObject.storyQuestion_writeInTextBoxLabel && modelObject.storyQuestion_writeInTextBoxLabel != ""); 
+    else
+        return false;
+}
+
 const panel: Panel = {
     id: "panel_addStoryQuestion",
     modelClass: "StoryQuestion",
@@ -178,6 +186,17 @@ const panel: Panel = {
             displayVisible: function(panelBuilder, model) { return !!Globals.clientState().showImportOptions(); }
         },
         {
+            id: "storyQuestion_import_showImportGuide",
+            valueType: "none",
+            displayType: "button",
+            displayConfiguration: "showImportGuide",
+            displayName: "Show import help",
+            displayPreventBreak: true,
+            displayIconClass: "showButtonImage",
+            displayPrompt: "Show import help",
+            displayVisible: function(panelBuilder, model) { return !!Globals.clientState().showImportOptions(); }
+        },
+        {
             id: "storyQuestion_import_columnName",
             valueType: "string",
             displayType: "text",
@@ -201,7 +220,7 @@ const panel: Panel = {
             ],
             displayType: "select",
             displayName: "Import type",
-            displayPrompt: "In your data file, how is this question <strong>formatted</strong>? (For an explanation of these import data types, click the Help button.)",
+            displayPrompt: 'In your data file, how is this question <strong>formatted</strong>? (For an explanation of these import data types, click "Show import help.")',
             displayVisible: function(panelBuilder, model) { return !!Globals.clientState().showImportOptions(); }
         },
         {
@@ -215,12 +234,21 @@ const panel: Panel = {
             displayVisible: function(panelBuilder, model) { return !!Globals.clientState().showImportOptions(); }
         },
         {
+            id: "storyQuestion_import_writeInTextsAreInSeparateColumn",
+            valueType: "string",
+            valueOptions: ["yes", "no"],
+            displayType: "select",
+            displayName: "Write-in texts are in separate column",
+            displayPrompt: `In your data file, are the <strong>write-in answers</strong> for this question in their own column?`,
+            displayVisible: function(panelBuilder, model) { return !!Globals.clientState().showImportOptions() && questionAllowsWriteInAnswers(model); }
+        },
+        {
             id: "storyQuestion_import_minScaleValue",
             valueType: "string",
             displayType: "text",
             displayConfiguration: "10",
             displayName: "Min scale value",
-            displayPrompt: "What is the <strong>minimum slider value</strong> in this column?(This must be a number. If this field is blank, the default minimum of zero will be used.)",
+            displayPrompt: "What is the <strong>minimum slider value</strong> in this column? (This must be a number. If this field is blank, the default minimum of zero will be used.)",
             displayVisible: function(panelBuilder, model) { return !!Globals.clientState().showImportOptions() && matchQuestionType(model, ["slider"]); }
         },
         {
@@ -231,7 +259,7 @@ const panel: Panel = {
             displayName: "Max scale value",
             displayPrompt: "What is the <strong>maximum slider value</strong> in this column? (This must be a number. If this field is blank, the default maximum of 100 will be used.)",
             displayVisible: function(panelBuilder, model) { return !!Globals.clientState().showImportOptions()  && matchQuestionType(model, ["slider"]); }
-        }
+        },
     ]
 };
 

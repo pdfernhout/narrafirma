@@ -372,6 +372,7 @@ function processCSVContentsForStories(contents, saveStories, writeLog, questionn
                 const question = questionForHeaderFieldName(fieldName, fieldIndex, questionnaire, project);
                 if (question && question.writeInTextBoxLabel) { 
                     newItem[writeInTag + question.displayName] = value;
+                    log('LOG||Write-in answer for [' + question.displayName + ']: ' + value);
                 }
 
             } else {
@@ -394,6 +395,7 @@ function processCSVContentsForStories(contents, saveStories, writeLog, questionn
 
                 // get question referred to by header name from story form
                 const question = questionForHeaderFieldName(fieldName, fieldIndex, questionnaire, project);
+                const keepNonMatchingAnswers = question.writeInTextBoxLabel && question.import_writeInTextsAreInSeparateColumn && question.import_writeInTextsAreInSeparateColumn === "no";
 
                 if (question) { 
 
@@ -416,12 +418,17 @@ function processCSVContentsForStories(contents, saveStories, writeLog, questionn
                                 newItem[questionName] = answerNameToUse;
                                 log("LOG||Answer for " + questionName + " (" + importValueType + "): " + answerNameToUse);
                             }
-                        } else { // no match, log error
+                        } else { // no match, log error (or keep as write-in answer)
                             if (["Text", "Textarea"].indexOf(importValueType) < 0) { 
-                                let listToShow = question.import_answerNames;
-                                if (!listToShow) listToShow = question.valueOptions;
-                                log("ERROR||Answer for " + questionName + " (" + importValueType + "): NO MATCHING ANSWER FOUND for answer name [" + value + 
-                                    "] out of list [" + listToShow.join(" | ") + "]");
+                                if (keepNonMatchingAnswers) {
+                                    newItem[writeInTag + question.displayName] = value;
+                                    log('LOG||Write-in answer for [' + question.displayName + ']: ' + value);
+                                } else {
+                                    let listToShow = question.import_answerNames;
+                                    if (!listToShow) listToShow = question.valueOptions;
+                                    log("ERROR||Answer for " + questionName + " (" + importValueType + "): NO MATCHING ANSWER FOUND for answer name [" + value + 
+                                        "] out of list [" + listToShow.join(" | ") + "]");
+                                }
                             }
                         }
 
@@ -440,8 +447,13 @@ function processCSVContentsForStories(contents, saveStories, writeLog, questionn
                                 }
                             }
                         }
-                        if (!valueAssigned) {
-                            log("ERROR||Answer for " + questionName + " (" + importValueType + "): NO MATCHING ANSWER FOUND for answer index: " + valueAsInt);
+                        if (!valueAssigned) { // no match, log error (or keep as write-in answer)
+                            if (keepNonMatchingAnswers) {
+                                newItem[writeInTag + question.displayName] = value;
+                                log('LOG||Write-in answer for [' + question.displayName + ']: ' + value);
+                            } else {
+                                log("ERROR||Answer for " + questionName + " (" + importValueType + "): NO MATCHING ANSWER FOUND for answer index: " + valueAsInt);
+                            }
                         }
 
                     // Scale, text is scale value
@@ -449,13 +461,26 @@ function processCSVContentsForStories(contents, saveStories, writeLog, questionn
                         // parseFloat does not take a locale parameter and cannot process a comma as the decimal delimiter
                         // so we should test for the presence of a comma, assuming that if it's present in a scale value
                         // it is meant to be a decimal delimiter 
-                        let valueAsFloat = parseFloat(value.replace(",", "."));
-                        if (valueAsFloat % 1 !== 0) {
+                        const valueToConvert = value.replace(",", ".");
+                        
+                        let valueAsFloat = parseFloat(valueToConvert);
+
+                        if (isNaN(valueAsFloat)) { // not a number, log error (or keep as write-in answer)
+                            if (keepNonMatchingAnswers) {
+                                newItem[writeInTag + question.displayName] = value;
+                                log('LOG||Write-in answer for [' + question.displayName + ']: ' + value);
+                            } else {
+                                log("ERROR||Answer for " + questionName + " (" + importValueType + "): Should be a number but is not.");
+                            }
+                        }
+
+                        if (valueAsFloat % 1 !== 0) { // not an integeger, truncate
                             // we only want to give this error once per question, or the console will fill up with hundreds of these messages
                             // parseInt stops when it encounters anything but a digit, so the number will be truncated
                             log("ERROR||Answer for " + questionName + " (" + importValueType + "): Should be an integer but is not. It has been truncated.");
                         }
                         const valueAsInt = parseInt(value);
+
                         const adjustedValue = changeValueForCustomScaleValues(valueAsInt, question, questionnaire);
                         newItem[questionName] = adjustedValue;
                         let infoString = "LOG||Answer for " + questionName + " (" + importValueType + "): " + adjustedValue;
@@ -475,11 +500,16 @@ function processCSVContentsForStories(contents, saveStories, writeLog, questionn
                             newItem[questionName][answerNameToUse] = true;
                             log("LOG||Answer for " + questionName + " (" + importValueType + "): " + answerNameToUse);
                             
-                        } else { // no match, log error
-                            let listToShow = question.import_answerNames;
-                            if (!listToShow) listToShow = question.valueOptions;
-                            log("ERROR||Answer for " + questionName + " (" + importValueType + "): NO MATCHING ANSWER FOUND for answer name [" + value + 
-                                "] out of list [" + listToShow.join(" | ") + "]");
+                        } else { // no match, log error (or keep as write-in answer)
+                            if (keepNonMatchingAnswers) {
+                                newItem[writeInTag + question.displayName] = value;
+                                log('LOG||Write-in answer for [' + question.displayName + ']: ' + value);
+                            } else {
+                                let listToShow = question.import_answerNames;
+                                if (!listToShow) listToShow = question.valueOptions;
+                                log("ERROR||Answer for " + questionName + " (" + importValueType + "): NO MATCHING ANSWER FOUND for answer name [" + value + 
+                                    "] out of list [" + listToShow.join(" | ") + "]");
+                            }
                         }
 
                     // Multi-choice multi-column yes/no, text is yes indicator (or something else), answer was in header
@@ -492,11 +522,16 @@ function processCSVContentsForStories(contents, saveStories, writeLog, questionn
                                 if (!newItem[questionName][answerNameToUse]) count(questionName, answerNameToUse);
                                 newItem[questionName][answerNameToUse] = true;
                                 log("LOG||Answer for " + questionName + " (" + importValueType + "): " + answerNameToUse);
-                            } else { // no match, log error
-                                let listToShow = question.import_answerNames;
-                                if (!listToShow) listToShow = question.valueOptions;
-                                log("ERROR||Answer for " + questionName + " (" + importValueType + "): NO MATCHING ANSWER FOUND for answer name [" + answerName + 
-                                    "] out of list [" + listToShow.join(" | ") + "]");
+                            } else { // no match, log error (or keep as write-in answer)
+                                if (keepNonMatchingAnswers) {
+                                    newItem[writeInTag + question.displayName] = value;
+                                    log('LOG||Write-in answer for [' + question.displayName + ']: ' + value);
+                                } else {
+                                    let listToShow = question.import_answerNames;
+                                    if (!listToShow) listToShow = question.valueOptions;
+                                    log("ERROR||Answer for " + questionName + " (" + importValueType + "): NO MATCHING ANSWER FOUND for answer name [" + answerName + 
+                                        "] out of list [" + listToShow.join(" | ") + "]");
+                                }
                             }
                         }
 
@@ -515,11 +550,15 @@ function processCSVContentsForStories(contents, saveStories, writeLog, questionn
                                     if (!newItem[questionName][answerNameToUse]) count(questionName, answerNameToUse);
                                     newItem[questionName][answerNameToUse] = true;
                                     log("LOG||Answer for " + questionName + " (" + importValueType + "): " + answerNameToUse);
-                                } else { // no match, log error
-                                    let listToShow = question.import_answerNames;
-                                    if (!listToShow) listToShow = question.valueOptions;
-                                    log("ERROR||Answer for " + questionName + " (" + importValueType + "): NO MATCHING ANSWER FOUND for answer name [" + trimmedDelimitedItem + 
-                                        "] out of list " + listToShow.join(" | ") + "]");
+                                } else { // no match, log error (or keep as write-in answer)
+                                    if (keepNonMatchingAnswers) {
+                                        newItem[writeInTag + question.displayName] = value;
+                                        log('LOG||Write-in answer for [' + question.displayName + ']: ' + value);
+                                    } else {let listToShow = question.import_answerNames;
+                                        if (!listToShow) listToShow = question.valueOptions;
+                                        log("ERROR||Answer for " + questionName + " (" + importValueType + "): NO MATCHING ANSWER FOUND for answer name [" + trimmedDelimitedItem + 
+                                            "] out of list " + listToShow.join(" | ") + "]");
+                                    }
                                 }
                             }
                         });
@@ -546,9 +585,14 @@ function processCSVContentsForStories(contents, saveStories, writeLog, questionn
                                     }
                                 }
                             }
-                        if (!valueAssigned) {
-                            log("ERROR||Answer for " + questionName + " (" + importValueType + "): NO MATCHING ANSWER FOUND for answer index: " + delimitedIndex);
-                        }
+                            if (!valueAssigned) { // no match, log error (or keep as write-in answer)
+                                if (keepNonMatchingAnswers) {
+                                    newItem[writeInTag + question.displayName] = value;
+                                    log('LOG||Write-in answer for [' + question.displayName + ']: ' + value);
+                                } else {
+                                    log("ERROR||Answer for " + questionName + " (" + importValueType + "): NO MATCHING ANSWER FOUND for answer index: " + delimitedIndex);
+                                }
+                            }
                         });
                     }
                     
@@ -882,7 +926,7 @@ function changeValueForCustomScaleValues(value, question, questionnaire) {
     } else if (questionnaire.import_maxScaleValue != undefined && questionnaire.import_maxScaleValue != "") {
         max = parseInt("" + questionnaire.import_maxScaleValue);
     }
-    if (min === undefined || min === NaN || max === undefined || max === NaN || min === max) {
+    if (min === undefined || isNaN(min) || max === undefined || isNaN(max) || min === max) {
         return value;
     }
 
@@ -1717,7 +1761,6 @@ function questionForItem(item, questionCategory) {
     let questionType = "text";
     let valueOptions;
     let optionImageLinks;
-    let import_columnName;
     let import_answerNames;
     let import_minScaleValue = "";
     let import_maxScaleValue = "";
@@ -1727,6 +1770,7 @@ function questionForItem(item, questionCategory) {
 
     let maxNumAnswers = undefined;
     let writeInTextBoxLabel = "";
+    let writeInTextsAreInSeparateColumn = "";
     let listBoxRows = undefined;
     let textBoxLength = undefined;
     let optionImagesWidth = undefined;
@@ -1742,6 +1786,14 @@ function questionForItem(item, questionCategory) {
                 }
             } else if (part.indexOf("writeInTextBoxLabel=") >= 0) {
                 writeInTextBoxLabel = stringBeyond(part, "writeInTextBoxLabel=");
+
+            } else if (part.indexOf("writeInTextsAreInSeparateColumn=") >= 0) {
+                writeInTextsAreInSeparateColumn = stringBeyond(part, "writeInTextsAreInSeparateColumn=").toLowerCase();
+                if (["yes", "no"].indexOf(writeInTextsAreInSeparateColumn) < 0) {
+                    alert('Import error: For the question "' + item["Short name"] + '," the option writeInTextsAreInSeparateColumn ("' + writeInTextsAreInSeparateColumn + '") must have the value "yes" or "no."');
+                    writeInTextsAreInSeparateColumn = ""; 
+                }
+            
             } else if (part.indexOf("textBoxLength=") >= 0) {
                 textBoxLength = stringBeyond(part, "textBoxLength=");
                 if (textBoxLength && isNaN(textBoxLength)) {
@@ -1849,6 +1901,7 @@ function questionForItem(item, questionCategory) {
 
     question[questionCategory + "_import_columnName"] = item["Data column name"] || item["Short name"];
     question[questionCategory + "_import_valueType"] = itemType;
+    question[questionCategory + "_import_writeInTextsAreInSeparateColumn"] = writeInTextsAreInSeparateColumn;
     question[questionCategory + "_import_minScaleValue"] = import_minScaleValue;
     question[questionCategory + "_import_maxScaleValue"] = import_maxScaleValue;
     if (import_answerNames) question[questionCategory + "_import_answerNames"] = import_answerNames.join("\n");
@@ -2150,23 +2203,26 @@ export function exportQuestionnaireForImport(questionnaire = null) { // to prese
             outputLine.push(question.displayName || ""); 
             outputLine.push(question.displayPrompt || ""); 
 
-            const options = [];
+            const questionOptions = [];
             if (question.maxNumAnswers) {
-                options.push("maxNumAnswers=" + question.maxNumAnswers);
+                questionOptions.push("maxNumAnswers=" + question.maxNumAnswers);
             }
             if (question.writeInTextBoxLabel) {
-                options.push("writeInTextBoxLabel=" + question.writeInTextBoxLabel);
+                questionOptions.push("writeInTextBoxLabel=" + question.writeInTextBoxLabel);
             }
             if (question.listBoxRows) {
-                options.push("listBoxRows=" + question.listBoxRows);
+                questionOptions.push("listBoxRows=" + question.listBoxRows);
             }
             if (question.textBoxLength) {
-                options.push("textBoxLength=" + question.textBoxLength);
+                questionOptions.push("textBoxLength=" + question.textBoxLength);
             }
             if (question.optionImagesWidth) {
-                options.push("optionImagesWidth=" + question.optionImagesWidth);
+                questionOptions.push("optionImagesWidth=" + question.optionImagesWidth);
             }
-            outputLine.push(options.join("|"));  
+            if (question.import_writeInTextsAreInSeparateColumn) {
+                questionOptions.push("writeInTextsAreInSeparateColumn=" + question.writeInTextsAreInSeparateColumn); 
+            }
+            outputLine.push(questionOptions.join("|"));  
 
             // answers
             if (question.displayType === "slider") {

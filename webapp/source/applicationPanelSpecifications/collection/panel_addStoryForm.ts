@@ -477,6 +477,17 @@ const panel: Panel = {
             displayVisible: function(panelBuilder, model) { return !!Globals.clientState().showImportOptions(); }
         },
         {
+            id: "questionForm_import_showImportGuide",
+            valueType: "none",
+            displayType: "button",
+            displayConfiguration: "showImportGuide",
+            displayName: "Show import help",
+            displayPreventBreak: true,
+            displayIconClass: "showButtonImage",
+            displayPrompt: "Show import help",
+            displayVisible: function(panelBuilder, model) { return !!Globals.clientState().showImportOptions(); }
+        },
+        {
             id: "questionForm_import_storyTitleColumnName",
             valueType: "string",
             displayType: "text",

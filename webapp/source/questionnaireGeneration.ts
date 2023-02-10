@@ -290,6 +290,7 @@ export function convertEditorQuestions(editorQuestions, prefixQPA) {
         const import_valueType = question[keyPrefix + "import_valueType"];
         const import_minScaleValue = question[keyPrefix + "import_minScaleValue"];
         const import_maxScaleValue = question[keyPrefix + "import_maxScaleValue"];
+        const import_writeInTextsAreInSeparateColumn = question[keyPrefix + "import_writeInTextsAreInSeparateColumn"];
         let importOptions = [];
         const importOptionsString = question[keyPrefix + "import_answerNames"];
         if (importOptionsString && typeof importOptionsString === "string") {
@@ -314,7 +315,8 @@ export function convertEditorQuestions(editorQuestions, prefixQPA) {
             import_valueType: import_valueType,
             import_answerNames: importOptions,
             import_minScaleValue: import_minScaleValue,
-            import_maxScaleValue: import_maxScaleValue
+            import_maxScaleValue: import_maxScaleValue,
+            import_writeInTextsAreInSeparateColumn: import_writeInTextsAreInSeparateColumn
         });
     }
     

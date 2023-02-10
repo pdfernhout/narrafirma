@@ -32,10 +32,14 @@ li {
 	margin: 0.2em 0 0.2 0;
 }
 
+table {
+	margin: 0.25em 1.5em 0.75em 1.5em;
+}
+
 table, th, td {
-	border: 0.5px solid lightgray;
+	border: 1px solid rgb(0, 8, 123);
 	border-collapse: collapse;
-	padding: 0.2em;
+	padding: 0.25em;
 }
 
 table.noborders {
@@ -48,7 +52,7 @@ td.noborders {
 
 td.borderbottom {
 	border: none;
-	border-bottom: 1px solid black;
+	border-bottom: 1px solid rgb(0, 8, 123);
 }
 
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Navigation ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
@@ -92,35 +96,36 @@ h1.page-title {
 }
 
 h2.heading {
-	background: #b0d4d4;
-	border-bottom: 1px solid #97b4b4;
+	background: #fdcaa0;
 	font-size: 1.4em;
 	font-weight: bold;
-	margin: 0.5em 0 0.5em 0;
+	margin: 0.5em;
 	padding: 0.5em 0.5em 0.25em 0.5em;
 }
 
 h3.heading {
-	background: #ddf1f1;
-	border-bottom: 1px solid #97b4b4;
+	background: #fcdec5;
+	font-size: 1.3em;
+	font-weight: bold;
+	margin: 0.5em;
+	padding: 0.5em 0.5em 0.25em 0.5em;
+}
+
+h4.heading {
+	background: #b0d4d4;
 	font-size: 1.2em;
 	font-weight: bold;
 	margin: 0.5em 0 0.5em 0;
 	padding: 0.5em 0.5em 0.25em 0.5em;
 }
 
-h4.heading {
-	border-bottom: 2px solid #97b4b4;
+h5.heading {
 	font-size: 1.1em;
-	font-weight: bold;
-	margin: 0 0 0.5em 0;
-	padding: 0.5em 0.5em 0.25em 0;
-}
-
-h5 {
-	font-size: 1em;
-	font-weight: bold;
-	font-style: italic;
+	font-style: normal;
+	font-weight: normal;
+	background: #ddf1f1;
+	margin: 0.5em 0 0.5em 0;
+	padding: 0.5em 0.5em 0.25em 0.5em;
 }
 
 .text {
@@ -129,13 +134,16 @@ h5 {
 	margin: 0 0.5em 0 0.25em;
 }
 
+.img {
+	margin: 0.5em;
+}
+
 h3.question {
 	background: #c5d2eb;
 	font-weight: bold;
 	font-size: 1.0em;
 	padding: 0.75em 0.5em 0.5em 0.5em;
 	margin: 0.75em 0 0.5em 0;
-	border-bottom: 1px solid #89a5a5;
 }
 
 .question-answer {

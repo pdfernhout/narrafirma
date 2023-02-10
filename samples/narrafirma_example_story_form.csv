@@ -5,6 +5,7 @@ Eliciting question answered,eliciting,eliciting,Eliciting question,,,Best or wor
 Feel about,Multi-choice multi-column texts,story,Feel about,How do you feel about this story?,maxNumAnswers=2|writeInTextBoxLabel=Other,satisfied,frustrated,supported,disappointed,
 Scope,Single choice,story,Scope,How many people were involved in this story?,,Individual,Pair,Team,System,
 Scope custom answer name,Single choice,story,Scope custom answer name,How many people were involved in this story?,listBoxRows=4,Indv|Individual,Pair,Team,System,
+Scope mixed-in write-ins,Single choice,story,Scope mixed-in write-ins,How many people were involved in this story?,listBoxRows=4|writeInTextBoxLabel=Other|writeInTextsAreInSeparateColumn=no,Individual,Pair,Team,System,
 Scope index,Single choice indexed,story,Scope index,How many people were involved in this story?,,Individual,Pair,Team,System,
 Come from,Multi-choice multi-column texts,story,Come from,Where did this story come from?,,first hand,second hand,rumor,,
 Needed,Multi-choice multi-column texts,story,Needed,What did the main character of this story want or need?,maxNumAnswers=3,help|help,to be heard|to be heard,respect|respect,trust|trust,options|options
