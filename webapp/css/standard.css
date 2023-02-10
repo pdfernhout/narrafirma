@@ -59,6 +59,8 @@ Special warning areas f88a57
     --color-grid-selected-odd: #ffe9c4;
     --color-grid-unselected-even: white;
     --color-grid-unselected-odd: #f2f7f7;
+    --color-grid-editor: #ffe9c4;
+    --color-grid-editor-border: #fcc79a;
 
     /* tables */
     --color-table: #f2f7f7;
@@ -913,6 +915,7 @@ button:disabled {
 
 textarea.narrafirma-textbox {
     min-height: 5em;
+    width: 96%;
     resize: vertical;
 }
 
@@ -1118,10 +1121,11 @@ textarea.narrafirma-translation-textbox {
     display: none;
 }
 
-.narrafirma-griditempanel-divwithbutton-editing {
-    background-color: var(--color-grid);
-    border: 4px groove var(--color-editing);
+.narrafirma-griditempanel-divwithbutton-editing { 
+    border: 4px solid var(--color-grid-editor-border);
     margin: 0.5em;
+    padding: 0 0 0.25em 0;
+    box-shadow: 0 0 3px 4px darkgray;
 }
 
 .narrafirma-griditempanel-divwithbutton-viewing {
