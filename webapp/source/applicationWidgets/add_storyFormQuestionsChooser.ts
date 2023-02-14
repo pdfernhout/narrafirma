@@ -63,15 +63,7 @@ function add_storyFormQuestionsChooser(panelBuilder: PanelBuilder, model, fieldS
     const questionChoicesInFormSelectOptions = [];
     questionChoicesInForm.forEach((questionChoice, index) => {
         const shortName = questionChoice[questionCategory + "Question"].trim();
-        let displayName = shortName;
-
-        const question = getQuestionForShortName(createdQuestions, shortName);
-        if (question) {
-            const questionText = question[questionCategory + "Question_text"].trim();
-            const trucatedQuestionText = truncateQuestionText(questionText);
-            displayName += " (" + trucatedQuestionText + ")";
-        }
-        questionChoicesInFormSelectOptions.push(m("option", {value: questionChoice.id, selected: undefined}, displayName));
+        questionChoicesInFormSelectOptions.push(m("option", {value: questionChoice.id, selected: undefined}, shortName));
     });
 
     /////////////////// right side - questions available to choose
@@ -98,31 +90,8 @@ function add_storyFormQuestionsChooser(panelBuilder: PanelBuilder, model, fieldS
     const createdQuestionsNotInFormSelectOptions = [];
     createdQuestionsNotInForm.forEach((question) => {
         const shortName = question[questionCategory + "Question_shortName"].trim();
-        const truncatedQuestionText = truncateQuestionText(question[questionCategory + "Question_text"].trim());
-        const displayName = shortName + " (" + truncatedQuestionText + ")";
-        createdQuestionsNotInFormSelectOptions.push(m("option", {value: question.id, selected: undefined}, displayName));
+        createdQuestionsNotInFormSelectOptions.push(m("option", {value: question.id, selected: undefined}, shortName));
     });
-
-    function getQuestionForShortName(createdQuestions, shortName) {
-        const matchingQuestions = createdQuestions.filter(function(question) {
-            return question[questionCategory + "Question_shortName"] === shortName;
-        })
-        if (matchingQuestions.length >= 1) {
-            return matchingQuestions[0];
-        } else {
-            return null;
-        }
-    }
-
-    function truncateQuestionText(text) {
-        const maxQuestionTextWords = 10;
-        const words = text.split(" ");
-        if (words.length > maxQuestionTextWords) {
-            return words.slice(0, maxQuestionTextWords-1).join(" ") + " ...";
-        } else {
-            return text;
-        }
-    }
 
     // these up and down methods swap rather than set the "order" fields of the "QuestionChoice" objects
     // because in the past (before NF 1.5.0), the order was typed in by the user and could include letters
@@ -192,19 +161,22 @@ function add_storyFormQuestionsChooser(panelBuilder: PanelBuilder, model, fieldS
         const element = <HTMLSelectElement>document.getElementById(questionsCreatedSelectBoxID);
         if (!element || element.selectedIndex < 0) return;
         const selectedOption = element.options[element.selectedIndex];
-        const newOrder = highestOrderInExistingQuestionChoices() + 1;
+        const selectedQuestion = project.tripleStore.makeObject(selectedOption.value, true);
 
-        const template = {"order": newOrder};
-        if (questionCategory === "eliciting") {
-            template["elicitingQuestion"] = selectedOption.text.trim();
-        } else if (questionCategory === "story") {
-            template["storyQuestion"] = selectedOption.text.trim();
-        } else if (questionCategory === "participant") {
-            template["participantQuestion"] = selectedOption.text.trim();
+        if (selectedQuestion) {
+            const newOrder = highestOrderInExistingQuestionChoices() + 1;
+            const template = {"order": newOrder};
+            if (questionCategory === "eliciting") {
+                template["elicitingQuestion"] = selectedQuestion["elicitingQuestion_shortName"].trim();
+            } else if (questionCategory === "story") {
+                template["storyQuestion"] = selectedQuestion["storyQuestion_shortName"].trim();
+            } else if (questionCategory === "participant") {
+                template["participantQuestion"] = selectedQuestion["participantQuestion_shortName"].trim();
+            }
+            const itemClassName = fieldSpecification.displayConfiguration + "QuestionChoice";
+
+            project.tripleStore.makeNewSetItem(questionChoicesSetID, itemClassName, template, "id");
         }
-        const itemClassName = fieldSpecification.displayConfiguration + "QuestionChoice";
-
-        project.tripleStore.makeNewSetItem(questionChoicesSetID, itemClassName, template, "id");
     }
 
     function removeSelectedQuestionChoice() {
