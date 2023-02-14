@@ -204,115 +204,6 @@ There are two ways to tell NarraFirma how to interpret your data:
 <p>
 Both methods have the same outcome. 
 </p>
-
-<p>
-        In this guide, we will pretend to be importing a fictional data file that contains all of the question types NarraFirma can read. It looks like this: 
-        </p>
-        
-<table border="1" cellpadding="4" cellspacing="0">
-        <tr>
-            <td>Respondent</td>
-            <td>EQuestion</td>
-            <td>SText</td>
-            <td>STitle</td>
-            <td>LongAgo</td>
-            <td>Source</td>
-            <td>Remember</td>
-            <td>Feel about</td>
-            <td>Feel about</td>
-            <td>Needed [help]</td>
-            <td>Needed [understanding]</td>
-            <td>Helped</td>
-            <td>Surprised</td>
-            <td>Comment</td>
-        </tr>
-        <tr>
-            <td>2554</td>
-            <td>Surprise</td>
-            <td>I was surprised one day when...</td>
-            <td>Never would have guessed</td>
-            <td>1 year</td>
-            <td>1</td>
-            <td>3</td>
-            <td>happy</td>
-            <td></td>
-            <td>Yes</td>
-            <td>No</td>
-            <td>manager, colleague</td>
-            <td>1 4</td>
-            <td>It's okay</td>
-        </tr>
-        <tr>
-            <td>1543</td>
-            <td>ReallyLike</td>
-            <td>It was on my last day at work...</td>
-            <td>Finally</td>
-            <td>3 months</td>
-            <td>3</td>
-            <td>7</td>
-            <td></td>
-            <td>sad</td>
-            <td>No</td>
-            <td>Yes</td>
-            <td>friend</td>
-            <td>2</td>
-            <td>Really upset about this</td>
-        </tr>
-        <tr>
-            <td>532</td>
-            <td>Discovered</td>
-            <td>I never knew before that...</td>
-            <td>Never knew</td>
-            <td>Last week</td>
-            <td>2</td>
-            <td>9</td>
-            <td>happy</td>
-            <td></td>
-            <td>Yes</td>
-            <td>No</td>
-            <td>colleague, friend</td>
-            <td>2 3</td>
-            <td>No comment!</td>
-        </tr>
-        </table>
-        
-        <p>The question types in the example file are:</p>
-        
-        <table border="1" cellpadding="4" cellspacing="0">
-                <tr>
-                    <td>Respondent</td>
-                    <td>EQuestion</td>
-                    <td>SText</td>
-                    <td>STitle</td>
-                    <td>LongAgo</td>
-                    <td>Source</td>
-                    <td>Remember</td>
-                    <td>Feel about</td>
-                    <td>Feel about</td>
-                    <td>Needed [help]</td>
-                    <td>Needed [understanding]</td>
-                    <td>Helped</td>
-                    <td>Surprised</td>
-                    <td>Comment</td>
-                </tr>
-                <tr>
-                    <td>Participant identifier</td>
-                    <td>Eliciting question</td>
-                    <td>Story texts</td>
-                    <td>Story titles</td>
-                    <td>Single choice</td>
-                    <td>Single choice indexed</td>
-                    <td>Scale</td>
-                    <td colspan="2">Multi-choice multi-column texts</td>
-                    <td colspan="2">Multi-choice multi-column yes/no</td>
-                    <td>Multi-choice single-column delimited</td>
-                    <td>Multi-choice single-column delimited indexed</td>
-                    <td>Text</td>
-                </tr>
-                </table>
-
-<p>The following descriptions of format specification using NarraFirma or a CSV file use the same example.</p>
-
 </div>
 
 <h3 class="heading" id="usingnf">3a. Build a story form in NarraFirma</h3>
@@ -934,7 +825,113 @@ Look at each column name and think about the data in that column so you can desc
     </table>
 
 <p>
-Let's go through the columns in our example data file one at a time.
+Let's pretend to import a data file that contains all of the question types NarraFirma can read. It looks like this: 
+</p>
+        
+<table border="1" cellpadding="4" cellspacing="0">
+        <tr>
+            <td>Respondent</td>
+            <td>EQuestion</td>
+            <td>SText</td>
+            <td>STitle</td>
+            <td>LongAgo</td>
+            <td>Source</td>
+            <td>Remember</td>
+            <td>Feel about</td>
+            <td>Feel about</td>
+            <td>Needed [help]</td>
+            <td>Needed [understanding]</td>
+            <td>Helped</td>
+            <td>Surprised</td>
+            <td>Comment</td>
+        </tr>
+        <tr>
+            <td>2554</td>
+            <td>Surprise</td>
+            <td>I was surprised one day when...</td>
+            <td>Never would have guessed</td>
+            <td>1 year</td>
+            <td>1</td>
+            <td>3</td>
+            <td>happy</td>
+            <td></td>
+            <td>Yes</td>
+            <td>No</td>
+            <td>manager, colleague</td>
+            <td>1 4</td>
+            <td>It's okay</td>
+        </tr>
+        <tr>
+            <td>1543</td>
+            <td>ReallyLike</td>
+            <td>It was on my last day at work...</td>
+            <td>Finally</td>
+            <td>3 months</td>
+            <td>3</td>
+            <td>7</td>
+            <td></td>
+            <td>sad</td>
+            <td>No</td>
+            <td>Yes</td>
+            <td>friend</td>
+            <td>2</td>
+            <td>Really upset about this</td>
+        </tr>
+        <tr>
+            <td>532</td>
+            <td>Discovered</td>
+            <td>I never knew before that...</td>
+            <td>Never knew</td>
+            <td>Last week</td>
+            <td>2</td>
+            <td>9</td>
+            <td>happy</td>
+            <td></td>
+            <td>Yes</td>
+            <td>No</td>
+            <td>colleague, friend</td>
+            <td>2 3</td>
+            <td>No comment!</td>
+        </tr>
+        </table>
+        
+        <p>The question types in the example file are:</p>
+        
+        <table border="1" cellpadding="4" cellspacing="0">
+                <tr>
+                    <td>Respondent</td>
+                    <td>EQuestion</td>
+                    <td>SText</td>
+                    <td>STitle</td>
+                    <td>LongAgo</td>
+                    <td>Source</td>
+                    <td>Remember</td>
+                    <td>Feel about</td>
+                    <td>Feel about</td>
+                    <td>Needed [help]</td>
+                    <td>Needed [understanding]</td>
+                    <td>Helped</td>
+                    <td>Surprised</td>
+                    <td>Comment</td>
+                </tr>
+                <tr>
+                    <td>Participant identifier</td>
+                    <td>Eliciting question</td>
+                    <td>Story texts</td>
+                    <td>Story titles</td>
+                    <td>Single choice</td>
+                    <td>Single choice indexed</td>
+                    <td>Scale</td>
+                    <td colspan="2">Multi-choice multi-column texts</td>
+                    <td colspan="2">Multi-choice multi-column yes/no</td>
+                    <td>Multi-choice single-column delimited</td>
+                    <td>Multi-choice single-column delimited indexed</td>
+                    <td>Text</td>
+                </tr>
+                </table>
+
+<p>
+Now let's go through the columns in our example data file one at a time.
 </p>
 
 <ul>
