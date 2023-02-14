@@ -50,6 +50,18 @@ const panel: Panel = {
             displayConfiguration: "updateQuestionnaireForStoryCollection",
             displayPrompt: "Update Story Form",
             displayIconClass: "updateButtonImage",
+            displayPreventBreak: true,
+            displayVisible: function(panelBuilder, model) {
+                return panelBuilder.readOnly === false;
+            }
+        },
+        {
+            id: "storyCollection_helpOnUpdatingStoryForms",
+            valueType: "none",
+            displayType: "button",
+            displayConfiguration: "showHelpOnUpdatingStoryFormsInCollections",
+            displayPrompt: "Help on Updating Story Forms",
+            displayIconClass: "showButtonImage",
             displayVisible: function(panelBuilder, model) {
                 return panelBuilder.readOnly === false;
             }

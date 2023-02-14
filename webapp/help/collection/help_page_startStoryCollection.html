@@ -101,75 +101,129 @@ To revise a story collection's associated story form:
 
 <h2 class="heading">Frequently-asked questions</h2>
 
-<h3 class="question">
+<h3 class="question" id="whatYouCanChange">
 Can you give me a clearer picture of exactly what I can and cannot change in my story form
 after I have started to collect stories?
 </h3>
 <div class="question-answer">
-<table cellpadding="4" cellspacing="0" border="1" style="margin-top: 1em">
-	<tr>
-		<th>For</th>
-		<th>It's okay to change</th>
-		<th>It's NOT okay to change</th>
-		<th>But if you have to, you can...</th>
-	</tr>
-	<tr>
-		<td>A story form</td>
-		<td>You can change any texts that appear on your story form that are not saved in your stories.
-			For example, you can change the story form's title, introduction, and conclusion, 
-			as well as any messages to participants (like "Thank you for sharing your story").</td>
-		<td>Do not change the short name of the story form.</td>
-		<td></td>
-	</tr>
-	<tr>
-		<td>Any kind of question</td>
-		<td>You can change a question's text (what participants read) and write-in label.</td>
-		<td>Do not change a question's short name. If you do, you will create new a question that 
-			cannot be easily merged with the old question. 
-			Also, do not change a question's type.</td>
-		<td>If you need to change a question's short name, finish collecting your stories, then export your data,
-			change the short name in both CSV files, and re-import it. See the <a href="help_page_importGuide.html">Import guide</a>
-			for details. If you need to change a question's type .... some changes are simple, and others are probably impossible.
-		</td>
-	</tr>
-	<tr>
-		<td>A checkbox question</td>
-		<td>You can change the text displayed after the checkbox, since this is a display-only option. 
-			The value saved is a true/false value, no matter what it says on the checkbox.</td>
-		<td></td>
-		<td></td>
-	</tr>
-	<tr>
-		<td>A radiobuttons, select, or checkboxes question</td>
-		<td>You can change the number of rows shown in a select question, because it is a display-only option.</td>
-		<td>Do not change any of the available answers in the list.</td>
-		<td>If you have to change one of the answers in your list
-			(perhaps it is misspelled, for example), go ahead and make the change, then update the form.
-			Later, when you look at your data, you will see two sets of counts: one count for the old answer, and one count for the new answer.
-			You can merge these two answer counts together using display lumping during catalysis. See the help for the
-			<a href="../catalysis/help_page_configureCatalysisReport.html">Configure catalysis report</a> page for details.
-			You can also merge two answers by exporting, then importing your data.
-		</td>
-	</tr>
-	<tr>
-		<td>A slider question</td>
-		<td>You can change the left and right slider labels after you start collecting stories. The values saved with the stories are numerical only.
-			You can also change the label of the "Does not apply" checkbox under the slider. This is a display-only option.
-		</td>
-		<td></td>
-		<td></td>
-	</tr>
-</table>
-<p>One way to check what is safe to change in your story form is to look at the actual story data.
-	Find (or create) a story that has a value for every question. Then go to the
-	<a href="help_page_reviewIncomingStories.html">Review incoming stories</a> page.
-	Select the story, click <b>Edit</b>, then scroll down and click the 
-	<b>Show story as raw JSON data</b> button. In the window that appears, look at the story's data structure 
-	and think about what will happen to it (and to other stories like it) if you make the changes
-	you want to make to your questions or story form. (Ignore the prefixes before the question short names;
-	those are used internally.)
-</p>
-</div>
+
+<h4>At the level of the story form</h4>
+
+<p>Changes that are perfectly safe:</p>
+<ul>
+	<li>You can change any texts that appear on your story form that are not saved in your stories.
+		For example, you can change the story form's title, introduction, and conclusion, 
+		as well as any messages to participants (like "Thank you for sharing your story").</li>
+	<li>You can add new questions (eliciting, about stories, or about participants).</li>
+	<li>You can change the order of questions on the story form. Order is display-only.</li>
+</ul>
+
+<p>Do not change the <b>short name</b> of the story form.</p>
+
+<h4>At the level of the question</h4>
+
+<p>Changes that are perfectly safe:</p>
+<ul>
+	<li>You can change the actual text of the question. It is display-only.</li>
+	<li>You can change the label on the write-in "other" box.</li>
+	<li>There are actually a few pairs of question types you can switch between without any problems:
+		<ul>
+			<li>label and header (both store nothing)</li>
+			<li>text and textarea (both are stored as plain text)</li>
+			<li>select and radiobuttons (both are stored as a single plain-text answer)</li>
+		</ul>
+	</li>
+	<li>For a checkbox question, you can change the text displayed after the checkbox. It is a display-only option.
+		The value saved is a true/false value, no matter what it says on the checkbox.
+	</li>
+	<li>For a boolean question, you can set the text displayed on the choices (from the default of yes/no)
+		at the level of the story form. This is a display-only option.
+	</li>
+	<li>For a slider, you can change the left and right slider labels. 
+		The values saved with the stories are numerical only.
+		You can also change the label of the "Does not apply" checkbox under the slider. This is a display-only option as well.
+		</li>
+	<li>You can of course change any notes you wrote to yourself about the question.</li>
+</ul>
+
+<p>If you need to change a question's <b>short name</b> or <b>type</b>:</p>
+<ol>
+	<li>Collect your stories in two separate story collections.</li>
+	<li>Export the story forms and stories associated with both story collections to separate CSV files.
+		You will end up with four files: two story-form files and two data files.
+	</li>
+	<li>Compare the four files. See what you need to do to merge your questions without losing meaning.</li>
+	<li>Merge the two story-form files into one.</li>
+	<li>Merge the two data files into one.</li>
+	<li>Import the merged story form. Check that it looks right.</li>
+	<li>Import the merged data file. Check that the stories look right.</li>
+	<li>If you have questions during this process, see the <a href="help_page_importGuide.html">Import guide</a>.</li>
+</ol>
+
+<h4>Questions with fixed lists of answers (select, radiobuttons, checkboxes)</h4>
+
+<p>Changes that are perfectly safe:</p>
+<ul>
+	<li>You can <i>add</i> new answers to the list.</li>
+	<li>You can change the <i>order</i> in which the answers are shown to participants. Order is display-only.</li>
+	<li>You can change the number of rows shown in a select (drop-down) question.</li>
+</ul>
+
+<p>If you need to change one of the existing answers in a fixed list:</p>
+<ol>
+	<li>Make the change in the question (on the 
+		<a href="help_page_writeQuestionsAboutStories.html">Write questions about stories</a> page, for example).</li>
+	<li>Go to the <a href="help_page_startStoryCollection.html">Start story collection</a> page and update the form.</li>
+	<li>Add more stories to the collection.</li>
+	<li>When you look at your data, you will see two sets of counts: one count for the old answer, and one count for the new answer.</li>
+	<li>
+		Merge the two answer counts by using display lumping during catalysis. See the help for the
+		<a href="../catalysis/help_page_configureCatalysisReport.html">Configure catalysis report</a> page for details.</li>
+	<li>You can also merge two answers by exporting, changing, and re-importing your data.</li>
+</ol>
+
+<p>If you need to remove one of the existing answers in a fixed list:</p>
+<ol>
+	<li>Go to the
+		<a href="help_page_reviewIncomingStories.html">Review incoming stories</a> page.</li>
+	<li>Go through the stories, unchecking every instance of the answer.</li>
+	<li>Make the change in the question (on the 
+		<a href="help_page_writeQuestionsAboutStories.html">Write questions about stories</a> page, for example).</li>
+	<li>Go to the <a href="help_page_startStoryCollection.html">Start story collection</a> page and update the form.</li>
+	<li>Add more stories to the collection.</li>
+	<li>When you look at your data, the deleted answer should not appear.
+		If it does (which probably means that you left an answer in one story), and you don't want to find it,
+		you can use the display lumping feature to "hide" the extra answer inside another answer. See the help for the
+		<a href="../catalysis/help_page_configureCatalysisReport.html">Configure catalysis report</a> page for details.
+	</li>
+</ol>
+
+<h4>If you are not sure what to do</h4>
+
+<p>The very best way to get a clear picture of what you can and cannot change is to 
+	<b>look at your raw story data</b> and think about how the changes you want to make will affect what has been saved already.</p>
+<ol>
+	<li>Enter a fake story that has an answer for every question. For multiple-choice questions, tick every box.</li>
+	<li>Go to the
+		<a href="help_page_reviewIncomingStories.html">Review incoming stories</a> page.</li>
+	<li>Select your new fake story.</li>
+	<li>Click the <b>Show story as raw JSON data</b> button. </li>
+	<li>In the popup window that appears, look at the story's data structure. 
+		Think about what will happen if you make the changes you want to make. 
+		You can ignore the prefixes on the question short names (S_, P_); those are for internal use (to prevent collision).
+	</li>
+	<li>For example, in this case:<br/>
+		<img src="help_startStoryCollection_rawData.png" width="200" border="1"><br/>
+		If I wanted to change the option "help" to "support," I would have a problem to deal with, because here it is in the data.
+		However, if I wanted to change the way the "Needed" question is <i>asked</i>, that would be fine,
+		since the <i>text</i> of the question does not appear in the data.
+	</li>
+	<li>
+		If what you want to do looks like it will have no impact on the story, go ahead and make the change, then update the story form
+		on the <a href="help_page_startStoryCollection.html">Start story collection</a> page.
+		If it does look your change will impact your data, see the appropriate "if you need to" section above.
+	</li>
+	</ol>
 
 <h3 class="question">
 I have two story collections that are identical except for a few small differences. Can I merge them?
