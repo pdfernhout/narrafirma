@@ -162,6 +162,10 @@ M When import story form, hundreds of triples can be generated which take minute
 
 ==== DONE
 
+-- Release 1.5.23
+
+Fixed: Bug I thought I had fixed long ago, in the "chooser" boxes where you add questions to a story form. Showing the question texts broke the associations. Removed them.
+
 -- Release 1.5.22
 
 Fixed: I forgot to save one file (package.json) with the new version number in the previous release. That's all.
