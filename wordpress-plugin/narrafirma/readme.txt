@@ -9,7 +9,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Requires at least: 4.3.1
 Tested up to: 6.1.1
 Stable tag: trunk
-Version: 1.5.20
+Version: 1.5.21
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -105,6 +105,13 @@ We strongly suggest that you set up any web site on which you intend to install 
 12. Here the NarraFirma user is reflecting on the entire project, to learn from it and to keep good records for the future.
 
 == Changelog ==
+
+= 1.5.21 =
+
+Added: Import option for multi-choice delimited questions with write-in answers in the same column.
+Added: On "Write questions about stories/participants" pages, when import options are showing, button to directly access import guide.
+Added: On "Start story collection" page, button to directly access help on what can be changed in a story form linked to a non-empty story collection.
+Changed: Improved import guide and help on updating story forms.
 
 = 1.5.20 =
 
@@ -620,6 +627,10 @@ loading application, getting user information, or retrieving project data.
 change logs, see the [GitHub repository](https://github.com/pdfernhout/narrafirma).
 
 == Upgrade Notice ==
+
+= 1.5.21 =
+
+This minor upgrade adds a new import option (for multi-choice data with intermingled write-in answers) and improves help for data import and changes to story forms.
 
 = 1.5.20 =
 

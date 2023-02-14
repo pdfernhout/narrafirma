@@ -162,6 +162,13 @@ M When import story form, hundreds of triples can be generated which take minute
 
 ==== DONE
 
+-- Release 1.5.21
+
+Added: Import option for multi-choice delimited questions with write-in answers in the same column.
+Added: On "Write questions about stories/participants" pages, when import options are showing, button to directly access import guide.
+Added: On "Start story collection" page, button to directly access help on what can be changed in a story form linked to a non-empty story collection.
+Changed: Improved import guide and help on updating story forms.
+
 -- Release 1.5.20
 
 Added: Spot-check graphs page now has buttons to show selected stories (or random sample) in pop-up window for copying and pasting elsewhere.
