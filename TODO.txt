@@ -162,6 +162,10 @@ M When import story form, hundreds of triples can be generated which take minute
 
 ==== DONE
 
+-- Release 1.5.22
+
+Fixed: I forgot to save one file (package.json) with the new version number in the previous release. That's all.
+
 -- Release 1.5.21
 
 Added: Import option for multi-choice delimited questions with write-in answers in the same column.

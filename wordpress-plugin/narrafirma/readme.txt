@@ -9,7 +9,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Requires at least: 4.3.1
 Tested up to: 6.1.1
 Stable tag: trunk
-Version: 1.5.21
+Version: 1.5.22
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -105,6 +105,10 @@ We strongly suggest that you set up any web site on which you intend to install 
 12. Here the NarraFirma user is reflecting on the entire project, to learn from it and to keep good records for the future.
 
 == Changelog ==
+
+= 1.5.22 =
+
+Fixed: I forgot to save one file (package.json) with the new version number in the previous release. That's all.
 
 = 1.5.21 =
 
@@ -627,6 +631,10 @@ loading application, getting user information, or retrieving project data.
 change logs, see the [GitHub repository](https://github.com/pdfernhout/narrafirma).
 
 == Upgrade Notice ==
+
+= 1.5.22 =
+
+This minor upgrade just fixes a non-matching release number in one place. That's all.
 
 = 1.5.21 =
 
