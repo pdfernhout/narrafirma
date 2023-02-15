@@ -162,6 +162,10 @@ M When import story form, hundreds of triples can be generated which take minute
 
 ==== DONE
 
+-- Release 1.5.24
+
+Fixed: Bug where stories appeared out of order in survey form. 
+
 -- Release 1.5.23
 
 Fixed: Bug I thought I had fixed long ago, in the "chooser" boxes where you add questions to a story form. Showing the question texts broke the associations. Removed them.
