@@ -732,7 +732,7 @@ export function buildSurveyForm(surveyDiv, storyForm, doneCallback, surveyOption
         // invert even and odd to match up with numbers starting at 1, not zero
         const evenOrOdd = (index % 2 === 1) ? "narrafirma-survey-story-even" : "narrafirma-survey-story-odd";
         // A locally unique key needs to be defined so Mithril can track deletions and inserts without rebuilding DOM nodes
-        return m("div", {key: story.storyID, "class": "narrafirma-survey-story " + evenOrOdd}, <any>result); 
+        return m("div", {key: story.storyID, id: story.storyID, "class": "narrafirma-survey-story " + evenOrOdd}, <any>result); 
     }
     
     function validate() {
@@ -1001,9 +1001,9 @@ export function buildSurveyForm(surveyDiv, storyForm, doneCallback, surveyOption
             videoPart,
             m("div.narrafirma-survey-text-after-introductory-video", storyForm.textAfterVideo || ""),
             
-            stories.map(function(story, index) {
-                return displayStoryQuestions(story, index);
-            }),
+            m("div.narrafirma-survey-stories", stories.map(function(story, index) {
+                return m("div.narrafirma-survey-story-question-set", {key: index}, displayStoryQuestions(story, index));
+            })),
             (!storyForm.maxNumStories || storyForm.maxNumStories === "no limit" || stories.length < storyForm.maxNumStories) ? anotherStoryButton(storyForm) : "",
             // A locally unique key needs to be defined so Mithril can track deletions and inserts without rebuilding DOM nodes
             m("div", {key: "participant", "class": "narrafirma-survey-participant"}, 
