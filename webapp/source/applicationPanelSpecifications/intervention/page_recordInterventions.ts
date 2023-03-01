@@ -18,7 +18,14 @@ const panel: Panel = {
             id: "project_interventionRecordsList",
             valueType: "array",
             displayType: "grid",
-            displayConfiguration: "panel_addInterventionRecord",
+            displayConfiguration: {
+                itemPanelID: "panel_addInterventionRecord",
+                gridConfiguration: {
+                    addButton: true,
+                    removeButton: true, 
+                    duplicateButton: true,
+               }
+            },
             displayName: "Intervention records",
             displayPrompt: "These are the intervention records you have added. Click on a record to edit it."
         }

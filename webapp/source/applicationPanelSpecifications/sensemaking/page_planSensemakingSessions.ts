@@ -25,7 +25,14 @@ const panel: Panel = {
             id: "project_sensemakingSessionPlansList",
             valueType: "array",
             displayType: "grid",
-            displayConfiguration: "panel_addSensemakingSessionPlan",
+            displayConfiguration: {
+                itemPanelID: "panel_addSensemakingSessionPlan",
+                gridConfiguration: {
+                    addButton: true,
+                    removeButton: true, 
+                    duplicateButton: true,
+               }
+            },
             displayName: "Sensemaking session plans",
             displayPrompt: "These are the session plans you have added. Click on a plan to edit it."
         }

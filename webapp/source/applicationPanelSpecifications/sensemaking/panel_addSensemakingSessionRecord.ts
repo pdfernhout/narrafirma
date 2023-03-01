@@ -52,7 +52,14 @@ const panel: Panel = {
             id: "sensemakingSessionRecord_resonantStoriesList",
             valueType: "array",
             displayType: "grid",
-            displayConfiguration: "panel_addResonantStory",
+            displayConfiguration: {
+                itemPanelID: "panel_addResonantStory",
+                gridConfiguration: {
+                    addButton: true,
+                    removeButton: true, 
+                    duplicateButton: true,
+               }
+            },
             displayName: "Sensemaking session resonant stories",
             displayPrompt: "If you discovered any <strong>resonant stories</strong> (pivot, voice, discovery) in this session, you can enter them here."
         },
@@ -60,7 +67,14 @@ const panel: Panel = {
             id: "sensemakingSessionRecord_resonantPatternsList",
             valueType: "array",
             displayType: "grid",
-            displayConfiguration: "panel_addResonantPattern",
+            displayConfiguration: {
+                itemPanelID: "panel_addResonantPattern",
+                gridConfiguration: {
+                    addButton: true,
+                    removeButton: true, 
+                    duplicateButton: true,
+               }
+            },
             displayName: "Sensemaking session resonant patterns",
             displayPrompt: "If you discovered any <strong>resonant patterns</strong> (pivot, voice, discovery) in this session, you can enter them here."
         },
@@ -68,7 +82,14 @@ const panel: Panel = {
             id: "sensemakingSessionRecord_outcomesList",
             valueType: "array",
             displayType: "grid",
-            displayConfiguration: "panel_newSensemakingSessionOutcome",
+            displayConfiguration: {
+                itemPanelID: "panel_newSensemakingSessionOutcome",
+                gridConfiguration: {
+                    addButton: true,
+                    removeButton: true, 
+                    duplicateButton: true,
+               }
+            },
             displayName: "Sensemaking session outcomes",
             displayPrompt: "If your session ended with creating lists of <strong>outcomes</strong> (like discoveries and ideas), you can enter them here."
         },
@@ -76,7 +97,14 @@ const panel: Panel = {
             id: "sensemakingSessionRecord_constructionsList",
             valueType: "array",
             displayType: "grid",
-            displayConfiguration: "panel_newSensemakingSessionConstruction",
+            displayConfiguration: {
+                itemPanelID: "panel_newSensemakingSessionConstruction",
+                gridConfiguration: {
+                    addButton: true,
+                    removeButton: true, 
+                    duplicateButton: true,
+               }
+            },
             displayName: "Sensemaking session constructions",
             displayPrompt: "If your session involve creating any group <strong>constructions</strong> (like landscapes or timelines), you can describe them here."
         },

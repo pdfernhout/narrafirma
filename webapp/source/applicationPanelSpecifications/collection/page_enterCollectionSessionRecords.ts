@@ -17,7 +17,15 @@ const panel: Panel = {
             id: "project_collectionSessionRecordsList",
             valueType: "array",
             displayType: "grid",
-            displayConfiguration: "panel_addCollectionSessionRecord",
+            displayConfiguration: {
+                itemPanelID: "panel_addCollectionSessionRecord",
+                gridConfiguration: {
+                    addButton: true,
+                    removeButton: true,
+                    duplicateButton: true,
+                    navigationButtons: true,
+                }
+            },
             displayName: "Story collection session records",
             displayPrompt: "These are the session records you have added. Click on a record to edit it."
         }

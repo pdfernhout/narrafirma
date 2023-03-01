@@ -22,8 +22,6 @@ const panel: Panel = {
             displayConfiguration: {
                 itemPanelID: "panel_chooseStoryCollection",
                 gridConfiguration: {
-                    viewButton: true,
-                    editButton: true,
                     addButton: true,
                     removeButton: true
                 }

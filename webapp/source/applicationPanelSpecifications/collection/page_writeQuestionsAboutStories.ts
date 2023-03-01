@@ -24,12 +24,11 @@ const panel: Panel = {
                 itemPanelID: "panel_addStoryQuestion",
                 gridConfiguration: {
                     columnsToDisplay: ["storyQuestion_text", "storyQuestion_type", "storyQuestion_shortName", "storyQuestion_options"],
-                    viewButton: true,
-                    editButton: true,
                     validateAdd: "requireShortNameTypeAndQuestionOptionsIfNecessary",
                     validateEdit: "requireShortNameTypeAndQuestionOptionsIfNecessary",
                     addButton: true,
                     removeButton: true, 
+                    duplicateButton: true,
                     navigationButtons: true,
                }
             }

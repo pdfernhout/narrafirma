@@ -93,7 +93,14 @@ const panel: Panel = {
             id: "collectionSessionPlan_activitiesList",
             valueType: "array",
             displayType: "grid",
-            displayConfiguration: "panel_addCollectionSessionActivity",
+            displayConfiguration: {
+                itemPanelID: "panel_addCollectionSessionActivity",
+                gridConfiguration: {
+                    addButton: true,
+                    removeButton: true, 
+                    duplicateButton: true,
+               }
+            },
             displayName: "Story collection activities",
             displayPrompt: "Here you can enter some <strong>activities</strong> you plan for the session. Activities within story collection sessions can be simple instructions or complicated exercises (like the creation of timelines)."
         },

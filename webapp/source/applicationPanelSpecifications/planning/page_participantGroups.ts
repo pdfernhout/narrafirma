@@ -20,7 +20,14 @@ const panel: Panel = {
             id: "project_participantGroupsList",
             valueType: "array",
             displayType: "grid",
-            displayConfiguration: "panel_addParticipantGroup",
+            displayConfiguration: {
+                itemPanelID: "panel_addParticipantGroup",
+                gridConfiguration: {
+                    addButton: true,
+                    removeButton: true,
+                    duplicateButton: true,
+                }
+            },
             displayName: "Participant groups",
             displayPrompt: "Please add participant <strong>groups</strong> in the list below (typically up to three groups)."
         }

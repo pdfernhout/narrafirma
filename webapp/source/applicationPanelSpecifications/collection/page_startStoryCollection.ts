@@ -23,11 +23,8 @@ const panel: Panel = {
                 gridConfiguration: {
                     validateAdd: "storeQuestionnaireInStoryCollection",
                     validateEdit: "requireShortName",
-                    viewButton: true,
-                    editButton: true,
                     addButton: true,
                     removeButton: true,
-                    navigationButtons: true,
                     customButton: {
                         customButtonLabel: "Activate or Deactivate Web Form", 
                         customButtonIconClass: "buttonWithTextImage activateOrDeactivateButtonImage",

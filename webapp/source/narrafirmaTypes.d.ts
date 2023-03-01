@@ -23,6 +23,7 @@ interface GridConfiguration {
     inlineButtons?: boolean;
     addButton?: boolean;
     removeButton?: boolean;
+    duplicateButton?: boolean;
     navigationButtons?: boolean;
     specialHiddenPanelForPatternExplorer?: boolean;
     randomButton?: boolean;
@@ -251,4 +252,3 @@ interface ClusteringDiagramModel {
     items: ClusteringDiagramItem[];
     changesCount: number;
 }
-

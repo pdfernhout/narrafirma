@@ -25,7 +25,14 @@ const panel: Panel = {
             id: "project_interventionPlansList",
             valueType: "array",
             displayType: "grid",
-            displayConfiguration: "panel_addIntervention",
+            displayConfiguration: {
+                itemPanelID: "panel_addIntervention",
+                gridConfiguration: {
+                    addButton: true,
+                    removeButton: true, 
+                    duplicateButton: true,
+               }
+            },
             displayName: "Intervention plans",
             displayPrompt: "These are the intervention plans you have added. Click on a plan to edit it."
         }

@@ -22,7 +22,14 @@ const panel: Panel = {
             id: "project_storySharingObservationsList",
             valueType: "array",
             displayType: "grid",
-            displayConfiguration: "panel_addStorySharingObservation",
+            displayConfiguration: {
+                itemPanelID: "panel_addStorySharingObservation",
+                gridConfiguration: {
+                    addButton: true,
+                    removeButton: true,
+                    duplicateButton: true,
+                }
+            },
             displayName: "Story sharing observations",
             displayPrompt: `These are the observations you have added. 
                 Each one represents a conversation in which you observed and supported story sharing. 

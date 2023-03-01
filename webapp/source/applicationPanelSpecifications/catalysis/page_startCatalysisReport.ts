@@ -21,12 +21,11 @@ const panel: Panel = {
             displayConfiguration: {
                 itemPanelID: "panel_addCatalysisReport",
                 gridConfiguration: {
-                    viewButton: true,
-                    editButton: true,
                     validateAdd: "requireShortName",
                     validateEdit: "requireShortName",
                     addButton: true,
                     removeButton: true,
+                    duplicateButton: true,
                     navigationButtons: true,
                     columnsToDisplay: ["catalysisReport_shortName", "catalysisReport_notes", "catalysisReport_about", "catalysisReport_conclusion"]
                 }

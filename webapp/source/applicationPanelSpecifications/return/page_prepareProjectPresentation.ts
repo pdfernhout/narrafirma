@@ -20,7 +20,14 @@ const panel: Panel = {
             id: "project_presentationElementsList",
             valueType: "array",
             displayType: "grid",
-            displayConfiguration: "panel_addPresentationElement",
+            displayConfiguration: {
+                itemPanelID: "panel_addPresentationElement",
+                gridConfiguration: {
+                    addButton: true,
+                    removeButton: true, 
+                    duplicateButton: true,
+               }
+            },
             displayName: "Statements",
             displayPrompt: "These are the presentation elements you have added. Click on an element to edit it."
         },

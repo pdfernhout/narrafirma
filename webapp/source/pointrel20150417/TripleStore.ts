@@ -5,6 +5,61 @@ import generateRandomUuid = require("./generateRandomUuid");
 
 "use strict";
 
+function stringUpTo(aString: string, separator: string) {
+    if (separator !== "") {
+        const pieces = aString.split(separator);
+        if (pieces.length > 1) {
+            return pieces[0];
+        } else {
+            return aString;
+        }
+    } else {
+        return aString;
+    }
+}
+
+function replaceAll(str: string, find: string, replace: string) {
+    return str.replace(new RegExp(find, 'g'), replace);
+}
+
+function isUUIDWithDefinedPrefix(text: string, prefixes) {
+    if (!text) return false;
+    if (typeof text !== "string") return false;
+    const parts = text.split("_");
+    if (parts.length !== 2) {
+        return false;
+    } 
+    const [possiblePrefix, possibleUUID] = parts;
+    if (possibleUUID.length !== 36) return false;
+    if (!prefixes[possiblePrefix]) return false;
+    return true;
+}
+
+function mightBeUUID(text: string) {
+    if (!text) return false;
+    if (typeof text !== "string") return false;
+    const parts = text.split("_");
+    if (parts.length !== 2) {
+        return false;
+    } 
+    const [possiblePrefix, possibleUUID] = parts;
+    if (possibleUUID.length !== 36) return false;
+    return true;
+}
+
+function repeatStringNumTimes(string, times) {
+    var repeatedString = "";
+    while (times > 0) {
+      repeatedString += string;
+      times--;
+    }
+    return repeatedString;
+  }
+
+function isObject(a) {
+    return Object.prototype.toString.call(a) === '[object Object]';
+}
+
 function makeTopicKey(object) {
     // TODO: Should really canonicalize the a,b,c values
     return object;
@@ -322,6 +377,11 @@ class TripleStore {
         const setIdentifier = generateRandomUuid(setClassName);
         return setIdentifier;
     }
+
+    newIdForItemClass(stringToStartWith: string): string {
+        const newId = generateRandomUuid(stringToStartWith);
+        return newId;
+    }
     
     private newIdForSetItem(itemClassName: string): string {
         // return new Date().toISOString();
@@ -357,32 +417,61 @@ class TripleStore {
         
         return newId;
     }
-    
-    makeCopyOfSetItemWithNewId(setIdentifier: string, existingItemId: string, itemClassName: string): string {
-        if (setIdentifier === undefined) {
-            throw new Error("expected setIdentifier to be defined");
-        }
-        if (existingItemId === undefined) {
-            throw new Error("expected existingItemId to be defined");
-        }
-        
-        const newId = this.newIdForSetItem(itemClassName);
-        
-        this.addTriple(setIdentifier, {setItem: newId}, newId);
+
+    makeCopyOfItemOrSetWithNewId(level: number, existingItemId: string, itemOrSetClassName: string, setClassNames, itemClassNames, oldAndNewIDs): string {
+        if (existingItemId === undefined) throw new Error("expected existingItemId to be defined");
+        const doCopy = true;
+        const doReport = true;
+        const baseIndent = repeatStringNumTimes("    ", level);
+        const moreIndent = repeatStringNumTimes("    ", level+1);
+        const evenMoreIndent = repeatStringNumTimes("    ", level+2);
+
+        const newID = doCopy ? generateRandomUuid(itemOrSetClassName) : null;
+        if (doReport) console.log(baseIndent + "COPYING [", itemOrSetClassName, "] with id [", existingItemId, "] to [", newID, "]");
         
         const latestBC = this.queryAllLatestBCForA(existingItemId);
         for (let bKey in latestBC) {
-            // For every field, copy it...
             const b = JSON.parse(bKey);
             const c = latestBC[bKey];
-            if (c !== undefined) {
-                this.addTriple(newId, b, c);
+            const reportC = (typeof c === "string") ? replaceAll(c, "\n", " / ") : c;
+            if (c !== undefined && c !== null && c !== "") { 
+                if (doReport) console.log(moreIndent, b, '=', reportC);
+                const isSet = isUUIDWithDefinedPrefix(c, setClassNames);
+                const isItem = isUUIDWithDefinedPrefix(c, itemClassNames) && b !== "id";
+                if (isSet || isItem) {
+                    const classNameInC = stringUpTo(c, "_"); 
+                    const copyOfC = this.makeCopyOfItemOrSetWithNewId(level+1, c, classNameInC, setClassNames, itemClassNames, oldAndNewIDs);
+                    oldAndNewIDs[c] = copyOfC;
+                    if (b && b.setItem && b.setItem === c) {
+                        if (doCopy) this.addTriple(newID, {setItem: copyOfC}, copyOfC);
+                        if (doReport) console.log(moreIndent + "Copied", isSet ? "set" : "item", copyOfC, 'as set element:', copyOfC, 'of set', newID);
+                    } else {
+                        // the ObservationSet and Observation class names save connections differently 
+                        if (doCopy) this.addTriple(newID, b, copyOfC);
+                        console.log(moreIndent + "Copied", isSet ? "set" : "item", copyOfC, 'as field value:', b, copyOfC, 'of item', newID);
+                    }
+                } else { 
+                    const isNameOfTopLevelItem = (b.indexOf("_shortName") >= 0 || b.indexOf("_name") >= 0) && level === 0;
+                    const isIDOfItem = b === "id";
+                    if (isNameOfTopLevelItem) {
+                        if (doCopy) this.addTriple(newID, b, "Copy of " + c);
+                        if (doReport) console.log(evenMoreIndent + "Copied name to:", "Copy of " + c);
+                    } else if (isIDOfItem) {
+                        if (doCopy) this.addTriple(newID, b, newID);
+                        if (doReport) console.log(evenMoreIndent + "Updated ID field to:", newID);
+                    } else { 
+                        if (doCopy) this.addTriple(newID, b, c);
+                        if (doReport) console.log(evenMoreIndent + "Copied non-item data:", reportC);
+                    }
+                }
             } else {
-                console.log("Unexpected undefined value when copying list item", setIdentifier, existingItemId);
+                if (doReport) console.log("Not copying:", existingItemId, c);
             }
         }
 
-        return newId;
+        oldAndNewIDs[existingItemId] = newID;
+        if (doReport && level === 0) console.log("Old and new ids:", oldAndNewIDs);
+        return newID;
     }
     
     deleteSetItem(setIdentifier: string, itemIdentifier: string): void {

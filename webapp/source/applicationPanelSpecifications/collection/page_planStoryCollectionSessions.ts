@@ -25,7 +25,14 @@ const panel: Panel = {
             id: "project_collectionSessionPlansList",
             valueType: "array",
             displayType: "grid",
-            displayConfiguration: "panel_addStoryCollectionSession",
+            displayConfiguration: {
+                itemPanelID: "panel_addStoryCollectionSession",
+                gridConfiguration: {
+                    addButton: true,
+                    removeButton: true,
+                    duplicateButton: true
+                }
+            },
             displayName: "Story collection session plans",
             displayPrompt: "These are the session plans you have added. Click on a plan to edit it. (A single plan can be used for multiple sessions.)"
         }

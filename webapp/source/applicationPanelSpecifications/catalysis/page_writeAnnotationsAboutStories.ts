@@ -26,12 +26,11 @@ const panel: Panel = {
                 itemPanelID: "panel_addAnnotationQuestion",
                 gridConfiguration: {
                     columnsToDisplay: ["annotationQuestion_text", "annotationQuestion_type", "annotationQuestion_shortName", "annotationQuestion_options"],
-                    viewButton: true,
-                    editButton: true,
                     validateAdd: "requireShortName",
                     validateEdit: "requireShortName",
                     addButton: true,
                     removeButton: true, 
+                    duplicateButton: true,
                     navigationButtons: true,
                }
             }

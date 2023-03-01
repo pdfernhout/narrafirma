@@ -19,7 +19,13 @@ const panel: Panel = {
             id: "project_projectStoriesList",
             valueType: "array",
             displayType: "grid",
-            displayConfiguration: "panel_projectStory",
+            displayConfiguration: {
+                itemPanelID: "panel_projectStory",
+                gridConfiguration: {
+                    addButton: true,
+                    removeButton: true, 
+               }
+            },
             displayName: "Project stories",
             displayPrompt: "These are the project stories you have told so far."
         }

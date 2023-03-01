@@ -26,7 +26,14 @@ const panel: Panel = {
             id: "project_methodsList",
             valueType: "array",
             displayType: "grid",
-            displayConfiguration: "panel_addStoryCollectionMethod",
+            displayConfiguration: {
+                itemPanelID: "panel_addStoryCollectionMethod",
+                gridConfiguration: {
+                    addButton: true,
+                    removeButton: true,
+                    duplicateButton: true
+                }
+            },
             displayName: "Story collection methods",
             displayPrompt: "These are the story collection methods you have added. Click on a method to edit it."
         }

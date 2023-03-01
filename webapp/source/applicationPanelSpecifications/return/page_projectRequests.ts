@@ -21,8 +21,6 @@ const panel: Panel = {
             displayConfiguration: {
                 itemPanelID: "panel_addNewReturnRequest",
                 gridConfiguration: {
-                    viewButton: true,
-                    editButton: true,
                     addButton: true,
                     removeButton: true,
                     columnsToDisplay: ["returnRequest_description", "returnRequest_type", "returnRequest_isMet"]

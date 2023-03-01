@@ -13,6 +13,7 @@ import _ = require("lodash");
 // TODO: Probably need to prevent user surveys from having a question with a short name of "_id".
 
 let gridsMade = 0;
+const debug = false;
 
 const displayTypesToDisplayAsColumns = {
    text: true,
@@ -24,6 +25,69 @@ const displayTypesToDisplayAsColumns = {
    checkboxes: true,
    slider: true
 };
+
+// embedded sets to copy when duplicating item
+const SetClassNames = {
+    // planning
+    ObservedStorySet: true,
+    // collection
+    CollectionSessionActivitySet: true,
+    StoryFormSet: true,
+    ElicitingQuestionChoiceSet: true,
+    StoryQuestionChoiceSet: true,
+    ParticipantQuestionChoiceSet: true,
+    TranslationDictionarySet: true,
+    CollectionSessionConstructionSet: true,
+    // catalysis
+    StoryCollectionChoiceSet: true,
+    ObservationSet: true,
+    InterpretationSet: true,
+    // sensemaking
+    SensemakingSessionActivityPlanSet: true,
+    SensemakingSessionConstructionSet: true,
+    SensemakingSessionOutcomeSet: true,
+    ResonantPatternSet: true,
+    ResonantStorySet: true,
+    // intervention
+    // return
+}
+
+// embedded set items to copy when duplicating item
+const ItemClassNames = {
+    // planning
+    ObservedStory: true,
+    // collection
+    CollectionSessionActivity: true,
+    StoryForm: true,
+    ElicitingQuestionChoice: true,
+    StoryQuestionChoice: true,
+    ParticipantQuestionChoice: true,
+    TranslationDictionary: true,
+    CollectionSessionConstruction: true,
+    // catalysis
+    StoryCollectionChoice: true,
+    Observation: true,
+    Interpretation: true,
+    // sensemaking
+    SensemakingSessionActivityPlan: true,
+    SensemakingSessionConstruction: true,
+    SensemakingSessionOutcome: true,
+    ResonantPattern: true,
+    ResonantStory: true,
+    // intervention
+    // return
+}
+
+// item sets not given duplicate buttons, because it doesn't seem like people would want them
+// basically all of these things are stories, and it seems ridiculous to have two identical (or even nearly identical) ones
+// planning: project stories, observed stories
+// return: points of feedback, requests for support
+
+// items for which short names are lookups:
+// eliciting, story, and participant questions
+// story forms
+// story collections
+// none of these are ever listed in nested grids
 
 function computeColumnsForItemPanelSpecification(itemPanelSpecification, gridConfiguration: GridConfiguration) {
     const columns = [];
@@ -270,7 +334,7 @@ class GridWithItemPanel {
     }
     
     static view(controller: GridWithItemPanel, args) {
-        return controller.calculateView();
+        return controller.calculateView(args);
     }
     
     addNavigationButtons(buttons) {
@@ -296,7 +360,7 @@ class GridWithItemPanel {
                 m("span", {class: "buttonWithTextImage navigateRandomButtonImage"}), translate("#button_navigateRandom|Random")));
     }
 
-    calculateView() {
+    calculateView(args) {
         // Deal with the fact that new items might be added at any time by other users
         // TODO: This is very inefficient. Alternatives include: listening for changes that add or remove items; or determing nature of change prompting redraw
         this.updateData();
@@ -399,6 +463,8 @@ class GridWithItemPanel {
     
     setSelectedItem(item) {
         this.selectedItem = item;
+
+        // invalidate any gridwithitempanel inside this panel so it will be reconstructed with new model
         
         if (this.gridConfiguration.selectCallback) {
             this.gridConfiguration.selectCallback(this.selectedItem);
@@ -476,6 +542,11 @@ class GridWithItemPanel {
             this.setSelectedItem(null);
         }
     }
+
+    duplicateItem(item) {
+        if (!item) item = this.selectedItem; 
+        this.dataStore.makeCopyOfItemWithNewId(item);
+    }
     
     private editItem(item) {
         if (!item) item = this.selectedItem;
@@ -546,7 +617,13 @@ class GridWithItemPanel {
             buttons.push(removeButton);
         }
 
-          if (this.gridConfiguration.customButton) {
+        if (this.gridConfiguration.duplicateButton) {
+            const duplicateButton = m("button", {onclick: this.duplicateItem.bind(this, item), disabled: disabled, "class": "fader"}, 
+                m("span", {class: "buttonWithTextImage copyButtonImage"}), translate("#button_Duplicate|Duplicate"));
+            buttons.push(duplicateButton);
+        }
+
+        if (this.gridConfiguration.customButton) {
             const options = this.gridConfiguration.customButton;
             let customButtonClickedPartial;
             if (_.isString(options.callback)) {
@@ -615,7 +692,12 @@ class GridWithItemPanel {
             }
             if (reformattedValue == undefined) reformattedValue = "";
             
-            return m("td", {"text-overflow": "ellipsis", "data-item-index": this.dataStore.idForItem(item), id: this.makeHtmlIdForItem(item)}, reformattedValue);
+            if (debug) {
+                return m("td", {"text-overflow": "ellipsis", "data-item-index": this.dataStore.idForItem(item), 
+                    id: this.makeHtmlIdForItem(item)}, reformattedValue + "|" + this.dataStore.idForItem(item) + ", " + this.dataStore["setIdentifier"]);
+            } else {
+                return m("td", {"text-overflow": "ellipsis", "data-item-index": this.dataStore.idForItem(item), id: this.makeHtmlIdForItem(item)}, reformattedValue);
+            }
         });
         if (this.gridConfiguration.inlineButtons) {
             const buttons = this.createButtons(item);
@@ -714,7 +796,7 @@ class DataStore {
         this.data.splice(index, 1);
         return index;
     }
-    
+
     moveItemUp(item) {
         // TODO: How to move this change back to project data???
         const index = this.data.indexOf(item);
@@ -839,12 +921,35 @@ class TripleSetDataStore extends DataStore {
         }
     }
 
+    updateIDsInClusteringDiagram(newID, diagramFieldName, oldAndNewIDs) {
+        const newReport = this.tripleStore.makeObject(newID, true);
+        if (!newReport) return;
+        const newDiagram = newReport[diagramFieldName];
+        if (!newDiagram || !newDiagram.items) return;
+        for (let newItem of newDiagram.items) {
+            newItem.uuid = this.tripleStore.newIdForItemClass("ClusteringDiagramItem");
+            newItem.referenceUUID = oldAndNewIDs[newItem.referenceUUID];
+        }
+        this.tripleStore.addTriple(newID, diagramFieldName, newDiagram);
+    }
+
     makeCopyOfItemWithNewId(item) {
         // TODO: This needs to create an action that affects original list
         // Make a copy of the selected item
         this.ensureSetExists();
-        const newId = this.tripleStore.makeCopyOfSetItemWithNewId(this.setIdentifier, item, this.itemClassName);
+
+        const oldAndNewIDs = {};
+        const newId = this.tripleStore.makeCopyOfItemOrSetWithNewId(0, item, this.itemClassName, SetClassNames, ItemClassNames, oldAndNewIDs);
+        this.tripleStore.addTriple(this.setIdentifier, {setItem: newId}, newId);
         this.data.push(newId);
+
+        // special treatment for catalysis report clustering diagrams
+        // which have internal uuids, plus uuid references to interpretations or observations
+        if (this.itemClassName === "CatalysisReport") {
+            this.updateIDsInClusteringDiagram(newId, "interpretationsClusteringDiagram", oldAndNewIDs);
+            this.updateIDsInClusteringDiagram(newId, "observationsClusteringDiagram", oldAndNewIDs);
+        }
+
         return newId;
     }
     

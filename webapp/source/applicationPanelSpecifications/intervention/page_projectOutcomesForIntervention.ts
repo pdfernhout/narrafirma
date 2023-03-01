@@ -18,7 +18,14 @@ const panel: Panel = {
             id: "project_outcomesList",
             valueType: "array",
             displayType: "grid",
-            displayConfiguration: "panel_projectOutcome",
+            displayConfiguration: {
+                itemPanelID: "panel_projectOutcome",
+                gridConfiguration: {
+                    addButton: true,
+                    removeButton: true, 
+                    duplicateButton: true,
+               }
+            },
             displayName: "Project outcomes",
             displayPrompt: "These are the participant groups for which you have entered outcomes so far."
         }

@@ -60,7 +60,14 @@ const panel: Panel = {
             id: "collectionSessionRecord_constructionsList",
             valueType: "array",
             displayType: "grid",
-            displayConfiguration: "panel_newCollectionSessionConstruction",
+            displayConfiguration: {
+                itemPanelID: "panel_newCollectionSessionConstruction",
+                gridConfiguration: {
+                    addButton: true,
+                    removeButton: true, 
+                    duplicateButton: true,
+               }
+            },
             displayName: "Story collection session constructions",
             displayPrompt: "People in your story collection sessions might have created <strong>constructions</strong> such as timelines or landscapes. You can enter details about those here."
         },

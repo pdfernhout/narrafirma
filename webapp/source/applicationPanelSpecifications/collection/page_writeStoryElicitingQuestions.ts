@@ -25,12 +25,11 @@ const panel: Panel = {
             displayConfiguration: {
                 itemPanelID: "panel_addElicitingQuestion",
                 gridConfiguration: {
-                    viewButton: true,
-                    editButton: true,
                     addButton: true,
                     removeButton: true,
                     validateAdd: "requireShortNameAndType",
                     validateEdit: "requireShortNameAndType",
+                    duplicateButton: true,
                     navigationButtons: true,
                     columnsToDisplay: ["elicitingQuestion_text", "elicitingQuestion_shortName"]
                 }

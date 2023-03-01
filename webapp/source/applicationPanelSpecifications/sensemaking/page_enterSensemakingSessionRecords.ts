@@ -18,7 +18,14 @@ const panel: Panel = {
             id: "project_sensemakingSessionRecordsList",
             valueType: "array",
             displayType: "grid",
-            displayConfiguration: "panel_addSensemakingSessionRecord",
+            displayConfiguration: {
+                itemPanelID: "panel_addSensemakingSessionRecord",
+                gridConfiguration: {
+                    addButton: true,
+                    removeButton: true, 
+                    duplicateButton: true,
+               }
+            },
             displayName: "Sensemaking session records",
             displayPrompt: "These are the session records you have added. Click on a record to edit it."
         }

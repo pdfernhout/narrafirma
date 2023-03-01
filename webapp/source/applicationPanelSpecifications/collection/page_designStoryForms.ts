@@ -23,12 +23,11 @@ const panel: Panel = {
             displayConfiguration: {
                 itemPanelID: "panel_addStoryForm",
                 gridConfiguration: {
-                    viewButton: true,
-                    editButton: true,
                     validateAdd: "requireShortName",
                     validateEdit: "requireShortName",
                     addButton: true,
                     removeButton: true,
+                    duplicateButton: true,
                     navigationButtons: true,
                     columnsToDisplay: ["questionForm_shortName", "questionForm_title", "questionForm_startText"]
                 }

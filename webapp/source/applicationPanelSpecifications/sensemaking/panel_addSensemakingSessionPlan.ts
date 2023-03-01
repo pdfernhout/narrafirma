@@ -91,7 +91,14 @@ const panel: Panel = {
             id: "sensemakingSessionPlan_activitiesList",
             valueType: "array",
             displayType: "grid",
-            displayConfiguration: "panel_addSensemakingSessionActivity",
+            displayConfiguration: {
+                itemPanelID: "panel_addSensemakingSessionActivity",
+                gridConfiguration: {
+                    addButton: true,
+                    removeButton: true, 
+                    duplicateButton: true,
+               }
+            },
             displayName: "Sensemaking session activities",
             displayPrompt: "Here you can enter some <strong>activities</strong> you plan to use in the session. Activities can be simple instructions or complicated exercises (like the creation of timelines)."
         },

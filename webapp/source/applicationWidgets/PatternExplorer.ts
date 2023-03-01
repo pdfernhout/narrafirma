@@ -504,7 +504,14 @@ class PatternExplorer {
                     valuePath: "/clientState/observationAccessor/observationInterpretations",
                     valueType: "array",
                     displayType: "grid",
-                    displayConfiguration: "panel_addInterpretation",
+                    displayConfiguration: {
+                        itemPanelID: "panel_addInterpretation",
+                        gridConfiguration: {
+                            addButton: true,
+                            removeButton: true, 
+                            duplicateButton: true,
+                       }
+                    },
                     displayName: "Interpretations",
                     displayPrompt: "Enter at least two <strong>competing interpretations</strong> for this observation. Click on an interpretation to edit it.",
                 }
