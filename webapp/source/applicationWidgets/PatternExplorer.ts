@@ -653,7 +653,7 @@ class PatternExplorer {
             if (this.currentPattern && (this.currentPattern.graphType === "data integrity" || this.currentPattern.graphType === "correlation map")) {
                 parts = [
                     buildGridHeader(),
-                    this.patternsGrid.calculateView(),
+                    this.patternsGrid.calculateView(args),
                     m("div.narrafirma-graph-results-panel", {config: this.insertGraphResultsPaneConfig.bind(this)}),
                     panelBuilder.buildPanel(this.thingsYouCanDoIfNoSelectionPanelSpecification, activeAccessor || this),
                     buildObservationsAndInterpretationsPanels(),
@@ -661,14 +661,14 @@ class PatternExplorer {
             } else if (this.currentPattern && this.currentPattern.graphType === "texts") {
                 parts = [
                     buildGridHeader(),
-                    this.patternsGrid.calculateView(),
+                    this.patternsGrid.calculateView(args),
                     panelBuilder.buildPanel(this.textAnswersPanelSpecification, this),
                     buildObservationsAndInterpretationsPanels(),
                 ];
             } else if (this.currentPattern && this.currentPattern.graphType === "write-in texts") {
                 parts = [
                     buildGridHeader(),
-                    this.patternsGrid.calculateView(),
+                    this.patternsGrid.calculateView(args),
                     panelBuilder.buildPanel(this.writeInTextAnswersPanelSpecification, this),
                     buildObservationsAndInterpretationsPanels(),
                 ];
@@ -678,7 +678,7 @@ class PatternExplorer {
                 const selectedStoriesText = numStories + " " + storyOrStoriesWord + " in selection - " + this.nameForCurrentGraphSelection() + ". Click on a story to view it.";
                 parts = [
                     buildGridHeader(),
-                    this.patternsGrid.calculateView(),
+                    this.patternsGrid.calculateView(args),
                     this.currentPattern ?
                         [
                             m("div.narrafirma-graph-results-panel", {config: this.insertGraphResultsPaneConfig.bind(this)}),
@@ -688,7 +688,7 @@ class PatternExplorer {
                                 + ". To display this graph, choose a lower minimum story count."),
                             (this.modelForStoryGrid.storiesSelectedInGraph.length > 0) ? 
                                 m("div", {"class": "narrafirma-pattern-browser-selected-stories-header"}, selectedStoriesText) : m("div"),
-                            (this.modelForStoryGrid.storiesSelectedInGraph.length > 0) ? this.storyGrid.calculateView() : m("div"),
+                            (this.modelForStoryGrid.storiesSelectedInGraph.length > 0) ? this.storyGrid.calculateView(args) : m("div"),
                             panelBuilder.buildPanel(this.thingsYouCanDoPanelSpecification, activeAccessor || this),
                             buildObservationsAndInterpretationsPanels(),
                         ] :

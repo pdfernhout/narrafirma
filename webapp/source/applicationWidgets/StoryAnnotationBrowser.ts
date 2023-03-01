@@ -73,7 +73,7 @@ export class StoryAnnotationBrowser {
         if (!this.storyCollectionIdentifier) {
             parts = [m("div", "Please select a story collection to annotate.")];
         } else {
-            parts = [prompt, this.grid.calculateView()];
+            parts = [prompt, this.grid.calculateView(args)];
         }
         
         return m("div", {"class": "questionExternal narrafirma-question-type-questionAnswer"}, parts);

@@ -155,7 +155,7 @@ class Filter {
     }
     
     static view(controller, args) {
-        return controller.calculateView();
+        return controller.calculateView(args);
     }
 
     hasQuestionAndAnswers() {
@@ -177,7 +177,7 @@ class Filter {
     return result;
     }
         
-    calculateView() {
+    calculateView(args) {
         const choices = this.storyBrowser.choices || [];
         const selectOptions = choices.map((option) => {
             const optionOptions = {value: option.value, selected: undefined};
@@ -309,8 +309,8 @@ export class StoryBrowser {
             parts = [m("div", "Please select a story collection to view")];
         } else {
             const filter = m("table.filterTable", m("tr", [
-                m("td", this.filter1.calculateView()),
-                m("td", this.filter2.calculateView())
+                m("td", this.filter1.calculateView(args)),
+                m("td", this.filter2.calculateView(args))
             ]));
 
             let filterInfoString = "Stories (" + this.filteredStories.length + ")";
@@ -325,7 +325,7 @@ export class StoryBrowser {
             // TODO: Translation
             const filteredCountText = m("div.narrafirma-story-browser-filtered-stories-count", filterInfoString);
 
-            parts = [prompt, filter, filteredCountText, this.grid.calculateView()];
+            parts = [prompt, filter, filteredCountText, this.grid.calculateView(args)];
         }
         
         return m("div", {"class": "questionExternal narrafirma-question-type-questionAnswer"}, parts);
