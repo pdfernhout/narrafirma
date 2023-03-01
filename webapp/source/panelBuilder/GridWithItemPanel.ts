@@ -445,11 +445,12 @@ class GridWithItemPanel {
     }
     
     private bottomEditorForItem(panelBuilder, item, mode) {
+        const itemID = item && (typeof item === "string" ? item : item.id);
         return m("div.narrafirma-griditempanel-divwithbutton" + "-" + mode + "ing", [
             m("button", {onclick: this.doneClicked.bind(this, item), class: "narrafirma-griditempanel-close-button"}, 
                 m("span", {class: "buttonWithTextImage closeButtonImage"}), "Close"),
             m.component(<any>ItemPanel, 
-                {key: this.fieldSpecification.id + "_" + "bottomEditor" + "_" + mode, panelBuilder: panelBuilder, item: item, grid: this, mode: mode}),
+                {key: this.fieldSpecification.id + "_" + itemID + "_" + "bottomEditor" + "_" + mode, panelBuilder: panelBuilder, item: item, grid: this, mode: mode}),
             m("button", {onclick: this.doneClicked.bind(this, item), class: "narrafirma-griditempanel-close-button"}, 
                 m("span", {class: "buttonWithTextImage closeButtonImage"}), "Close")
         ]);
