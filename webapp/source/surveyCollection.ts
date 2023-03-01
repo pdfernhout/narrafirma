@@ -305,7 +305,8 @@ export function urlForSurvey(storyCollectionID) {
     const projectName = project.journalIdentifier.substring("NarraFirmaProject-".length);
     const shortName = project.tripleStore.queryLatestC(storyCollectionID, "storyCollection_shortName");
     const url = baseURL + "/survey.html#project=" + projectName + "&survey=" + shortName;
-    const result = m("a[id=narrafirma-survey-url]", {href: url, title: url, target: "_blank"}, url)
+    const cleanedUrl = encodeURI(url);
+    const result = m("a[id=narrafirma-survey-url]", {href: cleanedUrl, title: cleanedUrl, target: "_blank"}, url)
     return result;
 }
 
@@ -316,7 +317,8 @@ export function urlForSurveyAsString(storyCollectionID) {
     const projectName = project.journalIdentifier.substring("NarraFirmaProject-".length);
     const shortName = project.tripleStore.queryLatestC(storyCollectionID, "storyCollection_shortName");
     const url = baseURL + "/survey.html#project=" + projectName + "&survey=" + shortName;
-    return url;
+    const cleanedUrl = encodeURI(url);
+    return cleanedUrl;
 }
 
 export function urlForStoryCollectionReview(storyCollectionID, pageName: string) {
@@ -326,7 +328,8 @@ export function urlForStoryCollectionReview(storyCollectionID, pageName: string)
     const projectName = project.journalIdentifier.substring("NarraFirmaProject-".length);
     const shortName = project.tripleStore.queryLatestC(storyCollectionID, "storyCollection_shortName");
     const url = baseURL + "/narrafirma.html#project=" + projectName + "&page=" +  pageName + "&storyCollection=" + shortName;
-    return url;
+    const cleanedUrl = encodeURI(url);
+    return cleanedUrl;
 }
 
 export function toggleWebActivationOfSurvey(model: string, fieldSpecification, value) {
