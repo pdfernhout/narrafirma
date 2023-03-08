@@ -134,7 +134,12 @@ export function displayQuestion(panelBuilder: PanelBuilder, model, fieldSpecific
 
     const isAnnotationQuestion = fieldSpecification.id.indexOf("A_") >= 0;
     const useNormalDivs = typeof fieldSpecification.displayWithoutQuestionDivs === "undefined" || !fieldSpecification.displayWithoutQuestionDivs;
-    const readOnly = panelBuilder.readOnly || fieldSpecification.displayReadOnly || (fieldSpecification.valueImmutable && value) || undefined;
+
+    let displayReadOnly = fieldSpecification.displayReadOnly;
+    if (typeof fieldSpecification.displayReadOnly === "function") {
+        displayReadOnly = fieldSpecification.displayReadOnly(panelBuilder, model);
+    } 
+    const readOnly = panelBuilder.readOnly || displayReadOnly || (fieldSpecification.valueImmutable && value) || undefined;
     const disabled = readOnly || undefined;
 
     let parts: any = [];
@@ -166,6 +171,7 @@ export function displayQuestion(panelBuilder: PanelBuilder, model, fieldSpecific
         if (!isNaN(lengthAsNumber)) {
             standardValueOptions["style"] = "width: " + lengthAsNumber + "%";
         }
+
         return [m("input[class=" + className + "]", standardValueOptions), m("br")];
     }
 
