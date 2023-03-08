@@ -21,9 +21,6 @@ const panel: Panel = {
             displayConfiguration: {
                 itemPanelID: "panel_addStoryCollection",
                 gridConfiguration: {
-                    validateAdd: "storeQuestionnaireInStoryCollection",
-                    validateEdit: "requireShortName",
-                    addButton: true,
                     removeButton: true,
                     customButton: {
                         customButtonLabel: "Activate or Deactivate Web Form", 
@@ -37,8 +34,17 @@ const panel: Panel = {
                 }
             },
             displayName: "Story collections",
-            displayPrompt: "These are the story collections you have added. Click on a collection to edit it."
+            displayPrompt: "These are the story collections you have created."
         },
+        {
+            id: "createNewStoryCollection",
+            valueType: "none",
+            displayType: "button",
+            displayConfiguration: "createNewStoryCollection",
+            displayIconClass: "addButtonImage",
+            displayPrompt: "Create New Story Collection",
+        },
+
     ]
 };
 

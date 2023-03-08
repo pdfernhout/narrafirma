@@ -723,6 +723,8 @@ button:disabled {
 .narrafirma-griditempanel-editing .questionExternal.narrafirma-question-type-questionAnswer  {
     background-color: inherit;
     margin-bottom: 0.5em;
+    margin-left: 0.5em;
+    padding-left: 0.5em;
 }
 
 .questionExternal.narrafirma-question-type-questionAnswer {
@@ -1141,6 +1143,12 @@ button.narrafirma-griditempanel-close-button {
     margin: 0.5em auto 0.25em auto;
 }
 
+button.narrafirma-griditempanel-bottom-close-button {
+    display: block;
+    padding: 0.4em 2em 0.4em 2em;
+    margin: 0.5em auto 0.25em auto;
+}
+
 .narrafirma-griditempanel-editing {
     margin: 0.6em;
 }
@@ -1280,6 +1288,51 @@ table.scrolling-small {
 
 .narrafirma-annotation-choice-answers-answer {
     margin: 0.25em 0 0 1.5em;
+}
+
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Updating the story form ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
+.narrafirma-update-story-form-start {
+    margin: 0.5em 0.5em 1em 0.5em;
+}
+
+.narrafirma-update-story-form-problems {
+    font-size: 0.8em;
+    background-color: var(--color-reminder);
+    border: 1px solid gray;
+    margin: 0.5em;
+    padding: 0.5em;
+    max-height: 12em;
+    overflow-y: scroll;
+}
+
+.narrafirma-update-story-form-snapshot, .narrafirma-update-story-form-current {
+    font-size: 0.8em;
+    background-color: var(--color-reminder);
+    border: 1px solid gray;
+    margin: 0.5em;
+    padding: 0.5em;
+    max-height: 10em;
+    overflow-y: scroll;
+}
+
+.narrafirma-update-story-form-problems:empty {
+    display: none;
+}
+
+.narrafirma-update-story-form-end {
+    margin: 0.5em 0.5em 1em 0.5em;
+}
+
+.narrafirma-update-story-form-type-label {
+    margin: 0.5em 0.5em 0.2em 0.5em;
+    font-style: italic;
+}
+
+button.narrafirma-update-story-form-copy-button {
+    font-size: 0.8em;
+    background-color: var(--color-reminder);
+    box-shadow: 1px 1px 1px var(--color-reminder-border);
 }
 
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Stories list ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
@@ -2379,8 +2432,8 @@ td.narrafirma-mw-nested-title, td.narrafirma-mw-nested-stats {
     overflow: auto;
     z-index: 10001;
     margin: 5% auto 0;
-    padding: 1em 2em;
-    width: 80%;
+    padding: 1em 1em;
+    width: 60%;
     min-width: 300px;
     max-width: 80%;
     min-height: 100px;
@@ -2395,24 +2448,28 @@ td.narrafirma-mw-nested-title, td.narrafirma-mw-nested-stats {
 }
 
 .modal-internal {
-    margin: 1em;
-    padding: 1em;
+    margin: 0.5em;
+    padding: 0.5em;
     overflow: auto;
     max-height: 85%;
     background-color: var(--color-dialog-internal); 
     border: 1px solid var(--color-dialog-internal-border);
 }
 
+.modal-button-panel {
+    text-align: center;
+}
+
 .narrafirma-dialog-ok-button {
-    display: block;
-    margin: auto;
+    display: inline-block;
+    margin: 0.25em;
     padding: 0.4em;
     box-shadow: none;
 }
 
 .narrafirma-dialog-cancel-button {
-    display: block;
-    margin: auto;
+    display: inline-block;
+    margin: 0.25em;
     padding: 0.4em;
     box-shadow: none;
 }
@@ -2431,4 +2488,38 @@ textarea.textEditorInDialog {
 
 textarea.textEditorInDialogReadOnly {
     pointer-events: none;
+}
+
+.narrafirma-create-collection-name-prompt {
+    margin: 0 0 0.5em 0;
+}
+
+.narrafirma-create-collection-form-prompt {
+    margin: 0.5em 0 0.5em 0;
+}  
+
+.narrafirma-create-collection-input-name-div {
+    margin: 0 0 0.5em 0;
+}
+.narrafirma-create-collection-input-name {
+    margin: 0 0 0.5em 0;
+    border: 1px solid black;
+}
+
+.narrafirma-create-collection-choose-form {
+    margin: 0 0 0.5em 0;
+}
+
+.narrafirma-create-collection-choose-form-label {
+    margin: 0 0.5em 0.5em 0;
+}
+
+.narrafirma-create-collection-choose-form-select{
+    margin: 0 0 0.5em 0;
+    border: 1px solid black;
+}
+
+.narrafirma-create-collection-warning {
+    margin: 1em;
+    color: var(--color-read-only-warning);
 }

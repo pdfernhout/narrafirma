@@ -204,6 +204,16 @@ class Project {
         }
         return null;
     }
+
+    listOfAllStoryFormNames() {
+        const storyFormIDs: Array<string> = this.getListForField("project_storyForms");
+        const result = [];
+        for (let i = 0; i < storyFormIDs.length; i++) {
+            const formShortName = this.tripleStore.queryLatestC(storyFormIDs[i], "questionForm_shortName");
+            result.push(formShortName);
+        }
+        return result;
+    }
     
     findStoryCollectionID(shortName): string {
         const storyCollections: Array<string> = this.getListForField("project_storyCollections");
@@ -213,6 +223,16 @@ class Project {
             }
         }
         return null;
+    }
+
+    listOfAllStoryCollectionNames() {
+        const storyCollectionIDs: Array<string> = this.getListForField("project_storyCollections");
+        const result = [];
+        for (let i = 0; i < storyCollectionIDs.length; i++) {
+            const collectionShortName = this.tripleStore.queryLatestC(storyCollectionIDs[i], "storyCollection_shortName");
+            result.push(collectionShortName);
+        }
+        return result;
     }
     
     private collectAllQuestionsForQuestionList(questionListName: string) {

@@ -133,16 +133,6 @@ class Application {
     calculateFunctionResultForGUI(panelBuilder: PanelBuilder, model, fieldSpecification, functionName): any {
         if (functionName === "isStoryCollectingEnabled") {
             return surveyCollection.isStoryCollectingEnabled();
-        } else if (functionName === "storeQuestionnaireInStoryCollection") {
-            // i have bundled this new check inside the other existing one
-            const itemID = fieldSpecification.value;
-            const shortNameSuccess = buttonActions.checkThatItemHasShortName(itemID);
-            if (!shortNameSuccess) {
-                return ["You must enter a short name for the story collection."];
-            } 
-            const storyCollectionIdentifier = fieldSpecification.value;
-            const storyFormSuccess = buttonActions.setQuestionnaireForStoryCollection(storyCollectionIdentifier);
-            return storyFormSuccess ? null : ["Questionnaire could not be created for story collection."];
         } else if (functionName === "requireShortName") {
             const itemID = fieldSpecification.value;
             let success = buttonActions.checkThatItemHasShortName(itemID);
@@ -182,7 +172,7 @@ class Application {
             // document.documentElement.scrollTop = 0;
             window.scrollTo(0, 0);
         };
-        
+
         window["narrafirma_logoutClicked"] = () => {
             buttonActions.logoutButtonClicked();
         };

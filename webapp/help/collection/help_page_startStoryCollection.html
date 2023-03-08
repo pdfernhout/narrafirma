@@ -39,24 +39,18 @@ a pilot collection with a draft story form, and a final story collection with a 
 <h2 class="heading">What to do here</h2>
 
 <div class="text">
+	<p>On this page you can create new story collections and make (some) changes to existing ones.</p>
 <p>
-To create a story collection, click <b>Add</b>, then give the new story collection a <b>name</b>. 
-This name won't be visible to the people who only tell stories in the project. 
-It will only be visible to people who can see the pages of your NarraFirma project. 
+To create a story collection, click <b>Create New Story Collection</b>. Give the new collection a <b>name</b>.
+This name will only be visible to people who can see the pages of your NarraFirma project. 
+It will not be visible to the people who only tell stories in the project. 
 </p><p>
 Next, <b>choose a story form</b> from the list of forms you already created.
 This form will be permanently associated with the new story collection.
 </p><p>
-Finally, <b>CLICK THE CLOSE BUTTON</b>. Don't forget to do this. When you click the Close button,
-NarraFirma creates a <strong>snapshot</strong> copy of the selected story form &mdash; as it stands at that moment &mdash;
-and saves it in the story collection.
-</p><p>
-If you forget to click the Close button, you will create a story collection with no associated story form, 
-and you will see errors when you try to add stories to the collection. 
-If that happens, don't worry; you can fix it. Come back to this page, select the story collection in the list, then click <b>Edit</b>. 
-Check that the correct story form is selected, then click the <b>Update Story Form</b> button.
+Finally, click the <b>Create Story Collection</b> button. 
 </p>
-<p>There are three ways to add stories to a story collection.</p>
+<p>Once you have created a story collection, there are three ways to add stories to it.</p>
 <ul>
 <li>You can <b>collect stories over the internet</b>. To do this, 
 select your new story collection in the list, then click <b>Activate or Deactivate Web Form</b>.
@@ -81,22 +75,16 @@ Go to the
 When you associate a story form with a story collection, 
 a <strong>snapshot</strong> of the story form, <em>as it appears at that moment</em>, 
 is <strong>copied</strong> into the story collection. Any changes you make to the form 
-or the questions <em>after</em> that moment will <em>not</em> be automatically reflected in the story collection. 
-This is because once you start collecting (or entering) stories, you need all of your data 
-to match up (or you won't see patterns in it).
+or its questions <em>after</em> that moment will <em>not</em> be automatically reflected in the story collection. 
 </p>
 <img src="help_importGuide_dataStorage.png" width="800">
 <p>
-You can <em>update</em> your story collection to use a revised story form - but do this with caution. 
-To revise a story collection's associated story form:
+	If you make changes to a story form after you associate it with a collection, 
+		you can <b>update the snapshot version</b> of the form stored in the collection.
+		However, you cannot do this if the changes you have made will 
+		cause conflicts with data you have already collected. See the FAQ entry
+		below for details on this point.
 </p>
-<ol>
-<li>Make the change (to the question or form) on the page on which you created it.</li>
-<li>Return to this page.</li>
-<li>Select the story collection you want to change.</li>
-<li>Click <b>Edit</b>.</li>
-<li>Click the <b>Update Story Form</b> button. Now your story collection will use the changed story form.</li>
-</ol>
 </div>
 
 <h2 class="heading">Frequently-asked questions</h2>
@@ -109,7 +97,9 @@ after I have started to collect stories?
 
 <h4>At the level of the story form</h4>
 
-<p>Changes that are perfectly safe:</p>
+<table>
+	<tr><th>Safe</th><th>Dangerous</th></tr>
+<td>
 <ul>
 	<li>You can change any texts that appear on your story form that are not saved in your stories.
 		For example, you can change the story form's title, introduction, and conclusion, 
@@ -117,22 +107,23 @@ after I have started to collect stories?
 	<li>You can add new questions (eliciting, about stories, or about participants).</li>
 	<li>You can change the order of questions on the story form. Order is display-only.</li>
 </ul>
-
-<p>Do not change the <b>short name</b> of the story form.</p>
+</td>
+<td style="vertical-align: top">
+	<ul>
+		<li>Do not change the short name of the story form. It is used to connect the story form to the story collection.</li>
+	</ul></td>
+</tr>
+</table>
 
 <h4>At the level of the question</h4>
 
-<p>Changes that are perfectly safe:</p>
+<table>
+	<tr><th>Safe</th><th>Dangerous</th></tr>
+<td>
 <ul>
-	<li>You can change the actual text of the question. It is display-only.</li>
+	<li>You can change the actual text of the question. It is display-only. 
+		(Whether the new question <i>means</i> the same thing is up to you.)</li>
 	<li>You can change the label on the write-in "other" box.</li>
-	<li>There are actually a few pairs of question types you can switch between without any problems:
-		<ul>
-			<li>label and header (both store nothing)</li>
-			<li>text and textarea (both are stored as plain text)</li>
-			<li>select and radiobuttons (both are stored as a single plain-text answer)</li>
-		</ul>
-	</li>
 	<li>For a checkbox question, you can change the text displayed after the checkbox. It is a display-only option.
 		The value saved is a true/false value, no matter what it says on the checkbox.
 	</li>
@@ -141,12 +132,72 @@ after I have started to collect stories?
 	</li>
 	<li>For a slider, you can change the left and right slider labels. 
 		The values saved with the stories are numerical only.
+		Of course, if your label change alters the <i>meaning</i> of the numerical values, that's a problem.
+		But if both labels mean the same thing, it's fine.
 		You can also change the label of the "Does not apply" checkbox under the slider. This is a display-only option as well.
 		</li>
-	<li>You can of course change any notes you wrote to yourself about the question.</li>
+	<li>
+		For questions with fixed lists of answers (select, radiobuttons, checkboxes):
+		<ul>
+			<li>You can add new answers to the list.</li>
+			<li>You can change the order in which the answers are shown. Order is display-only.</li>
+			<li>You can change the number of rows shown in a select (drop-down) question.</li>
+			</ul>
+		</li>
 </ul>
+</td>
+<td style="vertical-align: top">
+	<ul>
+		<li>Do not change the question's short name. It is used to connect the question to the story form.</li>
+		<li>Do not change the question's type - with some exceptions (see below).</li>
+		<li>For questions with fixed lists of answers, do not change the answers themselves.</li>
+	</ul>
+</td>
+</tr>
+</table>
 
-<p>If you need to change a question's <b>short name</b> or <b>type</b>:</p>
+<h5>If you must remove a question</h5>
+
+<ol>
+	<li>Go to the <a href="help_page_reviewIncomingStories.html">Review incoming stories</a> page.</li>
+	<li>Go through your collected stories and remove every answer to the question, if you can. By type:
+		<ul>
+			<li>text or textarea: delete the text</li>
+			<li>select: choose the no-choice choice (usually "--select--")</li>
+			<li>checkboxes: uncheck every box</li>
+			<li>slider: check the "Does not apply" box</li>
+			<li>checkbox: uncheck the box</li>
+			<li>radiobuttons or boolean: Because you cannot uncheck an HTML radio-buttons widget, 
+				the only way to remove these types of questions is to export and then re-import your data.</li>
+		</ul>
+	</li>
+	<li>When no more stories have data for the question, 
+		go to the <a href="help_page_designStoryForms.html">Build story forms</a> page and remove the question from your form.</li>
+	<li>Go back to the <a href="help_page_startStoryCollection.html">Start story collection</a> page and see if you can update the form now.</li>
+</ol>
+
+<h5>If you must change a question's short name</h5>
+
+<ol>
+	<li>Create a new question with the new short name.</li>
+	<li>Go to the <a href="help_page_reviewIncomingStories.html">Review incoming stories</a> page.</li>
+	<li>Go through your collected stories removing every original answer, if you can (see above), and adding new answers for the new question.</li>
+	<li>When no more stories have data for the original question, 
+		go to the <a href="help_page_designStoryForms.html">Build story forms</a> page and remove the question from your form.</li>
+	<li>Go back to the <a href="help_page_startStoryCollection.html">Start story collection</a> page and see if you can update the form now.</li>
+</ol>
+
+<h5>If you must change a question's type</h5>
+
+<p>A few question type changes do not create data conflicts.</p>
+<p><img src="help_startStoryCollection_changingTypes.png" width="1000"></p>
+<p>Pairings marked "yes" can be changed back and forth with 
+	no effect on your data. Pairings marked "no" will cause conflicts between data in old and new stories. 
+	"If edited" means that you can change a question from a free-text type (text, textarea) to a single-answer type (select, radiobuttons) 
+	<i>if</i> you first edit all of the existing values to conform to a fixed list (which create a fixed answer list).</p>
+
+<p>If you must change a question's type in one of the "no" areas:</p>
+
 <ol>
 	<li>Collect your stories in two separate story collections.</li>
 	<li>Export the story forms and stories associated with both story collections to separate CSV files.
@@ -160,70 +211,29 @@ after I have started to collect stories?
 	<li>If you have questions during this process, see the <a href="help_page_importGuide.html">Import guide</a>.</li>
 </ol>
 
-<h4>Questions with fixed lists of answers (select, radiobuttons, checkboxes)</h4>
+<h5>If you must remove one of the answers in a fixed list</h5>
 
-<p>Changes that are perfectly safe:</p>
-<ul>
-	<li>You can <i>add</i> new answers to the list.</li>
-	<li>You can change the <i>order</i> in which the answers are shown to participants. Order is display-only.</li>
-	<li>You can change the number of rows shown in a select (drop-down) question.</li>
-</ul>
-
-<p>If you need to change one of the existing answers in a fixed list:</p>
-<ol>
-	<li>Make the change in the question (on the 
-		<a href="help_page_writeQuestionsAboutStories.html">Write questions about stories</a> page, for example).</li>
-	<li>Go to the <a href="help_page_startStoryCollection.html">Start story collection</a> page and update the form.</li>
-	<li>Add more stories to the collection.</li>
-	<li>When you look at your data, you will see two sets of counts: one count for the old answer, and one count for the new answer.</li>
-	<li>
-		Merge the two answer counts by using display lumping during catalysis. See the help for the
-		<a href="../catalysis/help_page_configureCatalysisReport.html">Configure catalysis report</a> page for details.</li>
-	<li>You can also merge two answers by exporting, changing, and re-importing your data.</li>
-</ol>
-
-<p>If you need to remove one of the existing answers in a fixed list:</p>
 <ol>
 	<li>Go to the
-		<a href="help_page_reviewIncomingStories.html">Review incoming stories</a> page.</li>
-	<li>Go through the stories, unchecking every instance of the answer.</li>
-	<li>Make the change in the question (on the 
+		<a href="help_page_reviewIncomingStories.html">Review incoming stories</a> page.
+		Go through the stories, unchecking every instance of the answer.</li>
+	<li>Remove the answer from the question (on the 
 		<a href="help_page_writeQuestionsAboutStories.html">Write questions about stories</a> page, for example).</li>
-	<li>Go to the <a href="help_page_startStoryCollection.html">Start story collection</a> page and update the form.</li>
-	<li>Add more stories to the collection.</li>
-	<li>When you look at your data, the deleted answer should not appear.
-		If it does (which probably means that you left an answer in one story), and you don't want to find it,
-		you can use the display lumping feature to "hide" the extra answer inside another answer. See the help for the
-		<a href="../catalysis/help_page_configureCatalysisReport.html">Configure catalysis report</a> page for details.
-	</li>
+	<li>Go to the <a href="help_page_startStoryCollection.html">Start story collection</a> page. Update the form.</li>
 </ol>
 
-<h4>If you are not sure what to do</h4>
+<h5>If you must change one of the answers in a fixed list</h5>
 
-<p>The very best way to get a clear picture of what you can and cannot change is to 
-	<b>look at your raw story data</b> and think about how the changes you want to make will affect what has been saved already.</p>
 <ol>
-	<li>Enter a fake story that has an answer for every question. For multiple-choice questions, tick every box.</li>
+	<li>Add the new answer to the question (on the 
+		<a href="help_page_writeQuestionsAboutStories.html">Write questions about stories</a> page, for example).</li>
+	<li>Go to the <a href="help_page_startStoryCollection.html">Start story collection</a> page. Update the form.</li>
 	<li>Go to the
-		<a href="help_page_reviewIncomingStories.html">Review incoming stories</a> page.</li>
-	<li>Select your new fake story.</li>
-	<li>Click the <b>Show story as raw JSON data</b> button. </li>
-	<li>In the popup window that appears, look at the story's data structure. 
-		Think about what will happen if you make the changes you want to make. 
-		You can ignore the prefixes on the question short names (S_, P_); those are for internal use (to prevent collision).
-	</li>
-	<li>For example, in this case:<br/>
-		<img src="help_startStoryCollection_rawData.png" width="200" border="1"><br/>
-		If I wanted to change the option "help" to "support," I would have a problem to deal with, because here it is in the data.
-		However, if I wanted to change the way the "Needed" question is <i>asked</i>, that would be fine,
-		since the <i>text</i> of the question does not appear in the data.
-	</li>
-	<li>
-		If what you want to do looks like it will have no impact on the story, go ahead and make the change, then update the story form
-		on the <a href="help_page_startStoryCollection.html">Start story collection</a> page.
-		If it does look your change will impact your data, see the appropriate "if you need to" section above.
-	</li>
-	</ol>
+		<a href="help_page_reviewIncomingStories.html">Review incoming stories</a> page.
+		Go through the stories, unchecking every instance of the old answer and checking the new answer instead.</li>
+	<li>Remove the old answer from the question.</li>
+	<li>Go to the <a href="help_page_startStoryCollection.html">Start story collection</a> page. Update the form again.</li>
+</ol>
 
 <h3 class="question">
 I have two story collections that are identical except for a few small differences. Can I merge them?

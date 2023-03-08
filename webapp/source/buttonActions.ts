@@ -9,6 +9,7 @@ import surveyBuilder = require("./surveyBuilderMithril");
 import surveyCollection = require("./surveyCollection");
 import surveyStorage = require("./surveyStorage");
 import translate = require("./panelBuilder/translate");
+import PanelBuilder = require("./panelBuilder/PanelBuilder");
 import generateRandomUuid = require("./pointrel20150417/generateRandomUuid");
 import toaster = require("./panelBuilder/toaster");
 import ClientState = require("./ClientState");
@@ -258,6 +259,456 @@ function openSurveyDialog() {
     }
 }
 
+export function createNewStoryCollection() {
+
+    function constructStoryCollectionDialog() {
+        const storyFormNamesList = project.listOfAllStoryFormNames();
+        console.log("storyFormNamesList", storyFormNamesList);
+        const options = [];
+        for (let index in storyFormNamesList) {
+            options.push(m("option", {value: storyFormNamesList[index], selected: undefined}, storyFormNamesList[index]));
+        }
+        return m("div", 
+            [m("div.narrafirma-create-collection-name-prompt", "Enter a name for the new story collection."),
+                m("div.narrafirma-create-collection-input-name-div", 
+                    m('input[type=text]', 
+                        {
+                            id: "storyCollection_shortName", 
+                            class: "narrafirma-create-collection-input-name",
+                            value: newCollectionName, 
+                            onchange: (event) => { 
+                                if (allCollectionNames.length && allCollectionNames.indexOf(event.target.value) >= 0) {
+                                    alert("That name is already in use. Please enter a different name.");
+                                    event.target.value = "";
+                                } else {
+                                    newCollectionName = event.target.value;
+                                }
+                            }
+                        }
+                    )
+                ),
+                m("div.narrafirma-create-collection-form-prompt", `Choose a story form to associate with the collection.`),
+                m("div.narrafirma-create-collection-choose-form", 
+                    [m('label', {for: "storyForms", class: "narrafirma-create-collection-choose-form-label"}, "Story form"),
+                    m("select", 
+                        {
+                            id: "storyForms",
+                            class: "narrafirma-create-collection-choose-form-select",
+                            value: "",
+                            onchange: (event) => {
+                                newCollectionStoryFormName = event.target.value;
+                            }
+                        }, options),
+                    ]),
+            ]);
+    } 
+
+    let newCollectionName = "";
+    const allCollectionNames = project.listOfAllStoryCollectionNames();
+    let newCollectionStoryFormName = "";
+    const dialogConfiguration = {
+        dialogModel: null,
+        dialogTitle: "Create New Story Collection",
+        dialogEntryText: "",
+        dialogClass: undefined,
+        dialogConstructionFunction: constructStoryCollectionDialog,
+        dialogOKButtonLabel: "Create Story Collection",
+        dialogCancelButtonLabel: "Cancel",
+        dialogOKCallback: 
+            function(dialogConfiguration, hideDialogMethod) { 
+                if (newCollectionName && newCollectionStoryFormName) {
+                    const confirmationPrompt = 'Please confirm that you want to create a story collection called "' + newCollectionName
+                        + '" using the story form called "' + newCollectionStoryFormName + '."';
+                    if (confirm(confirmationPrompt)) {
+                        const template = {};
+                        template["storyCollection_shortName"] = newCollectionName;
+                        template["storyCollection_questionnaireIdentifier"] = newCollectionStoryFormName;
+
+                        const setID = project.tripleStore.queryLatestC(project.projectIdentifier, "project_storyCollections");
+                        const newCollectionID = project.tripleStore.makeNewSetItem(setID, "StoryCollection", template);
+                        project.tripleStore.addTriple(newCollectionID, "id", newCollectionID);
+
+                        const questionnaire = questionnaireGeneration.buildStoryForm(newCollectionStoryFormName);
+                        if (!questionnaire) {
+                            alert('The selected story form (' + newCollectionStoryFormName + ") was not found.");
+                            return;
+                        }
+                        project.tripleStore.addTriple(newCollectionID, "questionnaire", questionnaire);
+                    } else {
+                        return;
+                    }
+                } else {
+                    if (!newCollectionName) {
+                        alert("Please enter a name for the story collection.");
+                    } else if (!newCollectionStoryFormName) {
+                        alert("Please choose a story form to associate with the new story collection.");
+                    }
+                    return;
+                }
+                hideDialogMethod(); 
+            }
+    };
+    return dialogSupport.openDialog(dialogConfiguration);
+
+}
+
+function questionsOnlyInFirstList(listOne, listTwo, idField) {
+    const result = [];
+    for (let itemOne of listOne) {
+        let foundItemOneInListTwo = false;
+        for (let itemTwo of listTwo) {
+            if (itemTwo[idField] === itemOne[idField]) {
+                foundItemOneInListTwo = true;
+                break;
+            }
+        }
+        if (!foundItemOneInListTwo) {
+            result.push(itemOne);
+        }
+    }
+    return result;
+}
+
+function questionsInBothLists(listOne, listTwo, idField) {
+    const result = [];
+    for (let itemOne of listOne) {
+        for (let itemTwo of listTwo) {
+            if (itemTwo[idField] === itemOne[idField]) {
+                result.push(itemOne);
+            }
+        }
+    }
+    return result;
+}
+
+function questionForID(list, idField, idValue) {
+    let result = null;
+    for (let item of list) {
+        if (item[idField] == idValue) {
+            result = item;
+        }
+    }
+    return result;
+}
+
+function displayQuestionIDs(list, idField) {
+    let ids = [];
+    for (let item of list) {
+        ids.push(item[idField].replace("S_", "").replace("P_", ""));
+    }
+    return ids.join(", ");
+}
+
+function displayQuestionName(id) {
+    return id.replace("S_", "").replace("P_", "");
+}
+
+export function updateQuestionnaireForStoryCollection(storyCollectionIdentifier) {
+    updateOrCheckQuestionnaireForStoryCollection(storyCollectionIdentifier, true);
+}
+
+export function checkStoryFormsForDataConflicts(storyCollectionIdentifier) {
+    updateOrCheckQuestionnaireForStoryCollection(storyCollectionIdentifier, false);
+}
+
+function updateOrCheckQuestionnaireForStoryCollection(storyCollectionIdentifier, actuallyCopy = false) {
+
+    function messageForTypeMismatch(snapshotQuestion, currentQuestion, name) {
+        let result = "";
+        const sType = snapshotQuestion.displayType;
+        const cType = currentQuestion.displayType;
+        if (sType != cType) {
+            result += 'For the question:\n  - ' + name
+                    + '\nthe snapshot version has the type:\n  - ' + sType
+                    + '\nand the current version has the type\n  - ' + cType;
+            let okay = false;
+            okay = okay || (sType == "label" && cType == "header");
+            okay = okay || (sType == "header" && cType == "label");
+            okay = okay || (sType == "text" && cType == "textarea");
+            okay = okay || (sType == "textarea" && cType == "text");
+            okay = okay || (sType == "select" && cType == "radiobuttons");
+            okay = okay || (sType == "radiobuttons" && cType == "select");
+            okay = okay || (sType == "boolean" && cType == "checkbox");
+            okay = okay || (sType == "checkbox" && cType == "boolean");
+            if (!okay) {
+                result += "\nThese question types are incompatible. Existing data may be invalidated.";
+            }
+        }
+        return result;
+    }
+    
+    function messageForAnswerListMismatch(snapshotQuestion, currentQuestion, name, stories) {
+        let result = "";
+        const sAnswers = snapshotQuestion.valueOptions;
+        const cAnswers = currentQuestion.valueOptions;
+        if (JSON.stringify(sAnswers) != JSON.stringify(cAnswers)) {
+            const matchingAnswers = [];
+            const answersOnlyInS = [];
+            for (let sAnswer of sAnswers) {
+                for (let cAnswer of cAnswers) {
+                    if (cAnswer === sAnswer) {
+                        matchingAnswers.push(sAnswer);
+                    }
+                }
+                if (matchingAnswers.indexOf(sAnswer) < 0) {
+                    answersOnlyInS.push(sAnswer);
+                }
+            }
+            if (answersOnlyInS.length > 0) {
+                const answerCountsOnlyInS = {};
+                let totalNumAnswers = 0;
+                for (let sAnswer of answersOnlyInS) {
+                    let numStoriesWithSAnswer = 0;
+                    for (let story of stories) {
+                        const value = story.fieldValue(snapshotQuestion.id);
+                        let match = false;
+                        if (typeof value === "string" || typeof value === "number") {
+                            match = value == sAnswer;
+                        } else {
+                            match = value.hasOwnProperty(sAnswer);
+                        }
+                        if (match) {
+                            numStoriesWithSAnswer++;
+                        }
+                    }
+                    answerCountsOnlyInS[sAnswer] = numStoriesWithSAnswer;
+                    totalNumAnswers += numStoriesWithSAnswer
+                }
+                if (totalNumAnswers > 0) {
+                    result += 'For the question "' + name + '" the answers:\n  - ' + answersOnlyInS.join("\n  - ")
+                        + '\nappear in the snapshot version, do not appear in the current version, and are connected to stories.\n';
+                    const storyCountMessages = [];
+                    Object.keys(answerCountsOnlyInS).forEach(function(anAnswer) {
+                        storyCountMessages.push('   - the answer "' + anAnswer + '" appears in ' + answerCountsOnlyInS[anAnswer] + ' stories.');
+                    });
+                    result += storyCountMessages.join("\n");
+                } 
+            } 
+        }
+        return result;
+    }
+    
+    function checkTwoQuestionsForTypeAndListMismatches(snapshotQuestion, currentQuestion, stories) {
+        let result = "";
+        const typeMismatchMessage = messageForTypeMismatch(snapshotQuestion, currentQuestion, displayQuestionName(snapshotQuestion.id));
+        if (typeMismatchMessage) {
+            result += typeMismatchMessage;
+        } else {
+            const typesWithValueOptions = ["select", "radiobuttons", "checkboxes"];
+            if (typesWithValueOptions.indexOf(snapshotQuestion.displayType) >= 0) {
+                result += messageForAnswerListMismatch(snapshotQuestion, currentQuestion, displayQuestionName(snapshotQuestion.id), stories);
+            } 
+        }
+        return result;
+    }
+
+    function constructResultDialog(startText, problemsText, endText, snapshot) {
+        const snapshotText = JSON.stringify(snapshot, null, "\t");
+        const currentText = JSON.stringify(current, null, "\t");
+        return m("div", 
+            [
+                m("div.narrafirma-update-story-form-start", startText),
+                m("pre.narrafirma-update-story-form-problems", problemsText),
+                problemsText ? m("button.narrafirma-update-story-form-copy-button", {onclick: function(event) {
+                    const textareas = document.getElementsByClassName("narrafirma-update-story-form-problems");
+                    if (textareas.length > 0) window.navigator['clipboard'].writeText(textareas[0].innerHTML);
+                }}, "Copy") : m("div"),
+                m("div.narrafirma-update-story-form-end", endText),
+                m("div.narrafirma-update-story-form-type-label", "The snapshot version saved in the story collection"),
+                m("pre.narrafirma-update-story-form-snapshot", snapshotText),
+                m("button.narrafirma-update-story-form-copy-button", {onclick: function(event) {
+                    const textareas = document.getElementsByClassName("narrafirma-update-story-form-snapshot");
+                    if (textareas.length > 0) window.navigator['clipboard'].writeText(textareas[0].innerHTML);
+                }}, "Copy"),
+                m("div.narrafirma-update-story-form-type-label", "The current version"),
+                m("pre.narrafirma-update-story-form-current", currentText),
+                m("button.narrafirma-update-story-form-copy-button", {onclick: function(event) {
+                    const textareas = document.getElementsByClassName("narrafirma-update-story-form-current");
+                    if (textareas.length > 0) window.navigator['clipboard'].writeText(textareas[0].innerHTML);
+                }}, "Copy"),
+            ]
+        );
+    } 
+    
+    function doCopy() {
+        const prompt = 'No data conflicts were found. '
+            + 'Please confirm that you want to update the snapshot story form associated with the story collection "' 
+            + storyCollectionName + '" so that it matches the current version.';
+        if (!confirm(prompt)) {
+            return;
+        }
+        const copyOfSnapshotBeforeChange = snapshot;
+        const updateResult = setQuestionnaireForStoryCollection(storyCollectionIdentifier);
+        if (!updateResult) {
+            alert("Problem: Could not build story form.");
+            return;
+        }
+        const dialogConfiguration = {
+            dialogTitle: "Update successful",
+            dialogConstructionFunction: function () {
+                return constructResultDialog(
+                    "The snapshot version of the story form was successfully updated.",
+                    null,
+                    "Here are the two versions of the story form as they were before the update (now they are identical).",
+                    copyOfSnapshotBeforeChange)
+                },
+            dialogOKCallback: function(dialogConfiguration, hideDialogMethod) { hideDialogMethod(); }
+        };
+        return dialogSupport.openDialog(dialogConfiguration);
+    }
+
+    if (!storyCollectionIdentifier) {
+        alert("Problem: No story collection identifier.");
+        return;
+    }
+    const storyCollectionName = project.tripleStore.queryLatestC(storyCollectionIdentifier, "storyCollection_shortName");
+    if (!storyCollectionName) {
+        alert("Problem: No story collection name.");
+        return;
+    }
+
+    const storyCollection = project.tripleStore.makeObject(storyCollectionIdentifier, true);
+    const snapshot = storyCollection.questionnaire;
+    const linkedStoryFormName = project.tripleStore.queryLatestC(storyCollectionIdentifier, "storyCollection_questionnaireIdentifier");
+    const linkedStoryFormID = project.findStoryFormID(linkedStoryFormName);
+    const current = questionnaireGeneration.buildStoryFormUsingTripleStoreID(linkedStoryFormID, linkedStoryFormName);
+    const stories = surveyCollection.getStoriesForStoryCollection(storyCollectionName);
+
+    if (stories.length === 0) {
+        if (actuallyCopy) { 
+            doCopy();
+            return;
+        } else {
+            alert("This story collection has no stories in it, so you can update the story form without creating any data conflicts.");
+            return;
+        }
+    }
+
+    const indent = "  - ";
+    const problemTexts = [];
+
+    // for eliciting questions, just look for questions (with data) that are missing in the current version
+    // this could happen because questions were removed, but it could also happen if question short names were changed
+    const eqInSnapshotOnly = questionsOnlyInFirstList(snapshot.elicitingQuestions, current.elicitingQuestions, "id");
+    if (eqInSnapshotOnly.length > 0) {
+        const eqInSnapshotOnlyWithStoryData = [];
+        for (let eq of eqInSnapshotOnly) {
+            const storiesWithThisQuestion = [];
+            for (let story of stories) {
+                const value = story.fieldValue("elicitingQuestion");
+                if (value && value === eq["id"]) {
+                    storiesWithThisQuestion.push(story);
+                }
+            }
+            if (storiesWithThisQuestion.length > 0) {
+                eqInSnapshotOnlyWithStoryData.push(eq);
+            }
+        }
+        if (eqInSnapshotOnlyWithStoryData.length > 0) {
+            const text = "The eliciting questions in this list:\n" + indent + displayQuestionIDs(eqInSnapshotOnlyWithStoryData, "id") 
+                + "\nare:\n" + indent + "in the snapshot version of the form\n" 
+                + indent + "not in the current version of the form\n" 
+                + indent + "connected to at least one story";
+            problemTexts.push(text);
+        }
+    }
+
+    // for story and participant questions, also need to check for type mismatches and answer list mismatches
+    for (let qType of ["story", "participant"]) {
+        const qInSnapshotOnly = questionsOnlyInFirstList(snapshot[qType + "Questions"], current[qType + "Questions"], "id");
+        if (qInSnapshotOnly.length > 0) {
+            const qInSnapshotOnlyWithStoryData = [];
+            for (let question of qInSnapshotOnly) {
+                const storiesWithThisQuestion = [];
+                for (let story of stories) {
+                    const value = story.fieldValue(question.id);
+                    // value could be string, number, or dictionary
+                    if (typeof value === "string" || typeof value === "number") {
+                        if (value !== undefined && value !== null && value !== "") {
+                            storiesWithThisQuestion.push(story);
+                        }
+                    } else { 
+                        // for dictionary, cannot just check if it exists; must also check if there are any true values 
+                        // because if a respondent checks then unchecks a value, the dictionary persists
+                        if (value !== undefined && value !== null) {
+                            const keys = Object.keys(value);
+                            let hasTrueEntry = false;
+                            for (let key of keys) {
+                                if (value[key] === true) {
+                                    hasTrueEntry = true;
+                                }
+                            }
+                            if (hasTrueEntry) {
+                                storiesWithThisQuestion.push(story);
+                            }
+                        }
+                    }
+                }
+                if (storiesWithThisQuestion.length > 0) {
+                    qInSnapshotOnlyWithStoryData.push(question);
+                }
+            }
+            if (qInSnapshotOnlyWithStoryData.length > 0) {
+                const text = "The " + qType + " questions in this list:\n" + indent + displayQuestionIDs(qInSnapshotOnlyWithStoryData, "id") 
+                    + "\nare:\n" + indent + "in the snapshot version of the form\n" 
+                    + indent + "not in the current version of the form\n" 
+                    + indent + "answered for at least one story";
+                problemTexts.push(text);
+            }
+        }
+        const qInBothLists = questionsInBothLists(snapshot[qType + "Questions"], current[qType + "Questions"], "id");
+        for (let question of qInBothLists) {
+            const snapshotQuestion = questionForID(snapshot[qType + "Questions"], "id", question.id);
+            const currentQuestion = questionForID(current[qType + "Questions"], "id", question.id);
+            const problemText = checkTwoQuestionsForTypeAndListMismatches(snapshotQuestion, currentQuestion, stories);
+            if (problemText.length > 0) {
+                problemTexts.push(problemText);
+            }
+        }
+    }
+
+    if (problemTexts.length === 0) {
+        if (actuallyCopy) {
+            doCopy();
+        } else {
+            const dialogConfiguration = {
+                dialogTitle: "No data conflicts found",
+                dialogConstructionFunction: function () {
+                    return constructResultDialog(
+                        "No data conflicts were found. You can safely update this story form.", 
+                        null, "For your reference, here are the two story forms in detail.", snapshot)
+                    },
+                dialogOKCallback: function(dialogConfiguration, hideDialogMethod) { hideDialogMethod(); }
+            };
+            return dialogSupport.openDialog(dialogConfiguration);
+        }
+    } else {
+        let allProblemsText = "";
+        for (let i = 0; i < problemTexts.length; i++) {
+            allProblemsText += i+1 + ". " + problemTexts[i] + "\n\n";
+        }
+        const dialogConfiguration = {
+            dialogTitle: "There are data conflicts",
+            dialogConstructionFunction: function () {
+                return constructResultDialog(
+                    "The snapshot story form " + (actuallyCopy ? "could not" : "cannot") + " be updated because of the following issues.",
+                    allProblemsText, "Here are the two story forms in detail.", snapshot)
+                },
+            dialogOKCallback: function(dialogConfiguration, hideDialogMethod) { hideDialogMethod(); }
+        };
+        return dialogSupport.openDialog(dialogConfiguration);
+    }
+} 
+
+export function setQuestionnaireForStoryCollection(storyCollectionIdentifier): boolean {
+    if (!storyCollectionIdentifier) return false;
+    const questionnaireName = project.tripleStore.queryLatestC(storyCollectionIdentifier, "storyCollection_questionnaireIdentifier");
+    const questionnaire = questionnaireGeneration.buildStoryForm(questionnaireName);
+    if (!questionnaire) return false;
+    project.tripleStore.addTriple(storyCollectionIdentifier, "questionnaire", questionnaire);
+    return true;
+}
+
 export function copyStoryFormURL() {
     alert("Story form URL is: " + "http://localhost:8080/survey.html");
 }
@@ -281,15 +732,6 @@ export function exportStoryFormWhileEditingIt_NativeFormat(model, fieldSpecifica
 export function exportStoryFormWhileEditingIt_ExternalFormat(model, fieldSpecification) {
     const questionnaire = questionnaireGeneration.buildStoryFormUsingTripleStoreID(model, "");
     csvImportExport.exportQuestionnaireForImport(questionnaire);
-}
-
-export function setQuestionnaireForStoryCollection(storyCollectionIdentifier): boolean {
-    if (!storyCollectionIdentifier) return false;
-    const questionnaireName = project.tripleStore.queryLatestC(storyCollectionIdentifier, "storyCollection_questionnaireIdentifier");
-    const questionnaire = questionnaireGeneration.buildStoryForm(questionnaireName);
-    if (!questionnaire) return false;
-    project.tripleStore.addTriple(storyCollectionIdentifier, "questionnaire", questionnaire);
-    return true;
 }
 
 export function checkThatItemHasShortName(itemID): boolean {
@@ -385,31 +827,6 @@ export function checkThatItemHasOptionListIfRequired(itemID): boolean {
     } else {
         return true; 
     }
-}
-
-export function updateQuestionnaireForStoryCollection(storyCollectionIdentifier) {
-    if (!storyCollectionIdentifier) {
-        alert("Problem: No storyCollectionIdentifier");
-        return;
-    }
-    const storyCollectionName = project.tripleStore.queryLatestC(storyCollectionIdentifier, "storyCollection_shortName");
-    if (!storyCollectionName) {
-        alert("Problem: No storyCollectionName");
-        return;
-    }
-    // TODO: Translate
-    const confirmResult = confirm('Update story form for story collection "' + storyCollectionName + '"?"\n(Updating is not recommended once data collection has begun.)');
-    if (!confirmResult) return;
-
-    const updateResult = setQuestionnaireForStoryCollection(storyCollectionIdentifier);
-    if (!updateResult) {
-        alert("Problem: No questionnaire could be created");
-        return;
-    }
-    
-    toaster.toast("Updated story form");
-    
-    return;
 }
 
 export function showStoryAsJSONData(model, fieldSpecification) {
