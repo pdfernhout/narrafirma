@@ -342,12 +342,13 @@ export function ensureAtLeastOneElicitingQuestion(elicitingQuestions) {
     if (elicitingQuestions.length === 0) {
         // TODO: Translate
         const defaultElicitingQuestion = "What happened?";
+        const defaultElicitingQuestionID = "what happened";
         const message = 'No eliciting questions were defined! Adding "' + defaultElicitingQuestion + '".';
         console.log("PROBLEM", message);
         console.log("Adding eliciting question: ", defaultElicitingQuestion);
         elicitingQuestions.push( {
             text: defaultElicitingQuestion,
-            id: defaultElicitingQuestion,
+            id: defaultElicitingQuestionID,
             type: {"what happened": true}
         });
     }
