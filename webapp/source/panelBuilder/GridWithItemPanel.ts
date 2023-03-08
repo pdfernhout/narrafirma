@@ -201,6 +201,7 @@ const defaultGridConfiguration: GridConfiguration = {
     columnsToDisplay: false,
     inlineButtons: false,
     navigationButtons: true, 
+    navigationButtonsAtBottom: false,
     
     customButton: null,
     validateAdd: null,
@@ -419,6 +420,13 @@ class GridWithItemPanel {
             parts.push(this.bottomEditorForItem(panelBuilder, this.selectedItem, "edit"));
         }
 
+        if (this.gridConfiguration.navigationButtonsAtBottom && (this.isViewing() || this.isEditing())) {
+            let bottomButtons = []
+            this.addNavigationButtons(bottomButtons);
+            const bottomButtonPanel = m("div.narrafirma-button-panel", buttons);
+            parts.push(bottomButtonPanel);
+        }
+
         return m("div", {"class": "questionExternal narrafirma-question-type-grid"}, parts);
     }
 
@@ -517,7 +525,7 @@ class GridWithItemPanel {
                 m("span", {class: "buttonWithTextImage closeButtonImage"}), "Close"),
             m.component(<any>ItemPanel, 
                 {key: this.fieldSpecification.id + "_" + itemID + "_" + "bottomEditor" + "_" + mode, panelBuilder: panelBuilder, item: item, grid: this, mode: mode}),
-            m("button", {onclick: this.doneClicked.bind(this, item), class: "narrafirma-griditempanel-close-button"}, 
+            m("button", {onclick: this.doneClicked.bind(this, item), class: "narrafirma-griditempanel-bottom-close-button"}, 
                 m("span", {class: "buttonWithTextImage closeButtonImage"}), "Close")
         ]);
     }
@@ -568,11 +576,12 @@ class GridWithItemPanel {
             if (errors.length) {
                 // TODO: Translate
                 alert(errors);
-                return;
+                return true;
             }
         }
         // Leave item selected: this.setSelection(null);
         this.displayMode = null;
+        return false;
     }
 
     navigateClicked(direction: string) {
@@ -949,7 +958,6 @@ class TripleSetDataStore extends DataStore {
             this.updateIDsInClusteringDiagram(newId, "interpretationsClusteringDiagram", oldAndNewIDs);
             this.updateIDsInClusteringDiagram(newId, "observationsClusteringDiagram", oldAndNewIDs);
         }
-
         return newId;
     }
     

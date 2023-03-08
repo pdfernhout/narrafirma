@@ -25,6 +25,7 @@ interface GridConfiguration {
     removeButton?: boolean;
     duplicateButton?: boolean;
     navigationButtons?: boolean;
+    navigationButtonsAtBottom?: boolean;
     specialHiddenPanelForPatternExplorer?: boolean;
     randomButton?: boolean;
     // For next field, Array could be ["fieldName1", "fieldName2", ...]
