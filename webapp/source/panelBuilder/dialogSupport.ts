@@ -82,8 +82,9 @@ class MithrilDialog {
             m("div.modal-internal", internalView)
         ];
         
+        const bottomPanelButtons = [];
         if (!dialogConfiguration.dialogOKButtonHidden) {
-            parts.push(m("button", {onclick: function() {
+            bottomPanelButtons.push(m("button", {onclick: function() {
                 if (dialogConfiguration.dialogOKCallback) {
                     dialogConfiguration.dialogOKCallback(dialogConfiguration, hideDialogMethod);
                 } else {
@@ -93,10 +94,11 @@ class MithrilDialog {
         }
         
         if (dialogConfiguration.dialogCancelButtonLabel) {
-           parts.push(m("button", {onclick: function() {
+            bottomPanelButtons.push(m("button", {onclick: function() {
                 hideDialogMethod();
             }, "class": "narrafirma-dialog-cancel-button"}, translate(args.dialogCancelButtonLabel)));
         }
+        parts.push(m("div.modal-button-panel", bottomPanelButtons));
         return m("div.overlay", m("div.modal-content", {"class": dialogConfiguration.dialogClass}, parts));
     }
 }
@@ -257,6 +259,5 @@ function build_listChooserDialogContent(dialogConfiguration, hideDialogMethod) {
             m("div")
     ];
 }
-
 
 
