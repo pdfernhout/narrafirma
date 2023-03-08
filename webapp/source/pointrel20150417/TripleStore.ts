@@ -421,7 +421,7 @@ class TripleStore {
     makeCopyOfItemOrSetWithNewId(level: number, existingItemId: string, itemOrSetClassName: string, setClassNames, itemClassNames, oldAndNewIDs): string {
         if (existingItemId === undefined) throw new Error("expected existingItemId to be defined");
         const doCopy = true;
-        const doReport = true;
+        const doReport = false;
         const baseIndent = repeatStringNumTimes("    ", level);
         const moreIndent = repeatStringNumTimes("    ", level+1);
         const evenMoreIndent = repeatStringNumTimes("    ", level+2);
