@@ -172,12 +172,7 @@ class Application {
         
         window["narrafirma_openPage"] = (pageIdentifier) => {
             if (!pageIdentifier) return;
-
-            const openGridElements = document.getElementsByClassName("narrafirma-griditempanel-divwithbutton-editing");
-            if (openGridElements.length > 0) {
-                alert("Please click the Close button to finish working on the selected list item.")
-                return;
-            }
+            if (buttonActions.checkForValidationErrors()) return;
 
             Globals.clientState().pageIdentifier(pageIdentifier);
             Globals.clientState().updateHashIfNeededForChangedClientState();

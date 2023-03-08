@@ -47,17 +47,28 @@ export function showHelpOnUpdatingStoryFormsInCollections() {
     browser.launchApplication(helpURL, 'help');
 }
 
+export function checkForValidationErrors() {
+    let thereAreValidationErrors = false;
+    const gridCloseButtons = document.getElementsByClassName("narrafirma-griditempanel-close-button");
+    if (gridCloseButtons.length > 0) {
+        for (let i = 0; i < gridCloseButtons.length; i++) {
+            const button = gridCloseButtons[i];
+            const event = button["onclick"];
+            if (typeof event == "function") {
+                thereAreValidationErrors = thereAreValidationErrors || event.call(button);
+            }
+        }
+    }
+    return thereAreValidationErrors;
+}
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // overall - links
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 export function logoutButtonClicked() {
-    // TODO: Warn if have any read-only changes that would be lost
-    const openGridElements = document.getElementsByClassName("narrafirma-griditempanel-divwithbutton-editing");
-    if (openGridElements.length > 0) {
-        alert("Please click the Close button to finish working on the selected list item.")
-        return;
-    }
+    if (checkForValidationErrors()) return;
+
     if (confirm("Are you sure you want to log out?")) {
         const isWordPressAJAX = !!window["ajaxurl"];
         if (isWordPressAJAX) {
@@ -79,13 +90,9 @@ export function loginButtonClicked() {
 }
 
 export function guiOpenSection(model, fieldSpecification, value) {
-    const section = fieldSpecification.displayConfiguration.section;
+    if (checkForValidationErrors()) return;
 
-    const openGridElements = document.getElementsByClassName("narrafirma-griditempanel-divwithbutton-editing");
-    if (openGridElements.length > 0) {
-        alert("Please click the Close button to finish working on the selected list item.")
-        return;
-    }
+    const section = fieldSpecification.displayConfiguration.section;
 
     // Don't queue an extra redraw as one is already queued since this code get called by a button press
     const isRedrawAlreadyQueued = true;
