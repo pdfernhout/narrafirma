@@ -100,9 +100,20 @@ const panel: Panel = {
             id: "project_importStoryFormAndDataFromCSV",
             valueType: "none",
             displayType: "button",
+            displayPreventBreak: true,
             displayIconClass: "importButtonImage",
             displayConfiguration: "importCSVQuestionnaire",
             displayPrompt: "Import CSV story form file..."
+        },
+        {
+            id: "storyForms_import_showImportGuide",
+            valueType: "none",
+            displayType: "button",
+            displayConfiguration: "showImportGuide",
+            displayName: "Show import help",
+            displayPreventBreak: true,
+            displayIconClass: "showButtonImage",
+            displayPrompt: "Show import help"
         },
         {
             id: "project_csvFileUploaderForForm",
