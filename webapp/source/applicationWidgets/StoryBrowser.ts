@@ -262,7 +262,8 @@ export class StoryBrowser {
                     columnsToDisplay: ["indexInStoryCollection", "storyName", "storyText", "ignore"],
                     viewButton: true,
                     editButton: true,
-                    navigationButtons: true
+                    navigationButtons: true,
+                    navigationButtonsAtBottom: true
                }
             }
         };
