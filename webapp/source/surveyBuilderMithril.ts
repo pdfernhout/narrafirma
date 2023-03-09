@@ -328,12 +328,24 @@ function displayQuestion(builder, model, fieldSpecification, storyForm) {
                     imageHTML = "img[src='" +  fieldSpecification.optionImageLinks[index] + "'][class='narrafirma-survey-answer-image']";
                     if (fieldSpecification.optionImagesWidth) imageHTML += '[style="width: ' + fieldSpecification.optionImagesWidth + 'px"]';
                     optionParts = [m("td.narrafirma-survey-answer-images", [
-                        m("input[type=radio]", {id: optionID, value: optionValue, name: fieldSpecification.id, checked: value === optionValue, onchange: standardChangeMethod.bind(null, null, optionValue) }),
+                        m("input[type=radio]", {
+                            id: optionID, 
+                            key: optionID,
+                            value: optionValue, 
+                            name: fieldID, 
+                            checked: value === optionValue, 
+                            onchange: function(event) { standardChangeMethod(null, optionValue) }}),
                         m("label", {"for": optionID}, sanitizeHTML.generateSmallerSetOfSanitizedHTMLForMithril(tr(optionName)), m("br"), m(imageHTML), m("br"))])
                     ];
                 } else {
                     optionParts = [
-                        m("input[type=radio]", {id: optionID, value: optionValue, name: fieldSpecification.id, checked: value === optionValue, onchange: standardChangeMethod.bind(null, null, optionValue) }),
+                        m("input[type=radio]", {
+                            id: optionID, 
+                            key: optionID,
+                            value: optionValue, 
+                            name: fieldID, 
+                            checked: value === optionValue, 
+                            onchange: function(event) { standardChangeMethod(null, optionValue) }}),
                         m("label", {"for": optionID}, sanitizeHTML.generateSmallerSetOfSanitizedHTMLForMithril(tr(optionName))), m("br")
                     ];
                 }
@@ -559,7 +571,7 @@ export function buildSurveyForm(surveyDiv, storyForm, doneCallback, surveyOption
         return translate(storyForm, currentLanguage, text);
     }
 
-    console.log("buildSurveyForm questions", storyForm);
+    // console.log("buildSurveyForm questions", storyForm);
     
     const startQuestions = [];
     
