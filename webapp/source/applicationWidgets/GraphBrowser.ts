@@ -1,8 +1,6 @@
 import charting = require("./charting");
 import questionnaireGeneration = require("../questionnaireGeneration");
 import surveyCollection = require("../surveyCollection");
-import valuePathResolver = require("../panelBuilder/valuePathResolver");
-// import PanelBuilder = require("../panelBuilder/PanelBuilder");
 import dialogSupport = require("../panelBuilder/dialogSupport");
 import Project = require("../Project");
 import Globals = require("../Globals");
@@ -29,7 +27,8 @@ class GraphBrowser {
     yAxisSelectValue = null;
     questions = [];
     choices = [];
-    storyCollectionIdentifier: string = null;
+    collectionIDs = [];
+    displayCollections = {};
     selectedStories = [];
     showAnswers = false;
     
@@ -37,6 +36,8 @@ class GraphBrowser {
     
     constructor(args) {
         this.project = Globals.project();
+        this.collectionIDs = Globals.project().listOfAllStoryCollectionNames();
+        for (let id of this.collectionIDs) this.displayCollections[id] = false;
         this.graphHolder = {
             graphResultsPane: charting.createGraphResultsPane("narrafirma-graph-results-pane"),
             chartPanes: [],
@@ -61,6 +62,7 @@ class GraphBrowser {
             graphTypesToCreate: {},
             lumpingCommands: {}
         }; 
+        this.updateForChangeToDisplayedStoryCollections();
     }
     
     static controller(args) {
@@ -70,27 +72,45 @@ class GraphBrowser {
     static view(controller, args) {
         return controller.calculateView(args);
     }
-    
-    // TODO: Translate
-    
-    // TODO: Track new incoming stories
+
+    isChecked(id, value = undefined) {
+        if (value !== undefined) {
+            const oldValue = this.displayCollections[id];
+            this.displayCollections[id] = value;
+            if (value !== oldValue) {
+                this.updateForChangeToDisplayedStoryCollections();
+            }
+        } else {
+            return this.displayCollections[id];
+        }
+    }
+
+    buildCollectionCheckbox(id): any {
+        const self = this;
+        return m("div.graphBrowserCheckboxDiv", [
+            m("input[type=checkbox].graphBrowserCheckbox", {
+                id: id, 
+                checked: this.isChecked(id), 
+                onchange: function(event) { self.isChecked(id, event.target.checked); }
+            }),
+            m("label", {"for": id}, id),
+            m("br")
+        ]);
+    }
     
     calculateView(args) {
-        // Handling of caching of questions and stories
-        const storyCollectionIdentifier = valuePathResolver.newValuePathForFieldSpecification(args.model, args.fieldSpecification)();
-        
-        if (storyCollectionIdentifier !== this.storyCollectionIdentifier) {
-            // TODO: Maybe need to handle tracking if list changed so can keep sorted list?
-            this.storyCollectionIdentifier = storyCollectionIdentifier;
-            this.currentStoryCollectionChanged(this.storyCollectionIdentifier);
-        }
-        
-        let parts;
-
-        if (!this.storyCollectionIdentifier) {
-            parts = [m("div", "Please select a story collection to view")];
+        let parts = [];
+        if (this.collectionIDs.length === 0) {
+            parts.push(m("div.graphBrowserCollectionsIntro", "There are no story collections to show."));
         } else {
-            parts = [
+            parts.push(m("div.graphBrowserCollectionsIntro", "Select one or more story collections to view."));
+            const checkboxDivs = [];
+            for (let collectionID of this.collectionIDs) {
+                checkboxDivs.push(this.buildCollectionCheckbox(collectionID));
+            }
+            parts.push(m("div.graphBrowserCheckboxesDiv", checkboxDivs));
+            const moreParts = [
+                m("div.graphBrowserQuestionsIntro", "Select one or two questions to view."),
                 m("select.graphBrowserSelect", {onchange: (event) => { this.xAxisSelectValue = event.target.value; this.updateGraph(); }}, this.calculateOptionsForChoices(this.xAxisSelectValue)),
                 m("span.narrafirma-graphbrowser-versus", "versus"),
                 m("select.graphBrowserSelect", {onchange: (event) => { this.yAxisSelectValue = event.target.value; this.updateGraph(); }}, this.calculateOptionsForChoices(this.yAxisSelectValue)),
@@ -114,22 +134,9 @@ class GraphBrowser {
                     ]);
                 })
             ];
+            parts = parts.concat(moreParts);
         }
-
-        // TODO: Need to set class
-        return m("div", parts);
-        
-        /*
-        // TODO: Should provide copy of item?
-        const panelBuilder: PanelBuilder = args.panelBuilder;
-        // Possible recursion if the panels contain a table
-        
-        let theClass = "narrafirma-griditempanel-viewing";
-        if (args.mode === "edit") {
-            theClass = "narrafirma-griditempanel-editing";  
-        }
-        return m("div", {"class": theClass}, panelBuilder.buildPanel(args.grid.itemPanelSpecification, args.item));
-        */
+        return m("div.graphBrowserOverallDiv", parts);
     }
     
     insertGraphResultsPaneConfig(element: HTMLElement, isInitialized: boolean, context: any) {
@@ -139,8 +146,166 @@ class GraphBrowser {
     }
     
     storiesSelected(selectedStories) {
-        // TODO: Finish
         this.selectedStories = selectedStories;
+    }
+
+    calculateOptionsForChoices(currentValue) {
+        const options = this.choices.map((option) => {
+            const optionOptions = {value: option.value, selected: undefined};
+            if (currentValue === option.value) optionOptions.selected = 'selected';
+            return m("option", optionOptions, option.label);
+        });
+        const hasNoSelection = (currentValue === null || currentValue === undefined || currentValue === "") || undefined;
+        options.unshift(m("option", {value: "", selected: hasNoSelection}, "--- select ---"));
+        return options;
+    }
+    
+    updateForChangeToDisplayedStoryCollections() {
+        this.questions = [];
+        if (this.collectionIDs.length > 0) {
+            const selectedCollections = [];
+            for (let collectionID of this.collectionIDs) {
+                if (this.displayCollections[collectionID]) {
+                    selectedCollections.push(collectionID);
+                }
+            }
+            if (selectedCollections.length > 0) {
+
+                // built-in questions should be the same for all story collections, so just use the first one chosen
+                const elicitingQuestion = this.project.elicitingQuestionForStoryCollection(selectedCollections[0]);
+                if (elicitingQuestion) this.questions.push(elicitingQuestion);
+                const numStoriesToldQuestions = this.project.numStoriesToldQuestionForStoryCollection(selectedCollections[0]);
+                const storyLengthQuestions = this.project.storyLengthQuestionForStoryCollection(selectedCollections[0]);
+                const collectionDateQuestions = this.project.collectionDateQuestionForStoryCollection(selectedCollections[0]);
+                const languageQuestions = this.project.languageQuestionForStoryCollection(selectedCollections[0]);
+
+                // annotations are not per collection/questionnaire
+                const annotationQuestions = questionnaireGeneration.convertEditorQuestions(this.project.collectAllAnnotationQuestions(), "A_");
+
+                // for questions that could vary, combine all questions with the same short names
+                const storyQuestions = [];
+                const participantQuestions = [];
+                for (let collectionID of selectedCollections) {
+                    const storyQuestionsForThisCollection = this.project.storyQuestionsForStoryCollection(collectionID);
+                    for (let thisQuestion of storyQuestionsForThisCollection) {
+                        let foundQuestion = false;
+                        for (let existingQuestion of storyQuestions) {
+                            if (existingQuestion.id === thisQuestion.id) {
+                                foundQuestion = true;
+                            }
+                        }
+                        if (!foundQuestion) {
+                            storyQuestions.push(thisQuestion);
+                        }
+                    }
+                    const participantQuestionsForThisCollection = this.project.participantQuestionsForStoryCollection(collectionID);
+                    for (let thisQuestion of participantQuestionsForThisCollection) {
+                        let foundQuestion = false;
+                        for (let existingQuestion of participantQuestions) {
+                            if (existingQuestion.id === thisQuestion.id) {
+                                foundQuestion = true;
+                            }
+                        }
+                        if (!foundQuestion) {
+                            participantQuestions.push(thisQuestion);
+                        }
+                    }
+                }
+                this.questions = this.questions.concat(
+                    storyQuestions, participantQuestions, annotationQuestions, 
+                    numStoriesToldQuestions, storyLengthQuestions, collectionDateQuestions, languageQuestions);
+                this.choices = surveyCollection.optionsForAllQuestions(this.questions, "excludeTextQuestions");
+            }
+        }
+        // update all stories for the specific collection and update graph
+        this.loadLatestStories();
+    }
+    
+    loadLatestStories() {
+        let allStories = [];
+        for (let collectionID of this.collectionIDs) {
+            if (this.displayCollections[collectionID]) {
+                const storiesForThisCollection = surveyCollection.getStoriesForStoryCollection(collectionID);
+                allStories = allStories.concat(storiesForThisCollection);
+            }
+        }
+        this.graphHolder.allStories = allStories;
+        this.updateGraph();
+    }
+    
+    updateGraph() {
+
+        const xAxisQuestionID = this.xAxisSelectValue;
+        const yAxisQuestionID = this.yAxisSelectValue;
+        
+        // Remove old graph(s)
+        while (this.graphHolder.chartPanes.length) {
+            const chartPane = this.graphHolder.chartPanes.pop();
+            this.graphHolder.graphResultsPane.removeChild(chartPane);
+            // TODO: Do these need to be destroyed or freed somehow?
+        }
+        
+        // Need to remove the float end node, if any        
+        while (this.graphHolder.graphResultsPane.firstChild) {
+            this.graphHolder.graphResultsPane.removeChild(this.graphHolder.graphResultsPane.firstChild);
+        }
+        
+        this.selectedStories = [];
+
+        const selectedCollections = [];
+        for (let collectionID of this.collectionIDs) {
+            if (this.displayCollections[collectionID]) {
+                selectedCollections.push(collectionID);
+            }
+        }
+        if (selectedCollections.length === 0) {
+            return;
+        }
+        
+        // TODO: Translated or improve checking or provide alternate handling if only one selected
+        if (!xAxisQuestionID && !yAxisQuestionID) return; // alert("Please select a question for one or both graph axes");
+          
+        let xAxisQuestion = questionForID(this.questions, xAxisQuestionID);
+        let yAxisQuestion = questionForID(this.questions, yAxisQuestionID);
+        
+        // Ensure xAxisQuestion is always defined
+        if (!xAxisQuestion) {
+            xAxisQuestion = yAxisQuestion;
+            yAxisQuestion = null;
+        }
+        
+        if (!xAxisQuestion) return;
+        
+        let xType = "choice";
+        let yType = null;
+        if (xAxisQuestion.displayType === "slider") {
+            xType = "scale";
+        }
+        if (yAxisQuestion) {
+            if (yAxisQuestion.displayType === "slider") {
+                yType = "scale";
+            } else {
+                yType = "choice";
+            }
+        }
+        
+        if (xType === "choice" && yType === null) {
+            charting.d3BarChartForQuestion(this.graphHolder, xAxisQuestion, this.storiesSelected.bind(this), true);
+        } else if (xType === "choice" && yType === "choice") {
+            charting.d3ContingencyTable(this.graphHolder, xAxisQuestion, yAxisQuestion, null, this.storiesSelected.bind(this), true);
+        } else if (xType === "choice" && yType === "scale") {
+            charting.multipleHistograms(this.graphHolder, xAxisQuestion, yAxisQuestion, this.storiesSelected.bind(this), true);
+        } else if (xType === "scale" && yType === null) {
+            charting.d3HistogramChartForQuestion(this.graphHolder, xAxisQuestion, null, null, this.storiesSelected.bind(this), true);
+        } else if (xType === "scale" && yType === "choice") {
+            charting.multipleHistograms(this.graphHolder, yAxisQuestion, xAxisQuestion, this.storiesSelected.bind(this), true);
+        } else if (xType === "scale" && yType === "scale") {
+            charting.d3ScatterPlot(this.graphHolder, xAxisQuestion, yAxisQuestion, null, null, this.storiesSelected.bind(this), true);
+        } else {
+            console.log("ERROR: Unexpected graph type");
+            alert("ERROR: Unexpected graph type");
+            return;
+        }
     }
 
     changeShowAnswers(event) {
@@ -210,109 +375,7 @@ class GraphBrowser {
     showRandom30SelectedStories(event) {
         this.sampleSelectedStories(30);
     }
-    
-    calculateOptionsForChoices(currentValue) {
-        const options = this.choices.map((option) => {
-            const optionOptions = {value: option.value, selected: undefined};
-            if (currentValue === option.value) optionOptions.selected = 'selected';
-            return m("option", optionOptions, option.label);
-        });
-        const hasNoSelection = (currentValue === null || currentValue === undefined || currentValue === "") || undefined;
-        options.unshift(m("option", {value: "", selected: hasNoSelection}, "--- select ---"));
-        return options;
-    }
-    
-    currentStoryCollectionChanged(storyCollectionIdentifier) {
-        this.questions = [];
-        this.storyCollectionIdentifier = storyCollectionIdentifier;
-        
-        const elicitingQuestion = this.project.elicitingQuestionForStoryCollection(this.storyCollectionIdentifier);
-        if (elicitingQuestion) this.questions.push(elicitingQuestion);
-        const numStoriesToldQuestions = this.project.numStoriesToldQuestionForStoryCollection(this.storyCollectionIdentifier);
-        const storyLengthQuestions = this.project.storyLengthQuestionForStoryCollection(this.storyCollectionIdentifier);
-        const collectionDateQuestions = this.project.collectionDateQuestionForStoryCollection(this.storyCollectionIdentifier);
-        const languageQuestions = this.project.languageQuestionForStoryCollection(this.storyCollectionIdentifier);
 
-        const storyQuestions = this.project.storyQuestionsForStoryCollection(this.storyCollectionIdentifier);
-        const participantQuestions = this.project.participantQuestionsForStoryCollection(this.storyCollectionIdentifier);
-        // annotations are not per collection/questionnaire
-        const annotationQuestions = questionnaireGeneration.convertEditorQuestions(this.project.collectAllAnnotationQuestions(), "A_");
-        
-        this.questions = this.questions.concat(storyQuestions, participantQuestions, annotationQuestions, numStoriesToldQuestions, storyLengthQuestions, collectionDateQuestions, languageQuestions);
-
-        this.choices = surveyCollection.optionsForAllQuestions(this.questions, "excludeTextQuestions");
-        // update all stories for the specific collection and update graph
-        this.loadLatestStories();
-    }
-    
-    loadLatestStories() {
-        this.graphHolder.allStories = surveyCollection.getStoriesForStoryCollection(this.storyCollectionIdentifier);
-        this.updateGraph();
-    }
-    
-    updateGraph() {
-        const xAxisQuestionID = this.xAxisSelectValue;
-        const yAxisQuestionID = this.yAxisSelectValue;
-        
-        // Remove old graph(s)
-        while (this.graphHolder.chartPanes.length) {
-            const chartPane = this.graphHolder.chartPanes.pop();
-            this.graphHolder.graphResultsPane.removeChild(chartPane);
-            // TODO: Do these need to be destroyed or freed somehow?
-        }
-        
-        // Need to remove the float end node, if any        
-        while (this.graphHolder.graphResultsPane.firstChild) {
-            this.graphHolder.graphResultsPane.removeChild(this.graphHolder.graphResultsPane.firstChild);
-        }
-        
-        this.selectedStories = [];
-        
-        // TODO: Translated or improve checking or provide alternate handling if only one selected
-        if (!xAxisQuestionID && !yAxisQuestionID) return; // alert("Please select a question for one or both graph axes");
-          
-        let xAxisQuestion = questionForID(this.questions, xAxisQuestionID);
-        let yAxisQuestion = questionForID(this.questions, yAxisQuestionID);
-        
-        // Ensure xAxisQuestion is always defined
-        if (!xAxisQuestion) {
-            xAxisQuestion = yAxisQuestion;
-            yAxisQuestion = null;
-        }
-        
-        if (!xAxisQuestion) return;
-        
-        let xType = "choice";
-        let yType = null;
-        if (xAxisQuestion.displayType === "slider") {
-            xType = "scale";
-        }
-        if (yAxisQuestion) {
-            if (yAxisQuestion.displayType === "slider") {
-                yType = "scale";
-            } else {
-                yType = "choice";
-            }
-        }
-        
-        if (xType === "choice" && yType === null) {
-            charting.d3BarChartForQuestion(this.graphHolder, xAxisQuestion, this.storiesSelected.bind(this), true);
-        } else if (xType === "choice" && yType === "choice") {
-            charting.d3ContingencyTable(this.graphHolder, xAxisQuestion, yAxisQuestion, null, this.storiesSelected.bind(this), true);
-        } else if (xType === "choice" && yType === "scale") {
-            charting.multipleHistograms(this.graphHolder, xAxisQuestion, yAxisQuestion, this.storiesSelected.bind(this), true);
-        } else if (xType === "scale" && yType === null) {
-            charting.d3HistogramChartForQuestion(this.graphHolder, xAxisQuestion, null, null, this.storiesSelected.bind(this), true);
-        } else if (xType === "scale" && yType === "choice") {
-            charting.multipleHistograms(this.graphHolder, yAxisQuestion, xAxisQuestion, this.storiesSelected.bind(this), true);
-        } else if (xType === "scale" && yType === "scale") {
-            charting.d3ScatterPlot(this.graphHolder, xAxisQuestion, yAxisQuestion, null, null, this.storiesSelected.bind(this), true);
-        } else {
-            console.log("ERROR: Unexpected graph type");
-            alert("ERROR: Unexpected graph type");
-            return;
-        }
-    }
 }
 
 export = GraphBrowser;
