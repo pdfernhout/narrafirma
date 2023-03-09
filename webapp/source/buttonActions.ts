@@ -502,13 +502,14 @@ function updateOrCheckQuestionnaireForStoryCollection(storyCollectionIdentifier,
         return result;
     }
 
-    function constructResultDialog(startText, problemsText, endText, snapshot) {
+    function constructResultDialog(startText, noticeText, problemsText, endText, snapshot) {
         const snapshotText = JSON.stringify(snapshot, null, "\t");
         const currentText = JSON.stringify(current, null, "\t");
         return m("div", 
             [
                 m("div.narrafirma-update-story-form-start", startText),
-                m("pre.narrafirma-update-story-form-problems", problemsText),
+                noticeText ? m("div.narrafirma-update-story-form-notice", noticeText) : "",
+                problemsText ? m("pre.narrafirma-update-story-form-problems", problemsText): "",
                 problemsText ? m("button.narrafirma-update-story-form-copy-button", {onclick: function(event) {
                     const textareas = document.getElementsByClassName("narrafirma-update-story-form-problems");
                     if (textareas.length > 0) window.navigator['clipboard'].writeText(textareas[0].innerHTML);
@@ -530,7 +531,7 @@ function updateOrCheckQuestionnaireForStoryCollection(storyCollectionIdentifier,
         );
     } 
     
-    function doCopy() {
+    function doCopy(activeOnWeb) {
         const prompt = 'No data conflicts were found. '
             + 'Please confirm that you want to update the snapshot story form associated with the story collection "' 
             + storyCollectionName + '" so that it matches the current version.';
@@ -543,11 +544,16 @@ function updateOrCheckQuestionnaireForStoryCollection(storyCollectionIdentifier,
             alert("Problem: Could not build story form.");
             return;
         }
+        const activeNotice = activeOnWeb ? 
+            "This story collection is currently accepting stories over the internet. "
+            + "When you are ready to make these changes live, deactivate the collection's web form. "
+            + "Then, when you activate the form again, it will pick up your changes." : null;
         const dialogConfiguration = {
             dialogTitle: "Update successful",
             dialogConstructionFunction: function () {
                 return constructResultDialog(
                     "The snapshot version of the story form was successfully updated.",
+                    activeNotice,
                     null,
                     "Here are the two versions of the story form as they were before the update (now they are identical).",
                     copyOfSnapshotBeforeChange)
@@ -568,6 +574,7 @@ function updateOrCheckQuestionnaireForStoryCollection(storyCollectionIdentifier,
     }
 
     const storyCollection = project.tripleStore.makeObject(storyCollectionIdentifier, true);
+    const activeOnWeb = project.tripleStore.queryLatestC(storyCollectionIdentifier, "storyCollection_activeOnWeb");
     const snapshot = storyCollection.questionnaire;
     const linkedStoryFormName = project.tripleStore.queryLatestC(storyCollectionIdentifier, "storyCollection_questionnaireIdentifier");
     const linkedStoryFormID = project.findStoryFormID(linkedStoryFormName);
@@ -576,7 +583,7 @@ function updateOrCheckQuestionnaireForStoryCollection(storyCollectionIdentifier,
 
     if (stories.length === 0) {
         if (actuallyCopy) { 
-            doCopy();
+            doCopy(activeOnWeb);
             return;
         } else {
             alert("This story collection has no stories in it, so you can update the story form without creating any data conflicts.");
@@ -669,13 +676,13 @@ function updateOrCheckQuestionnaireForStoryCollection(storyCollectionIdentifier,
 
     if (problemTexts.length === 0) {
         if (actuallyCopy) {
-            doCopy();
+            doCopy(activeOnWeb);
         } else {
             const dialogConfiguration = {
                 dialogTitle: "No data conflicts found",
                 dialogConstructionFunction: function () {
                     return constructResultDialog(
-                        "No data conflicts were found. You can safely update this story form.", 
+                        "No data conflicts were found. You can safely update this story form.", null,
                         null, "For your reference, here are the two story forms in detail.", snapshot)
                     },
                 dialogOKCallback: function(dialogConfiguration, hideDialogMethod) { hideDialogMethod(); }
@@ -691,7 +698,7 @@ function updateOrCheckQuestionnaireForStoryCollection(storyCollectionIdentifier,
             dialogTitle: "There are data conflicts",
             dialogConstructionFunction: function () {
                 return constructResultDialog(
-                    "The snapshot story form " + (actuallyCopy ? "could not" : "cannot") + " be updated because of the following issues.",
+                    "The snapshot story form " + (actuallyCopy ? "could not" : "cannot") + " be updated because of the following issues.", null,
                     allProblemsText, "Here are the two story forms in detail.", snapshot)
                 },
             dialogOKCallback: function(dialogConfiguration, hideDialogMethod) { hideDialogMethod(); }

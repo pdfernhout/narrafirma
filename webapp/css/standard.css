@@ -1316,6 +1316,11 @@ table.scrolling-small {
     overflow-y: scroll;
 }
 
+.narrafirma-update-story-form-notice {
+    margin: 0.5em 0.5em 1em 0.5em;
+    color: var(--color-error-text);
+}
+
 .narrafirma-update-story-form-problems:empty {
     display: none;
 }
