@@ -413,25 +413,63 @@ export function checkStoryFormsForDataConflicts(storyCollectionIdentifier) {
 
 function updateOrCheckQuestionnaireForStoryCollection(storyCollectionIdentifier, actuallyCopy = false) {
 
-    function messageForTypeMismatch(snapshotQuestion, currentQuestion, name) {
+    function numStoriesWithDataForQuestionID(question, stories) {
+        const storiesWithThisQuestion = [];
+        for (let story of stories) {
+            const value = story.fieldValue(question.id);
+            // value could be string, number, or dictionary
+            if (typeof value === "string" || typeof value === "number") {
+                if (value !== undefined && value !== null && value !== "") {
+                    storiesWithThisQuestion.push(story);
+                }
+            } else { 
+                // for dictionary, cannot just check if it exists; must also check if there are any true values 
+                // because if a respondent checks then unchecks a value, the dictionary persists
+                if (value !== undefined && value !== null) {
+                    const keys = Object.keys(value);
+                    let hasTrueEntry = false;
+                    for (let key of keys) {
+                        if (value[key] === true) {
+                            hasTrueEntry = true;
+                        }
+                    }
+                    if (hasTrueEntry) {
+                        storiesWithThisQuestion.push(story);
+                    }
+                }
+            }
+        }
+        return storiesWithThisQuestion.length;
+    }
+
+    function messageForTypeMismatch(snapshotQuestion, currentQuestion, name, stories) {
         let result = "";
         const sType = snapshotQuestion.displayType;
         const cType = currentQuestion.displayType;
         if (sType != cType) {
-            result += 'For the question:\n  - ' + name
-                    + '\nthe snapshot version has the type:\n  - ' + sType
-                    + '\nand the current version has the type\n  - ' + cType;
             let okay = false;
             okay = okay || (sType == "label" && cType == "header");
             okay = okay || (sType == "header" && cType == "label");
+            
             okay = okay || (sType == "text" && cType == "textarea");
             okay = okay || (sType == "textarea" && cType == "text");
+            
             okay = okay || (sType == "select" && cType == "radiobuttons");
             okay = okay || (sType == "radiobuttons" && cType == "select");
+            
             okay = okay || (sType == "boolean" && cType == "checkbox");
             okay = okay || (sType == "checkbox" && cType == "boolean");
+            
             if (!okay) {
-                result += "\nThese question types are incompatible. Existing data may be invalidated.";
+                const numStoriesWithDataForQuestion = numStoriesWithDataForQuestionID(snapshotQuestion, stories);
+                const storiesHave = (numStoriesWithDataForQuestion !== 1) ? " stories have" : " story has";
+                if (numStoriesWithDataForQuestion > 0) {
+                    result += 'For the question:\n  - ' + name
+                    + '\nthe snapshot version has the type:\n  - ' + sType
+                    + '\nand the current version has the type\n  - ' + cType;
+                    result += "\nThese question types are incompatible, and " 
+                        + numStoriesWithDataForQuestion + storiesHave + " data for the snapshot version.";
+                }
             }
         }
         return result;
@@ -479,7 +517,8 @@ function updateOrCheckQuestionnaireForStoryCollection(storyCollectionIdentifier,
                         + '\nappear in the snapshot version, do not appear in the current version, and are connected to stories.\n';
                     const storyCountMessages = [];
                     Object.keys(answerCountsOnlyInS).forEach(function(anAnswer) {
-                        storyCountMessages.push('   - the answer "' + anAnswer + '" appears in ' + answerCountsOnlyInS[anAnswer] + ' stories.');
+                        storyCountMessages.push('   - the answer "' + anAnswer + '" appears in ' + answerCountsOnlyInS[anAnswer] 
+                            + (answerCountsOnlyInS[anAnswer] > 1) ? " stories." : " story.");
                     });
                     result += storyCountMessages.join("\n");
                 } 
@@ -490,7 +529,7 @@ function updateOrCheckQuestionnaireForStoryCollection(storyCollectionIdentifier,
     
     function checkTwoQuestionsForTypeAndListMismatches(snapshotQuestion, currentQuestion, stories) {
         let result = "";
-        const typeMismatchMessage = messageForTypeMismatch(snapshotQuestion, currentQuestion, displayQuestionName(snapshotQuestion.id));
+        const typeMismatchMessage = messageForTypeMismatch(snapshotQuestion, currentQuestion, displayQuestionName(snapshotQuestion.id), stories);
         if (typeMismatchMessage) {
             result += typeMismatchMessage;
         } else {
@@ -531,10 +570,11 @@ function updateOrCheckQuestionnaireForStoryCollection(storyCollectionIdentifier,
         );
     } 
     
-    function doCopy(activeOnWeb) {
-        const prompt = 'No data conflicts were found. '
-            + 'Please confirm that you want to update the snapshot story form associated with the story collection "' 
-            + storyCollectionName + '" so that it matches the current version.';
+    function doCopy(activeOnWeb, override) {
+        let prompt = "";
+        if (!override) prompt += 'No data conflicts were found. ';
+        prompt += "Please confirm that you want to update the snapshot story form associated with the story collection " 
+                    + storyCollectionName + '" so that it matches the current version.';
         if (!confirm(prompt)) {
             return;
         }
@@ -583,7 +623,7 @@ function updateOrCheckQuestionnaireForStoryCollection(storyCollectionIdentifier,
 
     if (stories.length === 0) {
         if (actuallyCopy) { 
-            doCopy(activeOnWeb);
+            doCopy(activeOnWeb, false);
             return;
         } else {
             alert("This story collection has no stories in it, so you can update the story form without creating any data conflicts.");
@@ -626,32 +666,8 @@ function updateOrCheckQuestionnaireForStoryCollection(storyCollectionIdentifier,
         if (qInSnapshotOnly.length > 0) {
             const qInSnapshotOnlyWithStoryData = [];
             for (let question of qInSnapshotOnly) {
-                const storiesWithThisQuestion = [];
-                for (let story of stories) {
-                    const value = story.fieldValue(question.id);
-                    // value could be string, number, or dictionary
-                    if (typeof value === "string" || typeof value === "number") {
-                        if (value !== undefined && value !== null && value !== "") {
-                            storiesWithThisQuestion.push(story);
-                        }
-                    } else { 
-                        // for dictionary, cannot just check if it exists; must also check if there are any true values 
-                        // because if a respondent checks then unchecks a value, the dictionary persists
-                        if (value !== undefined && value !== null) {
-                            const keys = Object.keys(value);
-                            let hasTrueEntry = false;
-                            for (let key of keys) {
-                                if (value[key] === true) {
-                                    hasTrueEntry = true;
-                                }
-                            }
-                            if (hasTrueEntry) {
-                                storiesWithThisQuestion.push(story);
-                            }
-                        }
-                    }
-                }
-                if (storiesWithThisQuestion.length > 0) {
+                const storiesWithDataForThisQuestion = numStoriesWithDataForQuestionID(question, stories);
+                if (storiesWithDataForThisQuestion > 0) {
                     qInSnapshotOnlyWithStoryData.push(question);
                 }
             }
@@ -676,7 +692,7 @@ function updateOrCheckQuestionnaireForStoryCollection(storyCollectionIdentifier,
 
     if (problemTexts.length === 0) {
         if (actuallyCopy) {
-            doCopy(activeOnWeb);
+            doCopy(activeOnWeb, false);
         } else {
             const dialogConfiguration = {
                 dialogTitle: "No data conflicts found",
@@ -694,16 +710,32 @@ function updateOrCheckQuestionnaireForStoryCollection(storyCollectionIdentifier,
         for (let i = 0; i < problemTexts.length; i++) {
             allProblemsText += i+1 + ". " + problemTexts[i] + "\n\n";
         }
-        const dialogConfiguration = {
-            dialogTitle: "There are data conflicts",
-            dialogConstructionFunction: function () {
-                return constructResultDialog(
-                    "The snapshot story form " + (actuallyCopy ? "could not" : "cannot") + " be updated because of the following issues.", null,
-                    allProblemsText, "Here are the two story forms in detail.", snapshot)
-                },
-            dialogOKCallback: function(dialogConfiguration, hideDialogMethod) { hideDialogMethod(); }
-        };
-        return dialogSupport.openDialog(dialogConfiguration);
+        if (actuallyCopy) {
+            const dialogConfiguration = {
+                dialogTitle: "There are data conflicts",
+                dialogConstructionFunction: function () {
+                    return constructResultDialog(
+                        "The snapshot story form should not be updated because of the following issues.", null,
+                        allProblemsText, "Here are the two story forms in detail.", snapshot)
+                    },
+                dialogOKButtonLabel: "Override (Update anyway)",
+                dialogOKCallback: function(dialogConfiguration, hideDialogMethod) { hideDialogMethod(); doCopy(activeOnWeb, true); },
+                dialogCancelButtonLabel: actuallyCopy ? "Cancel" : "Close",
+                dialogCancelCallback: function(dialogConfiguration, hideDialogMethod) { hideDialogMethod(); }
+            };
+            return dialogSupport.openDialog(dialogConfiguration);
+        } else {
+            const dialogConfiguration = {
+                dialogTitle: "There are data conflicts",
+                dialogConstructionFunction: function () {
+                    return constructResultDialog(
+                        "The snapshot story form should not be updated because of the following issues.", null,
+                        allProblemsText, "Here are the two story forms in detail.", snapshot)
+                    },
+                dialogCloseCallback: function(dialogConfiguration, hideDialogMethod) { hideDialogMethod(); }
+            };
+            return dialogSupport.openDialog(dialogConfiguration);
+        }
     }
 } 
 
