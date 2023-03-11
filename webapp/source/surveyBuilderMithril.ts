@@ -369,10 +369,20 @@ function displayQuestion(builder, model, fieldSpecification, storyForm) {
         if (yesNoParts.length > 0) yesName = yesNoParts[0]; 
         if (yesNoParts.length > 1) noName = yesNoParts[1]; 
         const questionParts = [
-            m("input[type=radio]", {id: getIdForText(fieldID + "_yes"), value: true, name: fieldSpecification.id, checked: value === true, onchange: standardChangeMethod.bind(null, null, true) }),
+            m("input[type=radio]", {
+                id: getIdForText(fieldID + "_yes"), 
+                value: true, 
+                name: fieldID, 
+                checked: value === true, 
+                onchange: standardChangeMethod.bind(null, null, true) }),
             m("label", {"for": getIdForText(fieldID + "_yes")}, yesName), 
             m("br"),
-            m("input[type=radio]", {id: getIdForText(fieldID + "_no"), value: false, name: fieldSpecification.id, checked: value === false, onchange: standardChangeMethod.bind(null, null, false) }),
+            m("input[type=radio]", {
+                id: getIdForText(fieldID + "_no"), 
+                value: false, 
+                name: fieldID, 
+                checked: value === false, 
+                onchange: standardChangeMethod.bind(null, null, false) }),
             m("label", {"for": getIdForText(fieldID + "_no")}, noName), 
             m("br")
         ];
