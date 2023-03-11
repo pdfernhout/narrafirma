@@ -55,24 +55,24 @@ const panel: Panel = {
             `
         },
         {
-            id: "storyCollection_updateStoryForm",
-            valueType: "none",
-            displayType: "button",
-            displayConfiguration: "updateQuestionnaireForStoryCollection",
-            displayPrompt: "Update Story Form",
-            displayIconClass: "updateButtonImage",
-            displayPreventBreak: true,
-            displayVisible: function(panelBuilder, model) {
-                return panelBuilder.readOnly === false;
-            }
-        },
-        {
             id: "storyCollection_checkForDataConflicts",
             valueType: "none",
             displayType: "button",
             displayConfiguration: "checkStoryFormsForDataConflicts",
             displayPrompt: "Check for Data Conflicts",
             displayIconClass: "checkButtonImage",
+            displayPreventBreak: true,
+            displayVisible: function(panelBuilder, model) {
+                return panelBuilder.readOnly === false;
+            }
+        },
+        {
+            id: "storyCollection_updateStoryForm",
+            valueType: "none",
+            displayType: "button",
+            displayConfiguration: "updateQuestionnaireForStoryCollection",
+            displayPrompt: "Update Story Form",
+            displayIconClass: "updateButtonImage",
             displayPreventBreak: true,
             displayVisible: function(panelBuilder, model) {
                 return panelBuilder.readOnly === false;
