@@ -18,7 +18,15 @@ const panel: Panel = {
             id: "project_feedbackItemsList",
             valueType: "array",
             displayType: "grid",
-            displayConfiguration: "panel_enterFeedbackPiece",
+            displayConfiguration: {
+                itemPanelID: "panel_enterFeedbackPiece",
+                gridConfiguration: {
+                    addButton: true,
+                    removeButton: true,
+                    duplicateButton: true,
+                    columnsToDisplay: ["feedback_name", "feedback_type", "feedback_text"]
+                },
+            },
             displayName: "Feedback pieces",
             displayPrompt: "These are the pieces of feedback you have entered so far."
         },

@@ -23,6 +23,7 @@ const panel: Panel = {
                 gridConfiguration: {
                     addButton: true,
                     removeButton: true,
+                    duplicateButton: true,
                     columnsToDisplay: ["returnRequest_description", "returnRequest_type", "returnRequest_isMet"]
                 }
             },

@@ -24,6 +24,7 @@ const panel: Panel = {
                 gridConfiguration: {
                     addButton: true,
                     removeButton: true, 
+                    duplicateButton: true,
                }
             },
             displayName: "Project stories",

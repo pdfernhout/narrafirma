@@ -78,11 +78,6 @@ const ItemClassNames = {
     // return
 }
 
-// item sets not given duplicate buttons, because it doesn't seem like people would want them
-// basically all of these things are stories, and it seems ridiculous to have two identical (or even nearly identical) ones
-// planning: project stories, observed stories
-// return: points of feedback, requests for support
-
 // items for which short names are lookups:
 // eliciting, story, and participant questions
 // story forms
