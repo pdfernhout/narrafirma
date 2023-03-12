@@ -1,5 +1,6 @@
 import translate = require("./translate");
 import m = require("mithril");
+import toaster = require("./toaster");
 
 "use strict";
 
@@ -83,6 +84,25 @@ class MithrilDialog {
         ];
         
         const bottomPanelButtons = [];
+
+        if (dialogConfiguration.dialogCopyButtonLabel) {
+            bottomPanelButtons.push(
+                m("button", {
+                    onclick: function() 
+                    {  
+                        const textAreas = document.getElementsByClassName("textEditorInDialog");
+                        if (textAreas.length) {
+                            const value = (textAreas[0] as HTMLTextAreaElement).value;
+                            window.navigator['clipboard'].writeText(value);
+                            toaster.toast("Copied to clipboard", "message", 800);
+                        }
+                    }, 
+                "class": "narrafirma-dialog-copy-button"}, 
+                translate(args.dialogCopyButtonLabel)
+                )
+            );
+        }
+
         if (!dialogConfiguration.dialogOKButtonHidden) {
             bottomPanelButtons.push(m("button", {onclick: function() {
                 if (dialogConfiguration.dialogOKCallback) {
@@ -92,7 +112,7 @@ class MithrilDialog {
                 }
             }, "class": "narrafirma-dialog-ok-button"}, translate(args.dialogOKButtonLabel || "OK")));
         }
-        
+
         if (dialogConfiguration.dialogCancelButtonLabel) {
             bottomPanelButtons.push(m("button", {onclick: function() {
                 hideDialogMethod();
@@ -110,7 +130,7 @@ export function openDialog(dialogConfiguration) {
 }
 
 // Caller needs to call the hideDialogMethod returned as the second arg of dialogOKCallback to close the dialog
-export function openTextEditorDialog(text, dialogTitle, dialogOKButtonLabel, dialogOKCallback, showCancelButton = true, readOnly = false) {
+export function openTextEditorDialog(text, dialogTitle, dialogOKButtonLabel, dialogCopyButtonLabel, dialogOKCallback, showCancelButton = true, readOnly = false) {
     if (!dialogTitle) dialogTitle = "Editor";
     if (!dialogOKButtonLabel) dialogOKButtonLabel = "OK";
     
@@ -120,6 +140,7 @@ export function openTextEditorDialog(text, dialogTitle, dialogOKButtonLabel, dia
         dialogTitle: dialogTitle,
         dialogClass: undefined,
         dialogReadOnly: readOnly,
+        dialogCopyButtonLabel: dialogCopyButtonLabel,
         dialogConstructionFunction: build_textEditorDialogContent,
         dialogOKButtonLabel: dialogOKButtonLabel,
         dialogOKCallback: function(dialogConfiguration, hideDialogMethod) { dialogOKCallback(model.text, hideDialogMethod); },
@@ -133,7 +154,7 @@ function build_textEditorDialogContent(dialogConfiguration, hideDialogMethod) {
     return m("div", [
         m("textarea", 
             {
-                key: "standardTextEditorTextarea", 
+                key: "standardTextEditorTextarea",
                 class: "textEditorInDialog", 
                 onchange: function(event) { dialogConfiguration.dialogModel.text = event.target.value; }, 
                 value: dialogConfiguration.dialogModel.text,

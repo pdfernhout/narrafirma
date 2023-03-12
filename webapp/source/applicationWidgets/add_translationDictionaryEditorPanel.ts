@@ -201,7 +201,7 @@ function add_translationDictionaryEditorPanel(panelBuilder: PanelBuilder, model,
                 if (!languagesWritten) showParts.push("    (no translations)");
             }
         });
-        dialogSupport.openTextEditorDialog(showParts.join("\n"), "Orphaned translations", "Close", closeShowDialogClicked, false, true);
+        dialogSupport.openTextEditorDialog(showParts.join("\n"), "Orphaned translations", "Close", "Copy to Clipboard", closeShowDialogClicked, false, true);
     }
 
     function showAllTranslations() {
@@ -219,7 +219,7 @@ function add_translationDictionaryEditorPanel(panelBuilder: PanelBuilder, model,
             });
             if (!languagesWritten) showParts.push("    (no translations)");
         });
-        dialogSupport.openTextEditorDialog(showParts.join("\n"), "All translations", "Close", closeShowDialogClicked, false, true);       
+        dialogSupport.openTextEditorDialog(showParts.join("\n"), "All translations", "Close", "Copy to Clipboard", closeShowDialogClicked, false, true);       
     }
     
     function closeShowDialogClicked(text, hideDialogMethod) {     

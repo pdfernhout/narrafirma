@@ -389,7 +389,7 @@ export function showStoryAsJSONData(model, fieldSpecification) {
         return value;
     }
     var text = JSON.stringify(model, replacer, 4); // 4 is the number of pretty-print nesting indentation spaces
-    dialogSupport.openTextEditorDialog(text, "Story", "Close", closeShowDialogClicked, false, true);
+    dialogSupport.openTextEditorDialog(text, "Story", "Close", "Copy to Clipboard", closeShowDialogClicked, false, true);
 }
 
 function closeShowDialogClicked(text, hideDialogMethod) {     
@@ -703,7 +703,7 @@ export function copyPrivacyPolicy() {
     items.push(project.tripleStore.queryLatestC(project.projectIdentifier, "project_privacyPolicy_permission"));
     items.push(project.tripleStore.queryLatestC(project.projectIdentifier, "project_privacyPolicy_review"));
     const result = items.join('\n\n');
-    dialogSupport.openTextEditorDialog(result, title, "Close", closeShowDialogClicked, false, true);
+    dialogSupport.openTextEditorDialog(result, title, "Close", "Copy to Clipboard", closeShowDialogClicked, false, true);
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

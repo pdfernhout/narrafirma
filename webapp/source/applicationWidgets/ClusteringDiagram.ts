@@ -1100,7 +1100,7 @@ class ClusteringDiagram {
     }
     
     openSourceDialog(text) {
-        dialogSupport.openTextEditorDialog(text, "#clusterDiagramSource_titleID|Clustering Diagram", "#clusterDiagramSource_okButtonID|OK", this.updateSourceClicked.bind(this));
+        dialogSupport.openTextEditorDialog(text, "#clusterDiagramSource_titleID|Clustering Diagram", "#clusterDiagramSource_okButtonID|OK", "Copy to Clipboard", this.updateSourceClicked.bind(this));
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

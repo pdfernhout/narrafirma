@@ -33,7 +33,7 @@ Special warning areas f88a57
 
     /* text boxes */
     --color-text: black;
-    --color-text-disabled: gray;
+    --color-text-disabled: #666666;
     --color-textbox-border: #9cbbbb;
     --color-textbox-border-required: rgb(255, 140, 0);
     --color-textbox-border-disabled: gray;
@@ -2520,8 +2520,9 @@ textarea.textEditorInDialog {
     -webkit-box-sizing: border-box; /* For Safari  */
 }
 
-textarea.textEditorInDialogReadOnly {
+textarea.textEditorInDialog:read-only {
     pointer-events: none;
+    color: var(--color-text-disabled);
 }
 
 .narrafirma-create-collection-name-prompt {

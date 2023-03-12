@@ -1627,7 +1627,7 @@ class PatternExplorer {
         }
         const titleText = "Statistics for pattern: " +  this.currentPattern.patternName;
         const text = titleText + (this.graphHolder.statisticalInfo.indexOf("\n\n") !== 0 ? "\n\n" : "") + this.graphHolder.statisticalInfo;
-        dialogSupport.openTextEditorDialog(text, titleText, "Close", this.closeCopyStoriesDialogClicked.bind(this), false);
+        dialogSupport.openTextEditorDialog(text, titleText, "Close", "Copy to Clipboard", this.closeCopyStoriesDialogClicked.bind(this), false, true);
     }
 
     showAllStoriesSelectedInGraph() {
@@ -1761,7 +1761,7 @@ class PatternExplorer {
             text += header + stories[i].storyText() + "\n";
         }
 
-        dialogSupport.openTextEditorDialog(text, windowTitle, "Close", this.closeCopyStoriesDialogClicked.bind(this), false);
+        dialogSupport.openTextEditorDialog(text, windowTitle, "Close", "Copy to Clipboard", this.closeCopyStoriesDialogClicked.bind(this), false, true);
     }
 
     closeCopyStoriesDialogClicked(text, hideDialogMethod) {     

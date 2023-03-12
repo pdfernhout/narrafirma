@@ -322,7 +322,7 @@ class GraphBrowser {
                 text += stories[i].storyAnswersDisplay() + "\n"; 
             }
         }
-        dialogSupport.openTextEditorDialog(text, windowTitle, "Close", this.closeCopyStoriesDialogClicked.bind(this), false);
+        dialogSupport.openTextEditorDialog(text, windowTitle, "Close", "Copy to Clipboard", this.closeCopyStoriesDialogClicked.bind(this), false, true);
     }
 
     closeCopyStoriesDialogClicked(text, hideDialogMethod) {     

@@ -16,7 +16,7 @@ require([
     }
     
     /*
-    dialogSupport.openTextEditorDialog(text, null, null, function (result, hideDialogMethod) {
+    dialogSupport.openTextEditorDialog(text, null, null, null, function (result, hideDialogMethod) {
         hideDialogMethod();
         console.log("result", result);
     });
