@@ -198,8 +198,15 @@ function displayQuestion(builder, model, fieldSpecification, storyForm) {
         questionLabel[0].attrs["for"] = getIdForText(fieldID);
         questionLabel[0].tag = "label";
         if (type === "input") {
-            const lengthAsNumber = Number(fieldSpecification.displayConfiguration);
+            let lengthAsNumber = Number(fieldSpecification.displayConfiguration);
             if (!isNaN(lengthAsNumber)) {
+                if (window.innerWidth < 500) { // phone
+                    lengthAsNumber = Math.min(98, lengthAsNumber * 4);
+                } else if (window.innerWidth < 700) { // tablet
+                    lengthAsNumber = Math.min(98, lengthAsNumber * 3);
+                } else if (window.innerWidth < 900) { // laptop
+                    lengthAsNumber = Math.min(98, lengthAsNumber * 2);
+                }
                 const valueOptionsWithWidth = {
                     value: value,
                     style: "width: " + lengthAsNumber + "%",
@@ -624,7 +631,7 @@ export function buildSurveyForm(surveyDiv, storyForm, doneCallback, surveyOption
         initialStoryQuestions.push({id: "storyText", displayName: "storyText", displayPrompt: tr(singlePrompt.name), displayType: "textarea", valueOptions: [], displayClass: "narrafirma-story-text"});
     }
     const nameStoryText = tr(storyForm.nameStoryText || defaultFormTexts.nameStoryText);
-    initialStoryQuestions.push({id: "storyName", displayName: "storyName", displayPrompt: nameStoryText, displayType: "text", valueOptions: [], displayConfiguration: "20", displayClass: "narrafirma-story-name"});
+    initialStoryQuestions.push({id: "storyName", displayName: "storyName", displayPrompt: nameStoryText, displayType: "text", valueOptions: [], displayConfiguration: "40", displayClass: "narrafirma-story-name"});
     
     const allStoryQuestions = initialStoryQuestions.concat(storyForm.storyQuestions);
             
