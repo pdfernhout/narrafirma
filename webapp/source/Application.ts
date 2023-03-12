@@ -1,5 +1,6 @@
 import applicationMessages = require("./nls/applicationMessages");
 import buttonActions = require("./buttonActions");
+import manageStoryCollection = require("./manageStoryCollection");
 import csvImportExport = require("./csvImportExport");
 import dialogSupport = require("./panelBuilder/dialogSupport");
 import loadAllApplicationWidgets = require("./applicationWidgets/loadAllApplicationWidgets");
@@ -475,6 +476,7 @@ class Application {
 
                 // Now that data is presumably loaded into the Project tripleStore, we can proceed with further initialization
                 buttonActions.initialize(Globals.project(), Globals.clientState());
+                manageStoryCollection.initialize(Globals.project(), Globals.clientState());
                 csvImportExport.initialize(Globals.project());
                  
                 // Ensure the pageDisplayer will display the first page

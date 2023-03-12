@@ -10,6 +10,12 @@ import surveyCollection = require("./surveyCollection");
 let project: Project;
 let clientState: ClientState;
 
+// Call this to set up the project or other needed data
+export function initialize(theProject: Project, theClientState: ClientState) {
+    project = theProject;
+    clientState = theClientState;
+}
+
 export function createNewStoryCollection() {
 
     function constructStoryCollectionDialog() {
