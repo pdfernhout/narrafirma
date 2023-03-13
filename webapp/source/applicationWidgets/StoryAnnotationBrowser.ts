@@ -37,6 +37,7 @@ export class StoryAnnotationBrowser {
                     viewButton: true,
                     editButton: true,
                     navigationButtons: true,
+                    navigationButtonsAtBottom: true,
                     randomButton: true,
                     maxColumnCount: 13 // three for index, name, and text, 10 more for annotation questions
                }
