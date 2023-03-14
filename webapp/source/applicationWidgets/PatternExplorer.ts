@@ -85,7 +85,8 @@ function buildStoryDisplayPanel(panelBuilder: PanelBuilder, model) {
     const storyCardDiv = storyCardDisplay.generateStoryCardContent(model, undefined, {
         location: "storyBrowser", 
         storyTextAtTop: true, 
-        includeWriteInAnswers: true
+        includeWriteInAnswers: true,
+        blankLineAfterStory: false
     });
     return storyCardDiv;
 }
@@ -182,7 +183,7 @@ class PatternExplorer {
 
     progressMessage = "Calculating statistics";
     calculationsCanceled = false;
-    
+
     //------------------------------------------------------------------------------------------------------------------------------------------
     // static functions - used from printing and csv import/export
     //------------------------------------------------------------------------------------------------------------------------------------------

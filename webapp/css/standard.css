@@ -1484,41 +1484,41 @@ input[type="checkbox"].graphBrowserCheckbox {
 }
 
 .storyCard table {
-	margin: 0.5em 0 0.5em 0;
+	margin: 0;
 }
 
 .storyCard td {
-	padding: 0.25em 1em 0 0;
+	padding: 0 0.5em 0 0;
 }
 
 .storyCard hr {
 	color: gray;
 }
 
+.storyCard br {
+    font-size: 0.8em;
+}
+
 .narrafirma-story-card-story-title {
-    font-size: 2em;
+    font-size: 1.6em;
     font-weight: bold;
-    margin: 0.5em 0 0 0;
+    margin: 0.25em 0 0 0;
 }
 
 .narrafirma-story-card-story-text-in-story-browser {
-	border: 1px dotted black;
-	padding: 0.5em;
-	margin: 1em 0.5em 1em 0.5em;
+	margin: 0.5em 0.5em 0.5em 0;
+    padding-bottom: 0.5em;
+    border-bottom: 1px solid gray;
 }
 
 .narrafirma-story-card-story-text-in-story-annotation-browser {
-    border: 1px dotted black;
-	padding: 1em;
-	margin: 0.5em;
-}
-
-.narrafirma-story-card-story-text-in-printed-story-cards {
-	margin: 1em 2em 1em 2em;
+    margin: 0.5em 0.5em 0.5em 0;
+    padding-bottom: 0.5em;
+    border-bottom: 1px solid gray;
 }
 
 .narrafirma-story-card-question-line-with-selected-item {
-    padding-top: 0.25em;
+    padding-top: 0.5em;
 }
 
 .narrafirma-story-card-question-line-without-selected-item {
@@ -1526,24 +1526,29 @@ input[type="checkbox"].graphBrowserCheckbox {
 }
 
 .narrafirma-story-card-question-line-with-slider {
-    padding-top: 0.75em;
+    padding-top: 0.5em;
 }
 
-.narrafirma-story-card-eliciting-question {
+.narrafirma-story-card-eliciting-question, 
+    .narrafirma-story-card-story-length-question, 
+    .narrafirma-story-card-num-stories-question, 
+    .narrafirma-story-card-language-question,
+    .narrafirma-story-card-collection-date-question {
     font-size: 1em;
-    padding-top: 0.75em;
-}
-
-.narrafirma-story-card-num-stories-question {
-    font-size: 1em;
+    padding-top: 0.5em;
 }
 
 .narrafirma-story-card-sliders-table {
-    padding-left: 0.5em;
+    padding-left: 1.5em;
 }
 
-.narrafirma-story-card-one-slider-table {
-    font-size: 1em;
+table.narrafirma-story-card-one-slider-table {
+    margin: 0;
+    border-collapse: collapse;
+}
+
+td.narrafirma-story-card-one-slider-table {
+    padding: 0;
 }
 
 .narrafirma-story-card-question {
@@ -1559,7 +1564,7 @@ input[type="checkbox"].graphBrowserCheckbox {
 }
 
 .narrafirma-story-card-select-selected, .narrafirma-story-card-checkboxes-selected, .narrafirma-story-card-radiobuttons-selected {
-    font-size: 1.5em;
+    font-size: 1.25em;
     font-weight: bold; 
 }
 
@@ -1613,6 +1618,7 @@ input[type="checkbox"].graphBrowserCheckbox {
 
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Story card printing ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
+
 .storyCardForPrinting {
     page-break-after: always;
 }
@@ -1626,6 +1632,32 @@ input[type="checkbox"].graphBrowserCheckbox {
    .storyCardForPrinting hr {
        display: none;
    }
+}
+
+.narrafirma-story-card-story-number {
+    margin: 0.5em 0 0 0;
+    text-align: right;
+    font-size: 1.1em;
+}
+
+.narrafirma-story-card-story-text-in-printed-story-cards {
+	margin: 0.5em 0 0.5em 0;
+    padding: 0 0 0.5em 0;
+    border-bottom: 1px solid gray;
+}
+
+table.narrafirma-story-card-for-printing-table {
+    margin: 0;
+    border-spacing: 1em;
+}
+
+tr.narrafirma-story-card-for-printing-table {
+    margin: 0;
+}
+
+td.narrafirma-story-card-for-printing-table {
+    border: 1px solid gray;
+    vertical-align: top;
 }
 
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Recommendations table ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */

@@ -97,6 +97,28 @@ const panel: Panel = {
             }
         }, 
         {
+            id: "printStoryCards_numColumns",
+            valuePath: "/clientState/storyCollectionName/printStoryCards_numColumns",
+            valueType: "number",
+            displayType: "select",
+            valueOptions: ["1", "2", "3", "4", "5", "6"],
+            displayPrompt: `How many <strong>columns</strong> do you want to use to print your story cards? (If this field is left blank, one column will be used.)`,
+            displayVisible: function(panelBuilder, model) {
+                return !!Globals.clientState().haveStoryCollectionAndShowingAdvancedOptions();
+            }
+        },
+        {
+            id: "printStoryCards_sliderBucketCount",
+            valuePath: "/clientState/storyCollectionName/printStoryCards_sliderBucketCount",
+            valueType: "number",
+            displayType: "select",
+            valueOptions: ["20", "30", "40", "50", "60", "70", "80", "90", "100"],
+            displayPrompt: `How many characters do you want to use to represent each <strong>slider range</strong>? (If this field is left blank, 50 characters will be used.)`,
+            displayVisible: function(panelBuilder, model) {
+                return !!Globals.clientState().haveStoryCollectionAndShowingAdvancedOptions();
+            }
+        },
+        {
             id: "printStoryCards_filter",
             valuePath: "/clientState/storyCollectionName/printStoryCards_filter",
             valueType: "string",

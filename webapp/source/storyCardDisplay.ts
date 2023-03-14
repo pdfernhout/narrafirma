@@ -32,7 +32,7 @@ function displayHTMLForSlider(fieldSpecification, fieldName, value, options) {
     let sliderTextBefore = "";
     let sliderTextAfter = "";
     // Assumes values go from 0 to 100; places 100.0 in last bucket
-    const bucketCount = 50;
+    const bucketCount = options.sliderBucketCount || 50;
     const bucketSize = 100.0 / bucketCount;
     let placed = false;
     const answerClass = "narrafirma-story-card-answer-for-" + replaceSpacesWithDashes(fieldName);
@@ -49,7 +49,6 @@ function displayHTMLForSlider(fieldSpecification, fieldName, value, options) {
                 }
             } else {
                 sliderTextAfter += options.afterSliderCharacter || "-";
-                //sliderText.push("-");
             }
         }
         sliderText.push(m("span", {"class": "narrafirma-story-card-slider-bars-after " + answerClass + "-slider-bars-after"}, sliderTextAfter));
@@ -240,6 +239,8 @@ interface Options {
     includeIndex?: string;
     includeWriteInAnswers?: boolean;
     lumpingCommands?: any;
+    hrAtBottom?: boolean;
+    blankLineAfterStory?: boolean;
 }
 
 export function generateStoryCardContent(storyModel, questionsToInclude, options: Options = {}) {
@@ -248,9 +249,6 @@ export function generateStoryCardContent(storyModel, questionsToInclude, options
     const storyLength = storyModel.storyLength();
     
     let storyName = storyModel.storyName();
-    if (options.includeIndex) {
-        storyName = storyModel.indexInStoryCollection() + ". " + storyName;
-    }
 
     const storyCollectionDate = storyModel.storyCollectionDate();
     const language = storyModel.storyLanguage();
@@ -352,7 +350,7 @@ export function generateStoryCardContent(storyModel, questionsToInclude, options
             const fieldHTML = displayHTMLForField(storyModel, question, options, "nobreak");
             formattedFields.push(fieldHTML);
         }
-        if (formattedFields.length) formattedFields = [m("table", {"class": "narrafirma-story-card-sliders-table"}, formattedFields)];
+        if (formattedFields.length) formattedFields = [m("table", {"class": "narrafirma-story-card-sliders-table"}, formattedFields), m("br.storyCard")];
     }
     
     for (let i = 0; i < questions.length; i++) {
@@ -389,7 +387,7 @@ export function generateStoryCardContent(storyModel, questionsToInclude, options
         textForStoryLength = m(
             ".narrafirma-story-card-story-length-question", 
             [wrap("span", "narrafirma-story-card-story-length-question-name", "Story length: "), 
-            storyLength, " characters", m("br")]);
+            storyLength, " characters", m("br.storyCard")]);
     }
 
     let textForCollectionDate: any = [];
@@ -398,7 +396,7 @@ export function generateStoryCardContent(storyModel, questionsToInclude, options
         textForCollectionDate = m(
             ".narrafirma-story-card-collection-date-question", 
             [wrap("span", "narrafirma-story-card-collection-date-question-name", "Collection date: "), 
-            storyCollectionDate, m("br")]);
+            storyCollectionDate, m("br.storyCard")]);
     }
     let textForLanguage: any = [];
     // if questionsToInclude is unspecified, it is not being called in the "print story cards" page, so include this
@@ -406,7 +404,7 @@ export function generateStoryCardContent(storyModel, questionsToInclude, options
         textForCollectionDate = m(
             ".narrafirma-story-card-language-question", 
             [wrap("span", "narrafirma-story-card-language-question-name", "Language: "), 
-            language, m("br")]);
+            language, m("br.storyCard")]);
     }
     
     let storyTextAtTop: any = [];
@@ -418,14 +416,25 @@ export function generateStoryCardContent(storyModel, questionsToInclude, options
     } else {
         storyTextClass = "narrafirma-story-card-story-text-in-printed-story-cards";
     }
-    let storyTextAtBottom: any = wrap("div", storyTextClass, storyText);
+    let storyTextAtBottom = null;
+    if (options.blankLineAfterStory) {
+        // the empty line is for copying into word processors, so there is a blank line after the story
+        storyTextAtBottom = [wrap("div", storyTextClass, storyText), m("br.storyCard")];
+    } else {
+        storyTextAtBottom = wrap("div", storyTextClass, storyText);
+    }
     
     if (options.storyTextAtTop) {
         storyTextAtTop = storyTextAtBottom;
         storyTextAtBottom = [];
     }
+
+    let bottomHrDiv: any = [];
+    if (options.hrAtBottom) {
+        bottomHrDiv = m("hr.storyCardForPrinting");
+    }
     
-    const storyCardContent = m("div[class=storyCard]", [
+    const storyCardContent = m("div.storyCard", [
         wrap("div", "narrafirma-story-card-story-title", m("b", storyName)),
         storyTextAtTop,
         formattedFields,
@@ -435,7 +444,8 @@ export function generateStoryCardContent(storyModel, questionsToInclude, options
         textForStoryLength,
         textForCollectionDate,
         textForLanguage,
-        m("hr.narrafirma-story-card-divider")
+        options.includeIndex ? m("div.narrafirma-story-card-story-number", storyModel.indexInStoryCollection()) : "",
+        bottomHrDiv
     ]);
     
     return storyCardContent;

@@ -1512,9 +1512,17 @@ export function printStoryCards() {
     const includeIndex = project.tripleStore.queryLatestC(storyCollectionName, "printStoryCards_includeIndexInStoryCollection");
     const includeWriteInAnswers = project.tripleStore.queryLatestC(storyCollectionName, "printStoryCards_includeWriteInTexts");
     const lumpingCommands = project.lumpingCommandsForStoryCollection(storyCollectionName);
+    let sliderBucketCount = parseInt(project.tripleStore.queryLatestC(storyCollectionName, "printStoryCards_sliderBucketCount"));
+    if (!sliderBucketCount) sliderBucketCount = 50;
+    let numColumns = parseInt(project.tripleStore.queryLatestC(storyCollectionName, "printStoryCards_numColumns"));
+    if (!numColumns) numColumns = 1;
     
-    const storyDivs = [];
-    if (filter) storyDivs.push(m(".storyCardFilterWarning", "Stories that match filter: " + filter));
+    let storyDivs = [];
+    if (filter) storyDivs.push(m("div.storyCardFilterWarning", "Stories that match filter: " + filter));
+
+    let columnIndex = 1;
+    let rowTRs = [];
+    let columnTDs = [];
 
     for (let storyIndex = 0; storyIndex < filteredStories.length; storyIndex++) {
         const storyModel = filteredStories[storyIndex];
@@ -1524,21 +1532,37 @@ export function printStoryCards() {
             sliderButtonCharacter: sliderButtonCharacter,
             afterSliderCharacter: afterSliderCharacter,
             noAnswerSliderCharacter: noAnswerSliderCharacter,
+            sliderBucketCount: sliderBucketCount,
             order: order,
             cutoff: cutoff,
             cutoffMessage: cutoffMessage,
             includeIndex: includeIndex,
             includeWriteInAnswers: includeWriteInAnswers,
-            lumpingCommands: lumpingCommands
+            lumpingCommands: lumpingCommands,
+            hrAtBottom: numColumns === 1,
+            blankLineAfterStory: true
         }
         const storyContent = storyCardDisplay.generateStoryCardContent(storyModel, questionsToInclude, options);
-        
-        const storyDiv = m(".storyCardForPrinting", storyContent);
-        storyDivs.push(storyDiv);
+        const storyDiv = m("div.storyCardForPrinting", storyContent);
+
+        if (numColumns <= 1) {
+            storyDivs.push(storyDiv);
+        } else {
+            if (columnIndex === 1) columnTDs = [];
+            columnTDs.push(m("td.narrafirma-story-card-for-printing-table", storyDiv));
+            columnIndex++;
+            if (columnIndex > numColumns) {
+                rowTRs.push(m("tr.narrafirma-story-card-for-printing-table", columnTDs));
+                columnIndex = 1;
+            } 
+        } 
     }
-    
+
+    if (numColumns && numColumns > 1) {
+        storyDivs.push(m("table.narrafirma-story-card-for-printing-table", rowTRs));
+    } 
     const htmlForPage = generateHTMLForPage("Story cards for: " + storyCollectionIdentifier, "css/standard.css", customCSS, storyDivs, null);
-   printHTML(htmlForPage);
+    printHTML(htmlForPage);
 }
 
 function printItem(item, fieldsToIgnore = {}) {
