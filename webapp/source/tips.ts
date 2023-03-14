@@ -9,6 +9,7 @@ export function getRandomTip() {
             // Getting started
             "One way to get started with NarraFirma is to page through its help system, one page a time, just to see what you can do with it.",       
             "If you aren't sure whether you need or want to use any page, click the Help button to read about its purpose.",
+            `If you aren't sure how any page in NarraFirma will affect what happens on other pages, click the Help button and look for the section called \"Connections to other pages.\"`,
             "Click the Help button on any NarraFirma page to find out how the page is connected to other NarraFirma pages.",
             "The FAQ page at narrafirma.com has more answers to frequently asked questions.",
             "To see more tips, go to another NarraFirma page. To read all of the tips, go to the Home page, click Help, and look for a link to \"NarraFirma Tips\".",
@@ -19,7 +20,7 @@ export function getRandomTip() {
             "On section pages (Planning, etc), if you don't like the page descriptions and page-type icons, you can hide them in Home - Project administration - Project options.",
             "You can print a whole-project report in Project administration - Print.",
             "You can use simple HTML codes (b, i, ul/li, etc) on most NarraFirma fields that end up in exported or printed reports.",
-            "We recommend pandoc for converting all of NarraFirma's HTML reports to other formats.",
+            "We recommend <a href=\"https://pandoc.org\">pandoc</a> for converting all of NarraFirma's HTML reports to other formats.",
         
             // Technical
             "Everything you enter into NarraFirma is saved as soon as you leave each field.",
@@ -33,7 +34,7 @@ export function getRandomTip() {
             // Bugs
             "If you find a bug in NarraFirma, tell us about it on the <a href=\"https://github.com/pdfernhout/narrafirma/issues\">GitHub issues page</a>.",
             "If NarraFirma isn't working the way it should, look at your browser's development console to see if there is an error message there.",
-            "To report a NarraFirma bug, tell us what you were doing and what happened. Screenshots (especially of your browser's development console) are extra helpful.",
+            "To report a NarraFirma bug, tell us as much as you can remember about what you were doing and what happened. Screenshots (especially of your browser's development console) are extra helpful.",
         
             // Planning
             "The Planning pages of NarraFirma can help you think through your project as you are getting started.",
@@ -57,18 +58,25 @@ export function getRandomTip() {
             "You can give your survey participants the option to copy their contribution. Look at \"Finishing the form.\"",
             "You can use custom CSS to change how your survey looks.",
             "If you want to, you can build your entire story form in a CSV spreadsheet, then import it.",
+            "To use the same story form in multiple projects, export it to a CSV file from one project, then import it into the other.",
             "If you want to translate your story form into multiple languages, build and test the form in one language first, then translate it.",
             "It's a good idea to export your story collection to an external CSV file, just in case you want to see it outside of NarraFirma later.",
             
             // Collection - Managing story collections
-            "If you make major changes to your story form (e.g., changing a question's type or short name), create a new story collection so your data matches your form.",
+            "If you make major changes to your story form (e.g., changing a question's type or short name) after you start collecting stories, it is best to create a new story collection so your data matches your form.",
             "If you make so many test story collections that they slow down project loading, you can remove them by resetting the project (carefully!) in Project administration - Import &amp; Export.",
+            "After you update the story form in an active story collection, you must deactivate, then activate the collection before the change will take effect.",
+            "You can change the story form you are using to gather data in a story collection. NarraFirma will warn you if by doing so you will invalidate any of your existing data.",
+            "When you create a new story collection, NarraFirma makes a snapshot copy of the story form you choose for it as it stands at that moment and stores it in the collection.",
+            "Question data in different story collections can be graphed together as long as the question short names, types, and lists of available answers are the same.",
+            "If you collect some answers to a question, then decide to change the type of data it collects, click Help on the \"Start story collection\" page for some pointers.",
+
             "To prevent accidental data loss, you cannot delete stories. But you can mark them to be ignored on the  \"Review incoming stories\" page.",
-        
             "You can edit story names, texts, and answers to questions on the \"Review incoming stories\" page. Just be careful!",
             "If your stories do not have names, you can give them names on the \"Review incoming stories\" page.",
             "On the \"Review incoming stories\" page, you can see (and change) subsets of your stories as well as all of them.",
             "Use the \"Spot-check graphs\" page to check over incoming stories to look for gaps in your coverage.",
+            "You can look at patterns across multiple story collections on the \"Spot-check graphs\" page.",
         
             // Catalysis - General
             "What's catalysis? It's the same thing as analysis, but it generates questions to ponder, not conclusions to accept or reject.",
@@ -82,7 +90,7 @@ export function getRandomTip() {
             "On the \"Print catalysis report\" page, you can export all of your graphs to PNG, SVG, or CSV.",
             "You can change every English-language element of your catalysis report to your own language.",
             "You can use custom CSS to change how your catalysis report looks.",
-            "We recommend pandoc for converting NarraFirma's HTML catalysis reports to other formats.",
+            "We recommend <a href=\"https://pandoc.org\">pandoc</a> for converting NarraFirma's HTML catalysis reports to other formats.",
         
             // Catalysis - Annotating stories
             "You can use an annotation question to convert a free-text question to a fixed-list question (by reading and clustering the things people wrote in).",
@@ -107,9 +115,13 @@ export function getRandomTip() {
             // Sensemaking, Intervention, and Return
             "You can use the filtering function to print only some story cards.",
             "You can use display lumping to merge similar answers in your story cards.",
+            "When you print your story cards, you can truncate especially long stories.", //
+            "Story cards can include all or only some of the questions you asked about stories and participants.", //
+            "You can use multiple columns to make your story cards easier to use in sensemaking.", //
+            "You can copy your generated HTML story cards and paste them into most word processors.", //
             "You can create highly customized story cards.",
             "You can create printable agendas for your in-person or online sensemaking workshops.",
-            "We recommend pandoc for converting NarraFirma's HTML story cards to other formats.",
+            "We recommend <a href=\"https://pandoc.org\">pandoc</a> for converting NarraFirma's HTML story cards to other formats.",
          
         ];
         const randomIndex = Math.max(0, Math.min(tips.length - 1, Math.round(Math.random() * tips.length) - 1));
