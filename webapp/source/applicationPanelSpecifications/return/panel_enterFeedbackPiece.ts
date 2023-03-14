@@ -37,7 +37,7 @@ const panel: Panel = {
             ],
             displayType: "select",
             displayName: "Type",
-            displayPrompt: "What <strong>type</strong> of feedback was it?"
+            displayPrompt: "What <strong>type</strong> of feedback was this?"
         },
         {
             id: "feedback_who",
@@ -46,6 +46,14 @@ const panel: Panel = {
             displayConfiguration: "40",
             displayName: "Source",
             displayPrompt: "<strong>Who</strong> said or did this?"
+        },
+        {
+            id: "feedback_when",
+            valueType: "string",
+            displayType: "text",
+            displayConfiguration: "40",
+            displayName: "When",
+            displayPrompt: "<strong>When</strong> did this happen?"
         },
         {
             id: "feedback_prompt",
