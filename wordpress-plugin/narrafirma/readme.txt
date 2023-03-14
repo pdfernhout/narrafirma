@@ -9,7 +9,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Requires at least: 4.3.1
 Tested up to: 6.1.1
 Stable tag: trunk
-Version: 1.5.24
+Version: 1.6.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -105,6 +105,21 @@ We strongly suggest that you set up any web site on which you intend to install 
 12. Here the NarraFirma user is reflecting on the entire project, to learn from it and to keep good records for the future.
 
 == Changelog ==
+
+= 1.6.0 =
+
+Added: Duplicate button to make copies of most items in lists
+Added: Data conflict check when updating "snapshot" story form in story collection (to avoid confusion and data loss)
+Added: More buttons providing quick access to relevant help pages
+Added: On "Spot-check graphs" page, ability to show stories from multiple collections at once
+Added: Copy-to-clipboard button on all popup text dialogs
+Added: Option to print story cards in multiple columns
+Changed: Removed annoying "Please click the close button" popup (by improving data-entry validation system)
+Changed: Made "Start story collection" page easier to use and understand
+Changed: Improved help on updating "snaphot" story forms in existing collections
+Fixed: Made survey text question responsive to screen size (multiplying specified percent width by 4x on mobile, 3x on tablets, 2x on laptops)
+Fixed: Bug where special character in survey URL caused link on "Start story collection" page to not work
+Fixed: Bug where radio-button or boolean answer showed only on last story entered on form (though data was correctly stored)
 
 = 1.5.24 =
 
@@ -639,6 +654,10 @@ loading application, getting user information, or retrieving project data.
 change logs, see the [GitHub repository](https://github.com/pdfernhout/narrafirma).
 
 == Upgrade Notice ==
+
+= 1.6.0 =
+
+This major upgrade improves handling of data conflicts, adds item duplication and multi-column story cards, and removes the horrid "Please click the close button" popup.
 
 = 1.5.24 =
 

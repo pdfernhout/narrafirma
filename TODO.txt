@@ -162,6 +162,21 @@ M When import story form, hundreds of triples can be generated which take minute
 
 ==== DONE
 
+-- Release 1.6.0
+
+Added: Duplicate button to make copies of most items in lists
+Added: Data conflict check when updating "snapshot" story form in story collection (to avoid confusion and data loss)
+Added: More buttons providing quick access to relevant help pages
+Added: On "Spot-check graphs" page, ability to show stories from multiple collections at once
+Added: Copy-to-clipboard button on all popup text dialogs
+Added: Option to print story cards in multiple columns
+Changed: Removed annoying "Please click the close button" popup (by improving data-entry validation system)
+Changed: Made "Start story collection" page easier to use and understand
+Changed: Improved help on updating "snaphot" story forms in existing collections
+Fixed: Made survey text question responsive to screen size (multiplying specified percent width by 4x on mobile, 3x on tablets, 2x on laptops)
+Fixed: Bug where special character in survey URL caused link on "Start story collection" page to not work
+Fixed: Bug where radio-button or boolean answer showed only on last story entered on form (though data was correctly stored)
+
 -- Release 1.5.24
 
 Fixed: Bug where stories appeared out of order in survey form. 
