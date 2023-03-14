@@ -27,7 +27,7 @@
 <h1 class="page-title">Start story collection</h1>
 <div class="text">
 <p>
-A story collection identifies a specific group of stories that were collected using a specific story form.
+A story collection identifies and contains a specific group of stories that were collected using a specific story form.
 </p>
 <p>
 You can have multiple story collections within one project. 
@@ -81,7 +81,7 @@ or its questions <em>after</em> that moment will <em>not</em> be automatically r
 <p>
 	If you make changes to a story form after you associate it with a collection, 
 		you can <b>update the snapshot version</b> of the form stored in the collection.
-		However, you cannot do this if the changes you have made will 
+		NarraFirma will warn you if the changes you have made will 
 		cause conflicts with data you have already collected. See the FAQ entry
 		below for details on this point.
 </p>
@@ -98,7 +98,7 @@ after I have started to collect stories?
 <h4>At the level of the story form</h4>
 
 <table>
-	<tr><th>Safe</th><th>Dangerous</th></tr>
+	<tr><td>Always safe</td><td>Dangerous after you link the story form to a story collection</td></tr>
 <td>
 <ul>
 	<li>You can change any texts that appear on your story form that are not saved in your stories.
@@ -110,20 +110,33 @@ after I have started to collect stories?
 </td>
 <td style="vertical-align: top">
 	<ul>
-		<li>Do not change the short name of the story form. It is used to connect the story form to the story collection.</li>
+		<li>Do not change the short name of the story form. It is used to connect the story form to the story collection.
+		</li>
 	</ul></td>
 </tr>
 </table>
 
+<h5>If you must rename a story form</h5>
+
+<ul>
+	<li>Duplicate the existing story form.</li>
+	<li>Give the copy a new name.</li>
+	<li>Create a new story collection using the new form.</li>
+	<li>Switch over to collecting stories using the new story collection.</li>
+	<li>As long as the questions in the two forms
+		have the same short names, types, and answer lists, NarraFirma will treat them as if they came from the same story collection
+		and used the same story form.</li>
+	</ul>
+
 <h4>At the level of the question</h4>
 
 <table>
-	<tr><th>Safe</th><th>Dangerous</th></tr>
+	<tr><td>Always safe</td><td>Dangerous after you collect some stories</td></tr>
 <td>
 <ul>
 	<li>You can change the actual text of the question. It is display-only. 
 		(Whether the new question <i>means</i> the same thing is up to you.)</li>
-	<li>You can change the label on the write-in "other" box.</li>
+	<li>You can change the label on the write-in "other" box. It is display-only.</li>
 	<li>For a checkbox question, you can change the text displayed after the checkbox. It is a display-only option.
 		The value saved is a true/false value, no matter what it says on the checkbox.
 	</li>
@@ -132,7 +145,7 @@ after I have started to collect stories?
 	</li>
 	<li>For a slider, you can change the left and right slider labels. 
 		The values saved with the stories are numerical only.
-		Of course, if your label change alters the <i>meaning</i> of the numerical values, that's a problem.
+		Of course, if your label change alters the <i>meaning</i> of the numerical values, that's a problem (and NarraFirma will be oblivious to it).
 		But if both labels mean the same thing, it's fine.
 		You can also change the label of the "Does not apply" checkbox under the slider. This is a display-only option as well.
 		</li>
@@ -148,7 +161,7 @@ after I have started to collect stories?
 </td>
 <td style="vertical-align: top">
 	<ul>
-		<li>Do not change the question's short name. It is used to connect the question to the story form.</li>
+		<li>Do not change the question's short name. It is used to to identify your stored data.</li>
 		<li>Do not change the question's type - with some exceptions (see below).</li>
 		<li>For questions with fixed lists of answers, do not change the answers themselves.</li>
 	</ul>
@@ -173,7 +186,7 @@ after I have started to collect stories?
 	</li>
 	<li>When no more stories have data for the question, 
 		go to the <a href="help_page_designStoryForms.html">Build story forms</a> page and remove the question from your form.</li>
-	<li>Go back to the <a href="help_page_startStoryCollection.html">Start story collection</a> page and see if you can update the form now.</li>
+	<li>Go back to the <a href="help_page_startStoryCollection.html">Start story collection</a> page and see if you can safely update the form now.</li>
 </ol>
 
 <h5>If you must change a question's short name</h5>

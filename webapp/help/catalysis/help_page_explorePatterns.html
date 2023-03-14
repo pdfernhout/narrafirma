@@ -42,10 +42,10 @@ You can also use the arrow buttons to move systematically through the list of pa
 <p>
 As you are looking at a graph, <b>hover the mouse to see the stories</b>, thus:
 <ul>
-<li>In a <b>bar graph</b> (one choice question) or <b>histogram</b> (scale question), hover over any 
+<li>In a <b>bar graph</b> (one choice question) or <b>histogram</b> (one scale question), hover over any 
 bar segment to see the story there.</li>
-<li>In a <b>table</b> (two choice questions considered together), hover over an ellipse to see a list of story names.</li>
-<li>In a <b>histogram table</b> (two choice questions and a scale question considered together), 
+<li>In a <b>table</b> (two choice questions), hover over an ellipse to see a list of story names.</li>
+<li>In a <b>histogram table</b> (two choice questions and a scale question), 
 	hover over an square to see a list of story names.</li>
 <li>In a <b>scatterplot</b> (two scale questions), hover over any dot to see the story (or stories) it represents.</li>
 <li>You can't hover to see stories in a <b>correlation map</b> or any of the <b>data integrity</b> graphs.
@@ -58,14 +58,14 @@ When you are looking at any graph, <b>click and drag to select stories</b>.
 The selected stories will appear in the list under the graph. 
 </p>
 <ul>
-	<li>In a <b>bar graph</b> (one choice question) or histogram (scale question), select one or more bars 
+	<li>In a <b>bar graph</b> (one choice question) or histogram (one scale question), select one or more bars 
 		by dragging through their horizontal center points.
 		Where you drag vertically doesn't matter.
 		You can't select parts of a bar, just the whole thing.
 	</li>
-	<li>In a <b>table</b> (two choice questions considered together), 
+	<li>In a <b>table</b> (two choice questions), 
 		select any number of ellipses by dragging through their center points.</li>
-	<li>In a <b>histogram table</b> (two choice questions and a scale question considered together), 
+	<li>In a <b>histogram table</b> (two choice questions and a scale question), 
 		select any number of squares by dragging through their center points.</li>
 	<li>In a <b>scatterplot</b> (two scale questions), select stories by dragging through their center points.</li>
 	<li>You can't select stories in a <b>correlation map</b> or in any of the <b>data integrity</b> graphs.</li>
@@ -137,7 +137,7 @@ and interpretations.
 	<li>
 		<b>Start with the simpler patterns</b>. It can help to look at your patterns one type at a time. For example, you might start by 
 		looking only at the "data integrity" graphs, to see if there are any systematic biases 
-		in the answers people gave to questions. Then you might look at the bar graphs (which are simple)
+		in the answers people gave to questions. Then you might look at the bar graphs and histograms (which are simple)
 		before moving on to the more complex interactions among questions. If a type of graph 
 		is not being shown on this page, it doesn't mean you have lost any observations you wrote about 
 		those graphs; you will see them again when you view that type of graph again.
@@ -156,7 +156,7 @@ and interpretations.
 		catalysis report. As you write your observations, give each one a strength value.
 		Create a consistent system, like this one:
 		<ul><li>
-			To be marked as strong, a pattern must be (most likely) both obvious and surprising to everyone who sees it.</li>
+			To be marked as strong, a pattern must be both obvious and surprising to everyone who sees it.</li>
 			<li>
 				To be marked as medium, a pattern should be difficult (but not impossible) to dispute, and at least moderately interesting.</li>
 			</li>
@@ -298,6 +298,8 @@ and interpretations.
 			A red line on a scatterplot means that answers to the two questions are significantly correlated.
 			That is, when someone chose a high scale value for one question, they also chose a high scale value
 			for the other question -- on the same story. The slope of the line shows the calculated correlation coefficient.
+			A thin red line shows a correlation that is significant at the p &lt; 0.05 level.
+			A thicker red line shows a correlation that is significant at the p &lt; 0.01 level.
 		</td>
 		</tr>
 		
@@ -312,7 +314,7 @@ and interpretations.
 				in which participants said "a manager" was supposed to be responsible
 				for a situation but "a line employee" took charge of it.
 				<br><br>
-				The red line in these mini-histogram representations represents the arithmetic mean of the distribution.
+				The blue line in these mini-histogram representations represents the arithmetic mean of the distribution.
 				The shaded box represents one standard deviation on either side of the mean. The height
 				of each box shows how many stories are in the subset. (The width of the box is constant.)
 				<br><br>
@@ -336,7 +338,7 @@ and interpretations.
 		
 		<tr>
 			<td valign="top" class="noborders"><img src="graphThumbnail_correlationMaps.png" height="64px" alt="correlation map"></td>
-			<td valign="top" class="noborders">A <b>correlation map</b> is a diagram that shows the relationships
+			<td valign="top" class="noborders">A <b>correlation map</b> shows the relationships
 				among <i>all</i> selected scale questions, either overall or for subsets of stories
 				for which a choice question was answered in different ways.
 				For example, a correlation map might show that the question 
@@ -346,7 +348,7 @@ and interpretations.
 				only in subsets of stories in which the answer to "Who acted responsibly in this story?"
 				was "parents."
 				<br><br>
-				You can only see correlation maps if at least three slider questions exist and are selected.
+				You can only view correlation maps if at least three slider questions exist and are selected.
 				<br><br>
 				You can choose to see correlation maps in either of two formats: a line of questions with arcs
 				connecting them, or a circle of questions with straight lines connecting them. Change this option
@@ -439,7 +441,7 @@ the data is normally distributed, to be conservative.
 		You can still see the statistical results by choosing "Show statistical results" in the "things you can do" list and clicking 'Do it.'
 	</p><p>
 		Note: when you hide statistical results, the HTML elements (divs) that show the statistical results are actually still on the page. 
-		They just have their "display" options set to "none". If you wanted temporarily show a statistical-results panel (maybe for a screenshot or something), 
+		They just have their "display" options set to "none". If you wanted to temporarily show a statistical-results panel (maybe for a screenshot or something), 
 		you could open your browser's development console, inspect the graph whose panel you want to show, find the hidden statistical panel, and turn off its "display: none" option.
 	</p>
 	</div>
@@ -517,7 +519,7 @@ You can record and use more than one selection, and you can
 		<a id="multiplepatterns">How can I write an observation that refers to multiple patterns?</a>
 		</h3>
 		<div class="question-answer">
-		<ul>
+		<ol>
 			<li>Under the box where you describe your observation, find the box labeled "To include additional patterns."</li>
 			<li>For each pattern you want to include, find its line in the patterns table at the top of the page. </li>
 			<li>Copy the <i>exact</i> name of each question in the pattern. (Patterns can have one, two, or three question names.) </li>
@@ -525,7 +527,7 @@ You can record and use more than one selection, and you can
 			<li>If there is more than one question in the pattern, type the names in the same order as they appear in the 
 				patterns table (where it says Question 1, Question 2, Question 3). 
 				Separate the question names by typing double equals signs between them, for example "Feel about == How long remember."</li>
-		</ul>
+		</ol>
 		<p>
 			When NarraFirma prints your report, it will print the additional patterns you specified just after the pattern
 			associated with the observation (in the order you specified them). You can include as many additional patterns as you like; just make sure each one is described on its own line of text.

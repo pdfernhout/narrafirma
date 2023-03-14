@@ -79,132 +79,107 @@ page will appear with the report on it.
 </div>
 
 <h3 class="question">
-How can I format my report sections?
-</h3>
-<div class="question-answer">
-<p>
-You can control the formatting of your report sections in three ways. 
-</p>
-<ol>
-<li>You can use these simple markup tags: **bold** and __italic__.</li>
-<li>You can use these HTML tags: 
-	address, article, b, 
-	big, blockquote, br, caption, cite, code, del, dd, d1, dt, em, h1, h2, h3, h4, h5, h6, 
-	hr, i, kbd, li, ol, p, pre, s, small, sup, sub, strong, strike, table, td, th, tr, u, ul.
-</li>
-<li>You can use custom CSS.</li>
-</ol>
-</div>
-</div>
-
-<h3 class="question">
-How do I use the "Custom CSS" feature?
-</h3>
-<div class="question-answer">
-<p>
-Click <b>Print selected catalysis report</b>, 
-then use your browser to <strong>inspect</strong> any element of the report you want to change. 
-</p>
-<p>
-The usual way to inspect items is to right-click on a word or area and choose "Inspect" or "Inspect Element" from the popup menu that appears.
-If you don't see a popup menu or an "Inspect" menu item, look up how to inspect a web page element in the browser you are using.
-Sometimes you need to turn on "developer" mode to inspect page elements.
-</p>
-<p>When you have successfully inspected the page element you want to change, you should see its CSS class. 
-	Most of the classes start with "narrafirma-catalysis-report".
-</p>
-<p>Next go to the "custom CSS" field on this page and
-write a class selector (label) and declaration (set of formatting lines)
-for that class. You can use your browser's style editor to experiment with CSS until you get the styling you want.
-</p><p>
-For example, if you wanted to change your report so that your perspective names appear in blue, you would write a CSS statement
-like this:
-</p>
-<div class="book-quote">
-<code>     .narrafirma-catalysis-report-perspective { color: blue; }</code>
-</div>
-<p>
-Then print the report again to see your change. 
-(You can't just reload the report page; you have to click the "Print selected catalysis report" button again.)
-</p>
-<p>You can also style the elements of your graphs. For example, this
-	line will make the "observed" circles in your contingency graphs green:</p>
-<div class="book-quote">
-<code>     .contingencyChart ellipse.storyCluster.observed { stroke: green; }</code>
-</div>
-</div>
-
-<h3 class="question">
-One of my PNG graphs is empty.
-</h3>
-<div class="question-answer">
-<p>
-Firefox sometimes has a problem generating PNG graphs when there are special
-characters in texts. We can't easily fix this. If this happens to you, either use a different 
-browser (it doesn't happen in Chrome) or write your graph to SVG format,
-open it in a program that edits SVG (like Inkscape) and save it to PNG there.
-</p>
-</div>
-
-<h3 class="question">
 Why would I want to report only observations?
 </h3>
 <div class="question-answer">
 <p>
 So you can facilitate and record a <b>group catalysis session</b>, where a group of people writes and clusters 
-interpretations for your catalysis report. Here's how to do it.
+interpretations for your catalysis report. 
 </p>
+</div>
+
+<h3 class="question">
+	How do you facilitate group catalysis?
+	</h3>
+	<div class="question-answer">
 <ol>
 	<li>Look at the patterns in your data on the "Explore Patterns" page. Write an observation for each pattern that stands out.
 		Do this as objectively as possible; for example, you might write an observation for each statistically significant difference.
 	</li>
-	<li>Print a catalysis report with only the observations you wrote. Also print story cards.</li>
+	<li>Print a catalysis report with only the observations you wrote.</li>
+	<li>Also print out a set of story cards.</li>
 	<li><b>Invite some people to work with you.</b> You'll need at least two or three people.</li>
-	<li>A good rule of thumb is to plan to spend <b>ten minutes per observation</b>. 
+	<li>Plan to spend at least <b>ten minutes per observation</b>.
 		If you have a lot of observations, invite more people, or choose a subset
-		of your observations to put before the group (maybe only the ones you've marked as strongest).
+		of your observations to put before the group (maybe only the ones you've marked as strongest).</li>
+	<li>At your workshop:
+		<ul>
+			<li>Show the people your observations, one at a time. Ask them to talk about each observation and look at some of the stories involved.
+				If you have enough participants to break into groups of three, you can split up the observations and get through them faster.</li>
+			<li>Ask people to collaborate on writing <b>at least two competing interpretations of each observation</b>.
+				For each interpretation, ask them to write <i>a clear explanation of what the observation means from a particular perspective</i>.
+			</li><li>
+				Be sure to explain that <b>the interpretations must disagree</b> with each other. 
+				Remember to explain <i>why</i> this is useful.
+			</li>
+			<li>Ask the people to give each interpretation they come up with a <b>short name</b> (on a sticky note) and a <b>description</b> (on a sheet of paper). 
+				They can write both things down, or they can only write down the name and <i>say</i> the description into an audio recording
+				(which you will later transcribe).
+			</li>
+			<li>At the end of the workshop, ask the people to <b>cluster the interpretation names</b> they wrote. Ask them to give the clusters names.</li>
+			<li>Take good photographs of the session, making sure that you can read all of the clustered sticky notes.</li>
+		</ul>
 	</li>
-	<li>At your workshop, show the people your observations, one at a time. Ask them to talk about each observation and look at some of the stories involved.
-		If you have enough participants to break into groups of three, you can split up the observations and get through them faster.
-	</li>
-	<li>Ask people to collaborate on writing <b>at least two competing interpretations of each observation</b>.
-		For each interpretation, ask them to write <i>a clear explanation of what the observation means from a particular perspective</i>.
-	</li><li>
-		Be sure to explain that <b>the interpretations must disagree</b> with each other. 
-		Remember to explain <i>why</i> this is useful.
-	</li>
-	<li>Ask the people to give each interpretation they come up with a <b>short name</b> (on a sticky note) and a <b>description</b> (on a sheet of paper). 
-		They can write both things down, or they can only write down the name and <i>say</i> the description into an audio recording
-		(which you will later transcribe).
-	</li>
-	<li>At the end of the workshop, ask the people to <b>cluster the interpretation names</b> they wrote. Ask them to give the clusters names.</li>
-	<li>Take good photographs of the session, making sure that you can read all of the clustered sticky notes.</li>
-	<li>After the session, go back to NarraFirma. For each observation, enter the interpretations people gave for it. If you made an audio recording, 
+	<li>After the session:
+		<ul>
+			<li>Go back to NarraFirma. For each observation, enter the interpretations people gave for it. If you made an audio recording, 
 		transcribe what they said about each interpretation.</li>
 	<li>After you have entered all of the interpretations, arrange them into the clusters people put them in, and use the cluster names for the perspectives.</li>
 	<li>Now you're ready to print your catalysis report and use it in a sensemaking session.</li>
+		</ul>
 </ol>
-<p>Some tips on group narrative catalysis:</p>
+</div>
+
+<h3 class="question">
+	Why should I facilitate group catalysis?
+	</h3>
+	<div class="question-answer">
+	<p>
 <ul>
-	<li>
-		<b>Why</b> facilitate a group catalysis session? To spread the work around; to reduce costs; to involve your participants more fully;
-		to get better "buy-in" from people who might feel their words were being twisted or misrepresented otherwise; to improve the utility of your catalysis report;
-		to draw on more imaginations than just your own; to make up for gaps in your own understanding.
-	</li><li>
-			<b>Why not</b> facilitate a group catalysis session? You can't get enough people to help;
-	those who are willing to help can't understand the graphs they'd need to work with;
-	the people doing the sensemaking trust you more than other people; 
-	you are better at catalysis than
-	the people who are willing to help; somebody asked you to do catalysis;
-	nobody else has the time. 
-	</li>
-	<li>In your workshop, don't ask different groups of people to come up with competing interpretations for the same observations. It won't work. People will just argue. 
-		The <i>same</i> people must come up with interpretations on <i>multiple sides</i> of the observations. 
+	<li>To involve your project participants more fully.</li>
+	<li>To get better "buy-in" from people who might feel their words are being twisted or misrepresented otherwise.</li>
+	<li>To help interested participants make sense of the topic more fully than they could by participating in sensemaking alone.</li>
+	<li>To help your participants learn how to do PNI.</li>
+	<li>To improve the utility and relevance of your catalysis report.</li>
+	<li>To draw on a wide range of experiences and imaginations, not just your own.</li>
+	<li>To make up for gaps in your own understanding.</li>
+	<li>To spread the work around and reduce costs.</li>
+</ul>
+		</p>
+	</div>
+
+	<h3 class="question">
+		Why should I <i>not</i> facilitate group catalysis?
+		</h3>
+		<div class="question-answer">
+		<p>
+	<ul>
+		<li>You can't find anyone who has the time or energy or interest or patience to help you.</li>
+		<li>The topic is too painful or emotional for your participants to be able to look at it from multiple perspectives.</li>
+		<li>None of your participants know how to work with graphs and statistics, and they aren't willing to try, even with help.</li>
+		<li>As an outsider, you can see and say things that people deeply embedded in the situation cannot.</li>
+		<li>Your participants (or your funders) trust you more than they trust anyone else.</li>
+		<li>Your project involves groups of people who don't trust each other, but everyone trusts you.</li>
+		<li>You have a lot more experience doing catalytic work than anyone else involved in the project.</li>
+		<li>Your participants or funders asked you to do the catalysis yourself.</li>
+	</ul>
+			</p>
+		</div>
+
+		<h3 class="question">
+			Do you have any more tips for facilitating group catalysis?
+			</h3>
+			<div class="question-answer">
+			<p>
+<ul>
+	<li>In your workshop, do not ask different groups of people 
+		to come up with competing interpretations for the same observations. It won't work. People will just argue. 
+		The <i>same</i> people must come up with interpretations on <i>multiple sides</i> of each observation. 
 	</li>
 	<li>If people don't like the idea of disagreeing with themselves, explain that they are doing a sort of "devil's advocate" brainstorming exercise.
 		It also helps to explain how the interpretations they are writing will be useful in the sensemaking exercise(s) yet to come.
 	</li>
-	<li>Don't do this via email. People have to be able to talk with each other in real time.</li>
+	<li>Don't do this via email. People have to be able to talk with each other in real time (an online video call is fine, though).</li>
 	<li>Some people have an easier time making sense of graphs and charts than others. You can help with this by giving people a five or ten minute introduction
 		on what each graph type means and how to read it. You can also ask people to team up in such a way that each group has at least one person
 		who is familiar with graphs (and maybe statistics). </li>
@@ -216,6 +191,75 @@ interpretations for your catalysis report. Here's how to do it.
 	</li>
 </ul>
 </div>
+
+
+<h3 class="question">
+	How can I format my report sections?
+	</h3>
+	<div class="question-answer">
+	<p>
+	You can control the formatting of your report sections in three ways. 
+	</p>
+	<ol>
+	<li>You can use these simple markup tags: **bold** and __italic__.</li>
+	<li>You can use these HTML tags: 
+		address, article, b, 
+		big, blockquote, br, caption, cite, code, del, dd, d1, dt, em, h1, h2, h3, h4, h5, h6, 
+		hr, i, kbd, li, ol, p, pre, s, small, sup, sub, strong, strike, table, td, th, tr, u, ul.
+	</li>
+	<li>You can use custom CSS.</li>
+	</ol>
+	</div>
+	</div>
+	
+	<h3 class="question">
+	How do I use the "Custom CSS" feature?
+	</h3>
+	<div class="question-answer">
+	<p>
+	Click <b>Print selected catalysis report</b>, 
+	then use your browser to <strong>inspect</strong> any element of the report you want to change. 
+	</p>
+	<p>
+	The usual way to inspect items is to right-click on a word or area and choose "Inspect" or "Inspect Element" from the popup menu that appears.
+	If you don't see a popup menu or an "Inspect" menu item, look up how to inspect a web page element in the browser you are using.
+	Sometimes you need to turn on "developer" mode to inspect page elements.
+	</p>
+	<p>When you have successfully inspected the page element you want to change, you should see its CSS class. 
+		Most of the classes start with "narrafirma-catalysis-report".
+	</p>
+	<p>Next go to the "custom CSS" field on this page and
+	write a class selector (label) and declaration (set of formatting lines)
+	for that class. You can use your browser's style editor to experiment with CSS until you get the styling you want.
+	</p><p>
+	For example, if you wanted to change your report so that your perspective names appear in blue, you would write a CSS statement
+	like this:
+	</p>
+	<div class="book-quote">
+	<code>     .narrafirma-catalysis-report-perspective { color: blue; }</code>
+	</div>
+	<p>
+	Then print the report again to see your change. 
+	(You can't just reload the report page; you have to click the "Print selected catalysis report" button again.)
+	</p>
+	<p>You can also style the elements of your graphs. For example, this
+		line will make the "observed" circles in your contingency graphs green:</p>
+	<div class="book-quote">
+	<code>     .contingencyChart ellipse.storyCluster.observed { stroke: green; }</code>
+	</div>
+	</div>
+	
+	<h3 class="question">
+	One of my PNG graphs is empty.
+	</h3>
+	<div class="question-answer">
+	<p>
+	Firefox sometimes has a problem generating PNG graphs when there are special
+	characters in texts. We can't easily fix this. If this happens to you, either use a different 
+	browser (it doesn't happen in Chrome) or write your graph to SVG format,
+	open it in a program that edits SVG (like Inkscape) and save it to PNG there.
+	</p>
+	</div>
 
 </div>
 
