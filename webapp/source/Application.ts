@@ -252,6 +252,9 @@ class Application {
             }
             
             this.chooseAProjectToOpen(response.userIdentifier, projects);
+
+            // for testing field updating
+            // setInterval ( ()=> { m.redraw(); console.log("redraw", new Date().toISOString())}, 3000);
         });
     }
     
@@ -384,8 +387,6 @@ class Application {
         if (this.runningAfterInitialIdle) {
             if (!this.pendingRedraw) {
                 this.pendingRedraw = setTimeout(() => {
-                    // if the user was editing a field that is getting changed by another user, let them know
-                    Globals.clientState().anHTMLElementValueIsBeingSetBecauseOfAnIncomingMessage(true);
                     this.pendingRedraw = null;
                     m.redraw();
                 }, 0);

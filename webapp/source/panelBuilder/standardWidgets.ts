@@ -9,8 +9,6 @@ import dialogSupport = require("../panelBuilder/dialogSupport");
 
 "use strict";
 
-const writeInTag = "WriteInEntry_";
-
 function getIdForText(text) {
     return text.replaceAll(" ", "_");
 }
@@ -109,6 +107,33 @@ function setSliderValueWithPopup(value, sliderValueOptions) {
     }
 }
 
+export function standardConfigMethod(valueProperty, element, isInitialized) {
+    const value = valueProperty();
+    if (value === undefined) return;
+    
+    // nf_lastRetrievedValue is for "keeping a separate "work-in-progress" state property and another "real" property on the side"
+    // https://github.com/MithrilJS/mithril.js/issues/1087
+    if (!isInitialized) { 
+        element.value = value; 
+        element.nf_lastRetrievedValue = value;
+        return; 
+    }
+    if (value === element.value) return;
+    if (element.type !== "text" && element.type !== "textarea")  { element.value = value; return; }
+    if (element !== document.activeElement) { element.value = value; return; }
+    if (element.value === undefined || element.value === "") { element.value = value; return; }
+    if (element.nf_lastRetrievedValue === value) return; 
+
+    const prompt = "Collision alert!\n\nAnother user has changed this field to [ " + value + " ]. Do you want to override their entry?";
+    if (confirm(prompt)) {
+        valueProperty(element.value);
+        element.nf_lastRetrievedValue = element.value;
+    } else {
+        element.value = value; 
+        element.nf_lastRetrievedValue = value;
+    }
+}
+
 export function displayQuestion(panelBuilder: PanelBuilder, model, fieldSpecification) {
 
     const fieldID = fieldSpecification.id;
@@ -116,15 +141,6 @@ export function displayQuestion(panelBuilder: PanelBuilder, model, fieldSpecific
     let questionLabel = panelBuilder.buildQuestionLabel(fieldSpecification);
 
     const valueProperty = valuePathResolver.newValuePathForFieldSpecification(model, fieldSpecification);
-
-    let writeInValue = undefined;
-    let writeInValueProperty = undefined;
-    if (fieldSpecification.writeInTextBoxLabel) {
-        writeInValueProperty = valuePathResolver.newValuePath(model, writeInTag + fieldSpecification.id);
-        if (!displayTypesWithoutValues[displayType]) {
-            writeInValue = writeInValueProperty();
-        }
-    }
 
     let value;
     if (!displayTypesWithoutValues[displayType]) {
@@ -147,16 +163,20 @@ export function displayQuestion(panelBuilder: PanelBuilder, model, fieldSpecific
     function standardChangeMethod(event, value) {
         if (event) value = event.target.value;
         valueProperty(value);
+        if (event) event.target.nf_lastRetrievedValue = event.target.value;
     }
 
     const standardValueOptions = {
-        value: value,
         id: getIdForText(fieldID),
+        // switched from value to config to avoid clearing field when other user enters different data
+        // this only works with mithril 0.2.x, must change it when we upgrade to a newer version of mithril
+        // value: value,
+        config: (element, isInitialized) => standardConfigMethod(valueProperty, element, isInitialized),
         onchange: standardChangeMethod,
         readOnly: readOnly,
         disabled: disabled
     };
-    
+
     ///////////////////////////////////////////////////////////////////// text /////////////////////////////////////////////////////////////////////
     function displayTextQuestion() {
         questionLabel[0].attrs["for"] = getIdForText(fieldID);
@@ -177,56 +197,9 @@ export function displayQuestion(panelBuilder: PanelBuilder, model, fieldSpecific
 
     ///////////////////////////////////////////////////////////////////// textarea /////////////////////////////////////////////////////////////////////
     function displayTextareaQuestion() {
-
-        // if someone has been working in a textarea and has written a lot of text, and it is about to be ovewritten because somebody else was doing the same thing,
-        // show them both texts so they can resolve the conflict
-        if (clientState.anHTMLElementValueIsBeingSetBecauseOfAnIncomingMessage()) {
-            const element = <HTMLTextAreaElement>document.getElementById(fieldID);
-            const activeElement = <HTMLTextAreaElement>document.activeElement;
-            if (element && element === activeElement) { // only do this for the textarea they are actually editing right now, not all the textareas on the page
-                if (element.value !== value) {
-                    // more changes might come in while the user is attempting to resolve the conflict!
-                    // if that happens, keep adding more to the "overwritten texts" box, so they don't lose any of the versions of what they wrote
-                    const alreadyOverwrittenText = clientState.cachedOverwrittenTexts(fieldID);
-                    if (alreadyOverwrittenText) {
-                        clientState.cachedOverwrittenTexts(fieldID, element.value + "\n---\n" + alreadyOverwrittenText);
-                        console.log('Collision alert: Another user has changed "' + fieldSpecification.displayName + '"\n-- from --\n"' + clientState.cachedOverwrittenTexts(fieldID) + '"\n-- to --\n"' + value + '"');
-                    } else {
-                        clientState.cachedOverwrittenTexts(fieldID, element.value);
-                        console.log('Collision alert: Another user has changed "' + fieldSpecification.displayName + '"\n-- from --\n"' + clientState.cachedOverwrittenTexts(fieldID) + '"\n-- to --\n"' + value + '"');
-                    }
-                }
-            }
-        }
-
         questionLabel[0].attrs["for"] = getIdForText(fieldID);
         questionLabel[0].tag = "label";
-
-        return [
-            m("textarea[class=narrafirma-textbox]", standardValueOptions),
-            clientState.cachedOverwrittenTexts(fieldID) ? 
-                m("div.narrafirma-collision-message", 
-                    m("div.narrafirma-collision-header", m("b", "Collision alert!"), 
-                        " Another user has changed the contents of this text box. This is your version. It will remain here until you click one of the buttons below (or reload the page)."), 
-                    m("textarea[class=narrafirma-textbox]", {value: clientState.cachedOverwrittenTexts(fieldID), id: fieldID + "_cached"}),
-                    m("div.narrafirma-collision-buttons", [
-                        m("button.narrafirma-collision-button", {onclick: function () {
-                            // set the field value to the cached version, then delete the cached version
-                            valueProperty(clientState.cachedOverwrittenTexts(fieldID));
-                            clientState.cachedOverwrittenTexts(fieldID, null);
-                        }}, "Keep this version (delete theirs)"),
-                        m("button.narrafirma-collision-button", {onclick: function () {
-                            // just delete the cached version, thereby keeping the changed version
-                            clientState.cachedOverwrittenTexts(fieldID, null);
-                        }}, "Keep their version (delete this one)"),
-                        m("button.narrafirma-collision-button", {onclick: function () {
-                            // this does the same thing as accepting the other user's version, except that we assume this user has changed the field before they clicked this button
-                            clientState.cachedOverwrittenTexts(fieldID, null);
-                        }}, "I have resolved the conflict myself (delete this version)"),]),
-                    m("div.narrafirma-collision-explanation", "You can also find both versions of the text in your browser's development console (until you reload the page).")
-                ) : [],
-            m("br")
-        ];
+        return [m("textarea[class=narrafirma-textbox]", standardValueOptions), m("br")];
     }
 
     ///////////////////////////////////////////////////////////////////// one checkbox /////////////////////////////////////////////////////////////////////
@@ -453,31 +426,6 @@ export function displayQuestion(panelBuilder: PanelBuilder, model, fieldSpecific
         return questionParts;
     }
 
-    ///////////////////////////////////////////////////////////////////// write-in (extra) text box ///////////////////////////////////////////////////////////
-    function displayWriteInQuestion() {
-        let label = fieldSpecification.writeInTextBoxLabel;
-        let mString = "input[type=text].narrafirma-write-in-input";
-        if (label.indexOf("**") == 0) {
-            mString = "textarea.narrafirma-write-in-textarea";
-            label = label.replaceAll("**", "");
-        }
-        const writeInDivParts = [
-            m("span.narrafirma-write-in-prompt"), sanitizeHTML.generateSmallerSetOfSanitizedHTMLForMithril(label),
-            m(mString, {
-                id: getIdForText(fieldSpecification.id) + "_input",
-                value: writeInValue || "", 
-                onchange: function(event) { 
-                    if (event && event.target.value) {
-                        writeInValue = event.target.value; 
-                        writeInValueProperty(writeInValue);
-                    }
-                }
-            }),
-            m("br")
-        ];
-        return m("div.narrafirma-write-in-div", writeInDivParts);
-    }
-
     function addAnnotationAnswer(event) {
         const newAnswer = prompt('Type a new answer to add to the list of available answers for the annotation question "' + fieldSpecification.displayName + '."');
         if (newAnswer) {
@@ -521,10 +469,6 @@ export function displayQuestion(panelBuilder: PanelBuilder, model, fieldSpecific
             m("span", {style: {"font-weight": "bold"}}, "UNFINISHED: " + fieldSpecification.displayType),
             m("br")
         ];
-    }
-
-    if (fieldSpecification.writeInTextBoxLabel) {
-        parts.push(displayWriteInQuestion());
     }
 
     if (parts.length && useNormalDivs) {

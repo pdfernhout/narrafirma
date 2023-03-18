@@ -6,6 +6,7 @@ import Globals = require("../Globals");
 import questionnaireGeneration = require("../questionnaireGeneration");
 import csvImportExport = require("../csvImportExport");
 import dialogSupport = require("../panelBuilder/dialogSupport");
+import standardWidgets = require("../panelBuilder/standardWidgets");
 
 "use strict";
 
@@ -259,6 +260,14 @@ function add_translationDictionaryEditorPanel(panelBuilder: PanelBuilder, model,
         const w = window.open("survey.html#preview=" + (new Date().toISOString()), "_blank");
     }
 
+    function getOrSetDictValue(id, dict, language, value) {
+        if (value === undefined) {
+            return dict[language] || "";
+        } else {
+            changeTranslationForID(id, value);
+        }
+    }
+
     function htmlPartsForDictionary(text, dict) {
         if (!dict) return [];
 
@@ -282,8 +291,10 @@ function add_translationDictionaryEditorPanel(panelBuilder: PanelBuilder, model,
             }
             partsForThisLanguage.push(m("td.narrafirma-translation-textbox", m(inputClass, {
                 id: inputID, 
-                value: dict[language] || "",
-                onchange: changeTranslation
+                // switched from value to config to avoid clearing field when other user enters different data
+                // value: dict[language] || "",
+                config: standardWidgets.standardConfigMethod.bind(null, (value) => getOrSetDictValue(inputID, dict, language, value)),
+                onchange: changeTranslationForEvent
             })));
             textBoxIDs.push(inputID);
             dictionaryTable.push(m("tr"), partsForThisLanguage);
@@ -293,9 +304,14 @@ function add_translationDictionaryEditorPanel(panelBuilder: PanelBuilder, model,
         return m("div.questionExternal", partsForThisText);
     }
 
-    function changeTranslation(event) {
-        if (!event.target.id) return;
-        const textAndLanguage = event.target.id.split("::");
+    function changeTranslationForEvent(event) {
+        changeTranslationForID(event.target.id, event.target.value);
+        if (event) event.target.nf_lastRetrievedValue = event.target.value;
+    }
+
+    function changeTranslationForID(id, value) {
+        if (!id) return;
+        const textAndLanguage = id.split("::");
         if (textAndLanguage.length < 2) return;
 
         const text = textAndLanguage[0];
@@ -305,8 +321,8 @@ function add_translationDictionaryEditorPanel(panelBuilder: PanelBuilder, model,
         dictionaryIDs.forEach((id) => {
             const storedDictionary = project.tripleStore.makeObject(id, true);
             if (storedDictionary.defaultText === text) {
-                if (!storedDictionary.hasOwnProperty(language) || storedDictionary[language] !== event.target.value) {
-                    project.tripleStore.addTriple(id, language, event.target.value); 
+                if (!storedDictionary.hasOwnProperty(language) || storedDictionary[language] !== value) {
+                    project.tripleStore.addTriple(id, language, value); 
                 }
                 return;
             }

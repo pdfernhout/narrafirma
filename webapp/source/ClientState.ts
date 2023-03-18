@@ -42,7 +42,6 @@ class ClientState {
     private _serverStatus: string = "narrafirma-serverstatus-ok";
     private _serverStatusText: string = "";
     private _leavingPageCallback: () => void;
-    private _anHTMLElementValueIsBeingSetBecauseOfAnIncomingMessage: boolean = null;
     private _cachedOverwrittenTexts = {};
     private _showAdvancedOptions: boolean = false;
     private _showImportOptions: boolean = false;
@@ -164,13 +163,6 @@ class ClientState {
             this._leavingPageCallback = newValue;
         }
         return this._leavingPageCallback;
-    }
-
-    anHTMLElementValueIsBeingSetBecauseOfAnIncomingMessage(newValue: boolean = undefined) {
-        if (newValue !== undefined) {
-            this._anHTMLElementValueIsBeingSetBecauseOfAnIncomingMessage = newValue;
-        }
-        return this._anHTMLElementValueIsBeingSetBecauseOfAnIncomingMessage;
     }
 
     cachedOverwrittenTexts(fieldID: string, newValue: string = undefined) {

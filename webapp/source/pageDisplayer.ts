@@ -32,7 +32,7 @@ const PageDisplayer: any = {
     
     view: function(controller, args) {
         let contentsDiv;
-        
+
         // Setting the hash may trigger another call to the showPage function eventually, but as the new page will already be set, it should not loop further
         clientState.updateHashIfNeededForChangedClientState();
         
@@ -67,7 +67,6 @@ const PageDisplayer: any = {
                 contentsDiv = m("div", "PROBLEM: Failed to view page: " + currentPageID);
             }
         }
-        clientState.anHTMLElementValueIsBeingSetBecauseOfAnIncomingMessage(false);
 
         // for all of these optional displays
         // if nothing is stored for the option, show the thing (default to support for new user)

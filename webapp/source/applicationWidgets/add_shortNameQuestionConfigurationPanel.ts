@@ -93,8 +93,17 @@ function add_shortNameQuestionConfigurationPanel(panelBuilder: PanelBuilder, mod
     if (isAnnotationQuestion) {
         let value = storageFunction();
         if (value === undefined) { // no name set
-            parts.push(m("div.questionInternal", [m("input", {id: fieldSpecification.id, class: "narrafirma-textbox-required", style: "width: 20em;", value: storageFunction() || "", disabled: panelBuilder.readOnly, 
-                    onchange: function(event) { setNewShortName(event.target.value) }})]));
+            parts.push(m("div.questionInternal", [
+                m("input", {
+                    id: fieldSpecification.id, 
+                    class: "narrafirma-textbox-required", 
+                    style: "width: 20em;", 
+                    // not using config function here because it conflicts with validation
+                    // also, the probability of two users writing different names for the same item at the same time seems vanishingly small 
+                    value: storageFunction() || "", 
+                    disabled: panelBuilder.readOnly, 
+                    onchange: function(event) { if (event) setNewShortName(event.target.value) }
+                })]));
         } else { // name set already
             if (!changeAnnotationQuestionShortNamePanelIsOpen) {
                 const readOnlyStyle = "display: block; margin: 0.5em 0 0 1em";
@@ -114,8 +123,18 @@ function add_shortNameQuestionConfigurationPanel(panelBuilder: PanelBuilder, mod
             }
         }
     } else { // not an annotation question
-        parts.push(m("div.questionInternal", [m("input", {id: fieldSpecification.id, class: "narrafirma-textbox-required", style: "width: 20em;", value: storageFunction() || "", disabled: panelBuilder.readOnly, 
-                onchange: function(event) { setNewShortName(event.target.value) }})]));
+        parts.push(m("div.questionInternal", [
+            m("input", {
+                id: fieldSpecification.id, 
+                class: "narrafirma-textbox-required", 
+                style: "width: 20em;", 
+                // not using config function here because it conflicts with validation
+                // also, the probability of two users writing different names for the same item at the same time seems vanishingly small 
+                value: storageFunction() || "", 
+                disabled: panelBuilder.readOnly, 
+                onchange: function(event) { if (event) setNewShortName(event.target.value) }
+            })
+        ]));
     }
     return m("div.questionExternal", parts);
 }
