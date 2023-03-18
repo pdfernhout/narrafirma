@@ -477,8 +477,7 @@ function updateOrCheckQuestionnaireForStoryCollection(storyCollectionIdentifier,
                     },
                 dialogOKButtonLabel: "Override (Update anyway)",
                 dialogOKCallback: function(dialogConfiguration, hideDialogMethod) { hideDialogMethod(); doCopy(activeOnWeb, true); },
-                dialogCancelButtonLabel: actuallyCopy ? "Cancel" : "Close",
-                dialogCancelCallback: function(dialogConfiguration, hideDialogMethod) { hideDialogMethod(); }
+                dialogCancelButtonLabel: actuallyCopy ? "Cancel" : "Close"
             };
             return dialogSupport.openDialog(dialogConfiguration);
         } else {
