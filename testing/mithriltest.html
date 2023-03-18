@@ -1,0 +1,20 @@
+<body>
+    <script src="https://unpkg.com/mithril/mithril.js"></script>
+    <script>
+    var root = document.body;
+    let inputA = "hello";
+    let inputB = "bye";
+
+    m.mount(root, {
+        view: function() {
+            return m("div", [
+                m("input", {value: inputA, key: 1, id: 1, onchange: (event) => {inputA = event.target.value}}), 
+                m("input", {value: inputB, key: 2, id: 2, onchange: (event) => {inputB = event.target.value}}), 
+            ]);
+        }
+    });
+
+    setInterval ( ()=> { m.redraw(); console.log("redraw", new Date().toISOString())}, 3000);
+
+    </script>
+</body>
