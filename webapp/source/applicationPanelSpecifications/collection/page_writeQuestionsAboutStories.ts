@@ -24,8 +24,8 @@ const panel: Panel = {
                 itemPanelID: "panel_addStoryQuestion",
                 gridConfiguration: {
                     columnsToDisplay: ["storyQuestion_text", "storyQuestion_type", "storyQuestion_shortName", "storyQuestion_options"],
-                    validateAdd: "requireShortNameTypeAndQuestionOptionsIfNecessary",
-                    validateEdit: "requireShortNameTypeAndQuestionOptionsIfNecessary",
+                    validateAdd: "requireShortNameTypeOptionsAndTrimming",
+                    validateEdit: "requireShortNameTypeOptionsAndTrimming",
                     addButton: true,
                     removeButton: true, 
                     duplicateButton: true,

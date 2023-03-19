@@ -25,8 +25,8 @@ const panel: Panel = {
                 itemPanelID: "panel_addParticipantQuestion",
                 gridConfiguration: {
                     columnsToDisplay: ["participantQuestion_text", "participantQuestion_type", "participantQuestion_shortName", "participantQuestion_options"],
-                    validateAdd: "requireShortNameTypeAndQuestionOptionsIfNecessary",
-                    validateEdit: "requireShortNameTypeAndQuestionOptionsIfNecessary",
+                    validateAdd: "requireShortNameTypeOptionsAndTrimming",
+                    validateEdit: "requireShortNameTypeOptionsAndTrimming",
                     addButton: true,
                     removeButton: true, 
                     duplicateButton: true,

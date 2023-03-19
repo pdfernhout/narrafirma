@@ -132,26 +132,39 @@ class Application {
     
     // Panel builder "functionResult" components will get routed through here to calculate their text.
     calculateFunctionResultForGUI(panelBuilder: PanelBuilder, model, fieldSpecification, functionName): any {
+
+        function validationErrorMessage(itemID, checkName, checkType = false, checkOptions = false, checkTrimming = false) {
+            if (!itemID) return null;
+            let success = false;
+            if (checkName) {
+                success = buttonActions.checkThatItemHasShortName(itemID);
+                if (!success) return ["You must enter a short name for this item."];
+            }
+            if (checkType) {
+                success = buttonActions.checkThatQuestionHasType(itemID);
+                if (!success) return ["You must enter a question type for this item."];
+            }
+            if (checkOptions) {
+                success = buttonActions.checkThatItemHasOptionListIfRequired(itemID);
+                if (!success) return ["You must enter at least two options for this type of question."];
+            }
+            if (checkTrimming) {
+                success = buttonActions.checkThatItemOptionsHaveNoLeadingOrTrailingWhiteSpaceCharacters(itemID);
+                if (!success) return ["For this type of question, the answers in your answer list must not have empty spaces in front of or after them."];
+            }
+            return null;
+        }
+
+        const itemID = fieldSpecification.value;
+
         if (functionName === "isStoryCollectingEnabled") {
             return surveyCollection.isStoryCollectingEnabled();
         } else if (functionName === "requireShortName") {
-            const itemID = fieldSpecification.value;
-            let success = buttonActions.checkThatItemHasShortName(itemID);
-            return success ? null : ["You must enter a short name for this item."];
+            return validationErrorMessage(itemID, true);
         } else if (functionName === "requireShortNameAndType") {
-            const itemID = fieldSpecification.value;
-            let success = buttonActions.checkThatItemHasShortName(itemID);
-            if (!success) return ["You must enter a short name for this item."];
-            success = buttonActions.checkThatQuestionHasType(itemID);
-            return success ? null : ["You must enter a question type for this item."];
-        } else if (functionName === "requireShortNameTypeAndQuestionOptionsIfNecessary") {
-            const itemID = fieldSpecification.value;
-            let success = buttonActions.checkThatItemHasShortName(itemID);
-            if (!success) return ["You must enter a short name for this item."];
-            success = buttonActions.checkThatQuestionHasType(itemID);
-            if (!success) return ["You must enter a question type for this item."];
-            success = buttonActions.checkThatItemHasOptionListIfRequired(itemID);
-            return success ? null : ["You must enter at least two options for this type of question."];
+            return validationErrorMessage(itemID, true, true);
+        } else if (functionName === "requireShortNameTypeOptionsAndTrimming") { 
+            return validationErrorMessage(itemID, true, true, true, true);
         } else {
             console.log("TODO: calculateFunctionResultForGUI ", functionName, fieldSpecification);
             return "calculateFunctionResultForGUI UNFINISHED: " + functionName + " for: " + fieldSpecification.id;

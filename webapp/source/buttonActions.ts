@@ -347,36 +347,57 @@ export function checkThatQuestionHasType(itemID): boolean {
     return (questionType && questionType.length > 0);
 }
 
+function questionTypeForID(itemID) {
+    if (itemID.indexOf("StoryQuestion") >= 0) {
+        return "storyQuestion";
+    } else if (itemID.indexOf("ParticipantQuestion") >= 0) {
+        return "participantQuestion";
+    } else {
+        const message = "Error: Unsupported options list validation check for item: " + itemID;
+        alert(message);
+        console.log(message);
+        return null;
+    }
+}
+
 export function checkThatItemHasOptionListIfRequired(itemID): boolean {
     if (!itemID) return false;
     const item = project.tripleStore.makeObject(itemID, true);
     if (!item) return false; 
 
-    // item types whose option lists are required, for lookup:
-    // story and participant questions of the types radiobuttons, select, or checkboxes
-
-    let itemType = null;
-    if (itemID.indexOf("StoryQuestion") >= 0) {
-        itemType = "storyQuestion";
-    } else if (itemID.indexOf("ParticipantQuestion") >= 0) {
-        itemType = "participantQuestion";
-    } else {
-        const message = "Error: Unsupported options list validation check for item: " + itemID;
-        alert(message);
-        console.log(message);
-    }
-
+    const itemType = questionTypeForID(itemID);
+    if (!itemType) return false;
     const questionType = item[itemType + "_type"];
-    if (["radiobuttons", "select", "checkboxes"].indexOf(questionType) >= 0) {
-        const questionOptionsString = item[itemType + "_options"];
-        if (questionOptionsString) {
-            const questionOptionsList = item[itemType + "_options"].split("\n");
-            return (questionOptionsList.length > 1); 
-        } else {
-            return false;
-        }
+    if (!questionType) return false;
+    if (["radiobuttons", "select", "checkboxes"].indexOf(questionType) < 0) return true;
+
+    const questionOptionsString = item[itemType + "_options"];
+    if (questionOptionsString) {
+        const questionOptionsList = item[itemType + "_options"].split("\n");
+        return (questionOptionsList.length > 1); 
     } else {
-        return true; 
+        return false; 
+    }
+}
+
+export function checkThatItemOptionsHaveNoLeadingOrTrailingWhiteSpaceCharacters(itemID): boolean {
+    if (!itemID) return false;
+    const item = project.tripleStore.makeObject(itemID, true);
+    if (!item) return true; // in this case, if they have entered nothing, it is not wrong 
+
+    const itemType = questionTypeForID(itemID);
+    if (!itemType) return false;
+    const questionType = item[itemType + "_type"];
+    if (!questionType) return false;
+    if (["radiobuttons", "select", "checkboxes"].indexOf(questionType) < 0) return true;
+
+    const questionOptionsString = item[itemType + "_options"];
+    if (questionOptionsString) {
+        const questionOptionsList = item[itemType + "_options"].split("\n");
+        const trimmedQuestionOptionsList = questionOptionsList.map((item) => { return item.trim(); });
+        return (questionOptionsList.join("\n") === trimmedQuestionOptionsList.join("\n"));
+    } else {
+        return true; // in this case, if they have entered nothing, it is not wrong 
     }
 }
 
