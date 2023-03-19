@@ -556,32 +556,32 @@ class Project {
         // general case: filtering on answers to questions
         const questionID = this.questionIDForQuestionShortNameGivenQuestionnaire(questionShortName, questionnaire);
         let question = this.questionForQuestionIDGivenQuestionnaire(questionID, questionnaire, storyCollectionIdentifier);
-        let answers = [];
+        let answersInFilter = [];
         let lowerSliderLimit = undefined;
         let upperSliderLimit = undefined;
 
         if (question) {
-            answers = questionAndAnswers.slice(1);
+            answersInFilter = questionAndAnswers.slice(1);
             if (question.displayType == "boolean") {
-                if (answers[0] != "yes" && answers[0] != "no") {
+                if (answersInFilter[0] != "yes" && answersInFilter[0] != "no") {
                     if (showWarnings) alert("This question (" + questionShortName + ") is a boolean question. The specified answer must be either yes or no.");
                     return storiesToFilter;
                 }
             } else if (question.displayType == "checkbox") {
-                if (answers[0] != "true" && answers[0] != "false") {
+                if (answersInFilter[0] != "true" && answersInFilter[0] != "false") {
                     if (showWarnings) alert("This question (" + questionShortName + ")  is a checkbox question. The specified answer must be either true or false.");
                     return storiesToFilter;
                 }
             } else if (question.displayType == "slider") { 
-                lowerSliderLimit = parseInt(answers[0]);
+                lowerSliderLimit = parseInt(answersInFilter[0]);
                 if (isNaN(lowerSliderLimit)) {
-                    if (showWarnings) alert("This question (" + questionShortName + ") has a numerical range, and the lower limit you specified (" + answers[0] + ") doesn't seem to be a number.");
+                    if (showWarnings) alert("This question (" + questionShortName + ") has a numerical range, and the lower limit you specified (" + answersInFilter[0] + ") doesn't seem to be a number.");
                     return storiesToFilter;
                 }
-                if (answers.length > 1) {
-                    upperSliderLimit = parseInt(answers[1]);
+                if (answersInFilter.length > 1) {
+                    upperSliderLimit = parseInt(answersInFilter[1]);
                     if (isNaN(upperSliderLimit)) {
-                        if (showWarnings) alert("This question (" + questionShortName + ") has a numerical range, and the upper limit you specified (" + answers[1] + ") doesn't seem to be a number.");
+                        if (showWarnings) alert("This question (" + questionShortName + ") has a numerical range, and the upper limit you specified (" + answersInFilter[1] + ") doesn't seem to be a number.");
                         return storiesToFilter;
                     }
                 } else { 
@@ -604,25 +604,32 @@ class Project {
             const value = story.fieldValue(question.id)
             let storyMatches = false;
             if (question.displayType == "boolean") {
-                storyMatches = (answers[0] == "yes" && value) || (answers[0] == "no" && !value);
+                storyMatches = (answersInFilter[0] == "yes" && value) || (answersInFilter[0] == "no" && !value);
             } else if (question.displayType == "checkbox") {
-                storyMatches = (answers[0] == "true" && value) || (answers[0] == "false" && !value);
-            } else if (value !== undefined && value !== null && value !== {} && value !== "") {
+                storyMatches = (answersInFilter[0] == "true" && value) || (answersInFilter[0] == "false" && !value);
+            } else if (value !== undefined && value !== null && value !== "") {
                 if (question.displayType == "slider") {
                     const valueAsInt = parseInt(value);
                     if (valueAsInt >= lowerSliderLimit && valueAsInt <= upperSliderLimit) {
                         storyMatches = true;
                     }
                 } else if (typeof(value) == "string") { // select, radiobuttons
-                    for (let answerIndex = 0; answerIndex < answers.length; answerIndex++) {
-                        if (value.trim() == answers[answerIndex]) {
+                    for (let answerIndex = 0; answerIndex < answersInFilter.length; answerIndex++) {
+                        if (value.trim() == answersInFilter[answerIndex]) {
                             storyMatches = true;
                             break;
                         }
                     }
                 } else { // checkboxes
-                    for (let answerIndex = 0; answerIndex < answers.length; answerIndex++) {
-                        if (value[answers[answerIndex]] && value[answers[answerIndex]] == true) {
+                    const answersToReport = {}; 
+                    const valueKeys = Object.keys(value);
+                    for (let i = 0; i < valueKeys.length; i++) {
+                        // see note in calculateStatistics about lumping commands and trimming
+                        const trimmedKey = valueKeys[i].trim();
+                        answersToReport[trimmedKey] = value[valueKeys[i]];
+                    }
+                    for (let answerIndex = 0; answerIndex < answersInFilter.length; answerIndex++) {
+                        if (answersToReport[answersInFilter[answerIndex]] && answersToReport[answersInFilter[answerIndex]] == true) {
                             storyMatches = true;
                             break;
                         }

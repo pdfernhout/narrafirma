@@ -73,15 +73,15 @@ function displayHTMLForCheckboxes(fieldSpecification, fieldName, value) {
     // TODO: What if value is not currently available option?
     const optionsAlreadyConsidered = [];
     for (let i = 0; i < fieldSpecification.valueOptions.length; i++) {
-        const option = fieldSpecification.valueOptions[i];
-        if (optionsAlreadyConsidered.indexOf(option) >= 0) continue; // hide duplicate options, if any, due to lumping during import
-        optionsAlreadyConsidered.push(option);
+        const valueOption = fieldSpecification.valueOptions[i];
+        if (optionsAlreadyConsidered.indexOf(valueOption) >= 0) continue; // hide duplicate options, if any, due to lumping during import
+        optionsAlreadyConsidered.push(valueOption);
         if (options.length-1) options.push(wrap("span", answerClass + "-comma", ", "));
-        if (value && value[option]) {
-            options.push(wrap("b", "narrafirma-story-card-checkboxes-selected " + answerClass + "-selected", option));
+        if (value && value[valueOption]) {
+            options.push(wrap("b", "narrafirma-story-card-checkboxes-selected " + answerClass + "-selected", valueOption));
             atLeastOneOptionWasChecked = true;
         } else {
-            options.push(wrap("span", "narrafirma-story-card-checkboxes-unselected " + answerClass + "-unselected", option));
+            options.push(wrap("span", "narrafirma-story-card-checkboxes-unselected " + answerClass + "-unselected", valueOption));
         }
     }
     return [options, atLeastOneOptionWasChecked];
@@ -95,15 +95,15 @@ function displayHTMLForRadioButtons(fieldSpecification, fieldName, value) {
     // TODO: What if value is not currently available option?
     const optionsAlreadyConsidered = [];
     for (let i = 0; i < fieldSpecification.valueOptions.length; i++) {
-        const option = fieldSpecification.valueOptions[i];
-        if (optionsAlreadyConsidered.indexOf(option) >= 0) continue; // hide duplicate options, if any, due to lumping during import
-        optionsAlreadyConsidered.push(option);
+        const valueOption = fieldSpecification.valueOptions[i];
+        if (optionsAlreadyConsidered.indexOf(valueOption) >= 0) continue; // hide duplicate options, if any, due to lumping during import
+        optionsAlreadyConsidered.push(valueOption);
         if (options.length-1) options.push(wrap("span", answerClass + "-comma", ", "));
-        if (value && value === option) {
-            options.push(wrap("b", "narrafirma-story-card-radiobuttons-selected " + answerClass + "-selected", option));
+        if (value && value === valueOption) {
+            options.push(wrap("b", "narrafirma-story-card-radiobuttons-selected " + answerClass + "-selected", valueOption));
             atLeastOneOptionWasChecked = true;
         } else {
-            options.push(wrap("span", "narrafirma-story-card-radiobuttons-unselected " + answerClass + "-unselected", option));
+            options.push(wrap("span", "narrafirma-story-card-radiobuttons-unselected " + answerClass + "-unselected", valueOption));
         }
     }
     return [options, atLeastOneOptionWasChecked];
@@ -117,15 +117,15 @@ function displayHTMLForSelect(fieldSpecification, fieldName, value) {
     // TODO: What if value is not currently available option?
     const optionsAlreadyConsidered = [];
     for (let i = 0; i < fieldSpecification.valueOptions.length; i++) {
-        const option = fieldSpecification.valueOptions[i];
-        if (optionsAlreadyConsidered.indexOf(option) >= 0) continue; // hide duplicate options, if any, due to lumping during import
-        optionsAlreadyConsidered.push(option);
+        const valueOption = fieldSpecification.valueOptions[i];
+        if (optionsAlreadyConsidered.indexOf(valueOption) >= 0) continue; // hide duplicate options, if any, due to lumping during import
+        optionsAlreadyConsidered.push(valueOption);
         if (options.length-1) options.push(wrap("span", answerClass + "-comma", ", "));
-        if (value && value === option) {
-            options.push(wrap("b", "narrafirma-story-card-select-selected " + answerClass + "-selected", option));
+        if (value && value === valueOption) {
+            options.push(wrap("b", "narrafirma-story-card-select-selected " + answerClass + "-selected", valueOption));
             atLeastOneOptionWasChecked = true;
         } else {
-            options.push(wrap("span", "narrafirma-story-card-select-unselected " + answerClass + "-unselected", option));
+            options.push(wrap("span", "narrafirma-story-card-select-unselected " + answerClass + "-unselected", valueOption));
         }
     }
     return [options, atLeastOneOptionWasChecked];
@@ -134,22 +134,35 @@ function displayHTMLForSelect(fieldSpecification, fieldName, value) {
 function displayHTMLForField(storyModel: surveyCollection.Story, fieldSpecification, options, nobreak = null) {
     // if (!model[fieldSpecification.id]) return "";
     let value = storyModel.fieldValue(fieldSpecification.id);
+    let displayValue = value;
     const isAnnotationQuestion = fieldSpecification.id.indexOf("A_") >= 0;
 
     if (options.lumpingCommands && options.lumpingCommands.hasOwnProperty(fieldSpecification.displayName)) {
         if (fieldSpecification.displayType === "checkboxes") { 
-            const answersToLump = Object.keys(options.lumpingCommands[fieldSpecification.displayName]);
-            for (let i = 0; i < answersToLump.length; i++) {
-                const answerToLump = answersToLump[i];
-                const lumpedAnswer = options.lumpingCommands[fieldSpecification.displayName][answerToLump];
-                if (value.hasOwnProperty(answerToLump)) {
-                    delete value[answerToLump];
-                    value[lumpedAnswer] = true;
+
+                const answersToReport = {}; 
+                const valueKeys = Object.keys(value);
+                for (let i = 0; i < valueKeys.length; i++) {
+                    // see note in calculateStatistics about lumping commands and trimming
+                    const trimmedKey = valueKeys[i].trim();
+                    answersToReport[trimmedKey] = value[valueKeys[i]];
+                }
+
+            const answersToLumpTogether = Object.keys(options.lumpingCommands[fieldSpecification.displayName]);
+            for (let i = 0; i < answersToLumpTogether.length; i++) {
+                const thisAnswer = answersToLumpTogether[i];
+                if (answersToReport.hasOwnProperty(thisAnswer)) {
+                    const substituteAnswer = options.lumpingCommands[fieldSpecification.displayName][thisAnswer];
+                    delete answersToReport[thisAnswer];
+                    answersToReport[substituteAnswer] = true;
                 }
             }
+            displayValue = answersToReport;
         } else {
-            if (options.lumpingCommands[fieldSpecification.displayName].hasOwnProperty(value)) 
-                value = options.lumpingCommands[fieldSpecification.displayName][value];
+            // see note in calculateStatistics about lumping commands and trimming
+            const trimmedValue = value.trim();
+            if (options.lumpingCommands[fieldSpecification.displayName].hasOwnProperty(trimmedValue)) 
+            displayValue = options.lumpingCommands[fieldSpecification.displayName][trimmedValue];
         }
     }
 
@@ -157,23 +170,23 @@ function displayHTMLForField(storyModel: surveyCollection.Story, fieldSpecificat
     const result = [];
     const answerClass = "narrafirma-story-card-answer-for-" + replaceSpacesWithDashes(fieldName);
     if (fieldSpecification.displayType === "slider") {
-        result.push(displayHTMLForSlider(fieldSpecification, fieldName, value, options));
+        result.push(displayHTMLForSlider(fieldSpecification, fieldName, displayValue, options));
     } else if (fieldSpecification.displayType === "checkboxes") {
-        const optionsAndChecked = displayHTMLForCheckboxes(fieldSpecification, fieldName, value);
+        const optionsAndChecked = displayHTMLForCheckboxes(fieldSpecification, fieldName, displayValue);
         if (optionsAndChecked[1]) {
             result.push(wrap("div", "narrafirma-story-card-question-line-with-selected-item", optionsAndChecked[0]));
         } else {
             result.push(wrap("div", "narrafirma-story-card-question-line-without-selected-item", optionsAndChecked[0]));
         }
     } else if (fieldSpecification.displayType === "select") {
-        const optionsAndChecked = displayHTMLForSelect(fieldSpecification, fieldName, value);
+        const optionsAndChecked = displayHTMLForSelect(fieldSpecification, fieldName, displayValue);
         if (optionsAndChecked[1]) {
             result.push(wrap("div", "narrafirma-story-card-question-line-with-selected-item", optionsAndChecked[0]));
         } else {
             result.push(wrap("div", "narrafirma-story-card-question-line-without-selected-item", optionsAndChecked[0]));
         }
     } else if (fieldSpecification.displayType === "radiobuttons") {
-        const optionsAndChecked = displayHTMLForRadioButtons(fieldSpecification, fieldName, value);
+        const optionsAndChecked = displayHTMLForRadioButtons(fieldSpecification, fieldName, displayValue);
         if (optionsAndChecked[1]) {
             result.push(wrap("div", "narrafirma-story-card-question-line-with-selected-item", optionsAndChecked[0]));
         } else {
@@ -182,9 +195,9 @@ function displayHTMLForField(storyModel: surveyCollection.Story, fieldSpecificat
     } else if (fieldSpecification.displayType === "boolean") {
         const thisBit = [];
         thisBit.push(m("span", {"class": "narrafirma-story-card-field-name-" + replaceSpacesWithDashes(fieldName)}, fieldName + ": "));
-        if (value === true) {
+        if (displayValue === true) {
             thisBit.push(m("span", {"class": answerClass}, "yes"));
-        } else if (value === false) {
+        } else if (displayValue === false) {
             thisBit.push(m("span", {"class": answerClass}, "no"));
         } else {
             thisBit.push(m("span", {"class": answerClass}, ""));
@@ -193,9 +206,9 @@ function displayHTMLForField(storyModel: surveyCollection.Story, fieldSpecificat
     } else if (fieldSpecification.displayType === "checkbox") {
         const thisBit = [];
         thisBit.push(m("span", {"class": "narrafirma-story-card-field-name-" + replaceSpacesWithDashes(fieldName)}, fieldName + ": "));
-        if (value === true) {
+        if (displayValue === true) {
             thisBit.push(m("span", {"class": answerClass}, "true"));
-        } else if (value === false) {
+        } else if (displayValue === false) {
             thisBit.push(m("span", {"class": answerClass}, "false"));
         } else {
             thisBit.push(m("span", {"class": answerClass}, ""));
@@ -295,9 +308,11 @@ export function generateStoryCardContent(storyModel, questionsToInclude, options
             if (options.lumpingCommands.hasOwnProperty(question.displayName)) {
                 const lumpedAnswersToAdd = [];
                 question.valueOptions = question.valueOptions.filter((answer) => {
-                    const lumpedAnswer = options.lumpingCommands[question.displayName][answer];
+                    // see note in calculateStatistics about lumping commands and trimming
+                    const trimmedAnswer = answer.trim();
+                    const lumpedAnswer = options.lumpingCommands[question.displayName][trimmedAnswer];
                     if (lumpedAnswer) {
-                        if (lumpedAnswersToAdd.indexOf(answer) < 0) lumpedAnswersToAdd.push(lumpedAnswer);
+                        if (lumpedAnswersToAdd.indexOf(lumpedAnswer) < 0) lumpedAnswersToAdd.push(lumpedAnswer);
                         return false;
                     } 
                     return true;

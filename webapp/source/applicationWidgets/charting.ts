@@ -176,7 +176,11 @@ function createEmptyDataStructureForAnswerCountsUsingDictionary(structure, quest
         structure["false"] = 0;
     } else if (question.valueOptions) {
         for (let i = 0; i < question.valueOptions.length; i++) {
-            let value = String(question.valueOptions[i]);
+            // the answers entered into the lumping command are trimmed during parsing
+            // in v1.6.1, validation was added to require users to trim answers in lists for choice questions
+            // trimming this copied data should not be necessary in projects created in that version and afterward
+            // but legacy data could still have extra whitespace characters that make it incompatible with the display lumping system
+            let value = String(question.valueOptions[i]).trim();
             if (lumpingCommands.hasOwnProperty(question.displayName)) {
                 if (lumpingCommands[question.displayName].hasOwnProperty(value))
                     value = lumpingCommands[question.displayName][value];
@@ -199,7 +203,7 @@ function createEmptyDataStructureForAnswerCountsUsingArray(structure, question, 
         structure.push("false");
     } else if (question.valueOptions) {
         for (let i = 0; i < question.valueOptions.length; i++) {
-            let value = String(question.valueOptions[i]);
+            let value = String(question.valueOptions[i]).trim(); // see above comment about trimming
             if (lumpingCommands.hasOwnProperty(question.displayName)) {
                 if (lumpingCommands[question.displayName].hasOwnProperty(value))
                     value = lumpingCommands[question.displayName][value];

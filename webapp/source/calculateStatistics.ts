@@ -57,24 +57,34 @@ export function getChoiceValueForQuestionAndStory(question, story, unansweredTex
                 // do not want to change the actual values, because they are in the story
                 // so make a copy of the dictionary, change that, and return it
                 const answersToReport = {}; 
-                const answersToCopy = Object.keys(value);
-                for (let i = 0; i < answersToCopy.length; i++) {
-                    answersToReport[answersToCopy[i]] = value[answersToCopy[i]];
+                const valueKeys = Object.keys(value);
+                for (let i = 0; i < valueKeys.length; i++) {
+                    // the answers entered into the lumping command are trimmed during parsing
+                    // in v1.6.1, validation was added to require users to trim answers in lists for choice questions
+                    // trimming this copied data should not be necessary in projects created in that version and afterward
+                    // but legacy data could still have extra whitespace characters that make it incompatible with the display lumping system
+                    // so we will trim it as we read it
+                    const trimmedKey = valueKeys[i].trim();
+                    answersToReport[trimmedKey] = value[valueKeys[i]];
                 }
-                const answersToLump = Object.keys(lumpingCommands[question.displayName]);
-                for (let i = 0; i < answersToLump.length; i++) {
-                    const answerToLump = answersToLump[i];
-                    const lumpedAnswer = lumpingCommands[question.displayName][answerToLump];
-                    if (value.hasOwnProperty(answerToLump) && value[answerToLump]) {
-                        delete answersToReport[answerToLump];
-                        answersToReport[lumpedAnswer] = true;
+                const answersToLumpTogether = Object.keys(lumpingCommands[question.displayName]);
+
+                for (let i = 0; i < answersToLumpTogether.length; i++) {
+                    // answersToLumpTogether do not need to be trimmed, because they are trimmed during parsing of the lumping command
+                    const thisAnswer = answersToLumpTogether[i]; 
+                    if (answersToReport.hasOwnProperty(thisAnswer) && answersToReport[thisAnswer]) { 
+                        const substituteAnswer = lumpingCommands[question.displayName][thisAnswer];
+                        delete answersToReport[thisAnswer];
+                        answersToReport[substituteAnswer] = true;
                     }
                 }
                 return answersToReport;
 
             } else { // not checkboxes, so answer is not a dictionary, so you can just return one lumped value
-                if (lumpingCommands[question.displayName].hasOwnProperty(value)) 
-                    return lumpingCommands[question.displayName][value];
+                // the same value trimming has to take place here (again for legacy data)
+                const trimmedValue = value.trim();
+                if (lumpingCommands[question.displayName].hasOwnProperty(trimmedValue)) 
+                    return lumpingCommands[question.displayName][trimmedValue];
             }
         }
     } 
