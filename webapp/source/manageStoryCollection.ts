@@ -81,8 +81,12 @@ export function createNewStoryCollection() {
                         template["storyCollection_shortName"] = newCollectionName;
                         template["storyCollection_questionnaireIdentifier"] = newCollectionStoryFormName;
 
-                        const setID = project.tripleStore.queryLatestC(project.projectIdentifier, "project_storyCollections");
-                        const newCollectionID = project.tripleStore.makeNewSetItem(setID, "StoryCollection", template);
+                        let setIdentifier = project.tripleStore.queryLatestC(project.projectIdentifier, "project_storyCollections");
+                        if (!setIdentifier) {
+                            setIdentifier = project.tripleStore.newIdForSet("StoryCollectionSet");
+                            project.tripleStore.addTriple(project.projectIdentifier, "project_storyCollections", setIdentifier);
+                        }
+                        const newCollectionID = project.tripleStore.makeNewSetItem(setIdentifier, "StoryCollection", template);
                         project.tripleStore.addTriple(newCollectionID, "id", newCollectionID);
 
                         const questionnaire = questionnaireGeneration.buildStoryForm(newCollectionStoryFormName);
