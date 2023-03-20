@@ -653,6 +653,14 @@ class PatternExplorer {
             if (this.observationAccessors.length > this.activeObservationTab)
             activeAccessor = this.observationAccessors[this.activeObservationTab];
 
+            // this calculateView might have been called because another user changed something in the data
+            if (clientState.redrawingDueToIncomingMessage()) {
+                this.patternsGrid.updateData();
+                // they may have added a new observation 
+                this.updatePatternObservationIDs(this.currentPattern);
+                this.updateObservationPanelForSelectedPattern();
+            }
+
             if (this.currentPattern && (this.currentPattern.graphType === "data integrity" || this.currentPattern.graphType === "correlation map")) {
                 parts = [
                     buildGridHeader(),
@@ -1134,16 +1142,8 @@ class PatternExplorer {
             throw new Error("makePattern: Unexpected number of questions: " + questions.length);
         }
 
-        pattern.observationIDs = [];
-        let index = 0;
-        let observationID = "";
-        while (observationID !== undefined) {
-            observationID = findOrCreateObservationIDForPatternAndIndex(this.project, this.catalysisReportObservationSetIdentifier, pattern, index, false);
-            if (observationID) pattern.observationIDs.push(observationID);
-            index++;
-        }
+        this.updatePatternObservationIDs(pattern);
 
-        
         const observationTitleOrDescriptionAccessor = () => {
             return this.getCombinedObservationsInfoForPattern(pattern, "observationTitle") || this.getCombinedObservationsInfoForPattern(pattern, "observationDescription");
         };
@@ -1167,6 +1167,17 @@ class PatternExplorer {
         pattern.remarkable = remarkableAccessor;
         pattern.note = noteAccessor;
         return pattern;
+    }
+
+    updatePatternObservationIDs(pattern) {
+        pattern.observationIDs = [];
+        let index = 0;
+        let observationID = "";
+        while (observationID !== undefined) {
+            observationID = findOrCreateObservationIDForPatternAndIndex(this.project, this.catalysisReportObservationSetIdentifier, pattern, index, false);
+            if (observationID) pattern.observationIDs.push(observationID);
+            index++;
+        }
     }
 
     patternSelected(selectedPattern) {

@@ -100,12 +100,19 @@ export class StoryAnnotationBrowser {
         this.itemPanelSpecification = this.makeItemPanelSpecificationForQuestions(this.annotationQuestions);
     }
 
+    updateAnnotationQuestionsForPossibleChange() {
+        this.annotationQuestions = [];
+        this.annotationQuestions = questionnaireGeneration.convertEditorQuestions(this.project.collectAllAnnotationQuestions(), "A_");
+    }
+
     buildStoryDisplayPanel(panelBuilder: PanelBuilder, storyModel: surveyCollection.Story) {
         let storyDisplayPanel;
         let readOnlyDisplayPanel;
 
         let questionsToEdit = [];
         let questionsToDisplay = [];
+
+        this.updateAnnotationQuestionsForPossibleChange();
 
         if (panelBuilder.readOnly) {
             questionsToEdit = [];

@@ -400,8 +400,10 @@ class Application {
         if (this.runningAfterInitialIdle) {
             if (!this.pendingRedraw) {
                 this.pendingRedraw = setTimeout(() => {
+                    Globals.clientState().redrawingDueToIncomingMessage(true);
                     this.pendingRedraw = null;
                     m.redraw();
+                    Globals.clientState().redrawingDueToIncomingMessage(false);
                 }, 0);
             }
         }

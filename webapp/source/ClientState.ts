@@ -42,6 +42,7 @@ class ClientState {
     private _serverStatus: string = "narrafirma-serverstatus-ok";
     private _serverStatusText: string = "";
     private _leavingPageCallback: () => void;
+    private _redrawingDueToIncomingMessage: boolean = null;
     private _cachedOverwrittenTexts = {};
     private _showAdvancedOptions: boolean = false;
     private _showImportOptions: boolean = false;
@@ -163,6 +164,13 @@ class ClientState {
             this._leavingPageCallback = newValue;
         }
         return this._leavingPageCallback;
+    }
+
+    redrawingDueToIncomingMessage(newValue: boolean = undefined) {
+        if (newValue !== undefined) {
+            this._redrawingDueToIncomingMessage = newValue;
+        }
+        return this._redrawingDueToIncomingMessage;
     }
 
     cachedOverwrittenTexts(fieldID: string, newValue: string = undefined) {
