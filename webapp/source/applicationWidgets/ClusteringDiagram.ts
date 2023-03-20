@@ -1049,6 +1049,7 @@ class ClusteringDiagram {
         result.push(m('label', {for: "itemDialog_name", style: "margin-right: 0.5em"}, "Name"));
         result.push(m('input[type=text]', {
                 id: "itemDialog_name",
+                // note: don't have to use config option here because itemBeingEditedCopy is a local copy of the data
                 value: this.itemBeingEditedCopy.name || "",
                 onchange: (event) => { this.itemBeingEditedCopy.name = event.target.value; }
             }));
@@ -1062,22 +1063,6 @@ class ClusteringDiagram {
                 onchange: (event) => { this.itemBeingEditedCopy.notes = event.target.value; }
             }));
         result.push(m("br"));
-
-        /*
-        if (this.configuration === "interpretations" || this.configuration === "observations") {
-            result.push(m("br"));
-            result.push(m('label', {for: "itemDialog_order", style: "margin-right: 0.5em"}, "Order in printed report"));
-            result.push(m('input[type=text]', {
-                id: "itemDialog_order",
-                value: this.itemBeingEditedCopy.order || "",
-                onchange: (event) => { 
-                    let newOrderAsNumber = parseInt(event.target.value.trim(), 10);
-                    if (newOrderAsNumber) this.itemBeingEditedCopy.order = newOrderAsNumber; 
-                }
-            }));
-            result.push(m("br"));
-        }
-        */
         
         result.push(m("br"));
         result.push(m("button", {onclick: () => {this.showEntryDialog = false;}}, "Cancel"));
