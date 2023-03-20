@@ -162,6 +162,12 @@ M When import story form, hundreds of triples can be generated which take minute
 
 ==== DONE
 
+-- Release 1.6.1
+
+Fixed: Bug (introduced in last update) that made it impossible to create the first story collection in a project
+Fixed: Several bugs related to multi-user data conflicts
+Fixed: Bug where leading/trailing white-space characters were allowed in fixed-answer lists, but display lumping and filtering systems assumed none
+
 -- Release 1.6.0
 
 Added: Duplicate button to make copies of most items in lists
