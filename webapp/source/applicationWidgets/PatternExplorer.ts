@@ -1170,6 +1170,7 @@ class PatternExplorer {
     }
 
     updatePatternObservationIDs(pattern) {
+        if (!pattern) return;
         pattern.observationIDs = [];
         let index = 0;
         let observationID = "";
