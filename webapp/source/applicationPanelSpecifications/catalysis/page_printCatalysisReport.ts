@@ -53,8 +53,13 @@ const panel: Panel = {
             id: "catalysisReportPrint_reportType",
             valuePath: "/clientState/catalysisReportIdentifier/catalysisReportPrint_reportType",
             valueType: "string",
-            valueOptions: ["perspectives (clustered interpretations)", "themes (clustered observations)", 
-                "observations (disregarding any clustering)", "observation graphs only", "observation graph data as csv"],
+            valueOptions: [
+                "perspectives (clustered interpretations)", 
+                "themes (clustered observations)", 
+                "observations (disregarding any clustering)", 
+                "observation graphs only", 
+                "observation graph data as csv",
+                "observation and interpretation texts as csv"],
             displayType: "select",
             displayPrompt: `<strong>Which type</strong> of report would you like to print?`,
             displayVisible: function(panelBuilder, model) {

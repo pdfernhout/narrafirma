@@ -15,6 +15,7 @@ import translate = require("./panelBuilder/translate");
 import jszip = require("jszip");
 import saveAs = require("FileSaver");
 import { GraphHolder } from "./GraphHolder";
+import csvImportExport = require("./csvImportExport");
 
 "use strict";
 
@@ -396,6 +397,8 @@ export function printCatalysisReport() {
         printCatalysisReportWithUnclusteredObservations(project, catalysisReportIdentifier, catalysisReportName, allStories, observationIDsToInclude, options);
     } else if (reportType === "observation graphs only") {
         printCatalysisReportWithObservationGraphsOnly(project, catalysisReportIdentifier, catalysisReportName, allStories, observationIDsToInclude, options);
+    } else if (reportType === "observation and interpretation texts as csv") {
+        printObservationsAndInterpretationsToCSV(project, catalysisReportIdentifier, catalysisReportName, allStories, observationIDsToInclude, options);
     } else if (reportType === "observation graph data as csv") {
         printCatalysisReportWithCSVOnly(project, catalysisReportIdentifier, catalysisReportName, allStories, observationIDsToInclude, options);
     } else if (reportType === "themes (clustered observations)") {
@@ -538,6 +541,91 @@ function printCatalysisReportWithObservationGraphsOnly(project, catalysisReportI
                 }
             }
 
+            progressModel.progressText = progressText(observationIndex);
+            progressModel.redraw();
+            observationIndex++;
+            setTimeout(function() { printNextObservation(); }, 0);
+        }
+    }
+
+    function progressText(observationIndex: number) {
+        return "Observation " + (observationIndex + 1) + " of " + observationIDs.length;
+    }
+    
+    function dialogCancelled(dialogConfiguration, hideDialogMethod) {
+        progressModel.cancelled = true;
+        hideDialogMethod();
+    }
+    
+    setTimeout(function() { printNextObservation(); }, 0);
+}
+
+function printObservationsAndInterpretationsToCSV(project, catalysisReportIdentifier, catalysisReportName, allStories, observationIDs, options) {
+
+    const progressModel = dialogSupport.openProgressDialog("Starting up...", "Generating observation graph data", "Cancel", dialogCancelled);
+
+    let savedObservationCount = 0;
+    let observationIndex = 0;
+    const delimiter = Globals.clientState().csvDelimiter();
+    const obsHeaderLine = ["Observation name", "Description", "Pattern", "Graph type", "Strength"];
+    const intHeaderLine = ["Interpretation name", "Description", "Questions", "Ideas"];
+    let output = obsHeaderLine.join(delimiter) + delimiter;
+    const numInterpretationHeaders = 6;
+    for (let i = 0; i < numInterpretationHeaders; i++) {
+        for (let j = 0; j < intHeaderLine.length; j++) {
+            output += (i+1) + " - " + intHeaderLine[j] + delimiter;
+        }
+    }
+    output += "\n";
+    
+    function printNextObservation() {
+
+        if (progressModel.cancelled) {
+
+            alert("Cancelled after working on " + (observationIndex + 1) + " observation(s)");
+
+        } else if (observationIndex >= observationIDs.length) {
+
+            progressModel.hideDialogMethod();
+            if (savedObservationCount > 0) {
+                const finishModel = dialogSupport.openFinishedDialog("Done creating CSV file of observation and interpretation texts; save it?", 
+                        "Finished generating CSV file", "Save", "Cancel", function(dialogConfiguration, hideDialogMethod) {
+                    const fileName = options.catalysisReportName + " observation texts ("  + options.strengthTextsToReport.join(" ") + ").csv";
+                    const exportBlob = new Blob([output], {type: "text/csv;charset=utf-8"});
+                    saveAs(exportBlob, fileName);
+                    hideDialogMethod();
+                });
+                finishModel.redraw();
+            } else {
+                alert("No observations were found with your current selection criteria. Try choosing different observation strengths.");
+            }
+            progressModel.redraw();
+
+        } else {
+            let line = [];
+            const observation = project.tripleStore.makeObject(observationIDs[observationIndex]);
+            if (observation) {
+                line.push(observation.observationTitle || "");
+                line.push(observation.observationDescription || "");
+                line.push(observation.pattern.patternName || "");
+                line.push(observation.pattern.graphType || "");
+                line.push(observation.observationStrength || "");
+
+                const interpretationsListIdentifier = project.tripleStore.queryLatestC(observationIDs[observationIndex], "observationInterpretations");
+                const interpretationIDsForThisObservation = project.tripleStore.getListForSetIdentifier(interpretationsListIdentifier);
+                for (let id of interpretationIDsForThisObservation) {
+                    const interpretation = project.tripleStore.makeObject(id, true);
+                    if (interpretation) {
+                        line.push(interpretation.interpretation_name || "");
+                        line.push(interpretation.interpretation_text || "");
+                        line.push(interpretation.interpretation_questions || "");
+                        line.push(interpretation.interpretation_idea || "");
+                    }
+                }
+            }
+
+            output = csvImportExport.addCSVOutputLine(output, line, delimiter);
+            savedObservationCount++;
             progressModel.progressText = progressText(observationIndex);
             progressModel.redraw();
             observationIndex++;

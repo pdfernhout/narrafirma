@@ -2123,7 +2123,7 @@ const exportQuestionTypeMap = {
     "textarea": "Textarea"
 };
 
-function addCSVOutputLine(output, line, delimiter) {
+export function addCSVOutputLine(output, line, delimiter) {
     let start = true;
     line.forEach(function (item) {
         let itemToSave = "";
