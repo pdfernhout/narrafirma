@@ -9,7 +9,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Requires at least: 4.3.1
 Tested up to: 6.1.1
 Stable tag: trunk
-Version: 1.6.1
+Version: 1.6.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -105,6 +105,14 @@ We strongly suggest that you set up any web site on which you intend to install 
 12. Here the NarraFirma user is reflecting on the entire project, to learn from it and to keep good records for the future.
 
 == Changelog ==
+
+= 1.6.2 =
+
+Added: Option when printing catalysis reports to save observations and interpretations to simple CSV file
+Added: Texts below graphs explaining that you can click and drag in the graph to select stories (this is not obvious)
+Added: On "Explore patterns" page, new "things you can do" option to show survey questions for selected pattern
+Fixed: Bug where you might have seen a "pattern is null" message on the "Explore patterns" page
+Fixed: Bug where not enough space was being allocated to upper-right labels in table (contingency chart) images
 
 = 1.6.1 =
 
@@ -660,6 +668,10 @@ loading application, getting user information, or retrieving project data.
 change logs, see the [GitHub repository](https://github.com/pdfernhout/narrafirma).
 
 == Upgrade Notice ==
+
+= 1.6.2 =
+
+This minor upgrade adds a few quality-of-life options and fixes a few small bugs.
 
 = 1.6.1 =
 

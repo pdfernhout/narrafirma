@@ -162,6 +162,14 @@ M When import story form, hundreds of triples can be generated which take minute
 
 ==== DONE
 
+-- Release 1.6.2
+
+Added: Option when printing catalysis reports to save observations and interpretations to simple CSV file
+Added: Texts below graphs explaining that you can click and drag in the graph to select stories (this is not obvious)
+Added: On "Explore patterns" page, new "things you can do" option to show survey questions for selected pattern
+Fixed: Bug where you might have seen a "pattern is null" message on the "Explore patterns" page
+Fixed: Bug where not enough space was being allocated to upper-right labels in table (contingency chart) images
+
 -- Release 1.6.1
 
 Fixed: Bug (introduced in last update) that made it impossible to create the first story collection in a project
