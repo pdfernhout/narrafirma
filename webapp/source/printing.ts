@@ -564,30 +564,22 @@ function printObservationsAndInterpretationsToCSV(project, catalysisReportIdenti
 
     const progressModel = dialogSupport.openProgressDialog("Starting up...", "Generating observation graph data", "Cancel", dialogCancelled);
 
-    let savedObservationCount = 0;
+    let numObservationsWritten = 0;
     let observationIndex = 0;
     const delimiter = Globals.clientState().csvDelimiter();
-    const obsHeaderLine = ["Observation name", "Description", "Pattern", "Graph type", "Strength"];
-    const intHeaderLine = ["Interpretation name", "Description", "Questions", "Ideas"];
-    let output = obsHeaderLine.join(delimiter) + delimiter;
-    const numInterpretationHeaders = 6;
-    for (let i = 0; i < numInterpretationHeaders; i++) {
-        for (let j = 0; j < intHeaderLine.length; j++) {
-            output += (i+1) + " - " + intHeaderLine[j] + delimiter;
-        }
-    }
-    output += "\n";
+    const headerLine = [
+        "Number of observation", "Strength of observation", "Pattern observation is about", "Type of graph observation is about",
+        "Name of observation", "Description of observation", "Question linking observation to interpretations",
+        "Name of interpretation", "Description of interpretation", "Questions arising form interpretation", "Ideas related to interpretation"];
+    let output = [];
+    output = csvImportExport.addCSVOutputLine(output, headerLine, delimiter);
     
     function printNextObservation() {
-
         if (progressModel.cancelled) {
-
             alert("Cancelled after working on " + (observationIndex + 1) + " observation(s)");
-
         } else if (observationIndex >= observationIDs.length) {
-
             progressModel.hideDialogMethod();
-            if (savedObservationCount > 0) {
+            if (numObservationsWritten > 0) {
                 const finishModel = dialogSupport.openFinishedDialog("Done creating CSV file of observation and interpretation texts; save it?", 
                         "Finished generating CSV file", "Save", "Cancel", function(dialogConfiguration, hideDialogMethod) {
                     const fileName = options.catalysisReportName + " observation texts ("  + options.strengthTextsToReport.join(" ") + ").csv";
@@ -600,36 +592,41 @@ function printObservationsAndInterpretationsToCSV(project, catalysisReportIdenti
                 alert("No observations were found with your current selection criteria. Try choosing different observation strengths.");
             }
             progressModel.redraw();
-
         } else {
-            let line = [];
             const observation = project.tripleStore.makeObject(observationIDs[observationIndex]);
             if (observation) {
-                line.push(observation.observationTitle || "");
-                line.push(observation.observationDescription || "");
+                const line = [];
+                line.push(observationIndex + 1);
+                line.push(observation.observationStrength || "");
                 line.push(observation.pattern.patternName || "");
                 line.push(observation.pattern.graphType || "");
-                line.push(observation.observationStrength || "");
+                line.push(observation.observationTitle || "");
+                line.push(observation.observationDescription || "");
+                line.push(observation.observationLinkingQuestion || "");
+                output = csvImportExport.addCSVOutputLine(output, line, delimiter);
 
                 const interpretationsListIdentifier = project.tripleStore.queryLatestC(observationIDs[observationIndex], "observationInterpretations");
-                const interpretationIDsForThisObservation = project.tripleStore.getListForSetIdentifier(interpretationsListIdentifier);
-                for (let id of interpretationIDsForThisObservation) {
-                    const interpretation = project.tripleStore.makeObject(id, true);
-                    if (interpretation) {
-                        line.push(interpretation.interpretation_name || "");
-                        line.push(interpretation.interpretation_text || "");
-                        line.push(interpretation.interpretation_questions || "");
-                        line.push(interpretation.interpretation_idea || "");
+                const interpretationIDs = project.tripleStore.getListForSetIdentifier(interpretationsListIdentifier);
+                if (interpretationIDs && interpretationIDs.length > 0) {
+                    for (let id of interpretationIDs) {
+                        const interpretation = project.tripleStore.makeObject(id, true);
+                        if (interpretation) {
+                            let line = [];
+                            line = line.concat([observationIndex + 1, observation.observationStrength || "", "", "", "", "", ""]);
+                            line.push(interpretation.interpretation_name || "");
+                            line.push(interpretation.interpretation_text || "");
+                            line.push(interpretation.interpretation_questions || "");
+                            line.push(interpretation.interpretation_idea || "");
+                            output = csvImportExport.addCSVOutputLine(output, line, delimiter);
+                        }
                     }
                 }
-            }
-
-            output = csvImportExport.addCSVOutputLine(output, line, delimiter);
-            savedObservationCount++;
+            numObservationsWritten++;
             progressModel.progressText = progressText(observationIndex);
             progressModel.redraw();
             observationIndex++;
             setTimeout(function() { printNextObservation(); }, 0);
+            }
         }
     }
 
