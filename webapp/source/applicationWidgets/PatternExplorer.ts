@@ -342,10 +342,11 @@ class PatternExplorer {
                 {
                     id: "thingsYouCanDoPanel_actionRequested",
                     valuePath: "selectionActionRequested",
-                    displayPrompt: "These are some <strong>things you can do</strong> based on the pattern above and the selection you have made in it.",
+                    displayPrompt: "These are some <strong>things you can do</strong> based on the pattern above and the selection you have made in it (if any).",
                     displayType: "select",
                     displayWithoutQuestionDivs: true,
                     valueOptions: [
+                        "Show survey questions for this pattern",
                         "Show statistical results",
                         "Show selected stories in separate window for copying", 
                         "Show random sample of 10 selected stories", 
@@ -660,6 +661,7 @@ class PatternExplorer {
                 this.updatePatternObservationIDs(this.currentPattern);
                 this.updateObservationPanelForSelectedPattern();
             }
+            const stories = this.modelForStoryGrid.storiesSelectedInGraph;
 
             if (this.currentPattern && (this.currentPattern.graphType === "data integrity" || this.currentPattern.graphType === "correlation map")) {
                 parts = [
@@ -684,9 +686,10 @@ class PatternExplorer {
                     buildObservationsAndInterpretationsPanels(),
                 ];
             } else { 
-                const numStories = this.modelForStoryGrid.storiesSelectedInGraph.length;
+                const numStories = stories.length;
                 const storyOrStoriesWord = (numStories > 1) ? "stories" : "story";
-                const selectedStoriesText = numStories + " " + storyOrStoriesWord + " in selection - " + this.nameForCurrentGraphSelection() + ". Click on a story to view it.";
+                const selectedStoriesText = numStories + " " + storyOrStoriesWord + " in selection - " 
+                    + this.nameForCurrentGraphSelection() + ". Click on a story to view it.";
                 parts = [
                     buildGridHeader(),
                     this.patternsGrid.calculateView(args),
@@ -697,13 +700,13 @@ class PatternExplorer {
                                 "The number of stories for this pattern falls below the minimum count of " + this.graphHolder.minimumStoryCountRequiredForGraph 
                                 + ", which you set on the Configure catalysis report page"
                                 + ". To display this graph, choose a lower minimum story count."),
-                            (this.modelForStoryGrid.storiesSelectedInGraph.length > 0) ? 
-                                m("div", {"class": "narrafirma-pattern-browser-selected-stories-header"}, selectedStoriesText) : m("div"),
-                            (this.modelForStoryGrid.storiesSelectedInGraph.length > 0) ? this.storyGrid.calculateView(args) : m("div"),
+                            (stories.length > 0) ? 
+                                m("div.narrafirma-pattern-browser-selected-stories-header", selectedStoriesText) : 
+                                m("div.narrafirma-pattern-browser-no-selection-tip", "Click and drag in the graph(s) above to select stories to view."),
+                            (stories.length > 0) ? this.storyGrid.calculateView(args) : m("div"),
                             panelBuilder.buildPanel(this.thingsYouCanDoPanelSpecification, activeAccessor || this),
                             buildObservationsAndInterpretationsPanels(),
                         ] :
-                        // TODO: Translate
                         m("div.narrafirma-choose-pattern", "Please choose a pattern to view in the table above.")
                 ];
             }
@@ -1401,6 +1404,9 @@ class PatternExplorer {
         const actionElement = <HTMLTextAreaElement>document.getElementById("thingsYouCanDoPanel_actionRequested");
         const action = actionElement.value;
         switch (action) {
+            case "Show survey questions for this pattern":
+                this.showSurveyQuestionsForPatternQuestions();
+                break;
             case "Show statistical results":
                 this.showStatisticalResultsForGraph();
                 break;
@@ -1642,6 +1648,40 @@ class PatternExplorer {
         }
         const titleText = "Statistics for pattern: " +  this.currentPattern.patternName;
         const text = titleText + (this.graphHolder.statisticalInfo.indexOf("\n\n") !== 0 ? "\n\n" : "") + this.graphHolder.statisticalInfo;
+        dialogSupport.openTextEditorDialog(text, titleText, "Close", "Copy to Clipboard", this.closeCopyStoriesDialogClicked.bind(this), false, true);
+    }
+
+    showSurveyQuestionsForPatternQuestions() {
+        if (!this.currentPattern) {
+            alert("Please choose a graph.");
+            return;
+        }
+        if (!this.currentPattern.questions) {
+            alert("The current pattern has no questions.");
+            return;
+        }       
+        const titleText = "Questions for pattern: " +  this.currentPattern.patternName;
+        const typesWithValueOptions = ["select", "radiobuttons", "checkboxes"];
+        const typesToExplanationsDict = {
+            "select": "single choice",
+            "radiobuttons": "single choice",
+            "boolean": "yes/no",
+            "checkbox": "yes/no",
+            "checkboxes": "multiple choice",
+            "slider": "scale",
+            "text": "text",
+            "textarea": "text",
+        }
+        let text = "";
+        for (let question of this.currentPattern.questions) {
+            text += question.displayName + " (" + typesToExplanationsDict[question.displayType] + "): " + question.displayPrompt + "\n"
+            if (typesWithValueOptions.indexOf(question.displayType) >= 0) {
+                text += "    " + question.valueOptions.join("\n    ") + "\n";
+            } else if (question.displayType === "slider" && question.displayConfiguration.length > 1) {
+                text += "    " + question.displayConfiguration[0] + " ------ " + question.displayConfiguration[1] + "\n";
+            }
+            text += "\n";
+        }
         dialogSupport.openTextEditorDialog(text, titleText, "Close", "Copy to Clipboard", this.closeCopyStoriesDialogClicked.bind(this), false, true);
     }
 
