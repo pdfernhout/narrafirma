@@ -1926,8 +1926,8 @@ export function d3ContingencyTable(graphHolder: GraphHolder, xAxisQuestion, yAxi
     const letterSize = 8; // it would be better to get this from the DOM - but it would decrease performance...
 
     const margin = {
-        top: 20, 
-        right: 20, 
+        top: 36, 
+        right: 36, 
         bottom: longestColumnTextLength * letterSize + (graphHolder.customGraphPadding || 0), 
         left: longestRowTextLength * letterSize + (graphHolder.customGraphPadding || 0)
     };
