@@ -1661,7 +1661,6 @@ class PatternExplorer {
             return;
         }       
         const titleText = "Questions for pattern: " +  this.currentPattern.patternName;
-        const typesWithValueOptions = ["select", "radiobuttons", "checkboxes"];
         const typesToExplanationsDict = {
             "select": "single choice",
             "radiobuttons": "single choice",
@@ -1674,13 +1673,15 @@ class PatternExplorer {
         }
         let text = "";
         for (let question of this.currentPattern.questions) {
-            text += question.displayName + " (" + typesToExplanationsDict[question.displayType] + "): " + question.displayPrompt + "\n"
-            if (typesWithValueOptions.indexOf(question.displayType) >= 0) {
-                text += "    " + question.valueOptions.join("\n    ") + "\n";
-            } else if (question.displayType === "slider" && question.displayConfiguration.length > 1) {
-                text += "    " + question.displayConfiguration[0] + " ------ " + question.displayConfiguration[1] + "\n";
+            if (question.displayName && question.displayType && question.displayPrompt) {
+                text += question.displayName + " (" + typesToExplanationsDict[question.displayType] + "): " + question.displayPrompt + "\n";
+                if (question.valueOptions) {
+                    text += "    " + question.valueOptions.join("\n    ") + "\n";
+                } else if (question.displayType === "slider" && question.displayConfiguration.length > 1) {
+                    text += "    " + question.displayConfiguration[0] + " ----- " + question.displayConfiguration[1] + "\n";
+                }
+                text += "\n";
             }
-            text += "\n";
         }
         dialogSupport.openTextEditorDialog(text, titleText, "Close", "Copy to Clipboard", this.closeCopyStoriesDialogClicked.bind(this), false, true);
     }
