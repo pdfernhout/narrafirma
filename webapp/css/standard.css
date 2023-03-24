@@ -1449,6 +1449,10 @@ input[type="checkbox"].graphBrowserCheckbox {
 	margin: 0.5em 0.25em 1em 0;
 }
 
+.narrafirma-graphbrowser-select-stories-tip {
+    margin: 0.5em 0 0.5em 0.75em;
+}
+
 .singleChartStyleWithoutChildren {
     display: inline-block;
     vertical-align: top;

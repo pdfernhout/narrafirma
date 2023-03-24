@@ -116,7 +116,9 @@ class GraphBrowser {
                 m("select.graphBrowserSelect", {onchange: (event) => { this.yAxisSelectValue = event.target.value; this.updateGraph(); }}, this.calculateOptionsForChoices(this.yAxisSelectValue)),
                 m("br"),
                 m("div", {config: this.insertGraphResultsPaneConfig.bind(this)}),
-                m("div.narrafirma-graphbrowser-heading", "Selected stories (" + this.selectedStories.length + ")"),
+                (this.selectedStories.length > 0) ? 
+                    m("div.narrafirma-graphbrowser-heading", "Selected stories (" + this.selectedStories.length + ")")
+                    : m("div.narrafirma-graphbrowser-select-stories-tip", "Click and drag in the graph(s) above to select stories to view."),
                 (this.selectedStories.length > 0) ? 
                     m("div.narrafirma-graphbrowser-showstories-buttons", [
                         m("button.narrafirma-graphbrowser-show-stories-button", {onclick: this.showAllSelectedStoriesInSeparateWindow.bind(this)}, "Show in separate window"),
@@ -125,7 +127,7 @@ class GraphBrowser {
                         m("button.narrafirma-graphbrowser-show-stories-button", {onclick: this.showRandom30SelectedStories.bind(this)}, "30"),
                         m("input[type=checkbox]", {id: showAnswersCheckboxID, checked: this.showAnswers, onchange: this.changeShowAnswers.bind(this)}),
                         m("label", {"for": showAnswersCheckboxID}, "Show answers to questions"),
-                    ]) : m("div", ""),
+                    ]) : m("div"),
                 this.selectedStories.map((story) => {
                     return m("div", [
                         m("div.narrafirma-graphbrowser-story-number-and-name", story.indexInStoryCollection() + ". " + story.storyName()),
