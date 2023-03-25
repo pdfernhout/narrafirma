@@ -513,7 +513,7 @@ function printCatalysisReportWithObservationGraphsOnly(project, catalysisReportI
             if (observation && observation.pattern && graphTypesThatDontGetPrinted.indexOf(observation.pattern.graphType) < 0) {
 
                 let graphTitle = observation.pattern.patternName;
-                graphTitle = graphTitle.replace("/", " "); // jszip interprets a forward slash as a folder designation 
+                graphTitle = replaceAll(graphTitle, "/", " "); // jszip interprets a forward slash as a folder designation 
 
                 const graphHolder = initializedGraphHolder(allStories, options);
 
@@ -687,7 +687,7 @@ function printCatalysisReportWithCSVOnly(project, catalysisReportIdentifier, cat
             if (observation && observation.pattern && graphTypesThatDontGetPrinted.indexOf(observation.pattern.graphType) < 0) {
 
                 let graphTitle = observation.pattern.patternName;
-                graphTitle = graphTitle.replace("/", " "); // jszip interprets a forward slash as a folder designation 
+                graphTitle = replaceAll(graphTitle, "/", " "); // jszip interprets a forward slash as a folder designation 
 
                 const graphHolder = initializedGraphHolder(allStories, options);
                 const hideNoAnswerValues = PatternExplorer.getOrSetWhetherNoAnswerValuesShouldBeHiddenForPattern(project, options.catalysisReportIdentifier, observation.pattern);
