@@ -19,6 +19,7 @@ import jszip = require("jszip");
 import saveAs = require("FileSaver");
 import { GraphHolder } from "../GraphHolder";
 import { Story } from "../surveyCollection";
+import csvImportExport = require("../csvImportExport");
 
 "use strict";
 
@@ -661,6 +662,7 @@ class PatternExplorer {
                 this.updatePatternObservationIDs(this.currentPattern);
                 this.updateObservationPanelForSelectedPattern();
             }
+
             const stories = this.modelForStoryGrid.storiesSelectedInGraph;
 
             if (this.currentPattern && (this.currentPattern.graphType === "data integrity" || this.currentPattern.graphType === "correlation map")) {
@@ -710,6 +712,11 @@ class PatternExplorer {
                         m("div.narrafirma-choose-pattern", "Please choose a pattern to view in the table above.")
                 ];
             }
+            parts.push(
+                m("div.narrafirma-pattern-browser-bottombuttons", [
+                    m("button.narrafirma-pattern-browser-export", {onclick: () => {this.exportAllPatternGraphs(); }}, "Export All Pattern Graphs"),
+                    m("button.narrafirma-pattern-browser-export", {onclick: () => {this.exportAllPatternStatistics(); }}, "Export All Statistics")
+                ]));
         }
         return m("div.narrafirma-patterns-grid", parts);
     }
@@ -766,6 +773,248 @@ class PatternExplorer {
         if (!isInitialized) {
             element.appendChild(this.graphHolder.graphResultsPane);
         }       
+    }
+
+    exportAllPatternGraphs() {
+
+        const patterns = this.modelForPatternsGrid.patterns;
+
+        if (patterns.length > 100) {
+            const response = confirm("You are exporting graphs from " + patterns.length 
+                + " patterns, some of which could generate several graphs. "
+                + "This could take a long time and create a large zip file. Are you certain that you want to do this?")
+            if (!response) return;
+        }
+
+        // note that this code was brute-force copied and pasted from printing.ts
+        // i had it there but calling PatternExplorer.makeGraph created a circular reference
+        // it should probably be moved to its own file, but there are some differences, so maybe this is okay
+
+        const progressModel = dialogSupport.openProgressDialog("Starting up...", "Generating graphs", "Cancel", dialogCancelled);
+        
+        const project = this.project;
+        const reportID = this.catalysisReportIdentifier;
+        const allStories = this.project.storiesForCatalysisReport(this.catalysisReportIdentifier);
+        const catalysisReportName = this.project.tripleStore.queryLatestC(this.catalysisReportIdentifier, "catalysisReport_shortName");
+
+        const options = []; 
+        options["outputGraphFormat"] = "PNG"; // hard coding this for now
+        // these are the ones I think I must support
+        options["lumpingCommands"] = project.lumpingCommandsForCatalysisReport(reportID); 
+        options["minimumStoryCountRequiredForGraph"] = project.tripleStore.queryLatestC(reportID, "minimumStoryCountRequiredForGraph") || Project.default_minimumStoryCountRequiredForGraph; 
+        options["numHistogramBins"] = project.tripleStore.queryLatestC(reportID, "numHistogramBins") || Project.default_numHistogramBins; 
+        options["numScatterDotOpacityLevels"] = project.tripleStore.queryLatestC(reportID, "numScatterDotOpacityLevels") || Project.default_numScatterDotOpacityLevels; 
+        options["scatterDotSize"] = project.tripleStore.queryLatestC(reportID, "scatterDotSize") || Project.default_scatterDotSize; 
+        options["correlationMapShape"] = project.tripleStore.queryLatestC(reportID, "correlationMapShape") || Project.default_correlationMapShape; 
+        options["correlationMapIncludeScaleEndLabels"] = project.tripleStore.queryLatestC(reportID, "correlationMapIncludeScaleEndLabels") || Project.default_correlationMapIncludeScaleEndLabels; 
+        options["correlationMapCircleDiameter"] = parseInt(project.tripleStore.queryLatestC(reportID, "correlationMapCircleDiameter")) || Project.default_correlationMapCircleDiameter; 
+        options["correlationLineChoice"] = project.tripleStore.queryLatestC(reportID, "correlationLineChoice") || Project.default_correlationLineChoice; 
+        options["customLabelLengthLimit"] = parseInt(project.tripleStore.queryLatestC(reportID, "customLabelLengthLimit") || Project.default_customLabelLengthLimit); 
+        options["hideNumbersOnContingencyGraphs"] = project.tripleStore.queryLatestC(reportID, "hideNumbersOnContingencyGraphs") || false;
+        options["customGraphWidth"] = parseInt(project.tripleStore.queryLatestC(reportID, "customReportGraphWidth")) || Project.default_customReportGraphWidth;
+        options["customGraphHeight"] = parseInt(project.tripleStore.queryLatestC(reportID, "customReportGraphHeight")) || Project.default_customReportGraphHeight;
+
+        const zipFile = new jszip();
+        let savedGraphCount = 0;
+        const graphTypesThatDontGetPrinted = ["texts", "write-in texts"];
+    
+        function printGraphToZipFile(zipFile, graphHolder, graphNode, graphTitle, options) {
+            const svgNode = graphNode.querySelector("svg");
+            if (svgNode) {
+                // i am not using the svg option, but might as well keep it in case i want it later
+                if (options.outputGraphFormat === "SVG") {
+                    const svgFileText = graphStyle.prepareSVGToSaveToFile(svgNode, options.customGraphCSS, graphHolder.outputFontModifierPercent);
+                    zipFile.file(graphTitle + ".svg", svgFileText);
+                    savedGraphCount++;
+                } else if (options.outputGraphFormat === "PNG") {
+                    // when using canvas.toBlob either the ZIP file or the PNG files come out corrupted
+                    // found this method to fix it online and it works
+                    const canvas = graphStyle.preparePNGToSaveToFile(svgNode, options.customGraphCSS, graphHolder.outputFontModifierPercent);
+                    const dataURI = canvas.toDataURL("image/png");
+                    const imageData = graphStyle.dataURItoBlob(dataURI);
+                    zipFile.file(graphTitle + ".png", imageData, {binary: true});
+                    savedGraphCount++;
+                }
+            }
+        }
+    
+        let patternIndex = 0;
+
+        function printNextPattern() {
+
+            function customGraphHolder(allStories, options) {
+                const graphHolder: GraphHolder = {
+                    // things that are not options
+                    allStories: allStories,
+                    graphResultsPane: charting.createGraphResultsPane("narrafirma-graph-results-pane chartEnclosure"),
+
+                    // things that don't apply to this usage but should be set just in case
+                    currentGraph: null,
+                    currentSelectionExtentPercentages: null,
+                    excludeStoryTooltips: true,
+                    chartPanes: [],
+                    minimumStoryCountRequiredForTest: 20,
+                    showStatsPanelsInReport: false,
+                    customStatsTextReplacements: null,
+                    patternDisplayConfiguration: {hideNoAnswerValues: false, useLumpingCommands: true},
+                    adjustedCSS: null,
+                    graphTypesToCreate: {},
+
+                    // things that should come from the report settings
+                    lumpingCommands: options.lumpingCommands,
+                    minimumStoryCountRequiredForGraph: options.minimumStoryCountRequiredForGraph,
+                    numHistogramBins: options.numHistogramBins,
+                    numScatterDotOpacityLevels: options.numScatterDotOpacityLevels,
+                    scatterDotSize: options.scatterDotSize,
+                    correlationMapShape: options.correlationMapShape,
+                    correlationMapIncludeScaleEndLabels: options.correlationMapIncludeScaleEndLabels,
+                    correlationMapCircleDiameter: options.correlationMapCircleDiameter,
+                    correlationLineChoice: options.correlationLineChoice,
+                    customLabelLengthLimit: options.customLabelLengthLimit,
+                    hideNumbersOnContingencyGraphs: options.hideNumbersOnContingencyGraphs,  
+                    customGraphWidth: options.customGraphWidth,
+                    customGraphHeight: options.customGraphHeight,                  
+                    
+                    // things i want to set just for this output
+                    outputGraphFormat: options.outputGraphFormat,
+                    outputFontModifierPercent: 120, // these always seem to come out tiny
+
+                    // note that there are some fields on the config page that are not here
+                    // because they are not in the graphHolder
+                    // like the story collection date time unit and the story length categories
+                    // i am ignoring them because this brute-force output is getting out of hand
+                };
+                return graphHolder;
+            }
+    
+            if (progressModel.cancelled) {
+                alert("Cancelled after working on " + (patternIndex + 1) + " pattern(s)");
+            } else if (patternIndex >= patterns.length) {
+                progressModel.hideDialogMethod();
+                if (savedGraphCount > 0) {
+                    const finishModel = dialogSupport.openFinishedDialog("Done creating zip file of images; save it?", "Finished generating images", "Save", "Cancel", function(dialogConfiguration, hideDialogMethod) {
+                        const fileName = catalysisReportName + " pattern graphs " + options["outputGraphFormat"] + ".zip";
+                        zipFile.generateAsync({type: "blob", platform: "UNIX", compression: "DEFLATE"}).then(function (blob) {saveAs(blob, fileName);});
+                        hideDialogMethod();
+                    });
+                    finishModel.redraw();
+                } else {
+                    alert("No graphs were found with your current selection criteria. Try choosing different graph types.");
+                }
+                progressModel.redraw();
+            } else {
+                const pattern = patterns[patternIndex];
+                if (pattern && graphTypesThatDontGetPrinted.indexOf(pattern.graphType) < 0) {
+                    let graphTitle = pattern.patternName;
+                    graphTitle = replaceAll(graphTitle, "/", " "); // jszip interprets a forward slash as a folder designation
+                    console.log("graphTitle", graphTitle); 
+                    const graphHolder = customGraphHolder(allStories, options);
+                    const selectionCallback = function() { return this; };
+                    const graph = PatternExplorer.makeGraph(pattern, graphHolder, selectionCallback, !options["showStatsPanelsInReport"]);
+                    if (graphHolder.chartPanes.length > 1) {
+                        for (let graphIndex = 1; graphIndex < graphHolder.chartPanes.length; graphIndex++) { // start at 1 to skip over title pane
+                            const graphNode = graphHolder.chartPanes[graphIndex];
+                            if (graphNode) {
+                                const choiceTitle = replaceAll(graph[graphIndex-1].subgraphChoice, "/", " "); // subtract 1 because 1 is title pane
+                                const subGraphTitle = graphTitle + "/" + choiceTitle; // place subgraphs into folders
+                                printGraphToZipFile(zipFile, graphHolder, graphNode, subGraphTitle, options);
+                            }
+                        } 
+                    } else {
+                        const graphNode = <HTMLElement>graphHolder.graphResultsPane.firstChild;
+                        if (graphNode) printGraphToZipFile(zipFile, graphHolder, graphNode, graphTitle, options);
+                    }
+                }
+                progressModel.progressText = progressText(patternIndex);
+                progressModel.redraw();
+                patternIndex++;
+                setTimeout(function() { printNextPattern(); }, 0);
+            }
+        }
+    
+        function progressText(patternIndex: number) {
+            return "Pattern " + (patternIndex + 1) + " of " + patterns.length;
+        }
+        
+        function dialogCancelled(dialogConfiguration, hideDialogMethod) {
+            progressModel.cancelled = true;
+            hideDialogMethod();
+        }
+        
+        setTimeout(function() { printNextPattern(); }, 0); 
+    }
+
+    exportAllPatternStatistics() {
+        const progressModel = dialogSupport.openProgressDialog("Starting up...", "Generating statistics for export", "Cancel", dialogCancelled);
+
+        let numPatternsWritten = 0;
+        let patternIndex = 0;
+        const delimiter = Globals.clientState().csvDelimiter();
+        const headerLine = ["Number", "Pattern", "Graph type", "Summary", "Details", "Subset details"];
+        let output = [];
+        output = csvImportExport.addCSVOutputLine(output, headerLine, delimiter);
+
+        const patterns = this.modelForPatternsGrid.patterns;
+        const catalysisReportName = this.project.tripleStore.queryLatestC(this.catalysisReportIdentifier, "catalysisReport_shortName");
+        const allStories = this.project.storiesForCatalysisReport(this.catalysisReportIdentifier);
+        
+        function printStatsForNextPattern() {
+            if (progressModel.cancelled) {
+                alert("Cancelled after working on " + (patternIndex + 1) + " pattern(s)");
+            } else if (patternIndex >= patterns.length) {
+                progressModel.hideDialogMethod();
+                if (numPatternsWritten > 0) {
+                    const finishModel = dialogSupport.openFinishedDialog("Done creating CSV file of pattern statistics; save it?", 
+                            "Finished generating CSV file", "Save", "Cancel", function(dialogConfiguration, hideDialogMethod) {
+                        const fileName = catalysisReportName + " pattern statistics.csv";
+                        const exportBlob = new Blob([output], {type: "text/csv;charset=utf-8"});
+                        saveAs(exportBlob, fileName);
+                        hideDialogMethod();
+                    });
+                    finishModel.redraw();
+                } else {
+                    alert("No patterns were found with your current selection criteria. Try choosing different graph types.");
+                }
+                progressModel.redraw();
+            } else {
+                const pattern = patterns[patternIndex];
+                if (pattern) {
+                    const line = [];
+                    line.push(patternIndex + 1);
+                    line.push(pattern.patternName || "");
+                    line.push(pattern.graphType || "");
+                    line.push(pattern.statsSummary || "");
+                    line.push(pattern.statsDetailed && pattern.statsDetailed.length > 0 ? pattern.statsDetailed.join("; ") : "");
+                    if (pattern.allStatResults) {
+                        for (let outerKey of Object.keys(pattern.allStatResults)) {
+                            const resultDict = pattern.allStatResults[outerKey];
+                            let thisResultText = outerKey + " | ";
+                            for (let innerKey of Object.keys(resultDict)) {
+                                thisResultText += " " + innerKey + ": " + resultDict[innerKey];
+                            }
+                            line.push(thisResultText);
+                        }
+                    }
+                    output = csvImportExport.addCSVOutputLine(output, line, delimiter);
+                    }
+                    numPatternsWritten++;
+                progressModel.progressText = progressText(patternIndex);
+                progressModel.redraw();
+                patternIndex++;
+                setTimeout(function() { printStatsForNextPattern(); }, 0);
+                }
+        }
+    
+        function progressText(observationIndex: number) {
+            return "Pattern " + (observationIndex + 1) + " of " + patterns.length;
+        }
+        
+        function dialogCancelled(dialogConfiguration, hideDialogMethod) {
+            progressModel.cancelled = true;
+            hideDialogMethod();
+        }
+        
+        setTimeout(function() { printStatsForNextPattern(); }, 0);
     }
 
     //------------------------------------------------------------------------------------------------------------------------------------------
@@ -1202,7 +1451,7 @@ class PatternExplorer {
         if (!this.currentPattern) return;
         this.observationAccessors = [];
         this.currentPattern.observationIDs.forEach(id => {
-            const newAccessor = new ObservationAccessor(this.project, id);
+            const newAccessor = new ObservationAccessor(id);
             this.observationAccessors.push(newAccessor);
         });
     }
@@ -1498,7 +1747,7 @@ class PatternExplorer {
             for (let i = 0; i < svgNodes.length; i++) {
 
                 let graphTitle = this.graphHolder.currentGraph[i].subgraphChoice;
-                graphTitle = graphTitle.replace("/", " "); // jszip interprets a forward slash as a folder designation 
+                graphTitle = replaceAll(graphTitle, "/", " "); // jszip interprets a forward slash as a folder designation 
 
                 if (fileTypeToSave === "SVG") {
 
@@ -2079,21 +2328,18 @@ class PatternExplorer {
 
 class ObservationAccessor {    
 
-    constructor(
-        public project: Project,
-        public observationID: string,
-    ) {
-    }
+    constructor( public observationID: string ) { }
 
     getOrSetField(field: string, newValue = undefined) {
+        const project = Globals.project();
         if (newValue === undefined) {
-            let result = this.project.tripleStore.queryLatestC(this.observationID, field);
+            let result = project.tripleStore.queryLatestC(this.observationID, field);
             if (result === undefined || result === null) {
                 result = "";
             }
             return result;
         } else {
-            this.project.tripleStore.addTriple(this.observationID, field, newValue);
+            project.tripleStore.addTriple(this.observationID, field, newValue);
             return newValue;
         }
     }

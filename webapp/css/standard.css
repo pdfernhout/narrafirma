@@ -1762,6 +1762,15 @@ td.narrafirma-story-card-for-printing-table {
     margin: 0.5em 0 0.5em 0.7em;
 }
 
+.narrafirma-pattern-browser-bottombuttons {
+    display: block;
+    margin: 0;
+}
+
+button.narrafirma-pattern-browser-export {
+    display: inline-block;
+}
+
 .narrafirma-choose-pattern {
     margin: 1em auto 2em auto;
     text-align: center;
@@ -2561,7 +2570,6 @@ textarea.textEditorInDialog {
 }
 
 textarea.textEditorInDialog:read-only {
-    pointer-events: none;
     color: var(--color-text-disabled);
 }
 

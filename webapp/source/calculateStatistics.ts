@@ -313,6 +313,8 @@ export function calculateStatisticsForPattern(pattern, stories: surveyCollection
     
     if (statistics) {
         pattern.statsSummary = statistics.statsSummary;
+        pattern.statsDetailed = statistics.statsDetailed.map((stat) => {return stat + ": " + statistics[stat]});
+        pattern.allStatResults = statistics.allResults || null;
     } else {
         pattern.statsSummary = "ERROR";
     }
@@ -514,6 +516,7 @@ export function calculateStatisticsForScatterPlot(ratioQuestion1, ratioQuestion2
 export function calculateStatisticsForMultipleScatterPlot(ratioQuestion1, ratioQuestion2, choiceQuestion, stories: surveyCollection.Story[], 
         minimumStoryCountRequiredForTest: number, unansweredText, includeNAValues, lumpingCommands): any {
     const options = [];
+    const allResults = {};
     let index;
     if (choiceQuestion.displayType !== "checkbox" && choiceQuestion.displayType !== "checkboxes") {
         if (includeNAValues) options.push(unansweredText);
@@ -526,7 +529,7 @@ export function calculateStatisticsForMultipleScatterPlot(ratioQuestion1, ratioQ
             options.push(choiceQuestion.valueOptions[index]);
         }
     }
-    let minSignificanceOptionStats = {statsSummary: "None", statsDetailed: []};
+    let minSignificanceOptionStats = {statsSummary: "None", statsDetailed: [], allResults: {}};
     let minSignificance = 1000;
     let maxSignificance = 0;
     for (index in options) {
@@ -539,6 +542,7 @@ export function calculateStatisticsForMultipleScatterPlot(ratioQuestion1, ratioQ
             minSignificance = optionStats.p;
             minSignificanceOptionStats = optionStats;
         }
+        allResults[option] = optionStats;
     }
     const difference = maxSignificance - minSignificance;
     let differenceText = "";
@@ -548,6 +552,7 @@ export function calculateStatisticsForMultipleScatterPlot(ratioQuestion1, ratioQ
         differenceText = "" + difference.toFixed(3);
     }
     minSignificanceOptionStats.statsSummary = "p range: " + differenceText + ", p lowest: [" + minSignificanceOptionStats.statsSummary.trim() + "]";
+    minSignificanceOptionStats.allResults = allResults;
     return minSignificanceOptionStats;
 }
 
