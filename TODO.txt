@@ -162,6 +162,12 @@ M When import story form, hundreds of triples can be generated which take minute
 
 ==== DONE
 
+-- Release 1.6.3
+
+Added: Buttons to export all graphs and statistics displayed on "Explore patterns" page (without regard to observations)
+Fixed: Bug that was slowing down display of graphs on "Explore patterns" page
+Fixed: Bug where more than one forward slash in a question or answer name created spurious subfolders in zipped images
+
 -- Release 1.6.2
 
 Added: Option when printing catalysis reports to save observations and interpretations to simple CSV file
