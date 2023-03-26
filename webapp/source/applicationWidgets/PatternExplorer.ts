@@ -616,11 +616,9 @@ class PatternExplorer {
                 if (this.activeObservationTab >= 0 && this.activeObservationTab < this.observationAccessors.length) {
                     const activeAccessor = this.observationAccessors[this.activeObservationTab];
                     clientState.observationAccessor(activeAccessor);
-                    const observation = this.project.tripleStore.makeObject(activeAccessor, true);
-                    const interpretations = activeAccessor.observationInterpretations();
                     tabContents.push([
-                        panelBuilder.buildPanel(this.observationsPanelSpecification, observation || {}),
-                        activeAccessor.observationHasTitleOrDescription() ? panelBuilder.buildPanel(this.interpretationsPanelSpecification, interpretations || {}) : m("div"),
+                        panelBuilder.buildPanel(this.observationsPanelSpecification, {}),
+                        activeAccessor.observationHasTitleOrDescription() ? panelBuilder.buildPanel(this.interpretationsPanelSpecification, {}) : m("div"),
                     ]);
                 } 
                 result.push(m(".narrafirma-tabs", m(".narrafirma-tabs-header", tabs), m(".narrafirma-tabs-body", tabContents)));
