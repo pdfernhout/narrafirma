@@ -395,10 +395,10 @@ function processCSVContentsForStories(contents, saveStories, writeLog, questionn
 
                 // get question referred to by header name from story form
                 const question = questionForHeaderFieldName(fieldName, fieldIndex, questionnaire, project);
-                const keepNonMatchingAnswers = question.writeInTextBoxLabel && question.import_writeInTextsAreInSeparateColumn && question.import_writeInTextsAreInSeparateColumn === "no";
 
                 if (question) { 
 
+                    const keepNonMatchingAnswers = question.writeInTextBoxLabel && question.import_writeInTextsAreInSeparateColumn && question.import_writeInTextsAreInSeparateColumn === "no";
                     const questionName = question.displayName;
                     const importValueType = question.import_valueType;
                     log("LOG||Data column name: " + fieldName + " matched with question: " + questionName);
