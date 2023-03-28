@@ -115,6 +115,17 @@ const panel: Panel = {
             }
         },
         {
+            id: "configureCatalysisReport_hidePatternsWithoutStoryQuestions",
+            valueType: "boolean",
+            valuePath: "/clientState/catalysisReportIdentifier/hidePatternsWithoutStoryQuestions",
+            displayType: "checkbox",
+            displayConfiguration: "Hide patterns without story questions",
+            displayPrompt: `Would you like to <strong>hide patterns that don't involve any story questions</strong>?`,
+            displayVisible: function(panelBuilder, model) {
+                return !!Globals.clientState().haveCatalysisReportAndShowingAdvancedOptions();
+            }
+        },
+        {
             id: "configureCatalysisReport_hideStatsPanelsOnExplorePatternsPage",
             valueType: "boolean",
             valuePath: "/clientState/catalysisReportIdentifier/hideStatsPanelsOnExplorePatternsPage",

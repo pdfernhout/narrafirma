@@ -121,6 +121,7 @@ function add_catalysisReportGraphTypesChooser(panelBuilder: PanelBuilder, model,
     const questions = project.allQuestionsThatCouldBeGraphedForCatalysisReport(catalysisReportIdentifier, true);
     const graphTypesToCreate = project.tripleStore.queryLatestC(catalysisReportIdentifier, "graphTypesToCreate");
     const graphMultiChoiceQuestionsAgainstThemselves = project.tripleStore.queryLatestC(catalysisReportIdentifier, "graphMultiChoiceQuestionsAgainstThemselves");
+    const hidePatternsWithoutStoryQuestions = project.tripleStore.queryLatestC(catalysisReportIdentifier, "hidePatternsWithoutStoryQuestions");
     let totalGraphCount = 0;
 
     let columnTDs = [];
@@ -130,7 +131,7 @@ function add_catalysisReportGraphTypesChooser(panelBuilder: PanelBuilder, model,
         column.push(m("br"));
         column.push(m("br"));
         graphTypesInTableColumns[i].forEach(function(graphType) {
-            let count = graphCountForGraphType(graphType, questions, graphMultiChoiceQuestionsAgainstThemselves);
+            let count = graphCountForGraphType(graphType, questions, graphMultiChoiceQuestionsAgainstThemselves, hidePatternsWithoutStoryQuestions);
             let checkbox = buildQuestionCheckbox(graphTypesToDisplayNamesMap[graphType], graphType, count);
             column.push(checkbox);
             if (graphTypesToCreate && graphTypesToCreate[graphType]) totalGraphCount += count;
@@ -183,7 +184,18 @@ function tipStyleForGraphCount(totalGraphCount) {
 // Question types that have data associated with them for filters and graphs
 const nominalQuestionTypes = ["select", "boolean", "checkbox", "checkboxes", "radiobuttons"];
 
-function graphCountForGraphType(graphType, questions, graphMultiChoiceQuestionsAgainstThemselves) {
+
+function graphCountForGraphType(graphType, questions, graphMultiChoiceQuestionsAgainstThemselves, hidePatternsWithoutStoryQuestions) {
+
+    function hidePatternBecauseItDoesNotGoThroughTheStory(question1, question2, question3 = null) {
+        if (!hidePatternsWithoutStoryQuestions) return false;
+        if (question3) {
+            return (question1.id.indexOf("S_") < 0 && question2.id.indexOf("S_") < 0 && question3.id.indexOf("S_") < 0);
+        } else {
+            return (question1.id.indexOf("S_") < 0 && question2.id.indexOf("S_") < 0);
+        }
+    }
+
     if (!questions) return 0;
 
     if (graphType === "data integrity graphs") {
@@ -243,6 +255,7 @@ function graphCountForGraphType(graphType, questions, graphMultiChoiceQuestionsA
             nominalQuestions.forEach((question2) => {
                 const okayToGraphQuestionAgainstItself = graphMultiChoiceQuestionsAgainstThemselves && question1.displayName === question2.displayName && question2.displayType === "checkboxes";
                 if (!okayToGraphQuestionAgainstItself && usedQuestions.indexOf(question2) !== -1) return;
+                if (hidePatternBecauseItDoesNotGoThroughTheStory(question1, question2)) return;
                 graphCount++;
             });
         });
@@ -256,15 +269,23 @@ function graphCountForGraphType(graphType, questions, graphMultiChoiceQuestionsA
             usedQuestions.push(question1);
             scaleQuestions.forEach((question2) => {
                 if (usedQuestions.indexOf(question2) !== -1) return;
+                if (hidePatternBecauseItDoesNotGoThroughTheStory(question1, question2)) return;
                 graphCount++;
             });
         });
         return graphCount;
-    };
+    }
 
     // one scale question, one choice question
     if (graphType === "multiple histograms") {
-        return scaleQuestions.length * nominalQuestions.length;
+        //return scaleQuestions.length * nominalQuestions.length;
+        scaleQuestions.forEach((question1) => {
+            nominalQuestions.forEach((question2) => {
+                if (hidePatternBecauseItDoesNotGoThroughTheStory(question1, question2)) return;
+                graphCount++;
+            });
+        });
+        return graphCount;
     }
 
     // two choice questions, one scale question
@@ -276,6 +297,7 @@ function graphCountForGraphType(graphType, questions, graphMultiChoiceQuestionsA
                 const okayToGraphQuestionAgainstItself = graphMultiChoiceQuestionsAgainstThemselves && question1.displayName === question2.displayName && question2.displayType === "checkboxes";
                 if (!okayToGraphQuestionAgainstItself && usedQuestions.indexOf(question2) !== -1) return;
                 scaleQuestions.forEach((question3) => {
+                    if (hidePatternBecauseItDoesNotGoThroughTheStory(question1, question2, question3)) return;
                     graphCount++;
                 });
             });
@@ -291,6 +313,7 @@ function graphCountForGraphType(graphType, questions, graphMultiChoiceQuestionsA
             scaleQuestions.forEach((question2) => {
                 if (usedQuestions.indexOf(question2) !== -1) return;
                 nominalQuestions.forEach((question3) => {
+                    if (hidePatternBecauseItDoesNotGoThroughTheStory(question1, question2, question3)) return;
                     graphCount++;
                 });
             });

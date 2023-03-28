@@ -178,6 +178,7 @@ class PatternExplorer {
     storyGrid: GridWithItemPanel = null;
 
     graphMultiChoiceQuestionsAgainstThemselves = false;
+    hidePatternsWithoutStoryQuestions = false;
     hideStatsPanels = false;
     graphTypesToCreate = Project.default_graphTypesToCreate;
     numStoryCollectionsIncludedInReport = 0;
@@ -773,6 +774,7 @@ class PatternExplorer {
         }       
     }
 
+
     exportAllPatternGraphs() {
 
         const patterns = this.modelForPatternsGrid.patterns;
@@ -885,16 +887,36 @@ class PatternExplorer {
                 return graphHolder;
             }
     
+            function nicerGraphTypeName(name) {
+                const nicerGraphTypeNames = {
+                    "data integrity": "data integrity graphs",
+                    "bar": "bar charts",
+                    "histogram": "histograms",
+                    "multiple histogram": "histograms for choice subsets",
+                    "scatter": "scatter plots",
+                    "multiple scatter": "scatter plots for choice subsets",
+                    "table": "contingency charts",
+                    "contingency-histogram": "contingency charts with scale values",
+                    "correlation map": "correlation maps"
+                }
+                return nicerGraphTypeNames[name] || name;
+            }
+    
             if (progressModel.cancelled) {
                 alert("Cancelled after working on " + (patternIndex + 1) + " pattern(s)");
             } else if (patternIndex >= patterns.length) {
                 progressModel.hideDialogMethod();
                 if (savedGraphCount > 0) {
-                    const finishModel = dialogSupport.openFinishedDialog("Done creating zip file of images; save it?", "Finished generating images", "Save", "Cancel", function(dialogConfiguration, hideDialogMethod) {
-                        const fileName = catalysisReportName + " pattern graphs " + options["outputGraphFormat"] + ".zip";
-                        zipFile.generateAsync({type: "blob", platform: "UNIX", compression: "DEFLATE"}).then(function (blob) {saveAs(blob, fileName);});
-                        hideDialogMethod();
-                    });
+                        const finishModel = dialogSupport.openFinishedDialog(
+                            "Done creating zip file of " + savedGraphCount + " images; save it? (Note: saving the file might take a while.)", 
+                            "Finished generating images", "Save", "Cancel", 
+                            function(dialogConfiguration, hideDialogMethod) {
+                                toaster.toast("Saving file, please wait...");
+                                const fileName = catalysisReportName + " pattern graphs " + options["outputGraphFormat"] + ".zip";
+                                zipFile.generateAsync({type: "blob", platform: "UNIX", compression: "DEFLATE"}).then(function (blob) {saveAs(blob, fileName); });
+                                hideDialogMethod();
+                            }
+                        );
                     finishModel.redraw();
                 } else {
                     alert("No graphs were found with your current selection criteria. Try choosing different graph types.");
@@ -905,7 +927,7 @@ class PatternExplorer {
                 if (pattern && graphTypesThatDontGetPrinted.indexOf(pattern.graphType) < 0) {
                     let graphTitle = pattern.patternName;
                     graphTitle = replaceAll(graphTitle, "/", " "); // jszip interprets a forward slash as a folder designation
-                    console.log("graphTitle", graphTitle); 
+                    graphTitle = nicerGraphTypeName(pattern.graphType) + "/" + graphTitle; // place files into folders by type
                     const graphHolder = customGraphHolder(allStories, options);
                     const selectionCallback = function() { return this; };
                     const graph = PatternExplorer.makeGraph(pattern, graphHolder, selectionCallback, !options["showStatsPanelsInReport"]);
@@ -1025,6 +1047,7 @@ class PatternExplorer {
         // update options kept in this object
         this.graphTypesToCreate = this.project.tripleStore.queryLatestC(catalysisReportIdentifier, "graphTypesToCreate") || Project.default_graphTypesToCreate;
         this.graphMultiChoiceQuestionsAgainstThemselves = this.project.tripleStore.queryLatestC(this.catalysisReportIdentifier, "graphMultiChoiceQuestionsAgainstThemselves"); 
+        this.hidePatternsWithoutStoryQuestions = this.project.tripleStore.queryLatestC(this.catalysisReportIdentifier, "hidePatternsWithoutStoryQuestions"); 
         this.hideStatsPanels = this.project.tripleStore.queryLatestC(this.catalysisReportIdentifier, "hideStatsPanelsOnExplorePatternsPage"); 
         this.catalysisReportObservationSetIdentifier = this.getObservationSetIdentifier(catalysisReportIdentifier);
 
@@ -1185,6 +1208,15 @@ class PatternExplorer {
         return result;
     }
 
+    hidePatternBecauseItDoesNotGoThroughTheStory(question1, question2, question3 = null) {
+        if (!this.hidePatternsWithoutStoryQuestions) return false;
+        if (question3) {
+            return (question1.id.indexOf("S_") < 0 && question2.id.indexOf("S_") < 0 && question3.id.indexOf("S_") < 0);
+        } else {
+            return (question1.id.indexOf("S_") < 0 && question2.id.indexOf("S_") < 0);
+        }
+    }
+
     buildOrCountPatternList(nominalQuestions, scaleQuestions, textQuestions, build) {
         const result = [];
         let graphCount = 0;
@@ -1264,8 +1296,10 @@ class PatternExplorer {
             nominalQuestions.forEach((question1) => {
                 usedQuestions.push(question1);
                 nominalQuestions.forEach((question2) => {
-                    const okayToGraphQuestionAgainstItself = this.graphMultiChoiceQuestionsAgainstThemselves && question1.displayName === question2.displayName && question2.displayType === "checkboxes";
+                    const okayToGraphQuestionAgainstItself = this.graphMultiChoiceQuestionsAgainstThemselves 
+                        && question1.displayName === question2.displayName && question2.displayType === "checkboxes";
                     if (!okayToGraphQuestionAgainstItself && usedQuestions.indexOf(question2) !== -1) return;
+                    if (this.hidePatternBecauseItDoesNotGoThroughTheStory(question1, question2)) return;
                     if (build) {
                         result.push(this.makePattern(nextID(), "table", [question1, question2], null));
                     } else {
@@ -1282,6 +1316,7 @@ class PatternExplorer {
                 usedQuestions.push(question1);
                 scaleQuestions.forEach((question2) => {
                     if (usedQuestions.indexOf(question2) !== -1) return;
+                    if (this.hidePatternBecauseItDoesNotGoThroughTheStory(question1, question2)) return;
                     if (build) {
                         result.push(this.makePattern(nextID(), "scatter", [question1, question2], null));
                     } else {
@@ -1295,6 +1330,7 @@ class PatternExplorer {
         if (this.graphTypesToCreate["multiple histograms"]) {
             scaleQuestions.forEach((question1) => {
                 nominalQuestions.forEach((question2) => {
+                    if (this.hidePatternBecauseItDoesNotGoThroughTheStory(question1, question2)) return;
                     if (build) {
                         result.push(this.makePattern(nextID(), "multiple histogram", [question1, question2], null));
                     } else {
@@ -1313,6 +1349,7 @@ class PatternExplorer {
                     const okayToGraphQuestionAgainstItself = this.graphMultiChoiceQuestionsAgainstThemselves && question1.displayName === question2.displayName && question2.displayType === "checkboxes";
                     if (!okayToGraphQuestionAgainstItself && usedQuestions.indexOf(question2) !== -1) return;
                     scaleQuestions.forEach((question3) => {
+                        if (this.hidePatternBecauseItDoesNotGoThroughTheStory(question1, question2, question3)) return;
                         if (build) {
                             result.push(this.makePattern(nextID(), "contingency-histogram", [question1, question2, question3], null));
                         } else {
@@ -1331,6 +1368,7 @@ class PatternExplorer {
                 scaleQuestions.forEach((question2) => {
                     if (usedQuestions.indexOf(question2) !== -1) return;
                     nominalQuestions.forEach((question3) => {
+                        if (this.hidePatternBecauseItDoesNotGoThroughTheStory(question1, question2, question3)) return;
                         if (build) {
                             result.push(this.makePattern(nextID(), "multiple scatter", [question1, question2, question3], null));
                         } else {
