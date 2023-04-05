@@ -162,6 +162,15 @@ M When import story form, hundreds of triples can be generated which take minute
 
 ==== DONE
 
+-- Release 1.6.4
+
+Added: Catalysis option to hide patterns that don't include at least one question asked about stories
+Fixed: Bug in WordPress version where resetting a project more than once would produce an error
+Fixed: Bug where a forward slash in a question's short name would cause the data collected for that question to be invisible (now slashes are not allowed)
+Fixed: Bug where story cards html page had title with long messy id instead of short name
+Fixed: Bug in csv import that would cause an error (in NF, not in the console) if a data column name was not described in the story form file
+Fixed: Bug in csv import where slider with non-default "does not apply" label was being read incorrectly
+
 -- Release 1.6.3
 
 Added: Buttons to export all graphs and statistics displayed on "Explore patterns" page (without regard to observations)

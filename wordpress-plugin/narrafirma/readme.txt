@@ -7,9 +7,9 @@ Author URI: http://www.cfkurtz.com
 Author: Cynthia Kurtz and Paul Fernhout
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=DGVVDT2D49QA8
 Requires at least: 4.3.1
-Tested up to: 6.1.1
+Tested up to: 6.2
 Stable tag: trunk
-Version: 1.6.3
+Version: 1.6.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -105,6 +105,15 @@ We strongly suggest that you set up any web site on which you intend to install 
 12. Here the NarraFirma user is reflecting on the entire project, to learn from it and to keep good records for the future.
 
 == Changelog ==
+
+= 1.6.4 =
+
+Added: Catalysis option to hide patterns that don't include at least one question asked about stories
+Fixed: Bug in WordPress version where resetting a project more than once would produce an error
+Fixed: Bug where a forward slash in a question's short name would cause the data collected for that question to be invisible (now slashes are not allowed)
+Fixed: Bug where story cards html page had title with long messy id instead of short name
+Fixed: Bug in csv import that would cause an error (in NF, not in the console) if a data column name was not described in the story form file
+Fixed: Bug in csv import where slider with non-default "does not apply" label was being read incorrectly
 
 = 1.6.3 =
 
@@ -674,6 +683,10 @@ loading application, getting user information, or retrieving project data.
 change logs, see the [GitHub repository](https://github.com/pdfernhout/narrafirma).
 
 == Upgrade Notice ==
+
+= 1.6.4 =
+
+This minor upgrade adds a viewing option for catalysis and fixes several small bugs.
 
 = 1.6.3 =
 
