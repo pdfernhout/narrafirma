@@ -1866,6 +1866,9 @@ function questionForItem(item, questionCategory) {
             valueOptions = [answers[0], answers[1]];
         }
         if (answers && answers.length > 2) {
+            valueOptions.push(answers[2]); // this could be the "does not apply" label for the slider
+        }
+        if (answers && answers.length > 3) { // if there are min and max slider values, they should be in cells 4 and 5
             let answerCount = 0;
             const minAndMax = answers.slice(2);
             minAndMax.forEach(function (textValue) {
