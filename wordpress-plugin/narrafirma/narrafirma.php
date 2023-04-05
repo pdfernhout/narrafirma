@@ -560,27 +560,23 @@ function pointrel20150417_resetJournal($apiRequest) {
 	
 	$journalIdentifier = $apiRequest->journalIdentifier;
     if (!doesJournalTableExist($journalIdentifier)) {
-        wp_send_json( makeFailureResponse(500, "Journal does not exist") );
+        wp_send_json( makeFailureResponse(500, "Journal does not exist", array( 'journalIdentifier' => $journalIdentifier )) );
         return;
     }
 
     $table_name = tableNameForJournal($journalIdentifier);
 
-    // backup table name is the same, but with "b" in place of the usual "j"
-    $sanitizedJournalName = preg_replace('/[^a-zA-Z0-9_]+/', '_', $journalIdentifier);
-    $backup_table_name = $wpdb->prefix . 'narrafirma_b_' . $sanitizedJournalName;
-    $backup_table_name = strtolower($backup_table_name);
-
+    $backup_table_name = $wpdb->prefix . "narrafirma_reset_backup_" . strftime("%Y%m%d%H%M");
     $success = $wpdb->query("RENAME TABLE `$table_name` TO `$backup_table_name`");
     if ($success === false) {
-        wp_send_json( makeFailureResponse(500, "Journal could not be renamed to backup") );
+        wp_send_json( makeFailureResponse(500, "Journal table could not be renamed to backup table", array( 'table_name' => $table_name, 'backup_table_name', $backup_table_name )) );
         return;
     }
 
     $createdJournal = makeJournalTable($journalIdentifier);
     $result = ($createdJournal) ? 'true' : 'false';
     if ($createdJournal === false) {
-        wp_send_json( makeFailureResponse(500, "Journal name is too long") );
+        wp_send_json( makeFailureResponse(500, "Journal name is too long", array( 'journalIdentifier' => $journalIdentifier )) );
         return;
     }
 

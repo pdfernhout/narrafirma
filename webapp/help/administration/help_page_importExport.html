@@ -127,23 +127,43 @@ Can I use the export function to translate the entire project to another piece o
 </h3>
 <div class="question-answer">
 <p>
-Sort of, but the better way is to go to the project-administration <a href="help_page_print.html">Print</a> page and print a project report. 
+You could, but the better way is to go to the project-administration <a href="help_page_print.html">Print</a> page and print a project report. 
 </p>
 </div>
 
 <h3 class="question">
-If I have a problem with a project, can I export it, edit its JSON file using a word processor, then import it into an empty (or reset) project?
+If I have a problem with a project, can I export it, edit its JSON file using a text editor, then import it into an empty (or reset) project?
 </h3>
 <div class="question-answer">
 <p>
 Yes. Just be careful, and make a backup copy before you make any changes.
 </p>
+<p>Some tips for editing NarraFirma JSON files:</p>
+	<ul>
+		<li>Do not do this unless you are comfortable working with structured text data.</li>
+		<li>Make sure the file stays in plain text format with UTF-8 encoding.</li>
+		<li>Because this is a journaling data store, the same data fields may appear in multiple messages. 
+			Pay attention to the message timestamps.</li>
+		<li>In each addTriple message, "a" is the identifier of the thing being altered (a story form, a story, a question, etc).
+			The "b" field is the name of the property or field being set or changed. The "c" field is the data.
+			So a message that changes the color of a cat named Chloe to gray would read [a:Chloe, b:color, c:gray].	
+			If Chloe's color was later changed to brown, a later message would read [a:Chloe, b:color: c:brown].
+		</li>
+	</ul>
 </div>
 
 <h3 class="question">
 Why would I want to reset a project?
 </h3>
 <div class="question-answer">
+<p>For two reasons: to reload a project changed outside of your NarraFirma installation, or to remove disconnected stories.</p>
+<h5 class="heading">Changing a project outside of NarraFirma</h5>
+<p>You can export a NarraFirma project to a JSON file, 
+	change the JSON file using a text editor or another installation of NarraFirma, 
+	reset the project,
+	and import the changed JSON file into it. This will recreate the project, applying any changes you made to the JSON file.
+</p>
+<h5 class="heading">Removing disconnected stories</h5>
 <p>
 	To avoid accidentally losing stories, NarraFirma does not delete stories when you delete a story collection.
 	It just removes the container they were in. 
@@ -158,20 +178,26 @@ these extra stories can cause NarraFirma to run slower or even
 run out of Javascript memory. This is not likely to be a problem if you have dozens of stories, or even a hundred.
 But if you have loaded several hundred stories several times, you might notice a slowdown.
 In that case, you can use the export-reset-import process to trim out the hidden stories and speed things up.</p>
+<ol>
+	<li>Choose "project snapshot with stories," then click "Export project". Save the JSON file.</li>
+	<li>Click the "Reset project" button to empty out the project.</li>
+	<li>In the "Import" section, choose "project snapshot (with or without stories), then click "Import project." Choose the JSON file you saved in step one.</li>
+</ol>
+<p>This will restore the project without the disconnected stories.</p>
 </div>
 
 <h3 class="question">
 After I reset a project, are the stories that were removed gone forever?
 </h3>
 <div class="question-answer">
-<p>When you reset a project, NarraFirma makes a backup copy of it first. To restore the backup:</p>
+<p>No. You can still get them back. When you reset a project, NarraFirma makes a backup copy of it first. To restore the backup:</p>
 <ul>
 	<li>With WordPress:
 		<ul>
 			<li>Find a plugin that gives you access to your database tables. </li>
-			<li>Find the backup table. It will have the original table name with a "b" in place of the usual "j".</li>
+			<li>Using the plugin, find the reset backup table. It should be called <pre>[your WordPress prefix]narrafirma_reset_backup_[date/time]</pre></li>
 			<li>Rename or delete the original, empty table (the one you reset). </li>
-			<li>Rename the backup table to the empty table's name.</li>
+			<li>Rename the reset backup table to the empty table's name.</li>
 		</ul>
 		</li>
 	<li>With node.js: 
