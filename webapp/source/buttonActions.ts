@@ -285,17 +285,12 @@ export function exportStoryFormWhileEditingIt_ExternalFormat(model, fieldSpecifi
     csvImportExport.exportQuestionnaireForImport(questionnaire);
 }
 
-export function checkThatItemHasShortName(itemID): boolean {
-    if (!itemID) return false;
-    const item = project.tripleStore.makeObject(itemID, true);
-    if (!item) return false; 
-
+function itemTypeForItemID(itemID) {
     // item types whose short names are required, for lookup:
     // eliciting, story, participant, and annotation questions
     // story forms
     // story collections
     // catalysis reports
-
     let itemType = null;
     if (itemID.indexOf("ElicitingQuestion") >= 0) {
         itemType = "elicitingQuestion";
@@ -316,8 +311,25 @@ export function checkThatItemHasShortName(itemID): boolean {
         alert(message);
         console.log(message);
     }
+    return itemType;
+}
+
+export function checkThatItemHasShortName(itemID): boolean {
+    if (!itemID) return false;
+    const item = project.tripleStore.makeObject(itemID, true);
+    if (!item) return false; 
+    const itemType = itemTypeForItemID(itemID);
     const shortNameKey = itemType + "_shortName";
     return item[shortNameKey] && item[shortNameKey].length > 0;
+}
+
+export function checkThatItemHasShortNameWithNoForwardSlashInIt(itemID): boolean {
+    if (!itemID) return false;
+    const item = project.tripleStore.makeObject(itemID, true);
+    if (!item) return false; 
+    const itemType = itemTypeForItemID(itemID);
+    const shortNameKey = itemType + "_shortName";
+    return item[shortNameKey] && item[shortNameKey].length > 0 && item[shortNameKey].indexOf("/") < 0;
 }
 
 export function checkThatQuestionHasType(itemID): boolean {

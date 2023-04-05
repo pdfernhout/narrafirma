@@ -139,6 +139,8 @@ class Application {
             if (checkName) {
                 success = buttonActions.checkThatItemHasShortName(itemID);
                 if (!success) return ["You must enter a short name for this item."];
+                success = buttonActions.checkThatItemHasShortNameWithNoForwardSlashInIt(itemID);
+                if (!success) return ["Short names cannot have forward slashes (/) in them."]
             }
             if (checkType) {
                 success = buttonActions.checkThatQuestionHasType(itemID);
