@@ -109,6 +109,7 @@ We strongly suggest that you set up any web site on which you intend to install 
 = 1.6.4 =
 
 Added: Catalysis option to hide patterns that don't include at least one question asked about stories
+Changed: Clarified a few things on the Project admin / Import & Export page 
 Fixed: Bug in WordPress version where resetting a project more than once would produce an error
 Fixed: Bug where a forward slash in a question's short name would cause the data collected for that question to be invisible (now slashes are not allowed)
 Fixed: Bug where story cards html page had title with long messy id instead of short name
