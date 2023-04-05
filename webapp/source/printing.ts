@@ -1646,7 +1646,7 @@ export function printStoryCards() {
     if (numColumns && numColumns > 1) {
         storyDivs.push(m("table.narrafirma-story-card-for-printing-table", rowTRs));
     } 
-    const htmlForPage = generateHTMLForPage("Story cards for: " + storyCollectionIdentifier, "css/standard.css", customCSS, storyDivs, null);
+    const htmlForPage = generateHTMLForPage("Story cards for: " + storyCollectionName, "css/standard.css", customCSS, storyDivs, null);
     printHTML(htmlForPage);
 }
 
