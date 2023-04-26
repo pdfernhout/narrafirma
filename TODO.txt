@@ -162,6 +162,11 @@ M When import story form, hundreds of triples can be generated which take minute
 
 ==== DONE
 
+-- Release 1.6.5
+
+Fixed: Bug where code to update legacy data with missing remarkable flags was setting extra flags as well (only affected projects created before v1.4.0)
+Fixed: Added explanation of circle colors in clustering during catalysis
+
 -- Release 1.6.4
 
 Added: Catalysis option to hide patterns that don't include at least one question asked about stories

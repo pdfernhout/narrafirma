@@ -9,7 +9,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Requires at least: 4.3.1
 Tested up to: 6.2
 Stable tag: trunk
-Version: 1.6.4
+Version: 1.6.5
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -105,6 +105,11 @@ We strongly suggest that you set up any web site on which you intend to install 
 12. Here the NarraFirma user is reflecting on the entire project, to learn from it and to keep good records for the future.
 
 == Changelog ==
+
+= 1.6.5 =
+
+Fixed: Bug where code to update legacy data with missing remarkable flags was setting extra flags as well (only affected projects created before v1.4.0)
+Fixed: Added explanation of circle colors in clustering during catalysis
 
 = 1.6.4 =
 
@@ -684,6 +689,10 @@ loading application, getting user information, or retrieving project data.
 change logs, see the [GitHub repository](https://github.com/pdfernhout/narrafirma).
 
 == Upgrade Notice ==
+
+= 1.6.5 =
+
+This minor upgrade fixes a little bug that applies to older projects.
 
 = 1.6.4 =
 
