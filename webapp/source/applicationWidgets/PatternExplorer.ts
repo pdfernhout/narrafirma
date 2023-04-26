@@ -530,6 +530,19 @@ class PatternExplorer {
     static view(controller, args) {
         return controller.calculateView(args);
     }
+
+    patternHasObservations(pattern) {
+        if (!pattern) return false;
+        if (!pattern.observationIDs) return false;
+        if (pattern.observationIDs.length === 0) return false;
+        let numRealObservations = 0;
+        for (const id of pattern.observationIDs) {
+            const accessor = new ObservationAccessor(id);
+            if (accessor.observationHasTitleOrDescription()) numRealObservations++;
+        }
+        if (numRealObservations === 0) return false;
+        return true;
+    }
     
     //------------------------------------------------------------------------------------------------------------------------------------------
     // redrawing
@@ -568,11 +581,9 @@ class PatternExplorer {
             const result = [];
 
             let remarkable = PatternExplorer.getOrSetWhetherPatternIsMarkedAsRemarkable(this.project, this.catalysisReportIdentifier, this.currentPattern);
+            // deal with legacy data in which the remarkable value is not set but there is an observation 
+            if (!remarkable && this.patternHasObservations(this.currentPattern)) remarkable = "yes";
 
-            // update legacy data in which the remarkable value is not set but there is an observation (so the remarkable value SHOULD be set to "yes")
-            if (!remarkable && this.observationAccessors.length > 0) {
-                remarkable = PatternExplorer.getOrSetWhetherPatternIsMarkedAsRemarkable(this.project, this.catalysisReportIdentifier, this.currentPattern, "yes");
-            }
             let remarkableItems = [];
             remarkableItems.push(m("span.narrafirma-mark-pattern-text", ["Is this pattern ", m("b", "remarkable"), "?"]));
             remarkableItems.push(m("button", {class: "narrafirma-mark-pattern-button", 
@@ -588,7 +599,9 @@ class PatternExplorer {
                 m("span.button-text ", "unmarked"))); 
             result.push(m("div", remarkableItems));
 
-            if (this.observationAccessors.length === 0) {
+            // show observation panels in two situations: the user has set the remarkable flag to yes; the user has written texts for at least one observation
+            const showObservationPanels = remarkable === "yes" || this.patternHasObservations(this.currentPattern);
+            if (!showObservationPanels) {
                 result.push(m("button", {style: "margin-left: 0.8em", 
                     disabled: remarkable !== "yes",
                     onclick: this.addObservationTabClick.bind(this),}, m("span", {class: "buttonWithTextImage addButtonImage"}), "Add observation"));
@@ -1443,7 +1456,9 @@ class PatternExplorer {
         };
         const remarkableAccessor = () => {
             const remarkable = PatternExplorer.getOrSetWhetherPatternIsMarkedAsRemarkable(this.project, this.catalysisReportIdentifier, pattern);
-            return (remarkable === undefined) ? "" : remarkable;
+            return (remarkable === undefined) 
+                ? (this.patternHasObservations(pattern) ? "yes": "")
+                : remarkable;
         }
         const noteAccessor = () => {
             return this.getCombinedObservationsInfoForPattern(pattern, "observationNote") || "";
