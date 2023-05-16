@@ -85,8 +85,13 @@ function htmlForMithril(vdom) {
     // Convert Mithril vdom objects to HTML
     const temporaryDiv = document.createElement('div');
     m.render(temporaryDiv, vdom);
-    
-    return temporaryDiv.innerHTML;
+
+    // add carriage returns to make html more readable (for people who want to mess with it by hand)
+    let html = temporaryDiv.innerHTML;
+    html = replaceAll(html, '<div class="storyCard">', '\n<div class="storyCard">');
+    html = replaceAll(html, "<div", "\n<div");
+    html = replaceAll(html, "<", "\n<");
+    return html;
 }
 
 // escapeHtml from: http://shebang.brandonmintern.com/foolproof-html-escaping-in-javascript/
