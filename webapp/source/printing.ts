@@ -1603,7 +1603,7 @@ export function printStoryCards() {
     if (!numColumns) numColumns = 1;
     
     let storyDivs = [];
-    if (filter) storyDivs.push(m("div.storyCardFilterWarning", "Stories that match filter: " + filter));
+    if (filter) storyDivs.push(m("div.storyCardFilterWarning", "Stories that match filter: " + filter + " (" + filteredStories.length + ")"));
 
     let columnIndex = 1;
     let rowTRs = [];
