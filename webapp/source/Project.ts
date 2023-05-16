@@ -714,7 +714,16 @@ class Project {
         const annotationQuestions = this.collectAllAnnotationQuestions();
         for (let index in annotationQuestions) {
             const question = annotationQuestions[index];
-            if ("A_" + question.annotationQuestion_shortName === questionID) return question;
+            if ("A_" + question.annotationQuestion_shortName === questionID) {
+                const convertedAnnotationQuestion = {
+                    id: "A_" + question.annotationQuestion_shortName,
+                    displayName: question.annotationQuestion_shortName,
+                    displayPrompt: question.annotationQuestion_text,
+                    displayType: question.annotationQuestion_type,
+                    valueOptions: question.annotationQuestion_options
+                }
+                return convertedAnnotationQuestion;
+            }
         }
         console.log("ERROR: question not found for id", questionID);
         return null;
