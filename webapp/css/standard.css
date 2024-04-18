@@ -1762,10 +1762,12 @@ td.narrafirma-story-card-for-printing-table {
     margin: 0.5em 0 0.5em 0.7em;
 }
 
-.narrafirma-pattern-browser-bottombuttons {
+.narrafirma-pattern-browser-exportbuttons {
     display: block;
     font-size: 0.8em;
-    margin: 0;
+    margin: 0 0.5em 0 0.3em;
+    padding-left: 0.5em;
+    text-align: right;
 }
 
 button.narrafirma-pattern-browser-export {

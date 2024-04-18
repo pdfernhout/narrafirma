@@ -580,9 +580,13 @@ class PatternExplorer {
         const buildObservationsAndInterpretationsPanels = () => {
             const result = [];
 
-            let remarkable = PatternExplorer.getOrSetWhetherPatternIsMarkedAsRemarkable(this.project, this.catalysisReportIdentifier, this.currentPattern);
+            const remarkable = PatternExplorer.getOrSetWhetherPatternIsMarkedAsRemarkable(this.project, this.catalysisReportIdentifier, this.currentPattern);
+            let isRemarkable = remarkable === "yes";
+            const hasAtLeastOneNonEmptyObservation = this.patternHasObservations(this.currentPattern);
+            const hasEvenOneEmptyObservation = this.observationAccessors.length > 0;
+
             // deal with legacy data in which the remarkable value is not set but there is an observation 
-            if (!remarkable && this.patternHasObservations(this.currentPattern)) remarkable = "yes";
+            if (!isRemarkable && hasAtLeastOneNonEmptyObservation) isRemarkable = true;
 
             let remarkableItems = [];
             remarkableItems.push(m("span.narrafirma-mark-pattern-text", ["Is this pattern ", m("b", "remarkable"), "?"]));
@@ -597,35 +601,34 @@ class PatternExplorer {
             remarkableItems.push(m("button", {class: "narrafirma-mark-pattern-button", 
                 onclick: this.setRemarkableFlag.bind(this, ""), disabled: remarkable === undefined || remarkable === ""}, 
                 m("span.button-text ", "unmarked"))); 
+            remarkableItems.push(m("button", {
+                disabled: !isRemarkable || (isRemarkable && hasEvenOneEmptyObservation),
+                onclick: this.addObservationTabClick.bind(this),}, m("span", {class: "buttonWithTextImage addButtonImage"}), "Add observation"));
             result.push(m("div", remarkableItems));
 
-            // show observation panels in two situations: the user has set the remarkable flag to yes; the user has written texts for at least one observation
-            const showObservationPanels = remarkable === "yes" || this.patternHasObservations(this.currentPattern);
-            if (!showObservationPanels) {
-                result.push(m("button", {style: "margin-left: 0.8em", 
-                    disabled: remarkable !== "yes",
-                    onclick: this.addObservationTabClick.bind(this),}, m("span", {class: "buttonWithTextImage addButtonImage"}), "Add observation"));
-            } else {
+            if (isRemarkable) {
                 let tabs = [];
-                for (let i = 0; i < this.observationAccessors.length; i++) {
-                    const tab = m("button", {
-                        class: (i === this.activeObservationTab) ? "narrafirma-tab-button-selected" : "narrafirma-tab-button", 
-                        onclick: this.switchToObservationTabClick.bind(this, i),
-                        title: "Click to switch to another observation tab"
-                    }, "" + (i+1));
-                    tabs.push(tab);
+                if (hasAtLeastOneNonEmptyObservation) {
+                    for (let i = 0; i < this.observationAccessors.length; i++) {
+                        const tab = m("button", {
+                            class: (i === this.activeObservationTab) ? "narrafirma-tab-button-selected" : "narrafirma-tab-button", 
+                            onclick: this.switchToObservationTabClick.bind(this, i),
+                            title: "Click to switch to another observation tab"
+                        }, "" + (i+1));
+                        tabs.push(tab);
+                    }
+                    tabs.push(m("button", {
+                        class: "narrafirma-tab-button", 
+                        disabled: remarkable !== "yes",
+                        onclick: this.addObservationTabClick.bind(this),
+                        title: "Click to add another observation to this pattern"
+                    }, "+"));
+                    tabs.push(m("button", {
+                        class: "narrafirma-tab-button", 
+                        onclick: this.deleteObservationTabClick.bind(this),
+                        title: "Click here to delete this observation (permanently)"
+                    }, "-"));
                 }
-                tabs.push(m("button", {
-                    class: "narrafirma-tab-button", 
-                    disabled: remarkable !== "yes",
-                    onclick: this.addObservationTabClick.bind(this),
-                    title: "Click to add another observation to this pattern"
-                }, "+"));
-                tabs.push(m("button", {
-                    class: "narrafirma-tab-button", 
-                    onclick: this.deleteObservationTabClick.bind(this),
-                    title: "Click here to delete this observation (permanently)"
-                }, "-"));
                 let tabContents = [];
                 if (this.activeObservationTab >= 0 && this.activeObservationTab < this.observationAccessors.length) {
                     const activeAccessor = this.observationAccessors[this.activeObservationTab];
@@ -655,12 +658,22 @@ class PatternExplorer {
                     this.progressMessage = "";
                 }
             }, "Cancel");
+
             const buildGridHeader = () => {
                 return m("div.patterns-grid-header", 
                     m("div#gridHeaderProgressMessage" + (this.progressMessage ? ".pleaseWaitStatisticsOverlay" : ""), this.progressMessage),
                     this.progressMessage ? cancelButton : [],
                     patternsAndStrengthsToDisplayAbovePatternsTable, 
                 );
+            };
+
+            const buildExportButtonsPanel = () => {
+                return m("div.narrafirma-pattern-browser-exportbuttons", [
+                        m("span", "Export all "),
+                        m("button.narrafirma-pattern-browser-export", {onclick: () => {this.exportAllPatternGraphs(); }}, "Graphs"),
+                        m("button.narrafirma-pattern-browser-export", {onclick: () => {this.exportAllPatternStatistics(); }}, "Statistics"),
+                        m("button.narrafirma-pattern-browser-export", {onclick: () => {this.exportAllCorrelations(); }}, "Correlations")
+                    ]);
             };
 
             let activeAccessor = null;
@@ -679,6 +692,7 @@ class PatternExplorer {
 
             if (this.currentPattern && (this.currentPattern.graphType === "data integrity" || this.currentPattern.graphType === "correlation map")) {
                 parts = [
+                    buildExportButtonsPanel(),
                     buildGridHeader(),
                     this.patternsGrid.calculateView(args),
                     m("div.narrafirma-graph-results-panel", {config: this.insertGraphResultsPaneConfig.bind(this)}),
@@ -687,6 +701,7 @@ class PatternExplorer {
                 ];
             } else if (this.currentPattern && this.currentPattern.graphType === "texts") {
                 parts = [
+                    buildExportButtonsPanel(),
                     buildGridHeader(),
                     this.patternsGrid.calculateView(args),
                     panelBuilder.buildPanel(this.textAnswersPanelSpecification, this),
@@ -694,6 +709,7 @@ class PatternExplorer {
                 ];
             } else if (this.currentPattern && this.currentPattern.graphType === "write-in texts") {
                 parts = [
+                    buildExportButtonsPanel(),
                     buildGridHeader(),
                     this.patternsGrid.calculateView(args),
                     panelBuilder.buildPanel(this.writeInTextAnswersPanelSpecification, this),
@@ -705,6 +721,7 @@ class PatternExplorer {
                 const selectedStoriesText = numStories + " " + storyOrStoriesWord + " in selection - " 
                     + this.nameForCurrentGraphSelection() + ". Click on a story to view it.";
                 parts = [
+                    buildExportButtonsPanel(),
                     buildGridHeader(),
                     this.patternsGrid.calculateView(args),
                     this.currentPattern ?
@@ -724,11 +741,6 @@ class PatternExplorer {
                         m("div.narrafirma-choose-pattern", "Please choose a pattern to view in the table above.")
                 ];
             }
-            parts.push(
-                m("div.narrafirma-pattern-browser-bottombuttons", [
-                    m("button.narrafirma-pattern-browser-export", {onclick: () => {this.exportAllPatternGraphs(); }}, "Export All Pattern Graphs"),
-                    m("button.narrafirma-pattern-browser-export", {onclick: () => {this.exportAllPatternStatistics(); }}, "Export All Statistics")
-                ]));
         }
         return m("div.narrafirma-patterns-grid", parts);
     }
@@ -1050,6 +1062,82 @@ class PatternExplorer {
         setTimeout(function() { printStatsForNextPattern(); }, 0);
     }
 
+    exportAllCorrelations() {
+        const allStories = this.project.storiesForCatalysisReport(this.catalysisReportIdentifier);
+        const lumpingCommands = this.project.lumpingCommandsForCatalysisReport(this.catalysisReportIdentifier); 
+        const minimumStoryCountRequiredForTest = this.graphHolder.minimumStoryCountRequiredForTest;
+        const unansweredText = charting.customStatLabel("unanswered", this.graphHolder);
+        const includeNAValues = false;
+
+        const allQuestions = this.project.allQuestionsThatCouldBeGraphedForCatalysisReport(this.catalysisReportIdentifier, true);
+        const scaleQuestions = allQuestions.filter((question) => { if (question.displayType === "slider") return question; });
+        const choiceQuestions = allQuestions.filter((question) => { if (["select", "radiobuttons", "checkboxes"].indexOf(question.displayType) >= 0) return question; });
+
+        let output = [];
+        const delimiter = Globals.clientState().csvDelimiter();
+        const explanation = ["Subset correlations: + = significant positive correlation (++ highly); - = significant negative correlation (-- highly); blank line or cell = no significant correlation"];
+        output = csvImportExport.addCSVOutputLine(output, explanation, delimiter);
+        const headerLine = ["Scale 1","Scale 2", "Overall"];
+        for (let i = 0; i < choiceQuestions.length; i++) headerLine.push(choiceQuestions[i].displayName);
+        output = csvImportExport.addCSVOutputLine(output, headerLine, delimiter);
+        const combosAlreadyHandled = [];
+
+        for (let scaleQuestion1 of scaleQuestions) {
+            for (let scaleQuestion2 of scaleQuestions) {
+                if (scaleQuestion1 === scaleQuestion2) continue;
+                const oneThenTwo = scaleQuestion1.displayName + " x " + scaleQuestion2.displayName;
+                const twoThenOne = scaleQuestion2.displayName + " x " + scaleQuestion1.displayName;
+                if (combosAlreadyHandled.indexOf(oneThenTwo) >= 0 || combosAlreadyHandled.indexOf(twoThenOne) >= 0) continue;
+                combosAlreadyHandled.push(oneThenTwo);
+
+                let comboLine = [];
+                comboLine.push(scaleQuestion1.displayName);
+                comboLine.push(scaleQuestion2.displayName);
+                const overallStats = calculateStatistics.calculateStatisticsForScatterPlot(scaleQuestion1, scaleQuestion2, null, null, 
+                    allStories, minimumStoryCountRequiredForTest, unansweredText, includeNAValues, lumpingCommands);
+                let overallString = "";
+                if (overallStats.p < 0.01) {
+                        overallString = overallStats.rho < 0 ? "--" : "++";
+                    } else if (overallStats.p < 0.05) {
+                        overallString = overallStats.rho < 0 ? "-" : "+";
+                    } else {
+                        overallString = "";
+                    }
+                comboLine.push(overallString);
+
+                for (let choiceQuestion of choiceQuestions) {
+                    const optionsCell = [];
+                    const noCorrs = [];
+                    for (let option of choiceQuestion.valueOptions) {
+                        const optionStats = calculateStatistics.calculateStatisticsForScatterPlot(scaleQuestion1, scaleQuestion2, choiceQuestion, option, 
+                            allStories, minimumStoryCountRequiredForTest, unansweredText, includeNAValues, lumpingCommands);
+                        let corrString = "";
+                        if (optionStats.p < 0.01) {
+                            corrString = option + " " + (optionStats.rho < 0 ? "--" : "++");
+                        } else if (optionStats.p < 0.05) {
+                            corrString = option + " " + (optionStats.rho < 0 ? "-" : "+");
+                        } else {
+                            corrString = option + "";
+                            noCorrs.push(option);
+                        }
+                        if (corrString) optionsCell.push(corrString);
+                    }
+                    if (noCorrs.length === choiceQuestion.valueOptions.length) {
+                        comboLine.push("");
+                    } else {
+                        comboLine.push(optionsCell.join("\n"));
+                    }
+                }
+                output = csvImportExport.addCSVOutputLine(output, comboLine, delimiter);
+            }
+        }
+
+        const catalysisReportName = Globals.clientState().catalysisReportName();
+        const fileName = catalysisReportName + " correlations.csv";
+        const exportBlob = new Blob([output], {type: "text/csv;charset=utf-8"});
+        saveAs(exportBlob, fileName);
+    }
+
     //------------------------------------------------------------------------------------------------------------------------------------------
     // updating data
     //------------------------------------------------------------------------------------------------------------------------------------------
@@ -1206,7 +1294,7 @@ class PatternExplorer {
                 const useLumpingCommands = PatternExplorer.getOrSetWhetherLumpingCommandsShouldBeUsedForPattern(project, this.catalysisReportIdentifier, result[patternIndex]);
                 let lumpingCommands = {};
                 if (useLumpingCommands) {
-                    lumpingCommands = this.project.tripleStore.queryLatestC(this.catalysisReportIdentifier, "lumpingCommands") || ""; 
+                    lumpingCommands = project.lumpingCommandsForCatalysisReport(this.catalysisReportIdentifier);
                 }
                 calculateStatistics.calculateStatisticsForPattern(result[patternIndex], stories, 
                     minimumStoryCountRequiredForTest, "No answer", !hideNoAnswerValues, lumpingCommands,
