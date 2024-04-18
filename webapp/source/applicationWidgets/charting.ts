@@ -108,7 +108,7 @@ function escapeHtml(str) {
 // lookup functions 
 //------------------------------------------------------------------------------------------------------------------------------------------
 
-function customStatLabel(key, graphHolder) {
+export function customStatLabel(key, graphHolder) {
     if (graphHolder.customStatsTextReplacements) {
         return graphHolder.customStatsTextReplacements[defaultStatsTexts[key]] || defaultStatsTexts[key];
     } else {
@@ -1853,7 +1853,7 @@ export function d3ContingencyTable(graphHolder: GraphHolder, xAxisQuestion, yAxi
             const xySelector = JSON.stringify({x: column, y: row});
             
             let expectedValue = null;
-            if (!xHasCheckboxes && !yHasCheckboxes) {
+            if (!xHasCheckboxes && !yHasCheckboxes) { 
                 // Can only calculate expected and do chi-square if choices are exclusive
                 const columnSelector = JSON.stringify({x: column});
                 const columnTotal = results[columnSelector] || 0;
