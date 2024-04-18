@@ -97,6 +97,18 @@ const panel: Panel = {
             }
         }, 
         {
+            id: "printStoryCards_showNonSelectedChoices",
+            valuePath: "/clientState/storyCollectionName/printStoryCards_showNonSelectedChoices",
+            valueType: "number",
+            displayType: "checkbox",
+            displayName: "Show non-selected choices?",
+            displayConfiguration: "Yes, show non-selected choices",
+            displayPrompt: "Do you want to print choices that were <strong>not selected</strong> for each story?",
+            displayVisible: function(panelBuilder, model) {
+                return !!Globals.clientState().haveStoryCollectionAndShowingAdvancedOptions();
+            }
+        },
+        {
             id: "printStoryCards_numColumns",
             valuePath: "/clientState/storyCollectionName/printStoryCards_numColumns",
             valueType: "number",

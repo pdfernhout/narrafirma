@@ -1606,6 +1606,7 @@ export function printStoryCards() {
     if (!sliderBucketCount) sliderBucketCount = 50;
     let numColumns = parseInt(project.tripleStore.queryLatestC(storyCollectionName, "printStoryCards_numColumns"));
     if (!numColumns) numColumns = 1;
+    let showNonSelectedChoices = project.tripleStore.queryLatestC(storyCollectionName, "printStoryCards_showNonSelectedChoices");
     
     let storyDivs = [];
     if (filter) storyDivs.push(m("div.storyCardFilterWarning", "Stories that match filter [" + filter + "] (" + filteredStories.length + ")"));
@@ -1630,7 +1631,8 @@ export function printStoryCards() {
             includeWriteInAnswers: includeWriteInAnswers,
             lumpingCommands: lumpingCommands,
             hrAtBottom: numColumns === 1,
-            blankLineAfterStory: true
+            blankLineAfterStory: true,
+            showNonSelectedChoices: showNonSelectedChoices
         }
         const storyContent = storyCardDisplay.generateStoryCardContent(storyModel, questionsToInclude, options);
         const storyDiv = m("div.storyCardForPrinting", storyContent);
