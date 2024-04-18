@@ -36,6 +36,18 @@ const panel: Panel = {
             }
         },
         {
+            id: "project_annotationQuestionsOrder",
+            valueType: "string",
+            displayType: "textarea",
+            displayName: "Annotation questions order",
+            displayPrompt: `You can specify the <b>order</b> in which your questions should appear on the "Annotate stories" page.
+                Enter each question's (exact) short name, one per line. 
+                To add a header (e.g., "Questions about emotions"), write it on a line by itself.
+                To include a question as a column in the table of stories, type an asterisk (*) before its name.
+                If you don't type anything here, your questions will appear in the order in which you created them.
+                (Note: This only affects the "Annotate stories" page.)`
+        },
+        {
             id: "project_annotateStories_exportButtonsLabel",
             valueType: "none",
             displayType: "html",

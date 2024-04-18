@@ -18,6 +18,7 @@ export class StoryAnnotationBrowser {
     storyCollectionIdentifier: string = null;
     questionnaire: null;
     annotationQuestions = [];
+    gridColumnQuestions = [];
     storyQuestions = [];
     participantQuestions = [];
     allStories = [];
@@ -68,7 +69,6 @@ export class StoryAnnotationBrowser {
         const promptText = panelBuilder.addAllowedHTMLToPrompt(args.fieldSpecification.displayPrompt) 
             + " (" + this.allStories.length + "). Click on a story to annotate it.";
         const prompt =  m("span", {"class": "questionPrompt"}, promptText);
-        
         let parts; 
         
         if (!this.storyCollectionIdentifier) {
@@ -79,7 +79,7 @@ export class StoryAnnotationBrowser {
         
         return m("div", {"class": "questionExternal narrafirma-question-type-questionAnswer"}, parts);
     }
-    
+
     stories() {
         return this.allStories;
     }
@@ -97,12 +97,56 @@ export class StoryAnnotationBrowser {
 
         this.allStories = surveyCollection.getStoriesForStoryCollection(storyCollectionIdentifier, true);
 
-        this.itemPanelSpecification = this.makeItemPanelSpecificationForQuestions(this.annotationQuestions);
+        this.updateAnnotationQuestionsForPossibleChange();
+        this.itemPanelSpecification = this.makeItemPanelSpecificationForQuestions(this.gridColumnQuestions);
     }
 
     updateAnnotationQuestionsForPossibleChange() {
+        let headerCount = 0;
         this.annotationQuestions = [];
-        this.annotationQuestions = questionnaireGeneration.convertEditorQuestions(this.project.collectAllAnnotationQuestions(), "A_");
+        this.gridColumnQuestions = [];
+        const retrievedQuestions = questionnaireGeneration.convertEditorQuestions(this.project.collectAllAnnotationQuestions(), "A_");
+
+        const orderedShortNamesText = this.project.getFieldValue("project_annotationQuestionsOrder");
+        let orderedShortNames = [];
+        if (orderedShortNamesText) {
+            orderedShortNames = orderedShortNamesText.split("\n").map(function(item) { return item.trim(); } );
+        }
+        
+        if (orderedShortNames.length > 0) {
+            const orderedQuestions = [];
+            const orderedQuestionsToShowInGrid = [];
+            orderedShortNames.map((questionShortName) => {
+                let foundQuestion = false;
+                let questionShortNameToUse = questionShortName;
+                let showThisQuestionInTheGrid = false;
+                if (questionShortName.indexOf("*") == 0) {
+                    showThisQuestionInTheGrid = true;
+                    questionShortNameToUse = questionShortName.split("*")[1];
+                }
+                for (let i = 0; i <= retrievedQuestions.length; i++) {
+                    if (retrievedQuestions[i] && retrievedQuestions[i].displayName == questionShortNameToUse) {
+                        orderedQuestions.push(retrievedQuestions[i]);
+                        if (showThisQuestionInTheGrid) orderedQuestionsToShowInGrid.push(retrievedQuestions[i]);
+                        foundQuestion = true;
+                        break;
+                    }
+                }
+                if (!foundQuestion) {
+                    const headerQuestion = { id: "header" + ++headerCount, valueType: "none", displayPrompt: questionShortNameToUse, displayType: "header" };
+                    orderedQuestions.push(headerQuestion);
+                    }
+                });
+            this.annotationQuestions = this.annotationQuestions.concat(orderedQuestions);
+            if (orderedQuestionsToShowInGrid.length > 0) {
+                this.gridColumnQuestions = this.gridColumnQuestions.concat(orderedQuestionsToShowInGrid);
+            } else {
+                this.gridColumnQuestions = this.gridColumnQuestions.concat(orderedQuestions);
+            }
+        } else {
+            this.annotationQuestions = this.annotationQuestions.concat(retrievedQuestions);
+            this.gridColumnQuestions = this.gridColumnQuestions.concat(retrievedQuestions);
+        }
     }
 
     buildStoryDisplayPanel(panelBuilder: PanelBuilder, storyModel: surveyCollection.Story) {
@@ -123,7 +167,7 @@ export class StoryAnnotationBrowser {
         }
 
         const questionsInDictionaryWithIDs = {};
-        questionsToDisplay.map(function(question, index) {questionsInDictionaryWithIDs[question.id] = question;})
+        questionsToDisplay.map(function(question, index) { questionsInDictionaryWithIDs[question.id] = question; })
         readOnlyDisplayPanel = storyCardDisplay.generateStoryCardContent(storyModel, questionsInDictionaryWithIDs, {
             location: "storyAnnotationBrowser", 
             questionnaire: this.questionnaire,
