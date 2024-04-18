@@ -310,7 +310,7 @@ export function calculateStatisticsForPattern(pattern, stories: surveyCollection
         console.log("ERROR: Unexpected graphType: " + graphType);
         throw new Error("ERROR: Not suported graphType: " + graphType);
     }
-    
+
     if (statistics) {
         pattern.statsSummary = statistics.statsSummary;
         pattern.statsDetailed = statistics.statsDetailed.map((stat) => {return stat + ": " + statistics[stat]});
@@ -529,18 +529,21 @@ export function calculateStatisticsForMultipleScatterPlot(ratioQuestion1, ratioQ
             options.push(choiceQuestion.valueOptions[index]);
         }
     }
+
     let minSignificanceOptionStats = {statsSummary: "None", statsDetailed: [], allResults: {}};
     let minSignificance = 1000;
     let maxSignificance = 0;
     for (index in options) {
         const option = options[index];
         const optionStats = calculateStatisticsForScatterPlot(ratioQuestion1, ratioQuestion2, choiceQuestion, option, stories, minimumStoryCountRequiredForTest, unansweredText, includeNAValues, lumpingCommands);
-        if (optionStats.p && optionStats.p > maxSignificance) {
-            maxSignificance = optionStats.p;
-        }
-        if (optionStats.p && optionStats.p < minSignificance) {
-            minSignificance = optionStats.p;
-            minSignificanceOptionStats = optionStats;
+        if (optionStats.p) {
+            if (optionStats.p > maxSignificance) {
+                maxSignificance = optionStats.p;
+            }
+            if (optionStats.p < minSignificance) {
+                minSignificance = optionStats.p;
+                minSignificanceOptionStats = optionStats;
+            }
         }
         allResults[option] = optionStats;
     }
