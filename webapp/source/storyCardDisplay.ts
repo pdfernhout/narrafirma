@@ -459,7 +459,7 @@ export function generateStoryCardContent(storyModel, questionsToInclude, options
         textForStoryLength,
         textForCollectionDate,
         textForLanguage,
-        options.includeIndex ? m("div.narrafirma-story-card-story-number", storyModel.indexInStoryCollection()) : "",
+        options.includeIndex ? m("div.narrafirma-story-card-story-number", "#" + storyModel.indexInStoryCollection()) : "",
         bottomHrDiv
     ]);
     
