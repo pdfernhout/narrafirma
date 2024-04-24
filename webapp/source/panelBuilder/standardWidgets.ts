@@ -259,8 +259,10 @@ export function displayQuestion(panelBuilder: PanelBuilder, model, fieldSpecific
             });
         }
 
-        if (!fieldSpecification.valueOptions || fieldSpecification.valueOptions.length < 1) {
-            return [m("p", "Survey error: No options were created for this question.")];
+        if (!fieldSpecification.valueOptions || fieldSpecification.valueOptions.length < 1) { 
+            if (!isAnnotationQuestion) {
+                return [m("p", "Survey error: No options were created for this question.")];
+            }
         }
 
         const questionParts = [
