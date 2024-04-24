@@ -65,7 +65,7 @@ function displayHTMLForSlider(fieldSpecification, fieldName, value, options) {
      ]); 
 }
 
-function displayHTMLForCheckboxes(fieldSpecification, fieldName, value, showNonSelectedChoices) {
+function displayHTMLForCheckboxes(fieldSpecification, fieldName, value, hideNonSelectedAnswers) {
     const result = [];
     let atLeastOneAnswerWasChecked = false;
     const answerClass = "narrafirma-story-card-answer-for-" + replaceSpacesWithDashes(fieldName);
@@ -80,25 +80,25 @@ function displayHTMLForCheckboxes(fieldSpecification, fieldName, value, showNonS
         answersAlreadyConsidered.push(answerBeingConsidered);
 
         if (value && value[answerBeingConsidered]) {
-            if (showNonSelectedChoices) {
+            if (!hideNonSelectedAnswers) {
                 answerElements.push(wrap("span", "narrafirma-story-card-checkboxes-selected " + answerClass + "-selected", answerBeingConsidered));
             } else {
                 answerElements.push(wrap("span", "narrafirma-story-card-checkboxes-visible " + answerClass + "-visible", answerBeingConsidered));
             }
             atLeastOneAnswerWasChecked = true;
-        } else if (showNonSelectedChoices) {
+        } else if (!hideNonSelectedAnswers) {
             answerElements.push(wrap("span", "narrafirma-story-card-checkboxes-unselected " + answerClass + "-unselected", answerBeingConsidered));
         }
     }
 
     for (let i = 0; i < answerElements.length; i++) {
         result.push(answerElements[i]);
-        if (i < answerElements.length - 1) result.push(m("span", "/"));
+        if (i < answerElements.length - 1) result.push(m("span", " / "));
     }
     return [result, atLeastOneAnswerWasChecked];
 }
 
-function displayHTMLForRadioButtons(fieldSpecification, fieldName, value, showNonSelectedChoices) {
+function displayHTMLForRadioButtons(fieldSpecification, fieldName, value, hideNonSelectedAnswers) {
     const result = [];
     let atLeastOneAnswerWasChecked = false;
     const answerClass = "narrafirma-story-card-answer-for-" + replaceSpacesWithDashes(fieldName);
@@ -112,24 +112,24 @@ function displayHTMLForRadioButtons(fieldSpecification, fieldName, value, showNo
         if (answersAlreadyConsidered.indexOf(answerBeingConsidered) >= 0) continue; // hide duplicate options, if any, due to lumping during import
         answersAlreadyConsidered.push(answerBeingConsidered);
         if (value && value === answerBeingConsidered) {
-            if (showNonSelectedChoices) {
+            if (!hideNonSelectedAnswers) {
                 answerElements.push(wrap("span", "narrafirma-story-card-radiobuttons-selected " + answerClass + "-selected", answerBeingConsidered));
             } else {
                 answerElements.push(wrap("span", "narrafirma-story-card-radiobuttons-visible " + answerClass + "-visible", answerBeingConsidered));
             }
             atLeastOneAnswerWasChecked = true;
-        } else if (showNonSelectedChoices) {
+        } else if (!hideNonSelectedAnswers) {
             answerElements.push(wrap("span", "narrafirma-story-card-radiobuttons-unselected " + answerClass + "-unselected", answerBeingConsidered));
         }
     }
     for (let i = 0; i < answerElements.length; i++) {
         result.push(answerElements[i]);
-        if (i < answerElements.length - 1) result.push(m("span", "/"));
+        if (i < answerElements.length - 1) result.push(m("span", " / "));
     }
     return [result, atLeastOneAnswerWasChecked];
 }
 
-function displayHTMLForSelect(fieldSpecification, fieldName, value, showNonSelectedChoices) {
+function displayHTMLForSelect(fieldSpecification, fieldName, value, hideNonSelectedAnswers) {
     const result = [];
     let atLeastOneAnswerWasChecked = false;
     const answerClass = "narrafirma-story-card-answer-for-" + replaceSpacesWithDashes(fieldName);
@@ -143,19 +143,19 @@ function displayHTMLForSelect(fieldSpecification, fieldName, value, showNonSelec
         if (answersAlreadyConsidered.indexOf(answerBeingConsidered) >= 0) continue; // hide duplicate options, if any, due to lumping during import
         answersAlreadyConsidered.push(answerBeingConsidered);
         if (value && value === answerBeingConsidered) {
-            if (showNonSelectedChoices) {
+            if (!hideNonSelectedAnswers) {
                 answerElements.push(wrap("span", "narrafirma-story-card-select-selected " + answerClass + "-selected", answerBeingConsidered));
             } else {
                 answerElements.push(wrap("span", "narrafirma-story-card-select-visible " + answerClass + "-visible", answerBeingConsidered));
             }
             atLeastOneAnswerWasChecked = true;
-        } else if (showNonSelectedChoices) {
+        } else if (!hideNonSelectedAnswers) {
             answerElements.push(wrap("span", "narrafirma-story-card-select-unselected " + answerClass + "-unselected", answerBeingConsidered));
         }
     }
     for (let i = 0; i < answerElements.length; i++) {
         result.push(answerElements[i]);
-        if (i < answerElements.length - 1) result.push(m("span", "/"));
+        if (i < answerElements.length - 1) result.push(m("span", " / "));
     }
     return [result, atLeastOneAnswerWasChecked];
 }
@@ -201,22 +201,22 @@ function displayHTMLForField(storyModel: surveyCollection.Story, fieldSpecificat
     if (fieldSpecification.displayType === "slider") {
         result.push(displayHTMLForSlider(fieldSpecification, fieldName, displayValue, options));
     } else if (fieldSpecification.displayType === "checkboxes") {
-        const optionsAndChecked = displayHTMLForCheckboxes(fieldSpecification, fieldName, displayValue, options.showNonSelectedChoices || false);
-        if (options.showNonSelectedChoices && optionsAndChecked[1]) {
+        const optionsAndChecked = displayHTMLForCheckboxes(fieldSpecification, fieldName, displayValue, options.hideNonSelectedAnswers || false);
+        if (!options.hideNonSelectedAnswers && optionsAndChecked[1]) {
             result.push(wrap("div", "narrafirma-story-card-question-line-with-selected-item", optionsAndChecked[0]));
         } else {
             result.push(wrap("div", "narrafirma-story-card-question-line-without-selected-item", optionsAndChecked[0]));
         }
     } else if (fieldSpecification.displayType === "select") {
-        const optionsAndChecked = displayHTMLForSelect(fieldSpecification, fieldName, displayValue, options.showNonSelectedChoices || false);
-        if (options.showNonSelectedChoices && optionsAndChecked[1]) {
+        const optionsAndChecked = displayHTMLForSelect(fieldSpecification, fieldName, displayValue, options.hideNonSelectedAnswers || false);
+        if (!options.hideNonSelectedAnswers && optionsAndChecked[1]) {
             result.push(wrap("div", "narrafirma-story-card-question-line-with-selected-item", optionsAndChecked[0]));
         } else {
             result.push(wrap("div", "narrafirma-story-card-question-line-without-selected-item", optionsAndChecked[0]));
         }
     } else if (fieldSpecification.displayType === "radiobuttons") {
-        const optionsAndChecked = displayHTMLForRadioButtons(fieldSpecification, fieldName, displayValue, options.showNonSelectedChoices || false);
-        if (options.showNonSelectedChoices && optionsAndChecked[1]) {
+        const optionsAndChecked = displayHTMLForRadioButtons(fieldSpecification, fieldName, displayValue, options.hideNonSelectedAnswers || false);
+        if (!options.hideNonSelectedAnswers && optionsAndChecked[1]) {
             result.push(wrap("div", "narrafirma-story-card-question-line-with-selected-item", optionsAndChecked[0]));
         } else {
             result.push(wrap("div", "narrafirma-story-card-question-line-without-selected-item", optionsAndChecked[0]));

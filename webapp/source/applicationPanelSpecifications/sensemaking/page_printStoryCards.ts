@@ -97,13 +97,13 @@ const panel: Panel = {
             }
         }, 
         {
-            id: "printStoryCards_showNonSelectedChoices",
-            valuePath: "/clientState/storyCollectionName/printStoryCards_showNonSelectedChoices",
+            id: "printStoryCards_hideNonSelectedAnswers",
+            valuePath: "/clientState/storyCollectionName/printStoryCards_hideNonSelectedAnswers",
             valueType: "number",
             displayType: "checkbox",
-            displayName: "Show non-selected choices?",
-            displayConfiguration: "Yes, show non-selected choices",
-            displayPrompt: "Do you want to print choices that were <strong>not selected</strong> for each story?",
+            displayName: "Hide non-selected answers?",
+            displayConfiguration: "Yes, hide non-selected answers",
+            displayPrompt: "Do you want to hide answers that were <strong>not selected</strong>?",
             displayVisible: function(panelBuilder, model) {
                 return !!Globals.clientState().haveStoryCollectionAndShowingAdvancedOptions();
             }
