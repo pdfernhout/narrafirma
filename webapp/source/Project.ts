@@ -376,16 +376,24 @@ class Project {
 
     addOptionToAnnotationChoiceQuestion(questionID, newAnswer) {
         const annotationQuestions = this.collectAllAnnotationQuestions();
+        let foundQuestion = false;
         for (let i = 0; i < annotationQuestions.length; i++) {
             const aQuestion = annotationQuestions[i];
-            if ("A_" + aQuestion.annotationQuestion_shortName == questionID) {
-                if (!aQuestion.annotationQuestion_options) aQuestion.annotationQuestion_options = "";
-                const parts = aQuestion.annotationQuestion_options.split("\n");
-                if (parts.indexOf(newAnswer) < 0) {
-                    parts.push(newAnswer);
-                    aQuestion.annotationQuestion_options = parts.join("\n");
+            if (!foundQuestion && ("A_" + aQuestion.annotationQuestion_shortName == questionID)) {
+                foundQuestion = true;
+                if (aQuestion.annotationQuestion_options === undefined || aQuestion.annotationQuestion_options === "") {
+                    aQuestion.annotationQuestion_options = newAnswer;
                     if (aQuestion.id) {
                         this.tripleStore.addTriple(aQuestion.id, "annotationQuestion_options", aQuestion.annotationQuestion_options);
+                    }
+                } else {
+                    const parts = aQuestion.annotationQuestion_options.split("\n");
+                    if (parts.indexOf(newAnswer) < 0) {
+                        parts.push(newAnswer);
+                        aQuestion.annotationQuestion_options = parts.join("\n");
+                        if (aQuestion.id) {
+                            this.tripleStore.addTriple(aQuestion.id, "annotationQuestion_options", aQuestion.annotationQuestion_options);
+                        }
                     }
                 }
             }
