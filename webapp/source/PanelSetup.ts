@@ -109,7 +109,7 @@ function addExtraFieldSpecificationsForPageSpecification(pageID, pageSpecificati
                     for (let categoryIndex in categories) {
                         const category = categories[categoryIndex];
                         if (allowedPageCategories.indexOf(category) >= 0) {
-                            const imageSpan = m("span", {class: "pageCategoryImage " + category + "CategoryImage", title: category});
+                            const imageSpan = m("span", {class: "pageCategoryImage " + category + "CategoryImage", key: "pageCategoryImage" + childPageIndex, title: category});
                             pageExplanationWithCategoryImages.push(imageSpan);
                         } else {
                            console.log("Error: Unrecognized page category: ", category);
