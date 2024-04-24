@@ -1529,6 +1529,10 @@ input[type="checkbox"].graphBrowserCheckbox {
     padding-top: 0.75em;
 }
 
+.narrafirma-story-card-question-line-basic {
+    padding-top: 0.25em;
+}
+
 .narrafirma-story-card-question-line-with-slider {
     padding-top: 0.5em;
 }
