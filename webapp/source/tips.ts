@@ -75,8 +75,8 @@ export function getRandomTip() {
             "You can edit story names, texts, and answers to questions on the \"Review incoming stories\" page. Just be careful!",
             "If your stories do not have names, you can give them names on the \"Review incoming stories\" page.",
             "On the \"Review incoming stories\" page, you can see (and change) subsets of your stories as well as all of them.",
-            "Use the \"Spot-check graphs\" page to check over incoming stories to look for gaps in your coverage.",
-            "You can look at patterns across multiple story collections on the \"Spot-check graphs\" page.",
+            "Use the \"Review graphs\" page to check over incoming stories to look for gaps in your coverage.",
+            "You can look at patterns across multiple story collections on the \"Review graphs\" page.",
         
             // Catalysis - General
             "What's catalysis? It's the same thing as analysis, but it generates questions to ponder, not conclusions to accept or reject.",
