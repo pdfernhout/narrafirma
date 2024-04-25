@@ -97,18 +97,6 @@ const panel: Panel = {
             }
         }, 
         {
-            id: "printStoryCards_hideNonSelectedAnswers",
-            valuePath: "/clientState/storyCollectionName/printStoryCards_hideNonSelectedAnswers",
-            valueType: "number",
-            displayType: "checkbox",
-            displayName: "Hide non-selected answers?",
-            displayConfiguration: "Yes, hide non-selected answers",
-            displayPrompt: "Do you want to hide answers that were <strong>not selected</strong>?",
-            displayVisible: function(panelBuilder, model) {
-                return !!Globals.clientState().haveStoryCollectionAndShowingAdvancedOptions();
-            }
-        },
-        {
             id: "printStoryCards_numColumns",
             valuePath: "/clientState/storyCollectionName/printStoryCards_numColumns",
             valueType: "number",
@@ -178,6 +166,18 @@ const panel: Panel = {
             }
         },
         {
+            id: "printStoryCards_hideNonSelectedAnswers",
+            valuePath: "/clientState/storyCollectionName/printStoryCards_hideNonSelectedAnswers",
+            valueType: "number",
+            displayType: "checkbox",
+            displayName: "Hide non-selected answers?",
+            displayConfiguration: "Yes, hide non-selected answers",
+            displayPrompt: "Do you want to hide answers that were <strong>not selected</strong>?",
+            displayVisible: function(panelBuilder, model) {
+                return !!Globals.clientState().haveStoryCollectionAndShowingAdvancedOptions();
+            }
+        },
+        {
             id: "printStoryCards_includeWriteInTexts",
             valueType: "boolean",
             valuePath: "/clientState/storyCollectionName/printStoryCards_includeWriteInTexts",
@@ -211,6 +211,19 @@ const panel: Panel = {
             displayVisible: function(panelBuilder, model) {
                 return !!Globals.clientState().haveStoryCollectionAndShowingAdvancedOptions();
             }
+        },
+        {
+            id: "printStoryCards_betweenAnswerText",
+            valueType: "string",
+            valuePath: "/clientState/storyCollectionName/printStoryCards_betweenAnswerText",
+            displayType: "text",
+            displayConfiguration: "10",
+            displayName: "Text to print between multi-choice-question answers",
+            displayPrompt: `
+                Enter the text to print <strong>between answers</strong> to multiple-choice questions. If empty, the text " / " will be used.
+                (Multiple spaces will be collapsed down to one.)`,
+            displayVisible: function(panelBuilder, model) {
+                return !!Globals.clientState().haveStoryCollectionAndShowingAdvancedOptions();}
         },
         {
             id: "printStoryCards_beforeSliderCharacter",
