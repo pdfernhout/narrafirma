@@ -93,6 +93,14 @@ export class Story {
 
         return [allStoryTexts, allParticipantTexts, allAnnotationTexts].join(". ") + ".";
     }
+
+    storyAnswersCount() { // read-only, for showing number of story answers in dashboard
+        // the model fields include the story text and other non-answer answers
+        // but that's okay, we just want a total to show on the dashboard
+        if (!this.model) return 0;
+        const keys = Object.keys(this.model);
+        return keys.length;
+    }
     
     storyName(newValue = undefined) {
         return this.fieldValue("storyName", newValue);

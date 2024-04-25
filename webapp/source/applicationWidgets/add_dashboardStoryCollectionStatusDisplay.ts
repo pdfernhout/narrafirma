@@ -59,6 +59,8 @@ function add_dashboardStoryCollectionStatusDisplay(panelBuilder: PanelBuilder, m
             const shortName = tripleStore.queryLatestC(storyCollectionIdentifier, "storyCollection_shortName");
             const allStoriesInStoryCollection = surveyCollection.getStoriesForStoryCollection(shortName);
             const storyCount = allStoriesInStoryCollection.length;
+            let answerCount = 0;
+            allStoriesInStoryCollection.map(function (story) { answerCount += story.storyAnswersCount(); });
             const activeOnWeb = tripleStore.queryLatestC(storyCollectionIdentifier, "storyCollection_activeOnWeb");
             if (activeOnWeb) {
                 console.log("active on web: ", shortName, storyCollectionIdentifier);
@@ -71,6 +73,7 @@ function add_dashboardStoryCollectionStatusDisplay(panelBuilder: PanelBuilder, m
                 id: storyCollectionIdentifier,
                 shortName: shortName,
                 storyCount: storyCount,
+                answerCount: answerCount,
                 activeOnWeb: activeOnWeb,
                 surveyURL: surveyURL,
                 reviewStoriesURL: reviewStoriesURL,
@@ -88,20 +91,23 @@ function add_dashboardStoryCollectionStatusDisplay(panelBuilder: PanelBuilder, m
             m("br"),
             m("table", 
                 m("tr", [
-                    m("th", "Story collection"),
+                    m("th", "Collection"),
                     m("th", "stories"), 
+                    m("th", "answers"),
                     m("th", "active?") 
                 ]),
                 storyCollections.map(function(storyCollection) {
-                    const reviewStories = m("a[id=narrafirma-review-stories-url]", 
-                        {href: storyCollection.reviewStoriesURL, title: "Click here to view the stories in this collection.", tabindex: 0}, storyCollection.shortName);
-                        const reviewGraphs = m("a[id=narrafirma-review-graphs-url]", 
-                        {href: storyCollection.browseGraphsURL, title: "Click here to review graphs in this collection.", tabindex: 0}, <any>storyCollection.storyCount);
-                        const surveyActive = storyCollection.activeOnWeb ? m("a[id=narrafirma-survey-url]", 
+                    const collectionNameLine = m("span.narrafirma-dashboard-story-collection-name", storyCollection.shortName);
+                    const storiesLine = m("a[id=narrafirma-review-stories-url]", 
+                        {href: storyCollection.reviewStoriesURL, title: "Click here to view the stories in this collection.", tabindex: 0}, <any>storyCollection.storyCount);
+                    const answersLine = m("a[id=narrafirma-review-graphs-url]", 
+                        {href: storyCollection.browseGraphsURL, title: "Click here to review graphs in this collection.", tabindex: 0}, <any>storyCollection.answerCount);
+                    const surveyActive = storyCollection.activeOnWeb ? m("a[id=narrafirma-survey-url]", 
                         {href: storyCollection.surveyURL, target: "_blank", title: "Click here to launch the survey for this collection.", tabindex: 0}, "yes") : "no";
                     return m("tr", [
-                        m("td", reviewStories),
-                        m("td", {style: "text-align: center;"}, reviewGraphs),
+                        m("td", collectionNameLine),
+                        m("td", {style: "text-align: center;"}, storiesLine),
+                        m("td", {style: "text-align: center;"}, answersLine),
                         m("td", {style: "text-align: center;"}, surveyActive),
                     ]);
                 })
