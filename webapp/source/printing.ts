@@ -1606,7 +1606,8 @@ export function printStoryCards() {
     if (!sliderBucketCount) sliderBucketCount = 50;
     let numColumns = parseInt(project.tripleStore.queryLatestC(storyCollectionName, "printStoryCards_numColumns"));
     if (!numColumns) numColumns = 1;
-    let hideNonSelectedAnswers = project.tripleStore.queryLatestC(storyCollectionName, "printStoryCards_hideNonSelectedAnswers");
+    const hideNonSelectedAnswers = project.tripleStore.queryLatestC(storyCollectionName, "printStoryCards_hideNonSelectedAnswers");
+    const betweenAnswerText = project.tripleStore.queryLatestC(storyCollectionName, "printStoryCards_betweenAnswerText");
     
     let storyDivs = [];
     if (filter) storyDivs.push(m("div.storyCardFilterWarning", "Stories that match filter [" + filter + "] (" + filteredStories.length + ")"));
@@ -1632,7 +1633,8 @@ export function printStoryCards() {
             lumpingCommands: lumpingCommands,
             hrAtBottom: numColumns === 1,
             blankLineAfterStory: true,
-            hideNonSelectedAnswers: hideNonSelectedAnswers
+            hideNonSelectedAnswers: hideNonSelectedAnswers,
+            betweenAnswerText: betweenAnswerText
         }
         const storyContent = storyCardDisplay.generateStoryCardContent(storyModel, questionsToInclude, options);
         const storyDiv = m("div.storyCardForPrinting", storyContent);
@@ -1653,7 +1655,11 @@ export function printStoryCards() {
     if (numColumns && numColumns > 1) {
         storyDivs.push(m("table.narrafirma-story-card-for-printing-table", rowTRs));
     } 
-    const htmlForPage = generateHTMLForPage("Story cards for: " + storyCollectionName, "css/standard.css", customCSS, storyDivs, null);
+    let htmlForPage = generateHTMLForPage("Story cards for: " + storyCollectionName, "css/standard.css", customCSS, storyDivs, null);
+
+    // carriage returns inside and between spans cause extra padding, which we don't want in this case
+    htmlForPage = replaceAll(htmlForPage, "\n</span>", "</span>");
+    htmlForPage = replaceAll(htmlForPage, "</span>\n<span>", "</span><span>"); 
     printHTML(htmlForPage);
 }
 

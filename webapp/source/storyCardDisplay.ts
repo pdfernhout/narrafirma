@@ -5,6 +5,8 @@ import Globals = require("./Globals");
 
 "use strict";
 
+const defaultBetweenAnswerText = " / ";
+
 function replaceAll(str, find, replace) {
     return str.replace(new RegExp(find, 'g'), replace);
 }
@@ -65,7 +67,7 @@ function displayHTMLForSlider(fieldSpecification, fieldName, value, options) {
      ]); 
 }
 
-function displayHTMLForCheckboxes(fieldSpecification, fieldName, value, hideNonSelectedAnswers) {
+function displayHTMLForCheckboxes(fieldSpecification, fieldName, value, hideNonSelectedAnswers, betweenAnswerText) {
     const result = [];
     let atLeastOneAnswerWasChecked = false;
     const answerClass = "narrafirma-story-card-answer-for-" + replaceSpacesWithDashes(fieldName);
@@ -93,12 +95,12 @@ function displayHTMLForCheckboxes(fieldSpecification, fieldName, value, hideNonS
 
     for (let i = 0; i < answerElements.length; i++) {
         result.push(answerElements[i]);
-        if (i < answerElements.length - 1) result.push(m("span", " / "));
+        if (i < answerElements.length - 1) result.push(m("span", betweenAnswerText));
     }
     return [result, atLeastOneAnswerWasChecked];
 }
 
-function displayHTMLForRadioButtons(fieldSpecification, fieldName, value, hideNonSelectedAnswers) {
+function displayHTMLForRadioButtons(fieldSpecification, fieldName, value, hideNonSelectedAnswers, betweenAnswerText) {
     const result = [];
     let atLeastOneAnswerWasChecked = false;
     const answerClass = "narrafirma-story-card-answer-for-" + replaceSpacesWithDashes(fieldName);
@@ -124,12 +126,12 @@ function displayHTMLForRadioButtons(fieldSpecification, fieldName, value, hideNo
     }
     for (let i = 0; i < answerElements.length; i++) {
         result.push(answerElements[i]);
-        if (i < answerElements.length - 1) result.push(m("span", " / "));
+        if (i < answerElements.length - 1) result.push(m("span", betweenAnswerText));
     }
     return [result, atLeastOneAnswerWasChecked];
 }
 
-function displayHTMLForSelect(fieldSpecification, fieldName, value, hideNonSelectedAnswers) {
+function displayHTMLForSelect(fieldSpecification, fieldName, value, hideNonSelectedAnswers, betweenAnswerText) {
     const result = [];
     let atLeastOneAnswerWasChecked = false;
     const answerClass = "narrafirma-story-card-answer-for-" + replaceSpacesWithDashes(fieldName);
@@ -155,7 +157,7 @@ function displayHTMLForSelect(fieldSpecification, fieldName, value, hideNonSelec
     }
     for (let i = 0; i < answerElements.length; i++) {
         result.push(answerElements[i]);
-        if (i < answerElements.length - 1) result.push(m("span", " / "));
+        if (i < answerElements.length - 1) result.push(m("span", betweenAnswerText));
     }
     return [result, atLeastOneAnswerWasChecked];
 }
@@ -204,11 +206,14 @@ function displayHTMLForField(storyModel: surveyCollection.Story, fieldSpecificat
     } else if (["checkboxes", "select", "radiobuttons"].indexOf(displayType) >= 0) {
         let answerHTMLDivsAndWhetherAtLeastOneIsSelected = [];
         if (displayType === "checkboxes") {
-            answerHTMLDivsAndWhetherAtLeastOneIsSelected = displayHTMLForCheckboxes(fieldSpecification, fieldNameToShow, displayValue, options.hideNonSelectedAnswers || false);
+            answerHTMLDivsAndWhetherAtLeastOneIsSelected = displayHTMLForCheckboxes(fieldSpecification, fieldNameToShow, displayValue, 
+                options.hideNonSelectedAnswers || false, options.betweenAnswerText || defaultBetweenAnswerText);
         } else if (displayType === "select") {
-            answerHTMLDivsAndWhetherAtLeastOneIsSelected = displayHTMLForSelect(fieldSpecification, fieldNameToShow, displayValue, options.hideNonSelectedAnswers || false);
+            answerHTMLDivsAndWhetherAtLeastOneIsSelected = displayHTMLForSelect(fieldSpecification, fieldNameToShow, displayValue, 
+                options.hideNonSelectedAnswers || false, options.betweenAnswerText || defaultBetweenAnswerText);
         } else if (displayType === "radiobuttons") {
-            answerHTMLDivsAndWhetherAtLeastOneIsSelected = displayHTMLForRadioButtons(fieldSpecification, fieldNameToShow, displayValue, options.hideNonSelectedAnswers || false);
+            answerHTMLDivsAndWhetherAtLeastOneIsSelected = displayHTMLForRadioButtons(fieldSpecification, fieldNameToShow, displayValue, 
+                options.hideNonSelectedAnswers || false, options.betweenAnswerText || defaultBetweenAnswerText);
         }
         let answerHTMLDivs = [];
         let atLeastOneAnswerIsSelected = false;
@@ -218,7 +223,7 @@ function displayHTMLForField(storyModel: surveyCollection.Story, fieldSpecificat
                 atLeastOneAnswerIsSelected = answerHTMLDivsAndWhetherAtLeastOneIsSelected[1];
             }
         }
-        
+
         if (options.hideNonSelectedAnswers) {
             if (atLeastOneAnswerIsSelected) {
                 result.push(wrap("div", "narrafirma-story-card-question-line-basic", answerHTMLDivs));

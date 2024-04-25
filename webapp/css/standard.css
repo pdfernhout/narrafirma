@@ -430,14 +430,14 @@ input[type="submit"].narrafirma-login-button:hover {
     font-weight: normal;
     background-color: var(--color-header);
 	border: 1px solid var(--color-textbox-border);
-	padding: 0.2em;
+	padding: 0.25em;
 }
 
 .narrafirma-dashboard-story-collection-status td {
     border: 1px solid var(--color-textbox-border);
     background-color: var(--color-table);
-    padding: 0.2em;
-    max-width: 16em;
+    padding: 0.25em;
+    max-width: 20em;
 }
     
 .narrafirma-dashboard-header {
@@ -1522,19 +1522,19 @@ input[type="checkbox"].graphBrowserCheckbox {
 }
 
 .narrafirma-story-card-question-line-with-selected-item {
-    padding-top: 0.5em;
+    padding-top: 0.15em; /* leave extra room for bold items */
 }
 
 .narrafirma-story-card-question-line-without-selected-item {
-    padding-top: 0.75em;
+    padding-top: 0.3em;
 }
 
 .narrafirma-story-card-question-line-basic {
-    padding-top: 0.25em;
+    padding-top: 0.3em;
 }
 
 .narrafirma-story-card-question-line-with-slider {
-    padding-top: 0.5em;
+    padding-top: 0.3em;
 }
 
 .narrafirma-story-card-eliciting-question, 
@@ -1543,7 +1543,7 @@ input[type="checkbox"].graphBrowserCheckbox {
     .narrafirma-story-card-language-question,
     .narrafirma-story-card-collection-date-question {
     font-size: 1em;
-    padding-top: 0.5em;
+    padding-top: 0.3em;
 }
 
 .narrafirma-story-card-sliders-table {
