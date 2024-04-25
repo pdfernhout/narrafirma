@@ -4,16 +4,16 @@ import kludgeForUseStrict = require("../../kludgeForUseStrict");
 
 const panel: Panel = {
     id: "page_browseGraphs",
-    displayName: "Spot-check graphs",
+    displayName: "Review graphs",
     pageExplanation: "Look at patterns in your data. Notice gaps, miscommunications, confounding, other anomalies. ",
     pageCategories: "review",
     panelFields: [
         {
             id: "graphBrowserLabel",
             valueType: "none",
-            displayType: "label",
-            displayPrompt: `On this page you can <strong>discover patterns</strong> that appear in the answers people gave about their stories. 
-            (You can also examine these graphs in more detail in the Catalysis section.)`
+            displayType: "html",
+            displayPrompt: `On this page you can <strong>browse through graphs</strong> that show the answers people gave to questsions about their stories. 
+            (You can also examine these graphs in more detail in the <a href=\"javascript:narrafirma_openPage('page_catalysis')\">Catalysis</a> section.)`
         },
         {
             id: "graphBrowserDisplay",
