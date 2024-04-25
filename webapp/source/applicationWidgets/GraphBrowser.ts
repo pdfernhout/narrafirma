@@ -38,6 +38,13 @@ class GraphBrowser {
         this.project = Globals.project();
         this.collectionIDs = Globals.project().listOfAllStoryCollectionNames();
         for (let id of this.collectionIDs) this.displayCollections[id] = false;
+
+        // sometimes the user clicked on a story count on the main dashboard table
+        const preselectedCollection = Globals.clientState().storyCollectionName();
+        if (preselectedCollection) {
+            this.displayCollections[preselectedCollection] = true;
+        }
+
         this.graphHolder = {
             graphResultsPane: charting.createGraphResultsPane("narrafirma-graph-results-pane chartEnclosure"),
             chartPanes: [],
@@ -148,10 +155,6 @@ class GraphBrowser {
     }
     
     storiesSelected(selectedStories) {
-        const graphs = this.graphHolder.currentGraph;
-        graphs.forEach(function (subgraph) {
-            console.log("subgraph", subgraph);
-            });
         this.selectedStories = selectedStories;
     }
 
