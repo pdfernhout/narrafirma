@@ -12,7 +12,7 @@ const panel: Panel = {
             id: "graphBrowserLabel",
             valueType: "none",
             displayType: "html",
-            displayPrompt: `On this page you can <strong>browse through graphs</strong> that show the answers people gave to questsions about their stories. 
+            displayPrompt: `On this page you can <strong>browse through graphs</strong> that show the answers people gave to questions about their stories. 
             (You can also examine these graphs in more detail in the <a href=\"javascript:narrafirma_openPage('page_catalysis')\">Catalysis</a> section.)`
         },
         {
