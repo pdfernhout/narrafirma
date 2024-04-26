@@ -2581,7 +2581,13 @@ export function exportStoryCollection() {
     allStories.forEach(function (story) {
         const outputLine = [];
         outputLine.push(story.storyName()); 
-        outputLine.push(story.storyText());
+
+        // if story text has newline or carriage return characters, enclose it in quotes
+        let storyText = story.storyText();
+        if (storyText.indexOf("\n") >= 0 || storyText.indexOf("\r") >= 0) {
+            storyText = '"' + storyText + '"'
+        }
+        outputLine.push(storyText);
         outputLine.push(story.storyCollectionDate() || "");
         outputLine.push(story.storyLanguage() || "");
         outputLine.push(story.elicitingQuestion());
