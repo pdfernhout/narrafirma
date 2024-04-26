@@ -505,7 +505,7 @@ function displayQuestion(builder, model, fieldSpecification, storyForm) {
     function displayWriteInQuestion() {
         if (!model.hasOwnProperty("writeInTexts")) model["writeInTexts"] = {};
 
-        let label = fieldSpecification.writeInTextBoxLabel;
+        let label = tr(fieldSpecification.writeInTextBoxLabel); 
         let mString = "input[type=text].narrafirma-survey-write-in-input";
         if (label.indexOf("**") == 0) {
             mString = "textarea.narrafirma-survey-write-in-textarea";

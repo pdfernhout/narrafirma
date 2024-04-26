@@ -473,6 +473,9 @@ export function translateableTextsInStoryForm(storyForm, section = undefined) {
             } else if (question.valueOptions) {
                 question.valueOptions.forEach((option) => { result.push(option); });
             }
+            if (question.writeInTextBoxLabel) {
+                result.push(question.writeInTextBoxLabel);
+            }
         });
     });
     formFieldsInfo.forEach((fieldInfo) => {
