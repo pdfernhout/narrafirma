@@ -431,6 +431,7 @@ input[type="submit"].narrafirma-login-button:hover {
     background-color: var(--color-header);
 	border: 1px solid var(--color-textbox-border);
 	padding: 0.25em;
+    text-align: left;
 }
 
 .narrafirma-dashboard-story-collection-status td {
@@ -438,6 +439,7 @@ input[type="submit"].narrafirma-login-button:hover {
     background-color: var(--color-table);
     padding: 0.25em;
     max-width: 20em;
+    text-align: left;
 }
     
 .narrafirma-dashboard-header {
