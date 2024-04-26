@@ -77,6 +77,7 @@ export function getRandomTip() {
             "On the \"Review incoming stories\" page, you can see (and change) subsets of your stories as well as all of them.",
             "Use the \"Review graphs\" page to check over incoming stories to look for gaps in your coverage.",
             "You can look at patterns across multiple story collections on the \"Review graphs\" page.",
+            "Stories in an exported story collection are in the same order as they are shown in the \"Review incoming stories\" page.",
         
             // Catalysis - General
             "What's catalysis? It's the same thing as analysis, but it generates questions to ponder, not conclusions to accept or reject.",
@@ -99,6 +100,7 @@ export function getRandomTip() {
             "You can enter answers to annotation questions in NarraFirma or import them from a CSV spreadsheet file.",
             "When annotating stories, you can use the Random button to code a randomly chosen subset of a large story collection.",
             "Annotation questions are not connected to particular story forms. They are available to the whole project.",
+            "You can change the order your annotation questions appear on the \"Annotate stories\" page.",
         
             // Catalysis - Exploring patterns
             "The \"Explore patterns\" page is the most complicated page in NarraFirma. Budget some time to take it in and read its Help page.",
@@ -115,10 +117,11 @@ export function getRandomTip() {
             // Sensemaking, Intervention, and Return
             "You can use the filtering function to print only some story cards.",
             "You can use display lumping to merge similar answers in your story cards.",
-            "When you print your story cards, you can truncate especially long stories.", //
-            "Story cards can include all or only some of the questions you asked about stories and participants.", //
-            "You can use multiple columns to make your story cards easier to use in sensemaking.", //
-            "You can copy your generated HTML story cards and paste them into most word processors.", //
+            "When you print your story cards, you can truncate especially long stories.", 
+            "In story cards, for choice questions, you can print all the answers (with the selected answers in bold) or only the selected answers.",
+            "Story cards can include all or only some of the questions you asked about stories and participants.", 
+            "You can use multiple columns to make your story cards easier to use in sensemaking.", 
+            "You can copy your generated HTML story cards and paste them into most word processors.", 
             "You can create highly customized story cards.",
             "You can create printable agendas for your in-person or online sensemaking workshops.",
             "We recommend <a href=\"https://pandoc.org\">pandoc</a> for converting NarraFirma's HTML story cards to other formats.",
