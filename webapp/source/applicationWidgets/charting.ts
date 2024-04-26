@@ -1932,9 +1932,9 @@ export function d3ContingencyTable(graphHolder: GraphHolder, xAxisQuestion, yAxi
         left: longestRowTextLength * letterSize + (graphHolder.customGraphPadding || 0)
     };
 
-    // deal with questions that have LOTS of answers (not so much of a problem in the columns)
+    // spread out chart vertically for questions that have more answers (not so much of a problem in the columns)
     let graphSize = "large";
-    if (rowCount > 10) { 
+    if (rowCount >= 8) { 
         graphSize = "tall";
     }
     const chart = makeChartFramework(chartPane, "contingencyChart", graphSize, margin, graphHolder.customGraphWidth, graphHolder.customGraphHeight);
