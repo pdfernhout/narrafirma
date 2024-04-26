@@ -46,7 +46,8 @@ const panel: Panel = {
             displayType: "text",
             displayConfiguration: "80",
             displayName: "Language choice question text",
-            displayPrompt: "Enter a question participants will answer to <strong>choose a language</strong> in which to view the story form.",
+            displayPrompt: `Enter a question participants will answer to <strong>choose a language</strong> in which to view the story form. 
+                (This field is required; if it is empty, the story form will not show multiple languages. You can ask the question in multiple languages within the field.)`,
             displayVisible: function(panelBuilder, model) { return !!Globals.clientState().storyFormIdentifier(); }
         },
         {
