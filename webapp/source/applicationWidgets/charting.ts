@@ -185,8 +185,10 @@ function createEmptyDataStructureForAnswerCountsUsingDictionary(structure, quest
                 if (lumpingCommands[question.displayName].hasOwnProperty(value))
                     value = lumpingCommands[question.displayName][value];
             }
-            if (!(value in structure)) { // this is in case there are duplicate answers
-                structure[value] = 0;
+            if (value !== calculateStatistics.IGNOREANSWERCODE) { 
+                if (!(value in structure)) { // this is in case there are duplicate answers
+                    structure[value] = 0;
+                }
             }
         }
     }
@@ -208,8 +210,10 @@ function createEmptyDataStructureForAnswerCountsUsingArray(structure, question, 
                 if (lumpingCommands[question.displayName].hasOwnProperty(value))
                     value = lumpingCommands[question.displayName][value];
             }
-            if (structure.indexOf(value) < 0) { // this is in case there are duplicate answers
-                structure.push(value);
+            if (value !== calculateStatistics.IGNOREANSWERCODE) {
+                if (structure.indexOf(value) < 0) { // this is in case there are duplicate answers
+                    structure.push(value);
+                }
             }
         }
     }

@@ -183,6 +183,10 @@ h3.question {
 	background: white;
 }
 
+p.specialNote {
+	color: #b35d1b;
+}
+
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ old, maybe not used ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 .section {

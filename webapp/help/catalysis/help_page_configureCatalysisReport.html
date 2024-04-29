@@ -213,10 +213,13 @@ observations you've already written that depend on statistical test values.
 </h3>
 <div class="question-answer">
 	<p>
-		You can lump answers permanently as you import your data from a CSV file.
+		You can lump choice-question answers permanently as you import your data from a CSV file.
 		(See the <a href="../collection/help_page_importGuide.html">Import guide</a> to learn how to do that.)
 		However, NarraFirma also supports <b>display lumping</b> -- that is, changing your catalysis graphs <i>without</i> 
 		changing your stored data. 
+	</p>
+	<p class="specialNote">Use the display lumping function with care, respect, and transparency.
+		Never use it to distort or misrepresent what people said. Always explain why and how you used it.
 	</p>
 	<p>
 		To use display lumping, find the box labeled
@@ -239,23 +242,13 @@ observations you've already written that depend on statistical test values.
 	<li>If you enter <b>Feel about == frustrated || angry == negative</b>, NarraFirma will count the answers "frustrated" or "angry" to the 
 			question "Feel about" as "negative."</li>
 	</ul>
-	<p>Tips on display lumping:</p>
+	<p>Display lumping has some limitations, as follows.</p>
 		<ul>
-			<li>Spaces around the equals signs and pipe characters are optional. They get trimmed off.</li>
-			<li>Why <i>two</i> equals signs? Why <i>two</i> pipe characters? Because you might have one equals sign or pipe character in a question name or answer.</li>
-			<li>If you have multiple story collections in your catalysis report, display lumping will apply to all of them, as long as the question and answer names match.</li>
-			<li>Display lumping only affects the graphs drawn in the Catalysis portion of NarraFirma,
-				on the "Explore patterns" page and in your catalysis report. 
-				The Collection portion of NarraFirma (the "Review graphs" page) shows your unlumped data.
-			</li>
-			<li>
-				If you make changes to your lumping scheme <i>after</i> you have written some observations, 
-				make sure you <b>check to see whether your observations need to change</b>. 
-				NarraFirma cannot tell that you have changed the way your graphs are drawn. 
-				You need to keep track of that yourself.
-			</li>
 			<li>You can only use display lumping with questions of the types <b>checkboxes</b>, <b>radio buttons</b>, and <b>select</b>.
 				You cannot use it with questions of the types boolean, checkbox, slider, label, header, text, and textarea. 
+			</li>
+			<li>Display lumping only affects the graphs drawn on the <b>Explore patterns</b> page and in your <b>catalysis report</b>. 
+				It does not affect the "Review graphs" page, which always shows your unlumped data.
 			</li>
 			<li>In your catalysis report, you can use display lumping with all of the <b>questions NarraFirma generates</b>: 
 				Eliciting question, Number of stories told, Story length, and Collection date.
@@ -266,7 +259,35 @@ observations you've already written that depend on statistical test values.
 					<li>Collection date == 2021-05-12 || 2021-05-13 || 2021-05-14 == Pulse 3</li>
 				</ul>
 			</li>
-			<li>When printing story cards, you cannot use display lumping for any of the generated questions. It works for all story and participant questions, however.</li>
+			<li>If you have multiple story collections in your catalysis report, display lumping will apply to all of them, as long as the question and answer names match.</li>
+			<li>However, when you are printing story cards, 
+				you cannot use display lumping for any of the generated questions. (It works for all story and participant questions, however.)</li>
+		</ul>
+
+		<p>You can also use display lumping to:</p>
+		<ul>
+			<li><b>Rename an answer</b>, usually to shorten it so it looks better on graphs. 
+				Enter the old and new answers on the same line (question == answer == new answer).
+			</li>
+			<li><b>Hide an answer</b> whose count is very small but that cannot be meaningfully
+				lumped together with any other answers. For example, if only 5 of 500 people said their story made them feel "weird,"
+				you can choose not to show that count on your graphs. 
+				To do this, enter (exactly) "*IGNORE*" as the new answer (question == answer == *IGNORE*). 
+				Do not leave out the two asterisks. They are in case anyone ever uses the all-caps word "IGNORE" as an actual answer.
+			</li>
+		</ul>
+
+		<p>Other tips:</p>
+		<ul>
+			<li>Spaces around the equals signs and pipe characters are optional. They get trimmed off.</li>
+			<li>Why <i>two</i> equals signs? Why <i>two</i> pipe characters? Because you might have one equals sign or pipe character in a question name or answer.</li>
+			<li>In your display lumping specification you can <b>comment out a line</b> by placing a semicolon (;) as its first character. That line will be ignored.</li>
+			<li>
+				If you make changes to your lumping scheme <i>after</i> you have written some observations, 
+				make sure you <b>check to see whether your observations need to change</b>. 
+				NarraFirma cannot tell that you have changed the way your graphs are drawn. 
+				You need to keep track of that yourself.
+			</li>
 		</ul>
 </div>
 
@@ -308,7 +329,7 @@ observations you've already written that depend on statistical test values.
 		<tr><td>executive</td><td>15</td><td>32</td><td>18</td></tr>
 	</table>
 	<p>In this case, lumping together the managers and executives, or help and respect, would improve the situation. Whether that's 
-		a good idea (should those categories be lumped together?) is one of the decisions you make as you go through
+		a good idea (should those categories be lumped together?) is one of the decisions you need to make as you go through
 		the catalysis process.
 	</p>
 </div>

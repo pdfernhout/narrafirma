@@ -8,6 +8,8 @@ import m = require("mithril");
 
 "use strict";
 
+export const IGNOREANSWERCODE = "*IGNORE*";
+
 function isValidNumber(value) {
     return value !== "" && !isNaN(value);
 }
@@ -70,12 +72,14 @@ export function getChoiceValueForQuestionAndStory(question, story, unansweredTex
                 const answersToLumpTogether = Object.keys(lumpingCommands[question.displayName]);
 
                 for (let i = 0; i < answersToLumpTogether.length; i++) {
-                    // answersToLumpTogether do not need to be trimmed, because they are trimmed during parsing of the lumping command
+                    // answersToLumpTogether (and substituteAnswer) do not need to be trimmed, because they are trimmed during parsing of the lumping command
                     const thisAnswer = answersToLumpTogether[i]; 
                     if (answersToReport.hasOwnProperty(thisAnswer) && answersToReport[thisAnswer]) { 
                         const substituteAnswer = lumpingCommands[question.displayName][thisAnswer];
                         delete answersToReport[thisAnswer];
-                        answersToReport[substituteAnswer] = true;
+                        if (substituteAnswer !== IGNOREANSWERCODE) {
+                            answersToReport[substituteAnswer] = true;
+                        }
                     }
                 }
                 return answersToReport;
@@ -83,8 +87,15 @@ export function getChoiceValueForQuestionAndStory(question, story, unansweredTex
             } else { // not checkboxes, so answer is not a dictionary, so you can just return one lumped value
                 // the same value trimming has to take place here (again for legacy data)
                 const trimmedValue = value.trim();
-                if (lumpingCommands[question.displayName].hasOwnProperty(trimmedValue)) 
-                    return lumpingCommands[question.displayName][trimmedValue];
+                if (lumpingCommands[question.displayName].hasOwnProperty(trimmedValue)) {
+                    const substituteAnswer = lumpingCommands[question.displayName][trimmedValue];
+                    if (substituteAnswer !== IGNOREANSWERCODE) {
+                        return substituteAnswer;
+                    } else {
+                        return unansweredText;
+                    }
+                }
+                    
             }
         }
     } 

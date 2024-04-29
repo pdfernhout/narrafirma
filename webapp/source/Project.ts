@@ -1122,10 +1122,14 @@ class Project {
         const lumpingCommands = {};
         const lines = lumpingCommandsString.split("\n");
         for (let lineIndex = 0; lineIndex < lines.length; lineIndex++) {
+            if (lines[lineIndex].indexOf(";") === 0) continue; // user can commment out line with semicolon
             const lineParts = lines[lineIndex].split("==");
             if (lineParts.length == 3) { // line must have 3 parts: question name, answers to lump, lumped answer
                 const answersToLump = lineParts[1].split("||").map(function(part) {return part.trim()});
-                if (answersToLump.length >= 2) { // must have at least two answers to lump
+                // prior to NF v1.6.6, you had to have at least two answers to lump 
+                // this has now changed to add the "ignore" functionality, so you just need one
+                // this also means you can use the lumping facility to rename a single answer
+                if (answersToLump.length >= 1) { 
                     const questionName = lineParts[0].trim();
                     const lumpedAnswer = lineParts[2].trim();
                     if (!lumpingCommands.hasOwnProperty(questionName)) lumpingCommands[questionName] = {};
