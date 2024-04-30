@@ -155,7 +155,7 @@ h3.question {
 .narrafirma-pni-phases-image {
 	float: right;
 }
-
+f
 .book-quote {
 	margin: 0.5em 0 0.5em 0;
 	padding: 1em;
@@ -185,6 +185,11 @@ h3.question {
 
 p.specialNote {
 	color: #b35d1b;
+}
+
+.glossary_definition {
+	font-weight: bold;
+	margin-left: 0.65em;
 }
 
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ old, maybe not used ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
