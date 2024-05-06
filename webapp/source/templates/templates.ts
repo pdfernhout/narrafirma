@@ -471,7 +471,7 @@ const templates = [
                 "shortName": "When during history",
                 "category": "Setting",
                 "type": "select",
-                "options": "fill in your own relevant choices;choice 2;choice 3;not sure"
+                "options": "fill in your own relevant choices;not sure"
             },
             {
                 "id": "whereTookPlace",
@@ -479,7 +479,7 @@ const templates = [
                 "shortName": "Where took place",
                 "category": "Setting",
                 "type": "select",
-                "options": "fill in your own relevant choices; choice 2; choice 3; not sure"
+                "options": "fill in your own relevant choices;not sure"
             },
             {
                 "id": "timePeriod",
@@ -495,7 +495,7 @@ const templates = [
                 "shortName": "What changed",
                 "category": "Change",
                 "type": "select",
-                "options": "fill in your own relevant choices; choice 2; choice 3; not sure"
+                "options": "fill in your own relevant choices;not sure"
             },
             {
                 "id": "whatDidNotChange",
@@ -503,7 +503,7 @@ const templates = [
                 "shortName": "What did not change",
                 "category": "Change",
                 "type": "select",
-                "options": "fill in your own relevant choices;choice 2; choice 3;not sure"
+                "options": "fill in your own relevant choices;not sure"
             },
             {
                 "id": "whoWasAffectedByChanges",
@@ -511,7 +511,7 @@ const templates = [
                 "shortName": "Who was affected by changes",
                 "category": "Change",
                 "type": "select",
-                "options": "fill in your own relevant choices;choice 2;choice 3;not sure"
+                "options": "fill in your own relevant choices;not sure"
             },
             {
                 "id": "whoWasUnaffectedByChanges",
@@ -519,7 +519,7 @@ const templates = [
                 "shortName": "Who was unaffected by changes",
                 "category": "Change",
                 "type": "select",
-                "options": "fill in your own relevant choices;choice 2;choice 3;not sure"
+                "options": "fill in your own relevant choices;not sure"
             },
             {
                 "id": "storyHoldsTogether",
@@ -647,7 +647,7 @@ const templates = [
                 "shortName": "Roles involved",
                 "category": "Community",
                 "type": "checkboxes",
-                "options": "fill in your own relevant choices;choice 2;choice 3;not sure"
+                "options": "fill in your own relevant choices;not sure"
             },
             {
                 "id": "groupsInvolved",
@@ -655,7 +655,7 @@ const templates = [
                 "shortName": "Groups involved",
                 "category": "Community",
                 "type": "checkboxes",
-                "options": "fill in your own relevant choices; choice 2; choice 3;not sure"
+                "options": "fill in your own relevant choices;not sure"
             },
             {
                 "id": "strengthOfImpactIfHeard",
@@ -679,7 +679,7 @@ const templates = [
                 "shortName": "Groups need to hear story",
                 "category": "Community",
                 "type": "checkboxes",
-                "options": "fill in your own relevant choices;choice 2;choice 3;not sure"
+                "options": "fill in your own relevant choices;not sure"
             },
             {
                 "id": "groupsHaveNotHeardStory",
@@ -687,7 +687,7 @@ const templates = [
                 "shortName": "Groups have never heard story",
                 "category": "Community",
                 "type": "checkboxes",
-                "options": "fill in your own relevant choices;choice 2;choice 3;not sure"
+                "options": "fill in your own relevant choices;not sure"
             },
             {
                 "id": "groupsWillNotHearStory",
@@ -695,7 +695,7 @@ const templates = [
                 "shortName": "Groups will not hear story",
                 "category": "Community",
                 "type": "checkboxes",
-                "options": "fill in your own relevant choices;choice 2;choice 3;not sure"
+                "options": "fill in your own relevant choices;not sure"
             },
             {
                 "id": "groupsWillGetNewEnergy",
@@ -703,7 +703,7 @@ const templates = [
                 "shortName": "Groups will get new energy",
                 "category": "Community",
                 "type": "checkboxes",
-                "options": "fill in your own relevant choices;choice 2;choice 3;not sure"
+                "options": "fill in your own relevant choices;not sure"
             },
             {
                 "id": "groupsWillLoseEnergy",
@@ -711,7 +711,7 @@ const templates = [
                 "shortName": "Groups will lose energy",
                 "category": "Community",
                 "type": "checkboxes",
-                "options": "fill in your own relevant choices;choice 2;choice 3;not sure"
+                "options": "fill in your own relevant choices;not sure"
             },
             {
                 "id": "storySaysAbout",
@@ -835,7 +835,7 @@ const templates = [
                 "shortName": "Main character",
                 "category": "Main character",
                 "type": "select",
-                "options": "fill in your own relevant choices;choice 2 choice 3;not sure"
+                "options": "fill in your own relevant choices;not sure"
             },
             {
                 "id": "endedWell",
@@ -875,7 +875,7 @@ const templates = [
                 "shortName": "Helped",
                 "category": "Main character",
                 "type": "select",
-                "options": "fill in your own relevant choices;choice 2 choice 3;not;not sure"
+                "options": "fill in your own relevant choices;not sure"
             },
             {
                 "id": "amountOfHelp",
@@ -891,7 +891,7 @@ const templates = [
                 "shortName": "Hindered",
                 "category": "Main character",
                 "type": "select",
-                "options": "fill in your own relevant choices;choice 2 choice 3;not;not sure"
+                "options": "fill in your own relevant choices;not sure"
             },
             {
                 "id": "amountOfHindrance",
@@ -915,18 +915,228 @@ const templates = [
         "id": "participantQuestions",
         "name": "Participant questions",
         "questions": [
+            // opinions
+            {
+                "id": "supportForPolicy",
+                "text": "To what extent do you support [the/our] policy [of/on] ___?",
+                "shortName": "Support",
+                "category": "Opinions",
+                "type": "slider",
+                "options": "I fully support it;I am actively working to change it"
+            },
+            {
+                "id": "feelAboutIssue",
+                "text": "How do you feel about ___?",
+                "shortName": "Feel about issue scale",
+                "category": "Opinions",
+                "type": "slider",
+                "options": "It is harmful;It is helpful"
+            },
+            {
+                "id": "feelAboutIssueChoices",
+                "text": "Which of these statements best describes how you feel about ___?",
+                "shortName": "Feel about issue",
+                "category": "Opinions",
+                "type": "select",
+                "options": "fill in your own relevant choices;not sure;rather not say"
+            },
+            {
+                "id": "ifCouldWriteLaw",
+                "text": "If you could write a law or agreement regulating ___, what would it say?",
+                "shortName": "Law",
+                "category": "Opinions",
+                "type": "select",
+                "options": "fill in your own relevant choices;not sure;rather not say"
+            },
+            {
+                "id": "whatCausesProblem",
+                "text": "What do you think causes ___?",
+                "shortName": "Cause",
+                "category": "Opinions",
+                "type": "select",
+                "options": "fill in your own relevant choices;not sure;rather not say"
+            },
+            {
+                "id": "whatCouldSolveProblem",
+                "text": "What do you think would solve the problem of ___?",
+                "shortName": "Solution",
+                "category": "Opinions",
+                "type": "select",
+                "options": "fill in your own relevant choices;not sure;rather not say"
+            },
+            {
+                "id": "futureCourse",
+                "text": "What do you think ___ will be like in ___ years?",
+                "shortName": "Future course",
+                "category": "Opinions",
+                "type": "select",
+                "options": "fill in your own relevant choices;not sure;rather not say"
+            },
+            {
+                "id": "pastOrFuture",
+                "text": "With regard to ___, do you think ___ is more focused on the past or the future?",
+                "shortName": "Past or future",
+                "category": "Opinions",
+                "type": "slider",
+                "options": "Deep in the past;far into the future"
+            },
+            {
+                "id": "listening",
+                "text": "Do people in ___ listen to each other, in your experience?",
+                "shortName": "Listening",
+                "category": "Opinions",
+                "type": "slider",
+                "options": "No, never;Yes, always"
+            },
+            {
+                "id": "cooperating",
+                "text": "Do people in ___ cooperate with each other, in your experience?",
+                "shortName": "Cooperating",
+                "category": "Opinions",
+                "type": "slider",
+                "options": "No, never;Yes, always"
+            },
+            {
+                "id": "conflict",
+                "text": "How much conflict have you seen in ___, in general?",
+                "shortName": "Cooperating",
+                "category": "Opinions",
+                "type": "slider",
+                "options": "No conflict at all;Crippling amounts of conflict"
+            },
+            {
+                "id": "innovation",
+                "text": "In your experience, [is/are] ___ an innovative ___ with regard to ___?",
+                "shortName": "Innovation",
+                "category": "Opinions",
+                "type": "slider",
+                "options": "Not at all;Perfectly innovative"
+            },
+            {
+                "id": "openness",
+                "text": "In your experience, [is/are] ___ open to new ideas?",
+                "shortName": "Innovation",
+                "category": "Opinions",
+                "type": "slider",
+                "options": "No, never;Yes, perfectly open"
+            },
+            // situation
+            {
+                "id": "satisfaction",
+                "text": "How happy are you with your current ___?",
+                "shortName": "Satisfaction",
+                "category": "Situation",
+                "type": "slider",
+                "options": "I never want it to change;I am actively seeking change"
+            },
+            {
+                "id": "reasonsToStayOrLeave",
+                "text": "If you want to stay or leave in ___, why is that?",
+                "shortName": "Reasons to stay or leave",
+                "category": "Situation",
+                "type": "select",
+                "options": "fill in your own relevant choices;not sure;rather not say"
+            },
+            {
+                "id": "position",
+                "text": "What is your position in ___?",
+                "category": "Situation",
+                "type": "select",
+                "options": "fill in your own relevant choices;not sure;rather not say"
+            },
+            {
+                "id": "officialPosition",
+                "text": "What is your official position in ___?",
+                "shortName": "Official position",
+                "category": "Situation",
+                "type": "select",
+                "options": "fill in your own relevant choices;not sure;rather not say"
+            },
+            {
+                "id": "unofficialPosition",
+                "text": "Do you hold an unofficial position in ___?",
+                "shortName": "Unofficial position",
+                "category": "Situation",
+                "type": "select",
+                "options": "fill in your own relevant choices;not sure;rather not say"
+            },
+            {
+                "id": "aloneOrTogether",
+                "text": "Do you ___ alone or with other people?",
+                "shortName": "Alone or together",
+                "category": "Situation",
+                "type": "slider",
+                "options": "only by myself;only with others"
+            },
+            {
+                "id": "aloneOrTogetherPreference",
+                "text": "Which do you like better, ___ alone or together?",
+                "shortName": "Alone or together preference",
+                "category": "Preferences",
+                "type": "slider",
+                "options": "only by myself;only with others"
+            },
+            {
+                "id": "independence",
+                "text": "When it comes to ___, do you decide what will happen next, or does someone else decide that?",
+                "shortName": "Independence",
+                "category": "Situation",
+                "type": "slider",
+                "options": "I decide everything;I decide nothing"
+            },
+            {
+                "id": "independencePreference",
+                "text": "When it comes to ___, to what extent do you prefer to ___ independently?",
+                "shortName": "Independence preference",
+                "category": "Preferences",
+                "type": "slider",
+                "options": "I want to decide everything;I want to have others decide for me"
+            },
+            {
+                "id": "manageOthers",
+                "text": "Do you [manage, supervise, take care of] other people? If so, how?",
+                "shortName": "Manage others",
+                "category": "Situation",
+                "type": "select",
+                "options": "fill in your own relevant choices;not sure;rather not say"
+            },
+            {
+                "id": "manageNumber",
+                "text": "How many people do you [manage, supervise, take care of]?",
+                "shortName": "Manage number",
+                "category": "Situation",
+                "type": "select",
+                "options": "fill in your own relevant choices;not sure;rather not say"
+            },
+            {
+                "id": "structure",
+                "text": "How structured is your [work/life/___]?",
+                "shortName": "Structure",
+                "category": "Situation",
+                "type": "select",
+                "options": "fill in your own relevant choices;not sure;rather not say"
+            },
+            {
+                "id": "freedomToChoose",
+                "text": "With regard to ___, do you feel that you have a lot of freedom to make your own choices?",
+                "shortName": "Freedom to choose",
+                "category": "Situation",
+                "type": "slider",
+                "options": "I have complete freedom;I have no freedom"
+            },
+            // demographics
             {
                 "id": "ageRange",
                 "text": "Which age range do you fall into?",
                 "shortName": "Age",
-                "category": null,
+                "category": "Demographics",
                 "type": "select",
                 "options": "<25;25-34;35-44;45-64;65-74;75+"
             },
             {
                 "id": "gender",
                 "text": "What is your gender?",
-                "category": null,
+                "category": "Demographics",
                 "type": "select",
                 "options": "male;female"
             },
@@ -934,119 +1144,152 @@ const templates = [
                 "id": "rentOrOwn",
                 "text": "Do you rent or own your home?",
                 "shortName": "Rent or own",
-                "category": null,
+                "category": "Demographics",
                 "type": "select",
                 "options": "rent;own"
             },
             {
                 "id": "incomeLevel",
                 "text": "What is your income level?",
-                "category": null,
+                "shortName": "Income level",
+                "category": "Demographics",
                 "type": "select",
-                "options": "put in your own levels here"
+                "options": "fill in your own relevant choices;not sure;rather not say"
             },
             {
                 "id": "educationLevel",
-                "text": "How much education have you completed?",
-                "category": null,
+                "text": "How much formal education have you completed?",
+                "shortName": "Formal education",
+                "category": "Demographics",
                 "type": "select",
-                "options": "high school;college;post-graduate;trade;other"
+                "options": "no formal schooling;a little;elementary school;high school;college;post-graduate;trade;other;rather not say"
+            },
+            {
+                "id": "informalEducation",
+                "text": "How much informal education have you had?",
+                "shortName": "Informal education",
+                "category": "Demographics",
+                "type": "select",
+                "options": "fill in your own relevant choices;not sure;rather not say"
+            },
+            {
+                "id": "experience",
+                "text": "How much experience have you had with ___?",
+                "shortName": "Experience",
+                "category": "Demographics",
+                "type": "select",
+                "options": "fill in your own relevant choices;not sure;rather not say"
             },
             {
                 "id": "maritalStatus",
                 "text": "What is your marital status?",
-                "category": null,
+                "shortName": "Marital status",
+                "category": "Demographics",
                 "type": "select",
-                "options": "single;married;widowed;divorced;other"
+                "options": "single;living together;married;widowed;divorced;other"
             },
             {
                 "id": "children",
                 "text": "How many children do you have?",
-                "category": null,
+                "shortName": "How many children",
+                "category": "Demographics",
                 "type": "select",
-                "options": "none;1;2;3;4;5;6;7;8;9;10"
+                "options": "none;1;2;3;4;5;6;7;8;9;10;other"
+            },
+            {
+                "id": "describeChildren",
+                "text": "How would you describe your children?",
+                "shortName": "Children description",
+                "category": "Demographics",
+                "type": "select",
+                "options": "fill in your own relevant choices;not sure;rather not say"
             },
             {
                 "id": "profession",
                 "text": "What is your profession?",
-                "category": null,
+                "shortName": "Profession",
+                "category": "Demographics",
                 "type": "select",
-                "options": "put in your own choices here"
+                "options": "fill in your own relevant choices;not sure;rather not say"
             },
             {
                 "id": "location",
                 "text": "Where do you live?",
-                "category": null,
+                "shortName": "Location",
+                "category": "Demographics",
                 "type": "select",
-                "options": "put in your own choices here"
-            },
-            {
-                "id": "position",
-                "text": "What is your position?",
-                "category": null,
-                "type": "select",
-                "options": "put in your own choices here"
+                "options": "fill in your own relevant choices;not sure;rather not say"
             },
             {
                 "id": "ethnicBackground",
                 "text": "What is your ethnic background?",
-                "category": null,
+                "shortName": "Background",
+                "category": "Demographics",
                 "type": "select",
-                "options": "put in your own choices here"
+                "options": "fill in your own relevant choices;not sure;rather not say"
             },
+            // personality
             {
                 "id": "opennessToExperience",
                 "text": "Do you like trying new things?",
-                "category": null,
+                "shortName": "Openness to experience",
+                "category": "Personality",
                 "type": "slider",
                 "options": "I like things to stay the same;if it's new I'm for it"
             },
             {
                 "id": "selfDisciplined",
                 "text": "Would you call yourself self-disciplined?",
-                "category": null,
+                "shortName": "Self-disciplined",
+                "category": "Personality",
                 "type": "slider",
                 "options": "I always do exactly what I should;I have no control over myself"
             },
             {
                 "id": "introvertOrExtravert",
                 "text": "Are you more of an extravert or an introvert?",
-                "category": null,
+                "shortName": "Introvert or extravert",
+                "category": "Personality",
                 "type": "slider",
                 "options": "introverted;extraverted"
             },
             {
                 "id": "agreeableness",
                 "text": "How do you feel about other people?",
-                "category": null,
+                "shortName": "Agreeableness",
+                "category": "Personality",
                 "type": "slider",
                 "options": "heaven is other people;hell is other people"
             },
             {
                 "id": "neuroticism",
                 "text": "How much do you worry?",
-                "category": null,
+                "shortName": "Neuroticism",
+                "category": "Personality",
                 "type": "slider",
                 "options": "constantly;me? never"
             },
             {
                 "id": "sensingVsIntuition",
                 "text": "Do you prefer to think of abstract, \"big picture\" ideas, or do you like concrete, practical applications?",
-                "category": null,
+                "shortName": "Sensing vs intuition",
+                "category": "Personality",
                 "type": "slider",
                 "options": "I like the big picture;give me concrete details"
             },
             {
                 "id": "thinkingVsFeeling",
                 "text": "Does logic or emotion have more impact on your decisions?",
-                "category": null,
+                "shortName": "Thinking vs feeling",
+                "category": "Personality",
                 "type": "slider",
                 "options": "logic and reason only;my values and feelings are my guide"
             },
             {
                 "id": "judgingVsPerceiving",
                 "text": "How do you feel about rules?",
-                "category": null,
+                "shortName": "Judging vs perceiving",
+                "category": "Personality",
                 "type": "slider",
                 "options": "rules keep life working;rules are for breaking"
             }
