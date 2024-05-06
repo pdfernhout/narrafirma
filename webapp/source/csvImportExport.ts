@@ -162,6 +162,22 @@ function processCSVContentsForStories(contents, saveStories, writeLog, questionn
         logQuestionAnswerCounts[questionName][answerName]++;
     }
 
+    function getMultiChoiceDelimiter(questionnaire) {
+        let result = "";
+        if (questionnaire && questionnaire.import_multiChoiceDelimiter) {
+            result = questionnaire.import_multiChoiceDelimiter;
+        } else {
+            const projectDelimiter = Globals.clientState().csvDelimiter();
+            if (projectDelimiter) {
+                result = projectDelimiter;
+            } else {
+                result = ",";
+            }
+        }
+        if (result && result.toLowerCase() === "space") result = " ";
+        return result;
+    }
+
     let storyCollectionName;
     if (!questionnaire) {
         // check for story collection
@@ -539,8 +555,7 @@ function processCSVContentsForStories(contents, saveStories, writeLog, questionn
                     // in case of lumping, dictionary entry will be set to true again
                     } else if (importValueType === "Multi-choice single-column delimited") {
                         newItem[questionName] = {};
-                        let delimiter = questionnaire.import_multiChoiceDelimiter;
-                        if (delimiter && delimiter.toLowerCase() === "space") delimiter = " ";
+                        const delimiter = getMultiChoiceDelimiter(questionnaire);
                         const delimitedItems = value.split(delimiter);
                         delimitedItems.forEach((delimitedItem) => {
                             const trimmedDelimitedItem = delimitedItem.trim();
@@ -567,8 +582,7 @@ function processCSVContentsForStories(contents, saveStories, writeLog, questionn
                     // in case of lumping, dictionary entry will be set to true again
                     } else if (importValueType === "Multi-choice single-column delimited indexed") {
                         newItem[questionName] = {};
-                        let delimiter = questionnaire.import_multiChoiceDelimiter;
-                        if (delimiter.toLowerCase() === "space") delimiter = " ";
+                        const delimiter = getMultiChoiceDelimiter(questionnaire);
                         const delimitedIndexTexts = value.split(delimiter);
                         delimitedIndexTexts.forEach((delimitedIndexText) => {
                             const delimitedIndex = parseInt(delimitedIndexText);
@@ -2128,6 +2142,7 @@ const exportQuestionTypeMap = {
 
 export function addCSVOutputLine(output, line, delimiter) {
     let start = true;
+    if (!delimiter) delimiter = ",";
     line.forEach(function (item) {
         let itemToSave = "";
         if (start) {
