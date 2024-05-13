@@ -158,6 +158,10 @@ M When import story form, hundreds of triples can be generated which take minute
 
 ==== DONE
 
+-- Release 1.6.7
+
+* Made "Does not apply" slider label settable and translateable in general (not only for specific questions)
+
 -- Release 1.6.6
 
 * Added: You can now use display lumping to rename a too-long answer or put aside an answer that was rarely chosen (use with care and respect)

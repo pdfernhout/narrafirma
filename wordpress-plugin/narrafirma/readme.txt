@@ -9,7 +9,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Requires at least: 4.3.1
 Tested up to: 6.5.3
 Stable tag: trunk
-Version: 1.6.6
+Version: 1.6.7
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -105,6 +105,10 @@ We strongly suggest that you set up any web site on which you intend to install 
 12. Here the NarraFirma user is reflecting on the entire project, to learn from it and to keep good records for the future.
 
 == Changelog ==
+
+= 1.6.7 =
+
+Changed: Made "Does not apply" slider label settable and translateable in general (not only for specific questions)
 
 = 1.6.6 =
 
@@ -716,6 +720,10 @@ This is the first publicly released version of NarraFirma. For (highly detailed 
 change logs, see the [GitHub repository](https://github.com/pdfernhout/narrafirma).
 
 == Upgrade Notice ==
+
+= 1.6.7 =
+
+This minor upgrade adds a bit more functionality to the story-form building and translation facility.
 
 = 1.6.6 =
 
