@@ -232,6 +232,17 @@ const panel: Panel = {
             displayVisible: function(panelBuilder, model) { return !!Globals.clientState().showAdvancedOptions(); }
         },
         {
+            id: "questionForm_sliderDoesNotApply",
+            valueType: "string",
+            displayType: "text",
+            displayConfiguration: "30",
+            displayName: "Slider does-not-apply label",
+            displayPrompt: `
+                What do you want the slider <b>does not apply</b> label to say? 
+                (Default: \"Does not apply\")`,
+            displayVisible: function(panelBuilder, model) { return !!Globals.clientState().showAdvancedOptions(); }
+        },
+        {
             id: "questionForm_selectNoChoiceName",
             valueType: "string",
             displayType: "text",

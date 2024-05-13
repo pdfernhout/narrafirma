@@ -17,6 +17,7 @@ let currentLanguage = "";
 export const defaultFormTexts = {
     startText: 'Please help by taking a short survey. The data you enter will be sent to the server only at the end when you press the "submit survey" button.',
     sliderValuePrompt: "Type a new value",
+    sliderDoesNotApply: "Does not apply",
     selectNoChoiceName: "-- select --",
     booleanYesNoNames: "yes/no",
     maxNumAnswersPrompt: "(Please choose up to # answers.)",
@@ -449,10 +450,10 @@ function displayQuestion(builder, model, fieldSpecification, storyForm) {
 
         const checkboxID = getIdForText(fieldID) + "_doesNotApply";
         const popupPrompt = tr(storyForm.sliderValuePrompt || defaultFormTexts.sliderValuePrompt);
+        let doesNotApplyTranslatedText = tr(storyForm.sliderDoesNotApply || defaultFormTexts.sliderDoesNotApply);
         
         let leftSideText = "";
         let rightSideText = "";
-        let doesNotApplyText = "Does not apply";
         if (fieldSpecification.displayConfiguration) {
             if (fieldSpecification.displayConfiguration.length > 1) {
                 leftSideText = fieldSpecification.displayConfiguration[0];
@@ -460,7 +461,7 @@ function displayQuestion(builder, model, fieldSpecification, storyForm) {
             }
             // fieldSpecification.displayConfiguration[2] can exist but be undefined
             if (fieldSpecification.displayConfiguration.length > 2 && fieldSpecification.displayConfiguration[2]) {
-                doesNotApplyText = fieldSpecification.displayConfiguration[2];
+                doesNotApplyTranslatedText = tr(fieldSpecification.displayConfiguration[2]);
             }
         }
         
@@ -496,7 +497,7 @@ function displayQuestion(builder, model, fieldSpecification, storyForm) {
                     }
                 }
             }),
-            m("label", {"for": checkboxID}, tr(doesNotApplyText))
+            m("label", {"for": checkboxID}, doesNotApplyTranslatedText)
         ];
         return questionParts;
     }
