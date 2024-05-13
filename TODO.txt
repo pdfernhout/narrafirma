@@ -7,11 +7,7 @@ W - wish list
 
 ============ new things noticed/mentioned recently
 
-- in import, the delimiter for multiple choices within one CSV cell should default to a comma (it does not default to anything),
-and it should tell the user (in the interface and in the import guide) that it defaults to a comma
-(or should it default to something else? what is best for legacy data?)
-- for questions about participants, add some "what is your opinion" type questions to the templates
-- consider improving the printing of collection/sensemaking session agendas; it is ugly
+- none right now 
 
 =============== OLDER TODOS LIST ===================
 
@@ -161,6 +157,33 @@ M Improve reporting on startup for loading project data with some kind of progre
 M When import story form, hundreds of triples can be generated which take minutes to send to the server (with no progress feedback, even though done in background) -- may be related to console logging
 
 ==== DONE
+
+-- Release 1.6.6
+
+* Added: You can now use display lumping to rename a too-long answer or put aside an answer that was rarely chosen (use with care and respect)
+* Added: In display lumping, you can comment out a line by placing a semicolon at the beginning of it (helps with trying different schemes)
+* Added: On the "Print story cards" page, you can now hide non-selected choice-question answers (instead of showing all answers)
+* Added: On the "Print story cards" page, you can enter a custom text to write between choice-question answers
+* Added: Printed story cards now have a pound/hashtag sign in front of the story number/index (to make it easier to search for a story by number)
+* Added: On the "Write annotation questions" page, you can now set the order of questions on the "Annotate stories" page (you can also add headers and choose which columns to display in the table of stories)
+* Added: On the "Explore patterns" page, added a button to export a (simplified) summary of significant correlations across all choice-question subsets (helps in pattern discovery)
+* Added: More template questions about participants
+
+* Changed: The "Spot-check graphs" page is now called the "Review graphs" page (and the introduction has been tweaked)
+* Changed: The main-page display of story collections is (hopefully) more intuitive (clicking on the number of stories now leads to the "Review incoming stories" page, and clicking on the number of answers now leads to the "Review graphs" page)
+* Changed: On the "Explore patterns" page, the export buttons have been moved to the top of the page (before they got in the way of writing observations)
+* Changed: The threshold for drawing extra-tall contingency charts has been reduced from 11+ to 8+ rows (for better clarity)
+* Changed: Improved formatting of printed session agendas (collection, sensemaking) and project presentation outline
+* Changed: Slightly improved wording of some of the page descriptions on section pages
+
+* Fixed: A bug where the "anything else?" label was forgotten when adding the story form translation system 
+* Fixed: A bug where the statistics information reported (in patterns table) was incorrect (in some relatively rare) situations)
+* Fixed: A bug on section pages (Planning, Collection, etc) where HTML elements from other pages were appearing on top of the little page-type icons
+* Fixed: A bug on the "Spot check graphs" (now "Review graphs") page where making a selection in one subgraph did not remove a previous selection in another subgraph
+* Fixed: A bug on the "Annotate stories" page where adding the first answer to a choice question also added an empty-string answer
+* Fixed: A bug where clicking on the number of stories in a collection on the main/dashboard page did not bring up that collection on the "Review graphs" page
+* Fixed: A bug where certain carriage-return characters within stories would cause the CSV export to misalign spreadsheet cells 
+* Fixed: A bug where, in CSV story import, there was no backup default for a missing multi-choice single-column delimiter (it now defaults to a comma)
 
 -- Release 1.6.5
 

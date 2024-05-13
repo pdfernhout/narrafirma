@@ -7,9 +7,9 @@ Author URI: http://www.cfkurtz.com
 Author: Cynthia Kurtz and Paul Fernhout
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=DGVVDT2D49QA8
 Requires at least: 4.3.1
-Tested up to: 6.2
+Tested up to: 6.5.3
 Stable tag: trunk
-Version: 1.6.5
+Version: 1.6.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -105,6 +105,33 @@ We strongly suggest that you set up any web site on which you intend to install 
 12. Here the NarraFirma user is reflecting on the entire project, to learn from it and to keep good records for the future.
 
 == Changelog ==
+
+= 1.6.6 =
+
+Added: You can now use display lumping to rename a too-long answer or put aside an answer that was rarely chosen (use with care and respect)
+Added: In display lumping, you can comment out a line by placing a semicolon at the beginning of it (helps with trying different schemes)
+Added: On the "Print story cards" page, you can now hide non-selected choice-question answers (instead of showing all answers)
+Added: On the "Print story cards" page, you can enter a custom text to write between choice-question answers
+Added: Printed story cards now have a pound/hashtag sign in front of the story number/index (to make it easier to search for a story by number)
+Added: On the "Write annotation questions" page, you can now set the order of questions on the "Annotate stories" page (you can also add headers and choose which columns to display in the table of stories)
+Added: On the "Explore patterns" page, added a button to export a (simplified) summary of significant correlations across all choice-question subsets (helps in pattern discovery)
+Added: More template questions about participants
+
+Changed: The "Spot-check graphs" page is now called the "Review graphs" page (and the introduction has been tweaked)
+Changed: The main-page display of story collections is (hopefully) more intuitive (clicking on the number of stories now leads to the "Review incoming stories" page, and clicking on the number of answers now leads to the "Review graphs" page)
+Changed: On the "Explore patterns" page, the export buttons have been moved to the top of the page (before they got in the way of writing observations)
+Changed: The threshold for drawing extra-tall contingency charts has been reduced from 11+ to 8+ rows (for better clarity)
+Changed: Improved formatting of printed session agendas (collection, sensemaking) and project presentation outline
+Changed: Slightly improved wording of some of the page descriptions on section pages
+
+Fixed: A bug where the "anything else?" label was forgotten when adding the story form translation system 
+Fixed: A bug where the statistics information reported (in patterns table) was incorrect (in some relatively rare) situations)
+Fixed: A bug on section pages (Planning, Collection, etc) where HTML elements from other pages were appearing on top of the little page-type icons
+Fixed: A bug on the "Spot check graphs" (now "Review graphs") page where making a selection in one subgraph did not remove a previous selection in another subgraph
+Fixed: A bug on the "Annotate stories" page where adding the first answer to a choice question also added an empty-string answer
+Fixed: A bug where clicking on the number of stories in a collection on the main/dashboard page did not bring up that collection on the "Review graphs" page
+Fixed: A bug where certain carriage-return characters within stories would cause the CSV export to misalign spreadsheet cells 
+Fixed: A bug where, in CSV story import, there was no backup default for a missing multi-choice single-column delimiter (it now defaults to a comma)
 
 = 1.6.5 =
 
@@ -574,121 +601,125 @@ Fixed: Navigate-in-page "name" anchors changed to "id" anchors (because "name" a
 
 = 1.1.0 =
 
-* Added: Optional summary of submitted stories and other data, for participants to copy and save
-* Added: Human readable project report with all data entered for use outside of software
-* Fixed: Bug in login link
+Added: Optional summary of submitted stories and other data, for participants to copy and save
+Added: Human readable project report with all data entered for use outside of software
+Fixed: Bug in login link
 
 = 1.0.2 =
 
-* Added: Notes for questions, to keep track of decisions made while choosing and editing questions
-* Fixed: All user communications in the survey can now be customized (essential for non-English surveys)
+Added: Notes for questions, to keep track of decisions made while choosing and editing questions
+Fixed: All user communications in the survey can now be customized (essential for non-English surveys)
 
 = 1.0.1 = 
 
-* Fixed: Made navigation bar (at top) not scroll (was accidentally made scrolling)
-* Changed: Updated WordPress screenshots for new version
+Fixed: Made navigation bar (at top) not scroll (was accidentally made scrolling)
+Changed: Updated WordPress screenshots for new version
 
 = 1.0.0 =
 
-* Added: New data integrity graphs showing overall patterns across all questions (all scale values; per-participant means and sd; number of non-answers)
-* Added: User definable CSS for on-line and printed surveys, story cards, catalysis report
-* Added: Qualitative (free-text) answers in catalysis patterns
-* Added: More user definable fields to customize on-line story collection
-* Added: Multiple scatterplots to show scale+scale+choice question combinations
-* Added: Link to choose another project without logging out
-* Added: Visible slider number (0 to 100) and way to set value precisely 
-* Added: Option to set maximum number of stories participants can tell
-* Added: Story count per participant (framed as a "question" so it can form patterns with other questions)
-* Added: Auto-create story form option (using all existing questions)
-* Added: Can now choose which questions to include on story cards
-* Added: More control over the look of story cards, including custom CSS but also which questions to include and how to draw ranges
-* Added: Ability to set all story form options during CSV import
-* Added: Way to distinguish among participants during import (to count stories per participant)
-* Added: Scale conversion during import (for scale data collected with ranges other than 0-100)
-* Added: Field to write (then copy and paste) reminders from Return phase of one project to Planning phase of the next
-* Added: Way to choose types of graphs to view
-* Added: Counts above bars in bar graphs and histograms
-* Added: Correlation lines (optional) in scatterplots
-* Added: Mode to histograms
-* Added: Support for multiple observations per pattern (graph)
-* Added: Observation strength field to sort strong from weak patterns
-* Added: Interpretations to patterns list (can sort by them)
-* Added: More options for catalysis graphs including histogram bins, scatterplot dot size and opacity
-* Added: More user-supplied sections for catalysis report
-* Added: Unanswered count (number of stories with no answer to the question) to all graphs
-* Changed: Improved data import, with better error handling and help
-* Changed: Overhaul of screen designs and color palettes
-* Changed: Improved statistical information displays; improved reporting on statistical errors
-* Changed: Better error reporting and alerts to user
-* Changed: More tips and FAQ items to help system
-* Changed: More verification of statistical result against same tests in other software (you can't see this but it's important)
-* Changed: More help in various places to deal with questions people have had
-* Fixed: Explore Patterns page now shows cancelable progress bar when large numbers of statistical results are being calculated 
-* Fixed: Bug in chi-squared statistical calculation that disqualified too many comparisons
-* Fixed: Survey image now works
-* Fixed: Text areas now slightly taller
-* Fixed: Catalysis "ideas" now print in report
-* Fixed: Catalysis clustering diagram now updates better for changed interpretatations on previous page
-* Fixed: No longer showing questions in graphing sections (spot-check graphs, catalysis) that are not used in current story collection
-* Fixed: Eliciting question now included in spot-check graphs and catalysis
-* Fixed: Better graph sizing and scaling
-* Fixed: Statistical results no longer say "p=0.000" when p<0.001
-* Fixed: Better feedback when taking survey, showing that story has been submitted and accepted
-* Fixed: Better error handling for missing or untitled items (like story collections and catalysis reports)
-* Fixed: Dividing line (hr) no longer displays on story cards when they are being printed
+Added: New data integrity graphs showing overall patterns across all questions (all scale values; per-participant means and sd; number of non-answers)
+Added: User definable CSS for on-line and printed surveys, story cards, catalysis report
+Added: Qualitative (free-text) answers in catalysis patterns
+Added: More user definable fields to customize on-line story collection
+Added: Multiple scatterplots to show scale+scale+choice question combinations
+Added: Link to choose another project without logging out
+Added: Visible slider number (0 to 100) and way to set value precisely 
+Added: Option to set maximum number of stories participants can tell
+Added: Story count per participant (framed as a "question" so it can form patterns with other questions)
+Added: Auto-create story form option (using all existing questions)
+Added: Can now choose which questions to include on story cards
+Added: More control over the look of story cards, including custom CSS but also which questions to include and how to draw ranges
+Added: Ability to set all story form options during CSV import
+Added: Way to distinguish among participants during import (to count stories per participant)
+Added: Scale conversion during import (for scale data collected with ranges other than 0-100)
+Added: Field to write (then copy and paste) reminders from Return phase of one project to Planning phase of the next
+Added: Way to choose types of graphs to view
+Added: Counts above bars in bar graphs and histograms
+Added: Correlation lines (optional) in scatterplots
+Added: Mode to histograms
+Added: Support for multiple observations per pattern (graph)
+Added: Observation strength field to sort strong from weak patterns
+Added: Interpretations to patterns list (can sort by them)
+Added: More options for catalysis graphs including histogram bins, scatterplot dot size and opacity
+Added: More user-supplied sections for catalysis report
+Added: Unanswered count (number of stories with no answer to the question) to all graphs
+Changed: Improved data import, with better error handling and help
+Changed: Overhaul of screen designs and color palettes
+Changed: Improved statistical information displays; improved reporting on statistical errors
+Changed: Better error reporting and alerts to user
+Changed: More tips and FAQ items to help system
+Changed: More verification of statistical result against same tests in other software (you can't see this but it's important)
+Changed: More help in various places to deal with questions people have had
+Fixed: Explore Patterns page now shows cancelable progress bar when large numbers of statistical results are being calculated 
+Fixed: Bug in chi-squared statistical calculation that disqualified too many comparisons
+Fixed: Survey image now works
+Fixed: Text areas now slightly taller
+Fixed: Catalysis "ideas" now print in report
+Fixed: Catalysis clustering diagram now updates better for changed interpretatations on previous page
+Fixed: No longer showing questions in graphing sections (spot-check graphs, catalysis) that are not used in current story collection
+Fixed: Eliciting question now included in spot-check graphs and catalysis
+Fixed: Better graph sizing and scaling
+Fixed: Statistical results no longer say "p=0.000" when p<0.001
+Fixed: Better feedback when taking survey, showing that story has been submitted and accepted
+Fixed: Better error handling for missing or untitled items (like story collections and catalysis reports)
+Fixed: Dividing line (hr) no longer displays on story cards when they are being printed
 
 = 0.9.8 =
 
-* Added clarifying headers and popup hints for all links on dashboard (project phase) pages.
-* Improved styling and clarity of catalysis report, printed story form, and story cards.
-* Added story count to Spot-check graphs screen.
+Added clarifying headers and popup hints for all links on dashboard (project phase) pages.
+Improved styling and clarity of catalysis report, printed story form, and story cards.
+Added story count to Spot-check graphs screen.
 
 = 0.9.7 =
 
-* Fixed bug in checkbox questions where data was not being stored correctly.
-* Improved colors, labels, spacing of graphs.
-* Added story counts to Review stories and Explore patterns screens.
-* Added "does not apply" check box (configurable) to slider questions.
-* Improved help on question types.
-* Improved look of story card display.
-* Moved annotations to top of Review stories list; colored in green so they stand out.
+Fixed bug in checkbox questions where data was not being stored correctly.
+Improved colors, labels, spacing of graphs.
+Added story counts to Review stories and Explore patterns screens.
+Added "does not apply" check box (configurable) to slider questions.
+Improved help on question types.
+Improved look of story card display.
+Moved annotations to top of Review stories list; colored in green so they stand out.
 
 = 0.9.6 =
 
-* Sanitize SQL input in WordPress plugin.
-* Improve TypeScript typings for tsc 1.6.
+Sanitize SQL input in WordPress plugin.
+Improve TypeScript typings for tsc 1.6.
 
 = 0.9.5 =
 
-* Improvements for Node.js version and README/SETUP for installation.
+Improvements for Node.js version and README/SETUP for installation.
 
 = 0.9.4 =
 
-* Now uses NarraFirma namespace in WordPress plugin PHP to conform with WordPress guidelines.
-* Fixed WordPress plugin survey bug where always returning first questionnaire added in a topic instead of the last one.
+Now uses NarraFirma namespace in WordPress plugin PHP to conform with WordPress guidelines.
+Fixed WordPress plugin survey bug where always returning first questionnaire added in a topic instead of the last one.
 
 = 0.9.3 =
 
-* Fixed problem where first two characters of display name are being truncated during CSV export of story form.
-* Added arrows to sliders in survey form to make it more useful in narrow mobile displays.
-* Added warning about story collection creation.
-* Fixed some typos.
+Fixed problem where first two characters of display name are being truncated during CSV export of story form.
+Added arrows to sliders in survey form to make it more useful in narrow mobile displays.
+Added warning about story collection creation.
+Fixed some typos.
 
 = 0.9.2 =
 
-* More improvements to bundling of JavaScript for faster loading. Also improved startup feedback to show
+More improvements to bundling of JavaScript for faster loading. Also improved startup feedback to show
 loading application, getting user information, or retrieving project data.
 
 = 0.9.1 = 
 
-* Improvements to bundling of JavaScript code for faster loading.
+Improvements to bundling of JavaScript code for faster loading.
 
 = 0.9.0 =
 
-* This is the first publicly released version of NarraFirma. For (highly detailed and entertaining) 
+This is the first publicly released version of NarraFirma. For (highly detailed and entertaining) 
 change logs, see the [GitHub repository](https://github.com/pdfernhout/narrafirma).
 
 == Upgrade Notice ==
+
+= 1.6.6 =
+
+This minor upgrade adds some useful functions and fixes some small bugs.
 
 = 1.6.5 =
 
