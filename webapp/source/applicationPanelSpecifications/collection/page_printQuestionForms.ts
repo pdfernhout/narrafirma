@@ -5,7 +5,7 @@ import kludgeForUseStrict = require("../../kludgeForUseStrict");
 const panel: Panel = {
     id: "page_printQuestionForms",
     displayName: "Print story forms",
-    pageExplanation: "Generate a plain-text your story form to to print or send.",
+    pageExplanation: "Generate a plain-text story form to to print or send.",
     pageCategories: "export",
     panelFields: [
         {

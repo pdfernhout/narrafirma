@@ -4,7 +4,7 @@ import Globals = require("../../Globals");
 const panel: Panel = {
     id: "page_configureCatalysisReport",
     displayName: "Configure catalysis report",
-    pageExplanation: "Choose how you want to structure your catalysis report.",
+    pageExplanation: "Choose how you want to look through your patterns and put together your catalysis report.",
     pageCategories: "manage",
     panelFields: [
         {

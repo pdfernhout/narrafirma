@@ -4,7 +4,7 @@ import kludgeForUseStrict = require("../../kludgeForUseStrict");
 const panel: Panel = {
     id: "page_enterSensemakingSessionRecords",
     displayName: "Enter sensemaking session records",
-    pageExplanation: "Answer questions about the sessions you held.",
+    pageExplanation: "Answer questions about the sensemaking sessions you held.",
     pageCategories: "journal",
     headerAbove: "Wrap up",
     panelFields: [

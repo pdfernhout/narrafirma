@@ -4,7 +4,7 @@ import kludgeForUseStrict = require("../../kludgeForUseStrict");
 const panel: Panel = {
     id: "page_startCatalysisReport",
     displayName: "Start catalysis report",
-    pageExplanation: "Create a report of patterns, observations, interpretations, and ideas for use in sensemaking.",
+    pageExplanation: "Create a container to hold the patterns, observations, interpretations, and ideas you will use in sensemaking.",
     pageCategories: "manage",
     headerAbove: "Explore",
     panelFields: [
