@@ -825,7 +825,7 @@ function printCatalysisReportWithClusteredObservations(project, catalysisReportI
 
                         const interpretationsListIdentifier = project.tripleStore.queryLatestC(item.referenceUUID, "observationInterpretations");
                         const interpretationIDsForThisObservation = project.tripleStore.getListForSetIdentifier(interpretationsListIdentifier);
-                        printItems.push(<any>printListOfInterpretations(interpretationIDsForThisObservation, itemIndex, clusterIndex, idTag, allStories, options));
+                        printItems.push(<any>printListOfInterpretations(interpretationIDsForThisObservation, itemIndex, clusterIndex, idTag, options));
 
                         progressModel.progressText = progressText(clusterIndex, itemIndex);
                         progressModel.redraw();
@@ -1149,10 +1149,9 @@ function initializedGraphHolder(allStories, options) {
     return graphHolder;
 }
 
-function printListOfInterpretations(interpretationList, observationIndex, clusterIndex, idTagStart, allStories, options) {
+function printListOfInterpretations(interpretationList, observationIndex, clusterIndex, idTagStart, options) {
 
-    return printList(interpretationList, {}, options.useTableForInterpretationsFollowingObservation, function (interpretation, index) {
-
+    function printInterpretation(interpretation, index) {
         const headerItems = [];
         headerItems.push(m("span", {"class": "narrafirma-catalysis-report-interpretation-label"}, printText(options.interpretationLabel)));
         headerItems.push(componentWithSequenceNumber(clusterIndex, observationIndex, index, options));
@@ -1168,7 +1167,23 @@ function printListOfInterpretations(interpretationList, observationIndex, cluste
                 printText(interpretation.interpretation_idea)));
         }
         return resultItems;
+    }
+
+    const printAsTable = options.useTableForInterpretationsFollowingObservation;
+    let result = [];
+    let row = [];
+    let project = Globals.project();
+    interpretationList.forEach((id, index) => {
+        const item = project.tripleStore.makeObject(id, true);
+        if (printAsTable) {
+            row.push(m("td", m("div", {"class": "narrafirma-catalysis-report-list-table-td-div"}, printInterpretation(item, index))));
+        } else {
+            result.push(printInterpretation(item, index));
+            result.push([printReturn()]);
+        }
     });
+    if (printAsTable) result.push(m("table", {"class": "narrafirma-catalysis-report-list-table"}, m("tr", row)));
+    return result;
 }
 
 function printInterpretationQuestionsAsHTMLList(printItems, questionsText, options) {
@@ -1663,37 +1678,6 @@ export function printStoryCards() {
     printHTML(htmlForPage);
 }
 
-function printItem(item, fieldsToIgnore = {}) {
-    const result = [];
-    for (let fieldName in item) {
-        if (fieldsToIgnore[fieldName]) continue;
-        const fieldSpecification = Globals.panelSpecificationCollection().getFieldSpecificationForFieldID(fieldName);
-        const shortName = fieldSpecification ? fieldSpecification.displayName : "Problem with: " + fieldName;
-        const fieldValue = item[fieldName];
-        result.push([
-            m("div", shortName + ": " + fieldValue)
-        ]);
-    };
-    return result;
-}
- 
-function printList(list, fieldsToIgnore = {}, printAsTable = false, printItemFunction: Function = printItem) {
-    let result = [];
-    let row = [];
-    let project = Globals.project();
-    list.forEach((id, index) => {
-        const item = project.tripleStore.makeObject(id, true);
-        if (printAsTable) {
-            row.push(m("td", m("div", {"class": "narrafirma-catalysis-report-list-table-td-div"}, printItemFunction(item, index, fieldsToIgnore))));
-        } else {
-            result.push(printItemFunction(item, index, fieldsToIgnore));
-            result.push([printReturn()]);
-        }
-    });
-    if (printAsTable) result.push(m("table", {"class": "narrafirma-catalysis-report-list-table"}, m("tr", row)));
-    return result;
-}
-
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Printing presentation outline
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1701,13 +1685,39 @@ function printList(list, fieldsToIgnore = {}, printAsTable = false, printItemFun
 export function exportPresentationOutline() {
     const project = Globals.project();
     const presentationElementsList = project.getListForField("project_presentationElementsList");
-    const printItems = [
-        m("div", "Presentation Outline generated " + new Date()),
-        printReturnAndBlankLine()
-    ]; 
-    
-    printItems.push(printList(presentationElementsList));
-    
+    const printItems = []; 
+
+    let listDivs = [];
+    presentationElementsList.forEach((id, index) => {
+        const item = project.tripleStore.makeObject(id, true);
+
+        // pull out name of element and write it first as a header
+        const fieldNames = Object.keys(item);
+        let header = "";
+        for (let i = 0; i < fieldNames.length; i++) {
+            if (fieldNames[i] === "projectPresentationElement_name") {
+                header = item[fieldNames[i]];
+                break;
+            }
+        }
+        if (header) listDivs.push(m("div.narrafirma-presentation-line", [m("h2.narrafirma-presentation-element-name", header)]));
+
+        const itemDivs = [];
+        for (let fieldName of fieldNames) {
+            if (fieldName === "projectPresentationElement_name") continue;
+            const fieldSpecification = Globals.panelSpecificationCollection().getFieldSpecificationForFieldID(fieldName);
+            const shortName = fieldSpecification ? fieldSpecification.displayName : "Problem with: " + fieldName;
+            itemDivs.push(m("div.narrafirma-presentation-line", [
+                m("span.narrafirma-presentation-item-name", shortName + ": "), 
+                m("span.narrafirma-presentation-item-value", item[fieldName])
+            ]));
+        };
+
+        listDivs.push(itemDivs);
+        listDivs.push([printReturn()]);
+    });
+    printItems.push(listDivs);
+    printItems.push(m("div.narrafirma-presentation-timestamp", "Presentation Outline generated " + new Date()));
     const htmlForPage = generateHTMLForPage("Presentation Outline", "css/standard.css", null, printItems, null);
     printHTML(htmlForPage);
 }
@@ -1722,23 +1732,17 @@ export function exportCollectionSessionAgenda(itemID) {
     const activitiesListID = collectionSessionAgenda["collectionSessionPlan_activitiesList"];
     const activitiesList = project.tripleStore.getListForSetIdentifier(activitiesListID);
 
+    const printItems = [];
+    printItems.push([printAgendaItem(collectionSessionAgenda, {collectionSessionPlan_activitiesList: true})]);
+    
     activitiesList.sort((a,b) => {
         const aObject = project.tripleStore.makeObject(a, true);
         const bObject = project.tripleStore.makeObject(b, true);
         return (aObject.order < bObject.order) ? -1 : 1;
     });
-    
-    const printItems = [
-        m("div", "Story collection session agenda generated " + new Date()),
-        printReturnAndBlankLine()
-    ];
-    
-    printItems.push([
-        printItem(collectionSessionAgenda, {collectionSessionPlan_activitiesList: true}),
-        printReturnAndBlankLine()
-    ]);
-    
-    printItems.push(printList(activitiesList));
+    printItems.push(m("div.narrafirma-session-activities-intro", "Session activities"));
+    printItems.push(printActivitiesList(activitiesList, {}));
+    printItems.push(m("div.narrafirma-session-timestamp", "Story collection session agenda generated " + new Date()));
     
     const htmlForPage = generateHTMLForPage("Story collection session agenda", "css/standard.css", null, printItems, null);
     printHTML(htmlForPage);
@@ -1750,28 +1754,75 @@ export function printSensemakingSessionAgenda(itemID) {
     const activitiesListID = sensemakingSessionAgenda["sensemakingSessionPlan_activitiesList"];
     const activitiesList = project.tripleStore.getListForSetIdentifier(activitiesListID);
 
+    const printItems = [];
+    printItems.push([printAgendaItem(sensemakingSessionAgenda, {sensemakingSessionPlan_activitiesList: true})]);
+    
     activitiesList.sort((a,b) => {
         const aObject = project.tripleStore.makeObject(a, true);
         const bObject = project.tripleStore.makeObject(b, true);
         return (aObject.order < bObject.order) ? -1 : 1;
     });
-
-    const printItems = [
-        m("div", "Sensemaking session agenda generated " + new Date()),
-        printReturnAndBlankLine()
-    ];
-    
-    printItems.push([
-        printItem(sensemakingSessionAgenda, {sensemakingSessionPlan_activitiesList: true}),
-        printReturnAndBlankLine()
-    ]);
-    
-    printItems.push(printList(activitiesList));
+    printItems.push(m("div.narrafirma-session-activities-intro", "Session activities"));
+    printItems.push(printActivitiesList(activitiesList, {}));
+    printItems.push(m("div.narrafirma-session-timestamp", "Sensemaking session agenda generated " + new Date()));
     
     const htmlForPage = generateHTMLForPage("Sensemaking session agenda", "css/standard.css", null, printItems, null);
     printHTML(htmlForPage);
 }
 
+function printActivitiesList(list, fieldsToIgnore) {
+    let result = [];
+    let row = [];
+    let project = Globals.project();
+    list.forEach((id, index) => {
+        const item = project.tripleStore.makeObject(id, true);
+        result.push(printAgendaItem(item, fieldsToIgnore));
+    });
+    return result;
+}
+
+function printAgendaItem(item, fieldsToIgnore) {
+    const result = [];
+
+    // pull out name of session or activity and write it first as a header
+    const sessionHeaderFieldNames = ["collectionSessionPlan_name", "sensemakingSessionPlan_name"];
+    const activityHeaderFieldNames = ["collectionSessionActivity_name", "sensemakingSessionPlan_activity_name"];
+    const fieldNames = Object.keys(item);
+    let headerFieldName = "";
+    let header = "";
+    let isActivity = false;
+    for (let i = 0; i < fieldNames.length; i++) {
+        if (sessionHeaderFieldNames.indexOf(fieldNames[i]) >= 0 || activityHeaderFieldNames.indexOf(fieldNames[i]) >= 0) {
+            headerFieldName = fieldNames[i];
+            header = item[headerFieldName];
+            if (activityHeaderFieldNames.indexOf(headerFieldName) >= 0) isActivity = true;
+            break;
+        }
+    }
+    if (header) {
+        if (isActivity) {
+            result.push(m("div.narrafirma-session-line", [m("h2.narrafirma-session-activity-name", header)]));
+        } else {
+            result.push(m("div.narrafirma-session-line", [m("h1.narrafirma-session-name", header)]));
+        }
+    }
+
+    // now write rest of fields
+    for (let fieldName of fieldNames) {
+        if (fieldName === headerFieldName) continue;
+        if (fieldsToIgnore[fieldName]) continue;
+        const fieldSpecification = Globals.panelSpecificationCollection().getFieldSpecificationForFieldID(fieldName);
+        const shortName = fieldSpecification ? fieldSpecification.displayName : "Problem with: " + fieldName;
+        const fieldValue = item[fieldName];
+        result.push(m("div.narrafirma-session-line", [m("span.narrafirma-session-item-name", shortName + ": "), m("span.narrafirma-session-item-value", fieldValue)]));
+    };
+    if (isActivity) {
+        return [m("div.narrafirma-session-activity-frame", result)];
+    } else {
+        return result;
+    }
+}
+ 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Printing project report
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

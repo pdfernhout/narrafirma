@@ -6,20 +6,20 @@ const panel: Panel = {
     modelClass: "CollectionSessionActivity",
     panelFields: [
         {
-            id: "order",
-            valueType: "string",
-            displayType: "text",
-            displayConfiguration: "6",
-            displayName: "Order",
-            displayPrompt: "Specify the <strong>order</strong> in which to do this collection activity (e.g., 1, 2a, 2b, 3)."
-        },
-        {
             id: "collectionSessionActivity_name",
             valueType: "string",
             displayType: "text",
             displayConfiguration: "20",
             displayName: "Name",
             displayPrompt: "Please give this activity a <strong>name</strong>."
+        },
+        {
+            id: "order",
+            valueType: "string",
+            displayType: "text",
+            displayConfiguration: "6",
+            displayName: "Order",
+            displayPrompt: "Specify the <strong>order</strong> in which to do this collection activity (e.g., 1, 2a, 2b, 3)."
         },
         {
             id: "collectionSessionActivity_duration",
