@@ -7,7 +7,7 @@ Author URI: http://www.cfkurtz.com
 Author: Cynthia Kurtz and Paul Fernhout
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=DGVVDT2D49QA8
 Requires at least: 4.3.1
-Tested up to: 6.5.3
+Tested up to: 6.7.2
 Stable tag: trunk
 Version: 1.6.7
 License: GPLv2 or later
@@ -105,6 +105,10 @@ We strongly suggest that you set up any web site on which you intend to install 
 12. Here the NarraFirma user is reflecting on the entire project, to learn from it and to keep good records for the future.
 
 == Changelog ==
+
+= 1.6.8 =
+
+Changed: On the "Describe participant groups" page, added a notes field to each question category (about each group's status, ability, expectations, and feelings).
 
 = 1.6.7 =
 
@@ -720,6 +724,10 @@ This is the first publicly released version of NarraFirma. For (highly detailed 
 change logs, see the [GitHub repository](https://github.com/pdfernhout/narrafirma).
 
 == Upgrade Notice ==
+
+= 1.6.8 = 
+
+Ths minor upgrade adds fields for open-ended notes on each category of questions about participant groups.
 
 = 1.6.7 =
 

@@ -158,6 +158,10 @@ M When import story form, hundreds of triples can be generated which take minute
 
 ==== DONE
 
+-- Release 1.6.8
+
+* Changed: On the "Describe participant groups" page, added a notes field to each question category (about each group's status, ability, expectations, and feelings).
+
 -- Release 1.6.7
 
 * Made "Does not apply" slider label settable and translateable in general (not only for specific questions)

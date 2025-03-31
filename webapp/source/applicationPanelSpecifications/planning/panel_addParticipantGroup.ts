@@ -59,6 +59,13 @@ const panel: Panel = {
             displayPrompt: "How much <strong>self-confidence</strong> do these participants have?"
         },
         {
+            id: "participantGroup_statusNotes",
+            valueType: "string",
+            displayType: "textarea",
+            displayName: "Notes on status",
+            displayPrompt: "Enter any <strong>notes</strong> you want to remember about the status of this group."
+        },
+        {
             id: "participantGroup_abilityHeader",
             valueType: "none",
             displayType: "header",
@@ -124,6 +131,13 @@ const panel: Panel = {
             displayType: "select",
             displayName: "Emotional limitations",
             displayPrompt: "Do these participants have <strong>emotional impairments</strong> that will impact their participation (such as mental illness or traumatic stress)?"
+        },
+        {
+            id: "participantGroup_abilityNotes",
+            valueType: "string",
+            displayType: "textarea",
+            displayName: "Notes on ability",
+            displayPrompt: "Enter any <strong>notes</strong> you want to remember about the abilities of this group."
         },
         {
             id: "participantGroup_expectationsHeader",
@@ -192,6 +206,13 @@ const panel: Panel = {
             displayPrompt: "For these participants, how important is <strong>speaking out</strong> (having a say, venting, sounding off)?"
         },
         {
+            id: "participantGroup_expectationsNotes",
+            valueType: "string",
+            displayType: "textarea",
+            displayName: "Notes on expectations",
+            displayPrompt: "Enter any <strong>notes</strong> you want to remember about the expectations of this group."
+        },
+        {
             id: "participantGroup_feelingsHeader",
             valueType: "none",
             displayType: "header",
@@ -254,6 +275,13 @@ const panel: Panel = {
             displayType: "select",
             displayName: "Feel about stories",
             displayPrompt: "How do these participants feel about the idea of collecting <strong>stories</strong>?"
+        },
+        {
+            id: "participantGroup_feelingsNotes",
+            valueType: "string",
+            displayType: "textarea",
+            displayName: "Notes on feelings about project",
+            displayPrompt: "Enter any <strong>notes</strong> you want to remember about the feelings of this group towards your project."
         },
         {
             id: "participantGroup_topicHeader",
@@ -363,7 +391,13 @@ const panel: Panel = {
             displayName: "Complicated",
             displayPrompt: "Do you think these participants will find this topic <strong>complicated</strong> and hard to understand?"
         },       
-
+        {
+            id: "participantGroup_topicNotes",
+            valueType: "string",
+            displayType: "textarea",
+            displayName: "Notes on feelings about the topic",
+            displayPrompt: "Enter any <strong>notes</strong> you want to remember about the feelings of this group towards your topic."
+        },
         {
             id: "participantGroup_notesHeader",
             valueType: "none",
@@ -375,7 +409,7 @@ const panel: Panel = {
             valueType: "string",
             displayType: "textarea",
             displayName: "Notes",
-            displayPrompt: "Enter any additional <strong>notes</strong> you want to remember about this group of participants."
+            displayPrompt: "Enter any <strong>general notes</strong> you want to remember about this group of participants."
         }
     ]
 };
