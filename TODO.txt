@@ -158,6 +158,10 @@ M When import story form, hundreds of triples can be generated which take minute
 
 ==== DONE
 
+-- Release 1.6.9
+
+* Changed: Updated WordPress readme file to comply with WordPress requirements.
+
 -- Release 1.6.8
 
 * Changed: On the "Describe participant groups" page, added a notes field to each question category (about each group's status, ability, expectations, and feelings).
