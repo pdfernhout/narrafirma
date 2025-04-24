@@ -498,8 +498,8 @@ function grantAnonymousSurveyAccessToJournal(journalIdentifier) {
     // Make sure the user already exists
     const userInformation = allProjectsModel.users[userIdentifier];
     if (!userInformation) {
-        console.log("Error: could not find user", userIdentifier);
-        toaster.toast("Error: could not find user: " + userIdentifier);
+        console.log("Error: could not find user", userIdentifier, `Please create a new user with the ID "anonymous" before granting anonymous access.`);
+        toaster.toast("Error: could not find user: " + userIdentifier + `. Please create a new user with the ID "anonymous" before granting anonymous access.`);
         return;
     }
     
