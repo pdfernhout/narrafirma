@@ -399,6 +399,47 @@ const panel: Panel = {
             displayPrompt: "Enter any <strong>notes</strong> you want to remember about the feelings of this group towards your topic."
         },
         {
+            id: "participantGroup_winwinHeader",
+            valueType: "none",
+            displayType: "header",
+            displayPrompt: "Win-win proposal"
+        },
+        {
+            id: "participantGroup_winwin_ideal",
+            valueType: "string",
+            displayType: "textarea",
+            displayName: "Ideal project",
+            displayPrompt: "Describe the <strong>ideal project</strong> from the perspective of this participant group. If the project worked very well for them, what would it be like?"
+        },
+        {
+            id: "participantGroup_winwin_bring",
+            valueType: "string",
+            displayType: "textarea",
+            displayName: "Bring to the project",
+            displayPrompt: "What can this group of people <strong>bring to the project</strong> that no other group can?"
+        },
+        {
+            id: "participantGroup_winwin_energy",
+            valueType: "string",
+            displayType: "textarea",
+            displayName: "Participatory energy",
+            displayPrompt: "What might draw out the <strong>participatory energy</strong> of this group? What might they be enthused about doing?"
+        },
+        {
+            id: "participantGroup_winwin_turnaway",
+            valueType: "string",
+            displayType: "textarea",
+            displayName: "Turn away",
+            displayPrompt: "What might cause these people to <strong>turn away</strong> from the project? What might concern or demotivate them?"
+        },
+        {
+            id: "participantGroup_winwin_proposal",
+            valueType: "string",
+            displayType: "textarea",
+            displayName: "Proposal",
+            displayPrompt: "What is your <strong>win-win proposal</strong> to this group of participants? What do you plan to say to them?"
+        },
+        {
             id: "participantGroup_notesHeader",
             valueType: "none",
             displayType: "header",
