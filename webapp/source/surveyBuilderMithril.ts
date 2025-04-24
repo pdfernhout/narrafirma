@@ -870,6 +870,7 @@ export function buildSurveyForm(surveyDiv, storyForm, doneCallback, surveyOption
         const parts = [];
         stories.forEach((story) => {
             allStoryQuestions.forEach((question) => {
+                if (!question) return;
                 const questionName = tr(questionNameForResultsPane(question));
                 if (questionName) parts.push(questionName);
                 if (question.id in story) {
@@ -891,6 +892,7 @@ export function buildSurveyForm(surveyDiv, storyForm, doneCallback, surveyOption
             parts.push("");
         });
         participantQuestions.forEach((question) => {
+            if (!question) return;
             const questionName = tr(questionNameForResultsPane(question));
             if (questionName) parts.push(questionName);
             if (question.id in surveyResult.participantData) {

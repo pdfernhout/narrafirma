@@ -454,7 +454,7 @@ const filterableQuestionTypes = ["select", "slider", "boolean", "text", "checkbo
 export function optionsForAllQuestions(questions, excludeTextQuestionsFlag = null) {
     const questionOptions = [];
     questions.forEach(function (question) {
-        if (filterableQuestionTypes.indexOf(question.displayType) !== -1) {
+        if (question && filterableQuestionTypes.indexOf(question.displayType) !== -1) {
             if (!excludeTextQuestionsFlag || question.displayType !== "text") {
                 let defaultText = question.displayName;
                 if (!defaultText) defaultText = question.displayPrompt;
