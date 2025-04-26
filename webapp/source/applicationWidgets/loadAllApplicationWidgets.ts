@@ -22,6 +22,7 @@ import add_storyBrowser = require("./add_storyBrowser");
 import add_storyAnnotationBrowser = require("./add_storyAnnotationBrowser");
 import add_templateList = require("./add_templateList");
 import add_patternExplorer = require("./add_patternExplorer");
+import add_debugBrowser = require("./add_debugBrowser");
 
 "use strict";
     
@@ -50,6 +51,7 @@ function loadAllApplicationWidgets(PanelBuilder) {
     PanelBuilder.addPlugin("storyAnnotationBrowser", add_storyAnnotationBrowser);
     PanelBuilder.addPlugin("templateList", add_templateList);
     PanelBuilder.addPlugin("patternExplorer", add_patternExplorer);
+    PanelBuilder.addPlugin("debugBrowser", add_debugBrowser);
 }
 
 export = loadAllApplicationWidgets;
