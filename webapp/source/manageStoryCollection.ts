@@ -278,8 +278,12 @@ function updateOrCheckQuestionnaireForStoryCollection(storyCollectionIdentifier,
                         + '\nappear in the snapshot version, do not appear in the current version, and are connected to stories.\n';
                     const storyCountMessages = [];
                     Object.keys(answerCountsOnlyInSnapshot).forEach(function(anAnswer) {
-                        storyCountMessages.push('   - the answer "' + anAnswer + '" appears in ' + answerCountsOnlyInSnapshot[anAnswer] 
-                            + (answerCountsOnlyInSnapshot[anAnswer] > 1) ? " stories." : " story.");
+                        const answerCount = answerCountsOnlyInSnapshot[anAnswer];
+                        if (answerCount > 0) {
+                            var newMessage = '   - the answer "' + anAnswer + '" appears in ' + answerCount;
+                            newMessage += (answerCount > 1) ? " stories." : " story.";
+                            storyCountMessages.push(newMessage);
+                        }
                     });
                     result += storyCountMessages.join("\n");
                 } 
