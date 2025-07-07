@@ -386,10 +386,12 @@ function faiIfNotAuthorized($requestedCapability, $journalIdentifier, $topicIden
     
     if (!isset($journals->$journalIdentifier)) {
         wp_send_json( makeFailureResponse(404, "No such journal", array( 'journalIdentifier' => $journalIdentifier ) ) );
+        return;
     }
     
     if (!doesJournalTableExist($journalIdentifier)) {
         wp_send_json( makeFailureResponse(404, "No such journal table", array( 'journalIdentifier' => $journalIdentifier ) ) );
+        return;
     }
     
     $permissions = $journals->$journalIdentifier;
@@ -603,10 +605,12 @@ function pointrel20150417_reportJournalStatus($apiRequest) {
     
     if (!isset($journals->$journalIdentifier)) {
         wp_send_json( makeFailureResponse(404, "No such journal", array( 'journalIdentifier' => $journalIdentifier ) ) );
+        return;
     }
     
     if (!doesJournalTableExist($journalIdentifier)) {
         wp_send_json( makeFailureResponse(404, "No such journal table", array( 'journalIdentifier' => $journalIdentifier ) ) );
+        return;
     }
     
     $permissions = $journals->$journalIdentifier;
@@ -862,6 +866,7 @@ function pointrel20150417_storeMessage($apiRequest) {
     
     if ($oldTrace && !is_array($oldTrace)) {
         wp_send_json( makeFailureResponse(400, "Bad Request: trace field should be an array if it is defined" ) );
+        return;
      }
     
     if (!$oldTrace) $oldTrace = array();
@@ -886,10 +891,12 @@ function pointrel20150417_storeMessage($apiRequest) {
         error_log("Problem with new calculated SHA not matching old supplied one: $oldSHA256AndLength new: $sha256AndLength ");
         error_log("canonicalFormInUTF8 was: $canonicalFormInUTF8");
         wp_send_json( makeFailureResponse(400, "Bad Request: sha256AndLength was supplied in message but it does not match the calculated value; old: $oldSHA256AndLength new: $sha256AndLength" ) );
+        return;
     }
     
     if (isSHA256AndLengthIndexed($journalIdentifier, $sha256AndLength)) {
         wp_send_json(makeFailureResponse(409, "Conflict: The message already exists on the server", array("sha256AndLength" => $sha256AndLength)));
+        return;
     }
     
     $message->__pointrel_sha256AndLength = $sha256AndLength;
