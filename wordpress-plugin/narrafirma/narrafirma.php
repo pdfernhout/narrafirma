@@ -826,7 +826,7 @@ function copyObjectWithSortedKeys($value) {
             $valueCopyWithSortedKeys[$key] = copyObjectWithSortedKeys($value);
         }
         
-        ksort($valueCopyWithSortedKeys);
+        ksort($valueCopyWithSortedKeys, SORT_STRING);
 
         return  (object) $valueCopyWithSortedKeys;
     
