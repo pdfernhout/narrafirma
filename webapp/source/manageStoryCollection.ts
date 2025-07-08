@@ -316,24 +316,35 @@ function updateOrCheckQuestionnaireForStoryCollection(storyCollectionIdentifier,
                 problemsText ? m("pre.narrafirma-update-story-form-problems", problemsText): "",
                 problemsText ? m("button.narrafirma-update-story-form-copy-button", {onclick: function(event) {
                     const textareas = document.getElementsByClassName("narrafirma-update-story-form-problems");
-                    if (textareas.length > 0) window.navigator['clipboard'].writeText(textareas[0].innerHTML);
+                    if (textareas.length > 0) saveToClipboardIfPossible(textareas[0].innerHTML);
                 }}, "Copy") : m("div"),
                 m("div.narrafirma-update-story-form-end", endText),
                 m("div.narrafirma-update-story-form-type-label", "The snapshot version saved in the story collection"),
                 m("pre.narrafirma-update-story-form-snapshot", snapshotText),
                 m("button.narrafirma-update-story-form-copy-button", {onclick: function(event) {
                     const textareas = document.getElementsByClassName("narrafirma-update-story-form-snapshot");
-                    if (textareas.length > 0) window.navigator['clipboard'].writeText(textareas[0].innerHTML);
+                    if (textareas.length > 0) saveToClipboardIfPossible(textareas[0].innerHTML);
                 }}, "Copy"),
                 m("div.narrafirma-update-story-form-type-label", "The current version"),
                 m("pre.narrafirma-update-story-form-current", currentText),
                 m("button.narrafirma-update-story-form-copy-button", {onclick: function(event) {
                     const textareas = document.getElementsByClassName("narrafirma-update-story-form-current");
-                    if (textareas.length > 0) window.navigator['clipboard'].writeText(textareas[0].innerHTML);
+                    if (textareas.length > 0) saveToClipboardIfPossible(textareas[0].innerHTML);
                 }}, "Copy"),
             ]
         );
     } 
+
+    function saveToClipboardIfPossible(text) {
+        if (text) {
+            if (window.isSecureContext) {
+                window.navigator['clipboard'].writeText(text);
+                alert("The text has been saved to the clipboard.");
+            } else {
+                alert("Cannot save to clipboard; requires a secure connection.");
+            }
+        }
+    }
     
     function doCopy(activeOnWeb, override) {
         let prompt = "";

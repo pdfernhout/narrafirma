@@ -93,8 +93,12 @@ class MithrilDialog {
                         const textAreas = document.getElementsByClassName("textEditorInDialog");
                         if (textAreas.length) {
                             const value = (textAreas[0] as HTMLTextAreaElement).value;
-                            window.navigator['clipboard'].writeText(value);
-                            toaster.toast("Copied to clipboard", "message", 800);
+                            if (window.isSecureContext) {
+                                window.navigator['clipboard'].writeText(value);
+                                toaster.toast("Copied to clipboard", "message", 800);
+                            } else {
+                                alert("Cannot save to clipboard; requires a secure connection.");
+                            }
                         }
                     }, 
                 "class": "narrafirma-dialog-copy-button"}, 
