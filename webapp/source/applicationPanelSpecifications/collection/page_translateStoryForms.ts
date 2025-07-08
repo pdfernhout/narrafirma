@@ -56,7 +56,8 @@ const panel: Panel = {
             valueType: "string",
             displayType: "textarea",
             displayName: "Languages",
-            displayPrompt: `Enter a list of <strong>additional (non-default) languages</strong> participants can choose from.`,
+            displayPrompt: `Enter a list of <strong>additional (non-default) languages</strong> participants can choose from.
+                (To rename or remove a language after you have added it to the list, use the options next to the "Do it" button below.)`,
             displayVisible: function(panelBuilder, model) { return !!Globals.clientState().storyFormIdentifier(); }
         },
 

@@ -45,17 +45,35 @@ function add_translationDictionaryEditorPanel(panelBuilder: PanelBuilder, model,
     let totalNumEntries = 0;
     const numEntriesByLanguage = {};
     additionalLanguages.forEach((language) => { numEntriesByLanguage[language] = 0; });
+    const languagesInDataButNotInList = {};
     keysOfTranslationDictionary.forEach((key) => {
-        additionalLanguages.forEach((language) => {
-            if (storyForm.translationDictionary[key][language]) {
-                numEntriesByLanguage[language]++;
-                totalNumEntries++;
+        const dictForStoryFormText = storyForm.translationDictionary[key];
+        const languageKeys = Object.keys(dictForStoryFormText);
+        languageKeys.forEach((language) => {
+            if (["id", "defaultText"].indexOf(language) >= 0) return;
+            if (dictForStoryFormText[language] === null) return;
+            if (!numEntriesByLanguage[language]) {
+                numEntriesByLanguage[language] = 0;
+                if (additionalLanguages.indexOf(language) < 0) {
+                    languagesInDataButNotInList[language] = true;
+                }
             }
+            numEntriesByLanguage[language]++;
+            totalNumEntries++;
         });
     });
     let questionPrompt = "Texts to translate: " + translateableTexts.length + "."
     questionPrompt += " Translated texts: " + totalNumEntries + ". ";
-    additionalLanguages.forEach((language, index) => { questionPrompt += language + ": " + numEntriesByLanguage[language] + ". "; });
+    const allLanguagesInData = Object.keys(numEntriesByLanguage);
+    allLanguagesInData.forEach((language, index) => { 
+        questionPrompt += language;
+        if (languagesInDataButNotInList[language]) {
+            questionPrompt += " (hidden): ";
+        } else {
+            questionPrompt += ": "; 
+        }
+        questionPrompt += numEntriesByLanguage[language] + ". ";
+    });
     if (orphanedTexts.length) questionPrompt += " Orphaned translations (not found in story form or questions): " + orphanedTexts.length + ".";
 
     // lookup functions
@@ -112,6 +130,8 @@ function add_translationDictionaryEditorPanel(panelBuilder: PanelBuilder, model,
         "Delete translation dictionary",
         "Show orphaned translations",
         "Remove orphaned translations",
+        "Rename language",
+        "Remove language",
         "Import translations from CSV",
         "Export translations to CSV",
         "Show all translations",
@@ -137,6 +157,12 @@ function add_translationDictionaryEditorPanel(panelBuilder: PanelBuilder, model,
                 break;
             case "Remove orphaned translations":
                 removeOrphanedTranslations();
+                break;
+            case "Rename language":
+                renameLanguage();
+                break;
+            case "Remove language":
+                removeLanguage();
                 break;
             case "Import translations from CSV":
                 importTranslationDictionary();
@@ -208,17 +234,18 @@ function add_translationDictionaryEditorPanel(panelBuilder: PanelBuilder, model,
     function showAllTranslations() {
         const showParts = [];
         keysOfTranslationDictionary.forEach((key) => {
-            showParts.push(key);
+            showParts.push(key + "\n");
             let languagesWritten = 0;
             Object.keys(storyForm.translationDictionary[key]).forEach((innerKey) => {
                 if (["defaultText", "id"].indexOf(innerKey) < 0) {
                     if (storyForm.translationDictionary[key][innerKey]) {
                         languagesWritten++;
-                        showParts.push("    " + innerKey + ": " + storyForm.translationDictionary[key][innerKey]);
+                        showParts.push(" * " + innerKey + ": " + storyForm.translationDictionary[key][innerKey]);
                     }
                 }
             });
             if (!languagesWritten) showParts.push("    (no translations)");
+            showParts.push("\n-----------\n");
         });
         dialogSupport.openTextEditorDialog(showParts.join("\n"), "All translations", "Close", "Copy to Clipboard", closeShowDialogClicked, false, true);       
     }
@@ -246,6 +273,68 @@ function add_translationDictionaryEditorPanel(panelBuilder: PanelBuilder, model,
             dictionaryIDs = project.tripleStore.getListForSetIdentifier(dictionarySetID);
         }
         alert(orphanedTexts.length + " orphaned translations have been removed from the story form.");
+    }
+
+    function renameLanguage() {
+        const languageNameToRename = prompt("Enter the language you want to rename. Careful! You cannot undo this action. You might want to back up your translation dictionary first.", "");
+        if (languageNameToRename) {
+            const newName = prompt('Enter the new name for "' + languageNameToRename + '".', "");
+            if (newName) {
+                let changeCount = 0;
+                dictionaryIDs.forEach((dictionaryID) => {
+                    const foundValue = project.tripleStore.queryLatestC(dictionaryID, languageNameToRename);
+                    if (foundValue) {
+                        project.tripleStore.addTriple(dictionaryID, newName, foundValue);
+                        project.tripleStore.addTriple(dictionaryID, languageNameToRename, null);
+                        changeCount++;
+                    }
+                });
+                updateStoryFormLanguageListForRenamingOrRemoval(languageNameToRename, newName);
+                if (changeCount) {
+                    alert("Changed " + changeCount + ' entries from "' + languageNameToRename + '" to "' + newName + '".');
+
+                } else {
+                    alert('No entries were found for the language "' + languageNameToRename + '".');
+                }
+            }
+        }
+    }
+
+    function removeLanguage() {
+        const languageNameToRemove = prompt("Enter the language you want to remove. Careful! You cannot undo this action. You might want to back up your translation dictionary first.", "");
+        if (languageNameToRemove) {
+            let removalCount = 0;
+            dictionaryIDs.forEach((dictionaryID) => {
+                const foundValue = project.tripleStore.queryLatestC(dictionaryID, languageNameToRemove);
+                if (foundValue) {
+                    project.tripleStore.addTriple(dictionaryID, languageNameToRemove, null);
+                    removalCount++;
+                }
+            });
+            updateStoryFormLanguageListForRenamingOrRemoval(languageNameToRemove, null);
+            if (removalCount) {
+                alert("Removed " + removalCount + ' entries for the language "' + languageNameToRemove + '".');
+            } else {
+                alert('No entries were found for the language "' + languageNameToRemove + '".');
+            }
+        }
+    }
+
+    function updateStoryFormLanguageListForRenamingOrRemoval(oldLanguageName, newLanguageName) {
+        const newLanguages = [];
+        additionalLanguages.forEach((language) => {
+            if (language == oldLanguageName) {
+                if (newLanguageName) {
+                    newLanguages.push(newLanguageName);
+                }
+            } else {
+                newLanguages.push(language);
+            }
+        });
+        const newLanguagesText = newLanguages.join("\n");
+        project.tripleStore.addTriple(storyFormID, "questionForm_languageChoiceQuestion_choices", newLanguagesText);
+        storyForm.languageChoiceQuestion_choices = newLanguagesText;
+        additionalLanguages = storyForm.languageChoiceQuestion_choices.split("\n").map(function(item) { return item.trim(); } );
     }
     
     function resetTranslationDictionary() {
