@@ -428,7 +428,9 @@ function buildQuestionsFromQuestionChoiceIDs(questionChoiceIDs, shortNameField, 
             question.id = shortName;
             result.push(question);
         } else {
-            console.log("Editing error: Missing question definition for ", questionChoiceID);
+            const logMessage = 'Story form error: The question "' + shortName + '" (' + questionChoiceID + ") could not be found. "
+                + " If you have removed or renamed it, please remove it from your story form."
+            console.log(logMessage);
         }
     });
     result.sort(function(a, b) {
