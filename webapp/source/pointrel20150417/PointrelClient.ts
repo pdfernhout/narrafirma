@@ -282,8 +282,8 @@ class PointrelClient {
             throw new Error("Trying to send a message with the same sha256AndLength of a message previously received");
         }
     
-        // TODO: Extra copyObjectWithSortedKeys is not needed, but makes log messages look nicer so leaving for now
-        message = PointrelClient.copyObjectWithSortedKeys(message);
+        // TODO: Extra stringfy/parse is not needed, but makes log messages look nicer so leaving for now
+        message = JSON.parse(PointrelClient.stringifyAsCanonicalJSON(message))
         
         // TODO: This field ideally should go in a wrapper object and will be deleted later
         if (callback) message.__pointrel_callback = callback;
@@ -602,36 +602,49 @@ class PointrelClient {
         return PointrelClient.getCurrentUniqueTimestamp();
     }
     
-    /* TODO: Maybe make these other static utility functions available at instance levels?
-    PointrelClient.prototype.copyObjectWithSortedKeys = copyObjectWithSortedKeys;
-    PointrelClient.prototype.randomUUID = generateRandomUuid;
-    PointrelClient.prototype.calculateCanonicalSHA256AndLengthForObject = calculateCanonicalSHA256AndLengthForObject;
-    PointrelClient.prototype.calculateSHA256 = calculateSHA256;
-    */
-    
     // TODO: Next few from server code -- should have common routines to avoid duplicate code
     
-    // TODO: Note that this approach depends on object keys maintaining their order, which is not guaranteed by the JS standards but most browsers support it
-    // isObject and copyObjectWithSortedKeys are from Mirko Kiefer (with added semicolons):
-    // https://raw.githubusercontent.com/mirkokiefer/canonical-json/master/index2.js
-    static isObject(a) {
-        return Object.prototype.toString.call(a) === '[object Object]';
-    }
-    
-    static copyObjectWithSortedKeys(object) {
-        if (PointrelClient.isObject(object)) {
-            const newObj = {};
-            const keysSorted = Object.keys(object).sort();
-            for (let i = 0, len = keysSorted.length; i < len; i++) {
-                const key = keysSorted[i];
-                newObj[key] = PointrelClient.copyObjectWithSortedKeys(object[key]);
-            }
-            return newObj;
-        } else if (Array.isArray(object)) {
-            return object.map(PointrelClient.copyObjectWithSortedKeys);
-        } else {
-            return object;
+    // serialize generates canonical JSON and is under Apache License 2.0 copied from:
+    // https://github.com/erdtman/canonicalize/blob/master/lib/canonicalize.js
+    static serialize(object) {
+        if (typeof object === 'number' && isNaN(object)) {
+            throw new Error('NaN is not allowed');
         }
+
+        if (typeof object === 'number' && !isFinite(object)) {
+            throw new Error('Infinity is not allowed');
+        }
+
+        if (object === null || typeof object !== 'object') {
+            return JSON.stringify(object);
+        }
+
+        if (object.toJSON instanceof Function) {
+            return PointrelClient.serialize(object.toJSON());
+        }
+
+        if (Array.isArray(object)) {
+            const values = object.reduce((t, cv, ci) => {
+            const comma = ci === 0 ? '' : ',';
+            const value = cv === undefined || typeof cv === 'symbol' ? null : cv;
+            return `${t}${comma}${PointrelClient.serialize(value)}`;
+            }, '');
+            return `[${values}]`;
+        }
+
+        const values = Object.keys(object).sort().reduce((t, cv) => {
+            if (object[cv] === undefined ||
+                typeof object[cv] === 'symbol') {
+            return t;
+            }
+            const comma = t.length === 0 ? '' : ',';
+            return `${t}${comma}${PointrelClient.serialize(cv)}:${PointrelClient.serialize(object[cv])}`;
+        }, '');
+        return `{${values}}`;
+    }
+
+    static stringifyAsCanonicalJSON(anObject) {
+        return PointrelClient.serialize(anObject);
     }
     
     static makeSHA256AndLength(sha256AndLengthObject) {
@@ -642,9 +655,8 @@ class PointrelClient {
         return sha256AndLengthObject.sha256 + "_" + sha256AndLengthObject.length;
     }
     
-    static calculateCanonicalSHA256AndLengthForObject(someObject, doNotSortFlag = false) {
-        if (!doNotSortFlag) someObject = PointrelClient.copyObjectWithSortedKeys(someObject);
-        const minimalJSON = JSON.stringify(someObject);
+    static calculateCanonicalSHA256AndLengthForObject(someObject) {
+        const minimalJSON = PointrelClient.stringifyAsCanonicalJSON(someObject);
         // const buffer = new Buffer(minimalJSON, "utf8");
         // console.log("minimalJSON", minimalJSON);
         
@@ -731,7 +743,7 @@ class PointrelClient {
                 if (callback !== undefined) delete loopbackMessage.__pointrel_callback;
                 this.messageSentCount++;
                 // Simulating eventual response from server, generally for testing
-                this.messageReceived(PointrelClient.copyObjectWithSortedKeys(loopbackMessage));
+                this.messageReceived(JSON.parse(PointrelClient.stringifyAsCanonicalJSON(loopbackMessage)));
                 if (callback) callback(null, {success: true});
             }
         } else {
