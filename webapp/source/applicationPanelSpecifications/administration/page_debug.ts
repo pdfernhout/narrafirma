@@ -5,7 +5,7 @@ const panel: Panel = {
     id: "page_debug",
     displayName: "Debug",
     pageExplanation: "Used by developers for debugging project data",
-    pageCategories: "debug",
+    pageCategories: "manage",
     headerAbove: "Debug",
     panelFields: [
         {
