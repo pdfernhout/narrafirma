@@ -63,7 +63,18 @@ function add_storyFormQuestionsChooser(panelBuilder: PanelBuilder, model, fieldS
     const questionChoicesInFormSelectOptions = [];
     questionChoicesInForm.forEach((questionChoice, index) => {
         const shortName = questionChoice[questionCategory + "Question"].trim();
-        questionChoicesInFormSelectOptions.push(m("option", {value: questionChoice.id, selected: undefined}, shortName));
+        // if question does not exist in project, tell user that
+        let questionExists = false;
+        createdQuestions.forEach((createdQuestion) => {
+            const createdQuestionShortName = createdQuestion[questionCategory + "Question_shortName"].trim();
+            if (createdQuestionShortName == shortName) {
+                questionExists = true;
+                return;
+            }
+        });
+        let nameToUse = shortName;
+        if (!questionExists) nameToUse += " - NOT FOUND in project";
+        questionChoicesInFormSelectOptions.push(m("option", {value: questionChoice.id, selected: undefined}, nameToUse));
     });
 
     /////////////////// right side - questions available to choose
