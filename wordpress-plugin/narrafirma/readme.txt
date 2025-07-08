@@ -9,7 +9,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Requires at least: 4.3.1
 Tested up to: 6.7.2
 Stable tag: trunk
-Version: 1.6.9
+Version: 1.6.10
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -105,6 +105,12 @@ We strongly suggest that you set up any web site on which you intend to install 
 12. Here the NarraFirma user is reflecting on the entire project, to learn from it and to keep good records for the future.
 
 == Changelog ==
+
+= 1.6.10 =
+
+Added: Questions to build a win-win proposal for each participant group (on the "Describe participant groups" page).
+Fixed: Confusing error message when granting anonymous survey access without first having created an anonymous user id.
+Fixed: Two unnecessary error messages upon encountering a null/missing question while showing the survey and storing its results.
 
 = 1.6.9 =
 
@@ -387,6 +393,10 @@ Fixed (stability): Updated Mann-Whitney U test for two improvements in scipy cod
 To read about previous changes, see the NarraFirma blog.
 
 == Upgrade Notice ==
+
+= 1.6.10 =
+
+This minor upgrade adds some questions to the "Describe participant groups" page and fixes a few edge-case bugs.
 
 = 1.6.9 =
 

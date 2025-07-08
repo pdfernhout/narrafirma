@@ -158,6 +158,12 @@ M When import story form, hundreds of triples can be generated which take minute
 
 ==== DONE
 
+-- Release 1.6.10
+
+* Added: Questions to build a win-win proposal for each participant group (on the "Describe participant groups" page).
+* Fixed: Confusing error message when granting anonymous survey access without first having created an anonymous user id.
+* Fixed: Two unnecessary error messages upon encountering a null/missing question while showing the survey and storing its results.
+
 -- Release 1.6.9
 
 * Changed: Updated WordPress readme file to comply with WordPress requirements.
