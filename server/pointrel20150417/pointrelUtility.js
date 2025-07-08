@@ -11,28 +11,48 @@ function log() {
 
 //--- Comparing
 
-// TODO: Note that this approach depends on object keys maintaining their order, which is not guaranteed by the JS standards but most browsers support it
-// isObject and copyObjectWithSortedKeys are from Mirko Kiefer (with added semicolons):
-// https://raw.githubusercontent.com/mirkokiefer/canonical-json/master/index2.js
-var isObject = function(a) {
-    return Object.prototype.toString.call(a) === '[object Object]';
-};
-var copyObjectWithSortedKeys = function(object) {
-    if (isObject(object)) {
-        var newObj = {};
-        var keysSorted = Object.keys(object).sort();
-        var key;
-        for (var i = 0, len = keysSorted.length; i < len; i++) {
-            key = keysSorted[i];
-            newObj[key] = copyObjectWithSortedKeys(object[key]);
-        }
-        return newObj;
-    } else if (Array.isArray(object)) {
-        return object.map(copyObjectWithSortedKeys);
-    } else {
-        return object;
+// serialize generates canonical JSON and is under Apache License 2.0 copied from:
+// https://github.com/erdtman/canonicalize/blob/master/lib/canonicalize.js
+function serialize(object) {
+  if (typeof object === 'number' && isNaN(object)) {
+    throw new Error('NaN is not allowed');
+  }
+
+  if (typeof object === 'number' && !isFinite(object)) {
+    throw new Error('Infinity is not allowed');
+  }
+
+  if (object === null || typeof object !== 'object') {
+    return JSON.stringify(object);
+  }
+
+  if (object.toJSON instanceof Function) {
+    return serialize(object.toJSON());
+  }
+
+  if (Array.isArray(object)) {
+    const values = object.reduce((t, cv, ci) => {
+      const comma = ci === 0 ? '' : ',';
+      const value = cv === undefined || typeof cv === 'symbol' ? null : cv;
+      return `${t}${comma}${serialize(value)}`;
+    }, '');
+    return `[${values}]`;
+  }
+
+  const values = Object.keys(object).sort().reduce((t, cv) => {
+    if (object[cv] === undefined ||
+        typeof object[cv] === 'symbol') {
+      return t;
     }
-};
+    const comma = t.length === 0 ? '' : ',';
+    return `${t}${comma}${serialize(cv)}:${serialize(object[cv])}`;
+  }, '');
+  return `{${values}}`;
+}
+
+function stringifyAsCanonicalJSON(anObject) {
+    return serialize(anObject);
+}
 
 function addItemToSortedArray(sortedArray, item, compareFunction) {
     // console.log("addItemToSortedArray", item);
@@ -85,18 +105,16 @@ function makeSHA256AndLength(sha256AndLengthObject) {
     return sha256AndLengthObject.sha256 + "_" + sha256AndLengthObject.length;
 }
 
-function calculateCanonicalSHA256ForObject(someObject, doNotSortFlag) {
-    if (!doNotSortFlag) someObject = copyObjectWithSortedKeys(someObject);
-    var minimalJSON = JSON.stringify(someObject);
-    var buffer = new Buffer(minimalJSON, "utf8");
+function calculateCanonicalSHA256ForObject(someObject) {
+    var minimalJSON = stringifyAsCanonicalJSON(someObject);
+    var buffer = Buffer.from(minimalJSON, "utf8");
     var sha256 = calculateSHA256(buffer);
     return sha256;
 }
 
-function calculateCanonicalSHA256AndLengthForObject(someObject, doNotSortFlag) {
-    if (!doNotSortFlag) someObject = copyObjectWithSortedKeys(someObject);
-    var minimalJSON = JSON.stringify(someObject);
-    var buffer = new Buffer(minimalJSON, "utf8");
+function calculateCanonicalSHA256AndLengthForObject(someObject) {
+    var minimalJSON = stringifyAsCanonicalJSON(someObject);
+    var buffer = Buffer.from(minimalJSON, "utf8");
     var sha256 = calculateSHA256(buffer);
     var sha256AndLength = "" + sha256 + "_" + buffer.length;
     return {sha256: "" + sha256, length: buffer.length};
@@ -270,7 +288,7 @@ function compareReceivedRecordsByTopicTimestamp(a, b) {
 
 exports.log = log;
 
-exports.copyObjectWithSortedKeys = copyObjectWithSortedKeys;
+exports.stringifyAsCanonicalJSON = stringifyAsCanonicalJSON;
 exports.addItemToSortedArray = addItemToSortedArray;
 
 exports.startsWith = startsWith;

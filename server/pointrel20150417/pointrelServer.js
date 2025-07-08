@@ -602,7 +602,7 @@ function respondForStoreMessageRequest(userIdentifier, senderIPAddress, journal,
     
     message.__pointrel_trace = newTrace;
     
-    var canonicalMessage = utility.copyObjectWithSortedKeys(message);
+    var canonicalMessage = utility.stringifyAsCanonicalJSON(message);
     
     var currentTimestampForFileName = receivedTimestamp.replace(/:/g, "-").replace("T", "_");
     
@@ -616,8 +616,8 @@ function respondForStoreMessageRequest(userIdentifier, senderIPAddress, journal,
     var fullFileName = journal.journalDirectory + fileName;
     
     // Pretty printing it even though wasteful -- easier for developer to look at in stored files
-    var prettyJSON = JSON.stringify(canonicalMessage, null, 2);
-    var buffer = new Buffer(prettyJSON, "utf8");
+    var prettyJSON = JSON.stringify(JSON.parse(canonicalMessage), null, 2);
+    var buffer = Buffer.from(prettyJSON, "utf8");
 
     log("about to store", sha256AndLength);
     // log("prettyJSON", prettyJSON);
