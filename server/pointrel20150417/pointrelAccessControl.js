@@ -254,6 +254,10 @@ function isAuthorized(journalIdentifier, userIdentifier, requestedAction, apiReq
             messageType = apiRequest.message.messageType;
         }
     }
+
+    if (userIdentifier === "anonymous" && topic === "surveyResults" && requestedAction === "read") {
+        return false;
+    }
     
     var unionOfPermissionsForUser = makeUnionOfPermissionsForUser(rolesForJournal, topic, messageType, apiRequest);
     
