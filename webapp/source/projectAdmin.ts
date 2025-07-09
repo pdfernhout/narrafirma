@@ -100,7 +100,7 @@ const AdminPageDisplayer: any = {
                 m("h3[style='margin-left:0.25em;']", "Roles for user: " + userToDisplay), 
                 m("pre", JSON.stringify(allProjectsModel.users[userToDisplay].rolesForJournals, null, 4))
             ]) : m("div", {style: "height: 200px; overflow: auto; float: right; min-width: 75%"}),
-            m("h3", "Users"),
+            m("h3", "Users with project roles"),
             m(pWithStyle, "Click a user name to see their project permissions."),
             // don't show users who have no roles for any existing projects 
             // because there is no real way to remove a user, and it's annoying to have to look at them forever
@@ -121,6 +121,7 @@ const AdminPageDisplayer: any = {
             }),
 
             m("br"),
+            m("p", "To hide a user from view, revoke all of their project permissions."),
             m("hr", {style: hrStyleText}),
             m("div", [
                 m("h3", "Add New User"),
@@ -130,7 +131,6 @@ const AdminPageDisplayer: any = {
                 m("label[style='" + labelStyleText + "']", {"for": "p2"}, "Password"),
                 m("input", {id: "p2", value: userPassword(), onchange: m.withAttr("value", userPassword), disabled: userName().trim() === "anonymous"}),
                 m("button[style='" + buttonStyleText + "']", {onclick: addUserClicked}, "Add User"),
-                m("p", "To remove a user, revoke all of their project permissions."),
             ]),
 
             m("hr", {style: hrStyleText}),
