@@ -115,6 +115,7 @@ Changed: On "Translate story forms" page, improved counts of translated texts to
 Changed: On "Start story collection" page, improved descriptions of data conflicts (seen after clicking "Check for Data Conflicts").
 Changed: Improved error message shown in console when question included in story form does not exist in project.
 Changed: On "Build story forms" page, added "NOT FOUND in project" to question-choice listbox to alert user when included question does not exist in project (because it has been renamed or removed).
+Changed: Updated text on Node.js site administration page.
 Fixed: Bug (in WordPress version) in which choice questions with numerical answers caused mismatches between PHP and Javascript data formats (sorting algorithms have now been improved).
 Fixed: Stopped trying to save to clipboard without checking that the context is secure (clipboard access is not allowed when page context is insecure).
 Fixed: In WordPress version, added some missing PHP return statements in certain error conditions, which could have (theoretically) caused problems.
