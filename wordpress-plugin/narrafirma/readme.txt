@@ -7,7 +7,7 @@ Author URI: http://www.cfkurtz.com
 Author: Cynthia Kurtz and Paul Fernhout
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=DGVVDT2D49QA8
 Requires at least: 4.3.1
-Tested up to: 6.7.2
+Tested up to: 6.8.1
 Stable tag: trunk
 Version: 1.6.10
 License: GPLv2 or later
@@ -108,9 +108,19 @@ We strongly suggest that you set up any web site on which you intend to install 
 
 = 1.6.10 =
 
-Added: Questions to build a win-win proposal for each participant group (on the "Describe participant groups" page).
+Added: On "Describe participant groups" page, questions to build a win-win proposal for each participant group.
+Added: Debug page (in Project administration) that shows all project data (for easier problem solving).
+Added: On "Translate story forms" page, additional operations (in "Do it" list) to rename or remove a language, systematically replacing or removing all related translations.
+Changed: On "Translate story forms" page, improved counts of translated texts to include "hidden" translations (for languages that no longer appear in the "Additional languages" box).
+Changed: On "Start story collection" page, improved descriptions of data conflicts (seen after clicking "Check for Data Conflicts").
+Changed: Improved error message shown in console when question included in story form does not exist in project.
+Changed: On "Build story forms" page, added "NOT FOUND in project" to question-choice listbox to alert user when included question does not exist in project (because it has been renamed or removed).
+Fixed: Bug (in WordPress version) in which choice questions with numerical answers caused mismatches between PHP and Javascript data formats (sorting algorithms have now been improved).
+Fixed: Stopped trying to save to clipboard without checking that the context is secure (clipboard access is not allowed when page context is insecure).
+Fixed: In WordPress version, added some missing PHP return statements in certain error conditions, which could have (theoretically) caused problems.
 Fixed: Confusing error message when granting anonymous survey access without first having created an anonymous user id.
-Fixed: Two unnecessary error messages upon encountering a null/missing question while showing the survey and storing its results.
+Fixed: Improved handling of situation in which question is null or missing during survey display and story collection.
+Fixed: Removed two unnecessary error messages upon encountering a null or missing question while showing a survey and storing its results.
 
 = 1.6.9 =
 
@@ -396,7 +406,7 @@ To read about previous changes, see the NarraFirma blog.
 
 = 1.6.10 =
 
-This minor upgrade adds some questions to the "Describe participant groups" page and fixes a few edge-case bugs.
+This minor upgrade adds win-win proposal questions to the "Describe participant groups" page, improves the translation page, and fixes some edge-case bugs.
 
 = 1.6.9 =
 
