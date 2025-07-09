@@ -120,7 +120,6 @@ Fixed: Stopped trying to save to clipboard without checking that the context is 
 Fixed: In WordPress version, added some missing PHP return statements in certain error conditions, which could have (theoretically) caused problems.
 Fixed: Confusing error message when granting anonymous survey access without first having created an anonymous user id.
 Fixed: Improved handling of situation in which question is null or missing during survey display and story collection.
-Fixed: Removed two unnecessary error messages upon encountering a null or missing question while showing a survey and storing its results.
 
 = 1.6.9 =
 
