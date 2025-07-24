@@ -480,7 +480,7 @@ function printCatalysisReportWithObservationGraphsOnly(project, catalysisReportI
 
                 // when using canvas.toBlob either the ZIP file or the PNG files come out corrupted
                 // found this method to fix it online and it works
-                const canvas = graphStyle.preparePNGToSaveToFile(svgNode, options.customGraphCSS, graphHolder.outputFontModifierPercent);
+                const canvas = graphStyle.preparePNGToSaveToFile(svgNode, options.customGraphCSS, graphHolder.outputFontModifierPercent, false);
                 const dataURI = canvas.toDataURL("image/png");
                 const imageData = graphStyle.dataURItoBlob(dataURI);
                 zipFile.file(graphTitle + ".png", imageData, {binary: true});
@@ -1228,7 +1228,7 @@ function printGraphWithGraphHolder(graphHolder: GraphHolder, customCSS) {
                 if (graphIndex >= graphHolder.chartPanes.length) break;
                 const graphPane = graphHolder.chartPanes[graphIndex];
                 const graph = printGraphWithGraphNode(graphPane, graphHolder, customCSS);
-                if (graph) columnsForThisRow.push(m("td", graph));
+                if (graph) columnsForThisRow.push(m("td", {class: "narrafirma-report-subgraph"}, graph));
             }
             rows.push(m("tr", columnsForThisRow));
         } 
@@ -1258,6 +1258,7 @@ function printGraphWithGraphNode(graphNode: HTMLElement, graphHolder: GraphHolde
     svgNode.setAttribute("xmlns:xlink", "http://www.w3.org/1999/xlink");
 
     const titleNode = graphNode.querySelector(".narrafirma-graph-title");
+    const embeddedTitleNode = graphNode.querySelector(".narrafirma-graph-title-embedded");
     const statisticsNode = graphNode.querySelector(".narrafirma-statistics-panel");
 
     const styleNode = document.createElement("style");
@@ -1272,6 +1273,7 @@ function printGraphWithGraphNode(graphNode: HTMLElement, graphHolder: GraphHolde
 
     const result = [];
     if (titleNode) result.push(m.trust(titleNode.outerHTML));
+    if (embeddedTitleNode) result.push(m.trust(embeddedTitleNode.outerHTML));
     
     if (graphHolder.outputGraphFormat === "PNG") {
 

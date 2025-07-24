@@ -118,8 +118,16 @@ export function prepareSVGToSaveToFile(svgNode, customCSS, outputFontModifierPer
     return head + "\n" + styleText + "\n" + svgText + "\n" + foot;
 }
 
-export function preparePNGToSaveToFile(svgNode, customCSS, outputFontModifierPercent = null) {
+export function preparePNGToSaveToFile(svgNode, customCSS, outputFontModifierPercent = null, enlargeFonts = false) {
     const styleNode = document.createElement("style");
+
+    // cfk this is a kludge to deal with the fact that font sizes come out weirdly small 
+    // but only when you export the file directly from the Pattern Explorer page (with the Do it list)
+    // in all other situations (report, export all) the font sizes in the CSS are respected
+    if (enlargeFonts) {
+        d3.select(svgNode).style('font-size', "1.1em");
+    }
+
     styleNode.setAttribute('type', 'text/css');
 
     let styleText = graphResultsPaneCSS(svgNode);
