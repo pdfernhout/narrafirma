@@ -1959,6 +1959,11 @@ label {
 
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Catalysis report ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
+.narrafirma-report-subgraph {
+    border: 1px solid lightgray;
+    padding: 0.5em;
+}
+
 .narrafirma-statistics-panel-header {
 	margin: 0.5em 0 0.5em 0;
 	font-weight: bold;
@@ -1973,6 +1978,7 @@ label {
 h6.narrafirma-statistics-panel-small {
     font-weight: normal;
     display: block;
+    font-size: 0.9em;
 }
 
 .statistics-name, .statistics-value, .narrafirma-mann-whitney-title {
@@ -1983,7 +1989,7 @@ h6.narrafirma-statistics-panel-small {
     background-color: inherit;
     font-size: 0.9em;
     width: max-content;
-    margin: auto;
+    margin: 0 auto 0 auto;
 }
 
 table.narrafirma-mw-all-results {
@@ -2226,7 +2232,12 @@ td.narrafirma-mw-nested-title, td.narrafirma-mw-nested-stats {
 .narrafirma-graph-title {
     margin: 0.5em;
     font-size: 1.2em;
-    font-variant-caps: small-caps;
+}
+
+.narrafirma-graph-title-embedded {
+    margin: 0.25em 0.25em 0.5em 0.25em;
+    font-size: 1em;
+    font-weight: bold;
 }
 
 .narrafirma-graph-results-pane {
@@ -2270,28 +2281,28 @@ td.narrafirma-mw-nested-title, td.narrafirma-mw-nested-stats {
 	fill: black;
 	stroke-width: 0.5px;
 	font-family: sans-serif;
-	font-size: 0.9em;
+	font-size: 1.1em;
 }
 
 .y-axis text {
 	fill: black;
 	stroke-width: 0.5px;
 	font-family: sans-serif;
-	font-size: 0.9em;
+	font-size: 1.1em;
 }
 
 .x-axis-label {
 	fill: black;
 	stroke-width: 0.5px;
 	font-family: sans-serif;
-    font-size: 0.8em;
+    font-size: 1.2em;
 }
 
 .y-axis-label {
 	fill: black;
 	stroke-width: 0.5px;
 	font-family: sans-serif;
-    font-size: 0.8em;
+    font-size: 1.2em;
 }
 
 .brush .extent {
@@ -2310,7 +2321,7 @@ td.narrafirma-mw-nested-title, td.narrafirma-mw-nested-stats {
 
 .barChart-barLabel {
     fill: black;
-    font-size: 0.9em;
+    font-size: 1.1em;
 }
 
 .barChart-story.even {
@@ -2334,7 +2345,7 @@ td.narrafirma-mw-nested-title, td.narrafirma-mw-nested-stats {
 }
 
 .barChart.y-axis-label {
-    font-size: 1em;
+    font-size: 1.2em;
 }
 
 /* histogram */
@@ -2345,12 +2356,12 @@ td.narrafirma-mw-nested-title, td.narrafirma-mw-nested-stats {
 
 .histogram-barLabel {
     fill: black;
-    font-size: 0.9em;
+    font-size: 1.1em;
 }
 
 .histogram-barLabelSmall {
     fill: black;
-    font-size: 0.7em;    
+    font-size: 0.9em;    
 }
 
 .histogram-story.even {
@@ -2386,14 +2397,16 @@ td.narrafirma-mw-nested-title, td.narrafirma-mw-nested-stats {
 
 .histogram.x-axis-label.middle, .histogram.y-axis-label.middle {
     font-size: 1.1em;
+    font-weight: bold;
 }
 
 .histogram.x-axis-label.small.middle {
     font-size: 0.9em;
+    font-weight: bold;
 }
 
 .histogram.x-axis-label.start, .histogram.x-axis-label.end {
-    font-size: 0.9em;
+    font-size: 1em;
 }
 
 /* contingency chart */
@@ -2418,7 +2431,7 @@ td.narrafirma-mw-nested-title, td.narrafirma-mw-nested-stats {
 }
 
 .contingencyChart-circle-label {
-    font-size: 0.8em;
+    font-size: 1em;
     fill: var(--color-graph-contingency-expected-text);
 }
 
@@ -2459,7 +2472,8 @@ td.narrafirma-mw-nested-title, td.narrafirma-mw-nested-stats {
 }
 
 .table.x-axis-label.upper-corner, .table.y-axis-label.upper-corner {
-    font-size: 1.1em;
+    font-size: 1.2em;
+    font-weight: bold;
 }
 
 /* scatter plot */
@@ -2478,14 +2492,15 @@ td.narrafirma-mw-nested-title, td.narrafirma-mw-nested-stats {
   
 .scatterplot.x-axis-label.middle, .scatterplot.y-axis-label.middle {
     font-size: 1.1em;
+    font-weight: bold;
 }
 
 .scatterplot.x-axis-label.small.middle, .scatterplot.y-axis-label.small.middle {
-    font-size: 0.9em;
+    font-size: 1.1em;
 }
 
 .scatterplot.x-axis-label.start, .scatterplot.y-axis-label.start, .scatterplot.x-axis-label.end, .scatterplot.y-axis-label.end {
-    font-size: 0.9em;
+    font-size: 1.1em;
 }
 
 /* correlation map */
@@ -2535,7 +2550,6 @@ td.narrafirma-mw-nested-title, td.narrafirma-mw-nested-stats {
 .narrafirma-correlation-map-option-title {
     margin: 0.5em 0 1.5em 0.5em;
     font-size: 1em;
-    font-variant-caps: small-caps;
     font-weight: bold;
 }
 
