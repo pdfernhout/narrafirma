@@ -1458,6 +1458,8 @@ input[type="checkbox"].graphBrowserCheckbox {
 .singleChartStyleWithoutChildren {
     display: inline-block;
     vertical-align: top;
+    border: 1px solid lightgray;
+    padding: 1em;
 }
 
 .singleChartStyleWithChildren {
@@ -1467,11 +1469,15 @@ input[type="checkbox"].graphBrowserCheckbox {
 .smallChartStyle {
     display: inline-block;
     vertical-align: top;
+    border: 1px solid lightgray;
+    padding: 1em;
 }
 
 .mediumChartStyle {
     display: inline-block;
     vertical-align: top;
+    border: 1px solid lightgray;
+    padding: 1em;
 }
 
 .chartEnclosure {
@@ -1837,11 +1843,13 @@ td.narrafirma-story-card-for-printing-table {
 
 .narrafirma-pattern-browser-selected-stories-header {
     margin-left: 1.4em;
-    margin-top: 0.4em;
+    margin-top: 1em;
+    font-style: italic;
 }
 
 .narrafirma-pattern-browser-no-selection-tip {
-    margin: 0.5em 0 0.5em 0.7em;
+    margin: 1em 0 0.5em 0.7em;
+    font-style: italic;
 }
 
 .narrafirma-pattern-browser-exportbuttons {
@@ -2222,7 +2230,7 @@ td.narrafirma-mw-nested-title, td.narrafirma-mw-nested-stats {
 }
 
 .narrafirma-graph-results-pane {
-    margin: 5px auto 0px 4em;
+    margin: 5px auto 0px 1.5em;
 }
 
 .chartBackground {

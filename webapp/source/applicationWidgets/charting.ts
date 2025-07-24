@@ -302,6 +302,8 @@ function makeChartFramework(chartPane: HTMLElement, chartType, size, margin, cus
         .attr('height', height + margin.top + margin.bottom)
         .attr('class', 'chart ' + chartType);
 
+    d3.select(chartPane).style("font-size","1.25em"); // global increase because all labels were too small
+
     const chartBackground = chart.append("rect")
         .attr('width', fullWidth)
         .attr('height', fullHeight)
@@ -632,9 +634,10 @@ function addYAxisLabel(chart, label, options: AxisOptions) {
     let rotateAngle;
 
     // Y and X are flipped because of the rotate
+    const letterSize = 10;
     if (options.placeAxisNamesInUpperRight) {
         options.textAnchor = "start";
-        yPosition = -(chart.fullWidth - chart.margin.right + 8); // negative because of rotation
+        yPosition = -(chart.fullWidth - chart.margin.right + letterSize); // negative because of rotation
         xPosition = chart.margin.top;
         rotateAngle = 90;
         className = 'y-axis-label ' + (options.graphType || "") + (options.isSmallFormat ? " small" : "") + " upper-corner";
@@ -955,7 +958,7 @@ export function d3BarChartForValues(graphHolder: GraphHolder, plotItems, xLabels
 
     const maxItemsPerBar = d3.max(plotItems, function(plotItem: PlotItem) { return plotItem.value; });
 
-    let letterSize = 8; // it would be better to get this from the DOM - but it would decrease performance...
+    let letterSize = 10; // it would be better to get this from the DOM - but it would decrease performance...
     const margin = {
         top: 20, 
         right: 15, 
@@ -1927,7 +1930,7 @@ export function d3ContingencyTable(graphHolder: GraphHolder, xAxisQuestion, yAxi
     }
     addTitlePanelForChart(chartPane, chartTitle);
 
-    const letterSize = 8; // it would be better to get this from the DOM - but it would decrease performance...
+    const letterSize = 10; // it would be better to get this from the DOM - but it would decrease performance...
 
     const margin = {
         top: 36, 
@@ -2128,7 +2131,7 @@ export function d3ContingencyTable(graphHolder: GraphHolder, xAxisQuestion, yAxi
         }
 
         if (!graphHolder.hideNumbersOnContingencyGraphs) {
-            const letterSize = 8;
+            const letterSize = 10;
             const minSizeToDrawLabelInside = 24; 
             const circleLabels = chartBody.selectAll(".contingencyChart-circle-label")
                 .data(observedPlotItems)
