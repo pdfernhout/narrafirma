@@ -302,14 +302,12 @@ function makeChartFramework(chartPane: HTMLElement, chartType, size, margin, cus
         .attr('height', height + margin.top + margin.bottom)
         .attr('class', 'chart ' + chartType);
 
-    d3.select(chartPane).style("font-size","1.25em"); // global increase because all labels were too small
-
     const chartBackground = chart.append("rect")
         .attr('width', fullWidth)
         .attr('height', fullHeight)
         .attr('class', 'chartBackground')
         .attr('style', 'fill: none;');
-    
+
     const chartBody = chart.append('g')
         .attr('width', width)
         .attr('height', height)
@@ -352,9 +350,13 @@ function newChartPane(graphHolder: GraphHolder, styleClass: string): HTMLElement
     return chartPane;
 }
 
-function addTitlePanelForChart(chartPane, chartTitle) {
+function addTitlePanelForChart(chartPane, chartTitle, isEmbedded=false) {
     const titlePane = document.createElement("h5");
-    titlePane.className = "narrafirma-graph-title";
+    if (isEmbedded) {
+        titlePane.className = "narrafirma-graph-title-embedded";
+    } else {
+        titlePane.className = "narrafirma-graph-title";
+    }
     titlePane.innerHTML = chartTitle;
     chartPane.appendChild(titlePane);
 }
@@ -590,21 +592,22 @@ function addXAxisLabel(chart, label, options: AxisOptions) {
     let yPosition;
     let className;
 
+    const letterSize = 10;
     if (options.placeAxisNamesInUpperRight) {
         options.textAnchor = "end";
         xPosition = chart.fullWidth - chart.margin.right;
-        yPosition = chart.margin.top - 6;
+        yPosition = chart.margin.top - letterSize;
         className = 'x-axis-label ' + (options.graphType || "") + (options.isSmallFormat ? " small" : "") + " upper-corner";
     } else {
-        yPosition = chart.fullHeight - 16;
+        yPosition = chart.fullHeight - letterSize * 2;
         if (options.textAnchor === "middle") {
             xPosition = chart.margin.left + chart.width / 2;
         } else if (options.textAnchor === "start") {
             xPosition = chart.margin.left;
-            yPosition -= 25;
+            yPosition -= letterSize * 2;
         } else if (options.textAnchor === "end") {
             xPosition = chart.margin.left + chart.width;
-            yPosition -= 25;
+            yPosition -= letterSize * 2;
         }
         className = 'x-axis-label ' + (options.graphType || "") + (options.isSmallFormat ? " small" : "") + (options.textAnchor ? " " + options.textAnchor : "");
     }
@@ -642,15 +645,15 @@ function addYAxisLabel(chart, label, options: AxisOptions) {
         rotateAngle = 90;
         className = 'y-axis-label ' + (options.graphType || "") + (options.isSmallFormat ? " small" : "") + " upper-corner";
     } else {
-        yPosition = 16;
+        yPosition = letterSize * 2;
         if (options.textAnchor === "middle") {
             xPosition = -(chart.margin.top + chart.height / 2);
         } else if (options.textAnchor === "start") {
             xPosition = -(chart.margin.top + chart.height);
-            yPosition += 25;
+            yPosition += letterSize * 2;
         } else if (options.textAnchor === "end") {
             xPosition = -chart.margin.top;
-            yPosition += 25;
+            yPosition += letterSize * 2;
         }
         rotateAngle = -90;
         className = 'y-axis-label ' + (options.graphType || "") + (options.isSmallFormat ? " small" : "") + (options.textAnchor ? " " + options.textAnchor : "");
@@ -1136,7 +1139,7 @@ export function d3HistogramChartForQuestion(graphHolder: GraphHolder, scaleQuest
     }
 
     let chartTitle = "" + nameForQuestion(scaleQuestion);
-    if (choiceQuestion) chartTitle = "" + choice;
+    if (choiceQuestion) chartTitle = "" + nameForQuestion(choiceQuestion) + ": " + choice;
     
     let style = "singleChartStyleWithoutChildren";
     let chartSize = "large";
@@ -1149,7 +1152,7 @@ export function d3HistogramChartForQuestion(graphHolder: GraphHolder, scaleQuest
     let xAxisStart = "";
     let xAxisEnd = "";
     if (choiceQuestion) {
-        xAxisLabel = choice;
+        xAxisLabel = "" + nameForQuestion(scaleQuestion);
     } else {
         xAxisLabel = nameForQuestion(scaleQuestion);
         if (scaleQuestion.displayType === "slider") {
@@ -1242,7 +1245,7 @@ export function d3HistogramChartForValues(graphHolder: GraphHolder, plotItems, c
     }
 
     const chartPane = newChartPane(graphHolder, style);   
-    if (!isSmallFormat) addTitlePanelForChart(chartPane, chartTitle);
+    addTitlePanelForChart(chartPane, chartTitle, isSmallFormat); //cfktesting
 
     const chart = makeChartFramework(chartPane, "histogram", chartSize, margin, graphHolder.customGraphWidth, graphHolder.customGraphHeight);
     const chartBody = chart.chartBody;
@@ -1565,8 +1568,9 @@ export function d3ScatterPlot(graphHolder: GraphHolder, xAxisQuestion, yAxisQues
         margin.right = 20;
     }
     
-    const chartTitle = "" + nameForQuestion(xAxisQuestion) + " x " + nameForQuestion(yAxisQuestion);
-    if (!isSmallFormat) addTitlePanelForChart(chartPane, chartTitle);
+    let chartTitle = "" + nameForQuestion(xAxisQuestion) + " x " + nameForQuestion(yAxisQuestion);
+    if (choiceQuestion) chartTitle = "" + nameForQuestion(choiceQuestion) + ": " + option; //cfktesting
+    addTitlePanelForChart(chartPane, chartTitle, isSmallFormat); //cfktesting
 
     const chart = makeChartFramework(chartPane, "scatterPlot", chartSize, margin, graphHolder.customGraphWidth, graphHolder.customGraphHeight);
     const chartBody = chart.chartBody;
@@ -1593,11 +1597,7 @@ export function d3ScatterPlot(graphHolder: GraphHolder, xAxisQuestion, yAxisQues
         addXAxisLabel(chart, xAxisQuestion.displayConfiguration[0], {labelLengthLimit: maxRangeLabelLength, isSmallFormat: isSmallFormat, textAnchor: "start", graphType: "scatterplot"});
         addXAxisLabel(chart, xAxisQuestion.displayConfiguration[1], {labelLengthLimit: maxRangeLabelLength, isSmallFormat: isSmallFormat, textAnchor: "end", graphType: "scatterplot"});
     }
-    if (choiceQuestion) {
-        addXAxisLabel(chart, nameForQuestion(xAxisQuestion) + " (" + option + ")", {isSmallFormat: isSmallFormat, graphType: "scatterplot"});
-    } else {
-        addXAxisLabel(chart, nameForQuestion(xAxisQuestion), {isSmallFormat: isSmallFormat, graphType: "scatterplot"});
-    }
+    addXAxisLabel(chart, nameForQuestion(xAxisQuestion), {isSmallFormat: isSmallFormat, graphType: "scatterplot"});
 
     // draw the y axis
     
@@ -1610,11 +1610,7 @@ export function d3ScatterPlot(graphHolder: GraphHolder, xAxisQuestion, yAxisQues
     
     const yAxis = addYAxis(chart, yScale, {isSmallFormat: isSmallFormat, graphType: "scatterplot"});
     
-    if (choiceQuestion) {
-        addYAxisLabel(chart, nameForQuestion(yAxisQuestion) + " (" + option + ")", {isSmallFormat: isSmallFormat, graphType: "scatterplot"});
-    } else {
-        addYAxisLabel(chart, nameForQuestion(yAxisQuestion), {isSmallFormat: isSmallFormat, graphType: "scatterplot"});
-    }
+    addYAxisLabel(chart, nameForQuestion(yAxisQuestion), {isSmallFormat: isSmallFormat, graphType: "scatterplot"});
 
     if (yAxisQuestion.displayConfiguration) {
         addYAxisLabel(chart, yAxisQuestion.displayConfiguration[0], {labelLengthLimit: maxRangeLabelLength, isSmallFormat: isSmallFormat, textAnchor: "start", graphType: "scatterplot"});
