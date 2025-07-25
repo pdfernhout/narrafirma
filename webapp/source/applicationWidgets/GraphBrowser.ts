@@ -65,6 +65,7 @@ class GraphBrowser {
             customGraphHeight: Project.default_customDisplayGraphHeight,
             customGraphPadding: Project.default_customGraphPadding,
             hideNumbersOnContingencyGraphs: false,
+            hideNumbersOnHistograms: false,
             patternDisplayConfiguration: {hideNoAnswerValues: false, useLumpingCommands: true},
             graphTypesToCreate: {},
             lumpingCommands: {}

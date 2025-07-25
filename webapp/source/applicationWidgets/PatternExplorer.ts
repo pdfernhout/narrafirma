@@ -277,6 +277,7 @@ class PatternExplorer {
             customGraphHeight: Project.default_customDisplayGraphHeight,
             customGraphPadding: Project.default_customGraphPadding,
             hideNumbersOnContingencyGraphs: false,
+            hideNumbersOnHistograms: false,
             graphTypesToCreate: Project.default_graphTypesToCreate,
             patternDisplayConfiguration: {hideNoAnswerValues: false, useLumpingCommands: true},
             lumpingCommands: {}
@@ -836,6 +837,7 @@ class PatternExplorer {
         options["correlationLineChoice"] = project.tripleStore.queryLatestC(reportID, "correlationLineChoice") || Project.default_correlationLineChoice; 
         options["customLabelLengthLimit"] = parseInt(project.tripleStore.queryLatestC(reportID, "customLabelLengthLimit") || Project.default_customLabelLengthLimit); 
         options["hideNumbersOnContingencyGraphs"] = project.tripleStore.queryLatestC(reportID, "hideNumbersOnContingencyGraphs") || false;
+        options["hideNumbersOnHistograms"] = project.tripleStore.queryLatestC(reportID, "hideNumbersOnHistograms") || false;
         options["customGraphWidth"] = parseInt(project.tripleStore.queryLatestC(reportID, "customReportGraphWidth")) || Project.default_customReportGraphWidth;
         options["customGraphHeight"] = parseInt(project.tripleStore.queryLatestC(reportID, "customReportGraphHeight")) || Project.default_customReportGraphHeight;
 
@@ -897,6 +899,7 @@ class PatternExplorer {
                     correlationLineChoice: options.correlationLineChoice,
                     customLabelLengthLimit: options.customLabelLengthLimit,
                     hideNumbersOnContingencyGraphs: options.hideNumbersOnContingencyGraphs,  
+                    hideNumbersOnHistograms: options.hideNumbersOnHistograms,
                     customGraphWidth: options.customGraphWidth,
                     customGraphHeight: options.customGraphHeight,                  
                     
@@ -1169,6 +1172,7 @@ class PatternExplorer {
         this.graphHolder.customGraphPadding = parseInt(this.project.tripleStore.queryLatestC(this.catalysisReportIdentifier, "customGraphPadding")) || Project.default_customGraphPadding; 
         
         this.graphHolder.hideNumbersOnContingencyGraphs = this.project.tripleStore.queryLatestC(this.catalysisReportIdentifier, "hideNumbersOnContingencyGraphs"); 
+        this.graphHolder.hideNumbersOnHistograms = this.project.tripleStore.queryLatestC(this.catalysisReportIdentifier, "hideNumbersOnHistograms"); 
         this.updateStyleSheetForCustomGraphCSS();
 
         // get stories 

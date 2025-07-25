@@ -249,6 +249,7 @@ export function initializedGraphHolder(allStories, options) {
         correlationLineChoice: options.correlationLineChoice,
         customLabelLengthLimit: options.customLabelLengthLimit,
         hideNumbersOnContingencyGraphs: options.hideNumbersOnContingencyGraphs,
+        hideNumbersOnHistograms: options.hideNumbersOnHistograms,
         outputGraphFormat: options.outputGraphFormat,
         outputFontModifierPercent: options.outputFontModifierPercent,
         showStatsPanelsInReport: options.showStatsPanelsInReport,
@@ -268,7 +269,7 @@ const defaultLargeGraphWidth = 800;
 function makeChartFramework(chartPane: HTMLElement, chartType, size, margin, customGraphWidth, customGraphHeight) {
 
     const largeGraphWidth = customGraphWidth || defaultLargeGraphWidth;
-    const largeGraphHeight = customGraphHeight || Math.round(largeGraphWidth * 0.75);
+    const largeGraphHeight = customGraphHeight || Math.round(largeGraphWidth * 0.8);
 
     let fullWidth = 0;
     let fullHeight = 0;
@@ -433,6 +434,9 @@ function addStatisticsPanelForChart(chartPane: HTMLElement, graphHolder: GraphHo
             html += "</table>\n";
             text += "\n";
         }
+
+        console.log("html", html);
+
         if (chartSize === "small") {
             statsPane.className = "narrafirma-statistics-panel-small narrafirma-statistics-panel";
         } else if (chartSize === "large") {
@@ -592,7 +596,7 @@ function addXAxisLabel(chart, label, options: AxisOptions) {
     let yPosition;
     let className;
 
-    const letterSize = 10;
+    const letterSize = 9;
     if (options.placeAxisNamesInUpperRight) {
         options.textAnchor = "end";
         xPosition = chart.fullWidth - chart.margin.right;
@@ -637,7 +641,7 @@ function addYAxisLabel(chart, label, options: AxisOptions) {
     let rotateAngle;
 
     // Y and X are flipped because of the rotate
-    const letterSize = 10;
+    const letterSize = 9;
     if (options.placeAxisNamesInUpperRight) {
         options.textAnchor = "start";
         yPosition = -(chart.fullWidth - chart.margin.right + letterSize); // negative because of rotation
@@ -961,7 +965,7 @@ export function d3BarChartForValues(graphHolder: GraphHolder, plotItems, xLabels
 
     const maxItemsPerBar = d3.max(plotItems, function(plotItem: PlotItem) { return plotItem.value; });
 
-    let letterSize = 10; // it would be better to get this from the DOM - but it would decrease performance...
+    let letterSize = 9; // it would be better to get this from the DOM - but it would decrease performance...
     const margin = {
         top: 20, 
         right: 15, 
@@ -1344,6 +1348,8 @@ export function d3HistogramChartForValues(graphHolder: GraphHolder, plotItems, c
     if (isSmallFormat) {
         barLabelClass = "histogram-barLabelSmall";
     }
+
+    if (!graphHolder.hideNumbersOnHistograms) {
     const barLabels = chartBody.selectAll("." + barLabelClass)
             .data(data)
         .enter().append("text")
@@ -1353,7 +1359,8 @@ export function d3HistogramChartForValues(graphHolder: GraphHolder, plotItems, c
             .attr("y", function(d: any) { return chart.height - yHeightScale(d.y) - 12; } )
             .attr("dx", -3) // padding-right
             .attr("dy", ".35em") // vertical-align: middle
-            .attr("text-anchor", "middle") // text-align: middle
+            .attr("text-anchor", "middle"); // text-align: middle
+    }
               
     // Overlay stories on each bar...
     const storyDisplayItems = bars.selectAll(".histogram-story")
@@ -1926,7 +1933,7 @@ export function d3ContingencyTable(graphHolder: GraphHolder, xAxisQuestion, yAxi
     }
     addTitlePanelForChart(chartPane, chartTitle);
 
-    const letterSize = 10; // it would be better to get this from the DOM - but it would decrease performance...
+    const letterSize = 9; // it would be better to get this from the DOM - but it would decrease performance...
 
     const margin = {
         top: 36, 
@@ -2127,7 +2134,7 @@ export function d3ContingencyTable(graphHolder: GraphHolder, xAxisQuestion, yAxi
         }
 
         if (!graphHolder.hideNumbersOnContingencyGraphs) {
-            const letterSize = 10;
+            const letterSize = 9;
             const minSizeToDrawLabelInside = 24; 
             const circleLabels = chartBody.selectAll(".contingencyChart-circle-label")
                 .data(observedPlotItems)

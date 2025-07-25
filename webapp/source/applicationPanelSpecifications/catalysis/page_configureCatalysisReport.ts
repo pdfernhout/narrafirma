@@ -316,6 +316,19 @@ const panel: Panel = {
                 return !!Globals.clientState().haveCatalysisReportAndShowingAdvancedOptions();
             }
         },
+        {
+            id: "configureCatalysisReport_hideNumbersOnHistograms",
+            valueType: "boolean",
+            valuePath: "/clientState/catalysisReportIdentifier/hideNumbersOnHistograms",
+            displayType: "checkbox",
+            displayConfiguration: "Hide counts above histogram columns",
+            displayPrompt: `To <strong>hide column counts</strong> on histograms, check this box. 
+                (This choice affects graphs in the application and the printed report.)`,
+            displayVisible: function(panelBuilder, model) {
+                return !!Globals.clientState().haveCatalysisReportAndShowingAdvancedOptions();
+            }
+        },
+
 
         ////////////////////////////////////////////////////// contingency tables
         {

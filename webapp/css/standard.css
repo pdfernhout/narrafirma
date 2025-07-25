@@ -1458,7 +1458,6 @@ input[type="checkbox"].graphBrowserCheckbox {
 .singleChartStyleWithoutChildren {
     display: inline-block;
     vertical-align: top;
-    border: 1px solid lightgray;
     padding: 1em;
 }
 
@@ -1973,6 +1972,7 @@ label {
     background-color: inherit;
     font-size: 0.9em;
     font-weight: normal;
+    margin: 0.5em auto 0 auto;
 } 
 
 h6.narrafirma-statistics-panel-small {
@@ -1989,7 +1989,7 @@ h6.narrafirma-statistics-panel-small {
     background-color: inherit;
     font-size: 0.9em;
     width: max-content;
-    margin: 0 auto 0 auto;
+    margin: 0.5em auto 0 auto;
 }
 
 table.narrafirma-mw-all-results {
@@ -2361,7 +2361,7 @@ td.narrafirma-mw-nested-title, td.narrafirma-mw-nested-stats {
 
 .histogram-barLabelSmall {
     fill: black;
-    font-size: 0.9em;    
+    font-size: 0.85em;    
 }
 
 .histogram-story.even {
@@ -2500,7 +2500,7 @@ td.narrafirma-mw-nested-title, td.narrafirma-mw-nested-stats {
 }
 
 .scatterplot.x-axis-label.start, .scatterplot.y-axis-label.start, .scatterplot.x-axis-label.end, .scatterplot.y-axis-label.end {
-    font-size: 1.1em;
+    font-size: 0.8em;
 }
 
 /* correlation map */

@@ -51,6 +51,7 @@ class AnnotationGraphBrowser {
             customGraphHeight: Project.default_customDisplayGraphHeight,
             customGraphPadding: 0,
             hideNumbersOnContingencyGraphs: false,
+            hideNumbersOnHistograms: false,
             patternDisplayConfiguration: {hideNoAnswerValues: true, useLumpingCommands: true},
             graphTypesToCreate: {},
             lumpingCommands: {}
