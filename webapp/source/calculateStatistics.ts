@@ -387,8 +387,8 @@ export function calculateStatisticsForMiniHistograms(scaleQuestion, firstChoiceQ
     for (let i = 0; i < options.length; i++) {
         const x = values[options[i]];
         allNs.push(x.length);
-        if (x.length < minimumStoryCountRequiredForTest) continue;
         n += x.length;
+        if (x.length < minimumStoryCountRequiredForTest) continue;
 
         if (options.length === 1) {
             return {statsSummary: "None (too few options to compare)", statsDetailed: ["n"], n: n};
@@ -449,8 +449,8 @@ export function calculateStatisticsForMultipleHistogram(scaleQuestion, choiceQue
     for (let i = 0; i < options.length; i++) {
         const x = values[options[i]];
         allNs.push(x.length);
-        if (x.length < minimumStoryCountRequiredForTest) continue;
         n += x.length;
+        if (x.length < minimumStoryCountRequiredForTest) continue;
 
         if (options.length === 1) {
             return {statsSummary: "None (too few options to compare)", statsDetailed: ["n"], n: n};
