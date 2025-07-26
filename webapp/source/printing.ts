@@ -363,7 +363,6 @@ export function printCatalysisReport() {
     options["catalysisReportIdentifier"] = catalysisReportIdentifier;
 
     options["outputFontModifierPercent"] = parseInt(project.tripleStore.queryLatestC(catalysisReportIdentifier, "outputFontModifierPercent"));
-    options["adjustedCSS"] = graphStyle.modifyFontSize(graphStyle.graphResultsPaneCSS(null), options["outputFontModifierPercent"]);
 
     const strengthsToInclude = [];
     const strengthTextsToReport = [];
@@ -481,7 +480,7 @@ function printCatalysisReportWithObservationGraphsOnly(project, catalysisReportI
 
                 // when using canvas.toBlob either the ZIP file or the PNG files come out corrupted
                 // found this method to fix it online and it works
-                const canvas = graphStyle.preparePNGToSaveToFile(svgNode, options.customGraphCSS, graphHolder.outputFontModifierPercent, false);
+                const canvas = graphStyle.preparePNGToSaveToFile(svgNode, options.customGraphCSS, graphHolder.outputFontModifierPercent);
                 const dataURI = canvas.toDataURL("image/png");
                 const imageData = graphStyle.dataURItoBlob(dataURI);
                 zipFile.file(graphTitle + ".png", imageData, {binary: true});
@@ -1144,7 +1143,6 @@ function initializedGraphHolder(allStories, options) {
         customGraphWidth: options.customGraphWidth,
         customGraphHeight: options.customGraphHeight,
         patternDisplayConfiguration: {hideNoAnswerValues: false, useLumpingCommands: true},
-        adjustedCSS: options.adjustedCSS,
         lumpingCommands: options.lumpingCommands,
         graphTypesToCreate: {}
     };
@@ -1267,7 +1265,11 @@ function printGraphWithGraphNode(graphNode: HTMLElement, graphHolder: GraphHolde
     styleNode.setAttribute('type', 'text/css');
 
     let styleDefs = graphStyle.graphResultsPaneCSS(svgNode);
-    styleDefs = graphStyle.modifyFontSize(styleDefs, graphHolder.outputFontModifierPercent);
+    // this is messy, but for some reason the fonts in exported PNG files come out shrunken
+    // so if the user has not set a modifier, set one of 120% just to make the fonts look more like they do on the screen
+    let modifier = graphHolder.outputFontModifierPercent;
+    if (!modifier) modifier = 120;
+    styleDefs = graphStyle.modifyFontSize(styleDefs, modifier);
 
     const styleNodeText =  "<![CDATA[\n" + styleDefs + ((customCSS) ? customCSS : "") + "]]>";
     styleNode.innerHTML = styleNodeText;

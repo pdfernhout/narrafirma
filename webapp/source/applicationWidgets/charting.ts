@@ -257,7 +257,6 @@ export function initializedGraphHolder(allStories, options) {
         customGraphWidth: options.customGraphWidth,
         customGraphHeight: options.customGraphHeight,
         patternDisplayConfiguration: {hideNoAnswerValues: false, useLumpingCommands: true},
-        adjustedCSS: options.adjustedCSS,
         graphTypesToCreate: {},
         lumpingCommands: {}
     };
@@ -967,10 +966,10 @@ export function d3BarChartForValues(graphHolder: GraphHolder, plotItems, xLabels
 
     let letterSize = 9; // it would be better to get this from the DOM - but it would decrease performance...
     const margin = {
-        top: 20, 
-        right: 15, 
-        bottom: 30 + longestLabelTextLength * letterSize + (graphHolder.customGraphPadding || 0), 
-        left: 70};
+        top: letterSize * 3, 
+        right: letterSize * 2, 
+        bottom: letterSize * 3 + longestLabelTextLength * letterSize + (graphHolder.customGraphPadding || 0), 
+        left: letterSize * 10};
     if (maxItemsPerBar >= 100) margin.left += letterSize;
     if (maxItemsPerBar >= 1000) margin.left += letterSize;
     
@@ -1031,7 +1030,7 @@ export function d3BarChartForValues(graphHolder: GraphHolder, plotItems, xLabels
         .data(plotItems)
         .enter().append("text")
             .text(function(plotItem: StoryPlotItem) { if (plotItem.value > 0) { return "" + plotItem.value; } else { return ""}; })
-            .attr("class", "barChart-label")
+            .attr("class", "barChart-barLabel")
             .attr("x", function(plotItem: StoryPlotItem) { return xScale(plotItem.name) + xScale.rangeBand() / 2; } )
             .attr("y", function(plotItem: StoryPlotItem) { return chart.height - yHeightScale(plotItem.value) - 12; } )
             .attr("dx", -3) // padding-right
@@ -1238,7 +1237,8 @@ export function d3HistogramChartForDataIntegrity(graphHolder: GraphHolder, scale
 
 export function d3HistogramChartForValues(graphHolder: GraphHolder, plotItems, choiceQuestion, choice, unansweredCount, matchingStories, style, chartSize, chartTitle, xAxisLabel, xAxisStart, xAxisEnd, storiesSelectedCallback, hideStatsPanel = false) {
     
-    const margin = {top: 20, right: 15, bottom: 60, left: 70};
+    const letterSize = 9;
+    const margin = {top: letterSize * 3, right: letterSize * 2, bottom: letterSize * 8, left: letterSize * 10};
     if (plotItems.length > 1000) margin.left += 20;
 
     const isSmallFormat = style == "smallChartStyle";

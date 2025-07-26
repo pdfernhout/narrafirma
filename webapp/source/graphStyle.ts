@@ -43,6 +43,7 @@ export function graphResultsPaneCSS(svgNode) {
                 }
             }
         }
+        console.log("styleDefs", styleDefs);
     }
 
     const varStatements = Object.keys(rootDefs);
@@ -118,20 +119,20 @@ export function prepareSVGToSaveToFile(svgNode, customCSS, outputFontModifierPer
     return head + "\n" + styleText + "\n" + svgText + "\n" + foot;
 }
 
-export function preparePNGToSaveToFile(svgNode, customCSS, outputFontModifierPercent = null, enlargeFonts = false) {
+export function preparePNGToSaveToFile(svgNode, customCSS, outputFontModifierPercent = null) {
     const styleNode = document.createElement("style");
-
-    // cfk this is a kludge to deal with the fact that font sizes come out weirdly small 
-    // but only when you export the file directly from the Pattern Explorer page (with the Do it list)
-    // in all other situations (report, export all) the font sizes in the CSS are respected
-    if (enlargeFonts) {
-        d3.select(svgNode).style('font-size', "1.1em");
-    }
 
     styleNode.setAttribute('type', 'text/css');
 
+    // the fonts in exported PNG files come out shrunken
+    // this is a problem with the version of canvg we are using, which is very old
+    // until we update that library we will just brute-force an overall font increase
+    // if this method has been called from printing a catalysis report, the user might have set a modifier; in that case use theirs
+    let modifier = outputFontModifierPercent;
+    if (!modifier) modifier = 120;
+
     let styleText = graphResultsPaneCSS(svgNode);
-    styleText = "<![CDATA[" + modifyFontSize(styleText, outputFontModifierPercent);
+    styleText = "<![CDATA[" + modifyFontSize(styleText, modifier);
     if (customCSS) styleText += customCSS;
     styleText += "]]>";
 

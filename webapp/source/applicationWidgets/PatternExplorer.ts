@@ -856,7 +856,7 @@ class PatternExplorer {
                 } else if (options.outputGraphFormat === "PNG") {
                     // when using canvas.toBlob either the ZIP file or the PNG files come out corrupted
                     // found this method to fix it online and it works
-                    const canvas = graphStyle.preparePNGToSaveToFile(svgNode, options.customGraphCSS, graphHolder.outputFontModifierPercent, false);
+                    const canvas = graphStyle.preparePNGToSaveToFile(svgNode, options.customGraphCSS, graphHolder.outputFontModifierPercent);
                     const dataURI = canvas.toDataURL("image/png");
                     const imageData = graphStyle.dataURItoBlob(dataURI);
                     zipFile.file(graphTitle + ".png", imageData, {binary: true});
@@ -884,7 +884,6 @@ class PatternExplorer {
                     showStatsPanelsInReport: false,
                     customStatsTextReplacements: null,
                     patternDisplayConfiguration: {hideNoAnswerValues: false, useLumpingCommands: true},
-                    adjustedCSS: null,
                     graphTypesToCreate: {},
 
                     // things that should come from the report settings
@@ -1877,10 +1876,13 @@ class PatternExplorer {
 
             } else if (fileTypeToSave === "PNG") {
 
-                const canvas = graphStyle.preparePNGToSaveToFile(svgNodes[0], this.graphHolder.customGraphCSS, null, true);
-                canvas.toBlob(function(blob) {
-                    saveAs(blob, patternTitle + ".png");
-                })
+                const canvas = graphStyle.preparePNGToSaveToFile(svgNodes[0], this.graphHolder.customGraphCSS, this.graphHolder.outputFontModifierPercent);
+                const dataURI = canvas.toDataURL("image/png");
+                const imageData = graphStyle.dataURItoBlob(dataURI);
+                saveAs(imageData, patternTitle + ".png");
+                // thought this might be the problem (this was the old method) but changing it does not help
+                // canvas.toBlob(function(blob) { saveAs(blob, patternTitle + ".png");})
+
             }
 
         } else {
@@ -1901,7 +1903,7 @@ class PatternExplorer {
 
                     // when using canvas.toBlob either the ZIP file or the PNG files come out corrupted
                     // found this method to fix it online and it works
-                    const canvas = graphStyle.preparePNGToSaveToFile(svgNodes[i], this.graphHolder.customGraphCSS, null, true);
+                    const canvas = graphStyle.preparePNGToSaveToFile(svgNodes[i], this.graphHolder.customGraphCSS, this.graphHolder.outputFontModifierPercent);
                     const dataURI = canvas.toDataURL("image/png");
                     const imageData = graphStyle.dataURItoBlob(dataURI);
                     zipFile.file(patternTitle + " " + graphTitle + ".png", imageData, {binary: true});

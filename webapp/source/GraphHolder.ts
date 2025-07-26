@@ -39,6 +39,5 @@ export interface GraphHolder {
     customGraphHeight: number;
     customGraphPadding?: number;
     outputFontModifierPercent?: number;
-    adjustedCSS?: string;
     customGraphCSS?: string;
 }
