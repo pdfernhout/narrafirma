@@ -291,6 +291,29 @@ const panel: Panel = {
             }
         },
 
+        ////////////////////////////////////////////////////// bar charts
+        {
+            id: "configureCatalysisReport_DrawingBarGraphsHeader",
+            valueType: "none",
+            displayType: "header",
+            displayPrompt: "Bar graphs",
+            displayVisible: function(panelBuilder, model) {
+                return !!Globals.clientState().haveCatalysisReportAndShowingAdvancedOptions();
+            }
+        },
+        {
+            id: "configureCatalysisReport_hideNumbersOnBarGraphs",
+            valueType: "boolean",
+            valuePath: "/clientState/catalysisReportIdentifier/hideNumbersOnBarGraphs",
+            displayType: "checkbox",
+            displayConfiguration: "Hide counts above bar-graph columns",
+            displayPrompt: `To <strong>hide column counts</strong> on bar graphs, check this box. 
+                (This choice affects graphs in the application and the printed report.)`,
+            displayVisible: function(panelBuilder, model) {
+                return !!Globals.clientState().haveCatalysisReportAndShowingAdvancedOptions();
+            }
+        },
+
 
         ////////////////////////////////////////////////////// histograms
         {

@@ -278,6 +278,7 @@ class PatternExplorer {
             customGraphPadding: Project.default_customGraphPadding,
             hideNumbersOnContingencyGraphs: false,
             hideNumbersOnHistograms: false,
+            hideNumbersOnBarGraphs: false,
             graphTypesToCreate: Project.default_graphTypesToCreate,
             patternDisplayConfiguration: {hideNoAnswerValues: false, useLumpingCommands: true},
             lumpingCommands: {}
@@ -838,6 +839,7 @@ class PatternExplorer {
         options["customLabelLengthLimit"] = parseInt(project.tripleStore.queryLatestC(reportID, "customLabelLengthLimit") || Project.default_customLabelLengthLimit); 
         options["hideNumbersOnContingencyGraphs"] = project.tripleStore.queryLatestC(reportID, "hideNumbersOnContingencyGraphs") || false;
         options["hideNumbersOnHistograms"] = project.tripleStore.queryLatestC(reportID, "hideNumbersOnHistograms") || false;
+        options["hideNumbersOnBarGraphs"] = project.tripleStore.queryLatestC(reportID, "hideNumbersOnBarGraphs") || false;
         options["customGraphWidth"] = parseInt(project.tripleStore.queryLatestC(reportID, "customReportGraphWidth")) || Project.default_customReportGraphWidth;
         options["customGraphHeight"] = parseInt(project.tripleStore.queryLatestC(reportID, "customReportGraphHeight")) || Project.default_customReportGraphHeight;
 
@@ -899,6 +901,7 @@ class PatternExplorer {
                     customLabelLengthLimit: options.customLabelLengthLimit,
                     hideNumbersOnContingencyGraphs: options.hideNumbersOnContingencyGraphs,  
                     hideNumbersOnHistograms: options.hideNumbersOnHistograms,
+                    hideNumbersOnBarGraphs: options.hideNumbersOnBarGraphs,
                     customGraphWidth: options.customGraphWidth,
                     customGraphHeight: options.customGraphHeight,                  
                     
@@ -1172,6 +1175,7 @@ class PatternExplorer {
         
         this.graphHolder.hideNumbersOnContingencyGraphs = this.project.tripleStore.queryLatestC(this.catalysisReportIdentifier, "hideNumbersOnContingencyGraphs"); 
         this.graphHolder.hideNumbersOnHistograms = this.project.tripleStore.queryLatestC(this.catalysisReportIdentifier, "hideNumbersOnHistograms"); 
+        this.graphHolder.hideNumbersOnBarGraphs = this.project.tripleStore.queryLatestC(this.catalysisReportIdentifier, "hideNumbersOnBarGraphs"); 
         this.updateStyleSheetForCustomGraphCSS();
 
         // get stories 

@@ -25,6 +25,7 @@ export interface GraphHolder {
     customLabelLengthLimit: string;
     hideNumbersOnContingencyGraphs: boolean;
     hideNumbersOnHistograms: boolean;
+    hideNumbersOnBarGraphs: boolean;
     excludeStoryTooltips?: boolean; // this is used to suppress story tooltips in "data integrity" graphs where stories are not the things being represented
     patternDisplayConfiguration: PatternDisplayConfiguration;
     dataForCSVExport?: {};

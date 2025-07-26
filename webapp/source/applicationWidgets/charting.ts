@@ -250,6 +250,7 @@ export function initializedGraphHolder(allStories, options) {
         customLabelLengthLimit: options.customLabelLengthLimit,
         hideNumbersOnContingencyGraphs: options.hideNumbersOnContingencyGraphs,
         hideNumbersOnHistograms: options.hideNumbersOnHistograms,
+        hideNumbersOnBarGraphs: options.hideNumbersOnBarGraphs,
         outputGraphFormat: options.outputGraphFormat,
         outputFontModifierPercent: options.outputFontModifierPercent,
         showStatsPanelsInReport: options.showStatsPanelsInReport,
@@ -1026,16 +1027,18 @@ export function d3BarChartForValues(graphHolder: GraphHolder, plotItems, xLabels
         .attr("height", function(plotItem: StoryPlotItem) { return yHeightScale(plotItem.value); })
         .attr("width", xScale.rangeBand());
 
-    const barLabels = chartBody.selectAll(".barChart-label")
-        .data(plotItems)
-        .enter().append("text")
-            .text(function(plotItem: StoryPlotItem) { if (plotItem.value > 0) { return "" + plotItem.value; } else { return ""}; })
-            .attr("class", "barChart-barLabel")
-            .attr("x", function(plotItem: StoryPlotItem) { return xScale(plotItem.name) + xScale.rangeBand() / 2; } )
-            .attr("y", function(plotItem: StoryPlotItem) { return chart.height - yHeightScale(plotItem.value) - 12; } )
-            .attr("dx", -3) // padding-right
-            .attr("dy", ".35em") // vertical-align: middle
-            .attr("text-anchor", "middle") // text-align: middle
+    if (!graphHolder.hideNumbersOnBarGraphs) {
+        const barLabels = chartBody.selectAll(".barChart-label")
+            .data(plotItems)
+            .enter().append("text")
+                .text(function(plotItem: StoryPlotItem) { if (plotItem.value > 0) { return "" + plotItem.value; } else { return ""}; })
+                .attr("class", "barChart-barLabel")
+                .attr("x", function(plotItem: StoryPlotItem) { return xScale(plotItem.name) + xScale.rangeBand() / 2; } )
+                .attr("y", function(plotItem: StoryPlotItem) { return chart.height - yHeightScale(plotItem.value) - 12; } )
+                .attr("dx", -3) // padding-right
+                .attr("dy", ".35em") // vertical-align: middle
+                .attr("text-anchor", "middle") // text-align: middle
+    }
             
     // Overlay stories on each bar...
     const storyDisplayItems = bars.selectAll(".barChart-story")
@@ -1350,17 +1353,17 @@ export function d3HistogramChartForValues(graphHolder: GraphHolder, plotItems, c
     }
 
     if (!graphHolder.hideNumbersOnHistograms) {
-    const barLabels = chartBody.selectAll("." + barLabelClass)
-            .data(data)
-        .enter().append("text")
-            .text(function(d: any) { if (d.y > 0) { return "" + d.y; } else { return ""}; })
-            .attr("class", barLabelClass)
-            .attr("x", function(d: any) { return xScale(d.x) + xScale(d.dx) / 2; } )
-            .attr("y", function(d: any) { return chart.height - yHeightScale(d.y) - 12; } )
-            .attr("dx", -3) // padding-right
-            .attr("dy", ".35em") // vertical-align: middle
-            .attr("text-anchor", "middle"); // text-align: middle
-    }
+        const barLabels = chartBody.selectAll("." + barLabelClass)
+                .data(data)
+            .enter().append("text")
+                .text(function(d: any) { if (d.y > 0) { return "" + d.y; } else { return ""}; })
+                .attr("class", barLabelClass)
+                .attr("x", function(d: any) { return xScale(d.x) + xScale(d.dx) / 2; } )
+                .attr("y", function(d: any) { return chart.height - yHeightScale(d.y) - 12; } )
+                .attr("dx", -3) // padding-right
+                .attr("dy", ".35em") // vertical-align: middle
+                .attr("text-anchor", "middle"); // text-align: middle
+        }
               
     // Overlay stories on each bar...
     const storyDisplayItems = bars.selectAll(".histogram-story")

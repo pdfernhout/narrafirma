@@ -357,6 +357,7 @@ export function printCatalysisReport() {
     options["printItemIndexNumbers"] = project.tripleStore.queryLatestC(catalysisReportIdentifier, "printItemIndexNumbers") || false;
     options["hideNumbersOnContingencyGraphs"] = project.tripleStore.queryLatestC(catalysisReportIdentifier, "hideNumbersOnContingencyGraphs") || false;
     options["hideNumbersOnHistograms"] = project.tripleStore.queryLatestC(catalysisReportIdentifier, "hideNumbersOnHistograms") || false;
+    options["hideNumbersOnBarGraphs"] = project.tripleStore.queryLatestC(catalysisReportIdentifier, "hideNumbersOnBarGraphs") || false;
     options["useTableForInterpretationsFollowingObservation"] = project.tripleStore.queryLatestC(catalysisReportIdentifier, "useTableForInterpretationsFollowingObservation") || false;
     options["customGraphWidth"] = parseInt(project.tripleStore.queryLatestC(catalysisReportIdentifier, "customReportGraphWidth")) || Project.default_customReportGraphWidth;
     options["customGraphHeight"] = parseInt(project.tripleStore.queryLatestC(catalysisReportIdentifier, "customReportGraphHeight")) || Project.default_customReportGraphHeight;
@@ -1136,6 +1137,7 @@ function initializedGraphHolder(allStories, options) {
         customLabelLengthLimit: options.customLabelLengthLimit,
         hideNumbersOnContingencyGraphs: options.hideNumbersOnContingencyGraphs,
         hideNumbersOnHistograms: options.hideNumbersOnHistograms,
+        hideNumbersOnBarGraphs: options.hideNumbersOnBarGraphs,
         outputGraphFormat: options.outputGraphFormat,
         outputFontModifierPercent: options.outputFontModifierPercent,
         showStatsPanelsInReport: options.showStatsPanelsInReport,
