@@ -46,7 +46,7 @@ function add_catalysisReportGraphTypesChooser(panelBuilder: PanelBuilder, model,
     const graphTypesToDisplayNamesMap = {
         "bar graphs": "bar graphs (choices)",
         "histograms": "histograms (scales)",
-        "tables": "tables (choices + choices)",
+        "tables": "contingency tables (choices + choices)",
         "multiple histograms": "histogram sets (scales + choices)",
         "scatterplots": "scatterplots (scales + scales)",
         "contingency-histogram tables": "histogram tables (choices + choices + scales)",

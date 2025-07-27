@@ -42,6 +42,7 @@ interface MapLink {
 }
 
 const maxRangeLabelLength = 26;
+const letterSize = 10; // it would be better to get this from the DOM - but it would decrease performance...
 
 const defaultStatsTexts = {
     "count": "Count",
@@ -264,7 +265,7 @@ export function initializedGraphHolder(allStories, options) {
     return graphHolder;
 }
 
-const defaultLargeGraphWidth = 800;
+const defaultLargeGraphWidth = 900;
 
 function makeChartFramework(chartPane: HTMLElement, chartType, size, margin, customGraphWidth, customGraphHeight) {
 
@@ -596,7 +597,6 @@ function addXAxisLabel(chart, label, options: AxisOptions) {
     let yPosition;
     let className;
 
-    const letterSize = 9;
     if (options.placeAxisNamesInUpperRight) {
         options.textAnchor = "end";
         xPosition = chart.fullWidth - chart.margin.right;
@@ -641,7 +641,6 @@ function addYAxisLabel(chart, label, options: AxisOptions) {
     let rotateAngle;
 
     // Y and X are flipped because of the rotate
-    const letterSize = 9;
     if (options.placeAxisNamesInUpperRight) {
         options.textAnchor = "start";
         yPosition = -(chart.fullWidth - chart.margin.right + letterSize); // negative because of rotation
@@ -965,7 +964,6 @@ export function d3BarChartForValues(graphHolder: GraphHolder, plotItems, xLabels
 
     const maxItemsPerBar = d3.max(plotItems, function(plotItem: PlotItem) { return plotItem.value; });
 
-    let letterSize = 9; // it would be better to get this from the DOM - but it would decrease performance...
     const margin = {
         top: letterSize * 3, 
         right: letterSize * 2, 
@@ -1240,7 +1238,6 @@ export function d3HistogramChartForDataIntegrity(graphHolder: GraphHolder, scale
 
 export function d3HistogramChartForValues(graphHolder: GraphHolder, plotItems, choiceQuestion, choice, unansweredCount, matchingStories, style, chartSize, chartTitle, xAxisLabel, xAxisStart, xAxisEnd, storiesSelectedCallback, hideStatsPanel = false) {
     
-    const letterSize = 9;
     const margin = {top: letterSize * 3, right: letterSize * 2, bottom: letterSize * 8, left: letterSize * 10};
     if (plotItems.length > 1000) margin.left += 20;
 
@@ -1936,11 +1933,9 @@ export function d3ContingencyTable(graphHolder: GraphHolder, xAxisQuestion, yAxi
     }
     addTitlePanelForChart(chartPane, chartTitle);
 
-    const letterSize = 9; // it would be better to get this from the DOM - but it would decrease performance...
-
     const margin = {
-        top: 36, 
-        right: 36, 
+        top: 40, 
+        right: 40, 
         bottom: longestColumnTextLength * letterSize + (graphHolder.customGraphPadding || 0), 
         left: longestRowTextLength * letterSize + (graphHolder.customGraphPadding || 0)
     };
@@ -2136,9 +2131,10 @@ export function d3ContingencyTable(graphHolder: GraphHolder, xAxisQuestion, yAxi
                     .attr("cy", function (plotItem) { return yScale(plotItem.y) + yScale.rangeBand() / 2.0; } );
         }
 
+        // this adjustment in letterSize is because these fonts are a little smaller than the rest
+        // the 2 was determined by trial and error (it looks best)
+        const letterSizeForBubbleNumbers = letterSize - 2; 
         if (!graphHolder.hideNumbersOnContingencyGraphs) {
-            const letterSize = 9;
-            const minSizeToDrawLabelInside = 24; 
             const circleLabels = chartBody.selectAll(".contingencyChart-circle-label")
                 .data(observedPlotItems)
                 .enter().append("text")
@@ -2155,17 +2151,24 @@ export function d3ContingencyTable(graphHolder: GraphHolder, xAxisQuestion, yAxi
                     .attr("class", "contingencyChart-circle-label")
                     .attr("x", function (plotItem) { return xScale(plotItem.x) + xScale.rangeBand() / 2.0; } )
                     .attr("y", function (plotItem) { return yScale(plotItem.y) + yScale.rangeBand() / 2.0; } )
-                    .attr("dx", function(plotItem) { if (xValueMultiplier * plotItem.value >= plotItem.text.length * letterSize) return 0; else return "0.35em"; }) 
+                    .attr("dx", function(plotItem) { 
+                        if (xValueMultiplier * plotItem.value >= plotItem.text.length * letterSizeForBubbleNumbers) return 0; else return "0.3em"; 
+                    }) 
                     .attr("dy", function(plotItem) { 
-                        if (xValueMultiplier * plotItem.value >= plotItem.text.length * letterSize) {
-                            return "0.35em"; 
+                        if (xValueMultiplier * plotItem.value >= plotItem.text.length * letterSizeForBubbleNumbers) { 
+                            return "0.3em"; // depends on font size of labels
                         } else {
-                            // try to place text below bubble (note that the expected bubble is ignored)
-                            const displacement = 1.2 + yValueMultiplier * plotItem.value / 12; // these numbers were arrived at by trial and error
+                            // place text below bubble
+                            // displacement amount arrived at by trial and error (looks best)
+                            // note that the expected bubble is ignored, so if it is a lot bigger the numbers might be written over it
+                            const bubbleHeight = (yValueMultiplier * plotItem.value);
+                            const displacement = 1 + bubbleHeight / (letterSizeForBubbleNumbers * 1.8); 
                             return "" + displacement + "em";
                         }
                     }) 
-                    .attr("text-anchor", function(plotItem) { if (xValueMultiplier * plotItem.value >= plotItem.text.length * letterSize) return "middle"; else return "left"; }) 
+                    .attr("text-anchor", function(plotItem) { 
+                        if (xValueMultiplier * plotItem.value >= plotItem.text.length * letterSizeForBubbleNumbers) return "middle"; else return "left"; 
+                    }) 
             }
     }
 

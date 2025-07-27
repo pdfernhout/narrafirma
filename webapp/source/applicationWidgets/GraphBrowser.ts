@@ -64,9 +64,9 @@ class GraphBrowser {
             customGraphWidth: Project.default_customDisplayGraphWidth,
             customGraphHeight: Project.default_customDisplayGraphHeight,
             customGraphPadding: Project.default_customGraphPadding,
-            hideNumbersOnContingencyGraphs: false,
-            hideNumbersOnHistograms: false,
-            hideNumbersOnBarGraphs: false,
+            hideNumbersOnContingencyGraphs: true,
+            hideNumbersOnHistograms: true,
+            hideNumbersOnBarGraphs: true,
             patternDisplayConfiguration: {hideNoAnswerValues: false, useLumpingCommands: true},
             graphTypesToCreate: {},
             lumpingCommands: {}
@@ -124,6 +124,21 @@ class GraphBrowser {
                 m("span.narrafirma-graphbrowser-versus", "versus"),
                 m("select.graphBrowserSelect", {onchange: (event) => { this.yAxisSelectValue = event.target.value; this.updateGraph(); }}, this.calculateOptionsForChoices(this.yAxisSelectValue)),
                 m("br"),
+                m("div.graphBrowserShowCountsCheckboxDiv", [
+                    m("input[type=checkbox].graphBrowserShowCountsCheckbox",
+                        {
+                            id: "graphBrowserShowCountsCheckbox", 
+                            checked: !this.graphHolder.hideNumbersOnHistograms, // they all change together so you can just look at one setting
+                            onchange: (event) => { 
+                                this.graphHolder.hideNumbersOnContingencyGraphs = !event.target.checked; 
+                                this.graphHolder.hideNumbersOnHistograms = !event.target.checked; 
+                                this.graphHolder.hideNumbersOnBarGraphs = !event.target.checked; 
+                                this.updateGraph(); 
+                            }
+                        }), 
+                    m("label", {"for": "graphBrowserShowCountsCheckbox"}, "Show story counts"),
+                    m("br")
+                ]),
                 m("div", {config: this.insertGraphResultsPaneConfig.bind(this)}),
                 (this.selectedStories.length > 0) ? 
                     m("div.narrafirma-graphbrowser-heading", "Selected stories (" + this.selectedStories.length + ")")

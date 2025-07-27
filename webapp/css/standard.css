@@ -1399,6 +1399,14 @@ table.filterTable td {
     max-width: 40%
 }
 
+input[type="checkbox"].graphBrowserShowCountsCheckbox {
+    margin: 0.25em 0 0.25em 0.5em;
+}
+
+.graphBrowserShowCountsCheckboxDiv {
+    margin: 0.5em 0 0 0.5em;
+}
+
 input[type="checkbox"].graphBrowserCheckbox {
     margin: 0.25em 0 0.25em 1em;
 }
@@ -2431,7 +2439,7 @@ td.narrafirma-mw-nested-title, td.narrafirma-mw-nested-stats {
 }
 
 .contingencyChart-circle-label {
-    font-size: 1em;
+    font-size: 0.9em;
     fill: var(--color-graph-contingency-expected-text);
 }
 
