@@ -66,6 +66,7 @@ class GraphBrowser {
             customGraphPadding: Project.default_customGraphPadding,
             hideNumbersOnContingencyGraphs: true,
             hideNumbersOnHistograms: true,
+            hideNumbersOnHistogramSets: true,
             hideNumbersOnBarGraphs: true,
             patternDisplayConfiguration: {hideNoAnswerValues: false, useLumpingCommands: true},
             graphTypesToCreate: {},
@@ -132,6 +133,7 @@ class GraphBrowser {
                             onchange: (event) => { 
                                 this.graphHolder.hideNumbersOnContingencyGraphs = !event.target.checked; 
                                 this.graphHolder.hideNumbersOnHistograms = !event.target.checked; 
+                                this.graphHolder.hideNumbersOnHistogramSets = !event.target.checked;
                                 this.graphHolder.hideNumbersOnBarGraphs = !event.target.checked; 
                                 this.updateGraph(); 
                             }

@@ -357,6 +357,7 @@ export function printCatalysisReport() {
     options["printItemIndexNumbers"] = project.tripleStore.queryLatestC(catalysisReportIdentifier, "printItemIndexNumbers") || false;
     options["hideNumbersOnContingencyGraphs"] = project.tripleStore.queryLatestC(catalysisReportIdentifier, "hideNumbersOnContingencyGraphs") || false;
     options["hideNumbersOnHistograms"] = project.tripleStore.queryLatestC(catalysisReportIdentifier, "hideNumbersOnHistograms") || false;
+    options["hideNumbersOnHistogramSets"] = project.tripleStore.queryLatestC(catalysisReportIdentifier, "hideNumbersOnHistogramSets") || false;
     options["hideNumbersOnBarGraphs"] = project.tripleStore.queryLatestC(catalysisReportIdentifier, "hideNumbersOnBarGraphs") || false;
     options["useTableForInterpretationsFollowingObservation"] = project.tripleStore.queryLatestC(catalysisReportIdentifier, "useTableForInterpretationsFollowingObservation") || false;
     options["customGraphWidth"] = parseInt(project.tripleStore.queryLatestC(catalysisReportIdentifier, "customReportGraphWidth")) || Project.default_customReportGraphWidth;
@@ -1137,6 +1138,7 @@ function initializedGraphHolder(allStories, options) {
         customLabelLengthLimit: options.customLabelLengthLimit,
         hideNumbersOnContingencyGraphs: options.hideNumbersOnContingencyGraphs,
         hideNumbersOnHistograms: options.hideNumbersOnHistograms,
+        hideNumbersOnHistogramSets: options.hideNumbersOnHistogramSets,
         hideNumbersOnBarGraphs: options.hideNumbersOnBarGraphs,
         outputGraphFormat: options.outputGraphFormat,
         outputFontModifierPercent: options.outputFontModifierPercent,
@@ -1260,7 +1262,6 @@ function printGraphWithGraphNode(graphNode: HTMLElement, graphHolder: GraphHolde
     svgNode.setAttribute("xmlns:xlink", "http://www.w3.org/1999/xlink");
 
     const titleNode = graphNode.querySelector(".narrafirma-graph-title");
-    const embeddedTitleNode = graphNode.querySelector(".narrafirma-graph-title-embedded");
     const statisticsNode = graphNode.querySelector(".narrafirma-statistics-panel");
 
     const styleNode = document.createElement("style");
@@ -1279,7 +1280,6 @@ function printGraphWithGraphNode(graphNode: HTMLElement, graphHolder: GraphHolde
 
     const result = [];
     if (titleNode) result.push(m.trust(titleNode.outerHTML));
-    if (embeddedTitleNode) result.push(m.trust(embeddedTitleNode.outerHTML));
     
     if (graphHolder.outputGraphFormat === "PNG") {
 

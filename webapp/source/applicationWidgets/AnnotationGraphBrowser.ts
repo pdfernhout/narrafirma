@@ -52,6 +52,7 @@ class AnnotationGraphBrowser {
             customGraphPadding: 0,
             hideNumbersOnContingencyGraphs: false,
             hideNumbersOnHistograms: false,
+            hideNumbersOnHistogramSets: false,
             hideNumbersOnBarGraphs: false,
             patternDisplayConfiguration: {hideNoAnswerValues: true, useLumpingCommands: true},
             graphTypesToCreate: {},

@@ -278,6 +278,7 @@ class PatternExplorer {
             customGraphPadding: Project.default_customGraphPadding,
             hideNumbersOnContingencyGraphs: false,
             hideNumbersOnHistograms: false,
+            hideNumbersOnHistogramSets: false,
             hideNumbersOnBarGraphs: false,
             graphTypesToCreate: Project.default_graphTypesToCreate,
             patternDisplayConfiguration: {hideNoAnswerValues: false, useLumpingCommands: true},
@@ -839,6 +840,7 @@ class PatternExplorer {
         options["customLabelLengthLimit"] = parseInt(project.tripleStore.queryLatestC(reportID, "customLabelLengthLimit") || Project.default_customLabelLengthLimit); 
         options["hideNumbersOnContingencyGraphs"] = project.tripleStore.queryLatestC(reportID, "hideNumbersOnContingencyGraphs") || false;
         options["hideNumbersOnHistograms"] = project.tripleStore.queryLatestC(reportID, "hideNumbersOnHistograms") || false;
+        options["hideNumbersOnHistogramSets"] = project.tripleStore.queryLatestC(reportID, "hideNumbersOnHistogramSets") || false;
         options["hideNumbersOnBarGraphs"] = project.tripleStore.queryLatestC(reportID, "hideNumbersOnBarGraphs") || false;
         options["customGraphWidth"] = parseInt(project.tripleStore.queryLatestC(reportID, "customReportGraphWidth")) || Project.default_customReportGraphWidth;
         options["customGraphHeight"] = parseInt(project.tripleStore.queryLatestC(reportID, "customReportGraphHeight")) || Project.default_customReportGraphHeight;
@@ -901,6 +903,7 @@ class PatternExplorer {
                     customLabelLengthLimit: options.customLabelLengthLimit,
                     hideNumbersOnContingencyGraphs: options.hideNumbersOnContingencyGraphs,  
                     hideNumbersOnHistograms: options.hideNumbersOnHistograms,
+                    hideNumbersOnHistogramSets: options.hideNumbersOnHistogramSets,
                     hideNumbersOnBarGraphs: options.hideNumbersOnBarGraphs,
                     customGraphWidth: options.customGraphWidth,
                     customGraphHeight: options.customGraphHeight,                  
@@ -1175,6 +1178,7 @@ class PatternExplorer {
         
         this.graphHolder.hideNumbersOnContingencyGraphs = this.project.tripleStore.queryLatestC(this.catalysisReportIdentifier, "hideNumbersOnContingencyGraphs"); 
         this.graphHolder.hideNumbersOnHistograms = this.project.tripleStore.queryLatestC(this.catalysisReportIdentifier, "hideNumbersOnHistograms"); 
+        this.graphHolder.hideNumbersOnHistogramSets = this.project.tripleStore.queryLatestC(this.catalysisReportIdentifier, "hideNumbersOnHistogramSets"); 
         this.graphHolder.hideNumbersOnBarGraphs = this.project.tripleStore.queryLatestC(this.catalysisReportIdentifier, "hideNumbersOnBarGraphs"); 
         this.updateStyleSheetForCustomGraphCSS();
 
@@ -1894,6 +1898,9 @@ class PatternExplorer {
             const zipFile = new jszip();
 
             for (let i = 0; i < svgNodes.length; i++) {
+
+                console.log("svgNodes[i]", svgNodes[i]);
+                console.log("svgNodes[i].parentElement", svgNodes[i].parentElement);
 
                 let graphTitle = this.graphHolder.currentGraph[i].subgraphChoice;
                 graphTitle = replaceAll(graphTitle, "/", " "); // jszip interprets a forward slash as a folder designation 

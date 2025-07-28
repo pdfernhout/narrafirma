@@ -326,6 +326,30 @@ const panel: Panel = {
             }
         },
         {
+            id: "configureCatalysisReport_hideNumbersOnHistograms",
+            valueType: "boolean",
+            valuePath: "/clientState/catalysisReportIdentifier/hideNumbersOnHistograms",
+            displayType: "checkbox",
+            displayConfiguration: "Hide column counts in single histograms",
+            displayPrompt: `To <strong>hide column counts</strong> on single histograms (ones that are not in sets), check this box. 
+                (This choice affects graphs in the application and the printed report.)`,
+            displayVisible: function(panelBuilder, model) {
+                return !!Globals.clientState().haveCatalysisReportAndShowingAdvancedOptions();
+            }
+        },
+        {
+            id: "configureCatalysisReport_hideNumbersOnHistogramSets",
+            valueType: "boolean",
+            valuePath: "/clientState/catalysisReportIdentifier/hideNumbersOnHistogramSets",
+            displayType: "checkbox",
+            displayConfiguration: "Hide column counts in histograms in sets",
+            displayPrompt: `To hide column counts on <strong>histograms in sets</strong>, check this box. 
+                (This choice affects graphs in the application and the printed report.)`,
+            displayVisible: function(panelBuilder, model) {
+                return !!Globals.clientState().haveCatalysisReportAndShowingAdvancedOptions();
+            }
+        },
+        {
             id: "configureCatalysisReport_numHistogramBins",
             valuePath: "/clientState/catalysisReportIdentifier/numHistogramBins",
             valueType: "string",
@@ -335,18 +359,6 @@ const panel: Panel = {
             displayPrompt: `How many <strong>histogram bins</strong> should the data be sorted into?
                 (This choice affects graphs in the application and the printed report.
                 If no selection is made here, 20 bins will be used.)`,
-            displayVisible: function(panelBuilder, model) {
-                return !!Globals.clientState().haveCatalysisReportAndShowingAdvancedOptions();
-            }
-        },
-        {
-            id: "configureCatalysisReport_hideNumbersOnHistograms",
-            valueType: "boolean",
-            valuePath: "/clientState/catalysisReportIdentifier/hideNumbersOnHistograms",
-            displayType: "checkbox",
-            displayConfiguration: "Hide counts above histogram columns",
-            displayPrompt: `To <strong>hide column counts</strong> on histograms, check this box. 
-                (This choice affects graphs in the application and the printed report.)`,
             displayVisible: function(panelBuilder, model) {
                 return !!Globals.clientState().haveCatalysisReportAndShowingAdvancedOptions();
             }
