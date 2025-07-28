@@ -256,6 +256,7 @@ export function initializedGraphHolder(allStories, options) {
         customLabelLengthLimit: options.customLabelLengthLimit,
         hideNumbersOnContingencyGraphs: options.hideNumbersOnContingencyGraphs,
         hideNumbersOnHistograms: options.hideNumbersOnHistograms,
+        hideNumbersOnHistogramSets: options.hideNumbersOnHistogramSets,
         hideNumbersOnBarGraphs: options.hideNumbersOnBarGraphs,
         outputGraphFormat: options.outputGraphFormat,
         outputFontModifierPercent: options.outputFontModifierPercent,
@@ -357,13 +358,9 @@ function newChartPane(graphHolder: GraphHolder, styleClass: string): HTMLElement
     return chartPane;
 }
 
-function addTitlePanelForChart(chartPane, chartTitle, isEmbedded=false) {
+function addTitlePanelForChart(chartPane, chartTitle) {
     const titlePane = document.createElement("h5");
-    if (isEmbedded) {
-        titlePane.className = "narrafirma-graph-title-embedded";
-    } else {
-        titlePane.className = "narrafirma-graph-title";
-    }
+    titlePane.className = "narrafirma-graph-title";
     titlePane.innerHTML = chartTitle;
     chartPane.appendChild(titlePane);
 }
@@ -440,8 +437,6 @@ function addStatisticsPanelForChart(chartPane: HTMLElement, graphHolder: GraphHo
             html += "</table>\n";
             text += "\n";
         }
-
-        console.log("html", html);
 
         if (chartSize === "small") {
             statsPane.className = "narrafirma-statistics-panel-small narrafirma-statistics-panel";
@@ -546,7 +541,7 @@ function addYAxis(chart, yScale, options: AxisOptions) {
     if (!options.labelLengthLimit) options.labelLengthLimit = 64;
     if (!options.textAnchor) options.textAnchor = "middle";
 
-    const axisClassName = 'y-axis ' + (options.graphType || "") + (options.isSmallFormat ? "-small" : "");
+    const axisClassName = 'y-axis ' + (options.graphType || "") + (options.isSmallFormat ? " small" : "");
     
     const yAxis = d3.svg.axis()
         .scale(yScale)
@@ -1247,14 +1242,16 @@ export function d3HistogramChartForValues(graphHolder: GraphHolder, plotItems, c
     if (plotItems.length > 1000) margin.left += 20;
 
     const isSmallFormat = style == "smallChartStyle";
+    const maxChartTitleLineLength = 24;
     if (isSmallFormat) {
         margin.left = 35;
+        margin.top = (chartTitle.length <= maxChartTitleLineLength) ? 35 : 45;
     } else {
         margin.bottom += 30;
     }
 
     const chartPane = newChartPane(graphHolder, style);   
-    addTitlePanelForChart(chartPane, chartTitle, isSmallFormat); //cfktesting
+    if (!isSmallFormat) addTitlePanelForChart(chartPane, chartTitle); 
 
     const chart = makeChartFramework(chartPane, "histogram", chartSize, margin, graphHolder.customGraphWidth, graphHolder.customGraphHeight);
     const chartBody = chart.chartBody;
@@ -1354,7 +1351,13 @@ export function d3HistogramChartForValues(graphHolder: GraphHolder, plotItems, c
         barLabelClass = "histogram-barLabelSmall";
     }
 
-    if (!graphHolder.hideNumbersOnHistograms) {
+    let showNumberLabels = true;
+    if (isSmallFormat) {
+        showNumberLabels = !graphHolder.hideNumbersOnHistogramSets;
+    } else {
+        showNumberLabels = !graphHolder.hideNumbersOnHistograms;
+    }
+    if (showNumberLabels) {
         const barLabels = chartBody.selectAll("." + barLabelClass)
                 .data(data)
             .enter().append("text")
@@ -1462,9 +1465,33 @@ export function d3HistogramChartForValues(graphHolder: GraphHolder, plotItems, c
     if (storiesSelectedCallback) {
         chart.brushend = brushend;
     }
-    
-    // TODO: Put up title
-    
+
+    // include small-graph title within svg so it can be exported to PNG
+    if (isSmallFormat) {
+        // if title will be too long, split it into two lines
+        if (chartTitle.length <= maxChartTitleLineLength) { 
+            chartBody.append("text")
+                .attr("x", chart.width / 2) // must be centered; if left-aligned comes out wrong in PNG file        
+                .attr("y", 0 - margin.top / 2)
+                .attr("text-anchor", "middle")  
+                .attr("class", "narrafirma-graph-title-embedded")
+                .text(chartTitle); 
+        } else { 
+            chartBody.append("text")
+                .attr("x", chart.width / 2)      
+                .attr("y", 0 - 3 * margin.top / 4)
+                .attr("text-anchor", "middle")  
+                .attr("class", "narrafirma-graph-title-embedded")
+                .text(nameForQuestion(chart.subgraphQuestion) + ":"); 
+            chartBody.append("text")
+                .attr("x", chart.width / 2)     
+                .attr("y", 0 - 1 * margin.top / 4)
+                .attr("text-anchor", "middle")  
+                .attr("class", "narrafirma-graph-title-embedded-subtitle")
+                .text(chart.subgraphChoice); 
+        }
+    }
+
     return chart;
 }
 
@@ -1576,14 +1603,17 @@ export function d3ScatterPlot(graphHolder: GraphHolder, xAxisQuestion, yAxisQues
     
     let largeGraphWidth = graphHolder.customGraphWidth || defaultLargeGraphWidth;
     const margin = {top: 20, right: 15 + largeGraphWidth / 4, bottom: 90, left: 90};
-    if (isSmallFormat) {
-        margin.right = 20;
-    }
-    
+
     let chartTitle = "" + nameForQuestion(xAxisQuestion) + " x " + nameForQuestion(yAxisQuestion);
     if (choiceQuestion) chartTitle = "" + nameForQuestion(choiceQuestion) + ": " + option; //cfktesting
-    addTitlePanelForChart(chartPane, chartTitle, isSmallFormat); //cfktesting
+    if (!isSmallFormat) addTitlePanelForChart(chartPane, chartTitle);
 
+    const maxChartTitleLineLength = 24;
+    if (isSmallFormat) {
+        margin.right = 20;
+        margin.top = (chartTitle.length <= maxChartTitleLineLength) ? 35 : 45;
+    }
+    
     const chart = makeChartFramework(chartPane, "scatterPlot", chartSize, margin, graphHolder.customGraphWidth, graphHolder.customGraphHeight);
     const chartBody = chart.chartBody;
     
@@ -1727,6 +1757,32 @@ export function d3ScatterPlot(graphHolder: GraphHolder, xAxisQuestion, yAxisQues
         updateListOfSelectedStories(chart, storyDisplayItems, graphHolder, storiesSelectedCallback, isPlotItemSelected);
     }
     chart.brushend = brushend;
+
+    // include small-graph title within svg so it can be exported to PNG
+    if (isSmallFormat) {
+        // if title will be too long, split it into two lines
+        if (chartTitle.length <= maxChartTitleLineLength) { 
+            chartBody.append("text")
+                .attr("x", chart.width / 2) // must be centered; if left-aligned comes out wrong in PNG file        
+                .attr("y", 0 - margin.top / 2)
+                .attr("text-anchor", "middle")  
+                .attr("class", "narrafirma-graph-title-embedded")
+                .text(chartTitle); 
+        } else { 
+            chartBody.append("text")
+                .attr("x", chart.width / 2)      
+                .attr("y", 0 - 3 * margin.top / 4)
+                .attr("text-anchor", "middle")  
+                .attr("class", "narrafirma-graph-title-embedded")
+                .text(nameForQuestion(chart.subgraphQuestion) + ":"); 
+            chartBody.append("text")
+                .attr("x", chart.width / 2)     
+                .attr("y", 0 - 1 * margin.top / 4)
+                .attr("text-anchor", "middle")  
+                .attr("class", "narrafirma-graph-title-embedded-subtitle")
+                .text(chart.subgraphChoice); 
+        }
+    }
     
     return chart;
 }

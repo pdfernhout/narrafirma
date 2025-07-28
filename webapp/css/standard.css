@@ -2240,10 +2240,15 @@ td.narrafirma-mw-nested-title, td.narrafirma-mw-nested-stats {
 .narrafirma-graph-title {
     margin: 0.5em;
     font-size: 1.2em;
+    font-weight: bold;
 }
 
 .narrafirma-graph-title-embedded {
-    margin: 0.25em 0.25em 0.5em 0.25em;
+    font-size: 1em;
+    font-weight: bold;
+}
+
+.narrafirma-graph-title-embedded-subtitle{
     font-size: 1em;
     font-weight: bold;
 }
@@ -2296,7 +2301,7 @@ td.narrafirma-mw-nested-title, td.narrafirma-mw-nested-stats {
 	fill: black;
 	stroke-width: 0.5px;
 	font-family: sans-serif;
-	font-size: 1.1em;
+	font-size: 1em;
 }
 
 .x-axis-label {
@@ -2408,7 +2413,11 @@ td.narrafirma-mw-nested-title, td.narrafirma-mw-nested-stats {
     font-weight: bold;
 }
 
-.histogram.x-axis-label.small.middle {
+.histogram.x-axis-label.start.small, .histogram.x-axis-label.end.small {
+    font-size: 0.9em;
+}
+
+.histogram.x-axis-label.middle.small {
     font-size: 0.9em;
     font-weight: bold;
 }
@@ -2503,12 +2512,17 @@ td.narrafirma-mw-nested-title, td.narrafirma-mw-nested-stats {
     font-weight: bold;
 }
 
-.scatterplot.x-axis-label.small.middle, .scatterplot.y-axis-label.small.middle {
-    font-size: 1.1em;
+.scatterplot.x-axis-label.middle.small, .scatterplot.y-axis-label.middle.small {
+    font-size: 1em;
+    font-weight: bold;
 }
 
 .scatterplot.x-axis-label.start, .scatterplot.y-axis-label.start, .scatterplot.x-axis-label.end, .scatterplot.y-axis-label.end {
-    font-size: 0.8em;
+    font-size: 1em;
+}
+
+.scatterplot.x-axis-label.start.small, .scatterplot.y-axis-label.start.small, .scatterplot.x-axis-label.end.small, .scatterplot.y-axis-label.end.small {
+    font-size: 0.9em;
 }
 
 /* correlation map */
