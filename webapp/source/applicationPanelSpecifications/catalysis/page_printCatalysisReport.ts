@@ -466,7 +466,7 @@ const panel: Panel = {
                 <br><br>
                 The texts you can replace are (and must <em>exactly</em> match, to the left of the equals sign):
                 <ul>
-                <li>Count</li>
+                <li>Number of stories</li> 
                 <li>Frequency</li>
                 <li>No answer</li>
                 <li>Statistics</li>

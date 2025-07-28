@@ -46,6 +46,7 @@ const letterSize = 10; // it would be better to get this from the DOM - but it w
 
 const defaultStatsTexts = {
     "count": "Count",
+    "number of stories": "Number of stories",
     "frequency": "Frequency",
     "unanswered": "No answer",
     "stats": "Statistics",
@@ -109,9 +110,13 @@ function escapeHtml(str) {
 // lookup functions 
 //------------------------------------------------------------------------------------------------------------------------------------------
 
-export function customStatLabel(key, graphHolder) {
+export function customStatLabel(key, graphHolder, alternativeKey=null) {
     if (graphHolder.customStatsTextReplacements) {
-        return graphHolder.customStatsTextReplacements[defaultStatsTexts[key]] || defaultStatsTexts[key];
+        let result = graphHolder.customStatsTextReplacements[defaultStatsTexts[key]];
+        // this is to deal with legacy projects that have old translation keys (e.g., "Count" instead of the new "Number of stories")
+        if (!result && alternativeKey) result = graphHolder.customStatsTextReplacements[defaultStatsTexts[alternativeKey]];
+        if (!result) result = defaultStatsTexts[key];
+        return result;
     } else {
         return defaultStatsTexts[key];
     }
@@ -1007,7 +1012,7 @@ export function d3BarChartForValues(graphHolder: GraphHolder, plotItems, xLabels
     
     const yAxis = addYAxis(chart, yScale, {graphType: "barChart"});
     
-    const countLabel = customStatLabel("count", graphHolder);
+    let countLabel = customStatLabel("number of stories", graphHolder, "count"); 
     addYAxisLabel(chart, countLabel, {graphType: "barChart"});
     
     // Append brush before data to ensure titles are drown
