@@ -43,7 +43,6 @@ export function graphResultsPaneCSS(svgNode) {
                 }
             }
         }
-        console.log("styleDefs", styleDefs);
     }
 
     const varStatements = Object.keys(rootDefs);
