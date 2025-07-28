@@ -1899,9 +1899,6 @@ class PatternExplorer {
 
             for (let i = 0; i < svgNodes.length; i++) {
 
-                console.log("svgNodes[i]", svgNodes[i]);
-                console.log("svgNodes[i].parentElement", svgNodes[i].parentElement);
-
                 let graphTitle = this.graphHolder.currentGraph[i].subgraphChoice;
                 graphTitle = replaceAll(graphTitle, "/", " "); // jszip interprets a forward slash as a folder designation 
 
