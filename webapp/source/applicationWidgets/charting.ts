@@ -1245,7 +1245,9 @@ export function d3HistogramChartForValues(graphHolder: GraphHolder, plotItems, c
     const maxChartTitleLineLength = 24;
     if (isSmallFormat) {
         margin.left = 35;
-        margin.top = (chartTitle.length <= maxChartTitleLineLength) ? 35 : 45;
+        margin.top = 40;
+        if (chartTitle.length > maxChartTitleLineLength) margin.top += 30;
+        if (!graphHolder.hideNumbersOnHistogramSets) margin.top += 10;
     } else {
         margin.bottom += 30;
     }
@@ -1479,13 +1481,13 @@ export function d3HistogramChartForValues(graphHolder: GraphHolder, plotItems, c
         } else { 
             chartBody.append("text")
                 .attr("x", chart.width / 2)      
-                .attr("y", 0 - 3 * margin.top / 4)
+                .attr("y", 0 - margin.top / 2 - 20)
                 .attr("text-anchor", "middle")  
                 .attr("class", "narrafirma-graph-title-embedded")
                 .text(nameForQuestion(chart.subgraphQuestion) + ":"); 
             chartBody.append("text")
                 .attr("x", chart.width / 2)     
-                .attr("y", 0 - 1 * margin.top / 4)
+                .attr("y", 0 - margin.top / 2)
                 .attr("text-anchor", "middle")  
                 .attr("class", "narrafirma-graph-title-embedded-subtitle")
                 .text(chart.subgraphChoice); 
@@ -1611,7 +1613,8 @@ export function d3ScatterPlot(graphHolder: GraphHolder, xAxisQuestion, yAxisQues
     const maxChartTitleLineLength = 24;
     if (isSmallFormat) {
         margin.right = 20;
-        margin.top = (chartTitle.length <= maxChartTitleLineLength) ? 35 : 45;
+        margin.top = 35;
+        if (chartTitle.length > maxChartTitleLineLength) margin.top += 30;
     }
     
     const chart = makeChartFramework(chartPane, "scatterPlot", chartSize, margin, graphHolder.customGraphWidth, graphHolder.customGraphHeight);
@@ -1771,13 +1774,13 @@ export function d3ScatterPlot(graphHolder: GraphHolder, xAxisQuestion, yAxisQues
         } else { 
             chartBody.append("text")
                 .attr("x", chart.width / 2)      
-                .attr("y", 0 - 3 * margin.top / 4)
+                .attr("y", 0 - margin.top / 2 - 20)
                 .attr("text-anchor", "middle")  
                 .attr("class", "narrafirma-graph-title-embedded")
                 .text(nameForQuestion(chart.subgraphQuestion) + ":"); 
             chartBody.append("text")
                 .attr("x", chart.width / 2)     
-                .attr("y", 0 - 1 * margin.top / 4)
+                .attr("y", 0 - margin.top / 2)
                 .attr("text-anchor", "middle")  
                 .attr("class", "narrafirma-graph-title-embedded-subtitle")
                 .text(chart.subgraphChoice); 
