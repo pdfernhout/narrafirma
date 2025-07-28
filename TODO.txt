@@ -158,6 +158,21 @@ M When import story form, hundreds of triples can be generated which take minute
 
 ==== DONE
 
+-- Release 1.6.11
+
+* Added: On "Configure catalysis report" page, added options to hide story-count labels on bar graphs and histograms as well as on contingency tables
+* Added: On "Review graphs" page, story-count labels are now hidden by default (but there is a new checkbox to show them)
+* Changed: Stopped capitalizing graph titles (if you like them, check the blog for how to get them back)
+* Changed: Bolded axis name labels 
+* Changed: Changed "Count" on bar graphs to "Number of stories" 
+* Changed: In histogram and scatterplot sets, moved set answer names (e.g., Feel: happy) to above graphs 
+* Changed: Added fine gray lines around sub-graphs 
+* Changed: Increased sizes of all fonts on all graphs 
+* Changed: On "Configure catalysis report" page, changed "tables" label to "contingency tables" 
+* Changed: Increased default graph width to 900 pixels (because most laptops have better screen resolutions than they did 10 years ago)
+* Fixed: Bug with shrunken fonts in exported PNG graphs
+* Fixed: Bug where some graphs erroneously showed useless (and wrong) "n: 0" statistics message 
+
 -- Release 1.6.10
 
 * Added: On "Describe participant groups" page, questions to build a win-win proposal for each participant group.

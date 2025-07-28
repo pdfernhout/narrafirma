@@ -7,9 +7,9 @@ Author URI: http://www.cfkurtz.com
 Author: Cynthia Kurtz and Paul Fernhout
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=DGVVDT2D49QA8
 Requires at least: 4.3.1
-Tested up to: 6.8.1
+Tested up to: 6.8.2
 Stable tag: trunk
-Version: 1.6.10
+Version: 1.6.11
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -105,6 +105,21 @@ We strongly suggest that you set up any web site on which you intend to install 
 12. Here the NarraFirma user is reflecting on the entire project, to learn from it and to keep good records for the future.
 
 == Changelog ==
+
+= 1.6.11 =
+
+Added: On "Configure catalysis report" page, added options to hide story-count labels on bar graphs and histograms as well as on contingency tables
+Added: On "Review graphs" page, story-count labels are now hidden by default (but there is a new checkbox to show them)
+Changed: Stopped capitalizing graph titles (if you like them, check the blog for how to get them back)
+Changed: Bolded axis name labels 
+Changed: Changed "Count" on bar graphs to "Number of stories" 
+Changed: In histogram and scatterplot sets, moved set answer names (e.g., Feel: happy) to above graphs 
+Changed: Added fine gray lines around sub-graphs 
+Changed: Increased sizes of all fonts on all graphs 
+Changed: On "Configure catalysis report" page, changed "tables" label to "contingency tables" 
+Changed: Increased default graph width to 900 pixels (because most laptops have better screen resolutions than they did 10 years ago)
+Fixed: Bug with shrunken fonts in exported PNG graphs
+Fixed: Bug where some graphs erroneously showed useless (and wrong) "n: 0" statistics message 
 
 = 1.6.10 =
 
@@ -403,6 +418,10 @@ Fixed (stability): Updated Mann-Whitney U test for two improvements in scipy cod
 To read about previous changes, see the NarraFirma blog.
 
 == Upgrade Notice ==
+
+= 1.6.11 =
+
+This minor (but visible) upgrade makes several changes to the formatting of various graphs for better readability. 
 
 = 1.6.10 =
 
