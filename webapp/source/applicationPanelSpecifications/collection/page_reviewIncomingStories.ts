@@ -6,8 +6,8 @@ const panel: Panel = {
     id: "page_reviewIncomingStories",
     displayName: "Review incoming stories",
     pageExplanation: "Look over your collected stories. Clean, trim, fix errors, translate.",
-    pageCategories: "review, enter",
-    headerAbove: "Review",
+    pageCategories: "review",
+    //headerAbove: "Review your stories and patterns",
     panelFields: [
         {
             id: "collectedStoriesDuringCollectionLabel",

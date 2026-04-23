@@ -6,7 +6,7 @@ const panel: Panel = {
     displayName: "Start catalysis report",
     pageExplanation: "Create a container to hold the patterns, observations, interpretations, and ideas you will use in sensemaking.",
     pageCategories: "manage",
-    headerAbove: "Explore",
+    headerAbove: "Build catalytic material using mixed-methods analysis",
     panelFields: [
         {
             id: "catalysis_createCatalysisReportLabel",

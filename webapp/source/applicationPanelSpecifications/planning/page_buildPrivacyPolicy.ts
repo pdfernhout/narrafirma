@@ -4,8 +4,8 @@ import kludgeForUseStrict = require("../../kludgeForUseStrict");
 const panel: Panel = {
     id: "page_buildPrivacyPolicy",
     pageExplanation: "Create a policy you can show to participants who have questions about privacy.",
-    pageCategories: "plan",
-    displayName: "Build privacy policy",
+    pageCategories: "compose",
+    displayName: "Build your privacy policy",
     panelFields: [
          {
             id: "project_topic_intro",

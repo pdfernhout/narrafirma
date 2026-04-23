@@ -6,7 +6,7 @@ const panel: Panel = {
     displayName: "Answer questions about project outcomes",
     pageExplanation: "Describe your project from the perspective of each participant group. Your answers will drive recommendations that appear on the next page.",
     pageCategories: "plan",
-    headerAbove: "Plan",
+    headerAbove: "Plan your narrative interventions",
     panelFields: [
         {
             id: "project_outcomes_intro",

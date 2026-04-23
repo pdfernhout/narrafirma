@@ -6,7 +6,7 @@ const panel: Panel = {
     displayName: "Choose collection methods",
     pageExplanation: "Decide how you will collect stories. Describe your plans. View recommendations based on answers you entered in the Planning section.",
     pageCategories: "plan",
-    headerAbove: "Plan",
+    headerAbove: "Plan your story collection",
     panelFields: [
         {
             id: "project_methodsIntro",

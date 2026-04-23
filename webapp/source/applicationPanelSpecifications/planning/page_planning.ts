@@ -10,8 +10,8 @@ const panel: Panel = {
             valueType: "none",
             displayType: "label",
             displayPrompt: 
-                `In this phase of PNI, you decide what you are going to do. 
-                You consider your goals, topic, and participants; ponder opportunities and dangers; and firm up your plans.`
+                `In the first phase of PNI, you decide what you are going to do. 
+                You consider your goals, topic, and participants; you ponder opportunities and dangers; you firm up your plans.`
         }
     ]
 };

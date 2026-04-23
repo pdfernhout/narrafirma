@@ -217,9 +217,6 @@ a:active {
 }
 
 /* end read-only warning styles */
-
-
-
 textarea, input, select { /* override because expanded in survey */
     margin-top: 0.2em;
     margin-left: 1em;
@@ -316,16 +313,18 @@ input[type="submit"].narrafirma-login-button:hover {
     top: 0;
     left: 0;
     z-index: 999;
+    font-size: 0.95em;
     width: 100%;
     height: 1.6em;
-    padding: 0.75em 0.2em 0.5em 0em;
+    padding: 0.65em 0.2em 0.3em 0em;
     margin-bottom: 2em;
 }
 
 #narrafirma-name {
     display: inline-block;
     border-right: 2px solid var(--color-header-border); 
-    font-size: 1em;
+    font-size: 0.95em;
+    font-weight: bold;
     margin: 0 0 0 0.5em; 
     padding-right: 0.5em;
     color: var(--color-text);
@@ -350,7 +349,7 @@ input[type="submit"].narrafirma-login-button:hover {
 #narrafirma-project-name {
     display: inline-block;
     border-right: 2px solid var(--color-header-border); 
-    font-size: 1em;
+    font-size: 0.95em;
     padding-right: 0.5em;
     margin: 0 0.5em 0 0.5em;
 }
@@ -400,10 +399,16 @@ input[type="submit"].narrafirma-login-button:hover {
 
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Dashboard (home page) ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
+.narrafirma-quick-links {
+    color: rgb(197, 125, 36);
+    font-weight: bold;
+}
+
 .narrafirma-pni-phases-image {
     float: left;
     /* long bottom margin to prevent admin links on right from popping over to left */
-	margin: 0.2em 1.2em 30em 0.2em;
+	margin: 0.2em 1.2em 0.5em 0.2em;
+    padding-right: 1em;
 }
 
 .narrafirma-dashboardStatusButton {
@@ -417,8 +422,20 @@ input[type="submit"].narrafirma-login-button:hover {
     padding: 0.4em;
 }
 
+.narrafirma-dashboard-phase-links {
+    display: block;
+}
+
 .narrafirma-dashboardSectionStatusDisplayCompletion {
     margin-left: 1.0em;
+}
+
+.narrafirma-dashboard-story-collection-status {
+    float: left;
+    border-left: 3px solid rgb(242, 166, 73);
+    border-top: 3px solid rgb(242, 166, 73);
+    padding-left: 1em;
+    padding-bottom: 6em;
 }
 
 .narrafirma-dashboard-story-collection-status table {
@@ -451,7 +468,7 @@ input[type="submit"].narrafirma-login-button:hover {
 
 .narrafirma-dashboard-page-link {
 	display: block;
-	margin: 0 0 0.1em 0.5em;
+	margin: 0 0 0.1em 2em;
     font-size: 1em;
 }
 
@@ -471,9 +488,11 @@ input[type="submit"].narrafirma-login-button:hover {
 }
 
 .narrafirma-questionAnswer { /* this is now used to display the reminder on the section page */
-    border-left: 3px solid var(--color-reminder-border);
+    border-left: 2px solid var(--color-reminder-border);
+    border-top: 2px solid var(--color-reminder-border);
+    width: 75%;
     background-color: var(--color-reminder);
-    margin: 0.3em 0.3em 0 10%;
+    margin: 0.3em 0.3em 0 3.5em;
     padding: 0.3em;
 }
 
@@ -510,10 +529,16 @@ input[type="submit"].narrafirma-login-button:hover {
     margin-top: 0.5em;
 }
 
-.narrafirma-home-page-link {
-    display: table; /* display block sets the width at 100% of the page */
+.narrafirma-home-page-quicklink {
+    display: block; /* display block sets the width at 100% of the page */
     margin-bottom: 0.2em;
 }
+
+.narrafirma-home-page-adminlink {
+    display: block;
+    text-align: right;
+    margin-bottom: 0.2em;
+} 
 
 .narrafirma-home-page-section-link {
     display: inline;
@@ -527,18 +552,17 @@ form {
  }
  
 .narrafirma-page-change-button {
-    font-size: 0.9em;
+    font-size: 1em;
     min-width: 6em;
     border: none;
-    background-color: var(--color-reminder);
-    box-shadow: 1px 1px 1px var(--color-reminder-border);
+    background-color: var(--color-button);
+    box-shadow: 1px 1px 1px var(--color-box-shadow);
     margin: 1em 0 0.5em 0.5em;
-    padding: 0.3em 0.6em 0.3em 0.6em;
+    padding: 0.5em 0.6em 0.5em 0.6em;
 }
 
 .narrafirma-page-change-button:hover {
-    color: white;
-    background-color: var(--color-reminder-border);
+    background-color: var(--color-button-hover);
 }
 
 button {
@@ -655,10 +679,9 @@ button:disabled {
     background-size: auto 100%;
     width: 20px;
     height: 20px;
-    margin-right: 0.2em;
-    text-align: center;
+    margin-right: 0.3em;
     display: inline-block;
-    vertical-align: middle;
+    vertical-align: middle; 
 }
 
 .pageCategoryImage {
@@ -668,9 +691,10 @@ button:disabled {
 /* manage, plan, journal, enter, review, output */
 .manageCategoryImage { background-image: url(../images/ionicicons/build-outline.svg); }
 .planCategoryImage { background-image: url(../images/ionicicons/bulb-outline.svg); }
-.enterCategoryImage { background-image: url(../images/ionicicons/create-outline.svg); }
-.exportCategoryImage { background-image: url(../images/ionicicons/print-outline.svg); }
-.reviewCategoryImage { background-image: url(../images/ionicicons/stats-chart-outline.svg); }
+.composeCategoryImage { background-image: url(../images/ionicicons/reader-outline.svg); }
+.enterCategoryImage { background-image: url(../images/ionicicons/add-circle-outline.svg); }
+.exportCategoryImage { background-image: url(../images/ionicicons/log-out-outline.svg); }
+.reviewCategoryImage { background-image: url(../images/ionicicons/eye-outline.svg); }
 .journalCategoryImage { background-image: url(../images/ionicicons/book-outline.svg); }
 
 .showTips .narrafirma-tip {

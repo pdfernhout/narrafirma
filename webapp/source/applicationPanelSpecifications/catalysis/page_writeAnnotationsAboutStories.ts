@@ -5,9 +5,9 @@ import kludgeForUseStrict = require("../../kludgeForUseStrict");
 const panel: Panel = {
     id: "page_writeAnnotationsAboutStories",
     displayName: "Write annotation questions",
-    pageExplanation: "Design research questions to answer as you study your collected stories.",
-    pageCategories: "enter",
-    headerAbove: "Interpret",
+    pageExplanation: "Design questions to answer by reading your collected stories.",
+    pageCategories: "compose",
+    headerAbove: "Add qualitative annotations to your story data",
     panelFields: [
         {
             id: "project_annotationQuestionsLabel",

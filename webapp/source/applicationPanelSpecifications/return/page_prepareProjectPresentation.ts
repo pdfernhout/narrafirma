@@ -5,8 +5,8 @@ const panel: Panel = {
     id: "page_prepareProjectPresentation",
     displayName: "Prepare outline of project presentation",
     pageExplanation: "Create a simple outline you can use to tell people the story of your project.",
-    pageCategories: "journal",
-    headerAbove: "Explain",
+    pageCategories: "compose",
+    headerAbove: "Tell the story of your project",
     panelFields: [
         {
             id: "project_presentationLabel",

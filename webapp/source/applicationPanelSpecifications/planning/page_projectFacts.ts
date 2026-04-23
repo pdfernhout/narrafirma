@@ -5,8 +5,8 @@ const panel: Panel = {
     id: "page_projectFacts",
     displayName: "Describe your project",
     pageExplanation: "Record some initial background information.",
-    pageCategories: "plan",
-    headerAbove: "Orient",
+    pageCategories: "compose",
+    headerAbove: "Start planning your project",
     panelFields: [
         {
             id: "project_projectFacts",

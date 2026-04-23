@@ -6,7 +6,7 @@ const panel: Panel = {
     displayName: "Start story collection",
     pageExplanation: "Create a container that will hold a group of stories. Activate or deactivate a web survey.",
     pageCategories: "manage",
-    headerAbove: "Collect",
+    headerAbove: "Gather your stories",
     panelFields: [
         {
             id: "storyCollection_createCollectionLabel",

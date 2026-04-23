@@ -5,8 +5,8 @@ const panel: Panel = {
     id: "page_gatherFeedback",
     displayName: "Gather feedback",
     pageExplanation: "Make a note of things people told you about the project.",
-    pageCategories: "journal",
-    headerAbove: "Listen",
+    pageCategories: "enter",
+    headerAbove: "Listen to your participants",
     panelFields: [
         {
             id: "project_feedbackLabel",

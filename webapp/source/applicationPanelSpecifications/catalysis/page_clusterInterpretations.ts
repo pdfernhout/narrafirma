@@ -5,8 +5,7 @@ const panel: Panel = {
     id: "page_clusterInterpretations",
     displayName: "Cluster interpretations and/or observations",
     pageExplanation: "Pull together what you have built into a coherent report.",
-    pageCategories: "review, enter",
-    headerAbove: "Consolidate",
+    pageCategories: "compose",
     panelFields: [
         {
             id: "project_interpretationsClusteringLabel",

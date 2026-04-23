@@ -6,7 +6,7 @@ const panel: Panel = {
     displayName: "Import & Export",
     pageExplanation: "Backup or restore project data, or copy it from one project to another.",
     pageCategories: "manage",
-    headerAbove: "Integrate",
+    headerAbove: "Backup, restore, or transfer data",
     panelFields: [
         {
             id: "importExport_header",

@@ -6,7 +6,7 @@ const panel: Panel = {
     id: "page_explorePatterns",
     displayName: "Explore patterns",
     pageExplanation: "Look for patterns in your data. Write observations, interpretations, and ideas for use in sensemaking.",
-    pageCategories: "review, enter",
+    pageCategories: "compose",
     panelFields: [
         {
             id: "explorePatternsLabel",

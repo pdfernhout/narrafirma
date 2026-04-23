@@ -334,9 +334,15 @@ export function urlForStoryCollectionReview(storyCollectionID, pageName: string)
     const baseURL = href.substring(0, href.lastIndexOf("/"));
     // TODO: Duplicated project prefix; should refactor to have it in one place
     const projectName = project.journalIdentifier.substring("NarraFirmaProject-".length);
-    const shortName = project.tripleStore.queryLatestC(storyCollectionID, "storyCollection_shortName");
-    const url = baseURL + "/narrafirma.html#project=" + projectName + "&page=" +  pageName + "&storyCollection=" + shortName;
-    const cleanedUrl = encodeURI(url);
+    let cleanedUrl = "";
+    if (pageName === "startStoryCollection") {
+        const url = baseURL + "/narrafirma.html#project=" + projectName + "&page=" + pageName;
+        cleanedUrl = encodeURI(url);
+    } else {
+        const shortName = project.tripleStore.queryLatestC(storyCollectionID, "storyCollection_shortName");
+        const url = baseURL + "/narrafirma.html#project=" + projectName + "&page=" + pageName + "&storyCollection=" + shortName;
+        cleanedUrl = encodeURI(url);
+    }
     return cleanedUrl;
 }
 

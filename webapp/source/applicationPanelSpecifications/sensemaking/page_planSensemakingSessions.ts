@@ -5,7 +5,7 @@ const panel: Panel = {
     id: "page_planSensemakingSessions",
     displayName: "Plan sensemaking sessions",
     pageExplanation: "Create a printable agenda for your sensemaking sessions.",
-    pageCategories: "plan",
+    pageCategories: "compose",
     panelFields: [
         {
             id: "project_sensemakingSessionPlansLabel",

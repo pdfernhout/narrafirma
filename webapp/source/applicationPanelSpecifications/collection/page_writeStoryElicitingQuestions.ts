@@ -5,15 +5,15 @@ const panel: Panel = {
     id: "page_writeStoryElicitingQuestions",
     displayName: "Write story eliciting questions",
     pageExplanation: "Build a library of questions that help people think of experiences to recount.",
-    pageCategories: "enter",
-    headerAbove: "Design",
+    pageCategories: "compose",
+    headerAbove: "Design your questions, forms, and sessions",
     panelFields: [
         {
             id: "project_elicitingQuestionsLabel",
             valueType: "none",
             displayType: "label",
             displayPrompt: `On this page you can build a 
-                <strong>library of questions you will invite people to answer by telling stories</strong>.
+                <strong>library of questions people will answer by telling stories</strong>.
                 You will draw on this library as you build your story forms. 
                 Each story form must contain at least one story-eliciting question.
                 `

@@ -6,7 +6,7 @@ const panel: Panel = {
     displayName: "Tell project stories",
     pageExplanation: "Go through a small story-sharing exercise that will help you imagine your project.",
     pageCategories: "plan",
-    headerAbove: "Brainstorm",
+    headerAbove: "Imagine the future of your project",
     panelFields: [
         {
             id: "project_projectStories",

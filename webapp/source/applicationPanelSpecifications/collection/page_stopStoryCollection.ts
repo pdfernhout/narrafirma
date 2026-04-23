@@ -6,7 +6,7 @@ const panel: Panel = {
     displayName: "Stop story collection",
     pageExplanation: 'Deactivate an online survey. You can also do this on the "Start story collection" page.',
     pageCategories: "manage",
-    headerAbove: "Wrap Up",
+    headerAbove: "Wrap up the collection phase",
     panelFields: [
         {
             id: "webStoryCollection_stopCollectionLabel2",

@@ -3,10 +3,10 @@ import kludgeForUseStrict = require("../../kludgeForUseStrict");
 
 const panel: Panel = {
     id: "page_participantGroups",
-    displayName: "Describe participant groups",
+    displayName: "Describe your participant groups",
     pageExplanation: "Answer questions about your storytellers. Your answers will drive recommendations that appear on other pages.",
     pageCategories: "plan",
-    headerAbove: "Contemplate",
+    headerAbove: "Think about your participants",
     panelFields: [
         {
             id: "project_aboutParticipantGroups",

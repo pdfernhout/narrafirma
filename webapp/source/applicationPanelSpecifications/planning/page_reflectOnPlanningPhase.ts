@@ -6,6 +6,7 @@ const panel: Panel = {
     displayName: "Reflect on the planning phase",
     pageExplanation: "Think about what happened in this part of the project.",
     pageCategories: "journal",
+    headerAbove: "Wrap up the planning phase",
     panelFields: [
         {
             id: "project_phaseReflections_planning_intro",

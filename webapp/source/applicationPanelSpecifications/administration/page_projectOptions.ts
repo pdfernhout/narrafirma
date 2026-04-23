@@ -6,7 +6,7 @@ const panel: Panel = {
     displayName: "Project options",
     pageExplanation: "Change options that affect your entire project.",
     pageCategories: "manage",
-    headerAbove: "Manage",
+    headerAbove: "Change how NarraFirma looks and works",
     panelFields: [
         {
             id: "projectOptions_header",
@@ -39,8 +39,7 @@ const panel: Panel = {
             displayType: "radiobuttons",
             valueOptions: ["yes", "no"],
             displayName: "Verbose",
-            displayPrompt: `Would you like to see an <strong>explanation</strong> of each page 
-                next to its link on the section page where it appears? 
+            displayPrompt: `Would you like to see an <strong>explanation</strong> of each NarraFirma page? 
                 (If no choice is made here, explanations will be shown.)`
         },
         {
@@ -49,10 +48,9 @@ const panel: Panel = {
             displayType: "radiobuttons",
             valueOptions: ["yes", "no"],
             displayName: "Page category icons",
-            displayPrompt: `When showing page explanations, would you also like to see an <strong>icon</strong> for each page,
-                so you can see what type of page it is? 
-                (The categories are: manage, plan, enter, review, journal, export.) 
-                (If no choice is made here, page-type icons will be shown.)`
+            displayPrompt: `Would you like to see a <strong>category icon</strong> for each NarraFirma page? 
+                (The categories are: manage, plan, enter, review, journal, compose, and export. 
+                If no choice is made here, icons will be shown.)`
         },
         {
             id: "projectOptions_showTips",
@@ -60,7 +58,7 @@ const panel: Panel = {
             displayType: "radiobuttons",
             valueOptions: ["yes", "no"],
             displayName: "Tips",
-            displayPrompt: `Would you like to see <strong>tips</strong> at the bottom of each page? 
+            displayPrompt: `Would you like to see <strong>tips</strong> at the bottom of each NarraFirma page? 
                 (If no choice is made here, tips will be shown.)`
         },
 

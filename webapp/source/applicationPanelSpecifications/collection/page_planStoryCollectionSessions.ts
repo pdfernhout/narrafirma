@@ -5,7 +5,7 @@ const panel: Panel = {
     id: "page_planStoryCollectionSessions",
     displayName: "Plan story collection sessions",
     pageExplanation: "Design printable agendas for story-sharing sessions.",
-    pageCategories: "plan",
+    pageCategories: "compose",
     panelFields: [
         {
             id: "project_collectionSessionsLabel",

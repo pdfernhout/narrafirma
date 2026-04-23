@@ -213,7 +213,7 @@ const panel: Panel = {
             valueType: "string",
             displayType: "textarea",
             displayName: "Next project reminders",
-            displayPrompt: "Enter any <strong>reminders</strong> (ideas, resolutions, warnings) you want to keep in mind as you plan your next project. (Then, when you start your next project, copy these reminders and paste them into the \"Answer PNI planning questions\" page of the new project.)"
+            displayPrompt: "Enter any <strong>reminders</strong> (ideas, resolutions, warnings) you want to keep in mind as you plan your next project. (Then, when you start your next project, copy these reminders and paste them into the \"Answer the PNI planning questions\" page of the new project.)"
         },
         
         {

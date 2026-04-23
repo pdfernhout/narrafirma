@@ -5,7 +5,7 @@ const panel: Panel = {
     id: "page_writeQuestionsAboutStories",
     displayName: "Write questions about stories",
     pageExplanation: "Build a library of questions that help people interpret their stories.",
-    pageCategories: "enter",
+    pageCategories: "compose",
     panelFields: [
         {
             id: "project_storyQuestionsLabel",

@@ -87,8 +87,7 @@ function addExtraFieldSpecificationsForPageSpecification(pageID, pageSpecificati
             };
             _panelSpecificationCollection.addFieldSpecificationToPanelSpecification(pageSpecification, completionStatusEntryFieldSpecification);
         } else {
-            // Dashboard page
-            // Put in dashboard
+            // section page
             let childPageIDs = _panelSpecificationCollection.getChildPageIDListForHeaderID(pageID);
             if (!childPageIDs) childPageIDs = [];
 
@@ -102,23 +101,21 @@ function addExtraFieldSpecificationsForPageSpecification(pageID, pageSpecificati
                     let prompt = translate(childPageID + "::title", childPageSpecification.displayName);
                     const properties: any = { href: "javascript:narrafirma_openPage('" + childPageID + "')" };
                     
-                    const pageExplanationWithCategoryImages = [];
                     const categories = childPageSpecification.pageCategories.split(", ");
-                    const allowedPageCategories = ["manage", "plan", "journal", "enter", "review", "export"];
-
-                    for (let categoryIndex in categories) {
-                        const category = categories[categoryIndex];
+                    const allowedPageCategories = ["manage", "plan", "journal", "enter", "review", "compose", "export"];
+                    let categoryImages = [];
+                    for (let category of categories) {
                         if (allowedPageCategories.indexOf(category) >= 0) {
-                            const imageSpan = m("span", {class: "pageCategoryImage " + category + "CategoryImage", key: "pageCategoryImage" + childPageIndex, title: category});
-                            pageExplanationWithCategoryImages.push(imageSpan);
+                            const imageSpan = m("div", {class: "pageCategoryImage " + category + "CategoryImage", key: "pageCategoryImage" + childPageIndex});
+                            categoryImages.push(imageSpan);
                         } else {
                            console.log("Error: Unrecognized page category: ", category);
                         }
                     }
-                    pageExplanationWithCategoryImages.push(childPageSpecification.pageExplanation);
 
-                    const explanationDiv = m("div.narrafirma-dashboard-page-link-explanation", pageExplanationWithCategoryImages);
-                    prompt = m("div.narrafirma-dashboard-page-link", [m("a", properties, prompt), explanationDiv]);
+                    const explanationDiv = m("div.narrafirma-dashboard-page-link-explanation", childPageSpecification.pageExplanation);
+
+                    prompt = m("div.narrafirma-dashboard-page-link", [categoryImages, m("a", properties, prompt), explanationDiv]);
                     if (childPageSpecification.headerAbove) { 
                         prompt = [m("div.narrafirma-dashboard-header", childPageSpecification.headerAbove), prompt]; 
                     }
@@ -151,7 +148,7 @@ function addExtraFieldSpecificationsForPageSpecification(pageID, pageSpecificati
             addPageChangeButton(_startPage, "_returnToDashboardButton", "Home", "homeButtonImage");
         }
     }
-    addTip();
+    if (pageSpecification.section !== "dashboard") addTip();
     addReadOnlyWarning();
 }
 
