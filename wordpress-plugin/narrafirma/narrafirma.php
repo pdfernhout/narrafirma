@@ -698,7 +698,7 @@ function pointrel20150417_queryForNextMessage($apiRequest) {
     $includeMessageContents = $apiRequest->includeMessageContents;
     
     // TODO: Use constant here for maximum
-    $limitCount = max(1, min(100, intval($apiRequest->limitCount)));
+    $limitCount = max(1, min(1000, intval($apiRequest->limitCount)));
     
     /*
         id int(9) UNSIGNED NOT NULL AUTO_INCREMENT,

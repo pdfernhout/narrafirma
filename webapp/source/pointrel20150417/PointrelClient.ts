@@ -942,8 +942,8 @@ class PointrelClient {
             action: "pointrel20150417_queryForNextMessage",
             journalIdentifier: this.journalIdentifier,
             fromTimestampExclusive: this.lastReceivedTimestampConsidered,
-            // The server may return less than this number of message if including message contents and they exceed about 1MB in total
-            limitCount: 100,
+            // The server may return less than this number of message if including message contents and they exceed about 10MB in total
+            limitCount: 1000,
             includeMessageContents: this.includeMessageContents,
             topicIdentifier: undefined
         };
@@ -990,7 +990,7 @@ class PointrelClient {
                 // Schedule another request immediately if getting contents
                 setTimeout(function () {
                     self.sendFetchOrPollIfNeeded();
-                }, 0);
+                }, 200);
             } else {
                 if (self.idleCallback) {
                     const callback = self.idleCallback;

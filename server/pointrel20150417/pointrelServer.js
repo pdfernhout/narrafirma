@@ -68,8 +68,8 @@ var configuration = {
     cacheMessageContents: true,
     
     /// Limits for including message results in query responses
-    maximumQueryResponseLimit: 100,
-    maximumMessageBodyBytes: 1000000,
+    maximumQueryResponseLimit: 1000,
+    maximumMessageBodyBytes: 10000000,
     
     // Whether to allow requests to be attempted even if unauthenticated; otherwise athentication is only checked for identifer users
     // Note that even if this flag is set to true, journal access may fail if the anonymous user is not allowed to do some operation
