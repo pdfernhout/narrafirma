@@ -8,7 +8,7 @@ export function getRandomTip() {
         const tips = [
             // Getting started
             "One way to get started with NarraFirma is to page through its help system, one page a time, just to see what you can do with it.",       
-            "If you aren't sure whether you need or want to use any page, click the Help button to read about its purpose.",
+            "If you aren't sure whether you need or want to use any page of NarraFirma, click the Help button to read about its purpose.",
             `If you aren't sure how any page in NarraFirma will affect what happens on other pages, click the Help button and look for the section called \"Connections to other pages.\"`,
             "Click the Help button on any NarraFirma page to find out how the page is connected to other NarraFirma pages.",
             "The FAQ page at narrafirma.com has more answers to frequently asked questions.",
