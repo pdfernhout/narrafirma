@@ -26,13 +26,14 @@ const Navigation: any = {
         this.pageSpecification = null;
         this.panelBuilder = Navigation.panelBuilder;
     },
-    
+
     view: function(controller, args) {
         return m("div[id=narrafirma-navigation]", [
-            m("span[id=narrafirma-name]", {
+            m("a[id=narrafirma-name]", {
+                "href": "javascript:narrafirma_openPage(\'" + PanelSetup.startPage() + "\')",
                 "class": Globals.clientState().serverStatus(),
                 "title": Globals.clientState().serverStatusText()
-            }, "NarraFirma"), // 
+            }, "NarraFirma"), 
             //m("sup", {"class": "narrafirma-trademark"}, "TM"),
             //m("span[id=narrafirma-version]", "v" + versions.narrafirmaApplication),
             m("span[id=narrafirma-project-name]", Globals.project().projectNameOrNickname()),

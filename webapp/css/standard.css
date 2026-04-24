@@ -328,6 +328,7 @@ input[type="submit"].narrafirma-login-button:hover {
     margin: 0 0 0 0.5em; 
     padding-right: 0.5em;
     color: var(--color-text);
+    text-decoration: none;
 }
 
 .narrafirma-serverstatus-ok {
