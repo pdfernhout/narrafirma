@@ -184,8 +184,10 @@ const panel: Panel = {
                 "I don't know"
             ],
             displayType: "select",
-            displayName: "Recountings of events",
-            displayPrompt: "Did you see people tell stories that were <strong>recountings of events</strong> based on emotional experiences from particular perspectives?"
+            displayName: "Habitation",
+            displayPrompt: `
+                How often did it seem to you that people <strong>inhabited</strong> the stories they told?
+                That is, how often did their stories recount their own experiences from their own perspectives?`
         },
         {
             id: "assessment_negotiations",
