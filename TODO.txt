@@ -158,6 +158,15 @@ M When import story form, hundreds of triples can be generated which take minute
 
 ==== DONE
 
+-- Release 1.6.12
+
+* Changed: Increased batch size of startup message loading from 100 to 1000. Should reduce errors due to rate limiting on WordPress servers.
+* Changed: Updated home-page diagram to match new PNI-phases diagram in fourth edition of Working with Stories.
+* Changed: Updated labels on "PNI planning questions" to match revised headings in fourth edition of WWS.
+* Changed: To improve clarity, tweaked various elements of home page and section/phase pages (headers, icons, page names, etc). 
+* Changed: Removed unnecessary and distracting title-attribute popup tooltips on some buttons, icons, and links.
+* Changed: Replaced excerpts from the third edition of WWS with comparable excerpts from the fourth edition.
+
 -- Release 1.6.11
 
 * Added: On "Configure catalysis report" page, added options to hide story-count labels on bar graphs and histograms as well as on contingency tables

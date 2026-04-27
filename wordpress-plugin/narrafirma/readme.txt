@@ -106,6 +106,15 @@ We strongly suggest that you set up any web site on which you intend to install 
 
 == Changelog ==
 
+= 1.6.12 =
+
+* Changed: Increased batch size of startup message loading from 100 to 1000. Should reduce errors due to rate limiting on WordPress servers.
+* Changed: Updated home-page diagram to match new PNI-phases diagram in fourth edition of Working with Stories.
+* Changed: Updated labels on "PNI planning questions" to match revised headings in fourth edition of WWS.
+* Changed: To improve clarity, tweaked various elements of home page and section/phase pages (headers, icons, page names, etc). 
+* Changed: Removed unnecessary and distracting title-attribute popup tooltips on some buttons, icons, and links.
+* Changed: Replaced excerpts from the third edition of WWS with comparable excerpts from the fourth edition.
+
 = 1.6.11 =
 
 Added: On "Configure catalysis report" page, added options to hide story-count labels on bar graphs and histograms as well as on contingency tables
@@ -418,6 +427,10 @@ Fixed (stability): Updated Mann-Whitney U test for two improvements in scipy cod
 To read about previous changes, see the NarraFirma blog.
 
 == Upgrade Notice ==
+
+= 1.6.12 =
+
+This minor upgrade improves page loading, clarifies the home and section pages, and updates NF to better match the new WWS books.
 
 = 1.6.11 =
 

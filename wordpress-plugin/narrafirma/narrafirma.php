@@ -4,7 +4,7 @@ Plugin Name: NarraFirma
 Plugin URI: http://narrafirma.com
 Description: Participatory Narrative Inquiry in a box. Gather stories and make sense of challenges and opportunities in your community or organization.
 Author: Cynthia F. Kurtz and Paul D. Fernhout
-Version: 1.6.11
+Version: 1.6.12
 Author URI: http://cfkurtz.com
 License: GPLv2 or later
 */
@@ -29,7 +29,7 @@ namespace NarraFirma;
 
 defined( 'ABSPATH' ) or die( 'Plugin must be run from inside WordPress' );
 
-$NARRAFIRMA_VERSION = '1.6.11';
+$NARRAFIRMA_VERSION = '1.6.12';
 
 $pointrelServerVersion = "pointrel20150417-0.0.4-wp";
 
@@ -109,7 +109,7 @@ class NarraFirmaSettingsPage
 <div class="wrap">
 
     <h1><?php echo "NarraFirma $NARRAFIRMA_VERSION"; ?></h1>
-    <p>The NarraFirma&trade; web application supports Participatory Narrative Inquiry. 
+    <p>NarraFirma is a web application you can use to do Participatory Narrative Inquiry. 
     PNI helps ordinary people share ordinary stories to discover insights they can use. 
     To learn more about PNI, visit <a href="http://www.narrafirma.com" target="_blank">narrafirma.com</a>
     or <a href="http://www.workingwithstories.org" target="_blank">workingwithstories.org</a>.
