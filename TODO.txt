@@ -158,6 +158,11 @@ M When import story form, hundreds of triples can be generated which take minute
 
 ==== DONE
 
+-- Release 1.6.13
+
+* Changed: Fixed versioning mistake (in 1.6.12, forgot to update "tested up to" WordPress version).
+* Changed: Updated GitHub readme description.
+
 -- Release 1.6.12
 
 * Changed: Increased batch size of startup message loading from 100 to 1000. Should reduce errors due to rate limiting on WordPress servers.

@@ -7,9 +7,9 @@ Author URI: http://www.cfkurtz.com
 Author: Cynthia Kurtz and Paul Fernhout
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=DGVVDT2D49QA8
 Requires at least: 4.3.1
-Tested up to: 6.8.2
+Tested up to: 6.9.4
 Stable tag: trunk
-Version: 1.6.11
+Version: 1.6.13
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -19,7 +19,7 @@ Participatory Narrative Inquiry in a box. Gather stories and make sense of chall
 
 NarraFirma is companion software to the textbook [Working with Stories in Your Community Or Organization: Participatory Narrative Inquiry](http://www.workingwithstories.org).
 
-Participatory narrative inquiry is an approach in which groups of people participate in gathering and working with raw stories of personal experience in order to make sense of complex patterns for better decision making. PNI focuses on the profound consideration of values, beliefs, feelings, and perspectives through the recounting and interpretation of lived experience.
+Participatory Narrative Inquiry is a form of Participatory Action Research in which groups of people share and work with their stories of personal experiences to understand each other and to make collective sense of complex issues and situations. You can use it to help the people in your community or organization discover insights, catch emerging trends, make decisions, generate ideas, resolve conflicts, and connect people.
 
 = What is NarraFirma? =
 
@@ -66,7 +66,7 @@ Or you can install NarraFirma from the WordPress plugins directory:
 
 == Frequently Asked Questions ==
 
-= Where can I found out more about participatory narrative inquiry? =
+= Where can I found out more about Participatory Narrative Inquiry? =
 
 Take a look at the book behind NarraFirma, [Working with Stories in Your Community Or Organization: Participatory Narrative Inquiry](http://www.workingwithstories.org)
 
@@ -79,6 +79,8 @@ Tell us about it on the [GitHub issues list](https://github.com/pdfernhout/narra
 We strongly suggest that you set up any web site on which you intend to install NarraFirma with SSL (secure sockets). Your hosting provider should be able to help you do that.
 
 == Screenshots ==
+
+Please note that these screenshots are out of date. The basic functionality of the software has not changed, but some of the pages look a little different now.
 
 1. This is the main page of NarraFirma. The sections of the software (and the phases of PNI) are shown in the diagram. Clicking on any of these buttons  leads to that section.
 
@@ -105,6 +107,11 @@ We strongly suggest that you set up any web site on which you intend to install 
 12. Here the NarraFirma user is reflecting on the entire project, to learn from it and to keep good records for the future.
 
 == Changelog ==
+
+= 1.6.13 = 
+
+* Changed: Fixed versioning mistake (in 1.6.12, forgot to update "tested up to" WordPress version).
+* Changed: Updated GitHub readme description.
 
 = 1.6.12 =
 
@@ -427,6 +434,10 @@ Fixed (stability): Updated Mann-Whitney U test for two improvements in scipy cod
 To read about previous changes, see the NarraFirma blog.
 
 == Upgrade Notice ==
+
+= 1.6.13 =
+
+This minor upgrade fixes a versioning mistake and updates the GitHub readme page.
 
 = 1.6.12 =
 
