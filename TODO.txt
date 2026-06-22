@@ -158,6 +158,12 @@ M When import story form, hundreds of triples can be generated which take minute
 
 ==== DONE
 
+-- Release 1.6.14
+
+* Added: Option to print empty NarraFirma journal (on Project admin - Print page) to use off-line
+* Changed: Increased line height throughout application (for better readability)
+* Changed: Decreased scale of home-page navigation image a bit
+
 -- Release 1.6.13
 
 * Changed: Fixed versioning mistake (in 1.6.12, forgot to update "tested up to" WordPress version).

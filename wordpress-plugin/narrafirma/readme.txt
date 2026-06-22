@@ -7,9 +7,9 @@ Author URI: http://www.cfkurtz.com
 Author: Cynthia Kurtz and Paul Fernhout
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=DGVVDT2D49QA8
 Requires at least: 4.3.1
-Tested up to: 6.9.4
+Tested up to: 7.0
 Stable tag: trunk
-Version: 1.6.13
+Version: 1.6.14
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -107,6 +107,12 @@ Please note that these screenshots are out of date. The basic functionality of t
 12. Here the NarraFirma user is reflecting on the entire project, to learn from it and to keep good records for the future.
 
 == Changelog ==
+
+= 1.6.14 =
+
+* Added: Option to print empty NarraFirma journal (on Project admin - Print page) to use off-line
+* Changed: Increased line height throughout application (for better readability)
+* Changed: Decreased scale of home-page navigation image a bit
 
 = 1.6.13 = 
 
@@ -434,6 +440,10 @@ Fixed (stability): Updated Mann-Whitney U test for two improvements in scipy cod
 To read about previous changes, see the NarraFirma blog.
 
 == Upgrade Notice ==
+
+= 1.6.14 = 
+
+This minor upgrade adds an empty journal printout (with journaling questions) for offline use.
 
 = 1.6.13 =
 
