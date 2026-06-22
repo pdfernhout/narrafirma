@@ -34,7 +34,9 @@ const panel: Panel = {
                 }
             },
             displayName: "Story collection session plans",
-            displayPrompt: "These are the session plans you have added. Click on a plan to edit it. (A single plan can be used for multiple sessions.)"
+            displayPrompt: `These are the session plans you have added. 
+                Click on a plan to edit it. (A single plan can be used for multiple sessions.)`,
+            emptyJournalPrompt: "Copy and paste the following questions for each <strong>session plan</strong> you intend to use."
         }
     ]
 };

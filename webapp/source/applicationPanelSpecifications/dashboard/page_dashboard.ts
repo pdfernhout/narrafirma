@@ -22,11 +22,11 @@ const panel: Panel = {
                 `
         },
         {
-            id: "project_mainDashboardPNIPhasesDiagram",
+        id: "project_mainDashboardPNIPhasesDiagram",
             valueType: "none",
             displayType: "html",
             displayPrompt: `
-            <img class=\"narrafirma-pni-phases-image\" src=\"images/nf_front_page.png\" width="700" alt=\"NarraFirma sections (click to navigate)\" usemap=\"#pniphasesmap\"></img>
+            <img class=\"narrafirma-pni-phases-image\" src=\"images/nf_front_page.png\" width="640" alt=\"NarraFirma sections (click to navigate)\" usemap=\"#pniphasesmap\"></img>
             <map name=\"pniphasesmap\">
             <area shape=\"rect\" coords=\"33,117,154,228\" href=\"javascript:narrafirma_openPage('page_planning')\" alt=\"Planning\">
             <area shape=\"rect\" coords=\"295,11,419,150\" href=\"javascript:narrafirma_openPage('page_collection')\" alt=\"Collection\">

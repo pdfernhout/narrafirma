@@ -14,7 +14,10 @@ const panel: Panel = {
             displayType: "label",
             displayPrompt: `Use this page to enter some information about your project that you might want to look back on later.
                 All of these questions are optional. Just answer any of them that seem useful to you.
-                (Note: For more information on this or any other page, click the Help button in the upper-right hand corner of the page.)`
+                (Note: For more information on this or any other page, 
+                lick the Help button in the upper-right hand corner of the page.)`,
+                emptyJournalPrompt: `Use this page to enter some information about your project 
+                that you might want to look back on later.`
         },
 
 

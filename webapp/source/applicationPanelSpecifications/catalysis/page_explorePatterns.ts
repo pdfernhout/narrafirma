@@ -5,6 +5,7 @@ import kludgeForUseStrict = require("../../kludgeForUseStrict");
 const panel: Panel = {
     id: "page_explorePatterns",
     displayName: "Explore patterns",
+    emptyJournalName: "Record patterns",
     pageExplanation: "Look for patterns in your data. Write observations, interpretations, and ideas for use in sensemaking.",
     pageCategories: "compose",
     panelFields: [
@@ -12,13 +13,23 @@ const panel: Panel = {
             id: "explorePatternsLabel",
             valueType: "none",
             displayType: "label",
-            displayPrompt: `
-            On this page you can explore <strong>patterns</strong> in the data you 
+            displayPrompt: `On this page you can explore <strong>patterns</strong> in the data you 
             collected, make <strong>observations</strong> on the patterns,
             and <strong>interpret</strong> the observations. The
             <strong>catalysis report</strong> you build here can help other people 
-            make sense of what the story collection has to say.
-            `
+            make sense of what the story collection has to say.`,
+            emptyJournalPrompt: `***On this page, as preparation for sensemaking, you can record any
+            <strong>patterns</strong> you saw in the data you collected. 
+            For each pattern, include:
+            <ul>
+            <li>an <strong>observation</strong> (objective description) of the pattern</li>
+            <li>at least two competing <strong>interpretations</strong> of the observation 
+                (subjective descriptions from differing points of view)</li>
+            <li>possibly a few <strong>questions</strong> and <strong>ideas</strong> that follow
+                from each interpretation</li>
+            </ul>
+            If you find a lot of patterns, you may want to cluster your observations or interpretations
+            to provide your sensemaking participants with a birds-eye view of what you found.`
         },
         {
             id: "catalysisReportExplorePatterns",

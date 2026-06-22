@@ -69,7 +69,10 @@ const panel: Panel = {
                }
             },
             displayName: "Story collection session constructions",
-            displayPrompt: "People in your story collection sessions might have created <strong>constructions</strong> such as timelines or landscapes. You can enter details about those here."
+            displayPrompt: `People in your story collection sessions might have created <strong>constructions</strong> 
+                such as timelines or landscapes. You can enter details about those here.`,
+            emptyJournalPrompt: `People in your story collection sessions might have created <strong>constructions</strong> 
+                such as timelines or landscapes. Copy and paste the following questions for each construction you want to remember.`,
         },
         {
             id: "collectionSessionRecord_reflectionsLabel",

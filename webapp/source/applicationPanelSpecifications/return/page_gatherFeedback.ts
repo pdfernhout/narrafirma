@@ -28,7 +28,9 @@ const panel: Panel = {
                 },
             },
             displayName: "Feedback pieces",
-            displayPrompt: "These are the pieces of feedback you have entered so far."
+            displayPrompt: "These are the pieces of feedback you have entered so far.",
+            emptyJournalPrompt: `Copy and paste the following questions for each piece of <strong>feedback</strong> 
+                you have received.`
         },
         {
             id: "feedback_generalNotes",

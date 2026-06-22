@@ -102,7 +102,10 @@ const panel: Panel = {
                }
             },
             displayName: "Story collection activities",
-            displayPrompt: "Here you can enter some <strong>activities</strong> you plan for the session. Activities within story collection sessions can be simple instructions or complicated exercises (like the creation of timelines)."
+            displayPrompt: `Here you can enter some <strong>activities</strong> you plan for the session. 
+                Activities within story collection sessions can be simple instructions or 
+                complicated exercises (like the creation of timelines).`,
+            emptyJournalPrompt: "Copy and paste the following questions for <strong>activity</strong> within the session plan."
         },
         {
             id: "collectionSessionPlan_exportCollectionSessionAgendaButton",

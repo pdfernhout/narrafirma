@@ -14,7 +14,12 @@ const panel: Panel = {
             valueType: "none",
             displayType: "label",
             displayPrompt: `On this page you can create <strong>annotation questions</strong> 
-               that you will use to add qualitative research codes or tags to your story texts. For details on how annotation works, see the help system.`
+               that you will use to add qualitative research codes or tags to your story texts. 
+               For details on how annotation works, see the help system.`,
+            emptyJournalPrompt: `***Here you can record any <strong>annotation questions</strong> 
+               you used to add qualitative research codes or tags to your story texts. 
+               You will probably want to put your answers wherever you put your stories,
+               but you might want to record just the questions here for later reference.`
         },   
         {
             id: "project_annotationQuestionsList",

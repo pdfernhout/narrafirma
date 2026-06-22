@@ -51,6 +51,7 @@ interface PanelField {
     valueType: string;
     displayType: string;
     displayPrompt: any;
+    emptyJournalPrompt?: any;
     required?: boolean;
     valuePath?: string;
     valueOptions?: string | string[] | Object;
@@ -220,6 +221,7 @@ interface StoryFormFields {
 interface Panel {
     id: string;
     displayName?: string;
+    emptyJournalName?: string;
     pageExplanation?: string;
     pageCategories?: string;
     headerAbove?: string;

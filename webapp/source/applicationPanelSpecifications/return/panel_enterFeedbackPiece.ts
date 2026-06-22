@@ -37,7 +37,11 @@ const panel: Panel = {
             ],
             displayType: "select",
             displayName: "Type",
-            displayPrompt: "What <strong>type</strong> of feedback was this?"
+            displayPrompt: "What <strong>type</strong> of feedback was this?",
+            emptyJournalPrompt: `What <strong>type</strong> of feedback was this?
+                Was it a reference to something from the project, a concern or complaint,
+                a thank you, a suggestion, a hope or wish, a statement of fact, an opinion,
+                a story, an action, or something else?`
         },
         {
             id: "feedback_who",

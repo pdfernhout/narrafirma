@@ -15,8 +15,9 @@ const panel: Panel = {
             displayPrompt: `On this page you can build a 
                 <strong>library of questions people will answer by telling stories</strong>.
                 You will draw on this library as you build your story forms. 
-                Each story form must contain at least one story-eliciting question.
-                `
+                Each story form must contain at least one story-eliciting question.`,
+            emptyJournalPrompt: `***Write here all of the <strong>story-eliciting questions</strong>
+                you thought of as you planned your project, whether you ended up using them or not.`
         },
         {
             id: "project_elicitingQuestionsList",
@@ -35,7 +36,7 @@ const panel: Panel = {
                 }
             },
             displayName: "Story eliciting questions",
-            displayPrompt: "These are the eliciting questions you have added. Click on a question to edit it."
+            displayPrompt: "These are the eliciting questions you have added. Click on a question to edit it.",
         },
         {
             id: "SPECIAL_elicitingQuestionRecommendations",

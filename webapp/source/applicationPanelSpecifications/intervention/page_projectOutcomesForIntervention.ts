@@ -27,7 +27,8 @@ const panel: Panel = {
                }
             },
             displayName: "Project outcomes",
-            displayPrompt: "These are the participant groups for which you have entered outcomes so far."
+            displayPrompt: "These are the participant groups for which you have entered outcomes so far.",
+            emptyJournalPrompt: `Copy and paste the following questions for each <strong>participant group</strong> in your project.`
         }
     ]
 };

@@ -61,7 +61,11 @@ const panel: Panel = {
                }
             },
             displayName: "Sensemaking session resonant stories",
-            displayPrompt: "If you discovered any <strong>resonant stories</strong> (pivot, voice, discovery) in this session, you can enter them here."
+            displayPrompt: `If you discovered any <strong>resonant stories</strong> (pivot, voice, discovery) 
+                in this session, you can enter them here.`,
+            emptyJournalPrompt: `Copy and paste the following questions for each
+                <strong>resonant story</strong> (pivot, voice, discovery) your participants 
+                noticed in the session.`
         },
         {
             id: "sensemakingSessionRecord_resonantPatternsList",
@@ -76,7 +80,11 @@ const panel: Panel = {
                }
             },
             displayName: "Sensemaking session resonant patterns",
-            displayPrompt: "If you discovered any <strong>resonant patterns</strong> (pivot, voice, discovery) in this session, you can enter them here."
+            displayPrompt: `If you discovered any <strong>resonant patterns</strong> (pivot, voice, discovery) 
+                in this session, you can enter them here.`,
+            emptyJournalPrompt: `Copy and paste the following questions for each
+                <strong>resonant pattern</strong> (pivot, voice, discovery) your participants 
+                noticed in the session.`
         },
         {
             id: "sensemakingSessionRecord_outcomesList",
@@ -91,7 +99,11 @@ const panel: Panel = {
                }
             },
             displayName: "Sensemaking session outcomes",
-            displayPrompt: "If your session ended with creating lists of <strong>outcomes</strong> (like discoveries and ideas), you can enter them here."
+            displayPrompt: `If your session ended with creating lists of <strong>outcomes</strong> 
+                (like discoveries and ideas), you can enter them here.`,
+            emptyJournalPrompt: `Copy and paste the following questions for each
+                <strong>outcome</strong> (e.g., discovery, surprise, idea) your participants 
+                noticed in the session.`
         },
         {
             id: "sensemakingSessionRecord_constructionsList",
@@ -106,7 +118,11 @@ const panel: Panel = {
                }
             },
             displayName: "Sensemaking session constructions",
-            displayPrompt: "If your session involve creating any group <strong>constructions</strong> (like landscapes or timelines), you can describe them here."
+            displayPrompt: `If your session involve creating any group <strong>constructions</strong> 
+                (like landscapes or timelines), you can describe them here.`,
+            emptyJournalPrompt: `Copy and paste the following questions for each
+                <strong>construction</strong> (e.g., landscape, timeline) your participants 
+                built in the session.`
         },
         {
             id: "sensemakingSessionRecord_reflectionsLabel",

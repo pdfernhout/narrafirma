@@ -28,7 +28,10 @@ const panel: Panel = {
                }
             },
             displayName: "Project stories",
-            displayPrompt: "These are the project stories you have told so far."
+            displayPrompt: "These are the project stories you have told so far.",
+            emptyJournalPrompt: `Copy and paste the following questions to describe each project story you tell.
+                When you are done telling stories, 
+                discuss what they tell you about what you should do (and maybe avoid) in your project.`
         }
     ]
 };

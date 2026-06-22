@@ -24,7 +24,11 @@ const panel: Panel = {
             ],
             displayType: "select",
             displayName: "Type",
-            displayPrompt: "What <strong>type</strong> of request is this?"
+            displayPrompt: "What <strong>type</strong> of request is this?",
+            emptyJournalPrompt: `What <strong>type</strong> of request is this?
+                Did someone want help with their own project, help with creating or sustaining a story exchange,
+                help looking at this project's stories and results, help learning about story work,
+                or something else?`
         },
         {
             id: "returnRequest_isMet",

@@ -27,7 +27,9 @@ const panel: Panel = {
                }
             },
             displayName: "Intervention records",
-            displayPrompt: "These are the intervention records you have added. Click on a record to edit it."
+            displayPrompt: "These are the intervention records you have added. Click on a record to edit it.",
+            emptyJournalPrompt: `Copy and paste the following questions for each <strong>intervention</strong> 
+                you want to record.`
         }
     ]
 };

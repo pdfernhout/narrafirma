@@ -11,14 +11,21 @@ const panel: Panel = {
             id: "project_synopsis_intro",
             valueType: "none",
             displayType: "label",
-            displayPrompt: "On this page you can write your project <strong>synopsis</strong>, a one or two sentence summary of what matters most about your project."
+            displayPrompt: `On this page you can write your project <strong>synopsis</strong>, 
+                a one or two sentence summary of what matters most about your project.`,
+            emptyJournalPrompt: `On this page you can write your project <strong>synopsis</strong>, 
+                a one or two sentence summary of what matters most about your project.
+                Your synopsis should briefly <strong>summarize</strong> the project, 
+                so that anyone who hears about it can quickly understand what you are doing and why.`
         },
         {
             id: "project_synopsis",
             valueType: "string",
             displayType: "textarea",
             displayName: "Project synopsis",
-            displayPrompt: "Your synopsis should briefly <strong>summarize</strong> the project, so that anyone who hears about it can quickly understand what you are doing and why."
+            displayPrompt: `Your synopsis should briefly <strong>summarize</strong> the project, 
+                so that anyone who hears about it can quickly understand what you are doing and why.`,
+            emptyJournalPrompt: ""
         }
     ]
 };

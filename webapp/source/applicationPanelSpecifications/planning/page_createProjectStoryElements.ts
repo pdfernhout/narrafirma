@@ -17,8 +17,12 @@ const panel: Panel = {
             displayPrompt: `You can use this page to create <b>story elements</b> based on your project stories. 
                 Story elements are abstract representations of the meanings found in stories. 
                 Going through this exercise can help you think about what you want to happen in your project. 
-                (You can also do this exercise on paper. If you do that, skip to the bottom of this page to enter the story elements you created.)`
-        },
+                (You can also do this exercise on paper. If you do that, skip to the bottom of this page 
+                to enter the story elements you created.)`,
+            emptyJournalPrompt: `You can use this page to record the results of a <b>story elements</b>
+                exercise, as described in <i>Working with Stories</i>, using the project stories you told
+                on the previous page.`
+            },
         {
             id: "project_storyElements__questionType",
             valueType: "string",
@@ -34,17 +38,19 @@ const panel: Panel = {
             ],
             displayDataOptionField: "label",
             displayType: "select",
-            displayPrompt: "<b>1</b>. Choose a <b>type</b> of story element to create."
+            displayPrompt: "<b>1</b>. Choose a <b>type</b> of story element to create.",
+            emptyJournalPrompt: `What <strong>type</strong> of story element did you create? 
+                Did you create characters, situations, values, themes, relationships, motivations, beliefs, conflicts, or something else?
+                What <strong>question</strong> did you answer?`
         },
         {
             id: "project_storyElements_storiesList",
             valueType: "object",
             valuePath: "project_projectStoriesList",
             displayType: "storiesList",
-            displayPrompt: `
-                <b>2</b>. These are your project stories.
-                Click on the button below to copy them as clusters to the first diagram.
-            `
+            displayPrompt: `<b>2</b>. These are your project stories.
+                Click on the button below to copy them as clusters to the first diagram.`,
+            emptyJournalPrompt: ""
         },
         {
             id: "project_storyElements_copyButton1",
@@ -58,19 +64,17 @@ const panel: Panel = {
             id: "project_storyElements_answersClusteringDiagram",
             valueType: "object",
             displayType: "clusteringDiagram",
-            displayPrompt: `
-                <b>3</b>. For each story, come up with as many <b>answers</b> to the above question as you can.
-                For each answer, choose <b>Create new answer</b> from the list below, then click <b>Do it</b>.
-            `
+            displayPrompt: `<b>3</b>. For each story, come up with as many <b>answers</b> to the above question as you can.
+                For each answer, choose <b>Create new answer</b> from the list below, then click <b>Do it</b>.`,
+            emptyJournalPrompt: ""
         },
         {
             id: "project_storyElements_copyButton2Label",
             valueType: "none",
             displayType: "label",
-            displayPrompt: `
-                <b>4</b>. When you have considered all of your project stories,
-                press the button below to copy your answers to the next clustering diagram. 
-            `
+            displayPrompt: `<b>4</b>. When you have considered all of your project stories,
+                press the button below to copy your answers to the next clustering diagram.`,
+            emptyJournalPrompt: "List or describe your <strong>answers</strong> to the story element question."
         },        
         {
             id: "project_storyElements_copyButton2",
@@ -84,19 +88,18 @@ const panel: Panel = {
             id: "project_storyElements_answerClustersClusteringDiagram",
             valueType: "object",
             displayType: "clusteringDiagram",
-            displayPrompt: `
-                <b>5</b>. Now <b>cluster</b> your answers together. 
+            displayPrompt: `<b>5</b>. Now <b>cluster</b> your answers together. 
                 Drag the circles to place like with like.<br> 
-                <b>6</b>. Give each cluster of answers a <b>name</b> (choose <b>Create new cluster name</b>, then click <b>Do it</b>).
-            `
+                <b>6</b>. Give each cluster of answers a <b>name</b> (choose <b>Create new cluster name</b>, 
+                then click <b>Do it</b>).`,
+            emptyJournalPrompt: "List your <strong>answer clusters</strong>. What did you notice about them?"
         },
         {
             id: "project_storyElements_copyButton3Label",
            valueType: "none",
             displayType: "label",
-            displayPrompt: `
-                <b>7</b>. Press the button below to copy your cluster names to the next diagram. 
-            `
+            displayPrompt: `<b>7</b>. Press the button below to copy your cluster names to the next diagram.`,
+            emptyJournalPrompt: ""
         },        
         {
             id: "project_storyElements_copyButton3",
@@ -110,22 +113,20 @@ const panel: Panel = {
             id: "project_storyElements_attributesClusteringDiagram",
             valueType: "object",
             displayType: "clusteringDiagram",
-            displayPrompt: `
-                <b>8</b>. Describe each cluster by adding <b>attributes</b> to it.
+            displayPrompt: `<b>8</b>. Describe each cluster by adding <b>attributes</b> to it.
                 Ask yourself: What is good and bad about this cluster? What helps you, and what works against you? 
                 Where is the opportunity, and where is the challenge? Create at least two positive and two negative 
                 attributes for each cluster. For each attribute, choose <b>Create new answer</b>, then click <b>Do it</b>.
                 (If you can't think of both positive and negative attributes, keep trying. 
-                The exercise depends on the attributes being balanced.)
-            `
+                The exercise depends on the attributes being balanced.)`,
+            emptyJournalPrompt: "List or describe the <strong>attributes</strong> you wrote to describe each answer cluster."
         },
         {
             id: "project_storyElements_copyButton4Label",
             valueType: "none",
             displayType: "label",
-            displayPrompt: `
-                <b>9</b>. Press the button below to copy your attributes to the next diagram. 
-            `
+            displayPrompt: `<b>9</b>. Press the button below to copy your attributes to the next diagram.`,
+            emptyJournalPrompt: ""
         },        
         {
             id: "project_storyElements_copyButton4",
@@ -139,10 +140,10 @@ const panel: Panel = {
             id: "project_storyElements_attributeClustersClusteringDiagram",
             valueType: "object",
             displayType: "clusteringDiagram",
-            displayPrompt: `
-                <b>10</b>. <b>Rearrange</b> the attributes into new, different clusters, placing like with like, as you did before.<br>
-                <b>11</b>. <b>Create new clusters</b> with new names and descriptions. These are your story elements.
-            `
+            displayPrompt: `<b>10</b>. <b>Rearrange</b> the attributes into new, different clusters, placing like with like, as you did before.<br>
+                <b>11</b>. <b>Create new clusters</b> with new names and descriptions. These are your story elements.`,
+            emptyJournalPrompt: `List and describe the <strong>story elements</strong> you created. 
+                What did you learn from them?`
         },
         {
             id: "project_storyElements_reflection_header",

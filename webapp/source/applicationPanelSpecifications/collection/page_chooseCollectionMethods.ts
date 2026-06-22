@@ -35,7 +35,8 @@ const panel: Panel = {
                 }
             },
             displayName: "Story collection methods",
-            displayPrompt: "These are the story collection methods you have added. Click on a method to edit it."
+            displayPrompt: "These are the story collection methods you have added. Click on a method to edit it.",
+            emptyJournalPrompt: "Copy and paste the following questions for each <strong>story collection method</strong> you intend to use."
         }
     ]
 };

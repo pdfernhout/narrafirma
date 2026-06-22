@@ -34,7 +34,9 @@ const panel: Panel = {
                }
             },
             displayName: "Intervention plans",
-            displayPrompt: "These are the intervention plans you have added. Click on a plan to edit it."
+            displayPrompt: "These are the intervention plans you have added. Click on a plan to edit it.",
+            emptyJournalPrompt: `Copy and paste the following questions for each <strong>intervention</strong> 
+                you plan to use in your project.`
         }
     ]
 };

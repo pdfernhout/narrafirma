@@ -14,7 +14,13 @@ const panel: Panel = {
             displayPrompt: `On this page you can design one or more <strong>story forms</strong> for your project. 
                 Choose from the library of questions you already created to create the form your participants 
                 will use to tell their stories and answer questions about them.
-                You can also generate a story form using all existing questions or import one from a CSV file.`
+                You can also generate a story form using all existing questions or import one from a CSV file.`,
+            emptyJournalPrompt: `***Write here <strong>the questions you actually asked</strong> your participants,
+                in the order you asked them: 
+                your story-eliciting  questions, your follow-up questions about each story, 
+                and your questions about each participant.
+                Also record the introduction you used at the start of each interview, survey, or story-sharing session,
+                plus any concluding words.`
         },
         {
             id: "project_storyForms",

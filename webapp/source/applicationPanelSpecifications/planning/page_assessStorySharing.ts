@@ -325,7 +325,8 @@ const panel: Panel = {
             id: "assessment_result_header",
             valueType: "none",
             displayType: "header",
-            displayPrompt: "Your score"
+            displayPrompt: "Your score",
+            emptyJournalPrompt: "General notes"
         },
         {
             id: "assessment_result_freedomSubscore",
@@ -338,7 +339,8 @@ const panel: Panel = {
                 "assessment_silencing",
                 "assessment_conflict"
             ],
-            displayPrompt: "Narrative <strong>freedom</strong>:"
+            displayPrompt: "Narrative <strong>freedom</strong>:",
+            emptyJournalPrompt: ""
         },
         {
             id: "assessment_result_flowSubscore",
@@ -351,7 +353,8 @@ const panel: Panel = {
                 "assessment_storyTypes",
                 "assessment_sensemaking"
             ],
-            displayPrompt: "Narrative <strong>flow</strong>:"
+            displayPrompt: "Narrative <strong>flow</strong>:",
+            emptyJournalPrompt: ""
         },
         {
             id: "assessment_result_knowledgeSubscore",
@@ -364,7 +367,8 @@ const panel: Panel = {
                 "assessment_blunders",
                 "assessment_accounting"
             ],
-            displayPrompt: "Narrative <strong>knowledge</strong>:"
+            displayPrompt: "Narrative <strong>knowledge</strong>:",
+            emptyJournalPrompt: ""
         },
         {
             id: "assessment_result_unitySubscore",
@@ -377,7 +381,8 @@ const panel: Panel = {
                 "assessment_intermingling",
                 "assessment_culture"
             ],
-            displayPrompt: "Narrative <strong>unity</strong>:"
+            displayPrompt: "Narrative <strong>unity</strong>:",
+            emptyJournalPrompt: ""
         },
         {
             id: "assessment_result_grandTotal",
@@ -405,14 +410,17 @@ const panel: Panel = {
                 "assessment_intermingling",
                 "assessment_culture"
             ],
-            displayPrompt: "Combined score:"
+            displayPrompt: "Combined score:",
+            emptyJournalPrompt: ""
         },
         {
             id: "assessment_notes",
             valueType: "string",
             displayType: "textarea",
             displayName: "Notes",
-            displayPrompt: "Here you can record some <strong>notes</strong> or comments about this assessment."
+            displayPrompt: "Here you can record some <strong>notes</strong> or comments about this assessment.",
+            emptyJournalPrompt: `Is there anything you would like to <strong>remember</strong> about this assessment? 
+                Does anything stand out to you as especially important?`
         }
     ]
 };

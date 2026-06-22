@@ -100,7 +100,10 @@ const panel: Panel = {
                }
             },
             displayName: "Sensemaking session activities",
-            displayPrompt: "Here you can enter some <strong>activities</strong> you plan to use in the session. Activities can be simple instructions or complicated exercises (like the creation of timelines)."
+            displayPrompt: `Here you can enter some <strong>activities</strong> you plan to use in the session. 
+                Activities can be simple instructions or complicated exercises (like the creation of timelines).`,
+            emptyJournalPrompt: `Copy and paste the following questions for each <strong>activity</strong>
+                you want to include in your sensemaking session.`
         },
         {
             id: "sensemakingSessionPlan_printSensemakingSessionAgendaButton",

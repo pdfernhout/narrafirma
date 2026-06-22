@@ -29,7 +29,9 @@ const panel: Panel = {
                }
             },
             displayName: "Statements",
-            displayPrompt: "These are the presentation elements you have added. Click on an element to edit it."
+            displayPrompt: "These are the presentation elements you have added. Click on an element to edit it.",
+            emptyJournalPrompt: `Copy and paste the following questions for each <strong>element</strong> 
+                you want to include in your presentation.`
         },
         {
             id: "projectPresentation_exportPresentationOutlineButton",

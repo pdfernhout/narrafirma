@@ -14,7 +14,7 @@ const panel: Panel = {
             displayType: "label",
             displayPrompt: 
             `On this page you can think about groups of <strong>participants</strong> you want to involve in your project. 
-            (Examples might be: doctors and patients; staff and customers; natives, immigrants, and tourists.).`
+            (Examples might be: doctors and patients; staff and customers; residents and tourists.)`
         },
         {
             id: "project_participantGroupsList",
@@ -29,7 +29,8 @@ const panel: Panel = {
                 }
             },
             displayName: "Participant groups",
-            displayPrompt: "Please add participant <strong>groups</strong> in the list below (typically up to three groups)."
+            displayPrompt: "Please add participant <strong>groups</strong> in the list below (typically up to three groups).",
+            emptyJournalPrompt: "Copy and paste the following questions for each participant group involved in your project."
         }
     ]
 };

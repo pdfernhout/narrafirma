@@ -24,7 +24,10 @@ const panel: Panel = {
             ],
             displayType: "select",
             displayName: "Type",
-            displayPrompt: "Which <strong>type</strong> of resonant pattern is this?"
+            displayPrompt: "Which <strong>type</strong> of resonant pattern is this?",
+            emptyJournalPrompt: `Which <strong>type</strong> of resonant pattern is this? 
+                Is it a pivot pattern (keeps coming up), a voice pattern (needs to be heard),
+                or a discovery pattern (provides understanding)?`
         },
         {
             id: "sensemakingSessionRecord_resonantPattern_description",

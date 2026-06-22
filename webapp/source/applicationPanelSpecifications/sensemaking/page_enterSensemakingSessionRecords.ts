@@ -27,7 +27,9 @@ const panel: Panel = {
                }
             },
             displayName: "Sensemaking session records",
-            displayPrompt: "These are the session records you have added. Click on a record to edit it."
+            displayPrompt: "These are the session records you have added. Click on a record to edit it.",
+            emptyJournalPrompt: `Copy and paste the following questions for each 
+                <strong>sensemaking session</strong> you want to remember.`
         }
     ]
 };

@@ -35,7 +35,11 @@ const panel: Panel = {
             ],
             displayType: "select",
             displayName: "Type",
-            displayPrompt: "What <strong>type</strong> of element is this?"
+            displayPrompt: "What <strong>type</strong> of element is this?",
+            emptyJournalPrompt: `What <strong>type</strong> of element is this?
+                A background explanation about the project? A report on what happened? A project outcome?
+                Something someone said about the project? Something you learned about the project?
+                How the project affected the community? A proposal for the future? Or something else?`
         },
         {
             id: "projectPresentationElement_examples",

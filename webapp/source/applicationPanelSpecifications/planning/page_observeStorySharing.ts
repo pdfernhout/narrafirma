@@ -33,7 +33,8 @@ const panel: Panel = {
             displayName: "Story sharing observations",
             displayPrompt: `These are the observations you have added. 
                 Each one represents a conversation in which you observed and supported story sharing. 
-                Click on an observation to edit it.`
+                Click on an observation to edit it.`,
+            emptyJournalPrompt: `Copy and paste the following questions for each <strong>conversation</strong> you observed.`
         }
     ]
 };

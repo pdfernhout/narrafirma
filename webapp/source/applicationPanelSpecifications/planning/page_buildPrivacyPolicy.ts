@@ -12,7 +12,9 @@ const panel: Panel = {
             valueType: "none",
             displayType: "label",
             displayPrompt: `Use this page to craft a <strong>privacy policy</strong> you can use to show to your participants.
-                You can use simple HTML (b, i, ul/li, etc) to format your answers. For example, you might want to add a bold-faced heading to each section.` 
+                You can use simple HTML (b, i, ul/li, etc) to format your answers. 
+                For example, you might want to add a bold-faced heading to each section.`,
+            emptyJournalPrompt: "Use this page to craft a <strong>privacy policy</strong> you can use to show to your participants."
         },
 
         {

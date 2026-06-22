@@ -11,7 +11,10 @@ const panel: Panel = {
             id: "project_sensemakingSessionPlansLabel",
             valueType: "none",
             displayType: "label",
-            displayPrompt: "On this page you can create <strong>plans</strong> for your sensemaking sessions. After a plan is complete, you can print a session agenda and use it to remember what you plan to do, and to coordinate your facilitation with any helpers you might have."
+            displayPrompt: `On this page you can create <strong>plans</strong> for your sensemaking sessions. 
+                After a plan is complete, you can print a session agenda and use it to remember what you plan to do, 
+                and to coordinate your facilitation with any helpers you might have.`,
+            emptyJournalPrompt: `On this page you can create <strong>plans</strong> for your sensemaking sessions.`
         },
         {
             id: "sensemakingSessionRecommendations",
@@ -34,7 +37,8 @@ const panel: Panel = {
                }
             },
             displayName: "Sensemaking session plans",
-            displayPrompt: "These are the session plans you have added. Click on a plan to edit it."
+            displayPrompt: "These are the session plans you have added. Click on a plan to edit it.",
+            emptyJournalPrompt: "Copy and paste the following questions for each <strong>session plan</strong> you want to create."
         }
     ]
 };

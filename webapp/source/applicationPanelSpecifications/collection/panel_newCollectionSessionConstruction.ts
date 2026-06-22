@@ -23,7 +23,8 @@ const panel: Panel = {
             ],
             displayType: "select",
             displayName: "Type",
-            displayPrompt: "What <strong>type</strong> of construction is it?"
+            displayPrompt: "What <strong>type</strong> of construction is it?",
+            emptyJournalPrompt: `What <strong>type</strong> of construction is this? Is it, for example, a timeline or a landscape?`
         },
         {
             id: "collectionSessionRecord_construction_description",

@@ -38,9 +38,17 @@ const panel: Panel = {
             id: "storySharingObservation_storiesList",
             valueType: "array",
             displayType: "grid",
-            displayConfiguration: "panel_addObservedStory",
+            displayConfiguration: {
+                itemPanelID: "panel_addObservedStory",
+                gridConfiguration: {
+                    addButton: true,
+                    removeButton: true, 
+                    duplicateButton: true,
+               }
+            },
             displayName: "Observed stories",
-            displayPrompt: "Describe the <strong>stories</strong> you heard."
+            displayPrompt: "Describe the <strong>stories</strong> you heard.",
+            emptyJournalPrompt: "Copy and paste the following questions to describe each <strong>story</strong> you heard."
         },
         {
             id: "observationOfStorySharing_chains",

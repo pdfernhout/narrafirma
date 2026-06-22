@@ -36,7 +36,10 @@ const panel: Panel = {
             ],
             displayType: "select",
             displayName: "Type",
-            displayPrompt: "What <strong>type</strong> of session outcome is this?"
+            displayPrompt: "What <strong>type</strong> of session outcome is this?",
+            emptyJournalPrompt: `What <strong>type</strong> of session outcome is this?
+                Is it, for example, a discovery, learning, perspective, difference, connection, curiosity,
+                dilemma, concern, idea, opportunity, suggestion, issue, recommendation, discussion, or priority?`
         },
         {
             id: "sensemakingSessionRecord_outcome_description",

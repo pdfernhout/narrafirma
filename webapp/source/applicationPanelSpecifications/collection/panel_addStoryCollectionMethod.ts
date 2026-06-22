@@ -29,7 +29,10 @@ const panel: Panel = {
             ],
             displayType: "select",
             displayName: "Type",
-            displayPrompt: "What <strong>type</strong> of method is this?"
+            displayPrompt: "What <strong>type</strong> of method is this?",
+            emptyJournalPrompt: `What <strong>type</strong> of method is this?
+                Is it a one-on-one interview, a group interview, a peer interview, a story-sharing session,
+                a survey, a journal, a narrative incident account/report, or a set of gleaned stories? Or something else?`
         },
         {
             id: "storyCollectionMethod_participantGroups",

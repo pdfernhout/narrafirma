@@ -800,3 +800,4 @@ export const exportCollectionSessionAgenda = printing.exportCollectionSessionAge
 export const printSensemakingSessionAgenda = printing.printSensemakingSessionAgenda;
 
 export const printProjectReport = printing.printProjectReport;
+export const printEmptyJournal = printing.printEmptyJournal;

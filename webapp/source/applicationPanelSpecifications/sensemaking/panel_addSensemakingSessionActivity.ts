@@ -19,7 +19,8 @@ const panel: Panel = {
             displayType: "text",
             displayConfiguration: "10",
             displayName: "Order",
-            displayPrompt: "Specify the order in which to do this sensemaking activity (e.g. 1, 2a, 2b, 3)"
+            displayPrompt: "Specify the order in which to do this sensemaking activity (e.g. 1, 2a, 2b, 3)",
+            emptyJournalPrompt: ""
         },
         {
             id: "sensemakingSessionPlan_activity_duration",
@@ -52,7 +53,14 @@ const panel: Panel = {
             ],
             displayType: "select",
             displayName: "Type",
-            displayPrompt: "What <strong>type</strong> of activity is this?"
+            displayPrompt: "What <strong>type</strong> of activity is this?",
+            emptyJournalPrompt: `What <strong>type</strong> of activity is this? 
+                Is it an ice-breaking activity?
+                Is it a time for sharing stories, with or without a simple task?
+                Is it a group exercise with a specific name? 
+                Is it a time to talk about or find patterns in stories?
+                Is it a break? 
+                Is it a wrapping-up activity?`
         },
         {
             id: "sensemakingSessionPlan_activity_plan",

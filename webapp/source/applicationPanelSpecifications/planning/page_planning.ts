@@ -11,7 +11,7 @@ const panel: Panel = {
             displayType: "label",
             displayPrompt: 
                 `In the first phase of PNI, you decide what you are going to do. 
-                You consider your goals, topic, and participants; you ponder opportunities and dangers; you firm up your plans.`
+                You consider your goals, topic, and participants; you ponder opportunities and dangers; you firm up your plans.`,
         }
     ]
 };

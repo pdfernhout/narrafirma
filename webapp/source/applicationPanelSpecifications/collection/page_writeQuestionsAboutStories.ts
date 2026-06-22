@@ -12,7 +12,9 @@ const panel: Panel = {
             valueType: "none",
             displayType: "label",
             displayPrompt: `On this page you can build a <strong>library of questions about stories</strong>.
-                You will draw on this library as you build your story forms. `
+                You will draw on this library as you build your story forms. `,
+            emptyJournalPrompt: `***Write here all of the <strong>follow-up questions</strong> you thought of to ask about stories,
+                whether you end up using them or not.`
         },
         {
             id: "project_storyQuestionsList",

@@ -5,6 +5,7 @@ import kludgeForUseStrict = require("../../kludgeForUseStrict");
 const panel: Panel = {
     id: "page_enterStories",
     displayName: "Enter or import stories",
+    emptyJournalName: "Record stories",
     pageExplanation: "Input stories you collected outside of NarraFirma.",
     pageCategories: "enter",
     panelFields: [
@@ -14,7 +15,11 @@ const panel: Panel = {
             displayType: "label",
             displayPrompt: `On this page you can <strong>enter</strong> or import stories you collected from participants. 
                 (When importing stories, please be aware that the import process can take some time, especially if you are communicating with a remote server. 
-                If you import stories and you see no stories in the project, wait a minute or two, then check again.)`
+                If you import stories and you see no stories in the project, wait a minute or two, then check again.)`,
+            emptyJournalPrompt: `***Here you can type or paste in the <strong>stories</strong> you collected, 
+                including answers to questions you asked (about the stories and about the people who told them).
+                If you don't want to put your stories and answers into this file (maybe you want them in a spreadsheet),
+                you can use this space to describe the place(s) you put the stories and answers in, so you can find them again later.`
         },
         {
             id: "storyCollectionChoice_enterStories",

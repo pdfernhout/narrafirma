@@ -12,7 +12,11 @@ const panel: Panel = {
             id: "project_improvePlanningDrafts",
             valueType: "none",
             displayType: "label",
-            displayPrompt: "On this page you can review and improve your draft answers to the <strong>PNI planning questions</strong>, based on your consideration of project aspects and your project stories."
+            displayPrompt: `On this page you can review and improve your draft answers to the 
+                <strong>PNI planning questions</strong>, based on your consideration of project aspects and your project stories.`,
+            emptyJournalPrompt: `On this page (if you want to) you can review and improve your draft answers to the 
+                <strong>PNI planning questions</strong>, based on your consideration of project aspects and your project stories.
+                You can copy and paste your draft answers here, then revise them, or you can just delete this page from your journal.`,
         },
         {
             id: "project_pniQuestions_copyDraftsButton",

@@ -27,7 +27,9 @@ const panel: Panel = {
                 }
             },
             displayName: "Story collection session records",
-            displayPrompt: "These are the session records you have added. Click on a record to edit it."
+            displayPrompt: "These are the session records you have added. Click on a record to edit it.",
+            emptyJournalPrompt: `Copy and paste the following questions for each 
+                <strong>story-sharing session</strong> you want to remember.`
         }
     ]
 };

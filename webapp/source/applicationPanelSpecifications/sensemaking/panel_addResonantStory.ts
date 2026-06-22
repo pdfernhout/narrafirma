@@ -24,7 +24,10 @@ const panel: Panel = {
             ],
             displayType: "select",
             displayName: "Type",
-            displayPrompt: "Which <strong>type</strong> of resonant story is this?"
+            displayPrompt: "Which <strong>type</strong> of resonant story is this?",
+            emptyJournalPrompt: `Which <strong>type</strong> of resonant story is this? 
+                Is it a pivot story (keeps coming up), a voice story (needs to be heard),
+                or a discovery story (provides understanding)?`
         },
         {
             id: "sensemakingSessionRecord_resonantStory_text",

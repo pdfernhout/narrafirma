@@ -28,7 +28,9 @@ const panel: Panel = {
                 }
             },
             displayName: "Help requests",
-            displayPrompt: "These are the requests you have recorded so far."
+            displayPrompt: "These are the requests you have recorded so far.",
+            emptyJournalPrompt: `Copy and paste the following questions for each <strong>request</strong> 
+                you have received.`
         }
     ]
 };
